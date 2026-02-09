@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { Check, PlusCircle } from 'lucide-react';
 
 import { cn } from '@/app/lib/utils';
@@ -24,6 +25,7 @@ interface DataTableFacetedFilterProps {
 }
 
 export function DataTableFacetedFilter({ title, options, selectedValues, onSelectedChange }: DataTableFacetedFilterProps) {
+  const t = useTranslations('dataTable.facetedFilter');
   const selectedSet = new Set(selectedValues);
 
   const handleSelect = (value: string) => {
@@ -55,7 +57,7 @@ export function DataTableFacetedFilter({ title, options, selectedValues, onSelec
               <div className="hidden space-x-1 lg:flex">
                 {selectedSet.size > 2 ? (
                   <Badge variant="secondary" className="rounded-sm px-1 font-normal">
-                    {selectedSet.size} selected
+                    {t('selected', { count: selectedSet.size })}
                   </Badge>
                 ) : (
                   options
@@ -75,7 +77,7 @@ export function DataTableFacetedFilter({ title, options, selectedValues, onSelec
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t('noResults')}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedSet.has(option.value);
@@ -100,7 +102,7 @@ export function DataTableFacetedFilter({ title, options, selectedValues, onSelec
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem onSelect={handleClear} className="justify-center text-center">
-                    Clear filters
+                    {t('clearFilters')}
                   </CommandItem>
                 </CommandGroup>
               </>

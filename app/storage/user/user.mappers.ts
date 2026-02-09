@@ -9,6 +9,7 @@ export const dbUserToDomain = (user: Prisma.UserGetPayload<Prisma.UserDefaultArg
     email: user.email,
     emailVerified: user.emailVerified,
     image: user.image,
+    locale: user.locale,
     role: user.role as Role | null,
     banned: user.banned,
     banReason: user.banReason,

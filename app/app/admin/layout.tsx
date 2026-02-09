@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
@@ -22,12 +23,11 @@ import {
   SidebarTrigger,
 } from '@/app/components/ui/sidebar';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { ThemeToggle } from '@/app/components/theme-toggle';
 import { UserMenu } from '@/app/components/user-menu';
 
-const sidebarItems = [
+const SIDEBAR_ITEMS = [
   {
-    title: 'Users',
+    translationKey: 'users' as const,
     href: '/app/admin/users',
     icon: Users,
   },
@@ -35,6 +35,7 @@ const sidebarItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const t = useTranslations('admin');
   const { isAdmin, isPending } = useIsAdmin();
   const { data: session, isPending: isSessionPending } = authClient.useSession();
 
@@ -63,14 +64,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild tooltip="Back to App">
+              <SidebarMenuButton size="lg" asChild tooltip={t('sidebar.backToApp')}>
                 <Link href="/app">
                   <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg text-xs font-semibold">
                     N
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none">
                     <span className="font-semibold">Neurotic</span>
-                    <span className="text-muted-foreground text-xs">Admin</span>
+                    <span className="text-muted-foreground text-xs">{t('menu')}</span>
                   </div>
                 </Link>
               </SidebarMenuButton>
@@ -79,17 +80,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarGroupLabel>{t('sidebar.administration')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {sidebarItems.map((item) => {
+                {SIDEBAR_ITEMS.map((item) => {
+                  const title = t(`${item.translationKey}.title`);
                   const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                   return (
                     <SidebarMenuItem key={item.href}>
-                      <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
+                      <SidebarMenuButton asChild isActive={isActive} tooltip={title}>
                         <Link href={item.href}>
                           <item.icon />
-                          <span>{item.title}</span>
+                          <span>{title}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -105,10 +107,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-2">
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-4" />
-            <span className="text-muted-foreground text-sm">Admin Panel</span>
+            <span className="text-muted-foreground text-sm">{t('sidebar.panel')}</span>
           </div>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             {isSessionPending ? (
               <Skeleton className="h-8 w-8 rounded-full" />
             ) : session ? (

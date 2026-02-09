@@ -1,0 +1,157 @@
+{
+  "language": {
+    "label": "Taal",
+    "updateFailed": "Taal bijwerken mislukt"
+  },
+  "theme": {
+    "label": "Thema",
+    "light": "Licht",
+    "dark": "Donker",
+    "automatic": "Automatisch"
+  },
+  "dataTable": {
+    "pagination": {
+      "result": "resultaat",
+      "results": "resultaten",
+      "rowsPerPage": "Rijen per pagina",
+      "pageOf": "Pagina {current} van {total}",
+      "firstPage": "Ga naar eerste pagina",
+      "previousPage": "Vorige pagina",
+      "nextPage": "Volgende pagina",
+      "lastPage": "Ga naar laatste pagina"
+    },
+    "toolbar": {
+      "searchPlaceholder": "Zoeken...",
+      "clearSearch": "Zoekopdracht wissen"
+    },
+    "viewOptions": {
+      "view": "Weergave",
+      "toggleColumns": "Kolommen tonen/verbergen"
+    },
+    "facetedFilter": {
+      "selected": "{count} geselecteerd",
+      "noResults": "Geen resultaten gevonden.",
+      "clearFilters": "Filters wissen"
+    }
+  },
+  "settings": {
+    "language": "Taal",
+    "languageDescription": "Selecteer je voorkeurstaal voor de interface.",
+    "languageUpdateFailed": "Taal bijwerken mislukt"
+  },
+  "auth": {
+    "signIn": "Inloggen",
+    "signInDescription": "Voer je e-mailadres in om in te loggen",
+    "signInAction": "Inloggen",
+    "signUp": "Registreren",
+    "signUpDescription": "Vul je gegevens in om een account aan te maken",
+    "signUpAction": "Account aanmaken",
+    "signUpEmail": "Controleer je e-mail voor de verificatielink.",
+    "signOut": "Uitloggen",
+    "forgotPassword": "Wachtwoord vergeten",
+    "forgotPasswordDescription": "Voer je e-mailadres in om je wachtwoord te resetten",
+    "forgotPasswordAction": "Resetlink versturen",
+    "forgotPasswordEmail": "Controleer je e-mail voor de wachtwoord resetlink.",
+    "forgotPasswordLink": "Wachtwoord vergeten?",
+    "resetPassword": "Wachtwoord resetten",
+    "resetPasswordDescription": "Voer hieronder je nieuwe wachtwoord in",
+    "resetPasswordAction": "Nieuw wachtwoord opslaan",
+    "resetPasswordSuccess": "Wachtwoord succesvol gereset",
+    "changePassword": "Wachtwoord wijzigen",
+    "changePasswordDescription": "Voer je huidige wachtwoord en een nieuw wachtwoord in.",
+    "changePasswordSuccess": "Je wachtwoord is gewijzigd.",
+    "changePasswordInstructions": "Gebruik minimaal 8 tekens.",
+    "email": "E-mail",
+    "emailPlaceholder": "naam@voorbeeld.nl",
+    "emailDescription": "Voer het e-mailadres in waarmee je wilt inloggen.",
+    "emailRequired": "E-mailadres is verplicht",
+    "password": "Wachtwoord",
+    "passwordPlaceholder": "Wachtwoord",
+    "passwordRequired": "Wachtwoord is verplicht",
+    "newPassword": "Nieuw wachtwoord",
+    "newPasswordPlaceholder": "Nieuw wachtwoord",
+    "newPasswordRequired": "Nieuw wachtwoord is verplicht",
+    "currentPassword": "Huidig wachtwoord",
+    "currentPasswordPlaceholder": "Huidig wachtwoord",
+    "confirmPassword": "Bevestig wachtwoord",
+    "confirmPasswordPlaceholder": "Bevestig wachtwoord",
+    "confirmPasswordRequired": "Bevestig wachtwoord is verplicht",
+    "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+    "name": "Naam",
+    "namePlaceholder": "Naam",
+    "nameDescription": "Vul je volledige naam of weergavenaam in.",
+    "rememberMe": "Onthoud mij",
+    "alreadyHaveAnAccount": "Heb je al een account?",
+    "dontHaveAnAccount": "Nog geen account?",
+    "orContinueWith": "Of ga verder met",
+    "signInWith": "Inloggen met",
+    "deleteAccount": "Account verwijderen",
+    "deleteAccountDescription": "Verwijder je account en alle inhoud permanent. Deze actie kan niet ongedaan worden gemaakt.",
+    "deleteAccountSuccess": "Je account is verwijderd.",
+    "avatar": "Avatar",
+    "avatarDescription": "Klik op de avatar om een aangepaste afbeelding te uploaden.",
+    "settings": "Instellingen",
+    "security": "Beveiliging",
+    "sessions": "Sessies",
+    "sessionsDescription": "Beheer je actieve sessies en trek toegang in.",
+    "currentSession": "Huidige sessie",
+    "providers": "Providers",
+    "providersDescription": "Koppel je account met een externe dienst.",
+    "link": "Koppelen",
+    "unlink": "Ontkoppelen",
+    "twoFactor": "Twee-factor",
+    "twoFactorDescription": "Voer je eenmalige wachtwoord in om door te gaan",
+    "twoFactorCardDescription": "Voeg een extra beveiligingslaag toe aan je account.",
+    "enableTwoFactor": "Twee-factor inschakelen",
+    "disableTwoFactor": "Twee-factor uitschakelen",
+    "magicLink": "Magische link",
+    "magicLinkDescription": "Voer je e-mailadres in om een magische link te ontvangen",
+    "magicLinkAction": "Magische link versturen",
+    "magicLinkEmail": "Controleer je e-mail voor de magische link",
+    "verifyYourEmail": "Verifieer je e-mail",
+    "verifyYourEmailDescription": "Verifieer je e-mailadres. Controleer je inbox voor de verificatie-e-mail. Als je de e-mail niet hebt ontvangen, klik dan op de knop om opnieuw te versturen.",
+    "resendVerificationEmail": "Verificatie-e-mail opnieuw versturen",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "continue": "Doorgaan",
+    "goBack": "Terug",
+    "updatedSuccessfully": "Succesvol bijgewerkt",
+    "invalidEmailOrPassword": "Ongeldig e-mailadres of wachtwoord",
+    "userNotFound": "Gebruiker niet gevonden",
+    "userAlreadyExists": "Gebruiker bestaat al"
+  },
+  "admin": {
+    "menu": "Admin",
+    "sidebar": {
+      "backToApp": "Terug naar app",
+      "administration": "Administratie",
+      "panel": "Beheerpaneel"
+    },
+    "users": {
+      "title": "Gebruikers",
+      "columns": {
+        "name": "Naam",
+        "email": "E-mail",
+        "role": "Rol",
+        "language": "Taal",
+        "verified": "Geverifieerd",
+        "status": "Status",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "roleAdmin": "Admin",
+      "roleUser": "Gebruiker",
+      "yes": "Ja",
+      "no": "Nee",
+      "statusActive": "Actief",
+      "statusBanned": "Geblokkeerd",
+      "filters": {
+        "status": "Status",
+        "role": "Rol"
+      },
+      "searchPlaceholder": "Zoek gebruikers...",
+      "tryAgain": "Opnieuw proberen"
+    }
+  }
+}

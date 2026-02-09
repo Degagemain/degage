@@ -7,6 +7,7 @@ export const user = (data: Partial<User> = {}): User => {
     email: data.email ?? 'test@example.com',
     emailVerified: data.emailVerified ?? false,
     image: data.image ?? null,
+    locale: data.locale ?? 'en',
     role: data.role ?? null,
     banned: data.banned ?? false,
     banReason: data.banReason ?? null,

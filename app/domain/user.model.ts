@@ -7,6 +7,7 @@ export const userSchema = z.object({
   email: z.string().email().max(255),
   emailVerified: z.boolean().default(false),
   image: z.string().nullable().default(null),
+  locale: z.string().nullable().default('en'),
   role: roleSchema.nullable().default(null),
   banned: z.boolean().nullable().default(false),
   banReason: z.string().nullable().default(null),

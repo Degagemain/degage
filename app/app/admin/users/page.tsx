@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Ban, Shield, UserCheck, UserIcon } from 'lucide-react';
 
@@ -11,18 +12,6 @@ import { ALL_USER_ROLES, ALL_USER_STATUSES, UserStatus } from '@/domain/user.fil
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
-
-const STATUS_OPTIONS: FacetedFilterOption[] = ALL_USER_STATUSES.map((status) => ({
-  value: status,
-  label: status === UserStatus.ACTIVE ? 'Active' : 'Banned',
-  icon: status === UserStatus.ACTIVE ? UserCheck : Ban,
-}));
-
-const ROLE_OPTIONS: FacetedFilterOption[] = ALL_USER_ROLES.map((role) => ({
-  value: role,
-  label: role === Role.ADMIN ? 'Admin' : 'User',
-  icon: role === Role.ADMIN ? Shield : UserIcon,
-}));
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -42,6 +31,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 };
 
 export default function UsersPage() {
+  const t = useTranslations('admin.users');
   const [state, setState] = useState<UsersState>({
     data: [],
     total: 0,
@@ -87,8 +77,42 @@ export default function UsersPage() {
     setPageIndex(0); // Reset to first page on sort change
   }, []);
 
-  // Create columns with sort handler
-  const columns = useMemo(() => createColumns({ onSort: handleSort }), [handleSort]);
+  // Create columns with sort handler and translations
+  const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+
+  const statusOptions: FacetedFilterOption[] = useMemo(
+    () =>
+      ALL_USER_STATUSES.map((status) => ({
+        value: status,
+        label: status === UserStatus.ACTIVE ? t('statusActive') : t('statusBanned'),
+        icon: status === UserStatus.ACTIVE ? UserCheck : Ban,
+      })),
+    [t],
+  );
+
+  const roleOptions: FacetedFilterOption[] = useMemo(
+    () =>
+      ALL_USER_ROLES.map((role) => ({
+        value: role,
+        label: role === Role.ADMIN ? t('roleAdmin') : t('roleUser'),
+        icon: role === Role.ADMIN ? Shield : UserIcon,
+      })),
+    [t],
+  );
+
+  const columnLabels = useMemo(
+    () => ({
+      name: t('columns.name'),
+      email: t('columns.email'),
+      role: t('columns.role'),
+      locale: t('columns.language'),
+      emailVerified: t('columns.verified'),
+      banned: t('columns.status'),
+      createdAt: t('columns.created'),
+      updatedAt: t('columns.updated'),
+    }),
+    [t],
+  );
 
   // Fetch users
   const fetchUsers = useCallback(async () => {
@@ -176,7 +200,7 @@ export default function UsersPage() {
         <div className="text-center">
           <p className="text-destructive font-medium">{state.error}</p>
           <button onClick={fetchUsers} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
-            Try again
+            {t('tryAgain')}
           </button>
         </div>
       </div>
@@ -185,8 +209,13 @@ export default function UsersPage() {
 
   const filterSlot = (
     <>
-      <DataTableFacetedFilter title="Status" options={STATUS_OPTIONS} selectedValues={statuses} onSelectedChange={handleStatusChange} />
-      <DataTableFacetedFilter title="Role" options={ROLE_OPTIONS} selectedValues={roles} onSelectedChange={handleRoleChange} />
+      <DataTableFacetedFilter
+        title={t('filters.status')}
+        options={statusOptions}
+        selectedValues={statuses}
+        onSelectedChange={handleStatusChange}
+      />
+      <DataTableFacetedFilter title={t('filters.role')} options={roleOptions} selectedValues={roles} onSelectedChange={handleRoleChange} />
     </>
   );
 
@@ -194,11 +223,12 @@ export default function UsersPage() {
     <div className="space-y-4">
       <DataTableToolbar
         table={table}
-        title="Users"
+        title={t('title')}
         searchValue={query}
         onSearchChange={setQuery}
-        searchPlaceholder="Search users..."
+        searchPlaceholder={t('searchPlaceholder')}
         filterSlot={filterSlot}
+        columnLabels={columnLabels}
       />
 
       {state.isLoading ? (

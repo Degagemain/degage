@@ -198,6 +198,7 @@ This log explains why packages were installed.
 | Sidebar Component       | (shadcn generated - uses radix-ui)                                                                     |
 | Navigation Menu/Avatar  | (shadcn generated - uses radix-ui)                                                                     |
 | Faceted Filter          | cmdk (shadcn command component)                                                                        |
+| Internationalization    | next-intl                                                                                              |
 
 ## Known Issues
 
