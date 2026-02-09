@@ -1,0 +1,157 @@
+{
+  "language": {
+    "label": "Language",
+    "updateFailed": "Failed to update language"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "automatic": "Automatic"
+  },
+  "dataTable": {
+    "pagination": {
+      "result": "result",
+      "results": "results",
+      "rowsPerPage": "Rows per page",
+      "pageOf": "Page {current} of {total}",
+      "firstPage": "Go to first page",
+      "previousPage": "Go to previous page",
+      "nextPage": "Go to next page",
+      "lastPage": "Go to last page"
+    },
+    "toolbar": {
+      "searchPlaceholder": "Search...",
+      "clearSearch": "Clear search"
+    },
+    "viewOptions": {
+      "view": "View",
+      "toggleColumns": "Toggle columns"
+    },
+    "facetedFilter": {
+      "selected": "{count} selected",
+      "noResults": "No results found.",
+      "clearFilters": "Clear filters"
+    }
+  },
+  "settings": {
+    "language": "Language",
+    "languageDescription": "Select your preferred language for the interface.",
+    "languageUpdateFailed": "Failed to update language"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signInDescription": "Enter your email below to login to your account",
+    "signInAction": "Login",
+    "signUp": "Sign Up",
+    "signUpDescription": "Enter your information to create an account",
+    "signUpAction": "Create an account",
+    "signUpEmail": "Check your email for the verification link.",
+    "signOut": "Sign Out",
+    "forgotPassword": "Forgot Password",
+    "forgotPasswordDescription": "Enter your email to reset your password",
+    "forgotPasswordAction": "Send reset link",
+    "forgotPasswordEmail": "Check your email for the password reset link.",
+    "forgotPasswordLink": "Forgot your password?",
+    "resetPassword": "Reset Password",
+    "resetPasswordDescription": "Enter your new password below",
+    "resetPasswordAction": "Save new password",
+    "resetPasswordSuccess": "Password reset successfully",
+    "changePassword": "Change Password",
+    "changePasswordDescription": "Enter your current password and a new password.",
+    "changePasswordSuccess": "Your password has been changed.",
+    "changePasswordInstructions": "Please use 8 characters at minimum.",
+    "email": "Email",
+    "emailPlaceholder": "m@example.com",
+    "emailDescription": "Enter the email address you want to use to log in.",
+    "emailRequired": "Email address is required",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Password is required",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "New Password",
+    "newPasswordRequired": "New password is required",
+    "currentPassword": "Current Password",
+    "currentPasswordPlaceholder": "Current Password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "confirmPasswordRequired": "Confirm password is required",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "name": "Name",
+    "namePlaceholder": "Name",
+    "nameDescription": "Please enter your full name, or a display name.",
+    "rememberMe": "Remember me",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "dontHaveAnAccount": "Don't have an account?",
+    "orContinueWith": "Or continue with",
+    "signInWith": "Sign in with",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDescription": "Permanently remove your account and all of its contents. This action is not reversible, so please continue with caution.",
+    "deleteAccountSuccess": "Your account has been deleted.",
+    "avatar": "Avatar",
+    "avatarDescription": "Click on the avatar to upload a custom one from your files.",
+    "settings": "Settings",
+    "security": "Security",
+    "sessions": "Sessions",
+    "sessionsDescription": "Manage your active sessions and revoke access.",
+    "currentSession": "Current Session",
+    "providers": "Providers",
+    "providersDescription": "Connect your account with a third-party service.",
+    "link": "Link",
+    "unlink": "Unlink",
+    "twoFactor": "Two-Factor",
+    "twoFactorDescription": "Please enter your one-time password to continue",
+    "twoFactorCardDescription": "Add an extra layer of security to your account.",
+    "enableTwoFactor": "Enable Two-Factor",
+    "disableTwoFactor": "Disable Two-Factor",
+    "magicLink": "Magic Link",
+    "magicLinkDescription": "Enter your email to receive a magic link",
+    "magicLinkAction": "Send magic link",
+    "magicLinkEmail": "Check your email for the magic link",
+    "verifyYourEmail": "Verify Your Email",
+    "verifyYourEmailDescription": "Please verify your email address. Check your inbox for the verification email. If you haven't received the email, click the button below to resend.",
+    "resendVerificationEmail": "Resend verification email",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "continue": "Continue",
+    "goBack": "Go back",
+    "updatedSuccessfully": "Updated successfully",
+    "invalidEmailOrPassword": "Invalid email or password",
+    "userNotFound": "User not found",
+    "userAlreadyExists": "User already exists"
+  },
+  "admin": {
+    "menu": "Admin",
+    "sidebar": {
+      "backToApp": "Back to App",
+      "administration": "Administration",
+      "panel": "Admin Panel"
+    },
+    "users": {
+      "title": "Users",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "language": "Language",
+        "verified": "Verified",
+        "status": "Status",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "roleAdmin": "Admin",
+      "roleUser": "User",
+      "yes": "Yes",
+      "no": "No",
+      "statusActive": "Active",
+      "statusBanned": "Banned",
+      "filters": {
+        "status": "Status",
+        "role": "Role"
+      },
+      "searchPlaceholder": "Search users...",
+      "tryAgain": "Try again"
+    }
+  }
+}

@@ -1,0 +1,182 @@
+# Internationalization (i18n)
+
+This app uses `next-intl` for internationalization without URL-based locale routing.
+
+## Configuration
+
+- **Locale config**: `app/i18n/locales.ts` — defines UI and content locales
+- **Request config**: `app/i18n/request.ts` — loads messages based on cookie
+- **Proxy**: `proxy.ts` — detects locale from Accept-Language header
+- **Messages**: `messages/{locale}.json` — translation files
+
+## Supported Languages
+
+- English (en) — default
+- Dutch (nl)
+- French (fr)
+
+## Locale Storage
+
+Locale preference is stored in:
+1. **User profile** (database) for authenticated users
+2. **Cookie** for anonymous users
+
+The language switcher (`app/app/components/language-switcher.tsx`) updates both.
+
+## Adding Translations
+
+### UI Translations (Frontend)
+
+Add keys to all message files in `messages/`:
+
+```json
+// messages/en.json
+{
+  "myFeature": {
+    "title": "My Feature",
+    "description": "Description here"
+  }
+}
+```
+
+### Using Translations
+
+**Server Components:**
+```typescript
+import { getTranslations } from 'next-intl/server';
+
+export default async function Page() {
+  const t = await getTranslations('myFeature');
+  return <h1>{t('title')}</h1>;
+}
+```
+
+**Client Components:**
+```typescript
+'use client';
+import { useTranslations } from 'next-intl';
+
+export function MyComponent() {
+  const t = useTranslations('myFeature');
+  return <h1>{t('title')}</h1>;
+}
+```
+
+**With interpolation:**
+```typescript
+// Message: "welcome": "Hello, {name}!"
+t('welcome', { name: user.name })
+```
+
+## API Request Context
+
+API routes can access locale via `withContext` wrapper:
+
+```typescript
+import { withContext } from '@/api/with-context';
+import { getRequestContentLocale } from '@/context/request-context';
+
+export const GET = withContext(async () => {
+  const contentLocale = getRequestContentLocale();
+  // Use contentLocale for database queries
+});
+```
+
+## Content Localization (Database)
+
+For translatable database content, use the translation table pattern:
+
+```prisma
+model YourEntity {
+    id           String                @id @default(uuid())
+    code         String                @unique
+    translations YourEntityTranslation[]
+}
+
+model YourEntityTranslation {
+    id       String     @id @default(uuid())
+    entityId String
+    entity   YourEntity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+    locale   String
+    name     String
+
+    @@unique([entityId, locale])
+}
+```
+
+Query with locale from context:
+
+```typescript
+import { getRequestContentLocale } from '@/context/request-context';
+import { defaultContentLocale } from '@/i18n/locales';
+
+const contentLocale = getRequestContentLocale();
+
+const entities = await prisma.yourEntity.findMany({
+  include: {
+    translations: {
+      where: { locale: { in: [contentLocale, defaultContentLocale] } },
+    },
+  },
+});
+```
+
+## Adding a New Language
+
+### UI Language Only
+
+1. Add to `i18n/locales.ts`:
+   ```typescript
+   export const uiLocales = ['en', 'nl', 'fr', 'de'] as const;
+   ```
+2. Add display name:
+   ```typescript
+   export const localeDisplayNames = {
+     // ...existing
+     de: 'Deutsch',
+   };
+   ```
+3. Create `messages/de.json` with all translations
+4. Deploy
+
+### Content Language
+
+1. Add to `contentLocales` in `i18n/locales.ts`
+2. Add translations to database (via seed or admin UI)
+
+## Better Auth UI Localization
+
+The auth screens use `@daveyplate/better-auth-ui` which has its own localization system. Translations are mapped from next-intl in `app/app/providers/auth-provider.tsx`.
+
+Auth-related strings are stored in the `auth` namespace of message files:
+
+```json
+{
+  "auth": {
+    "SIGN_IN": "Sign In",
+    "SIGN_UP": "Sign Up",
+    "EMAIL": "Email",
+    ...
+  }
+}
+```
+
+When adding new auth strings, add them to:
+1. All message files (`messages/en.json`, `messages/nl.json`, `messages/fr.json`)
+2. The `localization` object in `auth-provider.tsx`
+
+See [Better Auth UI Localization docs](https://better-auth-ui.com/advanced/localization) for available strings.
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `app/i18n/locales.ts` | Locale definitions and helpers |
+| `app/i18n/request.ts` | Server-side message loading |
+| `proxy.ts` | Locale detection from headers |
+| `messages/*.json` | Translation files |
+| `app/context/request-context.ts` | AsyncLocalStorage for API context |
+| `app/api/with-context.ts` | API route wrapper |
+| `app/api/user/locale/route.ts` | Locale update endpoint |
+| `app/app/components/language-switcher.tsx` | Language switcher UI |
+| `app/app/providers/auth-provider.tsx` | Better Auth UI localization |

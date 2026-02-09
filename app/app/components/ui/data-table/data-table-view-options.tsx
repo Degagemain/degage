@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Table } from '@tanstack/react-table';
 import { Settings2 } from 'lucide-react';
 
@@ -15,24 +16,28 @@ import {
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
+  /** Optional map of column id -> display label (e.g. translated column names) */
+  columnLabels?: Record<string, string>;
 }
 
-export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps<TData>) {
+export function DataTableViewOptions<TData>({ table, columnLabels }: DataTableViewOptionsProps<TData>) {
+  const t = useTranslations('dataTable.viewOptions');
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className="ml-auto hidden h-8 lg:flex">
           <Settings2 className="mr-2 h-4 w-4" />
-          View
+          {t('view')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('toggleColumns')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
           .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
           .map((column) => {
+            const label = columnLabels?.[column.id] ?? column.id;
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
@@ -40,7 +45,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {label}
               </DropdownMenuCheckboxItem>
             );
           })}

@@ -1,0 +1,157 @@
+{
+  "language": {
+    "label": "Langue",
+    "updateFailed": "Impossible de mettre à jour la langue"
+  },
+  "theme": {
+    "label": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "automatic": "Automatique"
+  },
+  "dataTable": {
+    "pagination": {
+      "result": "résultat",
+      "results": "résultats",
+      "rowsPerPage": "Lignes par page",
+      "pageOf": "Page {current} sur {total}",
+      "firstPage": "Aller à la première page",
+      "previousPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "lastPage": "Aller à la dernière page"
+    },
+    "toolbar": {
+      "searchPlaceholder": "Rechercher...",
+      "clearSearch": "Effacer la recherche"
+    },
+    "viewOptions": {
+      "view": "Affichage",
+      "toggleColumns": "Afficher/masquer les colonnes"
+    },
+    "facetedFilter": {
+      "selected": "{count} sélectionné(s)",
+      "noResults": "Aucun résultat trouvé.",
+      "clearFilters": "Effacer les filtres"
+    }
+  },
+  "settings": {
+    "language": "Langue",
+    "languageDescription": "Sélectionnez votre langue préférée pour l'interface.",
+    "languageUpdateFailed": "Impossible de mettre à jour la langue"
+  },
+  "auth": {
+    "signIn": "Connexion",
+    "signInDescription": "Entrez votre e-mail pour vous connecter",
+    "signInAction": "Se connecter",
+    "signUp": "Inscription",
+    "signUpDescription": "Entrez vos informations pour créer un compte",
+    "signUpAction": "Créer un compte",
+    "signUpEmail": "Vérifiez votre e-mail pour le lien de vérification.",
+    "signOut": "Déconnexion",
+    "forgotPassword": "Mot de passe oublié",
+    "forgotPasswordDescription": "Entrez votre e-mail pour réinitialiser votre mot de passe",
+    "forgotPasswordAction": "Envoyer le lien",
+    "forgotPasswordEmail": "Vérifiez votre e-mail pour le lien de réinitialisation.",
+    "forgotPasswordLink": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "resetPasswordDescription": "Entrez votre nouveau mot de passe ci-dessous",
+    "resetPasswordAction": "Enregistrer le nouveau mot de passe",
+    "resetPasswordSuccess": "Mot de passe réinitialisé avec succès",
+    "changePassword": "Changer le mot de passe",
+    "changePasswordDescription": "Entrez votre mot de passe actuel et un nouveau mot de passe.",
+    "changePasswordSuccess": "Votre mot de passe a été changé.",
+    "changePasswordInstructions": "Utilisez au moins 8 caractères.",
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "emailDescription": "Entrez l'adresse e-mail que vous souhaitez utiliser pour vous connecter.",
+    "emailRequired": "L'adresse e-mail est requise",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Mot de passe",
+    "passwordRequired": "Le mot de passe est requis",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Nouveau mot de passe",
+    "newPasswordRequired": "Le nouveau mot de passe est requis",
+    "currentPassword": "Mot de passe actuel",
+    "currentPasswordPlaceholder": "Mot de passe actuel",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmer le mot de passe",
+    "confirmPasswordRequired": "La confirmation du mot de passe est requise",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "name": "Nom",
+    "namePlaceholder": "Nom",
+    "nameDescription": "Veuillez entrer votre nom complet ou un nom d'affichage.",
+    "rememberMe": "Se souvenir de moi",
+    "alreadyHaveAnAccount": "Vous avez déjà un compte ?",
+    "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+    "orContinueWith": "Ou continuer avec",
+    "signInWith": "Se connecter avec",
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountDescription": "Supprimez définitivement votre compte et tout son contenu. Cette action est irréversible.",
+    "deleteAccountSuccess": "Votre compte a été supprimé.",
+    "avatar": "Avatar",
+    "avatarDescription": "Cliquez sur l'avatar pour télécharger une image personnalisée.",
+    "settings": "Paramètres",
+    "security": "Sécurité",
+    "sessions": "Sessions",
+    "sessionsDescription": "Gérez vos sessions actives et révoquez l'accès.",
+    "currentSession": "Session actuelle",
+    "providers": "Fournisseurs",
+    "providersDescription": "Connectez votre compte à un service tiers.",
+    "link": "Lier",
+    "unlink": "Délier",
+    "twoFactor": "Double authentification",
+    "twoFactorDescription": "Veuillez entrer votre mot de passe à usage unique pour continuer",
+    "twoFactorCardDescription": "Ajoutez une couche de sécurité supplémentaire à votre compte.",
+    "enableTwoFactor": "Activer la double authentification",
+    "disableTwoFactor": "Désactiver la double authentification",
+    "magicLink": "Lien magique",
+    "magicLinkDescription": "Entrez votre e-mail pour recevoir un lien magique",
+    "magicLinkAction": "Envoyer le lien magique",
+    "magicLinkEmail": "Vérifiez votre e-mail pour le lien magique",
+    "verifyYourEmail": "Vérifiez votre e-mail",
+    "verifyYourEmailDescription": "Veuillez vérifier votre adresse e-mail. Consultez votre boîte de réception pour l'e-mail de vérification. Si vous n'avez pas reçu l'e-mail, cliquez sur le bouton pour le renvoyer.",
+    "resendVerificationEmail": "Renvoyer l'e-mail de vérification",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "continue": "Continuer",
+    "goBack": "Retour",
+    "updatedSuccessfully": "Mis à jour avec succès",
+    "invalidEmailOrPassword": "E-mail ou mot de passe invalide",
+    "userNotFound": "Utilisateur non trouvé",
+    "userAlreadyExists": "L'utilisateur existe déjà"
+  },
+  "admin": {
+    "menu": "Admin",
+    "sidebar": {
+      "backToApp": "Retour à l'application",
+      "administration": "Administration",
+      "panel": "Panneau d'administration"
+    },
+    "users": {
+      "title": "Utilisateurs",
+      "columns": {
+        "name": "Nom",
+        "email": "E-mail",
+        "role": "Rôle",
+        "language": "Langue",
+        "verified": "Vérifié",
+        "status": "Statut",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "roleAdmin": "Admin",
+      "roleUser": "Utilisateur",
+      "yes": "Oui",
+      "no": "Non",
+      "statusActive": "Actif",
+      "statusBanned": "Banni",
+      "filters": {
+        "status": "Statut",
+        "role": "Rôle"
+      },
+      "searchPlaceholder": "Rechercher des utilisateurs...",
+      "tryAgain": "Réessayer"
+    }
+  }
+}
