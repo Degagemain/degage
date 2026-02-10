@@ -10,9 +10,11 @@
     "automatic": "Automatisch"
   },
   "dataTable": {
+    "noResults": "Geen resultaten gevonden.",
     "pagination": {
       "result": "resultaat",
       "results": "resultaten",
+      "selected": "{selected} van {total} geselecteerd",
       "rowsPerPage": "Rijen per pagina",
       "pageOf": "Pagina {current} van {total}",
       "firstPage": "Ga naar eerste pagina",
@@ -135,7 +137,7 @@
         "email": "E-mail",
         "role": "Rol",
         "language": "Taal",
-        "verified": "Geverifieerd",
+        "verified": "Email geverifieerd",
         "status": "Status",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"

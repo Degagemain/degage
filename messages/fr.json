@@ -10,9 +10,11 @@
     "automatic": "Automatique"
   },
   "dataTable": {
+    "noResults": "Aucun résultat trouvé.",
     "pagination": {
       "result": "résultat",
       "results": "résultats",
+      "selected": "{selected} sur {total} sélectionné(s)",
       "rowsPerPage": "Lignes par page",
       "pageOf": "Page {current} sur {total}",
       "firstPage": "Aller à la première page",
@@ -135,7 +137,7 @@
         "email": "E-mail",
         "role": "Rôle",
         "language": "Langue",
-        "verified": "Vérifié",
+        "verified": "Email vérifié",
         "status": "Statut",
         "created": "Créé le",
         "updated": "Modifié le"

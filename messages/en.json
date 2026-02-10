@@ -10,9 +10,11 @@
     "automatic": "Automatic"
   },
   "dataTable": {
+    "noResults": "No results found.",
     "pagination": {
       "result": "result",
       "results": "results",
+      "selected": "{selected} of {total} selected",
       "rowsPerPage": "Rows per page",
       "pageOf": "Page {current} of {total}",
       "firstPage": "Go to first page",
@@ -135,7 +137,7 @@
         "email": "Email",
         "role": "Role",
         "language": "Language",
-        "verified": "Verified",
+        "verified": "Email Verified",
         "status": "Status",
         "created": "Created",
         "updated": "Updated"
