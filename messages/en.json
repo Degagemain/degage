@@ -14,6 +14,7 @@
     "pagination": {
       "result": "result",
       "results": "results",
+      "selected": "{selected} of {total} selected",
       "rowsPerPage": "Rows per page",
       "pageOf": "Page {current} of {total}",
       "firstPage": "Go to first page",
@@ -23,8 +24,7 @@
     },
     "toolbar": {
       "searchPlaceholder": "Search...",
-      "clearSearch": "Clear search",
-      "sortedBy": "Sorted by"
+      "clearSearch": "Clear search"
     },
     "viewOptions": {
       "view": "View",
@@ -153,11 +153,7 @@
         "role": "Role"
       },
       "searchPlaceholder": "Search users...",
-      "tryAgain": "Try again",
-      "sortedByName": "Name",
-      "sortedByEmail": "Email",
-      "sortedByCreated": "Created date",
-      "sortedByUpdated": "Last updated"
+      "tryAgain": "Try again"
     }
   }
 }

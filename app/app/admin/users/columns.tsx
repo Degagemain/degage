@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
 import { Badge } from '@/app/components/ui/badge';
+import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { User } from '@/domain/user.model';
 import { type UILocale, localeDisplayNames } from '@/i18n/locales';
@@ -25,6 +26,21 @@ function getInitials(name: string | null | undefined): string {
 export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
   const { t } = options;
   return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.name')} onSort={options.onSort} />,

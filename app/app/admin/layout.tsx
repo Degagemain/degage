@@ -36,10 +36,16 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
-function useBreadcrumbs() {
+function usePageTitle(t: (key: string) => string) {
   const pathname = usePathname();
   const segments = pathname?.replace('/app/admin', '').split('/').filter(Boolean) ?? [];
-  return segments.map((seg) => seg.charAt(0).toUpperCase() + seg.slice(1));
+  const last = segments[segments.length - 1];
+  if (!last) return undefined;
+  try {
+    return t(`${last}.title`);
+  } catch {
+    return last.charAt(0).toUpperCase() + last.slice(1);
+  }
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -47,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const t = useTranslations('admin');
   const { isAdmin, isPending } = useIsAdmin();
   const { data: session, isPending: isSessionPending } = authClient.useSession();
-  const breadcrumbs = useBreadcrumbs();
+  const pageTitle = usePageTitle(t);
 
   if (isPending) {
     return (
@@ -152,17 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <nav className="flex items-center gap-1.5 text-sm">
-            <Link href="/app/admin" className="text-muted-foreground hover:text-foreground transition-colors">
-              {t('sidebar.panel')}
-            </Link>
-            {breadcrumbs.map((crumb, i) => (
-              <span key={i} className="flex items-center gap-1.5">
-                <span className="text-muted-foreground/60">/</span>
-                <span className="font-medium">{crumb}</span>
-              </span>
-            ))}
-          </nav>
+          {pageTitle && <span className="text-sm font-semibold">{pageTitle}</span>}
           <div className="ml-auto flex items-center gap-2">
             {isSessionPending ? (
               <Skeleton className="h-8 w-8 rounded-full" />
@@ -171,7 +167,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             ) : null}
           </div>
         </header>
-        <main className="flex-1 overflow-auto py-6">{children}</main>
+        <main className="flex-1 overflow-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

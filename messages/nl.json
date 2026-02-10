@@ -14,6 +14,7 @@
     "pagination": {
       "result": "resultaat",
       "results": "resultaten",
+      "selected": "{selected} van {total} geselecteerd",
       "rowsPerPage": "Rijen per pagina",
       "pageOf": "Pagina {current} van {total}",
       "firstPage": "Ga naar eerste pagina",
@@ -23,8 +24,7 @@
     },
     "toolbar": {
       "searchPlaceholder": "Zoeken...",
-      "clearSearch": "Zoekopdracht wissen",
-      "sortedBy": "Gesorteerd op"
+      "clearSearch": "Zoekopdracht wissen"
     },
     "viewOptions": {
       "view": "Weergave",
@@ -153,11 +153,7 @@
         "role": "Rol"
       },
       "searchPlaceholder": "Zoek gebruikers...",
-      "tryAgain": "Opnieuw proberen",
-      "sortedByName": "Naam",
-      "sortedByEmail": "E-mail",
-      "sortedByCreated": "Aanmaakdatum",
-      "sortedByUpdated": "Laatst bijgewerkt"
+      "tryAgain": "Opnieuw proberen"
     }
   }
 }

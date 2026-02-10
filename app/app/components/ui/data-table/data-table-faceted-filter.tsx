@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
-import { Check, PlusCircle } from 'lucide-react';
+import { Check, Filter } from 'lucide-react';
 
 import { cn } from '@/app/lib/utils';
 import { Badge } from '@/app/components/ui/badge';
@@ -45,8 +45,8 @@ export function DataTableFacetedFilter({ title, options, selectedValues, onSelec
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <PlusCircle className="mr-2 h-4 w-4" />
+        <Button variant="outline" size="sm" className="text-muted-foreground h-9 border-dashed font-normal">
+          <Filter className="mr-2 h-3.5 w-3.5" />
           {title}
           {selectedSet.size > 0 && (
             <>

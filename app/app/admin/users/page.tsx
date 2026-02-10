@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Ban, Shield, UserCheck, UserIcon } from 'lucide-react';
 
 import { User } from '@/domain/user.model';
 import { Page } from '@/domain/page.model';
 import { Role } from '@/domain/role.model';
 import { ALL_USER_ROLES, ALL_USER_STATUSES, UserStatus } from '@/domain/user.filter';
+import { useIsMobile } from '@/app/hooks/use-mobile';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
@@ -30,16 +31,9 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   updatedAt: 'updatedAt',
 };
 
-// Map sort column IDs to translation keys
-const SORT_LABEL_MAP: Record<string, string> = {
-  name: 'sortedByName',
-  email: 'sortedByEmail',
-  createdAt: 'sortedByCreated',
-  updatedAt: 'sortedByUpdated',
-};
-
 export default function UsersPage() {
   const t = useTranslations('admin.users');
+  const isMobile = useIsMobile();
   const [state, setState] = useState<UsersState>({
     data: [],
     total: 0,
@@ -55,8 +49,22 @@ export default function UsersPage() {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>([{ id: 'updatedAt', desc: true }]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    updatedAt: false, // Hide by default
+    updatedAt: false,
   });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  // Adjust default column visibility based on screen size
+  useEffect(() => {
+    if (isMobile) {
+      setColumnVisibility((prev) => ({
+        ...prev,
+        locale: false,
+        emailVerified: false,
+        createdAt: false,
+        updatedAt: false,
+      }));
+    }
+  }, [isMobile]);
 
   // Debounce search query
   useEffect(() => {
@@ -122,13 +130,6 @@ export default function UsersPage() {
     [t],
   );
 
-  // Get the current sorting label for the toolbar
-  const sortingLabel = useMemo(() => {
-    if (sorting.length === 0) return undefined;
-    const labelKey = SORT_LABEL_MAP[sorting[0].id];
-    return labelKey ? t(labelKey) : undefined;
-  }, [sorting, t]);
-
   // Fetch users
   const fetchUsers = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -191,12 +192,14 @@ export default function UsersPage() {
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
     manualPagination: true,
     manualSorting: true,
     pageCount,
     state: {
       sorting,
       columnVisibility,
+      rowSelection,
     },
   });
 
@@ -235,18 +238,15 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="px-6">
+    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
+      <div className="px-3 md:px-4">
         <DataTableToolbar
           table={table}
-          title={t('title')}
-          totalItems={state.total}
           searchValue={query}
           onSearchChange={setQuery}
           searchPlaceholder={t('searchPlaceholder')}
           filterSlot={filterSlot}
           columnLabels={columnLabels}
-          sortingLabel={sortingLabel}
         />
       </div>
 
@@ -269,12 +269,13 @@ export default function UsersPage() {
       ) : (
         <>
           <DataTable table={table} columns={columns} />
-          <div className="px-6">
+          <div className="px-3 md:px-4">
             <DataTablePagination
               pageIndex={pageIndex}
               pageSize={pageSize}
               pageCount={pageCount}
               totalItems={state.total}
+              selectedCount={Object.keys(rowSelection).length}
               onPageChange={handlePageChange}
               onPageSizeChange={handlePageSizeChange}
             />

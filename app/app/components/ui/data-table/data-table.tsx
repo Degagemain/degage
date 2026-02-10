@@ -13,7 +13,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({ table, columns }: DataTableProps<TData, TValue>) {
   const t = useTranslations('dataTable');
   return (
-    <div className="overflow-hidden border-y">
+    <div className="overflow-x-auto border-y">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
