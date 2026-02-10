@@ -14,7 +14,7 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className, onSort }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return <div className={cn('text-xs font-medium tracking-wider uppercase', className)}>{title}</div>;
   }
 
   const isSorted = column.getIsSorted();
@@ -28,14 +28,14 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <Button variant="ghost" size="sm" className="-ml-3 h-8" onClick={handleClick}>
+      <Button variant="ghost" size="sm" className="-ml-3 h-8 text-xs font-medium tracking-wider uppercase" onClick={handleClick}>
         <span>{title}</span>
         {isSorted === 'desc' ? (
-          <ArrowDown className="ml-2 h-4 w-4" />
+          <ArrowDown className="ml-1.5 h-3.5 w-3.5" />
         ) : isSorted === 'asc' ? (
-          <ArrowUp className="ml-2 h-4 w-4" />
+          <ArrowUp className="ml-1.5 h-3.5 w-3.5" />
         ) : (
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="text-muted-foreground/50 ml-1.5 h-3.5 w-3.5" />
         )}
       </Button>
     </div>

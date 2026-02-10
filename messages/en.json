@@ -10,6 +10,7 @@
     "automatic": "Automatic"
   },
   "dataTable": {
+    "noResults": "No results found.",
     "pagination": {
       "result": "result",
       "results": "results",
@@ -22,7 +23,8 @@
     },
     "toolbar": {
       "searchPlaceholder": "Search...",
-      "clearSearch": "Clear search"
+      "clearSearch": "Clear search",
+      "sortedBy": "Sorted by"
     },
     "viewOptions": {
       "view": "View",
@@ -151,7 +153,11 @@
         "role": "Role"
       },
       "searchPlaceholder": "Search users...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "sortedByName": "Name",
+      "sortedByEmail": "Email",
+      "sortedByCreated": "Created date",
+      "sortedByUpdated": "Last updated"
     }
   }
 }

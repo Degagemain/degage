@@ -10,6 +10,7 @@
     "automatic": "Automatisch"
   },
   "dataTable": {
+    "noResults": "Geen resultaten gevonden.",
     "pagination": {
       "result": "resultaat",
       "results": "resultaten",
@@ -22,7 +23,8 @@
     },
     "toolbar": {
       "searchPlaceholder": "Zoeken...",
-      "clearSearch": "Zoekopdracht wissen"
+      "clearSearch": "Zoekopdracht wissen",
+      "sortedBy": "Gesorteerd op"
     },
     "viewOptions": {
       "view": "Weergave",
@@ -151,7 +153,11 @@
         "role": "Rol"
       },
       "searchPlaceholder": "Zoek gebruikers...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "sortedByName": "Naam",
+      "sortedByEmail": "E-mail",
+      "sortedByCreated": "Aanmaakdatum",
+      "sortedByUpdated": "Laatst bijgewerkt"
     }
   }
 }

@@ -30,6 +30,14 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   updatedAt: 'updatedAt',
 };
 
+// Map sort column IDs to translation keys
+const SORT_LABEL_MAP: Record<string, string> = {
+  name: 'sortedByName',
+  email: 'sortedByEmail',
+  createdAt: 'sortedByCreated',
+  updatedAt: 'sortedByUpdated',
+};
+
 export default function UsersPage() {
   const t = useTranslations('admin.users');
   const [state, setState] = useState<UsersState>({
@@ -113,6 +121,13 @@ export default function UsersPage() {
     }),
     [t],
   );
+
+  // Get the current sorting label for the toolbar
+  const sortingLabel = useMemo(() => {
+    if (sorting.length === 0) return undefined;
+    const labelKey = SORT_LABEL_MAP[sorting[0].id];
+    return labelKey ? t(labelKey) : undefined;
+  }, [sorting, t]);
 
   // Fetch users
   const fetchUsers = useCallback(async () => {
@@ -220,45 +235,50 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="space-y-4">
-      <DataTableToolbar
-        table={table}
-        title={t('title')}
-        searchValue={query}
-        onSearchChange={setQuery}
-        searchPlaceholder={t('searchPlaceholder')}
-        filterSlot={filterSlot}
-        columnLabels={columnLabels}
-      />
+    <div className="flex flex-col gap-4">
+      <div className="px-6">
+        <DataTableToolbar
+          table={table}
+          title={t('title')}
+          totalItems={state.total}
+          searchValue={query}
+          onSearchChange={setQuery}
+          searchPlaceholder={t('searchPlaceholder')}
+          filterSlot={filterSlot}
+          columnLabels={columnLabels}
+          sortingLabel={sortingLabel}
+        />
+      </div>
 
       {state.isLoading ? (
-        <div className="space-y-4">
-          <div className="overflow-hidden rounded-md border">
-            <div className="p-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex gap-4 py-3">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-5 w-48" />
-                  <Skeleton className="h-5 w-16" />
-                  <Skeleton className="h-5 w-16" />
-                  <Skeleton className="h-5 w-16" />
-                  <Skeleton className="h-5 w-24" />
-                </div>
-              ))}
-            </div>
+        <div className="border-y">
+          <div className="divide-y">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-4 py-3">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-4 w-44" />
+                <Skeleton className="h-5 w-14 rounded-full" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-5 w-14 rounded-full" />
+                <Skeleton className="h-4 w-20" />
+              </div>
+            ))}
           </div>
         </div>
       ) : (
         <>
           <DataTable table={table} columns={columns} />
-          <DataTablePagination
-            pageIndex={pageIndex}
-            pageSize={pageSize}
-            pageCount={pageCount}
-            totalItems={state.total}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
+          <div className="px-6">
+            <DataTablePagination
+              pageIndex={pageIndex}
+              pageSize={pageSize}
+              pageCount={pageCount}
+              totalItems={state.total}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          </div>
         </>
       )}
     </div>
