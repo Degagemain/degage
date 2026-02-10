@@ -199,6 +199,7 @@ This log explains why packages were installed.
 | Navigation Menu/Avatar  | (shadcn generated - uses radix-ui)                                                                     |
 | Faceted Filter          | cmdk (shadcn command component)                                                                        |
 | Internationalization    | next-intl                                                                                              |
+| Strangler HTML parsing  | cheerio                                                                                                |
 
 ## Known Issues
 
