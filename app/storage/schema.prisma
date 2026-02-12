@@ -21,6 +21,7 @@ model FuelType {
     code         String                @unique
     isActive     Boolean               @default(true)
     translations FuelTypeTranslation[]
+    carTypes     CarType[]
     createdAt    DateTime              @default(now())
     updatedAt    DateTime              @updatedAt
 }
@@ -40,6 +41,7 @@ model CarBrand {
     code         String                 @unique
     isActive     Boolean                @default(true)
     translations CarBrandTranslation[]
+    carTypes     CarType[]
     createdAt    DateTime               @default(now())
     updatedAt    DateTime               @updatedAt
 }
@@ -52,6 +54,19 @@ model CarBrandTranslation {
     name        String
 
     @@unique([carBrandId, locale])
+}
+
+model CarType {
+    id         String   @id @default(uuid())
+    brandId    String
+    brand      CarBrand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    fuelTypeId String
+    fuelType   FuelType @relation(fields: [fuelTypeId], references: [id])
+    name       String
+    ecoscore   Int
+    isActive   Boolean  @default(true)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 }
 
 model EuroNorm {

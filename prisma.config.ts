@@ -4,7 +4,7 @@ const config: PrismaConfig = {
   schema: 'app/storage/schema.prisma',
   migrations: {
     path: 'app/storage/migrations',
-    seed: 'pnpx tsx scripts/seed.ts',
+    seed: 'pnpx tsx seeding/seed.ts',
   },
   datasource: {
     // CLI (migrate, etc.) uses direct connection when pooled; fallback to DATABASE_URL for local dev

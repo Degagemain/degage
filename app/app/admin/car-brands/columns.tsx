@@ -1,9 +1,9 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Badge } from '@/app/components/ui/badge';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
+import { Check } from 'lucide-react';
 import { CarBrand } from '@/domain/car-brand.model';
 
 interface ColumnOptions {
@@ -51,11 +51,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarBrand>[] => 
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.active')} onSort={options.onSort} />,
       cell: ({ row }) => {
         const isActive = row.getValue('isActive') as boolean;
-        return (
-          <Badge variant={isActive ? 'default' : 'outline'} className="font-normal">
-            {isActive ? t('active') : t('inactive')}
-          </Badge>
-        );
+        return isActive ? <Check className="text-primary size-4" aria-label={t('active')} /> : <span className="text-muted-foreground">—</span>;
       },
       enableHiding: true,
       enableSorting: false,

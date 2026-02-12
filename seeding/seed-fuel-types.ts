@@ -1,3 +1,5 @@
+import { PrismaClient } from '@/storage/client/client';
+
 const fuelTypes = [
   {
     code: 'electric',
@@ -73,7 +75,7 @@ const fuelTypes = [
   },
 ];
 
-export async function seedFuelTypes(prisma: { fuelType: { upsert: (args: unknown) => Promise<unknown> } }) {
+export async function seedFuelTypes(prisma: PrismaClient) {
   console.log('Seeding fuel types...');
 
   for (const ft of fuelTypes) {

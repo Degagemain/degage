@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Car, ChevronsUpDown, Fuel, Gauge, Users } from 'lucide-react';
+import { Car, CarFront, ChevronsUpDown, Fuel, Gauge, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -43,6 +43,11 @@ const SIDEBAR_ITEMS = [
     translationKey: 'carBrands' as const,
     href: '/app/admin/car-brands',
     icon: Car,
+  },
+  {
+    translationKey: 'carTypes' as const,
+    href: '/app/admin/car-types',
+    icon: CarFront,
   },
   {
     translationKey: 'euroNorms' as const,

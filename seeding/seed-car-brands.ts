@@ -1,3 +1,5 @@
+import { PrismaClient } from '@/storage/client/client';
+
 const CAR_BRANDS: { code: string; name: string }[] = [
   { code: 'abarth', name: 'Abarth' },
   { code: 'aiways', name: 'Aiways' },
@@ -100,7 +102,7 @@ const CAR_BRANDS: { code: string; name: string }[] = [
 
 const LOCALES = ['en', 'nl', 'fr'] as const;
 
-export async function seedCarBrands(prisma: { carBrand: { upsert: (args: unknown) => Promise<unknown> } }) {
+export async function seedCarBrands(prisma: PrismaClient) {
   console.log('Seeding car brands...');
 
   for (const cb of CAR_BRANDS) {

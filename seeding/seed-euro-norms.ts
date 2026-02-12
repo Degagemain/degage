@@ -1,3 +1,5 @@
+import { PrismaClient } from '@/storage/client/client';
+
 const EURO_NORMS: { code: string; name: string; start: string; end: string | null }[] = [
   { code: 'euro-1', name: 'Euro 1', start: '1992-07-01', end: '1996-12-31' },
   { code: 'euro-2', name: 'Euro 2', start: '1997-01-01', end: '2000-12-31' },
@@ -13,7 +15,7 @@ const EURO_NORMS: { code: string; name: string; start: string; end: string | nul
   { code: 'euro-7-7a', name: 'Euro 7 / 7A', start: '2025-07-01', end: null },
 ];
 
-export async function seedEuroNorms(prisma: { euroNorm: { upsert: (args: unknown) => Promise<unknown> } }) {
+export async function seedEuroNorms(prisma: PrismaClient) {
   console.log('Seeding euro norms...');
 
   for (const en of EURO_NORMS) {

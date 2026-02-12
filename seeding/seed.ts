@@ -1,17 +1,16 @@
-import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../app/storage/client/client';
 import { seedFuelTypes } from './seed-fuel-types';
 import { seedCarBrands } from './seed-car-brands';
+import { seedCarTypes } from './seed-car-types';
 import { seedEuroNorms } from './seed-euro-norms';
+import { getPrismaClient } from '@/storage/utils';
 
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
-});
+const prisma = getPrismaClient();
 
 async function seed() {
   await seedFuelTypes(prisma);
   await seedCarBrands(prisma);
   await seedEuroNorms(prisma);
+  await seedCarTypes(prisma);
 }
 
 seed()

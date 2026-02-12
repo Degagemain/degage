@@ -33,7 +33,8 @@
     "facetedFilter": {
       "selected": "{count} selected",
       "noResults": "No results found.",
-      "clearFilters": "Clear filters"
+      "clearFilters": "Clear filters",
+      "loadMore": "Load more"
     }
   },
   "settings": {
@@ -162,6 +163,29 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search fuel types...",
+      "tryAgain": "Try again"
+    },
+    "carTypes": {
+      "title": "Car Types",
+      "filters": {
+        "brand": "Brand",
+        "brandPlaceholder": "Search brands...",
+        "fuelType": "Fuel type",
+        "fuelTypePlaceholder": "Search fuel types...",
+        "active": "Status"
+      },
+      "columns": {
+        "name": "Name",
+        "brand": "Brand",
+        "fuelType": "Fuel type",
+        "ecoscore": "Ecoscore",
+        "active": "Active",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "inactive": "Inactive",
+      "searchPlaceholder": "Search car types...",
       "tryAgain": "Try again"
     },
     "euroNorms": {

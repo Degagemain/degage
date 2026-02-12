@@ -4,14 +4,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Check } from 'lucide-react';
-import { FuelType } from '@/domain/fuel-type.model';
+import { CarType } from '@/domain/car-type.model';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   t: (key: string) => string;
 }
 
-export const createColumns = (options: ColumnOptions): ColumnDef<FuelType>[] => {
+export const createColumns = (options: ColumnOptions): ColumnDef<CarType>[] => {
   const { t } = options;
   return [
     {
@@ -30,21 +30,32 @@ export const createColumns = (options: ColumnOptions): ColumnDef<FuelType>[] => 
       enableHiding: false,
     },
     {
-      accessorKey: 'code',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.code')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        return <span className="font-mono text-sm">{row.getValue('code')}</span>;
-      },
+      accessorKey: 'brand',
+      accessorFn: (row) => row.brand?.name ?? '—',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.brand')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.brand?.name ?? '—'}</span>,
       enableHiding: true,
+      enableSorting: false,
     },
     {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.name')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        return <span className="font-medium">{row.getValue('name')}</span>;
-      },
+      cell: ({ row }) => <span className="font-medium">{row.getValue('name')}</span>,
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'fuelType',
+      accessorFn: (row) => row.fuelType?.name ?? '—',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.fuelType')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.fuelType?.name ?? '—'}</span>,
       enableHiding: true,
       enableSorting: false,
+    },
+    {
+      accessorKey: 'ecoscore',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.ecoscore')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{row.getValue('ecoscore')}</span>,
+      enableHiding: true,
     },
     {
       accessorKey: 'isActive',
