@@ -16,6 +16,25 @@ model Car {
     updatedAt DateTime @updatedAt
 }
 
+model FuelType {
+    id           String                @id @default(uuid())
+    code         String                @unique
+    isActive     Boolean               @default(true)
+    translations FuelTypeTranslation[]
+    createdAt    DateTime              @default(now())
+    updatedAt    DateTime              @updatedAt
+}
+
+model FuelTypeTranslation {
+    id         String   @id @default(uuid())
+    fuelTypeId String
+    fuelType   FuelType @relation(fields: [fuelTypeId], references: [id], onDelete: Cascade)
+    locale     String
+    name       String
+
+    @@unique([fuelTypeId, locale])
+}
+
 model User {
     id            String    @id
     name          String

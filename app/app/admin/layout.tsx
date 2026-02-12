@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronsUpDown, Users } from 'lucide-react';
+import { ChevronsUpDown, Fuel, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -34,17 +34,21 @@ const SIDEBAR_ITEMS = [
     href: '/app/admin/users',
     icon: Users,
   },
+  {
+    translationKey: 'fuelTypes' as const,
+    href: '/app/admin/fuel-types',
+    icon: Fuel,
+  },
 ];
 
 function usePageTitle(t: (key: string) => string) {
   const pathname = usePathname();
-  const segments = pathname?.replace('/app/admin', '').split('/').filter(Boolean) ?? [];
-  const last = segments[segments.length - 1];
-  if (!last) return undefined;
+  const item = SIDEBAR_ITEMS.find((i) => pathname === i.href || pathname.startsWith(`${i.href}/`));
+  if (!item) return undefined;
   try {
-    return t(`${last}.title`);
+    return t(`${item.translationKey}.title`);
   } catch {
-    return last.charAt(0).toUpperCase() + last.slice(1);
+    return item.translationKey.charAt(0).toUpperCase() + item.translationKey.slice(1);
   }
 }
 

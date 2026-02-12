@@ -130,6 +130,20 @@
       "administration": "Administration",
       "panel": "Panneau d'administration"
     },
+    "fuelTypes": {
+      "title": "Types de Carburant",
+      "columns": {
+        "code": "Code",
+        "name": "Nom",
+        "active": "Actif",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "active": "Actif",
+      "inactive": "Inactif",
+      "searchPlaceholder": "Rechercher des types de carburant...",
+      "tryAgain": "Réessayer"
+    },
     "users": {
       "title": "Utilisateurs",
       "columns": {

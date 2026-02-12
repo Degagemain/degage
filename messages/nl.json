@@ -130,6 +130,20 @@
       "administration": "Administratie",
       "panel": "Beheerpaneel"
     },
+    "fuelTypes": {
+      "title": "Brandstoftypes",
+      "columns": {
+        "code": "Code",
+        "name": "Naam",
+        "active": "Actief",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "active": "Actief",
+      "inactive": "Inactief",
+      "searchPlaceholder": "Zoek brandstoftypes...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "users": {
       "title": "Gebruikers",
       "columns": {

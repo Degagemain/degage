@@ -130,6 +130,20 @@
       "administration": "Administration",
       "panel": "Admin Panel"
     },
+    "fuelTypes": {
+      "title": "Fuel Types",
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "active": "Active",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "inactive": "Inactive",
+      "searchPlaceholder": "Search fuel types...",
+      "tryAgain": "Try again"
+    },
     "users": {
       "title": "Users",
       "columns": {
