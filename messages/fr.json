@@ -132,6 +132,9 @@
     },
     "carTypes": {
       "title": "Marques",
+      "filters": {
+        "active": "Statut"
+      },
       "columns": {
         "code": "Code",
         "name": "Nom",
@@ -146,6 +149,9 @@
     },
     "fuelTypes": {
       "title": "Types de Carburant",
+      "filters": {
+        "active": "Statut"
+      },
       "columns": {
         "code": "Code",
         "name": "Nom",

@@ -132,6 +132,9 @@
     },
     "carTypes": {
       "title": "Automerken",
+      "filters": {
+        "active": "Status"
+      },
       "columns": {
         "code": "Code",
         "name": "Naam",
@@ -146,6 +149,9 @@
     },
     "fuelTypes": {
       "title": "Brandstoftypes",
+      "filters": {
+        "active": "Status"
+      },
       "columns": {
         "code": "Code",
         "name": "Naam",

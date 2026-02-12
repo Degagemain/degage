@@ -14,7 +14,7 @@ import { Skeleton } from '@/app/components/ui/skeleton';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 20;
 
 interface UsersState {
   data: User[];

@@ -132,6 +132,9 @@
     },
     "carTypes": {
       "title": "Car Types",
+      "filters": {
+        "active": "Status"
+      },
       "columns": {
         "code": "Code",
         "name": "Name",
@@ -146,6 +149,9 @@
     },
     "fuelTypes": {
       "title": "Fuel Types",
+      "filters": {
+        "active": "Status"
+      },
       "columns": {
         "code": "Code",
         "name": "Name",

@@ -3,14 +3,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Check, X } from 'lucide-react';
 
 import { CarType } from '@/domain/car-type.model';
 import { Page } from '@/domain/page.model';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { DataTable, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
+import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 20;
 
 interface CarTypesState {
   data: CarType[];
@@ -39,6 +40,7 @@ export default function CarTypesPage() {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>([{ id: 'code', desc: false }]);
+  const [isActiveFilter, setIsActiveFilter] = useState<string[]>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     code: false,
     createdAt: false,
@@ -60,7 +62,20 @@ export default function CarTypesPage() {
     setPageIndex(0);
   }, []);
 
+  const handleIsActiveChange = useCallback((values: string[]) => {
+    setIsActiveFilter(values);
+    setPageIndex(0);
+  }, []);
+
   const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+
+  const isActiveOptions: FacetedFilterOption[] = useMemo(
+    () => [
+      { value: 'true', label: t('active'), icon: Check },
+      { value: 'false', label: t('inactive'), icon: X },
+    ],
+    [t],
+  );
 
   const columnLabels = useMemo(
     () => ({
@@ -79,6 +94,7 @@ export default function CarTypesPage() {
     try {
       const params = new URLSearchParams();
       if (debouncedQuery) params.set('query', debouncedQuery);
+      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]);
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -116,7 +132,7 @@ export default function CarTypesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, pageIndex, pageSize, sorting]);
+  }, [debouncedQuery, isActiveFilter, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
     fetchCarTypes();
@@ -164,6 +180,15 @@ export default function CarTypesPage() {
     );
   }
 
+  const filterSlot = (
+    <DataTableFacetedFilter
+      title={t('filters.active')}
+      options={isActiveOptions}
+      selectedValues={isActiveFilter}
+      onSelectedChange={handleIsActiveChange}
+    />
+  );
+
   return (
     <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
       <div className="px-3 md:px-4">
@@ -172,6 +197,7 @@ export default function CarTypesPage() {
           searchValue={query}
           onSearchChange={setQuery}
           searchPlaceholder={t('searchPlaceholder')}
+          filterSlot={filterSlot}
           columnLabels={columnLabels}
         />
       </div>
