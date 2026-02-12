@@ -164,6 +164,25 @@
       "searchPlaceholder": "Zoek brandstoftypes...",
       "tryAgain": "Opnieuw proberen"
     },
+    "euroNorms": {
+      "title": "Euronormen",
+      "filters": {
+        "active": "Status"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Naam",
+        "active": "Actief",
+        "start": "Start",
+        "end": "Einde",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "active": "Actief",
+      "inactive": "Inactief",
+      "searchPlaceholder": "Zoek euronormen...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "users": {
       "title": "Gebruikers",
       "columns": {

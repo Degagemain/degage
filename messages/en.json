@@ -164,6 +164,25 @@
       "searchPlaceholder": "Search fuel types...",
       "tryAgain": "Try again"
     },
+    "euroNorms": {
+      "title": "Euro Norms",
+      "filters": {
+        "active": "Status"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "active": "Active",
+        "start": "Start",
+        "end": "End",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "inactive": "Inactive",
+      "searchPlaceholder": "Search euro norms...",
+      "tryAgain": "Try again"
+    },
     "users": {
       "title": "Users",
       "columns": {

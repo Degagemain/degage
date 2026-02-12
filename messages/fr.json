@@ -164,6 +164,25 @@
       "searchPlaceholder": "Rechercher des types de carburant...",
       "tryAgain": "Réessayer"
     },
+    "euroNorms": {
+      "title": "Normes Euro",
+      "filters": {
+        "active": "Statut"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Nom",
+        "active": "Actif",
+        "start": "Début",
+        "end": "Fin",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "active": "Actif",
+      "inactive": "Inactif",
+      "searchPlaceholder": "Rechercher des normes euro...",
+      "tryAgain": "Réessayer"
+    },
     "users": {
       "title": "Utilisateurs",
       "columns": {
