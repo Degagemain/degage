@@ -1,6 +1,6 @@
 const fuelTypes = [
   {
-    code: 'ELECTRIC',
+    code: 'electric',
     isActive: true,
     translations: [
       { locale: 'en', name: 'Electric' },
@@ -9,7 +9,7 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'DIESEL',
+    code: 'diesel',
     isActive: true,
     translations: [
       { locale: 'en', name: 'Diesel' },
@@ -18,7 +18,7 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'GASOLINE',
+    code: 'gasoline',
     isActive: true,
     translations: [
       { locale: 'en', name: 'Gasoline' },
@@ -27,7 +27,7 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'HYBRID',
+    code: 'hybrid',
     isActive: true,
     translations: [
       { locale: 'en', name: 'Hybrid' },
@@ -36,7 +36,7 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'PLUGIN_HYBRID',
+    code: 'plugin-hybrid',
     isActive: true,
     translations: [
       { locale: 'en', name: 'Plugin Hybrid' },
@@ -45,7 +45,7 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'LPG',
+    code: 'lpg',
     isActive: true,
     translations: [
       { locale: 'en', name: 'LPG' },
@@ -54,12 +54,21 @@ const fuelTypes = [
     ],
   },
   {
-    code: 'CNG',
+    code: 'cng',
     isActive: true,
     translations: [
       { locale: 'en', name: 'CNG' },
       { locale: 'nl', name: 'CNG' },
       { locale: 'fr', name: 'GNC' },
+    ],
+  },
+  {
+    code: 'hydrogen',
+    isActive: true,
+    translations: [
+      { locale: 'en', name: 'Hydrogen' },
+      { locale: 'nl', name: 'Waterstof' },
+      { locale: 'fr', name: 'Hydrogène' },
     ],
   },
 ];

@@ -88,7 +88,7 @@ describe('API Route - GET /api/fuel-types/[id]', () => {
   describe('authorization - GET allowed for any authenticated user', () => {
     it('returns 200 when regular user requests by id', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockRegularUser } as any);
-      const mockFuelType = fuelType({ id: validId, code: 'ELECTRIC', name: 'Electric' });
+      const mockFuelType = fuelType({ id: validId, code: 'electric', name: 'Electric' });
       vi.mocked(readFuelType).mockResolvedValueOnce(mockFuelType);
 
       const request = {} as any;
@@ -99,13 +99,13 @@ describe('API Route - GET /api/fuel-types/[id]', () => {
 
       expect(response.status).toBe(200);
       expect(json.id).toBe(validId);
-      expect(json.code).toBe('ELECTRIC');
+      expect(json.code).toBe('electric');
       expect(readFuelType).toHaveBeenCalledWith(validId);
     });
 
     it('returns 200 when admin requests by id', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      const mockFuelType = fuelType({ id: validId, code: 'DIESEL' });
+      const mockFuelType = fuelType({ id: validId, code: 'diesel' });
       vi.mocked(readFuelType).mockResolvedValueOnce(mockFuelType);
 
       const request = {} as any;
@@ -142,7 +142,7 @@ describe('API Route - PUT /api/fuel-types/[id]', () => {
 
   const updateBody = {
     id: validId,
-    code: 'ELECTRIC',
+    code: 'electric',
     name: 'Electric',
     isActive: true,
     translations: [

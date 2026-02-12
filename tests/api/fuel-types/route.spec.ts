@@ -84,7 +84,7 @@ describe('API Route - GET /api/fuel-types', () => {
     it('returns 200 when regular user requests list', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockRegularUser } as any);
       vi.mocked(searchFuelTypes).mockResolvedValueOnce({
-        records: [fuelType({ code: 'ELECTRIC', name: 'Electric' })],
+        records: [fuelType({ code: 'electric', name: 'Electric' })],
         total: 1,
       });
 
@@ -104,7 +104,7 @@ describe('API Route - GET /api/fuel-types', () => {
     it('returns 200 when admin requests list', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
       vi.mocked(searchFuelTypes).mockResolvedValueOnce({
-        records: [fuelType({ code: 'DIESEL' })],
+        records: [fuelType({ code: 'diesel' })],
         total: 1,
       });
 
@@ -143,7 +143,7 @@ describe('API Route - POST /api/fuel-types', () => {
 
   const validFuelTypeBody = {
     id: null,
-    code: 'ELECTRIC',
+    code: 'electric',
     name: 'Electric',
     isActive: true,
     translations: [
@@ -209,7 +209,7 @@ describe('API Route - POST /api/fuel-types', () => {
 
     it('returns 201 when admin creates fuel type', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      const created = fuelType({ id: 'new-id', code: 'ELECTRIC' });
+      const created = fuelType({ id: 'new-id', code: 'electric' });
       vi.mocked(createFuelType).mockResolvedValueOnce(created);
 
       const request = {
@@ -221,7 +221,7 @@ describe('API Route - POST /api/fuel-types', () => {
       const json = await response.json();
 
       expect(response.status).toBe(201);
-      expect(json.code).toBe('ELECTRIC');
+      expect(json.code).toBe('electric');
       expect(createFuelType).toHaveBeenCalledTimes(1);
     });
   });
