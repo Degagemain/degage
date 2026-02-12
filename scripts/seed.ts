@@ -1,7 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../app/storage/client/client';
 import { seedFuelTypes } from './seed-fuel-types';
-import { seedCarTypes } from './seed-car-types';
+import { seedCarBrands } from './seed-car-brands';
 import { seedEuroNorms } from './seed-euro-norms';
 
 const prisma = new PrismaClient({
@@ -10,7 +10,7 @@ const prisma = new PrismaClient({
 
 async function seed() {
   await seedFuelTypes(prisma);
-  await seedCarTypes(prisma);
+  await seedCarBrands(prisma);
   await seedEuroNorms(prisma);
 }
 

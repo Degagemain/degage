@@ -1,12 +1,12 @@
-import { CarType } from '@/domain/car-type.model';
-import { CarTypeFilter } from '@/domain/car-type.filter';
+import { CarBrand } from '@/domain/car-brand.model';
+import { CarBrandFilter } from '@/domain/car-brand.filter';
 import { getPrismaClient } from '@/storage/utils';
 import { Page } from '@/domain/page.model';
 import { Prisma } from '@/storage/client/client';
 import { getRequestContentLocale } from '@/context/request-context';
-import { dbCarTypeToDomain } from './car-type.mappers';
+import { dbCarBrandToDomain } from './car-brand.mappers';
 
-export const filterToQuery = (filter: CarTypeFilter): Prisma.CarTypeWhereInput => {
+export const filterToQuery = (filter: CarBrandFilter): Prisma.CarBrandWhereInput => {
   return {
     isActive: filter.isActive !== null ? filter.isActive : undefined,
     translations: filter.query
@@ -22,14 +22,14 @@ export const filterToQuery = (filter: CarTypeFilter): Prisma.CarTypeWhereInput =
   };
 };
 
-export const dbCarTypeSearch = async (filter: CarTypeFilter): Promise<Page<CarType>> => {
+export const dbCarBrandSearch = async (filter: CarBrandFilter): Promise<Page<CarBrand>> => {
   const prisma = getPrismaClient();
   const locale = getRequestContentLocale();
   const whereClause = filterToQuery(filter);
-  const total = await prisma.carType.count({
+  const total = await prisma.carBrand.count({
     where: whereClause,
   });
-  const carTypes = await prisma.carType.findMany({
+  const carBrands = await prisma.carBrand.findMany({
     where: whereClause,
     include: { translations: true },
     skip: filter.skip,
@@ -37,7 +37,7 @@ export const dbCarTypeSearch = async (filter: CarTypeFilter): Promise<Page<CarTy
     orderBy: filter.sortBy ? { [filter.sortBy]: filter.sortOrder } : undefined,
   });
   return {
-    records: carTypes.map((ct) => dbCarTypeToDomain(ct, locale)),
+    records: carBrands.map((cb) => dbCarBrandToDomain(cb, locale)),
     total,
   };
 };

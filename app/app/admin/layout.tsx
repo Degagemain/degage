@@ -40,8 +40,8 @@ const SIDEBAR_ITEMS = [
     icon: Fuel,
   },
   {
-    translationKey: 'carTypes' as const,
-    href: '/app/admin/car-types',
+    translationKey: 'carBrands' as const,
+    href: '/app/admin/car-brands',
     icon: Car,
   },
   {

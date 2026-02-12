@@ -1,8 +1,8 @@
 import { getPrismaClient } from '@/storage/utils';
 
-export const dbCarTypeDelete = async (id: string): Promise<void> => {
+export const dbCarBrandDelete = async (id: string): Promise<void> => {
   const prisma = getPrismaClient();
-  await prisma.carType.delete({
+  await prisma.carBrand.delete({
     where: { id },
   });
 };

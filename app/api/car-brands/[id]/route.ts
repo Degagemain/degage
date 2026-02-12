@@ -11,9 +11,9 @@ import {
   tryUpdateResource,
   unauthorizedResponse,
 } from '@/api/utils';
-import { deleteCarType } from '@/actions/car-type/delete';
-import { updateCarType } from '@/actions/car-type/update';
-import { readCarType } from '@/actions/car-type/read';
+import { deleteCarBrand } from '@/actions/car-brand/delete';
+import { updateCarBrand } from '@/actions/car-brand/update';
+import { readCarBrand } from '@/actions/car-brand/read';
 import { withContext } from '@/api/with-context';
 
 const requireAdmin = async (): Promise<Response | null> => {
@@ -38,14 +38,14 @@ export const GET = withContext(async (request: NextRequest, context?: { params: 
   }
 
   const id = await getIdFromRoute(context as IdRouteParams);
-  return tryReadResource(readCarType, id);
+  return tryReadResource(readCarBrand, id);
 });
 
 export const PUT = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  return tryUpdateResource(request, context as IdRouteParams, updateCarType);
+  return tryUpdateResource(request, context as IdRouteParams, updateCarBrand);
 });
 
 export const DELETE = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
@@ -53,5 +53,5 @@ export const DELETE = withContext(async (request: NextRequest, context?: { param
   if (denied) return denied;
 
   const id = await getIdFromRoute(context as IdRouteParams);
-  return tryDeleteResource(deleteCarType, id);
+  return tryDeleteResource(deleteCarBrand, id);
 });

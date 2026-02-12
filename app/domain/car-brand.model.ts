@@ -1,13 +1,13 @@
 import * as z from 'zod';
 
-export const carTypeTranslationSchema = z.object({
+export const carBrandTranslationSchema = z.object({
   locale: z.string().min(2).max(5),
   name: z.string().min(1).max(100),
 });
 
-export type CarTypeTranslation = z.infer<typeof carTypeTranslationSchema>;
+export type CarBrandTranslation = z.infer<typeof carBrandTranslationSchema>;
 
-export const carTypeSchema = z
+export const carBrandSchema = z
   .object({
     id: z.uuid().nullable(),
     code: z
@@ -17,10 +17,10 @@ export const carTypeSchema = z
       .transform((s) => s.toLowerCase()),
     name: z.string().min(1).max(100),
     isActive: z.boolean().default(true),
-    translations: z.array(carTypeTranslationSchema).default([]),
+    translations: z.array(carBrandTranslationSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
   })
   .strict();
 
-export type CarType = z.infer<typeof carTypeSchema>;
+export type CarBrand = z.infer<typeof carBrandSchema>;

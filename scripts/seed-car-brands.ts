@@ -1,4 +1,4 @@
-const CAR_TYPES: { code: string; name: string }[] = [
+const CAR_BRANDS: { code: string; name: string }[] = [
   { code: 'abarth', name: 'Abarth' },
   { code: 'aiways', name: 'Aiways' },
   { code: 'alfa-romeo', name: 'Alfa Romeo' },
@@ -90,13 +90,13 @@ const CAR_TYPES: { code: string; name: string }[] = [
 
 const LOCALES = ['en', 'nl', 'fr'] as const;
 
-export async function seedCarTypes(prisma: { carType: { upsert: (args: unknown) => Promise<unknown> } }) {
-  console.log('Seeding car types...');
+export async function seedCarBrands(prisma: { carBrand: { upsert: (args: unknown) => Promise<unknown> } }) {
+  console.log('Seeding car brands...');
 
-  for (const ct of CAR_TYPES) {
-    const translations = LOCALES.map((locale) => ({ locale, name: ct.name }));
-    await prisma.carType.upsert({
-      where: { code: ct.code },
+  for (const cb of CAR_BRANDS) {
+    const translations = LOCALES.map((locale) => ({ locale, name: cb.name }));
+    await prisma.carBrand.upsert({
+      where: { code: cb.code },
       update: {
         isActive: true,
         translations: {
@@ -105,15 +105,15 @@ export async function seedCarTypes(prisma: { carType: { upsert: (args: unknown) 
         },
       },
       create: {
-        code: ct.code,
+        code: cb.code,
         isActive: true,
         translations: {
           createMany: { data: translations },
         },
       },
     });
-    console.log(`  Seeded: ${ct.code}`);
+    console.log(`  Seeded: ${cb.code}`);
   }
 
-  console.log('Car type seeding complete.');
+  console.log('Car brand seeding complete.');
 }

@@ -1,6 +1,6 @@
-import { CarType } from '@/domain/car-type.model';
+import { CarBrand } from '@/domain/car-brand.model';
 
-export const carType = (data: Partial<CarType> = {}): CarType => {
+export const carBrand = (data: Partial<CarBrand> = {}): CarBrand => {
   return {
     id: data.id || '550e8400-e29b-41d4-a716-446655440000',
     code: data.code || 'audi',

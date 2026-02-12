@@ -130,7 +130,7 @@
       "administration": "Administration",
       "panel": "Panneau d'administration"
     },
-    "carTypes": {
+    "carBrands": {
       "title": "Marques",
       "filters": {
         "active": "Statut"

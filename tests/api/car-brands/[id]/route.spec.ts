@@ -8,16 +8,16 @@ vi.mock('@/auth', () => ({
   },
 }));
 
-vi.mock('@/actions/car-type/read', () => ({
-  readCarType: vi.fn(),
+vi.mock('@/actions/car-brand/read', () => ({
+  readCarBrand: vi.fn(),
 }));
 
-vi.mock('@/actions/car-type/update', () => ({
-  updateCarType: vi.fn(),
+vi.mock('@/actions/car-brand/update', () => ({
+  updateCarBrand: vi.fn(),
 }));
 
-vi.mock('@/actions/car-type/delete', () => ({
-  deleteCarType: vi.fn(),
+vi.mock('@/actions/car-brand/delete', () => ({
+  deleteCarBrand: vi.fn(),
 }));
 
 vi.mock('next/headers', () => ({
@@ -25,16 +25,16 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
-import { DELETE, GET, PUT } from '@/api/car-types/[id]/route';
+import { DELETE, GET, PUT } from '@/api/car-brands/[id]/route';
 import { auth } from '@/auth';
-import { readCarType } from '@/actions/car-type/read';
-import { updateCarType } from '@/actions/car-type/update';
-import { deleteCarType } from '@/actions/car-type/delete';
-import { carType } from '../../../builders/car-type.builder';
+import { readCarBrand } from '@/actions/car-brand/read';
+import { updateCarBrand } from '@/actions/car-brand/update';
+import { deleteCarBrand } from '@/actions/car-brand/delete';
+import { carBrand } from '../../../builders/car-brand.builder';
 
 const validId = '550e8400-e29b-41d4-a716-446655440000';
 
-describe('API Route - GET /api/car-types/[id]', () => {
+describe('API Route - GET /api/car-brands/[id]', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -67,7 +67,7 @@ describe('API Route - GET /api/car-types/[id]', () => {
 
       expect(response.status).toBe(401);
       expect(json.code).toBe('unauthorized');
-      expect(readCarType).not.toHaveBeenCalled();
+      expect(readCarBrand).not.toHaveBeenCalled();
     });
 
     it('returns 401 when session has no user', async () => {
@@ -81,15 +81,15 @@ describe('API Route - GET /api/car-types/[id]', () => {
 
       expect(response.status).toBe(401);
       expect(json.code).toBe('unauthorized');
-      expect(readCarType).not.toHaveBeenCalled();
+      expect(readCarBrand).not.toHaveBeenCalled();
     });
   });
 
   describe('authorization - GET allowed for any authenticated user', () => {
     it('returns 200 when regular user requests by id', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockRegularUser } as any);
-      const mockCarType = carType({ id: validId, code: 'audi', name: 'Audi' });
-      vi.mocked(readCarType).mockResolvedValueOnce(mockCarType);
+      const mockCarBrand = carBrand({ id: validId, code: 'audi', name: 'Audi' });
+      vi.mocked(readCarBrand).mockResolvedValueOnce(mockCarBrand);
 
       const request = {} as any;
       const route = { params: Promise.resolve({ id: validId }) };
@@ -100,13 +100,13 @@ describe('API Route - GET /api/car-types/[id]', () => {
       expect(response.status).toBe(200);
       expect(json.id).toBe(validId);
       expect(json.code).toBe('audi');
-      expect(readCarType).toHaveBeenCalledWith(validId);
+      expect(readCarBrand).toHaveBeenCalledWith(validId);
     });
 
     it('returns 200 when admin requests by id', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      const mockCarType = carType({ id: validId, code: 'bmw' });
-      vi.mocked(readCarType).mockResolvedValueOnce(mockCarType);
+      const mockCarBrand = carBrand({ id: validId, code: 'bmw' });
+      vi.mocked(readCarBrand).mockResolvedValueOnce(mockCarBrand);
 
       const request = {} as any;
       const route = { params: Promise.resolve({ id: validId }) };
@@ -114,12 +114,12 @@ describe('API Route - GET /api/car-types/[id]', () => {
       const response = await GET(request, route);
 
       expect(response.status).toBe(200);
-      expect(readCarType).toHaveBeenCalledWith(validId);
+      expect(readCarBrand).toHaveBeenCalledWith(validId);
     });
   });
 });
 
-describe('API Route - PUT /api/car-types/[id]', () => {
+describe('API Route - PUT /api/car-brands/[id]', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -165,7 +165,7 @@ describe('API Route - PUT /api/car-types/[id]', () => {
 
       expect(response.status).toBe(401);
       expect(json.code).toBe('unauthorized');
-      expect(updateCarType).not.toHaveBeenCalled();
+      expect(updateCarBrand).not.toHaveBeenCalled();
     });
 
     it('returns 403 when regular user attempts to update', async () => {
@@ -180,12 +180,12 @@ describe('API Route - PUT /api/car-types/[id]', () => {
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
       expect(json.errors[0].message).toBe('Admin access required');
-      expect(updateCarType).not.toHaveBeenCalled();
+      expect(updateCarBrand).not.toHaveBeenCalled();
     });
 
     it('returns 204 when admin updates', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      vi.mocked(updateCarType).mockResolvedValueOnce(carType(updateBody));
+      vi.mocked(updateCarBrand).mockResolvedValueOnce(carBrand(updateBody));
 
       const request = { json: vi.fn().mockResolvedValue(updateBody) } as any;
       const route = { params: Promise.resolve({ id: validId }) };
@@ -193,12 +193,12 @@ describe('API Route - PUT /api/car-types/[id]', () => {
       const response = await PUT(request, route);
 
       expect(response.status).toBe(204);
-      expect(updateCarType).toHaveBeenCalledTimes(1);
+      expect(updateCarBrand).toHaveBeenCalledTimes(1);
     });
   });
 });
 
-describe('API Route - DELETE /api/car-types/[id]', () => {
+describe('API Route - DELETE /api/car-brands/[id]', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -231,7 +231,7 @@ describe('API Route - DELETE /api/car-types/[id]', () => {
 
       expect(response.status).toBe(401);
       expect(json.code).toBe('unauthorized');
-      expect(deleteCarType).not.toHaveBeenCalled();
+      expect(deleteCarBrand).not.toHaveBeenCalled();
     });
 
     it('returns 403 when regular user attempts to delete', async () => {
@@ -246,12 +246,12 @@ describe('API Route - DELETE /api/car-types/[id]', () => {
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
       expect(json.errors[0].message).toBe('Admin access required');
-      expect(deleteCarType).not.toHaveBeenCalled();
+      expect(deleteCarBrand).not.toHaveBeenCalled();
     });
 
     it('returns 204 when admin deletes', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      vi.mocked(deleteCarType).mockResolvedValueOnce(undefined);
+      vi.mocked(deleteCarBrand).mockResolvedValueOnce(undefined);
 
       const request = {} as any;
       const route = { params: Promise.resolve({ id: validId }) };
@@ -259,7 +259,7 @@ describe('API Route - DELETE /api/car-types/[id]', () => {
       const response = await DELETE(request, route);
 
       expect(response.status).toBe(204);
-      expect(deleteCarType).toHaveBeenCalledWith(validId);
+      expect(deleteCarBrand).toHaveBeenCalledWith(validId);
     });
   });
 });

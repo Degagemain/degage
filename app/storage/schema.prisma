@@ -35,23 +35,23 @@ model FuelTypeTranslation {
     @@unique([fuelTypeId, locale])
 }
 
-model CarType {
-    id           String                @id @default(uuid())
-    code         String                @unique
-    isActive     Boolean               @default(true)
-    translations CarTypeTranslation[]
-    createdAt    DateTime              @default(now())
-    updatedAt    DateTime              @updatedAt
+model CarBrand {
+    id           String                 @id @default(uuid())
+    code         String                 @unique
+    isActive     Boolean                @default(true)
+    translations CarBrandTranslation[]
+    createdAt    DateTime               @default(now())
+    updatedAt    DateTime               @updatedAt
 }
 
-model CarTypeTranslation {
-    id         String   @id @default(uuid())
-    carTypeId  String
-    carType    CarType  @relation(fields: [carTypeId], references: [id], onDelete: Cascade)
-    locale     String
-    name       String
+model CarBrandTranslation {
+    id          String   @id @default(uuid())
+    carBrandId  String
+    carBrand    CarBrand @relation(fields: [carBrandId], references: [id], onDelete: Cascade)
+    locale      String
+    name        String
 
-    @@unique([carTypeId, locale])
+    @@unique([carBrandId, locale])
 }
 
 model EuroNorm {

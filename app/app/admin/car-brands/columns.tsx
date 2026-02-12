@@ -4,14 +4,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/app/components/ui/badge';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
-import { CarType } from '@/domain/car-type.model';
+import { CarBrand } from '@/domain/car-brand.model';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   t: (key: string) => string;
 }
 
-export const createColumns = (options: ColumnOptions): ColumnDef<CarType>[] => {
+export const createColumns = (options: ColumnOptions): ColumnDef<CarBrand>[] => {
   const { t } = options;
   return [
     {

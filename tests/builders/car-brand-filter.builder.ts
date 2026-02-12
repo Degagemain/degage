@@ -1,6 +1,6 @@
-import { CarTypeFilter } from '@/domain/car-type.filter';
+import { CarBrandFilter } from '@/domain/car-brand.filter';
 
-export const carTypeFilter = (data: Partial<CarTypeFilter> = {}): CarTypeFilter => {
+export const carBrandFilter = (data: Partial<CarBrandFilter> = {}): CarBrandFilter => {
   return {
     query: data.query ?? null,
     isActive: data.isActive ?? null,

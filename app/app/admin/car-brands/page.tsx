@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Check, X } from 'lucide-react';
 
-import { CarType } from '@/domain/car-type.model';
+import { CarBrand } from '@/domain/car-brand.model';
 import { Page } from '@/domain/page.model';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
@@ -13,8 +13,8 @@ import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
 
-interface CarTypesState {
-  data: CarType[];
+interface CarBrandsState {
+  data: CarBrand[];
   total: number;
   isLoading: boolean;
   error: string | null;
@@ -26,9 +26,9 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   updatedAt: 'updatedAt',
 };
 
-export default function CarTypesPage() {
-  const t = useTranslations('admin.carTypes');
-  const [state, setState] = useState<CarTypesState>({
+export default function CarBrandsPage() {
+  const t = useTranslations('admin.carBrands');
+  const [state, setState] = useState<CarBrandsState>({
     data: [],
     total: 0,
     isLoading: true,
@@ -88,7 +88,7 @@ export default function CarTypesPage() {
     [t],
   );
 
-  const fetchCarTypes = useCallback(async () => {
+  const fetchCarBrands = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
@@ -106,7 +106,7 @@ export default function CarTypesPage() {
         }
       }
 
-      const response = await fetch(`/api/car-types?${params.toString()}`);
+      const response = await fetch(`/api/car-brands?${params.toString()}`);
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -115,10 +115,10 @@ export default function CarTypesPage() {
         if (response.status === 403) {
           throw new Error('Access denied');
         }
-        throw new Error('Failed to fetch car types');
+        throw new Error('Failed to fetch car brands');
       }
 
-      const result: Page<CarType> = await response.json();
+      const result: Page<CarBrand> = await response.json();
       setState({
         data: result.records,
         total: result.total,
@@ -135,8 +135,8 @@ export default function CarTypesPage() {
   }, [debouncedQuery, isActiveFilter, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
-    fetchCarTypes();
-  }, [fetchCarTypes]);
+    fetchCarBrands();
+  }, [fetchCarBrands]);
 
   const pageCount = Math.ceil(state.total / pageSize);
 
@@ -172,7 +172,7 @@ export default function CarTypesPage() {
       <div className="flex h-[400px] items-center justify-center">
         <div className="text-center">
           <p className="text-destructive font-medium">{state.error}</p>
-          <button onClick={fetchCarTypes} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
+          <button onClick={fetchCarBrands} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
             {t('tryAgain')}
           </button>
         </div>
