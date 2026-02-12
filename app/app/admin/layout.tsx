@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronsUpDown, Fuel, Users } from 'lucide-react';
+import { Car, ChevronsUpDown, Fuel, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -38,6 +38,11 @@ const SIDEBAR_ITEMS = [
     translationKey: 'fuelTypes' as const,
     href: '/app/admin/fuel-types',
     icon: Fuel,
+  },
+  {
+    translationKey: 'carTypes' as const,
+    href: '/app/admin/car-types',
+    icon: Car,
   },
 ];
 

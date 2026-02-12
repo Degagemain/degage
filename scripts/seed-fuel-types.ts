@@ -1,10 +1,3 @@
-import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../app/storage/client/client';
-
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
-});
-
 const fuelTypes = [
   {
     code: 'ELECTRIC',
@@ -71,7 +64,7 @@ const fuelTypes = [
   },
 ];
 
-async function seed() {
+export async function seedFuelTypes(prisma: { fuelType: { upsert: (args: unknown) => Promise<unknown> } }) {
   console.log('Seeding fuel types...');
 
   for (const ft of fuelTypes) {
@@ -97,10 +90,3 @@ async function seed() {
 
   console.log('Fuel type seeding complete.');
 }
-
-seed()
-  .catch((error) => {
-    console.error('Seed failed:', error);
-    process.exit(1);
-  })
-  .finally(() => prisma.$disconnect());

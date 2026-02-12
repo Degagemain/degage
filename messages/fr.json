@@ -130,6 +130,20 @@
       "administration": "Administration",
       "panel": "Panneau d'administration"
     },
+    "carTypes": {
+      "title": "Marques",
+      "columns": {
+        "code": "Code",
+        "name": "Nom",
+        "active": "Actif",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "active": "Actif",
+      "inactive": "Inactif",
+      "searchPlaceholder": "Rechercher des marques...",
+      "tryAgain": "Réessayer"
+    },
     "fuelTypes": {
       "title": "Types de Carburant",
       "columns": {

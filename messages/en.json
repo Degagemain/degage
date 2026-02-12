@@ -130,6 +130,20 @@
       "administration": "Administration",
       "panel": "Admin Panel"
     },
+    "carTypes": {
+      "title": "Car Types",
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "active": "Active",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "inactive": "Inactive",
+      "searchPlaceholder": "Search car types...",
+      "tryAgain": "Try again"
+    },
     "fuelTypes": {
       "title": "Fuel Types",
       "columns": {
