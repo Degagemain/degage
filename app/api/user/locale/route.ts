@@ -2,9 +2,12 @@ import { cookies, headers } from 'next/headers';
 import { auth } from '@/auth';
 import { dbUserUpdateLocale } from '@/storage/user/user.update';
 import { type UILocale, uiLocales } from '@/i18n/locales';
+import { safeParseRequestJson } from '@/api/utils';
 
 export async function PATCH(request: Request) {
-  const { locale } = await request.json();
+  const { data, errorResponse } = await safeParseRequestJson(request);
+  if (errorResponse) return errorResponse;
+  const { locale } = data as { locale: string };
 
   if (!uiLocales.includes(locale as UILocale)) {
     return Response.json({ error: 'Invalid locale' }, { status: 400 });

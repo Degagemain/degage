@@ -13,9 +13,34 @@ export const isPrismaNotFoundError = (error: unknown): boolean => {
   return error !== null && typeof error === 'object' && 'code' in error && error.code === 'P2025';
 };
 
-export const tryCreateResource = async <T>(createResource: (resource: T) => Promise<T>, resource: T): Promise<Response> => {
+export const isPrismaForeignKeyError = (error: unknown): boolean => {
+  return error !== null && typeof error === 'object' && 'code' in error && error.code === 'P2003';
+};
+
+export const conflictResponse = (message: string = 'Resource is in use and cannot be deleted'): Response => {
+  return Response.json({ code: 'conflict', errors: [{ message }] }, { status: statusCodes.CONFLICT });
+};
+
+export type SafeRequestJsonResult = { data: unknown; errorResponse: null } | { data: null; errorResponse: Response };
+
+export const safeParseRequestJson = async (request: Request | NextRequest): Promise<SafeRequestJsonResult> => {
   try {
-    const createdResource = await createResource(resource);
+    const data = await request.json();
+    return { data, errorResponse: null };
+  } catch {
+    return {
+      data: null,
+      errorResponse: Response.json(
+        { code: 'invalid_json', errors: [{ message: 'Invalid JSON in request body' }] },
+        { status: statusCodes.BAD_REQUEST },
+      ),
+    };
+  }
+};
+
+export const tryCreateResource = async <T>(createResource: (resource: T) => Promise<T>, resource: unknown): Promise<Response> => {
+  try {
+    const createdResource = await createResource(resource as T);
     return Response.json(createdResource, { status: statusCodes.CREATED });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -89,6 +114,9 @@ export const tryDeleteResource = async (deleteResource: (id: string) => Promise<
     if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
       return notFoundResponse();
     }
+    if (isPrismaForeignKeyError(error)) {
+      return conflictResponse('Resource is linked to other records and cannot be deleted');
+    }
     return Response.json(
       { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
       { status: statusCodes.INTERNAL_SERVER_ERROR },
@@ -103,8 +131,10 @@ export const tryUpdateResource = async <T>(
 ): Promise<Response> => {
   const id = await getIdFromRoute(route);
 
-  const data = await request.json();
-  if (data.id !== id) {
+  const { data, errorResponse } = await safeParseRequestJson(request);
+  if (errorResponse) return errorResponse;
+  const body = data as T;
+  if ((body as { id?: string }).id !== id) {
     return Response.json(
       {
         code: 'id_mismatch',
@@ -114,7 +144,7 @@ export const tryUpdateResource = async <T>(
     );
   }
   try {
-    await updateResource(data);
+    await updateResource(body);
     return noContentResponse();
   } catch (error) {
     if (error instanceof ZodError) {

@@ -5,8 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchCarTypes } from '@/actions/car-type/search';
 import { createCarType } from '@/actions/car-type/create';
 import { carTypeFilterSchema } from '@/domain/car-type.filter';
-import { forbiddenResponse, fromZodParseResult, tryCreateResource, unauthorizedResponse } from '@/api/utils';
-import { statusCodes } from '@/api/status-codes';
+import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -45,14 +44,7 @@ export const POST = withContext(async (request: NextRequest) => {
     return forbiddenResponse('Admin access required');
   }
 
-  try {
-    const carType = await request.json();
-    return tryCreateResource(createCarType, carType);
-  } catch (error) {
-    console.error(error);
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'Failed to parse request body' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
-  }
+  const { data, errorResponse } = await safeParseRequestJson(request);
+  if (errorResponse) return errorResponse;
+  return tryCreateResource(createCarType, data);
 });

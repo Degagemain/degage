@@ -5,8 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchFuelTypes } from '@/actions/fuel-type/search';
 import { createFuelType } from '@/actions/fuel-type/create';
 import { fuelTypeFilterSchema } from '@/domain/fuel-type.filter';
-import { forbiddenResponse, fromZodParseResult, tryCreateResource, unauthorizedResponse } from '@/api/utils';
-import { statusCodes } from '@/api/status-codes';
+import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -36,14 +35,7 @@ export const POST = withContext(async (request: NextRequest) => {
     return forbiddenResponse('Admin access required');
   }
 
-  try {
-    const fuelType = await request.json();
-    return tryCreateResource(createFuelType, fuelType);
-  } catch (error) {
-    console.error(error);
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'Failed to parse request body' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
-  }
+  const { data, errorResponse } = await safeParseRequestJson(request);
+  if (errorResponse) return errorResponse;
+  return tryCreateResource(createFuelType, data);
 });

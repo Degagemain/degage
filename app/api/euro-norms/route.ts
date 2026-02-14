@@ -5,8 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchEuroNorms } from '@/actions/euro-norm/search';
 import { createEuroNorm } from '@/actions/euro-norm/create';
 import { euroNormFilterSchema } from '@/domain/euro-norm.filter';
-import { forbiddenResponse, fromZodParseResult, tryCreateResource, unauthorizedResponse } from '@/api/utils';
-import { statusCodes } from '@/api/status-codes';
+import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -36,14 +35,7 @@ export const POST = withContext(async (request: NextRequest) => {
     return forbiddenResponse('Admin access required');
   }
 
-  try {
-    const euroNorm = await request.json();
-    return tryCreateResource(createEuroNorm, euroNorm);
-  } catch (error) {
-    console.error(error);
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'Failed to parse request body' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
-  }
+  const { data, errorResponse } = await safeParseRequestJson(request);
+  if (errorResponse) return errorResponse;
+  return tryCreateResource(createEuroNorm, data);
 });
