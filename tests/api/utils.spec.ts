@@ -6,6 +6,7 @@ import {
   isPrismaNotFoundError,
   noContentResponse,
   notFoundResponse,
+  safeParseRequestJson,
   tryCreateResource,
   tryDeleteResource,
   tryReadResource,
@@ -80,6 +81,37 @@ describe('API Utils', () => {
       expect(response.status).toBe(500);
       expect(responseData.code).toBe('internal_error');
       expect(responseData.errors).toBeDefined();
+    });
+  });
+
+  describe('safeParseRequestJson', () => {
+    it('returns deserialized data and null errorResponse for valid JSON', async () => {
+      const body = { name: 'Test', count: 42 };
+      const request = new Request('http://localhost', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+
+      const result = await safeParseRequestJson(request);
+
+      expect(result.errorResponse).toBeNull();
+      expect(result.data).toEqual(body);
+    });
+
+    it('returns null data and error Response for invalid JSON', async () => {
+      const request = new Request('http://localhost', {
+        method: 'POST',
+        body: 'not valid json {{{',
+      });
+
+      const result = await safeParseRequestJson(request);
+
+      expect(result.data).toBeNull();
+      expect(result.errorResponse).toBeInstanceOf(Response);
+      expect(result.errorResponse!.status).toBe(400);
+      const responseData = await result.errorResponse!.json();
+      expect(responseData.code).toBe('invalid_json');
+      expect(responseData.errors).toEqual([{ message: 'Invalid JSON in request body' }]);
     });
   });
 
@@ -279,6 +311,24 @@ describe('API Utils', () => {
 
       expect(response.status).toBe(204);
       expect(response.body).toBeNull();
+    });
+
+    it('should return 400 response for invalid JSON body', async () => {
+      const mockRequest = {
+        json: async () => {
+          throw new SyntaxError('Unexpected token');
+        },
+      } as any;
+      const mockRoute = {
+        params: Promise.resolve({ id: '123e4567-e89b-12d3-a456-426614174000' }),
+      };
+      const mockUpdateResource = async (resource: any) => resource;
+
+      const response = await tryUpdateResource(mockRequest, mockRoute, mockUpdateResource);
+      const responseData = await response.json();
+
+      expect(response.status).toBe(400);
+      expect(responseData.code).toBe('invalid_json');
     });
 
     it('should return 400 response for id mismatch', async () => {

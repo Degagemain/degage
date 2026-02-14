@@ -174,31 +174,32 @@ pnpm run docs
 
 This log explains why packages were installed.
 
-| Reason                  | Package(s)                                                                                             |
-| ----------------------- | ------------------------------------------------------------------------------------------------------ |
-| Next.js setup           | next@latest, react@latest, react-dom@latest                                                            |
-| commit message linting  | @commitlint/config-conventional, @commitlint/cli, husky                                                |
-| ESLint via Next.js      | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
-| validating models       | zod                                                                                                    |
-| prisma ORM setup        | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
-| Unit testing setup      | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
-| Unit test coverage      | @vitest/coverage-v8                                                                                    |
-| Tailwind setup          | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
-| ShadCn setup            | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
-| Button Component        | @radix-ui/react-slot                                                                                   |
-| Dropdown Menu Component | @radix-ui/react-dropdown-menu                                                                          |
-| Dark mode               | next-themes                                                                                            |
-| Label Component         | @radix-ui/react-label                                                                                  |
-| Separator Component     | @radix-ui/react-separator                                                                              |
-| Auth setup              | better-auth                                                                                            |
-| Auth UI Setup           | @daveyplate/better-auth-ui                                                                             |
-| Toastr Component        | sonner                                                                                                 |
-| ShadCN Table/Select     | radix-ui                                                                                               |
-| Data Table              | @tanstack/react-table                                                                                  |
-| Sidebar Component       | (shadcn generated - uses radix-ui)                                                                     |
-| Navigation Menu/Avatar  | (shadcn generated - uses radix-ui)                                                                     |
-| Faceted Filter          | cmdk (shadcn command component)                                                                        |
-| Internationalization    | next-intl                                                                                              |
+| Reason                        | Package(s)                                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Next.js setup                 | next@latest, react@latest, react-dom@latest                                                            |
+| commit message linting        | @commitlint/config-conventional, @commitlint/cli, husky                                                |
+| ESLint via Next.js            | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
+| validating models             | zod                                                                                                    |
+| prisma ORM setup              | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
+| Unit testing setup            | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
+| Unit test coverage            | @vitest/coverage-v8                                                                                    |
+| Tailwind setup                | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
+| ShadCn setup                  | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
+| Button Component              | @radix-ui/react-slot                                                                                   |
+| Dropdown Menu Component       | @radix-ui/react-dropdown-menu                                                                          |
+| Dark mode                     | next-themes                                                                                            |
+| Label Component               | @radix-ui/react-label                                                                                  |
+| Separator Component           | @radix-ui/react-separator                                                                              |
+| Auth setup                    | better-auth                                                                                            |
+| Auth UI Setup                 | @daveyplate/better-auth-ui                                                                             |
+| Toastr Component              | sonner                                                                                                 |
+| ShadCN Table/Select           | radix-ui                                                                                               |
+| Data Table                    | @tanstack/react-table                                                                                  |
+| Sidebar Component             | (shadcn generated - uses radix-ui)                                                                     |
+| Navigation Menu/Avatar        | (shadcn generated - uses radix-ui)                                                                     |
+| Faceted Filter                | cmdk (shadcn command component)                                                                        |
+| Internationalization          | next-intl                                                                                              |
+| ShadCN Calendar / Date picker | react-day-picker, date-fns                                                                             |
 
 ## Known Issues
 

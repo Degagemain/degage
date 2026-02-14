@@ -3,6 +3,7 @@
 import Link from 'next/link';
 
 import { authClient } from '@/app/lib/auth';
+import { useIsAdmin } from '@/app/lib/role';
 import { Button } from './components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 
@@ -46,6 +47,8 @@ function PublicHome() {
 }
 
 function AuthenticatedHome({ name }: { name: string }) {
+  const { isAdmin } = useIsAdmin();
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -54,18 +57,6 @@ function AuthenticatedHome({ name }: { name: string }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Getting Started</CardTitle>
-            <CardDescription>New to Neurotic? Start here.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground text-sm">
-              Explore the features and set up your account preferences to get the most out of the platform.
-            </p>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Account Settings</CardTitle>
@@ -80,13 +71,29 @@ function AuthenticatedHome({ name }: { name: string }) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Documentation</CardTitle>
-            <CardDescription>Learn how everything works.</CardDescription>
+            <CardTitle>Simulation</CardTitle>
+            <CardDescription>Check if a car can be admitted to the car sharing system.</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground text-sm">Check out our documentation to learn about all the features available to you.</p>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/app/simulation">Start simulation</Link>
+            </Button>
           </CardContent>
         </Card>
+
+        {isAdmin && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Admin</CardTitle>
+              <CardDescription>Manage users and reference data.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin">Go to admin</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </main>
   );

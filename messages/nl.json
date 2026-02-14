@@ -232,5 +232,51 @@
       "searchPlaceholder": "Zoek gebruikers...",
       "tryAgain": "Opnieuw proberen"
     }
+  },
+  "simulation": {
+    "step": {
+      "km_limit": "Max {maxKm} km",
+      "car_limit": "Auto niet ouder dan {maxYears} jaar",
+      "price_estimated": "Geschatte autowaarde: {price}",
+      "yearly_km_estimate": "Gebruiker rijdt {kmPerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
+      "payback_km": "Met {km} km zou de auto rond {paybackKm} km terugverdiend zijn"
+    },
+    "resultCode": {
+      "notOk": "Niet OK",
+      "categoryA": "Categorie A",
+      "categoryB": "Categorie B",
+      "higherRate": "Hogere tarief",
+      "manualReview": "Handmatige beoordeling"
+    },
+    "form": {
+      "backToDashboard": "← Terug naar dashboard",
+      "title": "Simulatie starten",
+      "description": "Vul de gegevens van de auto in om te controleren of deze auto tot het autodeelsysteem toegelaten kan worden.",
+      "brand": "Merk",
+      "brandPlaceholder": "Selecteer merk",
+      "fuelType": "Brandstoftype",
+      "fuelTypePlaceholder": "Selecteer brandstoftype",
+      "carType": "Autotype",
+      "carTypePlaceholder": "Selecteer autotype",
+      "carTypePlaceholderFirst": "Selecteer eerst merk en brandstoftype",
+      "carTypeOther": "Autotype overig",
+      "carTypeOtherOption": "Anders",
+      "carTypeOtherPlaceholder": "bijv. Aangepast model",
+      "mileage": "Kilometerstand (km)",
+      "mileagePlaceholder": "bijv. 50000",
+      "firstRegistrationDate": "Eerste inschrijving",
+      "pickDate": "Selecteer een datum",
+      "isVan": "Dit voertuig is een camionette",
+      "submit": "OK",
+      "submitting": "Bezig…",
+      "errorSelectBrand": "Selecteer een merk.",
+      "errorSelectFuelType": "Selecteer een brandstoftype.",
+      "errorCarTypeOtherRequired": "Vul het autotype in wanneer \"Anders\" is geselecteerd.",
+      "errorValidMileage": "Vul een geldige kilometerstand in (km).",
+      "errorEnterDate": "Vul de datum van eerste inschrijving in.",
+      "errorValidDate": "Vul een geldige datum in.",
+      "errorRequestFailed": "Verzoek mislukt",
+      "resultTitle": "Resultaat"
+    }
   }
 }

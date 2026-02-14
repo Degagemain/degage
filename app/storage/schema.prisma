@@ -22,6 +22,7 @@ model FuelType {
     isActive     Boolean               @default(true)
     translations FuelTypeTranslation[]
     carTypes     CarType[]
+    simulations  Simulation[]
     createdAt    DateTime              @default(now())
     updatedAt    DateTime              @updatedAt
 }
@@ -42,6 +43,7 @@ model CarBrand {
     isActive     Boolean                @default(true)
     translations CarBrandTranslation[]
     carTypes     CarType[]
+    simulations  Simulation[]
     createdAt    DateTime               @default(now())
     updatedAt    DateTime               @updatedAt
 }
@@ -57,16 +59,44 @@ model CarBrandTranslation {
 }
 
 model CarType {
-    id         String   @id @default(uuid())
-    brandId    String
-    brand      CarBrand @relation(fields: [brandId], references: [id], onDelete: Cascade)
-    fuelTypeId String
-    fuelType   FuelType @relation(fields: [fuelTypeId], references: [id])
-    name       String
-    ecoscore   Int
-    isActive   Boolean  @default(true)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id          String       @id @default(uuid())
+    brandId     String
+    brand       CarBrand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    fuelTypeId  String
+    fuelType    FuelType     @relation(fields: [fuelTypeId], references: [id])
+    name        String
+    ecoscore    Int
+    isActive    Boolean      @default(true)
+    simulations Simulation[]
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+}
+
+enum SimulationResultCode {
+  notOk
+  categoryA
+  categoryB
+  higherRate
+  manualReview
+}
+
+model Simulation {
+  id                 String                  @id @default(uuid())
+  brandId            String
+  brand              CarBrand               @relation(fields: [brandId], references: [id])
+  fuelTypeId         String
+  fuelType           FuelType               @relation(fields: [fuelTypeId], references: [id])
+  carTypeId          String?
+  carType            CarType?               @relation(fields: [carTypeId], references: [id])
+  carTypeOther       String?
+  km                 Int
+  firstRegisteredAt  DateTime
+  isVan              Boolean               @default(false)
+  resultCode         SimulationResultCode
+  estimatedPrice     Decimal?
+  steps              Json                    @default("[]")
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
 }
 
 model EuroNorm {

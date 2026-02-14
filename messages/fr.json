@@ -232,5 +232,51 @@
       "searchPlaceholder": "Rechercher des utilisateurs...",
       "tryAgain": "Réessayer"
     }
+  },
+  "simulation": {
+    "step": {
+      "km_limit": "Max {maxKm} km",
+      "car_limit": "Voiture pas plus vieille que {maxYears} ans",
+      "price_estimated": "Prix estimé de la voiture : {price}",
+      "yearly_km_estimate": "L'utilisateur roule {kmPerYear} km par an, kilomètres partagés estimés : {estimated}",
+      "payback_km": "Avec {km} km la voiture serait amortie vers {paybackKm} km"
+    },
+    "resultCode": {
+      "notOk": "Non OK",
+      "categoryA": "Catégorie A",
+      "categoryB": "Catégorie B",
+      "higherRate": "Taux plus élevé",
+      "manualReview": "Révision manuelle"
+    },
+    "form": {
+      "backToDashboard": "← Retour au tableau de bord",
+      "title": "Lancer une simulation",
+      "description": "Saisissez les détails du véhicule pour vérifier s'il peut être admis dans le système d'autopartage.",
+      "brand": "Marque",
+      "brandPlaceholder": "Sélectionner une marque",
+      "fuelType": "Type de carburant",
+      "fuelTypePlaceholder": "Sélectionner un type de carburant",
+      "carType": "Type de véhicule",
+      "carTypePlaceholder": "Sélectionner un type",
+      "carTypePlaceholderFirst": "Sélectionnez d'abord la marque et le type de carburant",
+      "carTypeOther": "Autre type",
+      "carTypeOtherOption": "Autre",
+      "carTypeOtherPlaceholder": "ex. Modèle personnalisé",
+      "mileage": "Kilométrage (km)",
+      "mileagePlaceholder": "ex. 50000",
+      "firstRegistrationDate": "Date de première immatriculation",
+      "pickDate": "Choisir une date",
+      "isVan": "Ce véhicule est une camionette",
+      "submit": "OK",
+      "submitting": "En cours…",
+      "errorSelectBrand": "Veuillez sélectionner une marque.",
+      "errorSelectFuelType": "Veuillez sélectionner un type de carburant.",
+      "errorCarTypeOtherRequired": "Veuillez saisir le type de véhicule lorsque « Autre » est sélectionné.",
+      "errorValidMileage": "Veuillez saisir un kilométrage valide (km).",
+      "errorEnterDate": "Veuillez saisir la date de première immatriculation.",
+      "errorValidDate": "Veuillez saisir une date valide.",
+      "errorRequestFailed": "Échec de la requête",
+      "resultTitle": "Résultat"
+    }
   }
 }
