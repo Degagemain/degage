@@ -233,6 +233,34 @@
       "searchPlaceholder": "Zoek simulatieregio's...",
       "tryAgain": "Opnieuw proberen"
     },
+    "towns": {
+      "title": "Gemeenten",
+      "filters": {
+        "province": "Provincie",
+        "provincePlaceholder": "Zoek provincies...",
+        "simulationRegion": "Simulatieregio",
+        "simulationRegionPlaceholder": "Zoek regio's...",
+        "highDemand": "Hoge vraag",
+        "hasActiveMembers": "Actieve leden"
+      },
+      "columns": {
+        "zip": "Postcode",
+        "name": "Naam",
+        "municipality": "Gemeente",
+        "province": "Provincie",
+        "simulationRegion": "Simulatieregio",
+        "highDemand": "Hoge vraag",
+        "hasActiveMembers": "Actieve leden",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "highDemand": "Hoge vraag",
+      "notHighDemand": "Geen hoge vraag",
+      "hasActiveMembers": "Actieve leden",
+      "notHasActiveMembers": "Geen actieve leden",
+      "searchPlaceholder": "Zoek gemeenten...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "systemParameters": {
       "title": "Systeemparameters",
       "filters": {

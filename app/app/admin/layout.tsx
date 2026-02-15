@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Calculator, Car, CarFront, ChevronsUpDown, Fuel, Gauge, MapPin, MapPinned, Settings2, Users } from 'lucide-react';
+import { Building2, Calculator, Car, CarFront, ChevronsUpDown, Fuel, Gauge, MapPin, MapPinned, Settings2, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -63,6 +63,11 @@ const SIDEBAR_ITEMS = [
     translationKey: 'simulationRegions' as const,
     href: '/app/admin/simulation-regions',
     icon: MapPinned,
+  },
+  {
+    translationKey: 'towns' as const,
+    href: '/app/admin/towns',
+    icon: Building2,
   },
   {
     translationKey: 'simulations' as const,

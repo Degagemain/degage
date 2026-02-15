@@ -114,6 +114,7 @@ model EuroNorm {
 model Province {
     id        String   @id @default(uuid())
     name      String
+    towns     Town[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
@@ -121,9 +122,25 @@ model Province {
 model SimulationRegion {
     id        String   @id @default(uuid())
     name      String
-    isDefault Boolean  @default(false) @map("is_default")
+    isDefault Boolean  @default(false)
+    towns     Town[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Town {
+    id                   String           @id @default(uuid())
+    zip                  String
+    name                 String
+    municipality         String
+    provinceId           String
+    province             Province         @relation(fields: [provinceId], references: [id])
+    highDemand           Boolean          @default(false) @map("high_demand")
+    hasActiveMembers     Boolean          @default(false)
+    simulationRegionId   String
+    simulationRegion     SimulationRegion @relation(fields: [simulationRegionId], references: [id])
+    createdAt            DateTime         @default(now())
+    updatedAt            DateTime         @updatedAt
 }
 
 enum SystemParameterCategory {

@@ -233,6 +233,34 @@
       "searchPlaceholder": "Search simulation regions...",
       "tryAgain": "Try again"
     },
+    "towns": {
+      "title": "Towns",
+      "filters": {
+        "province": "Province",
+        "provincePlaceholder": "Search provinces...",
+        "simulationRegion": "Simulation region",
+        "simulationRegionPlaceholder": "Search regions...",
+        "highDemand": "High demand",
+        "hasActiveMembers": "Active members"
+      },
+      "columns": {
+        "zip": "Zip",
+        "name": "Name",
+        "municipality": "Municipality",
+        "province": "Province",
+        "simulationRegion": "Simulation region",
+        "highDemand": "High demand",
+        "hasActiveMembers": "Active members",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "highDemand": "High demand",
+      "notHighDemand": "Not high demand",
+      "hasActiveMembers": "Active members",
+      "notHasActiveMembers": "No active members",
+      "searchPlaceholder": "Search towns...",
+      "tryAgain": "Try again"
+    },
     "systemParameters": {
       "title": "System Parameters",
       "filters": {

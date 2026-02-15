@@ -233,6 +233,34 @@
       "searchPlaceholder": "Rechercher des régions...",
       "tryAgain": "Réessayer"
     },
+    "towns": {
+      "title": "Villes / communes",
+      "filters": {
+        "province": "Province",
+        "provincePlaceholder": "Rechercher des provinces...",
+        "simulationRegion": "Région de simulation",
+        "simulationRegionPlaceholder": "Rechercher des régions...",
+        "highDemand": "Forte demande",
+        "hasActiveMembers": "Membres actifs"
+      },
+      "columns": {
+        "zip": "Code postal",
+        "name": "Nom",
+        "municipality": "Commune",
+        "province": "Province",
+        "simulationRegion": "Région de simulation",
+        "highDemand": "Forte demande",
+        "hasActiveMembers": "Membres actifs",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "highDemand": "Forte demande",
+      "notHighDemand": "Pas forte demande",
+      "hasActiveMembers": "Membres actifs",
+      "notHasActiveMembers": "Pas de membres actifs",
+      "searchPlaceholder": "Rechercher des villes...",
+      "tryAgain": "Réessayer"
+    },
     "systemParameters": {
       "title": "Paramètres système",
       "filters": {
