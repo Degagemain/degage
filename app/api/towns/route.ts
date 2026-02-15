@@ -21,7 +21,10 @@ export const GET = withContext(async (request: NextRequest) => {
   }
 
   const result = await searchTowns(filter.data);
-  return Response.json(result);
+  const displayLabel = (t: { zip: string; name: string; municipality: string }) =>
+    t.name !== t.municipality ? `${t.zip} ${t.name} (${t.municipality})` : `${t.zip} ${t.name}`;
+  const recordsWithLabel = result.records.map((t) => ({ ...t, displayLabel: displayLabel(t) }));
+  return Response.json({ ...result, records: recordsWithLabel });
 });
 
 export const POST = withContext(async (request: NextRequest) => {

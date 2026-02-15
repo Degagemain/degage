@@ -3,6 +3,7 @@ import {
   SimulationResultCode,
   SimulationStepCode,
   SimulationStepStatus,
+  simulationRunInputParseSchema,
   simulationSchema,
   simulationStepSchema,
 } from '@/domain/simulation.model';
@@ -36,10 +37,41 @@ describe('simulationStepSchema', () => {
   });
 });
 
+describe('simulationRunInputParseSchema', () => {
+  it('accepts valid run input with IdName for town, brand, fuelType, carType', () => {
+    const result = simulationRunInputParseSchema.safeParse({
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+      fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+      carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
+      carTypeOther: null,
+      km: 50_000,
+      firstRegisteredAt: '2020-01-01',
+      isVan: false,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects when carType is null and carTypeOther is empty', () => {
+    const result = simulationRunInputParseSchema.safeParse({
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+      fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+      carType: null,
+      carTypeOther: null,
+      km: 50_000,
+      firstRegisteredAt: '2020-01-01',
+      isVan: false,
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
 describe('simulationSchema', () => {
   it('accepts valid simulation', () => {
     const result = simulationSchema.safeParse({
       id: '550e8400-e29b-41d4-a716-446655440000',
+      townId: '550e8400-e29b-41d4-a716-446655440099',
       brandId: '550e8400-e29b-41d4-a716-446655440001',
       fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
       carTypeId: null,
@@ -59,6 +91,7 @@ describe('simulationSchema', () => {
   it('rejects km less than 0', () => {
     const result = simulationSchema.safeParse({
       id: null,
+      townId: '550e8400-e29b-41d4-a716-446655440099',
       brandId: '550e8400-e29b-41d4-a716-446655440001',
       fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
       carTypeId: null,

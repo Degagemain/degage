@@ -75,7 +75,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<{ 
     return { resultCode: SimulationResultCode.NOT_OK, steps };
   }
 
-  const priceRange = await carValueEstimator(input.brandId, input.carTypeId, input.carTypeOther, input.firstRegisteredAt);
+  const priceRange = await carValueEstimator(input.brand.id, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
   const priceMid = Math.round((priceRange.min + priceRange.max) / 2);
   const priceParams = { price: `${(priceMid / 1000).toFixed(0)}k` };
   steps.push({

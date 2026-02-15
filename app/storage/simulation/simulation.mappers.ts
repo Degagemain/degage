@@ -5,8 +5,17 @@ import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
 type SimulationDb = Prisma.SimulationGetPayload<object>;
 
 type SimulationWithRelations = Prisma.SimulationGetPayload<{
-  include: { brand: { include: { translations: true } }; fuelType: { include: { translations: true } }; carType: true };
+  include: {
+    town: true;
+    brand: { include: { translations: true } };
+    fuelType: { include: { translations: true } };
+    carType: true;
+  };
 }>;
+
+function townDisplayLabel(town: { zip: string; name: string; municipality: string }): string {
+  return town.name !== town.municipality ? `${town.zip} ${town.name} (${town.municipality})` : `${town.zip} ${town.name}`;
+}
 
 const pickTranslationName = (translations: { locale: string; name: string }[], locale: ContentLocale): string => {
   const t = translations.find((x) => x.locale === locale) ?? translations.find((x) => x.locale === defaultContentLocale) ?? translations[0];
@@ -26,6 +35,7 @@ function parseSteps(steps: unknown): SimulationStep[] {
 export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
   return {
     id: db.id,
+    townId: db.townId,
     brandId: db.brandId,
     fuelTypeId: db.fuelTypeId,
     carTypeId: db.carTypeId,
@@ -44,6 +54,10 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
 export const dbSimulationToDomainWithRelations = (db: SimulationWithRelations, locale: ContentLocale): Simulation => {
   return {
     ...dbSimulationToDomain(db),
+    town: {
+      id: db.townId,
+      name: townDisplayLabel(db.town),
+    },
     brand: {
       id: db.brandId,
       name: pickTranslationName(db.brand.translations, locale),
@@ -63,6 +77,7 @@ export const dbSimulationToDomainWithRelations = (db: SimulationWithRelations, l
 
 export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationCreateInput => {
   return {
+    town: { connect: { id: simulation.townId } },
     brand: { connect: { id: simulation.brandId } },
     fuelType: { connect: { id: simulation.fuelTypeId } },
     carType: simulation.carTypeId != null ? { connect: { id: simulation.carTypeId } } : undefined,
@@ -78,6 +93,7 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
 
 export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationUpdateInput => {
   return {
+    town: { connect: { id: simulation.townId } },
     brand: { connect: { id: simulation.brandId } },
     fuelType: { connect: { id: simulation.fuelTypeId } },
     carType: simulation.carTypeId != null ? { connect: { id: simulation.carTypeId } } : undefined,

@@ -21,8 +21,8 @@ describe('dbSimulationCreate', () => {
 
   it('creates a simulation and returns domain model', async () => {
     const input = simulation({ id: null, createdAt: null, updatedAt: null });
-    const dbCreateData = { brandId: input.brandId, km: input.km };
-    const createdDb = { ...input, id: 'new-id', createdAt: new Date(), updatedAt: new Date() };
+    const dbCreateData = { townId: input.townId, brandId: input.brandId, km: input.km };
+    const createdDb = { ...input, id: 'new-id', townId: input.townId, createdAt: new Date(), updatedAt: new Date() };
     const expectedDomain = simulation({ id: 'new-id' });
 
     const mockPrisma = {

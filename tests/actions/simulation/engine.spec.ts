@@ -97,6 +97,6 @@ describe('runSimulationEngine', () => {
     expect(result.steps[2].code).toBe(SimulationStepCode.PRICE_ESTIMATED);
     expect(result.steps[2].status).toBe(SimulationStepStatus.INFO);
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
-    expect(carValueEstimator).toHaveBeenCalledWith(input.brandId, input.carTypeId, input.carTypeOther, input.firstRegisteredAt);
+    expect(carValueEstimator).toHaveBeenCalledWith(input.brand.id, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
   });
 });

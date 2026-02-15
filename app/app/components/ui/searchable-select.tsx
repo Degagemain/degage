@@ -45,6 +45,8 @@ export interface SearchableSelectProps {
   apiPath: string;
   /** Optional query params appended to every request (e.g. brandId, fuelTypeId for filtered lists). */
   queryParams?: Record<string, string>;
+  /** Key on API record to use as option label (default "name"). e.g. "displayLabel" for towns. */
+  labelKey?: string;
   /** Options appended to the end of the list (e.g. "Other" fallback). */
   appendOptions?: SearchableOption[];
   placeholder?: string;
@@ -59,6 +61,7 @@ export function SearchableSelect({
   onValueChange,
   apiPath,
   queryParams,
+  labelKey = 'name',
   appendOptions = [],
   placeholder = 'Select…',
   disabled,
@@ -92,7 +95,10 @@ export function SearchableSelect({
       const res = await fetch(`/api/${apiPath}?${params.toString()}`);
       if (!res.ok) return;
       const data = await res.json();
-      const records = (data.records ?? []).map((r: { id: string; name: string }) => ({ id: r.id, name: r.name }));
+      const records = (data.records ?? []).map((r: Record<string, unknown>) => ({
+        id: String(r.id),
+        name: (r[labelKey] as string) ?? (r.name as string) ?? '',
+      }));
       if (append) {
         setOptions((prev) => (skip === 0 ? records : [...prev, ...records]));
       } else {
@@ -100,7 +106,7 @@ export function SearchableSelect({
       }
       setTotal(data.total ?? 0);
     },
-    [apiPath, debouncedSearch, queryParams],
+    [apiPath, debouncedSearch, queryParams, labelKey],
   );
 
   React.useEffect(() => {

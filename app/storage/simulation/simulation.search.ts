@@ -30,6 +30,7 @@ export const dbSimulationSearch = async (filter: SimulationFilter): Promise<Page
   const simulations = await prisma.simulation.findMany({
     where: whereClause,
     include: {
+      town: true,
       brand: { include: { translations: true } },
       fuelType: { include: { translations: true } },
       carType: true,

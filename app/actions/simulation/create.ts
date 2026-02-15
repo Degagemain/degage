@@ -9,9 +9,10 @@ export async function createSimulation(input: SimulationRunInput): Promise<Simul
 
   const simulation: Simulation = {
     id: null,
-    brandId: validated.brandId,
-    fuelTypeId: validated.fuelTypeId,
-    carTypeId: validated.carTypeId,
+    townId: validated.town.id,
+    brandId: validated.brand.id,
+    fuelTypeId: validated.fuelType.id,
+    carTypeId: validated.carType?.id ?? null,
     carTypeOther: validated.carTypeOther,
     km: validated.km,
     firstRegisteredAt: validated.firstRegisteredAt,

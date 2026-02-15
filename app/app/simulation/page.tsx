@@ -19,6 +19,8 @@ import { SearchableSelect } from '@/app/components/ui/searchable-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 
 interface SimulationFormState {
+  townId: string;
+  townName: string;
   brandId: string;
   brandName: string;
   fuelTypeId: string;
@@ -32,6 +34,8 @@ interface SimulationFormState {
 }
 
 const defaultFormState: SimulationFormState = {
+  townId: '',
+  townName: '',
   brandId: '',
   brandName: '',
   fuelTypeId: '',
@@ -158,11 +162,16 @@ export default function SimulationPage() {
       setError(null);
       setResult(null);
 
+      const townId = form.townId.trim();
       const brandId = form.brandId.trim();
       const fuelTypeId = form.fuelTypeId.trim();
       const km = form.km.trim() ? parseInt(form.km, 10) : NaN;
       const firstRegisteredAt = form.firstRegisteredAt.trim();
 
+      if (!townId) {
+        setError(t('errorSelectTown'));
+        return;
+      }
       if (!brandId) {
         setError(t('errorSelectBrand'));
         return;
@@ -193,9 +202,11 @@ export default function SimulationPage() {
       setIsSubmitting(true);
       try {
         const body = {
-          brandId,
-          fuelTypeId,
-          carTypeId: form.carTypeId === CAR_TYPE_OTHER ? null : form.carTypeId.trim() || null,
+          town: { id: townId, name: form.townName || undefined },
+          brand: { id: brandId, name: form.brandName || undefined },
+          fuelType: { id: fuelTypeId, name: form.fuelTypeName || undefined },
+          carType:
+            form.carTypeId && form.carTypeId !== CAR_TYPE_OTHER ? { id: form.carTypeId.trim(), name: form.carTypeName || undefined } : null,
           carTypeOther: form.carTypeId === CAR_TYPE_OTHER ? form.carTypeOther.trim() || null : null,
           km,
           firstRegisteredAt: date.toISOString(),
@@ -242,6 +253,18 @@ export default function SimulationPage() {
         <CardContent>
           <form onSubmit={handleSubmit}>
             <FieldGroup>
+              <Field>
+                <FieldLabel>{t('town')}</FieldLabel>
+                <SearchableSelect
+                  value={form.townId}
+                  selectedLabel={form.townName || undefined}
+                  onValueChange={(id, option) => updateForm({ townId: id, townName: option.name })}
+                  apiPath="towns"
+                  labelKey="displayLabel"
+                  placeholder={t('townPlaceholder')}
+                />
+              </Field>
+
               <Field>
                 <FieldLabel>{t('brand')}</FieldLabel>
                 <SearchableSelect

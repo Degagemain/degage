@@ -30,6 +30,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableHiding: false,
     },
     {
+      accessorKey: 'town',
+      accessorFn: (row) => row.town?.name ?? '—',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.town')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.town?.name ?? '—'}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'resultCode',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultCode')} onSort={onSort} />,
       cell: ({ row }) => {

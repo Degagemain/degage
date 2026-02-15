@@ -82,6 +82,8 @@ enum SimulationResultCode {
 
 model Simulation {
     id                String               @id @default(uuid())
+    townId            String
+    town              Town                 @relation(fields: [townId], references: [id])
     brandId           String
     brand             CarBrand             @relation(fields: [brandId], references: [id])
     fuelTypeId        String
@@ -139,6 +141,7 @@ model Town {
     hasActiveMembers     Boolean          @default(false)
     simulationRegionId   String
     simulationRegion     SimulationRegion @relation(fields: [simulationRegionId], references: [id])
+    simulations         Simulation[]
     createdAt            DateTime         @default(now())
     updatedAt            DateTime         @updatedAt
 }

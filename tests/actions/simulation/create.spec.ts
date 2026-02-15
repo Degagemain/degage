@@ -29,8 +29,8 @@ describe('createSimulation', () => {
 
     const result = await createSimulation(input);
 
-    expect(result.brandId).toBe(input.brandId);
-    expect(result.fuelTypeId).toBe(input.fuelTypeId);
+    expect(result.brandId).toBe(input.brand.id);
+    expect(result.fuelTypeId).toBe(input.fuelType.id);
     expect(result.km).toBe(input.km);
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(3);
@@ -47,7 +47,7 @@ describe('createSimulation', () => {
   });
 
   it('throws ZodError when car type is Other but carTypeOther is empty', async () => {
-    const input = simulationRunInput({ carTypeId: null, carTypeOther: null });
+    const input = simulationRunInput({ carType: null, carTypeOther: null });
 
     await expect(createSimulation(input)).rejects.toBeInstanceOf(ZodError);
     expect(dbSimulationCreate).not.toHaveBeenCalled();

@@ -43,13 +43,15 @@ export type SimulationStep = z.infer<typeof simulationStepSchema>;
 export type SimulationBrand = z.infer<typeof idNameSchema>;
 export type SimulationFuelType = z.infer<typeof idNameSchema>;
 export type SimulationCarType = z.infer<typeof idNameSchema>;
+export type SimulationTown = z.infer<typeof idNameSchema>;
 
-// Run input — used only for POST run simulation (request body)
+// Run input — used only for POST run simulation (request body). Uses IdName for relations.
 export const simulationRunInputSchema = z
   .object({
-    brandId: z.uuid(),
-    fuelTypeId: z.uuid(),
-    carTypeId: z.uuid().nullable().default(null),
+    town: idNameSchema,
+    brand: idNameSchema,
+    fuelType: idNameSchema,
+    carType: idNameSchema.nullable().default(null),
     carTypeOther: z.string().nullable().default(null),
     km: z.number().int().min(0),
     firstRegisteredAt: z.coerce.date(),
@@ -59,22 +61,30 @@ export const simulationRunInputSchema = z
 
 /** Run input with business rule: carTypeOther required when car type is Other. Use for parsing request body. */
 export const simulationRunInputParseSchema = simulationRunInputSchema.refine(
-  (data) => data.carTypeId != null || (data.carTypeOther != null && data.carTypeOther.trim().length > 0),
+  (data) => data.carType != null || (data.carTypeOther != null && data.carTypeOther.trim().length > 0),
   { message: 'carTypeOther is required when car type is Other', path: ['carTypeOther'] },
 );
 
 export type SimulationRunInput = z.infer<typeof simulationRunInputSchema>;
 
-// Simulation extends run input with id, result fields, timestamps, and optional relation names
-export const simulationSchema = simulationRunInputSchema
-  .extend({
+// Simulation entity: flat IDs for storage, optional IdName for API display
+export const simulationSchema = z
+  .object({
     id: z.uuid().nullable(),
-    firstRegisteredAt: z.date(), // override: storage uses Date, input uses coerce.date
+    townId: z.uuid(),
+    brandId: z.uuid(),
+    fuelTypeId: z.uuid(),
+    carTypeId: z.uuid().nullable(),
+    carTypeOther: z.string().nullable(),
+    km: z.number().int().min(0),
+    firstRegisteredAt: z.date(),
+    isVan: z.boolean(),
     resultCode: z.enum(SimulationResultCode),
     estimatedPrice: z.number().nullable(),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
+    town: idNameSchema.optional(),
     brand: idNameSchema.optional(),
     fuelType: idNameSchema.optional(),
     carType: idNameSchema.nullable().optional(),

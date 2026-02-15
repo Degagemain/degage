@@ -3,6 +3,7 @@ import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCod
 export const simulation = (data: Partial<Simulation> = {}): Simulation => {
   return {
     id: data.id ?? '550e8400-e29b-41d4-a716-446655440000',
+    townId: data.townId ?? '550e8400-e29b-41d4-a716-446655440099',
     brandId: data.brandId ?? '550e8400-e29b-41d4-a716-446655440001',
     fuelTypeId: data.fuelTypeId ?? '550e8400-e29b-41d4-a716-446655440002',
     carTypeId: data.carTypeId ?? null,
@@ -34,11 +35,14 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
   };
 };
 
+const defaultIdName = (id: string) => ({ id, name: undefined as string | undefined });
+
 export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): SimulationRunInput => {
   return {
-    brandId: data.brandId ?? '550e8400-e29b-41d4-a716-446655440001',
-    fuelTypeId: data.fuelTypeId ?? '550e8400-e29b-41d4-a716-446655440002',
-    carTypeId: data.carTypeId !== undefined ? data.carTypeId : '550e8400-e29b-41d4-a716-446655440003',
+    town: data.town ?? defaultIdName('550e8400-e29b-41d4-a716-446655440099'),
+    brand: data.brand ?? defaultIdName('550e8400-e29b-41d4-a716-446655440001'),
+    fuelType: data.fuelType ?? defaultIdName('550e8400-e29b-41d4-a716-446655440002'),
+    carType: data.carType !== undefined ? data.carType : defaultIdName('550e8400-e29b-41d4-a716-446655440003'),
     carTypeOther: data.carTypeOther !== undefined ? data.carTypeOther : null,
     km: data.km ?? 50_000,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
