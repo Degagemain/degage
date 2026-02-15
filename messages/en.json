@@ -207,6 +207,38 @@
       "searchPlaceholder": "Search euro norms...",
       "tryAgain": "Try again"
     },
+    "systemParameters": {
+      "title": "System Parameters",
+      "filters": {
+        "category": "Category"
+      },
+      "columns": {
+        "code": "Code",
+        "category": "Category",
+        "name": "Name",
+        "description": "Description",
+        "type": "Type",
+        "value": "Value",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "categories": {
+        "simulation": "Simulation"
+      },
+      "types": {
+        "number": "Number",
+        "number_range": "Number range",
+        "euronorm": "Euro norm"
+      },
+      "editTitle": "Edit value",
+      "valueNumber": "Value",
+      "valueNumberMin": "Min",
+      "valueNumberMax": "Max",
+      "save": "Save",
+      "cancel": "Cancel",
+      "searchPlaceholder": "Search parameters...",
+      "tryAgain": "Try again"
+    },
     "simulations": {
       "title": "Simulations",
       "filters": {

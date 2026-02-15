@@ -8,38 +8,46 @@ vi.mock('@/i18n/get-message', () => ({
   getMessage: vi.fn((path: string) => Promise.resolve(path)),
 }));
 
+vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
+  getSimulationParams: vi.fn().mockResolvedValue({ maxAgeYears: 15, maxKm: 250_000 }),
+}));
+
 import { carValueEstimator } from '@/actions/simulation/car-value-estimator';
 import { applyAgeRule, applyKmRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
+const DEFAULT_MAX_KM = 250_000;
+
 describe('applyKmRule', () => {
   it('returns ok step when km is under limit', () => {
-    const result = applyKmRule(100_000);
+    const result = applyKmRule(100_000, DEFAULT_MAX_KM);
     expect(result.reject).toBe(false);
     expect(result.code).toBe(SimulationStepCode.KM_LIMIT);
     expect(result.status).toBe(SimulationStepStatus.OK);
   });
 
   it('returns not_ok step when km is over 250_000', () => {
-    const result = applyKmRule(300_000);
+    const result = applyKmRule(300_000, DEFAULT_MAX_KM);
     expect(result.reject).toBe(true);
     expect(result.code).toBe(SimulationStepCode.KM_LIMIT);
     expect(result.status).toBe(SimulationStepStatus.NOT_OK);
   });
 
   it('boundary: exactly 250_000 is under limit', () => {
-    const result = applyKmRule(250_000);
+    const result = applyKmRule(250_000, DEFAULT_MAX_KM);
     expect(result.reject).toBe(false);
     expect(result.code).toBe(SimulationStepCode.KM_LIMIT);
   });
 });
 
+const DEFAULT_MAX_AGE_YEARS = 15;
+
 describe('applyAgeRule', () => {
   it('returns ok step when car is not older than 15 years', () => {
     const recentDate = new Date();
     recentDate.setFullYear(recentDate.getFullYear() - 5);
-    const result = applyAgeRule(recentDate);
+    const result = applyAgeRule(recentDate, DEFAULT_MAX_AGE_YEARS);
     expect(result.reject).toBe(false);
     expect(result.code).toBe(SimulationStepCode.CAR_LIMIT);
     expect(result.status).toBe(SimulationStepStatus.OK);
@@ -48,7 +56,7 @@ describe('applyAgeRule', () => {
   it('returns not_ok step when car is older than 15 years', () => {
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
-    const result = applyAgeRule(oldDate);
+    const result = applyAgeRule(oldDate, DEFAULT_MAX_AGE_YEARS);
     expect(result.reject).toBe(true);
     expect(result.code).toBe(SimulationStepCode.CAR_LIMIT);
     expect(result.status).toBe(SimulationStepStatus.NOT_OK);

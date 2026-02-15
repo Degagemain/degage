@@ -207,6 +207,38 @@
       "searchPlaceholder": "Rechercher des normes euro...",
       "tryAgain": "Réessayer"
     },
+    "systemParameters": {
+      "title": "Paramètres système",
+      "filters": {
+        "category": "Catégorie"
+      },
+      "columns": {
+        "code": "Code",
+        "category": "Catégorie",
+        "name": "Nom",
+        "description": "Description",
+        "type": "Type",
+        "value": "Valeur",
+        "created": "Créé",
+        "updated": "Modifié"
+      },
+      "categories": {
+        "simulation": "Simulation"
+      },
+      "types": {
+        "number": "Nombre",
+        "number_range": "Plage de nombres",
+        "euronorm": "Norme Euro"
+      },
+      "editTitle": "Modifier la valeur",
+      "valueNumber": "Valeur",
+      "valueNumberMin": "Min",
+      "valueNumberMax": "Max",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "searchPlaceholder": "Rechercher des paramètres...",
+      "tryAgain": "Réessayer"
+    },
     "simulations": {
       "title": "Simulations",
       "filters": {

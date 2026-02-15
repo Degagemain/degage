@@ -1,8 +1,6 @@
 import { addYears, isBefore } from 'date-fns';
 
 import {
-  SIMULATION_MAX_AGE_YEARS,
-  SIMULATION_MAX_KM,
   SimulationResultCode,
   type SimulationRunInput,
   SimulationStep,
@@ -11,35 +9,42 @@ import {
 } from '@/domain/simulation.model';
 import { getMessage } from '@/i18n/get-message';
 import { carValueEstimator } from './car-value-estimator';
+import { getSimulationParams } from '@/actions/system-parameter/get-simulation-params';
 
 /**
- * Km rule: reject if km > SIMULATION_MAX_KM.
+ * Km rule: reject if km > maxKm.
  * Returns the step (code, status, params) and whether to reject.
  */
-export function applyKmRule(km: number): {
+export function applyKmRule(
+  km: number,
+  maxKm: number,
+): {
   code: SimulationStepCode;
   status: SimulationStepStatus;
   params: Record<string, string | number>;
   reject: boolean;
 } {
-  const params = { maxKm: SIMULATION_MAX_KM };
-  if (km > SIMULATION_MAX_KM) {
+  const params = { maxKm };
+  if (km > maxKm) {
     return { code: SimulationStepCode.KM_LIMIT, status: SimulationStepStatus.NOT_OK, params, reject: true };
   }
   return { code: SimulationStepCode.KM_LIMIT, status: SimulationStepStatus.OK, params, reject: false };
 }
 
 /**
- * Age rule: reject if car is older than SIMULATION_MAX_AGE_YEARS.
+ * Age rule: reject if car is older than maxAgeYears.
  */
-export function applyAgeRule(firstRegisteredAt: Date): {
+export function applyAgeRule(
+  firstRegisteredAt: Date,
+  maxAgeYears: number,
+): {
   code: SimulationStepCode;
   status: SimulationStepStatus;
   params: Record<string, string | number>;
   reject: boolean;
 } {
-  const params = { maxYears: SIMULATION_MAX_AGE_YEARS };
-  const limitDate = addYears(firstRegisteredAt, SIMULATION_MAX_AGE_YEARS);
+  const params = { maxYears: maxAgeYears };
+  const limitDate = addYears(firstRegisteredAt, maxAgeYears);
   if (isBefore(limitDate, new Date())) {
     return { code: SimulationStepCode.CAR_LIMIT, status: SimulationStepStatus.NOT_OK, params, reject: true };
   }
@@ -47,9 +52,10 @@ export function applyAgeRule(firstRegisteredAt: Date): {
 }
 
 export async function runSimulationEngine(input: SimulationRunInput): Promise<{ resultCode: SimulationResultCode; steps: SimulationStep[] }> {
+  const { maxAgeYears, maxKm } = await getSimulationParams();
   const steps: SimulationStep[] = [];
 
-  const kmResult = applyKmRule(input.km);
+  const kmResult = applyKmRule(input.km, maxKm);
   steps.push({
     code: kmResult.code,
     status: kmResult.status,
@@ -59,7 +65,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<{ 
     return { resultCode: SimulationResultCode.NOT_OK, steps };
   }
 
-  const ageResult = applyAgeRule(input.firstRegisteredAt);
+  const ageResult = applyAgeRule(input.firstRegisteredAt, maxAgeYears);
   steps.push({
     code: ageResult.code,
     status: ageResult.status,

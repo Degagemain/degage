@@ -9,10 +9,14 @@ vi.mock('@/actions/simulation/car-value-estimator', () => ({
   carValueEstimator: vi.fn().mockResolvedValue({ min: 12_000, max: 18_000 }),
 }));
 
+vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
+  getSimulationParams: vi.fn().mockResolvedValue({ maxAgeYears: 15, maxKm: 250_000 }),
+}));
+
 import { createSimulation } from '@/actions/simulation/create';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
 import { SimulationStepStatus } from '@/domain/simulation.model';
-import { simulation, simulationRunInput } from '../../builders/simulation.builder';
+import { simulationRunInput } from '../../builders/simulation.builder';
 
 describe('createSimulation', () => {
   afterEach(() => {

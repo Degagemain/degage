@@ -89,6 +89,6 @@ export interface PriceRange {
   max: number;
 }
 
-// Engine constants (used by rules and tests)
-export const SIMULATION_MAX_KM = 250_000;
-export const SIMULATION_MAX_AGE_YEARS = 15;
+// Defaults when system parameters are not set (used by getSimulationParams and tests)
+export const SIMULATION_DEFAULT_MAX_KM = 250_000;
+export const SIMULATION_DEFAULT_MAX_AGE_YEARS = 15;

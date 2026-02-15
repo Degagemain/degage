@@ -38,22 +38,22 @@ model FuelTypeTranslation {
 }
 
 model CarBrand {
-    id           String                 @id @default(uuid())
-    code         String                 @unique
-    isActive     Boolean                @default(true)
+    id           String                @id @default(uuid())
+    code         String                @unique
+    isActive     Boolean               @default(true)
     translations CarBrandTranslation[]
     carTypes     CarType[]
     simulations  Simulation[]
-    createdAt    DateTime               @default(now())
-    updatedAt    DateTime               @updatedAt
+    createdAt    DateTime              @default(now())
+    updatedAt    DateTime              @updatedAt
 }
 
 model CarBrandTranslation {
-    id          String   @id @default(uuid())
-    carBrandId  String
-    carBrand    CarBrand @relation(fields: [carBrandId], references: [id], onDelete: Cascade)
-    locale      String
-    name        String
+    id         String   @id @default(uuid())
+    carBrandId String
+    carBrand   CarBrand @relation(fields: [carBrandId], references: [id], onDelete: Cascade)
+    locale     String
+    name       String
 
     @@unique([carBrandId, locale])
 }
@@ -73,41 +73,78 @@ model CarType {
 }
 
 enum SimulationResultCode {
-  notOk
-  categoryA
-  categoryB
-  higherRate
-  manualReview
+    notOk
+    categoryA
+    categoryB
+    higherRate
+    manualReview
 }
 
 model Simulation {
-  id                 String                  @id @default(uuid())
-  brandId            String
-  brand              CarBrand               @relation(fields: [brandId], references: [id])
-  fuelTypeId         String
-  fuelType           FuelType               @relation(fields: [fuelTypeId], references: [id])
-  carTypeId          String?
-  carType            CarType?               @relation(fields: [carTypeId], references: [id])
-  carTypeOther       String?
-  km                 Int
-  firstRegisteredAt  DateTime
-  isVan              Boolean               @default(false)
-  resultCode         SimulationResultCode
-  estimatedPrice     Decimal?
-  steps              Json                    @default("[]")
-  createdAt          DateTime                @default(now())
-  updatedAt          DateTime                @updatedAt
+    id                String               @id @default(uuid())
+    brandId           String
+    brand             CarBrand             @relation(fields: [brandId], references: [id])
+    fuelTypeId        String
+    fuelType          FuelType             @relation(fields: [fuelTypeId], references: [id])
+    carTypeId         String?
+    carType           CarType?             @relation(fields: [carTypeId], references: [id])
+    carTypeOther      String?
+    km                Int
+    firstRegisteredAt DateTime
+    isVan             Boolean              @default(false)
+    resultCode        SimulationResultCode
+    estimatedPrice    Decimal?
+    steps             Json                 @default("[]")
+    createdAt         DateTime             @default(now())
+    updatedAt         DateTime             @updatedAt
 }
 
 model EuroNorm {
-    id        String    @id @default(uuid())
-    code      String    @unique
-    name      String
-    isActive  Boolean   @default(true)
-    start     DateTime
-    end       DateTime?
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+    id                  String             @id @default(uuid())
+    code                String             @unique
+    name                String
+    isActive            Boolean            @default(true)
+    start               DateTime
+    end                 DateTime?
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    systemParameterValues SystemParameter[]
+}
+
+enum SystemParameterCategory {
+  simulation
+}
+
+enum SystemParameterType {
+  number
+  number_range
+  euronorm
+}
+
+model SystemParameter {
+  id              String                       @id @default(uuid())
+  code            String                       @unique
+  category        SystemParameterCategory
+  type            SystemParameterType
+  valueNumber     Float?
+  valueNumberMin  Float?
+  valueNumberMax  Float?
+  valueEuronormId String?
+  valueEuronorm   EuroNorm?                    @relation(fields: [valueEuronormId], references: [id])
+  translations    SystemParameterTranslation[]
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @updatedAt
+}
+
+model SystemParameterTranslation {
+  id                 String           @id @default(uuid())
+  systemParameterId  String
+  systemParameter    SystemParameter  @relation(fields: [systemParameterId], references: [id], onDelete: Cascade)
+  locale             String
+  name               String
+  description        String           @default("")
+
+  @@unique([systemParameterId, locale])
 }
 
 model User {

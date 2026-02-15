@@ -207,6 +207,38 @@
       "searchPlaceholder": "Zoek euronormen...",
       "tryAgain": "Opnieuw proberen"
     },
+    "systemParameters": {
+      "title": "Systeemparameters",
+      "filters": {
+        "category": "Categorie"
+      },
+      "columns": {
+        "code": "Code",
+        "category": "Categorie",
+        "name": "Naam",
+        "description": "Omschrijving",
+        "type": "Type",
+        "value": "Waarde",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "categories": {
+        "simulation": "Simulatie"
+      },
+      "types": {
+        "number": "Getal",
+        "number_range": "Getalbereik",
+        "euronorm": "Euronorm"
+      },
+      "editTitle": "Waarde bewerken",
+      "valueNumber": "Waarde",
+      "valueNumberMin": "Min",
+      "valueNumberMax": "Max",
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "searchPlaceholder": "Zoek parameters...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "simulations": {
       "title": "Simulaties",
       "filters": {

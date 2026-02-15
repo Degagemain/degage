@@ -32,15 +32,17 @@ The system evaluates the car in a fixed order. Each evaluation is recorded as a 
 
 ### Step 1 — Mileage limit
 
-- **Rule:** The car’s mileage must not exceed **250,000 km**.
-- **If mileage ≤ 250,000 km:** The step is marked as passed (OK). The system continues.
-- **If mileage > 250,000 km:** The step is marked as not passed (Not OK). The simulation **stops** and the overall result is **Not OK**.
+- **Rule:** The car’s mileage must not exceed the **maximum km** limit (configurable via **system parameters**; default 250,000 km).
+- **If mileage ≤ limit:** The step is marked as passed (OK). The system continues.
+- **If mileage > limit:** The step is marked as not passed (Not OK). The simulation **stops** and the overall result is **Not OK**.
 
 ### Step 2 — Age limit
 
-- **Rule:** The car must not be older than **15 years** (calculated from the first registration date).
-- **If the car is 15 years old or younger:** The step is marked as passed (OK). The system continues.
-- **If the car is older than 15 years:** The step is marked as not passed (Not OK). The simulation **stops** and the overall result is **Not OK**.
+- **Rule:** The car must not be older than the **maximum age in years** (configurable via **system parameters**; default 15 years, calculated from the first registration date).
+- **If the car is within the age limit:** The step is marked as passed (OK). The system continues.
+- **If the car is older than the limit:** The step is marked as not passed (Not OK). The simulation **stops** and the overall result is **Not OK**.
+
+Admins can change these limits at runtime in **Admin → System parameters**. See [system-parameters.md](./system-parameters.md).
 
 ### Step 3 — Price estimate (informational)
 
