@@ -20,10 +20,12 @@ export const GET = withContext(async (request: NextRequest) => {
   const sp = request.nextUrl.searchParams;
   const params: Record<string, unknown> = {};
   for (const [key, value] of sp.entries()) {
-    if (key === 'brandId' || key === 'resultCode') continue;
+    if (key === 'brandId' || key === 'fuelTypeId' || key === 'carTypeId' || key === 'resultCode') continue;
     params[key] = value;
   }
   params.brandIds = sp.getAll('brandId');
+  params.fuelTypeIds = sp.getAll('fuelTypeId');
+  params.carTypeIds = sp.getAll('carTypeId');
   params.resultCodes = sp.getAll('resultCode');
 
   const filterResult = simulationFilterSchema.safeParse(params);

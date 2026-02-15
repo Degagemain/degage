@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Car, CarFront, ChevronsUpDown, Fuel, Gauge, Users } from 'lucide-react';
+import { Calculator, Car, CarFront, ChevronsUpDown, Fuel, Gauge, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -53,6 +53,11 @@ const SIDEBAR_ITEMS = [
     translationKey: 'euroNorms' as const,
     href: '/app/admin/euro-norms',
     icon: Gauge,
+  },
+  {
+    translationKey: 'simulations' as const,
+    href: '/app/admin/simulations',
+    icon: Calculator,
   },
 ];
 

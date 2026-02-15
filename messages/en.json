@@ -207,6 +207,38 @@
       "searchPlaceholder": "Search euro norms...",
       "tryAgain": "Try again"
     },
+    "simulations": {
+      "title": "Simulations",
+      "filters": {
+        "brand": "Brand",
+        "brandPlaceholder": "Search brands...",
+        "fuelType": "Fuel type",
+        "fuelTypePlaceholder": "Search fuel types...",
+        "carType": "Car type",
+        "carTypePlaceholder": "Search car types...",
+        "resultCode": "Result"
+      },
+      "columns": {
+        "resultCode": "Result",
+        "brand": "Brand",
+        "fuelType": "Fuel type",
+        "carType": "Car type",
+        "km": "Mileage (km)",
+        "firstRegisteredAt": "First registered",
+        "carTypeOther": "Car type (other)",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "resultCodes": {
+        "notOk": "Not OK",
+        "manualReview": "Manual review",
+        "categoryA": "Category A",
+        "categoryB": "Category B",
+        "higherRate": "Higher rate"
+      },
+      "searchPlaceholder": "Search simulations...",
+      "tryAgain": "Try again"
+    },
     "users": {
       "title": "Users",
       "columns": {

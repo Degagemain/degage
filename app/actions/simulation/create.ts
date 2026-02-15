@@ -23,6 +23,5 @@ export async function createSimulation(input: SimulationRunInput): Promise<Simul
     updatedAt: null,
   };
 
-  // return dbSimulationCreate(simulation); # unskip test when ready
-  return simulation;
+  return dbSimulationCreate(simulation);
 }

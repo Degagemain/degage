@@ -1,5 +1,7 @@
 import * as z from 'zod';
 
+import { idNameSchema } from '@/domain/id-name.model';
+
 // Result codes (required on simulation)
 export enum SimulationResultCode {
   NOT_OK = 'notOk',
@@ -37,6 +39,11 @@ export const simulationStepSchema = z
 
 export type SimulationStep = z.infer<typeof simulationStepSchema>;
 
+// Re-export for consumers that need entity-specific type names
+export type SimulationBrand = z.infer<typeof idNameSchema>;
+export type SimulationFuelType = z.infer<typeof idNameSchema>;
+export type SimulationCarType = z.infer<typeof idNameSchema>;
+
 // Run input — used only for POST run simulation (request body)
 export const simulationRunInputSchema = z
   .object({
@@ -58,7 +65,7 @@ export const simulationRunInputParseSchema = simulationRunInputSchema.refine(
 
 export type SimulationRunInput = z.infer<typeof simulationRunInputSchema>;
 
-// Simulation extends run input with id, result fields, and timestamps
+// Simulation extends run input with id, result fields, timestamps, and optional relation names
 export const simulationSchema = simulationRunInputSchema
   .extend({
     id: z.uuid().nullable(),
@@ -68,6 +75,9 @@ export const simulationSchema = simulationRunInputSchema
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
+    brand: idNameSchema.optional(),
+    fuelType: idNameSchema.optional(),
+    carType: idNameSchema.nullable().optional(),
   })
   .strict();
 

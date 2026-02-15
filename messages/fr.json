@@ -207,6 +207,38 @@
       "searchPlaceholder": "Rechercher des normes euro...",
       "tryAgain": "Réessayer"
     },
+    "simulations": {
+      "title": "Simulations",
+      "filters": {
+        "brand": "Marque",
+        "brandPlaceholder": "Rechercher des marques...",
+        "fuelType": "Type de carburant",
+        "fuelTypePlaceholder": "Rechercher des types de carburant...",
+        "carType": "Type de véhicule",
+        "carTypePlaceholder": "Rechercher des types de véhicule...",
+        "resultCode": "Résultat"
+      },
+      "columns": {
+        "resultCode": "Résultat",
+        "brand": "Marque",
+        "fuelType": "Type de carburant",
+        "carType": "Type de véhicule",
+        "km": "Kilométrage (km)",
+        "firstRegisteredAt": "Première immatriculation",
+        "carTypeOther": "Type de véhicule (autre)",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "resultCodes": {
+        "notOk": "Non OK",
+        "manualReview": "Révision manuelle",
+        "categoryA": "Catégorie A",
+        "categoryB": "Catégorie B",
+        "higherRate": "Taux plus élevé"
+      },
+      "searchPlaceholder": "Rechercher des simulations...",
+      "tryAgain": "Réessayer"
+    },
     "users": {
       "title": "Utilisateurs",
       "columns": {

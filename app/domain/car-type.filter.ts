@@ -11,8 +11,8 @@ export enum CarTypeSortColumns {
 export const carTypeFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
-    brandIds: z.array(z.string().uuid()).default([]),
-    fuelTypeIds: z.array(z.string().uuid()).default([]),
+    brandIds: z.array(z.uuid()).default([]),
+    fuelTypeIds: z.array(z.uuid()).default([]),
     isActive: z
       .union([z.boolean(), z.string().transform((v) => v === 'true')])
       .nullable()

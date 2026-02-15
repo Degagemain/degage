@@ -1,7 +1,17 @@
 import { Simulation, SimulationResultCode, SimulationStep, simulationStepSchema } from '@/domain/simulation.model';
 import { Prisma } from '@/storage/client/client';
+import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
 
 type SimulationDb = Prisma.SimulationGetPayload<object>;
+
+type SimulationWithRelations = Prisma.SimulationGetPayload<{
+  include: { brand: { include: { translations: true } }; fuelType: { include: { translations: true } }; carType: true };
+}>;
+
+const pickTranslationName = (translations: { locale: string; name: string }[], locale: ContentLocale): string => {
+  const t = translations.find((x) => x.locale === locale) ?? translations.find((x) => x.locale === defaultContentLocale) ?? translations[0];
+  return t?.name ?? '';
+};
 
 const mapResultCodeFromDb = (value: string): SimulationResultCode => {
   return value as SimulationResultCode;
@@ -28,6 +38,26 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
     steps: parseSteps(db.steps),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
+  };
+};
+
+export const dbSimulationToDomainWithRelations = (db: SimulationWithRelations, locale: ContentLocale): Simulation => {
+  return {
+    ...dbSimulationToDomain(db),
+    brand: {
+      id: db.brandId,
+      name: pickTranslationName(db.brand.translations, locale),
+    },
+    fuelType: {
+      id: db.fuelTypeId,
+      name: pickTranslationName(db.fuelType.translations, locale),
+    },
+    carType: db.carType
+      ? {
+          id: db.carType.id,
+          name: db.carType.name,
+        }
+      : null,
   };
 };
 

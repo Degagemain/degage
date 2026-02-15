@@ -19,7 +19,7 @@ describe('createSimulation', () => {
     vi.clearAllMocks();
   });
 
-  it.skip('validates input, runs engine and returns simulation', async () => {
+  it('validates input, runs engine and returns simulation', async () => {
     const input = simulationRunInput({ km: 50_000 });
     vi.mocked(dbSimulationCreate).mockImplementation(async (s) => ({ ...s, id: 'created-id' }));
 

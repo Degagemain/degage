@@ -12,7 +12,9 @@ export enum SimulationSortColumns {
 export const simulationFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
-    brandIds: z.array(z.string().uuid()).default([]),
+    brandIds: z.array(z.uuid()).default([]),
+    fuelTypeIds: z.array(z.uuid()).default([]),
+    carTypeIds: z.array(z.uuid()).default([]),
     resultCodes: z.array(z.enum(SimulationResultCode)).default([]),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),

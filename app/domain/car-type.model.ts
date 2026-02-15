@@ -1,23 +1,15 @@
 import * as z from 'zod';
 
-export const carTypeBrandSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().optional(),
-});
+import { idNameSchema } from '@/domain/id-name.model';
 
-export const carTypeFuelTypeSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().optional(),
-});
-
-export type CarTypeBrand = z.infer<typeof carTypeBrandSchema>;
-export type CarTypeFuelType = z.infer<typeof carTypeFuelTypeSchema>;
+export type CarTypeBrand = z.infer<typeof idNameSchema>;
+export type CarTypeFuelType = z.infer<typeof idNameSchema>;
 
 export const carTypeSchema = z
   .object({
     id: z.uuid().nullable(),
-    brand: carTypeBrandSchema,
-    fuelType: carTypeFuelTypeSchema,
+    brand: idNameSchema,
+    fuelType: idNameSchema,
     name: z.string().min(1).max(200),
     ecoscore: z.number().int().min(0).max(100),
     isActive: z.boolean().default(true),

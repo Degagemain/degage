@@ -207,6 +207,38 @@
       "searchPlaceholder": "Zoek euronormen...",
       "tryAgain": "Opnieuw proberen"
     },
+    "simulations": {
+      "title": "Simulaties",
+      "filters": {
+        "brand": "Merk",
+        "brandPlaceholder": "Zoek merken...",
+        "fuelType": "Brandstoftype",
+        "fuelTypePlaceholder": "Zoek brandstoftypes...",
+        "carType": "Autotype",
+        "carTypePlaceholder": "Zoek autotypes...",
+        "resultCode": "Resultaat"
+      },
+      "columns": {
+        "resultCode": "Resultaat",
+        "brand": "Merk",
+        "fuelType": "Brandstoftype",
+        "carType": "Autotype",
+        "km": "Kilometerstand (km)",
+        "firstRegisteredAt": "Eerste inschrijving",
+        "carTypeOther": "Autotype (overig)",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "resultCodes": {
+        "notOk": "Niet OK",
+        "manualReview": "Handmatige beoordeling",
+        "categoryA": "Categorie A",
+        "categoryB": "Categorie B",
+        "higherRate": "Hogere tarief"
+      },
+      "searchPlaceholder": "Zoek simulaties...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "users": {
       "title": "Gebruikers",
       "columns": {
