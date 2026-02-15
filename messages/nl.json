@@ -207,6 +207,32 @@
       "searchPlaceholder": "Zoek euronormen...",
       "tryAgain": "Opnieuw proberen"
     },
+    "provinces": {
+      "title": "Provincies",
+      "columns": {
+        "name": "Naam",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek provincies...",
+      "tryAgain": "Opnieuw proberen"
+    },
+    "simulationRegions": {
+      "title": "Simulatieregio's",
+      "filters": {
+        "default": "Standaard"
+      },
+      "columns": {
+        "name": "Naam",
+        "default": "Standaard",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "default": "Standaard",
+      "notDefault": "Niet standaard",
+      "searchPlaceholder": "Zoek simulatieregio's...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "systemParameters": {
       "title": "Systeemparameters",
       "filters": {

@@ -1,0 +1,12 @@
+import { Province } from '@/domain/province.model';
+import { getPrismaClient } from '@/storage/utils';
+import { dbProvinceToDomain, provinceToDbUpdate } from './province.mappers';
+
+export const dbProvinceUpdate = async (province: Province): Promise<Province> => {
+  const prisma = getPrismaClient();
+  const updated = await prisma.province.update({
+    where: { id: province.id! },
+    data: provinceToDbUpdate(province),
+  });
+  return dbProvinceToDomain(updated);
+};

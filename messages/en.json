@@ -207,6 +207,32 @@
       "searchPlaceholder": "Search euro norms...",
       "tryAgain": "Try again"
     },
+    "provinces": {
+      "title": "Provinces",
+      "columns": {
+        "name": "Name",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search provinces...",
+      "tryAgain": "Try again"
+    },
+    "simulationRegions": {
+      "title": "Simulation Regions",
+      "filters": {
+        "default": "Default"
+      },
+      "columns": {
+        "name": "Name",
+        "default": "Default",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "default": "Default",
+      "notDefault": "Not default",
+      "searchPlaceholder": "Search simulation regions...",
+      "tryAgain": "Try again"
+    },
     "systemParameters": {
       "title": "System Parameters",
       "filters": {
