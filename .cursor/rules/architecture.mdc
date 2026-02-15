@@ -25,6 +25,7 @@ Follow this order:
 1. **Domain** (`app/domain/`)
    - Create `{entity}.model.ts` with Zod schema and TypeScript type
    - Create `{entity}.filter.ts` for search/pagination filters
+   - If the entity references others (brand, fuel type, region, etc.): use **idName objects** (`idNameSchema` from `@/domain/id-name.model`) for those relations on the model returned by the API, not flat IDs only. See the domain-models rule (Relations: use IdName objects).
 
 2. **Storage** (`app/storage/`)
    - Add model to `schema.prisma`

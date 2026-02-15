@@ -54,8 +54,20 @@ export const exampleFilterSchema = z
 export type ExampleFilter = z.infer<typeof exampleFilterSchema>;
 ```
 
+## Relations: use IdName objects, not flat IDs
+
+There is a single **entity schema** per entity. When that entity references others (brand, fuel type, car type, province, etc.), define those relations as **idName objects** (`{ id, name? }`) on the entity schema so the API can return display-ready data without extra lookups.
+
+- Import and use **`idNameSchema`** from `@/domain/id-name.model.ts` for any relation the UI should show by name.
+- On the entity schema, use nested idName: e.g. `brand: idNameSchema`, `fuelType: idNameSchema`, or `brand: idNameSchema.optional()` if the relation is optional.
+- **Do not** model relations as flat IDs only (`brandId: z.uuid()` with no `brand`). The entity schema should have the idName relation; storage fills it when loading (e.g. `dbXToDomainWithRelations` with request locale for translated names).
+- **Storage**: When loading entities for list/detail, include relations in the Prisma query and map them to idName in the mapper. Do not return entities with only relation IDs and no names.
+
+**Examples:** `CarType` has `brand: idNameSchema`, `fuelType: idNameSchema`. `Simulation` has `brand`/`fuelType`/`carType` as optional idName on the entity schema. `Town` has `province: idNameSchema`, `simulationRegion: idNameSchema`.
+
 ## Key Points
 
 - Use `z.uuid().nullable()` for IDs (null before creation)
 - Use `.strict()` on filter schemas to reject unknown params
 - Export both the schema and inferred type
+- For relations: use `idNameSchema` (id + optional name) on API-returned entity models, not flat `relationId` only
