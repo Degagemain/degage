@@ -23,12 +23,14 @@ function CommandDialog({
   children,
   className,
   showCloseButton = true,
+  footer,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title?: string;
   description?: string;
   className?: string;
   showCloseButton?: boolean;
+  footer?: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
@@ -37,9 +39,14 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent className={cn('overflow-hidden p-0', className)} showCloseButton={showCloseButton}>
-        <Command className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-          {children}
-        </Command>
+        <div className="border-border flex flex-col overflow-hidden rounded-lg border">
+          <Command className="[&_[cmdk-group-heading]]:text-muted-foreground min-h-0 flex-1 **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+            {children}
+          </Command>
+          {footer ? (
+            <div className="text-muted-foreground border-border bg-muted/50 flex items-center gap-2 border-t px-3 py-2 text-xs">{footer}</div>
+          ) : null}
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -134,6 +134,13 @@
       "carSettings": "Car",
       "geoSettings": "Geo"
     },
+    "command": {
+      "title": "Command palette",
+      "description": "Search and go to a page.",
+      "placeholder": "Search pages...",
+      "empty": "No page found.",
+      "goToPage": "Go to page"
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {

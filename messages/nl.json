@@ -134,6 +134,13 @@
       "carSettings": "Auto",
       "geoSettings": "Geo"
     },
+    "command": {
+      "title": "Commandopalet",
+      "description": "Zoek en ga naar een pagina.",
+      "placeholder": "Zoek pagina's...",
+      "empty": "Geen pagina gevonden.",
+      "goToPage": "Ga naar pagina"
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {

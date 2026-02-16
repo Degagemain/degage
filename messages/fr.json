@@ -134,6 +134,13 @@
       "carSettings": "Voiture",
       "geoSettings": "Geo"
     },
+    "command": {
+      "title": "Palette de commandes",
+      "description": "Rechercher et aller à une page.",
+      "placeholder": "Rechercher des pages...",
+      "empty": "Aucune page trouvée.",
+      "goToPage": "Aller à la page"
+    },
     "carBrands": {
       "title": "Marques",
       "filters": {
