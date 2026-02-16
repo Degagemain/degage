@@ -129,7 +129,10 @@
     "sidebar": {
       "backToApp": "Retour à l'application",
       "administration": "Administration",
-      "panel": "Panneau d'administration"
+      "panel": "Panneau d'administration",
+      "settings": "Paramètres",
+      "carSettings": "Voiture",
+      "geoSettings": "Geo"
     },
     "carBrands": {
       "title": "Marques",

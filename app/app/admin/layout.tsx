@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Building2, Calculator, Car, CarFront, ChevronsUpDown, Fuel, Gauge, MapPin, MapPinned, Settings2, Users } from 'lucide-react';
+import { Calculator, ChevronDown, ChevronsUpDown, MapPin, Settings2, Users } from 'lucide-react';
 
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Separator } from '@/app/components/ui/separator';
 import {
   Sidebar,
@@ -21,6 +22,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
@@ -28,67 +32,40 @@ import {
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { UserMenu } from '@/app/components/user-menu';
 
-const SIDEBAR_ITEMS = [
-  {
-    translationKey: 'users' as const,
-    href: '/app/admin/users',
-    icon: Users,
-  },
-  {
-    translationKey: 'fuelTypes' as const,
-    href: '/app/admin/fuel-types',
-    icon: Fuel,
-  },
-  {
-    translationKey: 'carBrands' as const,
-    href: '/app/admin/car-brands',
-    icon: Car,
-  },
-  {
-    translationKey: 'carTypes' as const,
-    href: '/app/admin/car-types',
-    icon: CarFront,
-  },
-  {
-    translationKey: 'euroNorms' as const,
-    href: '/app/admin/euro-norms',
-    icon: Gauge,
-  },
-  {
-    translationKey: 'provinces' as const,
-    href: '/app/admin/provinces',
-    icon: MapPin,
-  },
-  {
-    translationKey: 'hubs' as const,
-    href: '/app/admin/hubs',
-    icon: MapPinned,
-  },
-  {
-    translationKey: 'towns' as const,
-    href: '/app/admin/towns',
-    icon: Building2,
-  },
-  {
-    translationKey: 'simulations' as const,
-    href: '/app/admin/simulations',
-    icon: Calculator,
-  },
-  {
-    translationKey: 'systemParameters' as const,
-    href: '/app/admin/system-parameters',
-    icon: Settings2,
-  },
+const MAIN_ITEMS: { translationKey: 'simulations' | 'users'; href: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { translationKey: 'simulations', href: '/app/admin/simulations', icon: Calculator },
+  { translationKey: 'users', href: '/app/admin/users', icon: Users },
+];
+
+const CAR_SETTINGS_ITEMS: { translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'systemParameters'; href: string }[] = [
+  { translationKey: 'carBrands', href: '/app/admin/car-brands' },
+  { translationKey: 'carTypes', href: '/app/admin/car-types' },
+  { translationKey: 'fuelTypes', href: '/app/admin/fuel-types' },
+  { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
+  { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
+];
+
+const GEO_SETTINGS_ITEMS: { translationKey: 'towns' | 'hubs' | 'provinces'; href: string }[] = [
+  { translationKey: 'towns', href: '/app/admin/towns' },
+  { translationKey: 'hubs', href: '/app/admin/hubs' },
+  { translationKey: 'provinces', href: '/app/admin/provinces' },
+];
+
+const ALL_PAGE_ITEMS = [
+  ...MAIN_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` })),
+  ...CAR_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` })),
+  ...GEO_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` })),
 ];
 
 function usePageTitle(t: (key: string) => string) {
   const pathname = usePathname();
-  const item = SIDEBAR_ITEMS.find((i) => pathname === i.href || pathname.startsWith(`${i.href}/`));
+  const item = ALL_PAGE_ITEMS.find((i) => pathname === i.href || pathname.startsWith(`${i.href}/`));
   if (!item) return undefined;
   try {
-    return t(`${item.translationKey}.title`);
+    return t(item.titleKey);
   } catch {
-    return item.translationKey.charAt(0).toUpperCase() + item.translationKey.slice(1);
+    const key = 'translationKey' in item ? item.translationKey : '';
+    return key ? key.charAt(0).toUpperCase() + key.slice(1) : undefined;
   }
 }
 
@@ -134,7 +111,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild tooltip={t('sidebar.backToApp')}>
                 <Link href="/app">
-                  <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg text-xs font-semibold">
+                  <div
+                    className="bg-primary text-primary-foreground flex aspect-square size-8 items-center
+                      justify-center rounded-lg text-xs font-semibold"
+                  >
                     N
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none">
@@ -148,10 +128,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>{t('sidebar.administration')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {SIDEBAR_ITEMS.map((item) => {
+                {MAIN_ITEMS.map((item) => {
                   const title = t(`${item.translationKey}.title`);
                   const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                   return (
@@ -165,6 +144,71 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </SidebarMenuItem>
                   );
                 })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
+          <SidebarGroup>
+            <SidebarGroupLabel>{t('sidebar.settings')}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <Collapsible defaultOpen={false} className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={t('sidebar.carSettings')}>
+                        <Settings2 />
+                        <span>{t('sidebar.carSettings')}</span>
+                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {CAR_SETTINGS_ITEMS.map((item) => {
+                          const title = t(`${item.translationKey}.title`);
+                          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                          return (
+                            <SidebarMenuSubItem key={item.href}>
+                              <SidebarMenuSubButton asChild isActive={isActive}>
+                                <Link href={item.href}>
+                                  <span>{title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+
+                <Collapsible defaultOpen={false} className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={t('sidebar.geoSettings')}>
+                        <MapPin />
+                        <span>{t('sidebar.geoSettings')}</span>
+                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {GEO_SETTINGS_ITEMS.map((item) => {
+                          const title = t(`${item.translationKey}.title`);
+                          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                          return (
+                            <SidebarMenuSubItem key={item.href}>
+                              <SidebarMenuSubButton asChild isActive={isActive}>
+                                <Link href={item.href}>
+                                  <span>{title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -199,7 +243,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <SidebarRail />
       </Sidebar>
       <SidebarInset>
-        <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur">
+        <header
+          className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex
+            h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur"
+        >
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           {pageTitle && <span className="text-sm font-semibold">{pageTitle}</span>}
