@@ -63,7 +63,7 @@ There is a single **entity schema** per entity. When that entity references othe
 - **Do not** model relations as flat IDs only (`brandId: z.uuid()` with no `brand`). The entity schema should have the idName relation; storage fills it when loading (e.g. `dbXToDomainWithRelations` with request locale for translated names).
 - **Storage**: When loading entities for list/detail, include relations in the Prisma query and map them to idName in the mapper. Do not return entities with only relation IDs and no names.
 
-**Examples:** `CarType` has `brand: idNameSchema`, `fuelType: idNameSchema`. `Simulation` has `brand`/`fuelType`/`carType` as optional idName on the entity schema. `Town` has `province: idNameSchema`, `simulationRegion: idNameSchema`.
+**Examples:** `CarType` has `brand: idNameSchema`, `fuelType: idNameSchema`. `Simulation` has `brand`/`fuelType`/`carType` as optional idName on the entity schema. `Town` has `province: idNameSchema`, `hub: idNameSchema`.
 
 ## Key Points
 

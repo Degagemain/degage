@@ -53,8 +53,8 @@ export default function TownsPage() {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'name', desc: false }]);
   const [provinceIds, setProvinceIds] = useState<string[]>([]);
   const [provinceOptions, setProvinceOptions] = useState<SearchableOption[]>([]);
-  const [simulationRegionIds, setSimulationRegionIds] = useState<string[]>([]);
-  const [simulationRegionOptions, setSimulationRegionOptions] = useState<SearchableOption[]>([]);
+  const [hubIds, setHubIds] = useState<string[]>([]);
+  const [hubOptions, setHubOptions] = useState<SearchableOption[]>([]);
   const [highDemandFilter, setHighDemandFilter] = useState<string[]>([]);
   const [hasActiveMembersFilter, setHasActiveMembersFilter] = useState<string[]>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -83,9 +83,9 @@ export default function TownsPage() {
     setPageIndex(0);
   }, []);
 
-  const handleSimulationRegionChange = useCallback((values: string[], options: SearchableOption[]) => {
-    setSimulationRegionIds(values);
-    setSimulationRegionOptions(options);
+  const handleHubChange = useCallback((values: string[], options: SearchableOption[]) => {
+    setHubIds(values);
+    setHubOptions(options);
     setPageIndex(0);
   }, []);
 
@@ -123,7 +123,7 @@ export default function TownsPage() {
       name: t('columns.name'),
       municipality: t('columns.municipality'),
       province: t('columns.province'),
-      simulationRegion: t('columns.simulationRegion'),
+      hub: t('columns.hub'),
       highDemand: t('columns.highDemand'),
       hasActiveMembers: t('columns.hasActiveMembers'),
       createdAt: t('columns.created'),
@@ -139,7 +139,7 @@ export default function TownsPage() {
       const params = new URLSearchParams();
       if (debouncedQuery) params.set('query', debouncedQuery);
       if (provinceIds.length > 0) params.set('provinceId', provinceIds[0]);
-      if (simulationRegionIds.length > 0) params.set('simulationRegionId', simulationRegionIds[0]);
+      if (hubIds.length > 0) params.set('hubId', hubIds[0]);
       if (highDemandFilter.length === 1) params.set('highDemand', highDemandFilter[0]);
       if (hasActiveMembersFilter.length === 1) params.set('hasActiveMembers', hasActiveMembersFilter[0]);
       params.set('skip', String(pageIndex * pageSize));
@@ -175,7 +175,7 @@ export default function TownsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, provinceIds, simulationRegionIds, highDemandFilter, hasActiveMembersFilter, pageIndex, pageSize, sorting]);
+  }, [debouncedQuery, provinceIds, hubIds, highDemandFilter, hasActiveMembersFilter, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
     fetchTowns();
@@ -231,12 +231,12 @@ export default function TownsPage() {
         placeholder={t('filters.provincePlaceholder')}
       />
       <DataTableSearchableMultiselect
-        title={t('filters.simulationRegion')}
-        apiPath="simulation-regions"
-        selectedValues={simulationRegionIds}
-        selectedOptions={simulationRegionOptions}
-        onSelectedChange={handleSimulationRegionChange}
-        placeholder={t('filters.simulationRegionPlaceholder')}
+        title={t('filters.hub')}
+        apiPath="hubs"
+        selectedValues={hubIds}
+        selectedOptions={hubOptions}
+        onSelectedChange={handleHubChange}
+        placeholder={t('filters.hubPlaceholder')}
       />
       <DataTableFacetedFilter
         title={t('filters.highDemand')}

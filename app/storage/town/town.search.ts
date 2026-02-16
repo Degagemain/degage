@@ -18,7 +18,7 @@ export const filterToQuery = (filter: TownFilter): Prisma.TownWhereInput => {
         }
       : {}),
     provinceId: filter.provinceId ?? undefined,
-    simulationRegionId: filter.simulationRegionId ?? undefined,
+    hubId: filter.hubId ?? undefined,
     highDemand: filter.highDemand !== null ? filter.highDemand : undefined,
     hasActiveMembers: filter.hasActiveMembers !== null ? filter.hasActiveMembers : undefined,
   };
@@ -32,7 +32,7 @@ export const dbTownSearch = async (filter: TownFilter): Promise<Page<Town>> => {
   });
   const towns = await prisma.town.findMany({
     where: whereClause,
-    include: { province: true, simulationRegion: true },
+    include: { province: true, hub: true },
     skip: filter.skip,
     take: filter.take,
     orderBy: filter.sortBy ? { [filter.sortBy]: filter.sortOrder } : undefined,

@@ -11,9 +11,9 @@ import {
   tryUpdateResource,
   unauthorizedResponse,
 } from '@/api/utils';
-import { deleteSimulationRegion } from '@/actions/simulation-region/delete';
-import { updateSimulationRegion } from '@/actions/simulation-region/update';
-import { readSimulationRegion } from '@/actions/simulation-region/read';
+import { deleteHub } from '@/actions/hub/delete';
+import { updateHub } from '@/actions/hub/update';
+import { readHub } from '@/actions/hub/read';
 import { withContext } from '@/api/with-context';
 
 const requireAdmin = async (): Promise<Response | null> => {
@@ -38,14 +38,14 @@ export const GET = withContext(async (request: NextRequest, context?: { params: 
   }
 
   const id = await getIdFromRoute(context as IdRouteParams);
-  return tryReadResource(readSimulationRegion, id);
+  return tryReadResource(readHub, id);
 });
 
 export const PUT = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  return tryUpdateResource(request, context as IdRouteParams, updateSimulationRegion);
+  return tryUpdateResource(request, context as IdRouteParams, updateHub);
 });
 
 export const DELETE = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
@@ -53,5 +53,5 @@ export const DELETE = withContext(async (request: NextRequest, context?: { param
   if (denied) return denied;
 
   const id = await getIdFromRoute(context as IdRouteParams);
-  return tryDeleteResource(deleteSimulationRegion, id);
+  return tryDeleteResource(deleteHub, id);
 });

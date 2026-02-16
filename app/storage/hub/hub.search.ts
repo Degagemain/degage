@@ -1,11 +1,11 @@
-import { SimulationRegion } from '@/domain/simulation-region.model';
-import { SimulationRegionFilter } from '@/domain/simulation-region.filter';
+import { Hub } from '@/domain/hub.model';
+import { HubFilter } from '@/domain/hub.filter';
 import { getPrismaClient } from '@/storage/utils';
 import { Page } from '@/domain/page.model';
 import { Prisma } from '@/storage/client/client';
-import { dbSimulationRegionToDomain } from './simulation-region.mappers';
+import { dbHubToDomain } from './hub.mappers';
 
-export const filterToQuery = (filter: SimulationRegionFilter): Prisma.SimulationRegionWhereInput => {
+export const filterToQuery = (filter: HubFilter): Prisma.HubWhereInput => {
   const q = filter.query?.trim();
   return {
     name: q ? { contains: q, mode: 'insensitive' } : undefined,
@@ -13,20 +13,20 @@ export const filterToQuery = (filter: SimulationRegionFilter): Prisma.Simulation
   };
 };
 
-export const dbSimulationRegionSearch = async (filter: SimulationRegionFilter): Promise<Page<SimulationRegion>> => {
+export const dbHubSearch = async (filter: HubFilter): Promise<Page<Hub>> => {
   const prisma = getPrismaClient();
   const whereClause = filterToQuery(filter);
-  const total = await prisma.simulationRegion.count({
+  const total = await prisma.hub.count({
     where: whereClause,
   });
-  const regions = await prisma.simulationRegion.findMany({
+  const hubs = await prisma.hub.findMany({
     where: whereClause,
     skip: filter.skip,
     take: filter.take,
     orderBy: filter.sortBy ? { [filter.sortBy]: filter.sortOrder } : undefined,
   });
   return {
-    records: regions.map(dbSimulationRegionToDomain),
+    records: hubs.map(dbHubToDomain),
     total,
   };
 };

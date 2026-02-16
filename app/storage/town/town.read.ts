@@ -6,7 +6,7 @@ export const dbTownRead = async (id: string): Promise<Town> => {
   const prisma = getPrismaClient();
   const town = await prisma.town.findUniqueOrThrow({
     where: { id },
-    include: { province: true, simulationRegion: true },
+    include: { province: true, hub: true },
   });
   return dbTownToDomainWithRelations(town);
 };

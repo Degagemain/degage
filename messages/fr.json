@@ -217,8 +217,8 @@
       "searchPlaceholder": "Rechercher des provinces...",
       "tryAgain": "Réessayer"
     },
-    "simulationRegions": {
-      "title": "Régions de simulation",
+    "hubs": {
+      "title": "Hubs",
       "filters": {
         "default": "Par défaut"
       },
@@ -230,7 +230,7 @@
       },
       "default": "Par défaut",
       "notDefault": "Non par défaut",
-      "searchPlaceholder": "Rechercher des régions...",
+      "searchPlaceholder": "Rechercher des hubs...",
       "tryAgain": "Réessayer"
     },
     "towns": {
@@ -238,8 +238,8 @@
       "filters": {
         "province": "Province",
         "provincePlaceholder": "Rechercher des provinces...",
-        "simulationRegion": "Région de simulation",
-        "simulationRegionPlaceholder": "Rechercher des régions...",
+        "hub": "Hub",
+        "hubPlaceholder": "Rechercher des hubs...",
         "highDemand": "Forte demande",
         "hasActiveMembers": "Membres actifs"
       },
@@ -248,7 +248,7 @@
         "name": "Nom",
         "municipality": "Commune",
         "province": "Province",
-        "simulationRegion": "Région de simulation",
+        "hub": "Hub",
         "highDemand": "Forte demande",
         "hasActiveMembers": "Membres actifs",
         "created": "Créé le",

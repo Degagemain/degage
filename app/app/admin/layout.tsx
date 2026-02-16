@@ -60,8 +60,8 @@ const SIDEBAR_ITEMS = [
     icon: MapPin,
   },
   {
-    translationKey: 'simulationRegions' as const,
-    href: '/app/admin/simulation-regions',
+    translationKey: 'hubs' as const,
+    href: '/app/admin/hubs',
     icon: MapPinned,
   },
   {

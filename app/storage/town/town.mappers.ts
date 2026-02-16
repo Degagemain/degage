@@ -8,7 +8,7 @@ export const dbTownToDomain = (town: Prisma.TownGetPayload<object>): Town => {
     name: town.name,
     municipality: town.municipality,
     province: { id: town.provinceId, name: '' },
-    simulationRegion: { id: town.simulationRegionId, name: '' },
+    hub: { id: town.hubId, name: '' },
     highDemand: town.highDemand,
     hasActiveMembers: town.hasActiveMembers,
     createdAt: town.createdAt,
@@ -17,14 +17,14 @@ export const dbTownToDomain = (town: Prisma.TownGetPayload<object>): Town => {
 };
 
 type TownWithRelations = Prisma.TownGetPayload<{
-  include: { province: true; simulationRegion: true };
+  include: { province: true; hub: true };
 }>;
 
 export const dbTownToDomainWithRelations = (town: TownWithRelations): Town => {
   return {
     ...dbTownToDomain(town),
     province: { id: town.provinceId, name: town.province.name },
-    simulationRegion: { id: town.simulationRegionId, name: town.simulationRegion.name },
+    hub: { id: town.hubId, name: town.hub.name },
   };
 };
 
@@ -34,7 +34,7 @@ export const townToDbCreate = (town: Town): Prisma.TownCreateInput => {
     name: town.name,
     municipality: town.municipality,
     province: { connect: { id: town.province.id } },
-    simulationRegion: { connect: { id: town.simulationRegion.id } },
+    hub: { connect: { id: town.hub.id } },
     highDemand: town.highDemand,
     hasActiveMembers: town.hasActiveMembers,
   };
@@ -46,7 +46,7 @@ export const townToDbUpdate = (town: Town): Prisma.TownUpdateInput => {
     name: town.name,
     municipality: town.municipality,
     province: { connect: { id: town.province.id } },
-    simulationRegion: { connect: { id: town.simulationRegion.id } },
+    hub: { connect: { id: town.hub.id } },
     highDemand: town.highDemand,
     hasActiveMembers: town.hasActiveMembers,
   };

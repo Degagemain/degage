@@ -217,8 +217,8 @@
       "searchPlaceholder": "Zoek provincies...",
       "tryAgain": "Opnieuw proberen"
     },
-    "simulationRegions": {
-      "title": "Simulatieregio's",
+    "hubs": {
+      "title": "Hubs",
       "filters": {
         "default": "Standaard"
       },
@@ -230,7 +230,7 @@
       },
       "default": "Standaard",
       "notDefault": "Niet standaard",
-      "searchPlaceholder": "Zoek simulatieregio's...",
+      "searchPlaceholder": "Zoek hubs...",
       "tryAgain": "Opnieuw proberen"
     },
     "towns": {
@@ -238,8 +238,8 @@
       "filters": {
         "province": "Provincie",
         "provincePlaceholder": "Zoek provincies...",
-        "simulationRegion": "Simulatieregio",
-        "simulationRegionPlaceholder": "Zoek regio's...",
+        "hub": "Hub",
+        "hubPlaceholder": "Zoek hubs...",
         "highDemand": "Hoge vraag",
         "hasActiveMembers": "Actieve leden"
       },
@@ -248,7 +248,7 @@
         "name": "Naam",
         "municipality": "Gemeente",
         "province": "Provincie",
-        "simulationRegion": "Simulatieregio",
+        "hub": "Hub",
         "highDemand": "Hoge vraag",
         "hasActiveMembers": "Actieve leden",
         "created": "Aangemaakt",

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Check, X } from 'lucide-react';
 
-import { SimulationRegion } from '@/domain/simulation-region.model';
+import { Hub } from '@/domain/hub.model';
 import { Page } from '@/domain/page.model';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
@@ -13,8 +13,8 @@ import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
 
-interface SimulationRegionsState {
-  data: SimulationRegion[];
+interface HubsState {
+  data: Hub[];
   total: number;
   isLoading: boolean;
   error: string | null;
@@ -27,9 +27,9 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   updatedAt: 'updatedAt',
 };
 
-export default function SimulationRegionsPage() {
-  const t = useTranslations('admin.simulationRegions');
-  const [state, setState] = useState<SimulationRegionsState>({
+export default function HubsPage() {
+  const t = useTranslations('admin.hubs');
+  const [state, setState] = useState<HubsState>({
     data: [],
     total: 0,
     isLoading: true,
@@ -87,7 +87,7 @@ export default function SimulationRegionsPage() {
     [t],
   );
 
-  const fetchRegions = useCallback(async () => {
+  const fetchHubs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
@@ -105,15 +105,15 @@ export default function SimulationRegionsPage() {
         }
       }
 
-      const response = await fetch(`/api/simulation-regions?${params.toString()}`);
+      const response = await fetch(`/api/hubs?${params.toString()}`);
 
       if (!response.ok) {
         if (response.status === 401) throw new Error('Authentication required');
         if (response.status === 403) throw new Error('Access denied');
-        throw new Error('Failed to fetch simulation regions');
+        throw new Error('Failed to fetch hubs');
       }
 
-      const result: Page<SimulationRegion> = await response.json();
+      const result: Page<Hub> = await response.json();
       setState({
         data: result.records,
         total: result.total,
@@ -130,8 +130,8 @@ export default function SimulationRegionsPage() {
   }, [debouncedQuery, isDefaultFilter, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
-    fetchRegions();
-  }, [fetchRegions]);
+    fetchHubs();
+  }, [fetchHubs]);
 
   const pageCount = Math.ceil(state.total / pageSize);
 
@@ -164,7 +164,7 @@ export default function SimulationRegionsPage() {
       <div className="flex h-[400px] items-center justify-center">
         <div className="text-center">
           <p className="text-destructive font-medium">{state.error}</p>
-          <button onClick={fetchRegions} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
+          <button onClick={fetchHubs} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
             {t('tryAgain')}
           </button>
         </div>

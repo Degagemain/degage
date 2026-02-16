@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const simulationRegionSchema = z
+export const hubSchema = z
   .object({
     id: z.uuid().nullable(),
     name: z.string().min(1).max(100),
@@ -10,4 +10,4 @@ export const simulationRegionSchema = z
   })
   .strict();
 
-export type SimulationRegion = z.infer<typeof simulationRegionSchema>;
+export type Hub = z.infer<typeof hubSchema>;

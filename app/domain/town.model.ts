@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { idNameSchema } from '@/domain/id-name.model';
 
 export type TownProvince = z.infer<typeof idNameSchema>;
-export type TownSimulationRegion = z.infer<typeof idNameSchema>;
+export type TownHub = z.infer<typeof idNameSchema>;
 
 export const townSchema = z
   .object({
@@ -12,7 +12,7 @@ export const townSchema = z
     name: z.string().min(1).max(200),
     municipality: z.string().min(1).max(200),
     province: idNameSchema,
-    simulationRegion: idNameSchema,
+    hub: idNameSchema,
     highDemand: z.boolean().default(false),
     hasActiveMembers: z.boolean().default(false),
     createdAt: z.date().nullable().default(null),

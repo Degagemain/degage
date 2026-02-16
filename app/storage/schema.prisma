@@ -121,7 +121,7 @@ model Province {
     updatedAt DateTime @updatedAt
 }
 
-model SimulationRegion {
+model Hub {
     id        String   @id @default(uuid())
     name      String
     isDefault Boolean  @default(false)
@@ -131,17 +131,17 @@ model SimulationRegion {
 }
 
 model Town {
-    id                   String           @id @default(uuid())
-    zip                  String
-    name                 String
-    municipality         String
-    provinceId           String
-    province             Province         @relation(fields: [provinceId], references: [id])
-    highDemand           Boolean          @default(false) @map("high_demand")
-    hasActiveMembers     Boolean          @default(false)
-    simulationRegionId   String
-    simulationRegion     SimulationRegion @relation(fields: [simulationRegionId], references: [id])
-    simulations         Simulation[]
+    id               String   @id @default(uuid())
+    zip              String
+    name             String
+    municipality     String
+    provinceId       String
+    province         Province @relation(fields: [provinceId], references: [id])
+    highDemand       Boolean  @default(false) @map("high_demand")
+    hasActiveMembers Boolean  @default(false)
+    hubId            String
+    hub              Hub      @relation(fields: [hubId], references: [id])
+    simulations      Simulation[]
     createdAt            DateTime         @default(now())
     updatedAt            DateTime         @updatedAt
 }

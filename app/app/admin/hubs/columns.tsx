@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Check } from 'lucide-react';
-import { SimulationRegion } from '@/domain/simulation-region.model';
+import { Hub } from '@/domain/hub.model';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
@@ -16,7 +16,7 @@ function formatDate(value: Date | string | null): string {
   return new Date(value).toLocaleDateString();
 }
 
-export const createColumns = (options: ColumnOptions): ColumnDef<SimulationRegion>[] => {
+export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
   const { t } = options;
   return [
     {

@@ -14,7 +14,7 @@ export const townFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
     provinceId: z.string().uuid().nullable().default(null),
-    simulationRegionId: z.string().uuid().nullable().default(null),
+    hubId: z.string().uuid().nullable().default(null),
     highDemand: z
       .union([z.boolean(), z.string().transform((v) => v === 'true')])
       .nullable()

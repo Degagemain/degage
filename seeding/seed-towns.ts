@@ -9,7 +9,7 @@ type TownJsonRow = {
   provinceName: string;
   highDemand: boolean;
   hasActiveMembers: boolean;
-  isNonDefaultSimulationRegion: boolean;
+  isNonDefaultHub: boolean;
 };
 
 const TOWNS_JSON_PATH = path.join(process.cwd(), 'seeding', 'towns.json');
@@ -28,17 +28,17 @@ export async function seedTowns(prisma: PrismaClient) {
   const provinces = await prisma.province.findMany({ select: { id: true, name: true } });
   const provinceByIdName = new Map(provinces.map((p) => [p.name, p.id]));
 
-  const simulationRegions = await prisma.simulationRegion.findMany({
+  const hubs = await prisma.hub.findMany({
     select: { id: true, isDefault: true },
   });
-  const defaultRegion = simulationRegions.find((r) => r.isDefault);
-  const nonDefaultRegion = simulationRegions.find((r) => !r.isDefault);
+  const defaultHub = hubs.find((r) => r.isDefault);
+  const nonDefaultHub = hubs.find((r) => !r.isDefault);
 
-  if (!defaultRegion) {
-    throw new Error('No default simulation region found. Seed simulation regions first.');
+  if (!defaultHub) {
+    throw new Error('No default hub found. Seed hubs first.');
   }
-  if (!nonDefaultRegion) {
-    throw new Error('No non-default simulation region found. Seed simulation regions first.');
+  if (!nonDefaultHub) {
+    throw new Error('No non-default hub found. Seed hubs first.');
   }
 
   const raw = fs.readFileSync(TOWNS_JSON_PATH, 'utf-8');
@@ -49,7 +49,7 @@ export async function seedTowns(prisma: PrismaClient) {
     name: string;
     municipality: string;
     provinceId: string;
-    simulationRegionId: string;
+    hubId: string;
     highDemand: boolean;
     hasActiveMembers: boolean;
   }[] = [];
@@ -59,13 +59,13 @@ export async function seedTowns(prisma: PrismaClient) {
     if (!provinceId) {
       throw new Error(`Unmatched province "${row.provinceName}" for town ${row.name} (zip ${row.zip}). Aborting town seed.`);
     }
-    const simulationRegionId = row.isNonDefaultSimulationRegion ? nonDefaultRegion.id : defaultRegion.id;
+    const hubId = row.isNonDefaultHub ? nonDefaultHub.id : defaultHub.id;
     toInsert.push({
       zip: String(row.zip),
       name: row.name,
       municipality: row.municipality,
       provinceId,
-      simulationRegionId,
+      hubId,
       highDemand: row.highDemand,
       hasActiveMembers: row.hasActiveMembers,
     });
