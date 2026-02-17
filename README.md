@@ -67,7 +67,7 @@ Prettier is used to automatically format code. The .prettierrc configures pretti
 
 ## Node Version
 
-The Node.js version is indicated in .npmrc, and the pnpm version in package.json. These versions are also used on CI/CD. Be careful to run commands with pnpm, not your local npm version.
+The Node.js version is indicated in the `engines` field of package.json, and the pnpm version in `packageManager`. These versions are also used on CI/CD. Be careful to run commands with pnpm, not your local npm version.
 
 ## Testing
 

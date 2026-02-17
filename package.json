@@ -24,6 +24,9 @@
   "keywords": [],
   "author": "Mathias Colpaert",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "packageManager": "pnpm@10.15.1",
   "dependencies": {
     "@daveyplate/better-auth-ui": "^3.2.11",
