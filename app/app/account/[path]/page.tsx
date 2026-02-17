@@ -1,5 +1,5 @@
 import { AccountSettingsCards, AccountView } from '@daveyplate/better-auth-ui';
-import { accountViewPaths } from '@daveyplate/better-auth-ui';
+import { accountViewPaths } from '@daveyplate/better-auth-ui/server';
 import { UpdateLocaleCard } from '@/app/components/update-locale-card';
 
 export const dynamicParams = false;
