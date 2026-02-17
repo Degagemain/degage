@@ -1,11 +1,3 @@
-# Why
-
-This repository is a collection of modern web development tools aimed at creating fast, robust, and future-proof applications. These applications are designed to handle complex business domains, utilizing a domain-driven approach and setup to ensure scalability and maintainability. This repository is about:
-
-- Using minimal and well-known libraries
-- Writing clean code is a domain driven approach
-- Well tested with unit tests and e2e tests
-
 # Quickstart
 
 To get started, you need [pnpm](https://pnpm.io/) and [docker](https://www.docker.com/).
