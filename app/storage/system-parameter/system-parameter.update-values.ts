@@ -6,7 +6,7 @@ import { dbSystemParameterToDomain } from './system-parameter.mappers';
 
 export const dbSystemParameterUpdateValues = async (id: string, update: SystemParameterValueUpdate): Promise<SystemParameter> => {
   const prisma = getPrismaClient();
-  const data: Prisma.SystemParameterUpdateInput = {};
+  const data: Prisma.SystemParameterUncheckedUpdateInput = {};
   if (update.valueNumber !== undefined) data.valueNumber = update.valueNumber;
   if (update.valueNumberMin !== undefined) data.valueNumberMin = update.valueNumberMin;
   if (update.valueNumberMax !== undefined) data.valueNumberMax = update.valueNumberMax;

@@ -1,5 +1,5 @@
 import { SystemParameter, SystemParameterCategory, SystemParameterType } from '@/domain/system-parameter.model';
-import { Prisma } from '@/storage/client/client';
+import { $Enums, Prisma } from '@/storage/client/client';
 import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
 
 type SystemParameterWithTranslations = Prisma.SystemParameterGetPayload<{
@@ -33,11 +33,11 @@ export const dbSystemParameterToDomain = (param: SystemParameterWithTranslations
   };
 };
 
-export const systemParameterToDbCreate = (param: SystemParameter): Prisma.SystemParameterCreateInput => {
+export const systemParameterToDbCreate = (param: SystemParameter): Prisma.SystemParameterUncheckedCreateInput => {
   return {
     code: param.code,
-    category: param.category as Prisma.SystemParameterCategory,
-    type: param.type as Prisma.SystemParameterType,
+    category: param.category as $Enums.SystemParameterCategory,
+    type: param.type as $Enums.SystemParameterType,
     valueNumber: param.valueNumber ?? undefined,
     valueNumberMin: param.valueNumberMin ?? undefined,
     valueNumberMax: param.valueNumberMax ?? undefined,
