@@ -3,7 +3,6 @@
 import Link from 'next/link';
 
 import { authClient } from '@/app/lib/auth';
-import { Button } from './ui/button';
 import { Skeleton } from './ui/skeleton';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
@@ -16,8 +15,8 @@ export function Header() {
     <header className="bg-background sticky top-0 z-50 border-b">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
-          <Link href="/app" className="text-xl font-semibold">
-            Neurotic
+          <Link href="/app" className="text-xl font-semibold" aria-label="Home">
+            &nbsp;
           </Link>
         </div>
 
@@ -33,24 +32,9 @@ export function Header() {
             <Skeleton className="h-9 w-9 rounded-full" />
           ) : session ? (
             <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} />
-          ) : (
-            <AuthLinks />
-          )}
+          ) : null}
         </div>
       </div>
     </header>
-  );
-}
-
-function AuthLinks() {
-  return (
-    <div className="flex items-center gap-2">
-      <Button variant="ghost" asChild>
-        <Link href="/app/auth/sign-in">Sign in</Link>
-      </Button>
-      <Button asChild>
-        <Link href="/app/auth/sign-up">Sign up</Link>
-      </Button>
-    </div>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "neurotic-web",
+  "name": "open-cars",
   "version": "1.0.0",
   "scripts": {
     "predev": "pnpm db:start",
@@ -23,7 +23,7 @@
   },
   "keywords": [],
   "author": "Mathias Colpaert",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=22.12.0"
   },
