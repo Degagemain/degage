@@ -3,8 +3,8 @@
 To get started, you need [pnpm](https://pnpm.io/) and [docker](https://www.docker.com/).
 
 ```bash
-git clone https://github.com/mathi123/neurotic-web.git
-cd neurotic-web
+git clone https://github.com/degagemain/degage.git
+cd degage
 cp .env.example .env
 pnpm i
 pnpm db:start
