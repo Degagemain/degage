@@ -11,9 +11,8 @@ import { authClient } from '@/app/lib/auth';
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const t = useTranslations('auth');
-
   const socialProviders = {
-    providers: ['github'],
+    providers: process.env.NEXT_PUBLIC_BETTER_AUTH_SOCIAL_PROVIDERS?.split(',') || [],
   };
 
   // Map next-intl translations to Better Auth UI localization format
