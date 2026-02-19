@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/actions/simulation/car-value-estimator', () => ({
-  carValueEstimator: vi.fn().mockResolvedValue({ min: 12_000, max: 18_000 }),
+vi.mock('@/actions/car-price-estimate/car-value-estimator', () => ({
+  carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
 }));
 
 vi.mock('@/i18n/get-message', () => ({
@@ -12,7 +12,7 @@ vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
   getSimulationParams: vi.fn().mockResolvedValue({ maxAgeYears: 15, maxKm: 250_000 }),
 }));
 
-import { carValueEstimator } from '@/actions/simulation/car-value-estimator';
+import { carValueEstimator } from '@/actions/car-price-estimate/car-value-estimator';
 import { applyAgeRule, applyKmRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
@@ -97,6 +97,12 @@ describe('runSimulationEngine', () => {
     expect(result.steps[2].code).toBe(SimulationStepCode.PRICE_ESTIMATED);
     expect(result.steps[2].status).toBe(SimulationStepStatus.INFO);
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
-    expect(carValueEstimator).toHaveBeenCalledWith(input.brand.id, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
+    expect(carValueEstimator).toHaveBeenCalledWith(
+      input.brand.id,
+      input.fuelType.id,
+      input.carType?.id ?? null,
+      input.carTypeOther,
+      input.firstRegisteredAt,
+    );
   });
 });

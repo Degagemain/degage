@@ -16,6 +16,7 @@ export enum SimulationStepCode {
   KM_LIMIT = 'km_limit',
   CAR_LIMIT = 'car_limit',
   PRICE_ESTIMATED = 'price_estimated',
+  PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
   YEARLY_KM_ESTIMATE = 'yearly_km_estimate',
   PAYBACK_KM = 'payback_km',
 }
@@ -25,6 +26,7 @@ export enum SimulationStepStatus {
   OK = 'ok',
   NOT_OK = 'not_ok',
   INFO = 'info',
+  WARNING = 'warning',
 }
 
 export const simulationStepStatusSchema = z.enum(SimulationStepStatus);
@@ -97,10 +99,7 @@ export type Simulation = z.infer<typeof simulationSchema>;
 
 // Price range returned by car value estimator (integrations)
 export interface PriceRange {
+  price: number;
   min: number;
   max: number;
 }
-
-// Defaults when system parameters are not set (used by getSimulationParams and tests)
-export const SIMULATION_DEFAULT_MAX_KM = 250_000;
-export const SIMULATION_DEFAULT_MAX_AGE_YEARS = 15;

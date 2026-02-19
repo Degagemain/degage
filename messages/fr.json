@@ -218,6 +218,27 @@
       "searchPlaceholder": "Rechercher des normes euro...",
       "tryAgain": "Réessayer"
     },
+    "carPriceEstimates": {
+      "title": "Estimations de prix",
+      "filters": {
+        "brand": "Marque",
+        "brandPlaceholder": "Rechercher des marques...",
+        "carType": "Type de voiture",
+        "carTypePlaceholder": "Rechercher des types de voiture..."
+      },
+      "columns": {
+        "brand": "Marque",
+        "carType": "Type de voiture",
+        "year": "Année",
+        "price": "Prix",
+        "rangeMin": "Min",
+        "rangeMax": "Max",
+        "remarks": "Remarques",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "tryAgain": "Réessayer"
+    },
     "provinces": {
       "title": "Provinces",
       "columns": {
@@ -392,6 +413,7 @@
       "km_limit": "Max {maxKm} km",
       "car_limit": "Voiture pas plus vieille que {maxYears} ans",
       "price_estimated": "Prix estimé de la voiture : {price}",
+      "price_estimation_failed": "L'estimation du prix est temporairement indisponible",
       "yearly_km_estimate": "L'utilisateur roule {kmPerYear} km par an, kilomètres partagés estimés : {estimated}",
       "payback_km": "Avec {km} km la voiture serait amortie vers {paybackKm} km"
     },

@@ -59,17 +59,18 @@ model CarBrandTranslation {
 }
 
 model CarType {
-    id          String       @id @default(uuid())
-    brandId     String
-    brand       CarBrand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
-    fuelTypeId  String
-    fuelType    FuelType     @relation(fields: [fuelTypeId], references: [id])
-    name        String
-    ecoscore    Int
-    isActive    Boolean      @default(true)
-    simulations Simulation[]
-    createdAt   DateTime     @default(now())
-    updatedAt   DateTime     @updatedAt
+    id                 String              @id @default(uuid())
+    brandId            String
+    brand              CarBrand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    fuelTypeId         String
+    fuelType           FuelType            @relation(fields: [fuelTypeId], references: [id])
+    name               String
+    ecoscore           Int
+    isActive           Boolean             @default(true)
+    simulations        Simulation[]
+    carPriceEstimates  CarPriceEstimate[]
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
 }
 
 enum SimulationResultCode {
@@ -151,6 +152,21 @@ model HubBenchmark {
     updatedAt    DateTime @updatedAt
 
     @@unique([hubId, ownerKm])
+}
+
+model CarPriceEstimate {
+    id          String   @id @default(uuid())
+    carTypeId   String
+    carType     CarType  @relation(fields: [carTypeId], references: [id])
+    year        Int
+    price       Decimal
+    rangeMin    Decimal
+    rangeMax    Decimal
+    prompt      String?
+    remarks     String?
+    articleRefs String[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Town {

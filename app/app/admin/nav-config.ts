@@ -11,13 +11,14 @@ export const MAIN_ITEMS: {
 ];
 
 export const CAR_SETTINGS_ITEMS: {
-  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'systemParameters';
+  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'carPriceEstimates' | 'systemParameters';
   href: string;
 }[] = [
   { translationKey: 'carBrands', href: '/app/admin/car-brands' },
   { translationKey: 'carTypes', href: '/app/admin/car-types' },
   { translationKey: 'fuelTypes', href: '/app/admin/fuel-types' },
   { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
+  { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
 ];
 

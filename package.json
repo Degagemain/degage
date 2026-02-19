@@ -30,6 +30,7 @@
   "packageManager": "pnpm@10.15.1",
   "dependencies": {
     "@daveyplate/better-auth-ui": "^3.2.11",
+    "@google/genai": "^1.42.0",
     "@prisma/adapter-neon": "^7.3.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",

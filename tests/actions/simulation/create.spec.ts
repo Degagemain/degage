@@ -5,8 +5,8 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
   dbSimulationCreate: vi.fn(),
 }));
 
-vi.mock('@/actions/simulation/car-value-estimator', () => ({
-  carValueEstimator: vi.fn().mockResolvedValue({ min: 12_000, max: 18_000 }),
+vi.mock('@/actions/car-price-estimate/car-value-estimator', () => ({
+  carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
 }));
 
 vi.mock('@/actions/system-parameter/get-simulation-params', () => ({

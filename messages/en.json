@@ -218,6 +218,27 @@
       "searchPlaceholder": "Search euro norms...",
       "tryAgain": "Try again"
     },
+    "carPriceEstimates": {
+      "title": "Car Price Estimates",
+      "filters": {
+        "brand": "Brand",
+        "brandPlaceholder": "Search brands...",
+        "carType": "Car Type",
+        "carTypePlaceholder": "Search car types..."
+      },
+      "columns": {
+        "brand": "Brand",
+        "carType": "Car Type",
+        "year": "Year",
+        "price": "Price",
+        "rangeMin": "Range Min",
+        "rangeMax": "Range Max",
+        "remarks": "Remarks",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "tryAgain": "Try again"
+    },
     "provinces": {
       "title": "Provinces",
       "columns": {
@@ -392,6 +413,7 @@
       "km_limit": "Max {maxKm} km",
       "car_limit": "Car not older than {maxYears} years",
       "price_estimated": "Car price is estimated at {price}",
+      "price_estimation_failed": "Price estimation is temporarily unavailable",
       "yearly_km_estimate": "User drives {kmPerYear} km per year, estimated shared kilometers is {estimated}",
       "payback_km": "With {km} km the car would be paid back around {paybackKm} km"
     },

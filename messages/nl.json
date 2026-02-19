@@ -218,6 +218,27 @@
       "searchPlaceholder": "Zoek euronormen...",
       "tryAgain": "Opnieuw proberen"
     },
+    "carPriceEstimates": {
+      "title": "Prijsschattingen",
+      "filters": {
+        "brand": "Merk",
+        "brandPlaceholder": "Zoek merken...",
+        "carType": "Autotype",
+        "carTypePlaceholder": "Zoek autotypes..."
+      },
+      "columns": {
+        "brand": "Merk",
+        "carType": "Autotype",
+        "year": "Jaar",
+        "price": "Prijs",
+        "rangeMin": "Min",
+        "rangeMax": "Max",
+        "remarks": "Opmerkingen",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "tryAgain": "Opnieuw proberen"
+    },
     "provinces": {
       "title": "Provincies",
       "columns": {
@@ -392,6 +413,7 @@
       "km_limit": "Max {maxKm} km",
       "car_limit": "Auto niet ouder dan {maxYears} jaar",
       "price_estimated": "Geschatte autowaarde: {price}",
+      "price_estimation_failed": "Prijsschatting is tijdelijk niet beschikbaar",
       "yearly_km_estimate": "Gebruiker rijdt {kmPerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
       "payback_km": "Met {km} km zou de auto rond {paybackKm} km terugverdiend zijn"
     },
