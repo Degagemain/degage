@@ -5,7 +5,6 @@ import { seedEuroNorms } from './seed-euro-norms';
 import { seedProvinces } from './seed-provinces';
 import { seedHubs } from './seed-hubs';
 import { seedTowns } from './seed-towns';
-import { seedSystemParameters } from './seed-system-parameters';
 import { getPrismaClient } from '@/storage/utils';
 
 const prisma = getPrismaClient();
@@ -18,7 +17,6 @@ async function seed() {
   await seedHubs(prisma);
   await seedTowns(prisma);
   await seedCarTypes(prisma);
-  await seedSystemParameters(prisma);
 }
 
 seed()

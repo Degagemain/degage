@@ -9,6 +9,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     carTypeId: data.carTypeId ?? null,
     carTypeOther: data.carTypeOther ?? null,
     km: data.km ?? 50_000,
+    seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
@@ -45,6 +46,7 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     carType: data.carType !== undefined ? data.carType : defaultIdName('550e8400-e29b-41d4-a716-446655440003'),
     carTypeOther: data.carTypeOther !== undefined ? data.carTypeOther : null,
     km: data.km ?? 50_000,
+    seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
   };

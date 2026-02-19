@@ -46,6 +46,7 @@ describe('simulationRunInputParseSchema', () => {
       carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
       carTypeOther: null,
       km: 50_000,
+      seats: 5,
       firstRegisteredAt: '2020-01-01',
       isVan: false,
     });
@@ -60,6 +61,7 @@ describe('simulationRunInputParseSchema', () => {
       carType: null,
       carTypeOther: null,
       km: 50_000,
+      seats: 5,
       firstRegisteredAt: '2020-01-01',
       isVan: false,
     });
@@ -77,6 +79,7 @@ describe('simulationSchema', () => {
       carTypeId: null,
       carTypeOther: null,
       km: 100_000,
+      seats: 5,
       firstRegisteredAt: new Date('2019-01-01'),
       isVan: false,
       resultCode: SimulationResultCode.NOT_OK,
@@ -97,6 +100,7 @@ describe('simulationSchema', () => {
       carTypeId: null,
       carTypeOther: null,
       km: -1,
+      seats: 5,
       firstRegisteredAt: new Date(),
       isVan: false,
       resultCode: SimulationResultCode.MANUAL_REVIEW,

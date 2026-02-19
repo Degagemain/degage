@@ -15,6 +15,7 @@ export async function createSimulation(input: SimulationRunInput): Promise<Simul
     carTypeId: validated.carType?.id ?? null,
     carTypeOther: validated.carTypeOther,
     km: validated.km,
+    seats: validated.seats,
     firstRegisteredAt: validated.firstRegisteredAt,
     isVan: validated.isVan,
     resultCode: result.resultCode,

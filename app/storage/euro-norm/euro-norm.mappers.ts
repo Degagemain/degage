@@ -6,6 +6,7 @@ export const dbEuroNormToDomain = (euroNorm: Prisma.EuroNormGetPayload<object>):
     id: euroNorm.id,
     code: euroNorm.code,
     name: euroNorm.name,
+    group: euroNorm.group,
     isActive: euroNorm.isActive,
     start: euroNorm.start,
     end: euroNorm.end,
@@ -18,6 +19,7 @@ export const euroNormToDbCreate = (euroNorm: EuroNorm): Prisma.EuroNormCreateInp
   return {
     code: euroNorm.code.toLowerCase().replace(/\s+/g, '-'),
     name: euroNorm.name,
+    group: euroNorm.group,
     isActive: euroNorm.isActive,
     start: euroNorm.start,
     end: euroNorm.end ?? undefined,
@@ -28,6 +30,7 @@ export const euroNormToDbUpdate = (euroNorm: EuroNorm): Prisma.EuroNormUpdateInp
   return {
     code: euroNorm.code.toLowerCase().replace(/\s+/g, '-'),
     name: euroNorm.name,
+    group: euroNorm.group,
     isActive: euroNorm.isActive,
     start: euroNorm.start,
     end: euroNorm.end ?? undefined,

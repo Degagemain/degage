@@ -54,6 +54,7 @@ export const simulationRunInputSchema = z
     carType: idNameSchema.nullable().default(null),
     carTypeOther: z.string().nullable().default(null),
     km: z.number().int().min(0),
+    seats: z.number().int().min(1),
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
   })
@@ -77,6 +78,7 @@ export const simulationSchema = z
     carTypeId: z.uuid().nullable(),
     carTypeOther: z.string().nullable(),
     km: z.number().int().min(0),
+    seats: z.number().int().min(1),
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),
     resultCode: z.enum(SimulationResultCode),

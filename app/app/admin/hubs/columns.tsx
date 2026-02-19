@@ -56,6 +56,54 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'simMaxAge',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaxAge')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('simMaxAge')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMaxKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaxKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simMaxKm') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMinEuroNormGroupDiesel',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMinEuroNormGroupDiesel')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('simMinEuroNormGroupDiesel')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMinEcoScoreForBonus',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMinEcoScoreForBonus')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('simMinEcoScoreForBonus')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMaxKmForBonus',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaxKmForBonus')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simMaxKmForBonus') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMaxAgeForBonus',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaxAgeForBonus')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('simMaxAgeForBonus')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,

@@ -82,6 +82,7 @@ export default function EuroNormsPage() {
     () => ({
       code: t('columns.code'),
       name: t('columns.name'),
+      group: t('columns.group'),
       isActive: t('columns.active'),
       start: t('columns.start'),
       end: t('columns.end'),

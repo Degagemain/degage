@@ -85,6 +85,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
+      accessorKey: 'seats',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.seats')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('seats')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'firstRegisteredAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.firstRegisteredAt')} onSort={onSort} />,
       cell: ({ row }) => {

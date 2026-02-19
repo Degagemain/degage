@@ -92,6 +92,7 @@ model Simulation {
     carType           CarType?             @relation(fields: [carTypeId], references: [id])
     carTypeOther      String?
     km                Int
+    seats             Int                  @default(0)
     firstRegisteredAt DateTime
     isVan             Boolean              @default(false)
     resultCode        SimulationResultCode
@@ -105,6 +106,7 @@ model EuroNorm {
     id                    String            @id @default(uuid())
     code                  String            @unique
     name                  String
+    group                 Int               @default(0)
     isActive              Boolean           @default(true)
     start                 DateTime
     end                   DateTime?
@@ -122,12 +124,18 @@ model Province {
 }
 
 model Hub {
-    id        String   @id @default(uuid())
-    name      String
-    isDefault Boolean  @default(false)
-    towns     Town[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id                        String   @id @default(uuid())
+    name                      String
+    isDefault                 Boolean  @default(false)
+    simMaxAge                 Int      @default(15)
+    simMaxKm                  Int      @default(200000)
+    simMinEuroNormGroupDiesel Int      @default(5)
+    simMinEcoScoreForBonus    Int      @default(65)
+    simMaxKmForBonus          Int      @default(140000)
+    simMaxAgeForBonus         Int      @default(7)
+    towns                     Town[]
+    createdAt                 DateTime @default(now())
+    updatedAt                 DateTime @updatedAt
 }
 
 model Town {

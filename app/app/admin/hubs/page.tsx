@@ -43,6 +43,12 @@ export default function HubsPage() {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'name', desc: false }]);
   const [isDefaultFilter, setIsDefaultFilter] = useState<string[]>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    simMaxAge: false,
+    simMaxKm: false,
+    simMinEuroNormGroupDiesel: false,
+    simMinEcoScoreForBonus: false,
+    simMaxKmForBonus: false,
+    simMaxAgeForBonus: false,
     createdAt: false,
     updatedAt: false,
   });
@@ -81,6 +87,12 @@ export default function HubsPage() {
     () => ({
       name: t('columns.name'),
       isDefault: t('columns.default'),
+      simMaxAge: t('columns.simMaxAge'),
+      simMaxKm: t('columns.simMaxKm'),
+      simMinEuroNormGroupDiesel: t('columns.simMinEuroNormGroupDiesel'),
+      simMinEcoScoreForBonus: t('columns.simMinEcoScoreForBonus'),
+      simMaxKmForBonus: t('columns.simMaxKmForBonus'),
+      simMaxAgeForBonus: t('columns.simMaxAgeForBonus'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),
