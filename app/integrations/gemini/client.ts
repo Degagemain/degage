@@ -1,11 +1,11 @@
 /**
- * Gemini integration — grounded Google Search with structured JSON output.
+ * Gemini integration — structured JSON output with optional Google Search grounding.
  * No domain or business logic; just prompt + schema in, typed data out.
  *
- * Gemini does not support Google Search grounding and structured JSON output
- * in the same request. This module works around that by making two calls:
- *   1. Grounded search call (plain text) to gather real-world data.
- *   2. Structured extraction call (JSON mode) to parse the result into `T`.
+ * Two public functions:
+ *   - generateStructuredJson: single call with JSON schema enforcement.
+ *   - generateGroundedJson:   two-step call (grounded search → structured extraction)
+ *     because Gemini does not support grounding + JSON mode in the same request.
  */
 import { GoogleGenAI } from '@google/genai';
 import type { Schema } from '@google/genai';
@@ -18,6 +18,29 @@ function getClient(): GoogleGenAI {
     throw new Error('GEMINI_API_KEY is not set');
   }
   return new GoogleGenAI({ apiKey });
+}
+
+/**
+ * Single-call structured JSON generation (no grounding).
+ * Use when the model's training data is sufficient and web search is not needed.
+ */
+export async function generateStructuredJson<T>(prompt: string, responseSchema: Schema): Promise<T> {
+  const ai = getClient();
+
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: prompt,
+    config: {
+      responseMimeType: 'application/json',
+      responseJsonSchema: responseSchema,
+    },
+  });
+
+  if (!response.text) {
+    throw new Error('Gemini returned an empty response');
+  }
+
+  return JSON.parse(response.text) as T;
 }
 
 /**
@@ -38,8 +61,6 @@ export async function generateGroundedJson<T>(prompt: string, responseSchema: Sc
   if (!groundedResponse.text) {
     throw new Error('Gemini grounded search returned an empty response');
   }
-
-  console.log(groundedResponse.text);
 
   const structuredResponse = await ai.models.generateContent({
     model: MODEL,

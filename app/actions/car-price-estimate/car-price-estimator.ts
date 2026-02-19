@@ -73,9 +73,7 @@ export async function carValueEstimator(
   const carTypeName = carType?.name ?? carTypeOther ?? 'unknown model';
 
   const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year);
-  console.log(prompt);
   const result = await generateGroundedJson<GeminiPriceEstimate>(prompt, responseSchema);
-  console.log(result);
 
   if (carTypeId && result.price > 0) {
     const estimate: CarPriceEstimate = {

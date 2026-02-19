@@ -46,6 +46,10 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
     isVan: db.isVan,
     resultCode: mapResultCodeFromDb(db.resultCode),
     estimatedPrice: db.estimatedPrice != null ? Number(db.estimatedPrice) : null,
+    cylinderCc: db.cylinderCc,
+    co2Emission: db.co2Emission,
+    ecoscore: db.ecoscore,
+    euroNormCode: db.euroNormCode,
     steps: parseSteps(db.steps),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -89,6 +93,10 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
     isVan: simulation.isVan,
     resultCode: simulation.resultCode,
     estimatedPrice: simulation.estimatedPrice ?? undefined,
+    cylinderCc: simulation.cylinderCc ?? undefined,
+    co2Emission: simulation.co2Emission ?? undefined,
+    ecoscore: simulation.ecoscore ?? undefined,
+    euroNormCode: simulation.euroNormCode ?? undefined,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };
@@ -106,6 +114,10 @@ export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationU
     isVan: simulation.isVan,
     resultCode: simulation.resultCode,
     estimatedPrice: simulation.estimatedPrice ?? undefined,
+    cylinderCc: simulation.cylinderCc ?? undefined,
+    co2Emission: simulation.co2Emission ?? undefined,
+    ecoscore: simulation.ecoscore ?? undefined,
+    euroNormCode: simulation.euroNormCode ?? undefined,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };

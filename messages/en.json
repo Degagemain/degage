@@ -414,6 +414,8 @@
       "car_limit": "Car not older than {maxYears} years",
       "price_estimated": "Car price is estimated at {price}",
       "price_estimation_failed": "Price estimation is temporarily unavailable",
+      "car_info_estimated": "Engine: {cylinderCc}cc, CO2: {co2}g/km, Ecoscore: {ecoscore}, Euro norm: {euroNorm}",
+      "car_info_estimation_failed": "Car technical info could not be retrieved",
       "yearly_km_estimate": "User drives {kmPerYear} km per year, estimated shared kilometers is {estimated}",
       "payback_km": "With {km} km the car would be paid back around {paybackKm} km"
     },

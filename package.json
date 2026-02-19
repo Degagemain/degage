@@ -12,6 +12,7 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --config .prettierrc --check .",
     "format:fix": "prettier --config .prettierrc --write .",
+    "fix": "pnpm lint:fix && pnpm format:fix",
     "prepare": "husky",
     "postinstall": "prisma generate",
     "db:start": "docker compose up -d",

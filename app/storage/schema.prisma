@@ -98,6 +98,10 @@ model Simulation {
     isVan             Boolean              @default(false)
     resultCode        SimulationResultCode
     estimatedPrice    Decimal?
+    cylinderCc        Int?
+    co2Emission       Int?
+    ecoscore          Int?
+    euroNormCode      String?
     steps             Json                 @default("[]")
     createdAt         DateTime             @default(now())
     updatedAt         DateTime             @updatedAt

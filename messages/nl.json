@@ -414,6 +414,8 @@
       "car_limit": "Auto niet ouder dan {maxYears} jaar",
       "price_estimated": "Geschatte autowaarde: {price}",
       "price_estimation_failed": "Prijsschatting is tijdelijk niet beschikbaar",
+      "car_info_estimated": "Motor: {cylinderCc}cc, CO2: {co2}g/km, Ecoscore: {ecoscore}, Euronorm: {euroNorm}",
+      "car_info_estimation_failed": "Technische voertuiggegevens konden niet worden opgehaald",
       "yearly_km_estimate": "Gebruiker rijdt {kmPerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
       "payback_km": "Met {km} km zou de auto rond {paybackKm} km terugverdiend zijn"
     },

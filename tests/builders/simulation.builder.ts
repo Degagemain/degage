@@ -14,6 +14,10 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     isVan: data.isVan ?? false,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
     estimatedPrice: data.estimatedPrice ?? null,
+    cylinderCc: data.cylinderCc ?? null,
+    co2Emission: data.co2Emission ?? null,
+    ecoscore: data.ecoscore ?? null,
+    euroNormCode: data.euroNormCode ?? null,
     steps: data.steps ?? [
       {
         code: SimulationStepCode.KM_LIMIT,
