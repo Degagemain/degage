@@ -25,7 +25,7 @@ export const townFilterSchema = z
       .default(null),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
-    sortBy: z.enum(Object.values(TownSortColumns) as [string, ...string[]]).default(TownSortColumns.NAME),
+    sortBy: z.enum(Object.values(TownSortColumns) as [string, ...string[]]).default(TownSortColumns.ZIP),
     sortOrder: z.enum(Object.values(SortOrder) as [string, ...string[]]).default(SortOrder.ASC),
   })
   .strict();

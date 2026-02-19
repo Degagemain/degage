@@ -16,6 +16,9 @@ export enum SimulationStepCode {
   KM_LIMIT = 'km_limit',
   CAR_LIMIT = 'car_limit',
   PRICE_ESTIMATED = 'price_estimated',
+  PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
+  CAR_INFO_ESTIMATED = 'car_info_estimated',
+  CAR_INFO_ESTIMATION_FAILED = 'car_info_estimation_failed',
   YEARLY_KM_ESTIMATE = 'yearly_km_estimate',
   PAYBACK_KM = 'payback_km',
 }
@@ -25,6 +28,7 @@ export enum SimulationStepStatus {
   OK = 'ok',
   NOT_OK = 'not_ok',
   INFO = 'info',
+  WARNING = 'warning',
 }
 
 export const simulationStepStatusSchema = z.enum(SimulationStepStatus);
@@ -54,6 +58,7 @@ export const simulationRunInputSchema = z
     carType: idNameSchema.nullable().default(null),
     carTypeOther: z.string().nullable().default(null),
     km: z.number().int().min(0),
+    seats: z.number().int().min(1),
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
   })
@@ -77,10 +82,15 @@ export const simulationSchema = z
     carTypeId: z.uuid().nullable(),
     carTypeOther: z.string().nullable(),
     km: z.number().int().min(0),
+    seats: z.number().int().min(1),
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),
     resultCode: z.enum(SimulationResultCode),
     estimatedPrice: z.number().nullable(),
+    cylinderCc: z.number().int().nullable().default(null),
+    co2Emission: z.number().int().nullable().default(null),
+    ecoscore: z.number().int().min(0).max(100).nullable().default(null),
+    euroNormCode: z.string().nullable().default(null),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
@@ -95,10 +105,7 @@ export type Simulation = z.infer<typeof simulationSchema>;
 
 // Price range returned by car value estimator (integrations)
 export interface PriceRange {
+  price: number;
   min: number;
   max: number;
 }
-
-// Defaults when system parameters are not set (used by getSimulationParams and tests)
-export const SIMULATION_DEFAULT_MAX_KM = 250_000;
-export const SIMULATION_DEFAULT_MAX_AGE_YEARS = 15;

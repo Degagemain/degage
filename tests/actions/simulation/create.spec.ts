@@ -5,8 +5,12 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
   dbSimulationCreate: vi.fn(),
 }));
 
-vi.mock('@/actions/simulation/car-value-estimator', () => ({
-  carValueEstimator: vi.fn().mockResolvedValue({ min: 12_000, max: 18_000 }),
+vi.mock('@/actions/car-price-estimate/car-price-estimator', () => ({
+  carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
+}));
+
+vi.mock('@/actions/simulation/car-info-estimator', () => ({
+  carInfoEstimator: vi.fn().mockResolvedValue({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' }),
 }));
 
 vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
@@ -33,7 +37,7 @@ describe('createSimulation', () => {
     expect(result.fuelTypeId).toBe(input.fuelType.id);
     expect(result.km).toBe(input.km);
     expect(result.resultCode).toBe('manualReview');
-    expect(result.steps).toHaveLength(3);
+    expect(result.steps).toHaveLength(4);
     expect(result.steps[0].code).toBe('km_limit');
     expect(result.steps[0].status).toBe(SimulationStepStatus.OK);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);

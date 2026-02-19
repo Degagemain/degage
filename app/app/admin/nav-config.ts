@@ -11,22 +11,24 @@ export const MAIN_ITEMS: {
 ];
 
 export const CAR_SETTINGS_ITEMS: {
-  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'systemParameters';
+  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'carPriceEstimates' | 'systemParameters';
   href: string;
 }[] = [
   { translationKey: 'carBrands', href: '/app/admin/car-brands' },
   { translationKey: 'carTypes', href: '/app/admin/car-types' },
   { translationKey: 'fuelTypes', href: '/app/admin/fuel-types' },
   { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
+  { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
 ];
 
 export const GEO_SETTINGS_ITEMS: {
-  translationKey: 'towns' | 'hubs' | 'provinces';
+  translationKey: 'towns' | 'hubs' | 'hubBenchmarks' | 'provinces';
   href: string;
 }[] = [
   { translationKey: 'towns', href: '/app/admin/towns' },
   { translationKey: 'hubs', href: '/app/admin/hubs' },
+  { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },
   { translationKey: 'provinces', href: '/app/admin/provinces' },
 ];
 

@@ -192,6 +192,7 @@ This log explains why packages were installed.
 | Faceted Filter                | cmdk (shadcn command component)                                                                        |
 | Internationalization          | next-intl                                                                                              |
 | ShadCN Calendar / Date picker | react-day-picker, date-fns                                                                             |
+| Gemini AI integration         | @google/genai                                                                                          |
 
 ## Known Issues
 

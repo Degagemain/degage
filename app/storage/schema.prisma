@@ -59,17 +59,18 @@ model CarBrandTranslation {
 }
 
 model CarType {
-    id          String       @id @default(uuid())
-    brandId     String
-    brand       CarBrand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
-    fuelTypeId  String
-    fuelType    FuelType     @relation(fields: [fuelTypeId], references: [id])
-    name        String
-    ecoscore    Int
-    isActive    Boolean      @default(true)
-    simulations Simulation[]
-    createdAt   DateTime     @default(now())
-    updatedAt   DateTime     @updatedAt
+    id                 String              @id @default(uuid())
+    brandId            String
+    brand              CarBrand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    fuelTypeId         String
+    fuelType           FuelType            @relation(fields: [fuelTypeId], references: [id])
+    name               String
+    ecoscore           Int
+    isActive           Boolean             @default(true)
+    simulations        Simulation[]
+    carPriceEstimates  CarPriceEstimate[]
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
 }
 
 enum SimulationResultCode {
@@ -92,10 +93,15 @@ model Simulation {
     carType           CarType?             @relation(fields: [carTypeId], references: [id])
     carTypeOther      String?
     km                Int
+    seats             Int                  @default(0)
     firstRegisteredAt DateTime
     isVan             Boolean              @default(false)
     resultCode        SimulationResultCode
     estimatedPrice    Decimal?
+    cylinderCc        Int?
+    co2Emission       Int?
+    ecoscore          Int?
+    euroNormCode      String?
     steps             Json                 @default("[]")
     createdAt         DateTime             @default(now())
     updatedAt         DateTime             @updatedAt
@@ -105,6 +111,7 @@ model EuroNorm {
     id                    String            @id @default(uuid())
     code                  String            @unique
     name                  String
+    group                 Int               @default(0)
     isActive              Boolean           @default(true)
     start                 DateTime
     end                   DateTime?
@@ -122,12 +129,48 @@ model Province {
 }
 
 model Hub {
-    id        String   @id @default(uuid())
-    name      String
-    isDefault Boolean  @default(false)
-    towns     Town[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id                        String   @id @default(uuid())
+    name                      String
+    isDefault                 Boolean  @default(false)
+    simMaxAge                 Int      @default(15)
+    simMaxKm                  Int      @default(200000)
+    simMinEuroNormGroupDiesel Int      @default(5)
+    simMinEcoScoreForBonus    Int      @default(65)
+    simMaxKmForBonus          Int      @default(140000)
+    simMaxAgeForBonus         Int      @default(7)
+    towns                     Town[]
+    benchmarks                HubBenchmark[]
+    createdAt                 DateTime @default(now())
+    updatedAt                 DateTime @updatedAt
+}
+
+model HubBenchmark {
+    id           String   @id @default(uuid())
+    hubId        String
+    hub          Hub      @relation(fields: [hubId], references: [id], onDelete: Cascade)
+    ownerKm      Int
+    sharedMinKm  Int      @default(0)
+    sharedMaxKm  Int      @default(0)
+    sharedAvgKm  Int      @default(0)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@unique([hubId, ownerKm])
+}
+
+model CarPriceEstimate {
+    id          String   @id @default(uuid())
+    carTypeId   String
+    carType     CarType  @relation(fields: [carTypeId], references: [id])
+    year        Int
+    price       Decimal
+    rangeMin    Decimal
+    rangeMax    Decimal
+    prompt      String?
+    remarks     String?
+    articleRefs String[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Town {

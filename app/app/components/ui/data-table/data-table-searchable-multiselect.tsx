@@ -48,6 +48,8 @@ interface DataTableSearchableMultiselectProps {
   selectedOptions: SearchableOption[];
   onSelectedChange: (values: string[], options: SearchableOption[]) => void;
   placeholder?: string;
+  extraParams?: Record<string, string>;
+  disabled?: boolean;
 }
 
 export function DataTableSearchableMultiselect({
@@ -57,6 +59,8 @@ export function DataTableSearchableMultiselect({
   selectedOptions,
   onSelectedChange,
   placeholder,
+  extraParams,
+  disabled,
 }: DataTableSearchableMultiselectProps) {
   const t = useTranslations('dataTable.facetedFilter');
   const [open, setOpen] = React.useState(false);
@@ -79,6 +83,11 @@ export function DataTableSearchableMultiselect({
       if (debouncedSearch) params.set('query', debouncedSearch);
       params.set('skip', String(skip));
       params.set('take', String(OPTIONS_PAGE_SIZE));
+      if (extraParams) {
+        for (const [key, value] of Object.entries(extraParams)) {
+          params.set(key, value);
+        }
+      }
       const res = await fetch(`/api/${apiPath}?${params.toString()}`);
       if (!res.ok) return;
       const data = await res.json();
@@ -90,7 +99,7 @@ export function DataTableSearchableMultiselect({
       }
       setTotal(data.total ?? 0);
     },
-    [apiPath, debouncedSearch],
+    [apiPath, debouncedSearch, extraParams],
   );
 
   React.useEffect(() => {
@@ -138,7 +147,7 @@ export function DataTableSearchableMultiselect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="text-muted-foreground h-9 border-dashed font-normal">
+        <Button variant="outline" size="sm" className="text-muted-foreground h-9 border-dashed font-normal" disabled={disabled}>
           <Filter className="mr-2 h-3.5 w-3.5" />
           {title}
           {selectedSet.size > 0 && (

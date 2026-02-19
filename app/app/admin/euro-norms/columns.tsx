@@ -48,6 +48,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<EuroNorm>[] => 
       enableSorting: false,
     },
     {
+      accessorKey: 'group',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.group')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.getValue('group')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'isActive',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.active')} onSort={options.onSort} />,
       cell: ({ row }) => {

@@ -137,6 +137,7 @@ describe('API Route - POST /api/euro-norms', () => {
     id: null,
     code: 'euro-6d',
     name: 'Euro 6d',
+    group: 6,
     isActive: true,
     start: '2021-01-01',
     end: null,

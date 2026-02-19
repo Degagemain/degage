@@ -206,6 +206,7 @@
       "columns": {
         "code": "Code",
         "name": "Name",
+        "group": "Group",
         "active": "Active",
         "start": "Start",
         "end": "End",
@@ -215,6 +216,27 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search euro norms...",
+      "tryAgain": "Try again"
+    },
+    "carPriceEstimates": {
+      "title": "Car Price Estimates",
+      "filters": {
+        "brand": "Brand",
+        "brandPlaceholder": "Search brands...",
+        "carType": "Car Type",
+        "carTypePlaceholder": "Search car types..."
+      },
+      "columns": {
+        "brand": "Brand",
+        "carType": "Car Type",
+        "year": "Year",
+        "price": "Price",
+        "rangeMin": "Range Min",
+        "rangeMax": "Range Max",
+        "remarks": "Remarks",
+        "created": "Created",
+        "updated": "Updated"
+      },
       "tryAgain": "Try again"
     },
     "provinces": {
@@ -235,12 +257,35 @@
       "columns": {
         "name": "Name",
         "default": "Default",
+        "simMaxAge": "Max age",
+        "simMaxKm": "Max km",
+        "simMinEuroNormGroupDiesel": "Min euro norm (diesel)",
+        "simMinEcoScoreForBonus": "Min ecoscore (bonus)",
+        "simMaxKmForBonus": "Max km (bonus)",
+        "simMaxAgeForBonus": "Max age (bonus)",
         "created": "Created",
         "updated": "Updated"
       },
       "default": "Default",
       "notDefault": "Not default",
       "searchPlaceholder": "Search hubs...",
+      "tryAgain": "Try again"
+    },
+    "hubBenchmarks": {
+      "title": "Hub Benchmarks",
+      "filters": {
+        "hub": "Hub",
+        "hubPlaceholder": "Search hubs..."
+      },
+      "columns": {
+        "hub": "Hub",
+        "ownerKm": "Owner km",
+        "sharedAvgKm": "Shared avg km",
+        "sharedMinKm": "Shared min km",
+        "sharedMaxKm": "Shared max km",
+        "created": "Created",
+        "updated": "Updated"
+      },
       "tryAgain": "Try again"
     },
     "towns": {
@@ -321,6 +366,7 @@
         "fuelType": "Fuel type",
         "carType": "Car type",
         "km": "Mileage (km)",
+        "seats": "Seats",
         "firstRegisteredAt": "First registered",
         "carTypeOther": "Car type (other)",
         "created": "Created",
@@ -367,6 +413,9 @@
       "km_limit": "Max {maxKm} km",
       "car_limit": "Car not older than {maxYears} years",
       "price_estimated": "Car price is estimated at {price}",
+      "price_estimation_failed": "Price estimation is temporarily unavailable",
+      "car_info_estimated": "Engine: {cylinderCc}cc, CO2: {co2}g/km, Ecoscore: {ecoscore}, Euro norm: {euroNorm}",
+      "car_info_estimation_failed": "Car technical info could not be retrieved",
       "yearly_km_estimate": "User drives {kmPerYear} km per year, estimated shared kilometers is {estimated}",
       "payback_km": "With {km} km the car would be paid back around {paybackKm} km"
     },
@@ -395,6 +444,8 @@
       "carTypeOtherPlaceholder": "e.g. Custom model",
       "mileage": "Mileage (km)",
       "mileagePlaceholder": "e.g. 50000",
+      "seats": "Seats",
+      "seatsPlaceholder": "e.g. 5",
       "firstRegistrationDate": "First registration date",
       "pickDate": "Pick a date",
       "isVan": "This vehicle is a van",
@@ -405,6 +456,7 @@
       "errorSelectFuelType": "Please select a fuel type.",
       "errorCarTypeOtherRequired": "Please enter the car type when \"Other\" is selected.",
       "errorValidMileage": "Please enter a valid mileage (km).",
+      "errorValidSeats": "Please enter a valid number of seats.",
       "errorEnterDate": "Please enter the first registration date.",
       "errorValidDate": "Please enter a valid date.",
       "errorRequestFailed": "Request failed",

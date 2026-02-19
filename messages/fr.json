@@ -206,6 +206,7 @@
       "columns": {
         "code": "Code",
         "name": "Nom",
+        "group": "Groupe",
         "active": "Actif",
         "start": "Début",
         "end": "Fin",
@@ -215,6 +216,27 @@
       "active": "Actif",
       "inactive": "Inactif",
       "searchPlaceholder": "Rechercher des normes euro...",
+      "tryAgain": "Réessayer"
+    },
+    "carPriceEstimates": {
+      "title": "Estimations de prix",
+      "filters": {
+        "brand": "Marque",
+        "brandPlaceholder": "Rechercher des marques...",
+        "carType": "Type de voiture",
+        "carTypePlaceholder": "Rechercher des types de voiture..."
+      },
+      "columns": {
+        "brand": "Marque",
+        "carType": "Type de voiture",
+        "year": "Année",
+        "price": "Prix",
+        "rangeMin": "Min",
+        "rangeMax": "Max",
+        "remarks": "Remarques",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
       "tryAgain": "Réessayer"
     },
     "provinces": {
@@ -235,12 +257,35 @@
       "columns": {
         "name": "Nom",
         "default": "Par défaut",
+        "simMaxAge": "Âge max",
+        "simMaxKm": "Km max",
+        "simMinEuroNormGroupDiesel": "Norme euro min (diesel)",
+        "simMinEcoScoreForBonus": "Ecoscore min (bonus)",
+        "simMaxKmForBonus": "Km max (bonus)",
+        "simMaxAgeForBonus": "Âge max (bonus)",
         "created": "Créé le",
         "updated": "Modifié le"
       },
       "default": "Par défaut",
       "notDefault": "Non par défaut",
       "searchPlaceholder": "Rechercher des hubs...",
+      "tryAgain": "Réessayer"
+    },
+    "hubBenchmarks": {
+      "title": "Benchmarks de hub",
+      "filters": {
+        "hub": "Hub",
+        "hubPlaceholder": "Rechercher des hubs..."
+      },
+      "columns": {
+        "hub": "Hub",
+        "ownerKm": "Km propriétaire",
+        "sharedAvgKm": "Km partagés moy.",
+        "sharedMinKm": "Km partagés min",
+        "sharedMaxKm": "Km partagés max",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
       "tryAgain": "Réessayer"
     },
     "towns": {
@@ -321,6 +366,7 @@
         "fuelType": "Type de carburant",
         "carType": "Type de véhicule",
         "km": "Kilométrage (km)",
+        "seats": "Places assises",
         "firstRegisteredAt": "Première immatriculation",
         "carTypeOther": "Type de véhicule (autre)",
         "created": "Créé le",
@@ -367,6 +413,9 @@
       "km_limit": "Max {maxKm} km",
       "car_limit": "Voiture pas plus vieille que {maxYears} ans",
       "price_estimated": "Prix estimé de la voiture : {price}",
+      "price_estimation_failed": "L'estimation du prix est temporairement indisponible",
+      "car_info_estimated": "Moteur : {cylinderCc}cc, CO2 : {co2}g/km, Ecoscore : {ecoscore}, Norme Euro : {euroNorm}",
+      "car_info_estimation_failed": "Les informations techniques du véhicule n'ont pas pu être récupérées",
       "yearly_km_estimate": "L'utilisateur roule {kmPerYear} km par an, kilomètres partagés estimés : {estimated}",
       "payback_km": "Avec {km} km la voiture serait amortie vers {paybackKm} km"
     },
@@ -395,6 +444,8 @@
       "carTypeOtherPlaceholder": "ex. Modèle personnalisé",
       "mileage": "Kilométrage (km)",
       "mileagePlaceholder": "ex. 50000",
+      "seats": "Places assises",
+      "seatsPlaceholder": "ex. 5",
       "firstRegistrationDate": "Date de première immatriculation",
       "pickDate": "Choisir une date",
       "isVan": "Ce véhicule est une camionette",
@@ -405,6 +456,7 @@
       "errorSelectFuelType": "Veuillez sélectionner un type de carburant.",
       "errorCarTypeOtherRequired": "Veuillez saisir le type de véhicule lorsque « Autre » est sélectionné.",
       "errorValidMileage": "Veuillez saisir un kilométrage valide (km).",
+      "errorValidSeats": "Veuillez saisir un nombre de places valide.",
       "errorEnterDate": "Veuillez saisir la date de première immatriculation.",
       "errorValidDate": "Veuillez saisir une date valide.",
       "errorRequestFailed": "Échec de la requête",

@@ -29,6 +29,7 @@ interface SimulationFormState {
   carTypeName: string;
   carTypeOther: string;
   km: string;
+  seats: string;
   firstRegisteredAt: string;
   isVan: boolean;
 }
@@ -44,6 +45,7 @@ const defaultFormState: SimulationFormState = {
   carTypeName: '',
   carTypeOther: '',
   km: '',
+  seats: '',
   firstRegisteredAt: '',
   isVan: false,
 };
@@ -166,6 +168,7 @@ export default function SimulationPage() {
       const brandId = form.brandId.trim();
       const fuelTypeId = form.fuelTypeId.trim();
       const km = form.km.trim() ? parseInt(form.km, 10) : NaN;
+      const seats = form.seats.trim() ? parseInt(form.seats, 10) : NaN;
       const firstRegisteredAt = form.firstRegisteredAt.trim();
 
       if (!townId) {
@@ -186,6 +189,10 @@ export default function SimulationPage() {
       }
       if (!Number.isInteger(km) || km < 0) {
         setError(t('errorValidMileage'));
+        return;
+      }
+      if (!Number.isInteger(seats) || seats < 1) {
+        setError(t('errorValidSeats'));
         return;
       }
       if (!firstRegisteredAt) {
@@ -209,6 +216,7 @@ export default function SimulationPage() {
             form.carTypeId && form.carTypeId !== CAR_TYPE_OTHER ? { id: form.carTypeId.trim(), name: form.carTypeName || undefined } : null,
           carTypeOther: form.carTypeId === CAR_TYPE_OTHER ? form.carTypeOther.trim() || null : null,
           km,
+          seats,
           firstRegisteredAt: date.toISOString(),
           isVan: form.isVan,
         };
@@ -341,6 +349,17 @@ export default function SimulationPage() {
                   value={form.km}
                   onChange={(e) => updateForm({ km: e.target.value })}
                   placeholder={t('mileagePlaceholder')}
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel>{t('seats')}</FieldLabel>
+                <Input
+                  type="number"
+                  min={1}
+                  value={form.seats}
+                  onChange={(e) => updateForm({ seats: e.target.value })}
+                  placeholder={t('seatsPlaceholder')}
                 />
               </Field>
 

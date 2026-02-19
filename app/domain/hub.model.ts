@@ -5,6 +5,12 @@ export const hubSchema = z
     id: z.uuid().nullable(),
     name: z.string().min(1).max(100),
     isDefault: z.boolean().default(false),
+    simMaxAge: z.number().int().min(0).default(15),
+    simMaxKm: z.number().int().min(0).default(200_000),
+    simMinEuroNormGroupDiesel: z.number().int().min(0).default(5),
+    simMinEcoScoreForBonus: z.number().int().min(0).default(65),
+    simMaxKmForBonus: z.number().int().min(0).default(140_000),
+    simMaxAgeForBonus: z.number().int().min(0).default(7),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
   })

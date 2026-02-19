@@ -5,6 +5,7 @@ export const euroNorm = (data: Partial<EuroNorm> = {}): EuroNorm => {
     id: data.id || '550e8400-e29b-41d4-a716-446655440000',
     code: data.code || 'euro-6d',
     name: data.name || 'Euro 6d',
+    group: data.group ?? 6,
     isActive: data.isActive ?? true,
     start: data.start || new Date('2021-01-01'),
     end: data.end ?? null,

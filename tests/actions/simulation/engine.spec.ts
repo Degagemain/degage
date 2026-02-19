@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/actions/simulation/car-value-estimator', () => ({
-  carValueEstimator: vi.fn().mockResolvedValue({ min: 12_000, max: 18_000 }),
+vi.mock('@/actions/car-price-estimate/car-price-estimator', () => ({
+  carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
+}));
+
+vi.mock('@/actions/simulation/car-info-estimator', () => ({
+  carInfoEstimator: vi.fn().mockResolvedValue({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' }),
 }));
 
 vi.mock('@/i18n/get-message', () => ({
@@ -12,7 +16,7 @@ vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
   getSimulationParams: vi.fn().mockResolvedValue({ maxAgeYears: 15, maxKm: 250_000 }),
 }));
 
-import { carValueEstimator } from '@/actions/simulation/car-value-estimator';
+import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
 import { applyAgeRule, applyKmRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
@@ -91,12 +95,21 @@ describe('runSimulationEngine', () => {
     const input = simulationRunInput({ km: 50_000, firstRegisteredAt: new Date('2020-01-01') });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('manualReview');
-    expect(result.steps).toHaveLength(3);
+    expect(result.steps).toHaveLength(4);
     expect(result.steps[0].code).toBe(SimulationStepCode.KM_LIMIT);
     expect(result.steps[1].code).toBe(SimulationStepCode.CAR_LIMIT);
     expect(result.steps[2].code).toBe(SimulationStepCode.PRICE_ESTIMATED);
     expect(result.steps[2].status).toBe(SimulationStepStatus.INFO);
+    expect(result.steps[3].code).toBe(SimulationStepCode.CAR_INFO_ESTIMATED);
+    expect(result.steps[3].status).toBe(SimulationStepStatus.INFO);
+    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
-    expect(carValueEstimator).toHaveBeenCalledWith(input.brand.id, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
+    expect(carValueEstimator).toHaveBeenCalledWith(
+      input.brand.id,
+      input.fuelType.id,
+      input.carType?.id ?? null,
+      input.carTypeOther,
+      input.firstRegisteredAt,
+    );
   });
 });

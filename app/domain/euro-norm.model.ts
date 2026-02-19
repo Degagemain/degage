@@ -9,6 +9,7 @@ export const euroNormSchema = z
       .max(50)
       .transform((s) => s.toLowerCase().replace(/\s+/g, '-')),
     name: z.string().min(1).max(100),
+    group: z.number().int().min(0),
     isActive: z.boolean().default(true),
     start: z.coerce.date(),
     end: z.coerce.date().nullable().default(null),
