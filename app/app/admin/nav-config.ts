@@ -22,11 +22,12 @@ export const CAR_SETTINGS_ITEMS: {
 ];
 
 export const GEO_SETTINGS_ITEMS: {
-  translationKey: 'towns' | 'hubs' | 'provinces';
+  translationKey: 'towns' | 'hubs' | 'hubBenchmarks' | 'provinces';
   href: string;
 }[] = [
   { translationKey: 'towns', href: '/app/admin/towns' },
   { translationKey: 'hubs', href: '/app/admin/hubs' },
+  { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },
   { translationKey: 'provinces', href: '/app/admin/provinces' },
 ];
 

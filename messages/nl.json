@@ -250,6 +250,23 @@
       "searchPlaceholder": "Zoek hubs...",
       "tryAgain": "Opnieuw proberen"
     },
+    "hubBenchmarks": {
+      "title": "Hub benchmarks",
+      "filters": {
+        "hub": "Hub",
+        "hubPlaceholder": "Zoek hubs..."
+      },
+      "columns": {
+        "hub": "Hub",
+        "ownerKm": "Eigenaar km",
+        "sharedAvgKm": "Gedeeld gem. km",
+        "sharedMinKm": "Gedeeld min km",
+        "sharedMaxKm": "Gedeeld max km",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "tryAgain": "Opnieuw proberen"
+    },
     "towns": {
       "title": "Gemeenten",
       "filters": {

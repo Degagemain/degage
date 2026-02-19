@@ -134,8 +134,23 @@ model Hub {
     simMaxKmForBonus          Int      @default(140000)
     simMaxAgeForBonus         Int      @default(7)
     towns                     Town[]
+    benchmarks                HubBenchmark[]
     createdAt                 DateTime @default(now())
     updatedAt                 DateTime @updatedAt
+}
+
+model HubBenchmark {
+    id           String   @id @default(uuid())
+    hubId        String
+    hub          Hub      @relation(fields: [hubId], references: [id], onDelete: Cascade)
+    ownerKm      Int
+    sharedMinKm  Int      @default(0)
+    sharedMaxKm  Int      @default(0)
+    sharedAvgKm  Int      @default(0)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@unique([hubId, ownerKm])
 }
 
 model Town {

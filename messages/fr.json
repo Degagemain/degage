@@ -250,6 +250,23 @@
       "searchPlaceholder": "Rechercher des hubs...",
       "tryAgain": "Réessayer"
     },
+    "hubBenchmarks": {
+      "title": "Benchmarks de hub",
+      "filters": {
+        "hub": "Hub",
+        "hubPlaceholder": "Rechercher des hubs..."
+      },
+      "columns": {
+        "hub": "Hub",
+        "ownerKm": "Km propriétaire",
+        "sharedAvgKm": "Km partagés moy.",
+        "sharedMinKm": "Km partagés min",
+        "sharedMaxKm": "Km partagés max",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "tryAgain": "Réessayer"
+    },
     "towns": {
       "title": "Villes / communes",
       "filters": {
