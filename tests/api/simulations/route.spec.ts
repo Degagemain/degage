@@ -77,13 +77,29 @@ describe('POST /api/simulations', () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
     const created = simulation({ id: 'new-id' });
     vi.mocked(createSimulation).mockResolvedValueOnce(created);
-    const request = { json: vi.fn().mockResolvedValue(validBody) } as any;
+    const request = { json: vi.fn().mockResolvedValue(validBody), nextUrl: new URL('http://localhost/api/simulations') } as any;
     const response = await POST(request);
     expect(response.status).toBe(201);
     const json = await response.json();
     expect(json.id).toBe('new-id');
     expect(createSimulation).toHaveBeenCalledTimes(1);
-    expect(createSimulation).toHaveBeenCalledWith(validBody);
+    expect(createSimulation).toHaveBeenCalledWith(validBody, { skipPersistence: false });
+  });
+
+  it('calls createSimulation with skipPersistence when query param is true', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
+    const previewResult = { ...simulation(), id: null };
+    vi.mocked(createSimulation).mockResolvedValueOnce(previewResult);
+    const request = {
+      json: vi.fn().mockResolvedValue(validBody),
+      nextUrl: new URL('http://localhost/api/simulations?skipPersistence=true'),
+    } as any;
+    const response = await POST(request);
+    expect(response.status).toBe(201);
+    const json = await response.json();
+    expect(json.id).toBeNull();
+    expect(createSimulation).toHaveBeenCalledTimes(1);
+    expect(createSimulation).toHaveBeenCalledWith(validBody, { skipPersistence: true });
   });
 
   it('returns 400 when validation fails', async () => {

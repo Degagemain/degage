@@ -381,7 +381,17 @@
         "higherRate": "Hogere tarief"
       },
       "searchPlaceholder": "Zoek simulaties...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "new": "Nieuw",
+      "newPage": {
+        "title": "Nieuwe simulatie",
+        "description": "Stel de parameters in. Het resultaat wordt bijgewerkt bij elke wijziging. Gebruik \"Aanmaken\" om de simulatie op te slaan.",
+        "backToSimulations": "← Terug naar simulaties",
+        "create": "Simulatie aanmaken",
+        "creating": "Aanmaken…",
+        "resultTitle": "Resultaat",
+        "noResult": "Vul het formulier in om het simulatieresultaat te zien."
+      }
     },
     "users": {
       "title": "Gebruikers",

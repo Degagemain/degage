@@ -381,7 +381,17 @@
         "higherRate": "Higher rate"
       },
       "searchPlaceholder": "Search simulations...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "new": "New",
+      "newPage": {
+        "title": "New simulation",
+        "description": "Configure the simulation parameters. The result updates as you change values. Use \"Create\" to save the simulation.",
+        "backToSimulations": "← Back to simulations",
+        "create": "Create simulation",
+        "creating": "Creating…",
+        "resultTitle": "Result",
+        "noResult": "Fill in the form to see the simulation result."
+      }
     },
     "users": {
       "title": "Users",

@@ -1,11 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { Plus } from 'lucide-react';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Simulation } from '@/domain/simulation.model';
 import { Page } from '@/domain/page.model';
 import { SimulationSortColumns } from '@/domain/simulation.filter';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import {
   DataTable,
@@ -243,6 +246,14 @@ export default function SimulationsPage() {
           searchValue={query}
           onSearchChange={setQuery}
           searchPlaceholder={t('searchPlaceholder')}
+          leadingSlot={
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/app/admin/simulations/new">
+                <Plus className="mr-1.5 size-4" />
+                {t('new')}
+              </Link>
+            </Button>
+          }
           filterSlot={filterSlot}
           columnLabels={columnLabels}
         />

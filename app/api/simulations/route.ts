@@ -46,9 +46,12 @@ export const POST = withContext(async (request: NextRequest) => {
 
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
+
+  const skipPersistence = request.nextUrl?.searchParams?.get('skipPersistence') === 'true';
+
   try {
     const input = simulationRunInputParseSchema.parse(data);
-    const simulation = await createSimulation(input);
+    const simulation = await createSimulation(input, { skipPersistence });
     return Response.json(simulation, { status: statusCodes.CREATED });
   } catch (error) {
     if (error instanceof ZodError) {

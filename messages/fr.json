@@ -381,7 +381,17 @@
         "higherRate": "Taux plus élevé"
       },
       "searchPlaceholder": "Rechercher des simulations...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "new": "Nouveau",
+      "newPage": {
+        "title": "Nouvelle simulation",
+        "description": "Configurez les paramètres. Le résultat se met à jour à chaque modification. Utilisez « Créer » pour enregistrer la simulation.",
+        "backToSimulations": "← Retour aux simulations",
+        "create": "Créer la simulation",
+        "creating": "Création…",
+        "resultTitle": "Résultat",
+        "noResult": "Remplissez le formulaire pour voir le résultat de la simulation."
+      }
     },
     "users": {
       "title": "Utilisateurs",
