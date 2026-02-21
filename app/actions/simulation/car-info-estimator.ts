@@ -5,7 +5,7 @@ import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { dbCarBrandRead } from '@/storage/car-brand/car-brand.read';
 import { dbFuelTypeRead } from '@/storage/fuel-type/fuel-type.read';
 import { dbEuroNormSearch } from '@/storage/euro-norm/euro-norm.search';
-import { generateStructuredJson } from '@/integrations/gemini/client';
+import { generateStructuredJson } from '@/integrations/gemini';
 
 export interface CarInfo {
   cylinderCc: number;

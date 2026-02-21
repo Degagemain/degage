@@ -193,6 +193,7 @@ This log explains why packages were installed.
 | Internationalization          | next-intl                                                                                              |
 | ShadCN Calendar / Date picker | react-day-picker, date-fns                                                                             |
 | Gemini AI integration         | @google/genai                                                                                          |
+| Transactional email (auth)    | resend                                                                                                 |
 
 ## Known Issues
 
