@@ -14,6 +14,8 @@ export const dbHubToDomain = (hub: Prisma.HubGetPayload<object>): Hub => {
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
     simDepreciationKm: hub.simDepreciationKm,
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
+    simInspectionCostPerYear: Number(hub.simInspectionCostPerYear),
+    simMaintenanceCostPerYear: Number(hub.simMaintenanceCostPerYear),
     createdAt: hub.createdAt,
     updatedAt: hub.updatedAt,
   };
@@ -31,6 +33,8 @@ export const hubToDbCreate = (hub: Hub): Prisma.HubCreateInput => {
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
     simDepreciationKm: hub.simDepreciationKm,
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
+    simInspectionCostPerYear: hub.simInspectionCostPerYear,
+    simMaintenanceCostPerYear: hub.simMaintenanceCostPerYear,
   };
 };
 
@@ -46,5 +50,7 @@ export const hubToDbUpdate = (hub: Hub): Prisma.HubUpdateInput => {
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
     simDepreciationKm: hub.simDepreciationKm,
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
+    simInspectionCostPerYear: hub.simInspectionCostPerYear,
+    simMaintenanceCostPerYear: hub.simMaintenanceCostPerYear,
   };
 };

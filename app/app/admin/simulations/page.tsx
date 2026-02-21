@@ -111,7 +111,7 @@ export default function SimulationsPage() {
       brand: t('columns.brand'),
       fuelType: t('columns.fuelType'),
       carType: t('columns.carType'),
-      km: t('columns.km'),
+      mileage: t('columns.mileage'),
       seats: t('columns.seats'),
       firstRegisteredAt: t('columns.firstRegisteredAt'),
       carTypeOther: t('columns.carTypeOther'),

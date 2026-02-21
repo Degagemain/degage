@@ -75,11 +75,11 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
-      accessorKey: 'km',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.km')} onSort={onSort} />,
+      accessorKey: 'mileage',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.mileage')} onSort={onSort} />,
       cell: ({ row }) => {
-        const km = row.getValue('km') as number;
-        return <span className="font-mono text-sm">{km.toLocaleString()}</span>;
+        const mileage = row.getValue('mileage') as number;
+        return <span className="font-mono text-sm">{mileage.toLocaleString()}</span>;
       },
       enableHiding: true,
       enableSorting: false,

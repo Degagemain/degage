@@ -3,7 +3,7 @@ import { DefaultTake, MaxTake, SortOrder } from './utils';
 
 export enum InsurancePriceBenchmarkSortColumns {
   YEAR = 'year',
-  MAX_MILEAGE_EXCLUSIVE = 'maxMileageExclusive',
+  MAX_CAR_PRICE = 'maxCarPrice',
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',
 }

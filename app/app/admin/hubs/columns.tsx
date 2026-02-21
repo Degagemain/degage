@@ -124,6 +124,26 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'simInspectionCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simInspectionCostPerYear')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simInspectionCostPerYear') as number | null | undefined;
+        return <span className="font-mono text-sm">{val != null ? val.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simMaintenanceCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaintenanceCostPerYear')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simMaintenanceCostPerYear') as number | null | undefined;
+        return <span className="font-mono text-sm">{val != null ? val.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,

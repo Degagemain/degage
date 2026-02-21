@@ -11,7 +11,7 @@ import {
 describe('simulationStepSchema', () => {
   it('accepts valid step', () => {
     const result = simulationStepSchema.safeParse({
-      code: SimulationStepCode.KM_LIMIT,
+      code: SimulationStepCode.MILEAGE_LIMIT,
       status: SimulationStepStatus.OK,
       message: 'Less than 250 000 km',
     });
@@ -20,7 +20,7 @@ describe('simulationStepSchema', () => {
 
   it('rejects invalid status', () => {
     const result = simulationStepSchema.safeParse({
-      code: SimulationStepCode.KM_LIMIT,
+      code: SimulationStepCode.MILEAGE_LIMIT,
       status: 'invalid',
       message: 'x',
     });
@@ -45,7 +45,8 @@ describe('simulationRunInputParseSchema', () => {
       fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
       carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
       carTypeOther: null,
-      km: 50_000,
+      mileage: 50_000,
+      ownerKmPerYear: 10_000,
       seats: 5,
       firstRegisteredAt: '2020-01-01',
       isVan: false,
@@ -60,7 +61,8 @@ describe('simulationRunInputParseSchema', () => {
       fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
       carType: null,
       carTypeOther: null,
-      km: 50_000,
+      mileage: 50_000,
+      ownerKmPerYear: 10_000,
       seats: 5,
       firstRegisteredAt: '2020-01-01',
       isVan: false,
@@ -78,7 +80,8 @@ describe('simulationSchema', () => {
       fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
       carTypeId: null,
       carTypeOther: null,
-      km: 100_000,
+      mileage: 100_000,
+      ownerKmPerYear: 20_000,
       seats: 5,
       firstRegisteredAt: new Date('2019-01-01'),
       isVan: false,
@@ -91,7 +94,7 @@ describe('simulationSchema', () => {
     expect(result.success).toBe(true);
   });
 
-  it('rejects km less than 0', () => {
+  it('rejects mileage less than 0', () => {
     const result = simulationSchema.safeParse({
       id: null,
       townId: '550e8400-e29b-41d4-a716-446655440099',
@@ -99,7 +102,8 @@ describe('simulationSchema', () => {
       fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
       carTypeId: null,
       carTypeOther: null,
-      km: -1,
+      mileage: -1,
+      ownerKmPerYear: 0,
       seats: 5,
       firstRegisteredAt: new Date(),
       isVan: false,

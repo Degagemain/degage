@@ -4,9 +4,9 @@ import { PrismaClient } from '@/storage/client/client';
 
 const CSV_PATH = join(process.cwd(), 'seeding', 'car-tax-base-rates.csv');
 
-function parseDate(s: string): Date {
+function parseDateUtc(s: string): Date {
   const [day, month, year] = s.split('/').map(Number);
-  return new Date(year!, month! - 1, day!);
+  return new Date(Date.UTC(year!, month! - 1, day!));
 }
 
 export async function seedCarTaxBaseRates(prisma: PrismaClient) {
@@ -31,8 +31,8 @@ export async function seedCarTaxBaseRates(prisma: PrismaClient) {
         fiscalRegionId: defaultFiscalRegion.id,
         maxCc: Number(maxCc),
         fiscalPk: Number(fiscalPk),
-        start: parseDate(start!),
-        end: parseDate(end!),
+        start: parseDateUtc(start!),
+        end: parseDateUtc(end!),
         rate: Number(rate),
       },
     });

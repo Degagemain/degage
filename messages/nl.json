@@ -300,6 +300,8 @@
         "simMaxAgeForBonus": "Max leeftijd (bonus)",
         "simDepreciationKm": "Afschrijving km",
         "simDepreciationKmElectric": "Afschrijving km (elektrisch)",
+        "simInspectionCostPerYear": "Keuringkosten/jaar",
+        "simMaintenanceCostPerYear": "Onderhoudskosten/jaar",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -360,8 +362,9 @@
       },
       "columns": {
         "year": "Jaar",
-        "maxMileageExclusive": "Km max (excl.)",
-        "kmPrice": "€/km",
+        "maxCarPrice": "Max autoprijs (excl.)",
+        "baseRate": "Basistarief",
+        "rate": "€/km",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -445,6 +448,7 @@
         "fuelType": "Brandstoftype",
         "carType": "Autotype",
         "km": "Kilometerstand (km)",
+        "mileage": "Kilometerstand (km)",
         "seats": "Zitplaatsen",
         "firstRegisteredAt": "Eerste inschrijving",
         "carTypeOther": "Autotype (overig)",
@@ -499,14 +503,22 @@
   },
   "simulation": {
     "step": {
-      "km_limit": "Max {maxKm} km",
+      "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Auto niet ouder dan {maxYears} jaar",
       "price_estimated": "Geschatte autowaarde: {price}",
       "price_estimation_failed": "Prijsschatting is tijdelijk niet beschikbaar",
       "car_info_estimated": "Motor: {cylinderCc}cc, CO2: {co2}g/km, Ecoscore: {ecoscore}, Euronorm: {euroNorm}",
       "car_info_estimation_failed": "Technische voertuiggegevens konden niet worden opgehaald",
-      "yearly_km_estimate": "Gebruiker rijdt {kmPerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
-      "payback_km": "Met {km} km zou de auto rond {paybackKm} km terugverdiend zijn"
+      "car_tax_estimated": "Jaarlijkse verkeersbelasting: €{rate}",
+      "car_tax_estimated_electric": "Voor een elektrische auto ingeschreven op {registrationDate} bedraagt de belasting €{rate}",
+      "car_tax_failed": "Verkeersbelasting kon niet worden berekend",
+      "car_tax_co2_adjustment": "CO2-correctie: € {diff}",
+      "car_tax_euro_norm_adjustment": "Euro-normcorrectie: € {adjustment}",
+      "car_insurance_estimated": "Voor een geschatte waarde van € {carValue} is het verzekeringstarief in {year}: {baseRate} + {carValue} × {rate} = € {fee}",
+      "car_insurance_failed": "Verzekeringsschatting kon niet worden berekend",
+      "yearly_mileage_estimate": "Gebruiker rijdt {mileagePerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
+      "km_rate_estimated": "Geschatte kost per km: €{estimated}",
+      "payback_mileage": "Met {mileage} km zou de auto rond {paybackMileage} km terugverdiend zijn"
     },
     "resultCode": {
       "notOk": "Niet OK",
@@ -533,6 +545,10 @@
       "carTypeOtherPlaceholder": "bijv. Aangepast model",
       "mileage": "Kilometerstand (km)",
       "mileagePlaceholder": "bijv. 50000",
+      "ownerKmPerYear": "Km/jaar (eigenaar)",
+      "ownerKmPerYearPlaceholder": "Auto op basis van kilometerstand en datum",
+      "ownerKmPerYearCalculated": "{value} km/jaar (berekend op basis van kilometerstand en eerste inschrijving)",
+      "errorValidOwnerKmPerYear": "Vul een geldig km/jaar in.",
       "seats": "Zitplaatsen",
       "seatsPlaceholder": "bijv. 5",
       "firstRegistrationDate": "Eerste inschrijving",

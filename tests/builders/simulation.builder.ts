@@ -8,7 +8,8 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     fuelTypeId: data.fuelTypeId ?? '550e8400-e29b-41d4-a716-446655440002',
     carTypeId: data.carTypeId ?? null,
     carTypeOther: data.carTypeOther ?? null,
-    km: data.km ?? 50_000,
+    mileage: data.mileage ?? 50_000,
+    ownerKmPerYear: data.ownerKmPerYear ?? 10_000,
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
@@ -21,7 +22,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     consumption: data.consumption ?? null,
     steps: data.steps ?? [
       {
-        code: SimulationStepCode.KM_LIMIT,
+        code: SimulationStepCode.MILEAGE_LIMIT,
         status: SimulationStepStatus.OK,
         message: 'Less than 250 000 km',
       },
@@ -50,7 +51,8 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     fuelType: data.fuelType ?? defaultIdName('550e8400-e29b-41d4-a716-446655440002'),
     carType: data.carType !== undefined ? data.carType : defaultIdName('550e8400-e29b-41d4-a716-446655440003'),
     carTypeOther: data.carTypeOther !== undefined ? data.carTypeOther : null,
-    km: data.km ?? 50_000,
+    mileage: data.mileage ?? 50_000,
+    ownerKmPerYear: data.ownerKmPerYear ?? 10_000,
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,

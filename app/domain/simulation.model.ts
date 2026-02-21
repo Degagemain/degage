@@ -13,14 +13,18 @@ export enum SimulationResultCode {
 
 // Step codes — used as translation keys and for unit testing
 export enum SimulationStepCode {
-  KM_LIMIT = 'km_limit',
+  MILEAGE_LIMIT = 'mileage_limit',
   CAR_LIMIT = 'car_limit',
   PRICE_ESTIMATED = 'price_estimated',
   PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
   CAR_INFO_ESTIMATED = 'car_info_estimated',
   CAR_INFO_ESTIMATION_FAILED = 'car_info_estimation_failed',
-  YEARLY_KM_ESTIMATE = 'yearly_km_estimate',
-  PAYBACK_KM = 'payback_km',
+  CAR_TAX_ESTIMATED = 'car_tax_estimated',
+  CAR_TAX_FAILED = 'car_tax_failed',
+  CAR_INSURANCE_ESTIMATED = 'car_insurance_estimated',
+  CAR_INSURANCE_FAILED = 'car_insurance_failed',
+  YEARLY_MILEAGE_ESTIMATE = 'yearly_mileage_estimate',
+  PAYBACK_MILEAGE = 'payback_mileage',
 }
 
 // Step status — how the step is displayed (e.g. Check / Cross / Info)
@@ -57,7 +61,8 @@ export const simulationRunInputSchema = z
     fuelType: idNameSchema,
     carType: idNameSchema.nullable().default(null),
     carTypeOther: z.string().nullable().default(null),
-    km: z.number().int().min(0),
+    mileage: z.number().int().min(0),
+    ownerKmPerYear: z.number().int().min(0),
     seats: z.number().int().min(1),
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
@@ -81,7 +86,8 @@ export const simulationSchema = z
     fuelTypeId: z.uuid(),
     carTypeId: z.uuid().nullable(),
     carTypeOther: z.string().nullable(),
-    km: z.number().int().min(0),
+    mileage: z.number().int().min(0),
+    ownerKmPerYear: z.number().int().min(0),
     seats: z.number().int().min(1),
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),

@@ -300,6 +300,8 @@
         "simMaxAgeForBonus": "Max age (bonus)",
         "simDepreciationKm": "Depreciation km",
         "simDepreciationKmElectric": "Depreciation km (electric)",
+        "simInspectionCostPerYear": "Inspection cost/year",
+        "simMaintenanceCostPerYear": "Maintenance cost/year",
         "created": "Created",
         "updated": "Updated"
       },
@@ -360,8 +362,9 @@
       },
       "columns": {
         "year": "Year",
-        "maxMileageExclusive": "Max mileage (excl.)",
-        "kmPrice": "€/km",
+        "maxCarPrice": "Max car price (excl.)",
+        "baseRate": "Base rate",
+        "rate": "€/km",
         "created": "Created",
         "updated": "Updated"
       },
@@ -445,6 +448,7 @@
         "fuelType": "Fuel type",
         "carType": "Car type",
         "km": "Mileage (km)",
+        "mileage": "Mileage (km)",
         "seats": "Seats",
         "firstRegisteredAt": "First registered",
         "carTypeOther": "Car type (other)",
@@ -499,14 +503,22 @@
   },
   "simulation": {
     "step": {
-      "km_limit": "Max {maxKm} km",
+      "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Car not older than {maxYears} years",
       "price_estimated": "Car price is estimated at {price}",
       "price_estimation_failed": "Price estimation is temporarily unavailable",
       "car_info_estimated": "Engine: {cylinderCc}cc, CO2: {co2}g/km, Ecoscore: {ecoscore}, Euro norm: {euroNorm}",
       "car_info_estimation_failed": "Car technical info could not be retrieved",
-      "yearly_km_estimate": "User drives {kmPerYear} km per year, estimated shared kilometers is {estimated}",
-      "payback_km": "With {km} km the car would be paid back around {paybackKm} km"
+      "car_tax_estimated": "Annual car tax: €{rate}",
+      "car_tax_estimated_electric": "For an electric car registered at {registrationDate} the tax rate is €{rate}",
+      "car_tax_failed": "Car tax could not be calculated",
+      "car_tax_co2_adjustment": "CO2 adjustment: {diff} €",
+      "car_tax_euro_norm_adjustment": "Euro norm adjustment: {adjustment} €",
+      "car_insurance_estimated": "For an estimated value of {carValue}, insurance rate in {year} is {baseRate} + {carValue} * {rate} = {fee}",
+      "car_insurance_failed": "Insurance estimate could not be calculated",
+      "yearly_mileage_estimate": "User drives {mileagePerYear} km per year, estimated shared kilometers is {estimated}",
+      "km_rate_estimated": "Estimated cost per km: €{estimated}",
+      "payback_mileage": "With {mileage} km the car would be paid back around {paybackMileage} km"
     },
     "resultCode": {
       "notOk": "Not OK",
@@ -533,6 +545,10 @@
       "carTypeOtherPlaceholder": "e.g. Custom model",
       "mileage": "Mileage (km)",
       "mileagePlaceholder": "e.g. 50000",
+      "ownerKmPerYear": "Owner km/year",
+      "ownerKmPerYearPlaceholder": "Auto from mileage and date",
+      "ownerKmPerYearCalculated": "{value} km/year (calculated from mileage and first registration date)",
+      "errorValidOwnerKmPerYear": "Please enter a valid owner km/year.",
       "seats": "Seats",
       "seatsPlaceholder": "e.g. 5",
       "firstRegistrationDate": "First registration date",

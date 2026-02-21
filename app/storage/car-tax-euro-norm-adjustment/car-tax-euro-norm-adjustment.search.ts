@@ -8,15 +8,18 @@ import { dbCarTaxEuroNormAdjustmentToDomain } from './car-tax-euro-norm-adjustme
 
 export const filterToQuery = (filter: CarTaxEuroNormAdjustmentFilter): Prisma.CarTaxEuroNormAdjustmentWhereInput => {
   return {
-    fiscalRegion: filter.query
+    ...(filter.query
       ? {
-          translations: {
-            some: {
-              name: { contains: filter.query.trim(), mode: 'insensitive' },
+          fiscalRegion: {
+            translations: {
+              some: {
+                name: { contains: filter.query.trim(), mode: 'insensitive' },
+              },
             },
           },
         }
-      : undefined,
+      : {}),
+    ...(filter.euroNormGroup != null ? { euroNormGroup: filter.euroNormGroup } : {}),
   };
 };
 

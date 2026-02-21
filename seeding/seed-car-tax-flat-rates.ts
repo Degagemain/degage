@@ -1,6 +1,6 @@
 import { PrismaClient } from '@/storage/client/client';
 
-const START_DATE = new Date(2026, 0, 1); // 01 Jan 2026
+const START_DATE = new Date(Date.UTC(2026, 0, 1)); // 01 Jan 2026 UTC
 
 export async function seedCarTaxFlatRates(prisma: PrismaClient) {
   const count = await prisma.carTaxFlatRate.count();

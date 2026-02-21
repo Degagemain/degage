@@ -300,6 +300,8 @@
         "simMaxAgeForBonus": "Âge max (bonus)",
         "simDepreciationKm": "Km dépréciation",
         "simDepreciationKmElectric": "Km dépréciation (électrique)",
+        "simInspectionCostPerYear": "Coût contrôle/an",
+        "simMaintenanceCostPerYear": "Coût entretien/an",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -360,8 +362,9 @@
       },
       "columns": {
         "year": "Année",
-        "maxMileageExclusive": "Km max (excl.)",
-        "kmPrice": "€/km",
+        "maxCarPrice": "Prix voiture max (excl.)",
+        "baseRate": "Taux de base",
+        "rate": "€/km",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -445,6 +448,7 @@
         "fuelType": "Type de carburant",
         "carType": "Type de véhicule",
         "km": "Kilométrage (km)",
+        "mileage": "Kilométrage (km)",
         "seats": "Places assises",
         "firstRegisteredAt": "Première immatriculation",
         "carTypeOther": "Type de véhicule (autre)",
@@ -499,14 +503,22 @@
   },
   "simulation": {
     "step": {
-      "km_limit": "Max {maxKm} km",
+      "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Voiture pas plus vieille que {maxYears} ans",
       "price_estimated": "Prix estimé de la voiture : {price}",
       "price_estimation_failed": "L'estimation du prix est temporairement indisponible",
       "car_info_estimated": "Moteur : {cylinderCc}cc, CO2 : {co2}g/km, Ecoscore : {ecoscore}, Norme Euro : {euroNorm}",
       "car_info_estimation_failed": "Les informations techniques du véhicule n'ont pas pu être récupérées",
-      "yearly_km_estimate": "L'utilisateur roule {kmPerYear} km par an, kilomètres partagés estimés : {estimated}",
-      "payback_km": "Avec {km} km la voiture serait amortie vers {paybackKm} km"
+      "car_tax_estimated": "Taxe de circulation annuelle : {rate} €",
+      "car_tax_estimated_electric": "Pour une voiture électrique immatriculée le {registrationDate}, le taux de taxe est de {rate} €",
+      "car_tax_failed": "La taxe de circulation n'a pas pu être calculée",
+      "car_tax_co2_adjustment": "Ajustement CO2 : {diff} €",
+      "car_tax_euro_norm_adjustment": "Ajustement norme Euro : {adjustment} €",
+      "car_insurance_estimated": "Pour une valeur estimée de {carValue}, le tarif d'assurance en {year} est {baseRate} + {carValue} × {rate} = {fee}",
+      "car_insurance_failed": "L'estimation d'assurance n'a pas pu être calculée",
+      "yearly_mileage_estimate": "L'utilisateur roule {mileagePerYear} km par an, kilomètres partagés estimés : {estimated}",
+      "km_rate_estimated": "Coût estimé au km : {estimated} €",
+      "payback_mileage": "Avec {mileage} km la voiture serait amortie vers {paybackMileage} km"
     },
     "resultCode": {
       "notOk": "Non OK",
@@ -533,6 +545,10 @@
       "carTypeOtherPlaceholder": "ex. Modèle personnalisé",
       "mileage": "Kilométrage (km)",
       "mileagePlaceholder": "ex. 50000",
+      "ownerKmPerYear": "Km/an (propriétaire)",
+      "ownerKmPerYearPlaceholder": "Auto à partir du kilométrage et de la date",
+      "ownerKmPerYearCalculated": "{value} km/an (calculé à partir du kilométrage et de la date de première immatriculation)",
+      "errorValidOwnerKmPerYear": "Veuillez saisir un km/an valide.",
       "seats": "Places assises",
       "seatsPlaceholder": "ex. 5",
       "firstRegistrationDate": "Date de première immatriculation",

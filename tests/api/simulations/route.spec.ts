@@ -104,7 +104,7 @@ describe('POST /api/simulations', () => {
 
   it('returns 400 when validation fails', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
-    const request = { json: vi.fn().mockResolvedValue({ ...validBody, km: -1 }) } as any;
+    const request = { json: vi.fn().mockResolvedValue({ ...validBody, mileage: -1 }) } as any;
     const response = await POST(request);
     expect(response.status).toBe(400);
     expect(createSimulation).not.toHaveBeenCalled();

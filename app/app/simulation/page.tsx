@@ -8,6 +8,7 @@ import { CalendarIcon, Check, Info, X } from 'lucide-react';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
 import { SimulationStepStatus } from '@/domain/simulation.model';
+import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { Button } from '@/app/components/ui/button';
 import { Calendar } from '@/app/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -28,10 +29,11 @@ interface SimulationFormState {
   carTypeId: string;
   carTypeName: string;
   carTypeOther: string;
-  km: string;
+  mileage: string;
   seats: string;
   firstRegisteredAt: string;
   isVan: boolean;
+  ownerKmPerYear: string;
 }
 
 const defaultFormState: SimulationFormState = {
@@ -44,10 +46,11 @@ const defaultFormState: SimulationFormState = {
   carTypeId: '',
   carTypeName: '',
   carTypeOther: '',
-  km: '',
+  mileage: '',
   seats: '',
   firstRegisteredAt: '',
   isVan: false,
+  ownerKmPerYear: '',
 };
 
 function firstRegistrationDateToDate(value: string): Date | undefined {
@@ -116,6 +119,7 @@ export default function SimulationPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingFuelTypes, setIsLoadingFuelTypes] = useState(true);
+  const [userHasEditedOwnerKmPerYear, setUserHasEditedOwnerKmPerYear] = useState(false);
 
   const CAR_TYPE_OTHER = '__other__';
 
@@ -158,6 +162,21 @@ export default function SimulationPage() {
     [form.brandId, form.fuelTypeId],
   );
 
+  const computedOwnerKmPerYear = useMemo(() => {
+    const mileage = form.mileage.trim() ? parseInt(form.mileage, 10) : NaN;
+    const date = firstRegistrationDateToDate(form.firstRegisteredAt);
+    if (!Number.isInteger(mileage) || mileage < 0 || !date) return null;
+    return calculateOwnerKmPerYear(mileage, date);
+  }, [form.mileage, form.firstRegisteredAt]);
+
+  useEffect(() => {
+    if (userHasEditedOwnerKmPerYear) return;
+    setForm((prev) => ({
+      ...prev,
+      ownerKmPerYear: computedOwnerKmPerYear != null ? String(computedOwnerKmPerYear) : '',
+    }));
+  }, [computedOwnerKmPerYear, userHasEditedOwnerKmPerYear]);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -167,7 +186,7 @@ export default function SimulationPage() {
       const townId = form.townId.trim();
       const brandId = form.brandId.trim();
       const fuelTypeId = form.fuelTypeId.trim();
-      const km = form.km.trim() ? parseInt(form.km, 10) : NaN;
+      const mileage = form.mileage.trim() ? parseInt(form.mileage, 10) : NaN;
       const seats = form.seats.trim() ? parseInt(form.seats, 10) : NaN;
       const firstRegisteredAt = form.firstRegisteredAt.trim();
 
@@ -187,7 +206,7 @@ export default function SimulationPage() {
         setError(t('errorCarTypeOtherRequired'));
         return;
       }
-      if (!Number.isInteger(km) || km < 0) {
+      if (!Number.isInteger(mileage) || mileage < 0) {
         setError(t('errorValidMileage'));
         return;
       }
@@ -206,6 +225,13 @@ export default function SimulationPage() {
         return;
       }
 
+      const computedOwnerKmPerYear = calculateOwnerKmPerYear(mileage, date);
+      const ownerKmPerYearValue = form.ownerKmPerYear.trim() ? parseInt(form.ownerKmPerYear, 10) : computedOwnerKmPerYear;
+      if (ownerKmPerYearValue == null || !Number.isInteger(ownerKmPerYearValue) || ownerKmPerYearValue < 0) {
+        setError(t('errorValidOwnerKmPerYear'));
+        return;
+      }
+
       setIsSubmitting(true);
       try {
         const body = {
@@ -215,7 +241,8 @@ export default function SimulationPage() {
           carType:
             form.carTypeId && form.carTypeId !== CAR_TYPE_OTHER ? { id: form.carTypeId.trim(), name: form.carTypeName || undefined } : null,
           carTypeOther: form.carTypeId === CAR_TYPE_OTHER ? form.carTypeOther.trim() || null : null,
-          km,
+          mileage,
+          ownerKmPerYear: ownerKmPerYearValue,
           seats,
           firstRegisteredAt: date.toISOString(),
           isVan: form.isVan,
@@ -346,8 +373,8 @@ export default function SimulationPage() {
                 <Input
                   type="number"
                   min={0}
-                  value={form.km}
-                  onChange={(e) => updateForm({ km: e.target.value })}
+                  value={form.mileage}
+                  onChange={(e) => updateForm({ mileage: e.target.value })}
                   placeholder={t('mileagePlaceholder')}
                 />
               </Field>
@@ -369,6 +396,20 @@ export default function SimulationPage() {
                   value={form.firstRegisteredAt}
                   onChange={(value) => updateForm({ firstRegisteredAt: value })}
                   placeholder={t('pickDate')}
+                />
+              </Field>
+
+              <Field>
+                <FieldLabel>{t('ownerKmPerYear')}</FieldLabel>
+                <Input
+                  type="number"
+                  min={0}
+                  value={form.ownerKmPerYear}
+                  onChange={(e) => {
+                    updateForm({ ownerKmPerYear: e.target.value });
+                    setUserHasEditedOwnerKmPerYear(true);
+                  }}
+                  placeholder={t('ownerKmPerYearPlaceholder')}
                 />
               </Field>
 

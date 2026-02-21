@@ -103,6 +103,12 @@ const CAR_BRANDS: { code: string; name: string }[] = [
 const LOCALES = ['en', 'nl', 'fr'] as const;
 
 export async function seedCarBrands(prisma: PrismaClient) {
+  const existingCount = await prisma.carBrand.count();
+  if (existingCount > 0) {
+    console.log('Car brands already seeded, skipping.');
+    return;
+  }
+
   console.log('Seeding car brands...');
 
   for (const cb of CAR_BRANDS) {

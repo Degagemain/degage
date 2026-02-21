@@ -1,5 +1,6 @@
 import { PrismaClient } from '@/storage/client/client';
-
+import { hubSchema } from '@/domain/hub.model';
+import { createHub } from '@/actions/hub/create';
 const HUBS: { name: string; isDefault: boolean }[] = [
   { name: 'default', isDefault: true },
   { name: 'Kernregio (Gent)', isDefault: false },
@@ -15,9 +16,12 @@ export async function seedHubs(prisma: PrismaClient) {
   console.log('Seeding hubs...');
 
   for (const hub of HUBS) {
-    await prisma.hub.create({
-      data: { name: hub.name, isDefault: hub.isDefault },
+    const validated = hubSchema.parse({
+      id: null,
+      name: hub.name,
+      isDefault: hub.isDefault,
     });
+    await createHub(validated);
     console.log(`  Seeded: ${hub.name}${hub.isDefault ? ' (default)' : ''}`);
   }
 

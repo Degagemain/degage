@@ -51,6 +51,8 @@ export default function HubsPage() {
     simMaxAgeForBonus: false,
     simDepreciationKm: false,
     simDepreciationKmElectric: false,
+    simInspectionCostPerYear: false,
+    simMaintenanceCostPerYear: false,
     createdAt: false,
     updatedAt: false,
   });
@@ -97,6 +99,8 @@ export default function HubsPage() {
       simMaxAgeForBonus: t('columns.simMaxAgeForBonus'),
       simDepreciationKm: t('columns.simDepreciationKm'),
       simDepreciationKmElectric: t('columns.simDepreciationKmElectric'),
+      simInspectionCostPerYear: t('columns.simInspectionCostPerYear'),
+      simMaintenanceCostPerYear: t('columns.simMaintenanceCostPerYear'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

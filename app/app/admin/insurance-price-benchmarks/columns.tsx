@@ -15,7 +15,7 @@ function formatDate(value: Date | string | null): string {
   return new Date(value).toLocaleDateString();
 }
 
-function formatKm(value: number): string {
+function formatPriceCap(value: number): string {
   if (value >= 999_999_999) return '∞';
   return value.toLocaleString();
 }
@@ -45,19 +45,29 @@ export const createColumns = (options: ColumnOptions): ColumnDef<InsurancePriceB
       enableHiding: true,
     },
     {
-      accessorKey: 'maxMileageExclusive',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.maxMileageExclusive')} onSort={onSort} />,
+      accessorKey: 'maxCarPrice',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.maxCarPrice')} onSort={onSort} />,
       cell: ({ row }) => {
-        const val = row.getValue('maxMileageExclusive') as number;
-        return <span className="font-mono text-sm">{formatKm(val)}</span>;
+        const val = row.getValue('maxCarPrice') as number;
+        return <span className="font-mono text-sm">{formatPriceCap(val)}</span>;
       },
       enableHiding: true,
     },
     {
-      accessorKey: 'kmPrice',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.kmPrice')} onSort={onSort} />,
+      accessorKey: 'baseRate',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.baseRate')} onSort={onSort} />,
       cell: ({ row }) => {
-        const val = row.getValue('kmPrice') as number;
+        const val = row.getValue('baseRate') as number;
+        return <span className="font-mono text-sm">{val.toFixed(4)}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'rate',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.rate')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('rate') as number;
         return <span className="font-mono text-sm">{val.toFixed(4)}</span>;
       },
       enableHiding: true,
