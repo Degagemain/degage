@@ -132,6 +132,7 @@
       "panel": "Beheerpaneel",
       "settings": "Instellingen",
       "carSettings": "Auto",
+      "simulation": "Simulaties",
       "geoSettings": "Geo"
     },
     "command": {
@@ -284,6 +285,21 @@
         "sharedAvgKm": "Gedeeld gem. km",
         "sharedMinKm": "Gedeeld min km",
         "sharedMaxKm": "Gedeeld max km",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "tryAgain": "Opnieuw proberen"
+    },
+    "insurancePriceBenchmarks": {
+      "title": "Verzekering",
+      "filters": {
+        "year": "Jaar",
+        "yearPlaceholder": "Alle jaren"
+      },
+      "columns": {
+        "year": "Jaar",
+        "maxMileageExclusive": "Km max (excl.)",
+        "kmPrice": "€/km",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },

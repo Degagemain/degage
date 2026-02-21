@@ -43,7 +43,7 @@ describe('hubBenchmarkSchema', () => {
   });
 
   it('rejects missing hubId', () => {
-    const { hubId: _, ...noHub } = validData;
+    const { hubId, ...noHub } = validData;
     const result = hubBenchmarkSchema.safeParse(noHub);
     expect(result.success).toBe(false);
   });

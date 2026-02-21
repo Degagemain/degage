@@ -158,6 +158,17 @@ model HubBenchmark {
     @@unique([hubId, ownerKm])
 }
 
+model InsurancePriceBenchmark {
+    id                    String   @id @default(uuid())
+    year                  Int
+    maxMileageExclusive   Int
+    kmPrice               Decimal
+    createdAt             DateTime @default(now())
+    updatedAt             DateTime @updatedAt
+
+    @@unique([year, maxMileageExclusive])
+}
+
 model CarPriceEstimate {
     id          String   @id @default(uuid())
     carTypeId   String

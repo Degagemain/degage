@@ -5,6 +5,7 @@ import { seedEuroNorms } from './seed-euro-norms';
 import { seedProvinces } from './seed-provinces';
 import { seedHubs } from './seed-hubs';
 import { seedHubBenchmarks } from './seed-hub-benchmarks';
+import { seedInsurancePriceBenchmarks } from './seed-insurance-price-benchmarks';
 import { seedTowns } from './seed-towns';
 import { getPrismaClient } from '@/storage/utils';
 
@@ -17,6 +18,7 @@ async function seed() {
   await seedProvinces(prisma);
   await seedHubs(prisma);
   await seedHubBenchmarks(prisma);
+  await seedInsurancePriceBenchmarks(prisma);
   await seedTowns(prisma);
   await seedCarTypes(prisma);
 }

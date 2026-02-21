@@ -430,19 +430,19 @@ export default function NewSimulationPage() {
               <ul className="space-y-2" aria-busy="true" aria-label={tForm('submitting')}>
                 <li className="flex items-center gap-2 text-sm">
                   <Skeleton className="size-4 shrink-0 rounded-full" />
-                  <Skeleton className="h-4 flex-1 w-full" />
+                  <Skeleton className="h-4 w-full flex-1" />
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <Skeleton className="size-4 shrink-0 rounded-full" />
-                  <Skeleton className="h-4 flex-1 w-4/5" />
+                  <Skeleton className="h-4 w-4/5 flex-1" />
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <Skeleton className="size-4 shrink-0 rounded-full" />
-                  <Skeleton className="h-4 flex-1 w-3/4" />
+                  <Skeleton className="h-4 w-3/4 flex-1" />
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <Skeleton className="size-4 shrink-0 rounded-full" />
-                  <Skeleton className="h-4 flex-1 w-2/3" />
+                  <Skeleton className="h-4 w-2/3 flex-1" />
                 </li>
               </ul>
             ) : preview && preview.steps.length > 0 ? (

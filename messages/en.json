@@ -132,6 +132,7 @@
       "panel": "Admin Panel",
       "settings": "Settings",
       "carSettings": "Car",
+      "simulation": "Simulation",
       "geoSettings": "Geo"
     },
     "command": {
@@ -284,6 +285,21 @@
         "sharedAvgKm": "Shared avg km",
         "sharedMinKm": "Shared min km",
         "sharedMaxKm": "Shared max km",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "tryAgain": "Try again"
+    },
+    "insurancePriceBenchmarks": {
+      "title": "Insurance",
+      "filters": {
+        "year": "Year",
+        "yearPlaceholder": "All years"
+      },
+      "columns": {
+        "year": "Year",
+        "maxMileageExclusive": "Max mileage (excl.)",
+        "kmPrice": "€/km",
         "created": "Created",
         "updated": "Updated"
       },
