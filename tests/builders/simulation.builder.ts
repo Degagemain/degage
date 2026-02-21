@@ -18,6 +18,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     co2Emission: data.co2Emission ?? null,
     ecoscore: data.ecoscore ?? null,
     euroNormCode: data.euroNormCode ?? null,
+    consumption: data.consumption ?? null,
     steps: data.steps ?? [
       {
         code: SimulationStepCode.KM_LIMIT,

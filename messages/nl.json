@@ -340,6 +340,18 @@
       "searchPlaceholder": "Zoek op fiscale regio...",
       "tryAgain": "Opnieuw proberen"
     },
+    "carTaxFlatRates": {
+      "title": "Vast tarief fiscale belasting",
+      "columns": {
+        "fiscalRegion": "Fiscale regio",
+        "start": "Start",
+        "rate": "Tarief",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek op fiscale regio...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "insurancePriceBenchmarks": {
       "title": "Verzekering",
       "filters": {

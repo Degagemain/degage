@@ -27,6 +27,7 @@ export const SIMULATION_ITEMS: {
     | 'systemParameters'
     | 'hubBenchmarks'
     | 'carTaxBaseRates'
+    | 'carTaxFlatRates'
     | 'carTaxEuroNormAdjustments';
   href: string;
 }[] = [
@@ -35,6 +36,7 @@ export const SIMULATION_ITEMS: {
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },
   { translationKey: 'carTaxBaseRates', href: '/app/admin/car-tax-base-rates' },
+  { translationKey: 'carTaxFlatRates', href: '/app/admin/car-tax-flat-rates' },
   { translationKey: 'carTaxEuroNormAdjustments', href: '/app/admin/car-tax-euro-norm-adjustments' },
 ];
 

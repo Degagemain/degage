@@ -340,6 +340,18 @@
       "searchPlaceholder": "Search by fiscal region...",
       "tryAgain": "Try again"
     },
+    "carTaxFlatRates": {
+      "title": "Fiscal Tax Flat Rate",
+      "columns": {
+        "fiscalRegion": "Fiscal region",
+        "start": "Start",
+        "rate": "Rate",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search by fiscal region...",
+      "tryAgain": "Try again"
+    },
     "insurancePriceBenchmarks": {
       "title": "Insurance",
       "filters": {
