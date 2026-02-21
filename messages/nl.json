@@ -132,6 +132,7 @@
       "panel": "Beheerpaneel",
       "settings": "Instellingen",
       "carSettings": "Auto",
+      "simulation": "Simulaties",
       "geoSettings": "Geo"
     },
     "command": {
@@ -167,6 +168,8 @@
         "code": "Code",
         "name": "Naam",
         "active": "Actief",
+        "pricePer": "Prijs per l/kWh",
+        "co2Contribution": "CO₂-bijdrage",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -228,6 +231,7 @@
       },
       "columns": {
         "brand": "Merk",
+        "fuelType": "Brandstoftype",
         "carType": "Autotype",
         "year": "Jaar",
         "price": "Prijs",
@@ -239,10 +243,41 @@
       },
       "tryAgain": "Opnieuw proberen"
     },
+    "carTaxEuroNormAdjustments": {
+      "title": "Belastingen Euronorm correcties",
+      "columns": {
+        "fiscalRegion": "Fiscale regio",
+        "euroNormGroup": "Euro norm groep",
+        "defaultAdjustment": "Standaard correctie",
+        "dieselAdjustment": "Diesel correctie",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek op fiscale regio...",
+      "tryAgain": "Opnieuw proberen"
+    },
+    "fiscalRegions": {
+      "title": "Fiscale regio's",
+      "filters": {
+        "default": "Standaard"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Naam",
+        "default": "Standaard",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "default": "Standaard",
+      "notDefault": "Niet standaard",
+      "searchPlaceholder": "Zoek fiscale regio's...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "provinces": {
       "title": "Provincies",
       "columns": {
         "name": "Naam",
+        "fiscalRegion": "Fiscale regio",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -263,6 +298,8 @@
         "simMinEcoScoreForBonus": "Min ecoscore (bonus)",
         "simMaxKmForBonus": "Max km (bonus)",
         "simMaxAgeForBonus": "Max leeftijd (bonus)",
+        "simDepreciationKm": "Afschrijving km",
+        "simDepreciationKmElectric": "Afschrijving km (elektrisch)",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -283,6 +320,48 @@
         "sharedAvgKm": "Gedeeld gem. km",
         "sharedMinKm": "Gedeeld min km",
         "sharedMaxKm": "Gedeeld max km",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "tryAgain": "Opnieuw proberen"
+    },
+    "carTaxBaseRates": {
+      "title": "Belastingen basistarieven",
+      "columns": {
+        "fiscalRegion": "Fiscale regio",
+        "maxCc": "Max cc",
+        "fiscalPk": "Fiscal PK",
+        "start": "Start",
+        "end": "Einde",
+        "rate": "Tarief",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek op fiscale regio...",
+      "tryAgain": "Opnieuw proberen"
+    },
+    "carTaxFlatRates": {
+      "title": "Vast tarief fiscale belasting",
+      "columns": {
+        "fiscalRegion": "Fiscale regio",
+        "start": "Start",
+        "rate": "Tarief",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek op fiscale regio...",
+      "tryAgain": "Opnieuw proberen"
+    },
+    "insurancePriceBenchmarks": {
+      "title": "Verzekering",
+      "filters": {
+        "year": "Jaar",
+        "yearPlaceholder": "Alle jaren"
+      },
+      "columns": {
+        "year": "Jaar",
+        "maxMileageExclusive": "Km max (excl.)",
+        "kmPrice": "€/km",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -380,7 +459,17 @@
         "higherRate": "Hogere tarief"
       },
       "searchPlaceholder": "Zoek simulaties...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "new": "Nieuw",
+      "newPage": {
+        "title": "Nieuwe simulatie",
+        "description": "Stel de parameters in. Het resultaat wordt bijgewerkt bij elke wijziging. Gebruik \"Aanmaken\" om de simulatie op te slaan.",
+        "backToSimulations": "← Terug naar simulaties",
+        "create": "Simulatie aanmaken",
+        "creating": "Aanmaken…",
+        "resultTitle": "Resultaat",
+        "noResult": "Vul het formulier in om het simulatieresultaat te zien."
+      }
     },
     "users": {
       "title": "Gebruikers",

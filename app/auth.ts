@@ -4,8 +4,15 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin } from 'better-auth/plugins';
 import { getPrismaClient } from './storage/utils';
 import { dbUserGetLocale } from './storage/user/user.read';
+import { sendEmail } from './integrations/resend';
 
 const prisma = getPrismaClient();
+
+function isAdminDomain(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const domain = email.split('@')[1]?.toLowerCase();
+  return !!domain && (process.env.ADMIN_EMAIL_DOMAINS?.split(',') ?? []).includes(domain);
+}
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -13,8 +20,25 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    sendResetPassword: async (data, ctx) => {
-      console.log('to do: send reset password email', data, ctx);
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url }, _request) => {
+      await sendEmail({
+        to: user.email,
+        subject: 'Reset your password',
+        text: `Click the link to reset your password: ${url}`,
+      });
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }, _request) => {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your email address',
+        text: `Click the link to verify your email: ${url}`,
+      });
     },
   },
   socialProviders: {
@@ -27,6 +51,20 @@ export const auth = betterAuth({
         : undefined,
   },
   plugins: [admin()],
+  databaseHooks: {
+    user: {
+      update: {
+        after: async (user) => {
+          if (!user.emailVerified || user.role === 'admin') return;
+          if (!isAdminDomain(user.email)) return;
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { role: 'admin' },
+          });
+        },
+      },
+    },
+  },
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       // Set locale cookie after successful sign-in, sign-up, or OAuth callback

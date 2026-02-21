@@ -132,6 +132,7 @@
       "panel": "Panneau d'administration",
       "settings": "Paramètres",
       "carSettings": "Voiture",
+      "simulation": "Simulation",
       "geoSettings": "Geo"
     },
     "command": {
@@ -167,6 +168,8 @@
         "code": "Code",
         "name": "Nom",
         "active": "Actif",
+        "pricePer": "Prix par l/kWh",
+        "co2Contribution": "Contribution CO₂",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -228,6 +231,7 @@
       },
       "columns": {
         "brand": "Marque",
+        "fuelType": "Type de carburant",
         "carType": "Type de voiture",
         "year": "Année",
         "price": "Prix",
@@ -239,10 +243,41 @@
       },
       "tryAgain": "Réessayer"
     },
+    "carTaxEuroNormAdjustments": {
+      "title": "Normes Euro (taxe auto)",
+      "columns": {
+        "fiscalRegion": "Région fiscale",
+        "euroNormGroup": "Groupe euro norme",
+        "defaultAdjustment": "Ajustement par défaut",
+        "dieselAdjustment": "Ajustement diesel",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "searchPlaceholder": "Rechercher par région fiscale...",
+      "tryAgain": "Réessayer"
+    },
+    "fiscalRegions": {
+      "title": "Régions fiscales",
+      "filters": {
+        "default": "Par défaut"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Nom",
+        "default": "Par défaut",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "default": "Par défaut",
+      "notDefault": "Non par défaut",
+      "searchPlaceholder": "Rechercher des régions fiscales...",
+      "tryAgain": "Réessayer"
+    },
     "provinces": {
       "title": "Provinces",
       "columns": {
         "name": "Nom",
+        "fiscalRegion": "Région fiscale",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -263,6 +298,8 @@
         "simMinEcoScoreForBonus": "Ecoscore min (bonus)",
         "simMaxKmForBonus": "Km max (bonus)",
         "simMaxAgeForBonus": "Âge max (bonus)",
+        "simDepreciationKm": "Km dépréciation",
+        "simDepreciationKmElectric": "Km dépréciation (électrique)",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -283,6 +320,48 @@
         "sharedAvgKm": "Km partagés moy.",
         "sharedMinKm": "Km partagés min",
         "sharedMaxKm": "Km partagés max",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "tryAgain": "Réessayer"
+    },
+    "carTaxBaseRates": {
+      "title": "Taux de base fiscal",
+      "columns": {
+        "fiscalRegion": "Région fiscale",
+        "maxCc": "Max cc",
+        "fiscalPk": "Fiscal PK",
+        "start": "Début",
+        "end": "Fin",
+        "rate": "Taux",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "searchPlaceholder": "Rechercher par région fiscale...",
+      "tryAgain": "Réessayer"
+    },
+    "carTaxFlatRates": {
+      "title": "Taux fixe fiscal",
+      "columns": {
+        "fiscalRegion": "Région fiscale",
+        "start": "Début",
+        "rate": "Taux",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "searchPlaceholder": "Rechercher par région fiscale...",
+      "tryAgain": "Réessayer"
+    },
+    "insurancePriceBenchmarks": {
+      "title": "Prix assurance",
+      "filters": {
+        "year": "Année",
+        "yearPlaceholder": "Toutes les années"
+      },
+      "columns": {
+        "year": "Année",
+        "maxMileageExclusive": "Km max (excl.)",
+        "kmPrice": "€/km",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -380,7 +459,17 @@
         "higherRate": "Taux plus élevé"
       },
       "searchPlaceholder": "Rechercher des simulations...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "new": "Nouveau",
+      "newPage": {
+        "title": "Nouvelle simulation",
+        "description": "Configurez les paramètres. Le résultat se met à jour à chaque modification. Utilisez « Créer » pour enregistrer la simulation.",
+        "backToSimulations": "← Retour aux simulations",
+        "create": "Créer la simulation",
+        "creating": "Création…",
+        "resultTitle": "Résultat",
+        "noResult": "Remplissez le formulaire pour voir le résultat de la simulation."
+      }
     },
     "users": {
       "title": "Utilisateurs",

@@ -14,6 +14,8 @@ interface DataTableToolbarProps<TData> {
   searchValue: string;
   onSearchChange: (value: string) => void;
   searchPlaceholder?: string;
+  /** Slot rendered to the left of the search input */
+  leadingSlot?: React.ReactNode;
   filterSlot?: React.ReactNode;
   /** Optional map of column id -> display label for the column picker */
   columnLabels?: Record<string, string>;
@@ -26,6 +28,7 @@ export function DataTableToolbar<TData>({
   searchValue,
   onSearchChange,
   searchPlaceholder,
+  leadingSlot,
   filterSlot,
   columnLabels,
   actionSlot,
@@ -36,6 +39,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+      {leadingSlot}
       <div className="relative w-full sm:max-w-64">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input placeholder={placeholder} value={searchValue} onChange={(e) => onSearchChange(e.target.value)} className="h-9 pr-9 pl-9" />

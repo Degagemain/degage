@@ -12,6 +12,8 @@ export const dbHubToDomain = (hub: Prisma.HubGetPayload<object>): Hub => {
     simMinEcoScoreForBonus: hub.simMinEcoScoreForBonus,
     simMaxKmForBonus: hub.simMaxKmForBonus,
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
+    simDepreciationKm: hub.simDepreciationKm,
+    simDepreciationKmElectric: hub.simDepreciationKmElectric,
     createdAt: hub.createdAt,
     updatedAt: hub.updatedAt,
   };
@@ -27,6 +29,8 @@ export const hubToDbCreate = (hub: Hub): Prisma.HubCreateInput => {
     simMinEcoScoreForBonus: hub.simMinEcoScoreForBonus,
     simMaxKmForBonus: hub.simMaxKmForBonus,
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
+    simDepreciationKm: hub.simDepreciationKm,
+    simDepreciationKmElectric: hub.simDepreciationKmElectric,
   };
 };
 
@@ -40,5 +44,7 @@ export const hubToDbUpdate = (hub: Hub): Prisma.HubUpdateInput => {
     simMinEcoScoreForBonus: hub.simMinEcoScoreForBonus,
     simMaxKmForBonus: hub.simMaxKmForBonus,
     simMaxAgeForBonus: hub.simMaxAgeForBonus,
+    simDepreciationKm: hub.simDepreciationKm,
+    simDepreciationKmElectric: hub.simDepreciationKmElectric,
   };
 };

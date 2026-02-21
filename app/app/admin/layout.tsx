@@ -5,7 +5,14 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { ChevronDown, ChevronsUpDown } from 'lucide-react';
 
-import { ALL_PAGE_ITEMS, CAR_SETTINGS_ITEMS, GEO_SETTINGS_ITEMS, MAIN_ITEMS, SIDEBAR_SETTINGS_ICONS } from '@/app/admin/nav-config';
+import {
+  ALL_PAGE_ITEMS,
+  CAR_SETTINGS_ITEMS,
+  GEO_SETTINGS_ITEMS,
+  MAIN_ITEMS,
+  SIDEBAR_SETTINGS_ICONS,
+  SIMULATION_ITEMS,
+} from '@/app/admin/nav-config';
 import { AdminCommandPalette } from '@/app/admin/admin-command-palette';
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -128,6 +135,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <SidebarGroupLabel>{t('sidebar.settings')}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                  <Collapsible defaultOpen={false} className="group/collapsible">
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton tooltip={t('sidebar.simulation')}>
+                          <SIDEBAR_SETTINGS_ICONS.simulation />
+                          <span>{t('sidebar.simulation')}</span>
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {SIMULATION_ITEMS.map((item) => {
+                            const title = t(`${item.translationKey}.title`);
+                            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                            return (
+                              <SidebarMenuSubItem key={item.href}>
+                                <SidebarMenuSubButton asChild isActive={isActive}>
+                                  <Link href={item.href}>
+                                    <span>{title}</span>
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            );
+                          })}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+
                   <Collapsible defaultOpen={false} className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>

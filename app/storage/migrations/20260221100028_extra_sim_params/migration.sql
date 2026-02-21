@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Hub" ADD COLUMN     "simDepreciationKm" INTEGER NOT NULL DEFAULT 250000,
+ADD COLUMN     "simDepreciationKmElectric" INTEGER NOT NULL DEFAULT 320000;

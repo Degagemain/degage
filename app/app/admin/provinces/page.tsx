@@ -64,6 +64,7 @@ export default function ProvincesPage() {
   const columnLabels = useMemo(
     () => ({
       name: t('columns.name'),
+      fiscalRegion: t('columns.fiscalRegion'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

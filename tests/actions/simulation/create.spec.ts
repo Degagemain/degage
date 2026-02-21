@@ -56,4 +56,16 @@ describe('createSimulation', () => {
     await expect(createSimulation(input)).rejects.toBeInstanceOf(ZodError);
     expect(dbSimulationCreate).not.toHaveBeenCalled();
   });
+
+  it('returns simulation without persisting when skipPersistence is true', async () => {
+    const input = simulationRunInput({ km: 50_000 });
+
+    const result = await createSimulation(input, { skipPersistence: true });
+
+    expect(result.brandId).toBe(input.brand.id);
+    expect(result.km).toBe(input.km);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.id).toBeNull();
+    expect(dbSimulationCreate).not.toHaveBeenCalled();
+  });
 });

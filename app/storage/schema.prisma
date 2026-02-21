@@ -17,14 +17,16 @@ model Car {
 }
 
 model FuelType {
-    id           String                @id @default(uuid())
-    code         String                @unique
-    isActive     Boolean               @default(true)
-    translations FuelTypeTranslation[]
-    carTypes     CarType[]
-    simulations  Simulation[]
-    createdAt    DateTime              @default(now())
-    updatedAt    DateTime              @updatedAt
+    id               String                @id @default(uuid())
+    code             String                @unique
+    isActive         Boolean               @default(true)
+    pricePer         Decimal               @default(0)
+    co2Contribution  Int                   @default(0)
+    translations     FuelTypeTranslation[]
+    carTypes         CarType[]
+    simulations      Simulation[]
+    createdAt        DateTime              @default(now())
+    updatedAt        DateTime              @updatedAt
 }
 
 model FuelTypeTranslation {
@@ -102,6 +104,7 @@ model Simulation {
     co2Emission       Int?
     ecoscore          Int?
     euroNormCode      String?
+    consumption       Float?
     steps             Json                 @default("[]")
     createdAt         DateTime             @default(now())
     updatedAt         DateTime             @updatedAt
@@ -120,12 +123,71 @@ model EuroNorm {
     systemParameterValues SystemParameter[]
 }
 
+model FiscalRegion {
+    id                        String                        @id @default(uuid())
+    code                      String                        @unique
+    isDefault                 Boolean                       @default(true)
+    translations              FiscalRegionTranslation[]
+    provinces                 Province[]
+    carTaxBaseRates           CarTaxBaseRate[]
+    carTaxEuroNormAdjustments CarTaxEuroNormAdjustment[]
+    carTaxFlatRates           CarTaxFlatRate[]
+    createdAt                 DateTime                      @default(now())
+    updatedAt                 DateTime                      @updatedAt
+}
+
+model CarTaxEuroNormAdjustment {
+    id                String       @id @default(uuid())
+    fiscalRegionId    String
+    fiscalRegion      FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+    euroNormGroup     Int
+    defaultAdjustment Decimal      @default(0)
+    dieselAdjustment  Decimal      @default(0)
+    createdAt         DateTime     @default(now())
+    updatedAt         DateTime     @updatedAt
+}
+
+model CarTaxBaseRate {
+    id              String       @id @default(uuid())
+    fiscalRegionId  String
+    fiscalRegion    FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+    maxCc           Int
+    fiscalPk        Int
+    start           DateTime?
+    end             DateTime?
+    rate            Decimal
+    createdAt       DateTime     @default(now())
+    updatedAt       DateTime     @updatedAt
+}
+
+model CarTaxFlatRate {
+    id              String       @id @default(uuid())
+    fiscalRegionId  String
+    fiscalRegion    FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+    start           DateTime?
+    rate            Decimal
+    createdAt       DateTime     @default(now())
+    updatedAt       DateTime     @updatedAt
+}
+
+model FiscalRegionTranslation {
+    id              String       @id @default(uuid())
+    fiscalRegionId  String
+    fiscalRegion    FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+    locale          String
+    name            String
+
+    @@unique([fiscalRegionId, locale])
+}
+
 model Province {
-    id        String   @id @default(uuid())
-    name      String
-    towns     Town[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id               String       @id @default(uuid())
+    name             String
+    fiscalRegionId   String
+    fiscalRegion     FiscalRegion @relation(fields: [fiscalRegionId], references: [id])
+    towns            Town[]
+    createdAt        DateTime     @default(now())
+    updatedAt        DateTime     @updatedAt
 }
 
 model Hub {
@@ -138,6 +200,8 @@ model Hub {
     simMinEcoScoreForBonus    Int      @default(65)
     simMaxKmForBonus          Int      @default(140000)
     simMaxAgeForBonus         Int      @default(7)
+    simDepreciationKm         Int      @default(250000)
+    simDepreciationKmElectric Int      @default(320000)
     towns                     Town[]
     benchmarks                HubBenchmark[]
     createdAt                 DateTime @default(now())
@@ -156,6 +220,17 @@ model HubBenchmark {
     updatedAt    DateTime @updatedAt
 
     @@unique([hubId, ownerKm])
+}
+
+model InsurancePriceBenchmark {
+    id                    String   @id @default(uuid())
+    year                  Int
+    maxMileageExclusive   Int
+    kmPrice               Decimal
+    createdAt             DateTime @default(now())
+    updatedAt             DateTime @updatedAt
+
+    @@unique([year, maxMileageExclusive])
 }
 
 model CarPriceEstimate {

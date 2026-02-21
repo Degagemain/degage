@@ -3,11 +3,11 @@ import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
 import { runSimulationEngine } from './engine';
 import type { Simulation, SimulationRunInput } from '@/domain/simulation.model';
 
-export async function createSimulation(input: SimulationRunInput): Promise<Simulation> {
-  const validated = simulationRunInputParseSchema.parse(input);
-  const result = await runSimulationEngine(validated);
-
-  const simulation: Simulation = {
+function buildSimulationFromResult(
+  validated: ReturnType<typeof simulationRunInputParseSchema.parse>,
+  result: Awaited<ReturnType<typeof runSimulationEngine>>,
+): Simulation {
+  return {
     id: null,
     townId: validated.town.id,
     brandId: validated.brand.id,
@@ -24,10 +24,21 @@ export async function createSimulation(input: SimulationRunInput): Promise<Simul
     co2Emission: result.carInfo?.co2Emission ?? null,
     ecoscore: result.carInfo?.ecoscore ?? null,
     euroNormCode: result.carInfo?.euroNormCode ?? null,
+    consumption: result.carInfo?.consumption ?? null,
     steps: result.steps,
     createdAt: null,
     updatedAt: null,
   };
+}
+
+export async function createSimulation(input: SimulationRunInput, options?: { skipPersistence?: boolean }): Promise<Simulation> {
+  const validated = simulationRunInputParseSchema.parse(input);
+  const result = await runSimulationEngine(validated);
+  const simulation = buildSimulationFromResult(validated, result);
+
+  if (options?.skipPersistence) {
+    return simulation;
+  }
 
   return dbSimulationCreate(simulation);
 }

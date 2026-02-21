@@ -13,6 +13,8 @@ export const fuelTypeSchema = z
     code: z.string().min(1).max(50),
     name: z.string().min(1).max(100),
     isActive: z.boolean().default(true),
+    pricePer: z.number().min(0).default(0),
+    co2Contribution: z.number().int().min(0).default(0),
     translations: z.array(fuelTypeTranslationSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
@@ -20,3 +22,7 @@ export const fuelTypeSchema = z
   .strict();
 
 export type FuelType = z.infer<typeof fuelTypeSchema>;
+
+export function isElectricFuelType(fuelType: FuelType): boolean {
+  return fuelType.code === 'electric';
+}

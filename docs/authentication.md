@@ -2,6 +2,21 @@
 
 Authentication is implemented using [better-auth](https://www.better-auth.com/) with pre-built UI components from [@daveyplate/better-auth-ui](https://github.com/daveyplate/better-auth-ui).
 
+## Environment Variables
+
+| Variable              | Description                                                                                                                                                                                                                                                              |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ADMIN_EMAIL_DOMAINS` | Comma-separated list of email domains. Users whose **verified** email domain is in this list are automatically assigned the `admin` role (on sign-up if the email is already verified, e.g. OAuth, or when they verify their email). Example: `example.com,company.org`. |
+| `RESEND_API_KEY`      | API key for [Resend](https://resend.com) used to send verification and password-reset emails. If unset, those emails are not sent (e.g. local dev).                                                                                                                      |
+| `RESEND_FROM`         | Sender address for transactional emails. Default: `Neurotic <onboarding@resend.dev>`. Use your verified domain in production, e.g. `App <noreply@yourdomain.com>`.                                                                                                       |
+
+## Email verification and password reset
+
+Verification and password-reset emails are sent via [Resend](https://resend.com). Configure `RESEND_API_KEY` (and optionally `RESEND_FROM` for a custom sender).
+
+- **Email verification**: Sent on sign-up (`sendOnSignUp`) and on sign-in when the user is not yet verified (`sendOnSignIn`). Login with email/password requires a verified email (`requireEmailVerification`). After the user clicks the verification link, they are signed in automatically (`autoSignInAfterVerification`).
+- **Password reset**: Triggered from the forgot-password flow; the user receives a link to set a new password.
+
 ## Plugins
 
 - **Admin** — Role-based access control and user management ([docs](https://www.better-auth.com/docs/plugins/admin))

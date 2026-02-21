@@ -41,6 +41,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Province>[] => 
       enableSorting: false,
     },
     {
+      accessorKey: 'fiscalRegion',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.fiscalRegion')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const fiscalRegion = row.original.fiscalRegion;
+        return <span className="text-muted-foreground text-sm">{fiscalRegion?.name ?? '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,

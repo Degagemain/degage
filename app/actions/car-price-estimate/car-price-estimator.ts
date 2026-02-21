@@ -8,7 +8,7 @@ import { dbCarPriceEstimateCreate } from '@/storage/car-price-estimate/car-price
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { dbCarBrandRead } from '@/storage/car-brand/car-brand.read';
 import { dbFuelTypeRead } from '@/storage/fuel-type/fuel-type.read';
-import { generateGroundedJson } from '@/integrations/gemini/client';
+import { generateGroundedJson } from '@/integrations/gemini';
 
 interface GeminiPriceEstimate {
   price: number;

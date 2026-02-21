@@ -22,6 +22,8 @@ interface FuelTypesState {
 
 const SORT_COLUMN_MAP: Record<string, string> = {
   code: 'code',
+  pricePer: 'pricePer',
+  co2Contribution: 'co2Contribution',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
 };
@@ -85,6 +87,8 @@ export default function FuelTypesPage() {
       code: t('columns.code'),
       name: t('columns.name'),
       isActive: t('columns.active'),
+      pricePer: t('columns.pricePer'),
+      co2Contribution: t('columns.co2Contribution'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

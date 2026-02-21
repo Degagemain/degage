@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { CornerDownLeft } from 'lucide-react';
 
-import { CAR_SETTINGS_ITEMS, GEO_SETTINGS_ITEMS, MAIN_ITEMS, SIDEBAR_SETTINGS_ICONS } from '@/app/admin/nav-config';
+import { CAR_SETTINGS_ITEMS, GEO_SETTINGS_ITEMS, MAIN_ITEMS, SIDEBAR_SETTINGS_ICONS, SIMULATION_ITEMS } from '@/app/admin/nav-config';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/app/components/ui/command';
 
 export function AdminCommandPalette() {
@@ -67,6 +67,18 @@ export function AdminCommandPalette() {
             return (
               <CommandItem key={item.href} value={title} onSelect={() => run(item.href)}>
                 <SIDEBAR_SETTINGS_ICONS.car />
+                {title}
+              </CommandItem>
+            );
+          })}
+        </CommandGroup>
+
+        <CommandGroup heading={t('sidebar.simulation')}>
+          {SIMULATION_ITEMS.map((item) => {
+            const title = t(`${item.translationKey}.title`);
+            return (
+              <CommandItem key={item.href} value={title} onSelect={() => run(item.href)}>
+                <SIDEBAR_SETTINGS_ICONS.simulation />
                 {title}
               </CommandItem>
             );
