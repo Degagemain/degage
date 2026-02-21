@@ -91,6 +91,7 @@ export const simulationSchema = z
     co2Emission: z.number().int().nullable().default(null),
     ecoscore: z.number().int().min(0).max(100).nullable().default(null),
     euroNormCode: z.string().nullable().default(null),
+    consumption: z.number().nullable().default(null),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),

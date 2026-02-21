@@ -43,8 +43,16 @@ describe('GET /api/hub-benchmarks', () => {
     expect(searchHubBenchmarks).not.toHaveBeenCalled();
   });
 
-  it('returns 200 and list when authenticated', async () => {
+  it('returns 403 when regular user', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockRegularUser } as any);
+    const request = { nextUrl: new URL('http://localhost/api/hub-benchmarks') } as any;
+    const response = await GET(request);
+    expect(response.status).toBe(403);
+    expect(searchHubBenchmarks).not.toHaveBeenCalled();
+  });
+
+  it('returns 200 and list when admin', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
     vi.mocked(searchHubBenchmarks).mockResolvedValueOnce({
       records: [hubBenchmark()],
       total: 1,

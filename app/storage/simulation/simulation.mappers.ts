@@ -50,6 +50,7 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
     co2Emission: db.co2Emission,
     ecoscore: db.ecoscore,
     euroNormCode: db.euroNormCode,
+    consumption: db.consumption != null ? Number(db.consumption) : null,
     steps: parseSteps(db.steps),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -97,6 +98,7 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
     co2Emission: simulation.co2Emission ?? undefined,
     ecoscore: simulation.ecoscore ?? undefined,
     euroNormCode: simulation.euroNormCode ?? undefined,
+    consumption: simulation.consumption ?? undefined,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };
@@ -118,6 +120,7 @@ export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationU
     co2Emission: simulation.co2Emission ?? undefined,
     ecoscore: simulation.ecoscore ?? undefined,
     euroNormCode: simulation.euroNormCode ?? undefined,
+    consumption: simulation.consumption ?? undefined,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };

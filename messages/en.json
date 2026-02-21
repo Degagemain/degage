@@ -243,10 +243,41 @@
       },
       "tryAgain": "Try again"
     },
+    "carTaxEuroNormAdjustments": {
+      "title": "Fiscal Tax Euro Norms",
+      "columns": {
+        "fiscalRegion": "Fiscal region",
+        "euroNormGroup": "Euro norm group",
+        "defaultAdjustment": "Default adjustment",
+        "dieselAdjustment": "Diesel adjustment",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search by fiscal region...",
+      "tryAgain": "Try again"
+    },
+    "fiscalRegions": {
+      "title": "Fiscal Regions",
+      "filters": {
+        "default": "Default"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "default": "Default",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "default": "Default",
+      "notDefault": "Not default",
+      "searchPlaceholder": "Search fiscal regions...",
+      "tryAgain": "Try again"
+    },
     "provinces": {
       "title": "Provinces",
       "columns": {
         "name": "Name",
+        "fiscalRegion": "Fiscal region",
         "created": "Created",
         "updated": "Updated"
       },
@@ -267,6 +298,8 @@
         "simMinEcoScoreForBonus": "Min ecoscore (bonus)",
         "simMaxKmForBonus": "Max km (bonus)",
         "simMaxAgeForBonus": "Max age (bonus)",
+        "simDepreciationKm": "Depreciation km",
+        "simDepreciationKmElectric": "Depreciation km (electric)",
         "created": "Created",
         "updated": "Updated"
       },
@@ -290,6 +323,21 @@
         "created": "Created",
         "updated": "Updated"
       },
+      "tryAgain": "Try again"
+    },
+    "carTaxBaseRates": {
+      "title": "Fiscal Tax Base",
+      "columns": {
+        "fiscalRegion": "Fiscal region",
+        "maxCc": "Max cc",
+        "fiscalPk": "Fiscal PK",
+        "start": "Start",
+        "end": "End",
+        "rate": "Rate",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search by fiscal region...",
       "tryAgain": "Try again"
     },
     "insurancePriceBenchmarks": {

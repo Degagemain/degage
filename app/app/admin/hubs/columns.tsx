@@ -104,6 +104,26 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'simDepreciationKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simDepreciationKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simDepreciationKm') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simDepreciationKmElectric',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simDepreciationKmElectric')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simDepreciationKmElectric') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,

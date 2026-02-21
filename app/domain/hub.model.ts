@@ -11,6 +11,8 @@ export const hubSchema = z
     simMinEcoScoreForBonus: z.number().int().min(0).default(65),
     simMaxKmForBonus: z.number().int().min(0).default(140_000),
     simMaxAgeForBonus: z.number().int().min(0).default(7),
+    simDepreciationKm: z.number().int().min(0).default(250_000),
+    simDepreciationKmElectric: z.number().int().min(0).default(320_000),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
   })

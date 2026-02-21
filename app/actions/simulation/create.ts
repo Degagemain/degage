@@ -24,6 +24,7 @@ function buildSimulationFromResult(
     co2Emission: result.carInfo?.co2Emission ?? null,
     ecoscore: result.carInfo?.ecoscore ?? null,
     euroNormCode: result.carInfo?.euroNormCode ?? null,
+    consumption: result.carInfo?.consumption ?? null,
     steps: result.steps,
     createdAt: null,
     updatedAt: null,

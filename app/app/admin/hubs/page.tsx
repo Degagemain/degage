@@ -49,6 +49,8 @@ export default function HubsPage() {
     simMinEcoScoreForBonus: false,
     simMaxKmForBonus: false,
     simMaxAgeForBonus: false,
+    simDepreciationKm: false,
+    simDepreciationKmElectric: false,
     createdAt: false,
     updatedAt: false,
   });
@@ -93,6 +95,8 @@ export default function HubsPage() {
       simMinEcoScoreForBonus: t('columns.simMinEcoScoreForBonus'),
       simMaxKmForBonus: t('columns.simMaxKmForBonus'),
       simMaxAgeForBonus: t('columns.simMaxAgeForBonus'),
+      simDepreciationKm: t('columns.simDepreciationKm'),
+      simDepreciationKmElectric: t('columns.simDepreciationKmElectric'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

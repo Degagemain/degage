@@ -15,6 +15,10 @@ export const GET = withContext(async (request: NextRequest) => {
     return unauthorizedResponse();
   }
 
+  if (!isAdmin(session.user)) {
+    return forbiddenResponse('Admin access required');
+  }
+
   const filter = insurancePriceBenchmarkFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
     return fromZodParseResult(filter);

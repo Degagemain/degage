@@ -22,3 +22,7 @@ export const fuelTypeSchema = z
   .strict();
 
 export type FuelType = z.infer<typeof fuelTypeSchema>;
+
+export function isElectricFuelType(fuelType: FuelType): boolean {
+  return fuelType.code === 'electric';
+}

@@ -21,19 +21,28 @@ export const CAR_SETTINGS_ITEMS: {
 ];
 
 export const SIMULATION_ITEMS: {
-  translationKey: 'carPriceEstimates' | 'insurancePriceBenchmarks' | 'systemParameters' | 'hubBenchmarks';
+  translationKey:
+    | 'carPriceEstimates'
+    | 'insurancePriceBenchmarks'
+    | 'systemParameters'
+    | 'hubBenchmarks'
+    | 'carTaxBaseRates'
+    | 'carTaxEuroNormAdjustments';
   href: string;
 }[] = [
   { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
   { translationKey: 'insurancePriceBenchmarks', href: '/app/admin/insurance-price-benchmarks' },
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },
+  { translationKey: 'carTaxBaseRates', href: '/app/admin/car-tax-base-rates' },
+  { translationKey: 'carTaxEuroNormAdjustments', href: '/app/admin/car-tax-euro-norm-adjustments' },
 ];
 
 export const GEO_SETTINGS_ITEMS: {
-  translationKey: 'towns' | 'hubs' | 'provinces';
+  translationKey: 'fiscalRegions' | 'towns' | 'hubs' | 'provinces';
   href: string;
 }[] = [
+  { translationKey: 'fiscalRegions', href: '/app/admin/fiscal-regions' },
   { translationKey: 'towns', href: '/app/admin/towns' },
   { translationKey: 'hubs', href: '/app/admin/hubs' },
   { translationKey: 'provinces', href: '/app/admin/provinces' },

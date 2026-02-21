@@ -21,11 +21,18 @@ export async function seedProvinces(prisma: PrismaClient) {
     return;
   }
 
+  const defaultFiscalRegion = await prisma.fiscalRegion.findFirstOrThrow({
+    where: { isDefault: true },
+  });
+
   console.log('Seeding provinces...');
 
   for (const name of PROVINCE_NAMES) {
     await prisma.province.create({
-      data: { name },
+      data: {
+        name,
+        fiscalRegionId: defaultFiscalRegion.id,
+      },
     });
     console.log(`  Seeded: ${name}`);
   }

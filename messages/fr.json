@@ -243,10 +243,41 @@
       },
       "tryAgain": "Réessayer"
     },
+    "carTaxEuroNormAdjustments": {
+      "title": "Normes Euro (taxe auto)",
+      "columns": {
+        "fiscalRegion": "Région fiscale",
+        "euroNormGroup": "Groupe euro norme",
+        "defaultAdjustment": "Ajustement par défaut",
+        "dieselAdjustment": "Ajustement diesel",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "searchPlaceholder": "Rechercher par région fiscale...",
+      "tryAgain": "Réessayer"
+    },
+    "fiscalRegions": {
+      "title": "Régions fiscales",
+      "filters": {
+        "default": "Par défaut"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Nom",
+        "default": "Par défaut",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "default": "Par défaut",
+      "notDefault": "Non par défaut",
+      "searchPlaceholder": "Rechercher des régions fiscales...",
+      "tryAgain": "Réessayer"
+    },
     "provinces": {
       "title": "Provinces",
       "columns": {
         "name": "Nom",
+        "fiscalRegion": "Région fiscale",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -267,6 +298,8 @@
         "simMinEcoScoreForBonus": "Ecoscore min (bonus)",
         "simMaxKmForBonus": "Km max (bonus)",
         "simMaxAgeForBonus": "Âge max (bonus)",
+        "simDepreciationKm": "Km dépréciation",
+        "simDepreciationKmElectric": "Km dépréciation (électrique)",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -290,6 +323,21 @@
         "created": "Créé le",
         "updated": "Modifié le"
       },
+      "tryAgain": "Réessayer"
+    },
+    "carTaxBaseRates": {
+      "title": "Taux de base fiscal",
+      "columns": {
+        "fiscalRegion": "Région fiscale",
+        "maxCc": "Max cc",
+        "fiscalPk": "Fiscal PK",
+        "start": "Début",
+        "end": "Fin",
+        "rate": "Taux",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "searchPlaceholder": "Rechercher par région fiscale...",
       "tryAgain": "Réessayer"
     },
     "insurancePriceBenchmarks": {
