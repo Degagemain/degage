@@ -168,6 +168,8 @@
         "code": "Code",
         "name": "Naam",
         "active": "Actief",
+        "pricePer": "Prijs per l/kWh",
+        "co2Contribution": "CO₂-bijdrage",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },

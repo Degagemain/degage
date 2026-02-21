@@ -57,6 +57,28 @@ export const createColumns = (options: ColumnOptions): ColumnDef<FuelType>[] => 
       enableSorting: false,
     },
     {
+      accessorKey: 'pricePer',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.pricePer')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('pricePer') as number;
+        return (
+          <span className="font-mono text-sm tabular-nums">
+            {val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
+          </span>
+        );
+      },
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'co2Contribution',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.co2Contribution')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('co2Contribution') as number;
+        return <span className="font-mono text-sm tabular-nums">{val}</span>;
+      },
+      enableHiding: true,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => {

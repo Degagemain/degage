@@ -15,6 +15,8 @@ export const dbFuelTypeToDomain = (fuelType: FuelTypeWithTranslations, locale: C
     code: fuelType.code,
     name: translation?.name ?? fuelType.code,
     isActive: fuelType.isActive,
+    pricePer: Number(fuelType.pricePer),
+    co2Contribution: fuelType.co2Contribution,
     translations: fuelType.translations.map((t) => ({
       locale: t.locale,
       name: t.name,
@@ -28,6 +30,8 @@ export const fuelTypeToDbCreate = (fuelType: FuelType): Prisma.FuelTypeCreateInp
   return {
     code: fuelType.code,
     isActive: fuelType.isActive,
+    pricePer: fuelType.pricePer,
+    co2Contribution: fuelType.co2Contribution,
     translations: {
       createMany: {
         data: fuelType.translations.map((t) => ({
@@ -43,6 +47,8 @@ export const fuelTypeToDbUpdate = (fuelType: FuelType): Prisma.FuelTypeUpdateInp
   return {
     code: fuelType.code,
     isActive: fuelType.isActive,
+    pricePer: fuelType.pricePer,
+    co2Contribution: fuelType.co2Contribution,
     translations: {
       deleteMany: {},
       createMany: {

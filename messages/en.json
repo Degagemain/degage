@@ -168,6 +168,8 @@
         "code": "Code",
         "name": "Name",
         "active": "Active",
+        "pricePer": "Price per L/kWh",
+        "co2Contribution": "CO₂ contribution",
         "created": "Created",
         "updated": "Updated"
       },

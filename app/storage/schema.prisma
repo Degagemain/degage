@@ -17,14 +17,16 @@ model Car {
 }
 
 model FuelType {
-    id           String                @id @default(uuid())
-    code         String                @unique
-    isActive     Boolean               @default(true)
-    translations FuelTypeTranslation[]
-    carTypes     CarType[]
-    simulations  Simulation[]
-    createdAt    DateTime              @default(now())
-    updatedAt    DateTime              @updatedAt
+    id               String                @id @default(uuid())
+    code             String                @unique
+    isActive         Boolean               @default(true)
+    pricePer         Decimal               @default(0)
+    co2Contribution  Int                   @default(0)
+    translations     FuelTypeTranslation[]
+    carTypes         CarType[]
+    simulations      Simulation[]
+    createdAt        DateTime              @default(now())
+    updatedAt        DateTime              @updatedAt
 }
 
 model FuelTypeTranslation {

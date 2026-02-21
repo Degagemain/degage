@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "FuelType" ADD COLUMN     "co2Contribution" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "pricePer" DECIMAL(65,30) NOT NULL DEFAULT 0;

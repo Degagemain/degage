@@ -3,6 +3,8 @@ import { DefaultTake, MaxTake, SortOrder } from './utils';
 
 export enum FuelTypeSortColumns {
   CODE = 'code',
+  PRICE_PER = 'pricePer',
+  CO2_CONTRIBUTION = 'co2Contribution',
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',
 }
