@@ -17,7 +17,14 @@ export const dbCarPriceEstimateSearch = async (filter: CarPriceEstimateFilter): 
   const total = await prisma.carPriceEstimate.count({ where: whereClause });
   const records = await prisma.carPriceEstimate.findMany({
     where: whereClause,
-    include: { carType: { include: { brand: { include: { translations: true } } } } },
+    include: {
+      carType: {
+        include: {
+          brand: { include: { translations: true } },
+          fuelType: { include: { translations: true } },
+        },
+      },
+    },
     skip: filter.skip,
     take: filter.take,
     orderBy: { [filter.sortBy]: filter.sortOrder },

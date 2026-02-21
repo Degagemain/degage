@@ -6,7 +6,14 @@ import { getRequestContentLocale } from '@/context/request-context';
 type CarPriceEstimateDb = Prisma.CarPriceEstimateGetPayload<object>;
 
 type CarPriceEstimateWithCarType = Prisma.CarPriceEstimateGetPayload<{
-  include: { carType: { include: { brand: { include: { translations: true } } } } };
+  include: {
+    carType: {
+      include: {
+        brand: { include: { translations: true } };
+        fuelType: { include: { translations: true } };
+      };
+    };
+  };
 }>;
 
 export const dbCarPriceEstimateToDomain = (db: CarPriceEstimateDb): CarPriceEstimate => {
@@ -40,6 +47,10 @@ export const dbCarPriceEstimateToDomainWithRelations = (db: CarPriceEstimateWith
       brand: {
         id: db.carType.brandId,
         name: pickTranslationName(db.carType.brand.translations, locale),
+      },
+      fuelType: {
+        id: db.carType.fuelTypeId,
+        name: pickTranslationName(db.carType.fuelType.translations, locale),
       },
     },
   };

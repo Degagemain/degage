@@ -228,6 +228,7 @@
       },
       "columns": {
         "brand": "Brand",
+        "fuelType": "Fuel type",
         "carType": "Car Type",
         "year": "Year",
         "price": "Price",

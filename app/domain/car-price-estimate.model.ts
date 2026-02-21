@@ -4,6 +4,7 @@ import { idNameSchema } from '@/domain/id-name.model';
 
 const carPriceEstimateCarTypeSchema = idNameSchema.extend({
   brand: idNameSchema.optional(),
+  fuelType: idNameSchema.optional(),
 });
 
 export const carPriceEstimateSchema = z

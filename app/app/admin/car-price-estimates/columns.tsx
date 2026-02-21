@@ -46,6 +46,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarPriceEstimat
       enableSorting: false,
     },
     {
+      accessorKey: 'fuelType',
+      accessorFn: (row) => row.carType?.fuelType?.name ?? '—',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.fuelType')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-sm font-medium">{row.original.carType?.fuelType?.name ?? '—'}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'carType',
       accessorFn: (row) => row.carType?.name ?? '—',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.carType')} onSort={onSort} />,
