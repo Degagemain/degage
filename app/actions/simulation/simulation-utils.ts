@@ -2,10 +2,7 @@ import type { SimulationEngineResult, SimulationResultBuilder } from '@/domain/s
 import { SimulationPhase, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 import { getMessage } from '@/i18n/get-message';
 
-export async function getSimulationMessage(
-  code: SimulationStepCode,
-  params: Record<string, string | number> = {},
-): Promise<string> {
+export async function getSimulationMessage(code: SimulationStepCode, params: Record<string, string | number> = {}): Promise<string> {
   return getMessage(`simulation.step.${code}`, params);
 }
 
@@ -13,11 +10,7 @@ export function setCurrentStep(result: SimulationEngineResult, phase: Simulation
   result.currentStep = phase;
 }
 
-export function addStep(
-  result: SimulationResultBuilder,
-  status: SimulationStepIcon,
-  message: string,
-): void {
+export function addStep(result: SimulationResultBuilder, status: SimulationStepIcon, message: string): void {
   result.steps.push({ status, message });
 }
 

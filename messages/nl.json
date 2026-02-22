@@ -243,6 +243,23 @@
       },
       "tryAgain": "Opnieuw proberen"
     },
+    "carInfos": {
+      "title": "Auto Info (schattingen)",
+      "columns": {
+        "brand": "Merk",
+        "fuelType": "Brandstoftype",
+        "carType": "Autotype",
+        "year": "Jaar",
+        "cylinderCc": "Cilinder (cc)",
+        "co2Emission": "CO₂ (g/km)",
+        "ecoscore": "Ecoscore",
+        "euroNorm": "Euronorm",
+        "consumption": "Verbruik",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "tryAgain": "Opnieuw proberen"
+    },
     "carTaxEuroNormAdjustments": {
       "title": "Belastingen Euronorm correcties",
       "columns": {

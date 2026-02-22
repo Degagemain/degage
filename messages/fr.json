@@ -243,6 +243,23 @@
       },
       "tryAgain": "Réessayer"
     },
+    "carInfos": {
+      "title": "Infos voiture (estimations)",
+      "columns": {
+        "brand": "Marque",
+        "fuelType": "Type de carburant",
+        "carType": "Type de voiture",
+        "year": "Année",
+        "cylinderCc": "Cylindrée (cc)",
+        "co2Emission": "CO₂ (g/km)",
+        "ecoscore": "Ecoscore",
+        "euroNorm": "Norme Euro",
+        "consumption": "Consommation",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "tryAgain": "Réessayer"
+    },
     "carTaxEuroNormAdjustments": {
       "title": "Normes Euro (taxe auto)",
       "columns": {

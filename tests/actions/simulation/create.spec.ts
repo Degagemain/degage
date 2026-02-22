@@ -6,7 +6,7 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
 }));
 
 vi.mock('@/actions/simulation/engine', () => ({
-    runSimulationEngine: vi.fn().mockResolvedValue({
+  runSimulationEngine: vi.fn().mockResolvedValue({
     resultCode: 'manualReview',
     steps: [
       { status: 'ok', message: 'simulation.step.mileage_limit' },

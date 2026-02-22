@@ -71,6 +71,7 @@ model CarType {
     isActive           Boolean             @default(true)
     simulations        Simulation[]
     carPriceEstimates  CarPriceEstimate[]
+    carInfos           CarInfo[]
     createdAt          DateTime            @default(now())
     updatedAt          DateTime            @updatedAt
 }
@@ -122,6 +123,7 @@ model EuroNorm {
     createdAt             DateTime          @default(now())
     updatedAt             DateTime          @updatedAt
     systemParameterValues SystemParameter[]
+    carInfos              CarInfo[]
 }
 
 model FiscalRegion {
@@ -250,6 +252,23 @@ model CarPriceEstimate {
     articleRefs String[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+}
+
+model CarInfo {
+    id          String    @id @default(uuid())
+    carTypeId   String
+    carType     CarType   @relation(fields: [carTypeId], references: [id], onDelete: Cascade)
+    year        Int
+    cylinderCc  Int
+    co2Emission Int
+    ecoscore    Int
+    euroNormId  String?
+    euroNorm    EuroNorm? @relation(fields: [euroNormId], references: [id])
+    consumption Float
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    @@unique([carTypeId, year])
 }
 
 model Town {

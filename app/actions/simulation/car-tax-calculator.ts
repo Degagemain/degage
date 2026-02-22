@@ -59,7 +59,11 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
     const flatRate = await dbCarTaxFlatRateFindByFiscalRegionAndRegistrationDate(fiscalRegion.id!, input.firstRegistrationDate);
     const rate = Math.round(flatRate?.rate ?? 0);
     const registrationDate = format(input.firstRegistrationDate, 'dd/MM/yyyy');
-    addStep(result, SimulationStepIcon.INFO, await getSimulationMessage(SimulationStepCode.CAR_TAX_ESTIMATED_ELECTRIC, { registrationDate, rate }));
+    addStep(
+      result,
+      SimulationStepIcon.INFO,
+      await getSimulationMessage(SimulationStepCode.CAR_TAX_ESTIMATED_ELECTRIC, { registrationDate, rate }),
+    );
     return { rate };
   }
 
@@ -93,7 +97,11 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
 
   const { co2Diff } = calculateCo2Diff(input.firstRegistrationDate, input.co2Emission!, rate);
 
-  addStep(result, SimulationStepIcon.INFO, await getSimulationMessage(SimulationStepCode.CAR_TAX_CO2_ADJUSTMENT, { diff: Math.round(co2Diff) }));
+  addStep(
+    result,
+    SimulationStepIcon.INFO,
+    await getSimulationMessage(SimulationStepCode.CAR_TAX_CO2_ADJUSTMENT, { diff: Math.round(co2Diff) }),
+  );
 
   const euroNormAdjustment = await dbCarTaxEuroNormAdjustmentFindByFiscalRegionAndEuroNormGroup(fiscalRegion.id!, euroNorm.group);
   if (!euroNormAdjustment) {
@@ -101,7 +109,11 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
   }
   const adjustment = fuelType.code === 'diesel' ? euroNormAdjustment.dieselAdjustment : euroNormAdjustment.defaultAdjustment;
   const euroNormDiff = rate * adjustment;
-  addStep(result, SimulationStepIcon.INFO, await getSimulationMessage(SimulationStepCode.CAR_TAX_EURO_NORM_ADJUSTMENT, { adjustment: Math.round(euroNormDiff) }));
+  addStep(
+    result,
+    SimulationStepIcon.INFO,
+    await getSimulationMessage(SimulationStepCode.CAR_TAX_EURO_NORM_ADJUSTMENT, { adjustment: Math.round(euroNormDiff) }),
+  );
 
   rate = Math.round(rate + co2Diff + euroNormDiff);
 
