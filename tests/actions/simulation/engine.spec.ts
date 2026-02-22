@@ -9,9 +9,9 @@ vi.mock('@/actions/simulation/car-info-estimator', () => ({
 }));
 
 vi.mock('@/actions/simulation/car-tax-calculator', () => ({
-  calculateCarTax: vi.fn().mockResolvedValue({
-    rate: 250,
-    steps: [{ code: 'car_tax_estimated', status: 'info', message: 'simulation.step.car_tax_estimated' }],
+  calculateCarTax: vi.fn().mockImplementation(async (result: { steps: { push: (step: unknown) => void } }) => {
+    result.steps.push({ status: 'info', message: 'simulation.step.car_tax_estimated' });
+    return { rate: 250 };
   }),
 }));
 
@@ -45,6 +45,10 @@ vi.mock('@/storage/province/province.read', () => ({
   dbProvinceRead: vi.fn().mockResolvedValue({ fiscalRegion: { id: 'fiscal-region-1' } }),
 }));
 
+vi.mock('@/storage/fiscal-region/fiscal-region.read', () => ({
+  dbFiscalRegionRead: vi.fn().mockResolvedValue({ id: 'fiscal-region-1', isDefault: true }),
+}));
+
 vi.mock('@/storage/euro-norm/euro-norm.read', () => ({
   dbEuroNormFindByCode: vi.fn().mockResolvedValue({ id: 'euro-norm-1', group: 6 }),
 }));
@@ -54,110 +58,117 @@ vi.mock('@/storage/hub-benchmark/hub-benchmark.read', () => ({
 }));
 
 vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
-  calculateCarInsurance: vi.fn().mockResolvedValue({
-    rate: 500,
-    steps: [{ code: 'car_insurance_estimated', status: 'info', message: 'simulation.step.car_insurance_estimated' }],
+  calculateCarInsurance: vi.fn().mockImplementation(async (result: { steps: { push: (step: unknown) => void } }) => {
+    result.steps.push({ status: 'info', message: 'simulation.step.car_insurance_estimated' });
+    return { rate: 500 };
   }),
 }));
 
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
 import { applyAgeRule, applyMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
-import { SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
+import { SimulationStepIcon } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
 const DEFAULT_MAX_MILEAGE = 250_000;
 
 describe('applyMileageRule', () => {
-  it('returns ok step when mileage is under limit', () => {
-    const result = applyMileageRule(100_000, DEFAULT_MAX_MILEAGE);
-    expect(result.reject).toBe(false);
-    expect(result.code).toBe(SimulationStepCode.MILEAGE_LIMIT);
-    expect(result.status).toBe(SimulationStepStatus.OK);
+  it('adds ok step and returns true when mileage is under limit', async () => {
+    const result = { steps: [] as { status: string; message: string }[] };
+    const passed = await applyMileageRule(result, 100_000, DEFAULT_MAX_MILEAGE);
+    expect(passed).toBe(true);
+    expect(result.steps).toHaveLength(1);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
   });
 
-  it('returns not_ok step when mileage is over 250_000', () => {
-    const result = applyMileageRule(300_000, DEFAULT_MAX_MILEAGE);
-    expect(result.reject).toBe(true);
-    expect(result.code).toBe(SimulationStepCode.MILEAGE_LIMIT);
-    expect(result.status).toBe(SimulationStepStatus.NOT_OK);
+  it('adds not_ok step and returns false when mileage is over 250_000', async () => {
+    const result = { steps: [] as { status: string; message: string }[] };
+    const passed = await applyMileageRule(result, 300_000, DEFAULT_MAX_MILEAGE);
+    expect(passed).toBe(false);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
   });
 
-  it('boundary: exactly 250_000 is under limit', () => {
-    const result = applyMileageRule(250_000, DEFAULT_MAX_MILEAGE);
-    expect(result.reject).toBe(false);
-    expect(result.code).toBe(SimulationStepCode.MILEAGE_LIMIT);
+  it('boundary: exactly 250_000 adds ok step and returns true', async () => {
+    const result = { steps: [] as { status: string; message: string }[] };
+    const passed = await applyMileageRule(result, 250_000, DEFAULT_MAX_MILEAGE);
+    expect(passed).toBe(true);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
   });
 });
 
 const DEFAULT_MAX_AGE_YEARS = 15;
 
 describe('applyAgeRule', () => {
-  it('returns ok step when car is not older than 15 years', () => {
+  it('adds ok step and returns true when car is not older than 15 years', async () => {
+    const result = { steps: [] as { status: string; message: string }[] };
     const recentDate = new Date();
     recentDate.setFullYear(recentDate.getFullYear() - 5);
-    const result = applyAgeRule(recentDate, DEFAULT_MAX_AGE_YEARS);
-    expect(result.reject).toBe(false);
-    expect(result.code).toBe(SimulationStepCode.CAR_LIMIT);
-    expect(result.status).toBe(SimulationStepStatus.OK);
+    const passed = await applyAgeRule(result, recentDate, DEFAULT_MAX_AGE_YEARS);
+    expect(passed).toBe(true);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
   });
 
-  it('returns not_ok step when car is older than 15 years', () => {
+  it('adds not_ok step and returns false when car is older than 15 years', async () => {
+    const result = { steps: [] as { status: string; message: string }[] };
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
-    const result = applyAgeRule(oldDate, DEFAULT_MAX_AGE_YEARS);
-    expect(result.reject).toBe(true);
-    expect(result.code).toBe(SimulationStepCode.CAR_LIMIT);
-    expect(result.status).toBe(SimulationStepStatus.NOT_OK);
+    const passed = await applyAgeRule(result, oldDate, DEFAULT_MAX_AGE_YEARS);
+    expect(passed).toBe(false);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
   });
 });
 
 describe('runSimulationEngine', () => {
-  it('rejects when mileage over limit and returns steps with mileage_limit not_ok', async () => {
+  it('rejects when mileage over limit and returns steps with not_ok status', async () => {
     const input = simulationRunInput({ mileage: 300_000 });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('notOk');
     expect(result.steps).toHaveLength(1);
-    expect(result.steps[0].code).toBe(SimulationStepCode.MILEAGE_LIMIT);
-    expect(result.steps[0].status).toBe(SimulationStepStatus.NOT_OK);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
     expect(carValueEstimator).not.toHaveBeenCalled();
   });
 
-  it('rejects when car too old and returns steps with car_limit not_ok', async () => {
+  it('rejects when car too old and returns steps with not_ok on second step', async () => {
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
     const input = simulationRunInput({ firstRegisteredAt: oldDate, mileage: 50_000 });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('notOk');
     expect(result.steps).toHaveLength(2);
-    expect(result.steps[0].code).toBe(SimulationStepCode.MILEAGE_LIMIT);
-    expect(result.steps[1].code).toBe(SimulationStepCode.CAR_LIMIT);
-    expect(result.steps[1].status).toBe(SimulationStepStatus.NOT_OK);
+    expect(result.steps[1].status).toBe(SimulationStepIcon.NOT_OK);
     expect(carValueEstimator).not.toHaveBeenCalled();
   });
 
-  it('calls carValueEstimator and returns steps with price_estimated when rules pass', async () => {
+  it('calls carValueEstimator and returns steps when rules pass', async () => {
     const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(7);
-    expect(result.steps[0].code).toBe(SimulationStepCode.MILEAGE_LIMIT);
-    expect(result.steps[1].code).toBe(SimulationStepCode.CAR_LIMIT);
-    expect(result.steps[2].code).toBe(SimulationStepCode.PRICE_ESTIMATED);
-    expect(result.steps[2].status).toBe(SimulationStepStatus.INFO);
-    expect(result.steps[3].code).toBe(SimulationStepCode.CAR_INFO_ESTIMATED);
-    expect(result.steps[3].status).toBe(SimulationStepStatus.INFO);
-    expect(result.steps[4].code).toBe(SimulationStepCode.CAR_TAX_ESTIMATED);
-    expect(result.steps[4].status).toBe(SimulationStepStatus.INFO);
-    expect(result.steps[5].code).toBe(SimulationStepCode.CAR_INSURANCE_ESTIMATED);
-    expect(result.steps[6].code).toBe(SimulationStepCode.YEARLY_MILEAGE_ESTIMATE);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
+    expect(result.steps[1].status).toBe(SimulationStepIcon.OK);
+    expect(result.steps[2].status).toBe(SimulationStepIcon.INFO);
+    expect(result.steps[3].status).toBe(SimulationStepIcon.INFO);
+    expect(result.steps[4].status).toBe(SimulationStepIcon.INFO);
+    expect(result.steps[5].status).toBe(SimulationStepIcon.INFO);
+    expect(result.steps[6].status).toBe(SimulationStepIcon.INFO);
     expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
     expect(carValueEstimator).toHaveBeenCalledWith(
       input.brand.id,
-      input.fuelType.id,
+      expect.objectContaining({ id: 'fuel-1', code: 'petrol' }),
       input.carType?.id ?? null,
       input.carTypeOther,
       input.firstRegisteredAt,
     );
+  });
+
+  it('on unexpected error adds generic error step with current phase and returns manualReview', async () => {
+    vi.mocked(carValueEstimator).mockRejectedValueOnce(new Error('Network error'));
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.steps.length).toBeGreaterThanOrEqual(3);
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.error_during_step');
   });
 });

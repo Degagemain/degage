@@ -1,36 +1,34 @@
 import { describe, expect, it } from 'vitest';
 import {
   SimulationResultCode,
-  SimulationStepCode,
-  SimulationStepStatus,
+  SimulationStepIcon,
   simulationRunInputParseSchema,
   simulationSchema,
   simulationStepSchema,
 } from '@/domain/simulation.model';
 
 describe('simulationStepSchema', () => {
-  it('accepts valid step', () => {
+  it('accepts valid step with status and message', () => {
     const result = simulationStepSchema.safeParse({
-      code: SimulationStepCode.MILEAGE_LIMIT,
-      status: SimulationStepStatus.OK,
+      status: SimulationStepIcon.OK,
       message: 'Less than 250 000 km',
     });
     expect(result.success).toBe(true);
   });
 
-  it('rejects invalid status', () => {
+  it('strips unknown keys', () => {
     const result = simulationStepSchema.safeParse({
-      code: SimulationStepCode.MILEAGE_LIMIT,
-      status: 'invalid',
+      code: 'mileage_limit',
+      status: SimulationStepIcon.OK,
       message: 'x',
     });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data).toEqual({ status: SimulationStepIcon.OK, message: 'x' });
   });
 
-  it('rejects invalid code', () => {
+  it('rejects invalid status', () => {
     const result = simulationStepSchema.safeParse({
-      code: 'unknown_code',
-      status: SimulationStepStatus.OK,
+      status: 'invalid',
       message: 'x',
     });
     expect(result.success).toBe(false);

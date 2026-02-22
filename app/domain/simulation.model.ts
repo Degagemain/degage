@@ -11,7 +11,7 @@ export enum SimulationResultCode {
   MANUAL_REVIEW = 'manualReview',
 }
 
-// Step codes — used as translation keys and for unit testing
+// Step codes — used as translation keys (simulation.step.*) and for unit testing
 export enum SimulationStepCode {
   MILEAGE_LIMIT = 'mileage_limit',
   CAR_LIMIT = 'car_limit',
@@ -20,30 +20,45 @@ export enum SimulationStepCode {
   CAR_INFO_ESTIMATED = 'car_info_estimated',
   CAR_INFO_ESTIMATION_FAILED = 'car_info_estimation_failed',
   CAR_TAX_ESTIMATED = 'car_tax_estimated',
+  CAR_TAX_ESTIMATED_ELECTRIC = 'car_tax_estimated_electric',
+  CAR_TAX_CO2_ADJUSTMENT = 'car_tax_co2_adjustment',
+  CAR_TAX_EURO_NORM_ADJUSTMENT = 'car_tax_euro_norm_adjustment',
   CAR_TAX_FAILED = 'car_tax_failed',
   CAR_INSURANCE_ESTIMATED = 'car_insurance_estimated',
   CAR_INSURANCE_FAILED = 'car_insurance_failed',
   YEARLY_MILEAGE_ESTIMATE = 'yearly_mileage_estimate',
+  KM_RATE_ESTIMATED = 'km_rate_estimated',
   PAYBACK_MILEAGE = 'payback_mileage',
+  INFO_MESSAGE = 'info_message',
+  ERROR_MESSAGE = 'error_message',
+  ERROR_DURING_STEP = 'error_during_step',
 }
 
-// Step status — how the step is displayed (e.g. Check / Cross / Info)
-export enum SimulationStepStatus {
+// Step icon — how the step is displayed (e.g. Check / Cross / Info)
+export enum SimulationStepIcon {
   OK = 'ok',
   NOT_OK = 'not_ok',
   INFO = 'info',
   WARNING = 'warning',
 }
 
-export const simulationStepStatusSchema = z.enum(SimulationStepStatus);
+// Phase keys for error reporting (translation keys under simulation.phase.*)
+export enum SimulationPhase {
+  INITIAL_CHECKS = 'simulation.phase.initial_checks',
+  PRICE_ESTIMATION = 'simulation.phase.price_estimation',
+  CAR_INFO = 'simulation.phase.car_info',
+  CAR_TAX = 'simulation.phase.car_tax',
+  CAR_INSURANCE = 'simulation.phase.car_insurance',
+  KM_RATE = 'simulation.phase.km_rate',
+  UNKNOWN = 'simulation.phase.unknown',
+}
 
-export const simulationStepSchema = z
-  .object({
-    code: z.enum(SimulationStepCode),
-    status: simulationStepStatusSchema,
-    message: z.string(),
-  })
-  .strict();
+export const simulationStepIconSchema = z.enum(SimulationStepIcon);
+
+export const simulationStepSchema = z.object({
+  status: simulationStepIconSchema,
+  message: z.string(),
+});
 
 export type SimulationStep = z.infer<typeof simulationStepSchema>;
 
@@ -115,4 +130,22 @@ export interface PriceRange {
   price: number;
   min: number;
   max: number;
+}
+
+export interface SimulationCarInfo {
+  cylinderCc: number;
+  co2Emission: number;
+  ecoscore: number;
+  euroNormCode: string | null;
+  consumption: number;
+}
+
+export interface SimulationResultBuilder {
+  steps: SimulationStep[];
+}
+
+export interface SimulationEngineResult extends SimulationResultBuilder {
+  resultCode: SimulationResultCode;
+  carInfo: SimulationCarInfo | null;
+  currentStep: string | null;
 }

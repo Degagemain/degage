@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Check, Info, X } from 'lucide-react';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
-import { SimulationStepStatus } from '@/domain/simulation.model';
+import { SimulationStepIcon } from '@/domain/simulation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { Button } from '@/app/components/ui/button';
 import { Calendar } from '@/app/components/ui/calendar';
@@ -100,11 +100,11 @@ function FirstRegistrationDatePicker({
 
 function StepIcon({ status }: { status: SimulationStep['status'] }) {
   switch (status) {
-    case SimulationStepStatus.OK:
+    case SimulationStepIcon.OK:
       return <Check className="size-4 text-green-600" />;
-    case SimulationStepStatus.NOT_OK:
+    case SimulationStepIcon.NOT_OK:
       return <X className="size-4 text-red-600" />;
-    case SimulationStepStatus.INFO:
+    case SimulationStepIcon.INFO:
       return <Info className="text-muted-foreground size-4" />;
     default:
       return null;

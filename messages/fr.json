@@ -502,6 +502,15 @@
     }
   },
   "simulation": {
+    "phase": {
+      "initial_checks": "Contrôles initiaux",
+      "price_estimation": "Estimation du prix",
+      "car_info": "Infos techniques du véhicule",
+      "car_tax": "Taxe de circulation",
+      "car_insurance": "Assurance",
+      "km_rate": "Coût au km",
+      "unknown": "Étape inconnue"
+    },
     "step": {
       "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Voiture pas plus vieille que {maxYears} ans",
@@ -518,7 +527,8 @@
       "car_insurance_failed": "L'estimation d'assurance n'a pas pu être calculée",
       "yearly_mileage_estimate": "L'utilisateur roule {mileagePerYear} km par an, kilomètres partagés estimés : {estimated}",
       "km_rate_estimated": "Coût estimé au km : {estimated} €",
-      "payback_mileage": "Avec {mileage} km la voiture serait amortie vers {paybackMileage} km"
+      "payback_mileage": "Avec {mileage} km la voiture serait amortie vers {paybackMileage} km",
+      "error_during_step": "Une erreur s'est produite pendant : {step}"
     },
     "resultCode": {
       "notOk": "Non OK",

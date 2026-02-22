@@ -45,10 +45,7 @@ export const dbInsurancePriceBenchmarkFindByYearAndCarPrice = async (
  * Returns the most recent insurance price benchmark (by updatedAt) for the given year
  * where carValue < maxCarPrice (strictly). Returns null if no such record exists.
  */
-export const dbInsurancePriceBenchmarkFindMostRecentByYearAndCarPriceBelowMax = async (
-  year: number,
-  carValue: number,
-): Promise<InsurancePriceBenchmark | null> => {
+export const dbInsurancePriceBenchmarkFindMostRecent = async (year: number, carValue: number): Promise<InsurancePriceBenchmark | null> => {
   const prisma = getPrismaClient();
   const row = await prisma.insurancePriceBenchmark.findFirst({
     where: {

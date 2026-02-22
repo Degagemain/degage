@@ -502,6 +502,15 @@
     }
   },
   "simulation": {
+    "phase": {
+      "initial_checks": "Controles",
+      "price_estimation": "Prijsschatting",
+      "car_info": "Technische voertuiggegevens",
+      "car_tax": "Verkeersbelasting",
+      "car_insurance": "Verzekering",
+      "km_rate": "Kost per km",
+      "unknown": "Onbekende stap"
+    },
     "step": {
       "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Auto niet ouder dan {maxYears} jaar",
@@ -518,7 +527,8 @@
       "car_insurance_failed": "Verzekeringsschatting kon niet worden berekend",
       "yearly_mileage_estimate": "Gebruiker rijdt {mileagePerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
       "km_rate_estimated": "Geschatte kost per km: €{estimated}",
-      "payback_mileage": "Met {mileage} km zou de auto rond {paybackMileage} km terugverdiend zijn"
+      "payback_mileage": "Met {mileage} km zou de auto rond {paybackMileage} km terugverdiend zijn",
+      "error_during_step": "Er is een fout opgetreden tijdens: {step}"
     },
     "resultCode": {
       "notOk": "Niet OK",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DefaultTake, MaxTake, SortOrder, calculateOwnerKmPerYear } from '@/domain/utils';
+import { DefaultTake, MaxTake, SortOrder, calculateOwnerKmPerYear, formatPriceInThousands } from '@/domain/utils';
 
 describe('calculateOwnerKmPerYear', () => {
   it('returns mileage divided by years since first registration', () => {
@@ -18,6 +18,18 @@ describe('calculateOwnerKmPerYear', () => {
     const ref = new Date('2025-01-01');
     const firstReg = new Date('2022-01-01'); // 3 years
     expect(calculateOwnerKmPerYear(10_000, firstReg, ref)).toBe(3_333);
+  });
+});
+
+describe('formatPriceInThousands', () => {
+  it('formats whole thousands with k suffix', () => {
+    expect(formatPriceInThousands(15_000)).toBe('15k');
+    expect(formatPriceInThousands(250_000)).toBe('250k');
+  });
+
+  it('rounds to nearest thousand', () => {
+    expect(formatPriceInThousands(15_400)).toBe('15k');
+    expect(formatPriceInThousands(15_600)).toBe('16k');
   });
 });
 

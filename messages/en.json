@@ -502,6 +502,15 @@
     }
   },
   "simulation": {
+    "phase": {
+      "initial_checks": "Initial checks",
+      "price_estimation": "Price estimation",
+      "car_info": "Car technical info",
+      "car_tax": "Car tax",
+      "car_insurance": "Car insurance",
+      "km_rate": "Cost per km calculation",
+      "unknown": "Unknown step"
+    },
     "step": {
       "mileage_limit": "Max {maxMileage} km",
       "car_limit": "Car not older than {maxYears} years",
@@ -518,7 +527,8 @@
       "car_insurance_failed": "Insurance estimate could not be calculated",
       "yearly_mileage_estimate": "User drives {mileagePerYear} km per year, estimated shared kilometers is {estimated}",
       "km_rate_estimated": "Estimated cost per km: €{estimated}",
-      "payback_mileage": "With {mileage} km the car would be paid back around {paybackMileage} km"
+      "payback_mileage": "With {mileage} km the car would be paid back around {paybackMileage} km",
+      "error_during_step": "An error occurred during: {step}"
     },
     "resultCode": {
       "notOk": "Not OK",

@@ -1,4 +1,4 @@
-import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
+import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 
 export const simulation = (data: Partial<Simulation> = {}): Simulation => {
   return {
@@ -23,17 +23,17 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     steps: data.steps ?? [
       {
         code: SimulationStepCode.MILEAGE_LIMIT,
-        status: SimulationStepStatus.OK,
+        status: SimulationStepIcon.OK,
         message: 'Less than 250 000 km',
       },
       {
         code: SimulationStepCode.CAR_LIMIT,
-        status: SimulationStepStatus.OK,
+        status: SimulationStepIcon.OK,
         message: 'Car not older than 15 years',
       },
       {
         code: SimulationStepCode.PRICE_ESTIMATED,
-        status: SimulationStepStatus.INFO,
+        status: SimulationStepIcon.INFO,
         message: 'Car price is estimated at 15k',
       },
     ],

@@ -25,5 +25,12 @@ export function isEmpty(value: number | string | null | undefined): boolean {
   return value == null || value === '' || value === 0;
 }
 
+/**
+ * Formats a number as whole thousands with a "k" suffix (e.g. 15000 → "15k").
+ */
+export function formatPriceInThousands(price: number): string {
+  return `${(Math.round(price) / 1000).toFixed(0)}k`;
+}
+
 export const DefaultTake = 24;
 export const MaxTake = 100;

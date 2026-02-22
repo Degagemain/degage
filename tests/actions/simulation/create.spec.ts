@@ -6,13 +6,13 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
 }));
 
 vi.mock('@/actions/simulation/engine', () => ({
-  runSimulationEngine: vi.fn().mockResolvedValue({
+    runSimulationEngine: vi.fn().mockResolvedValue({
     resultCode: 'manualReview',
     steps: [
-      { code: 'mileage_limit', status: 'ok', message: 'simulation.step.mileage_limit' },
-      { code: 'car_limit', status: 'ok', message: 'simulation.step.car_limit' },
-      { code: 'price_estimated', status: 'info', message: 'simulation.step.price_estimated' },
-      { code: 'car_info_estimated', status: 'info', message: 'simulation.step.car_info_estimated' },
+      { status: 'ok', message: 'simulation.step.mileage_limit' },
+      { status: 'ok', message: 'simulation.step.car_limit' },
+      { status: 'info', message: 'simulation.step.price_estimated' },
+      { status: 'info', message: 'simulation.step.car_info_estimated' },
     ],
     carInfo: { cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' },
   }),
@@ -20,7 +20,7 @@ vi.mock('@/actions/simulation/engine', () => ({
 
 import { createSimulation } from '@/actions/simulation/create';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
-import { SimulationStepStatus } from '@/domain/simulation.model';
+import { SimulationStepIcon } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
 describe('createSimulation', () => {
@@ -39,8 +39,7 @@ describe('createSimulation', () => {
     expect(result.mileage).toBe(input.mileage);
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(4);
-    expect(result.steps[0].code).toBe('mileage_limit');
-    expect(result.steps[0].status).toBe(SimulationStepStatus.OK);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
   });
 

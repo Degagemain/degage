@@ -1,13 +1,13 @@
 import type { Schema } from '@google/genai';
 import { Type } from '@google/genai';
 
+import type { FuelType } from '@/domain/fuel-type.model';
 import type { PriceRange } from '@/domain/simulation.model';
 import type { CarPriceEstimate } from '@/domain/car-price-estimate.model';
 import { dbCarPriceEstimateFindByCarTypeAndYear } from '@/storage/car-price-estimate/car-price-estimate.find-by-car-type-year';
 import { dbCarPriceEstimateCreate } from '@/storage/car-price-estimate/car-price-estimate.create';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { dbCarBrandRead } from '@/storage/car-brand/car-brand.read';
-import { dbFuelTypeRead } from '@/storage/fuel-type/fuel-type.read';
 import { generateGroundedJson } from '@/integrations/gemini';
 
 interface GeminiPriceEstimate {
@@ -53,7 +53,7 @@ function buildPrompt(brandName: string, carTypeName: string, fuelTypeName: strin
  */
 export async function carValueEstimator(
   brandId: string,
-  fuelTypeId: string,
+  fuelType: FuelType,
   carTypeId: string | null,
   carTypeOther: string | null,
   firstRegistrationDate: Date,
@@ -68,7 +68,6 @@ export async function carValueEstimator(
   }
 
   const brand = await dbCarBrandRead(brandId);
-  const fuelType = await dbFuelTypeRead(fuelTypeId);
   const carType = carTypeId ? await dbCarTypeRead(carTypeId) : null;
   const carTypeName = carType?.name ?? carTypeOther ?? 'unknown model';
 

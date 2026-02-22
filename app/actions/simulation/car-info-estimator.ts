@@ -1,10 +1,10 @@
 import type { Schema } from '@google/genai';
 import { Type } from '@google/genai';
 
+import type { FuelType } from '@/domain/fuel-type.model';
 import { isElectricFuelType } from '@/domain/fuel-type.model';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { dbCarBrandRead } from '@/storage/car-brand/car-brand.read';
-import { dbFuelTypeRead } from '@/storage/fuel-type/fuel-type.read';
 import { dbEuroNormSearch } from '@/storage/euro-norm/euro-norm.search';
 import { generateStructuredJson } from '@/integrations/gemini';
 
@@ -64,13 +64,12 @@ function buildPrompt(
  */
 export async function carInfoEstimator(
   brandId: string,
-  fuelTypeId: string,
+  fuelType: FuelType,
   carTypeId: string | null,
   carTypeOther: string | null,
   year: number,
 ): Promise<CarInfo> {
   const brand = await dbCarBrandRead(brandId);
-  const fuelType = await dbFuelTypeRead(fuelTypeId);
   const carType = carTypeId ? await dbCarTypeRead(carTypeId) : null;
   const carTypeName = carType?.name ?? carTypeOther ?? 'unknown model';
 
