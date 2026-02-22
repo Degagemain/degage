@@ -58,7 +58,8 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   };
   try {
     return await tryRunSimulationEngine(input, result);
-  } catch {
+  } catch (error) {
+    console.error(error);
     const stepKey = result.currentStep ?? SimulationPhase.UNKNOWN;
     const stepLabel = await getMessage(stepKey);
     const message = await getSimulationMessage(SimulationStepCode.ERROR_DURING_STEP, { step: stepLabel });
