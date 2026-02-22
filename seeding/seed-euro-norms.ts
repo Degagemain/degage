@@ -1,5 +1,10 @@
 import { PrismaClient } from '@/storage/client/client';
 
+/** Parse a date-only string (YYYY-MM-DD) as UTC midnight. */
+function parseDateUtc(dateOnly: string): Date {
+  return new Date(dateOnly + 'T00:00:00.000Z');
+}
+
 const EURO_NORMS: { code: string; name: string; group: number; start: string; end: string | null }[] = [
   { code: 'euro-1', name: 'Euro 1', group: 1, start: '1992-07-01', end: '1996-12-31' },
   { code: 'euro-2', name: 'Euro 2', group: 2, start: '1997-01-01', end: '2000-12-31' },
@@ -25,16 +30,16 @@ export async function seedEuroNorms(prisma: PrismaClient) {
         name: en.name,
         group: en.group,
         isActive: true,
-        start: new Date(en.start),
-        end: en.end ? new Date(en.end) : null,
+        start: parseDateUtc(en.start),
+        end: en.end ? parseDateUtc(en.end) : null,
       },
       create: {
         code: en.code,
         name: en.name,
         group: en.group,
         isActive: true,
-        start: new Date(en.start),
-        end: en.end ? new Date(en.end) : null,
+        start: parseDateUtc(en.start),
+        end: en.end ? parseDateUtc(en.end) : null,
       },
     });
     console.log(`  Seeded: ${en.code}`);

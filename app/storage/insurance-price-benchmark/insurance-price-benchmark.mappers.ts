@@ -7,8 +7,9 @@ export const dbInsurancePriceBenchmarkToDomain = (db: InsurancePriceBenchmarkDb)
   return {
     id: db.id,
     year: db.year,
-    maxMileageExclusive: db.maxMileageExclusive,
-    kmPrice: Number(db.kmPrice),
+    maxCarPrice: db.maxCarPrice,
+    baseRate: Number(db.baseRate),
+    rate: Number(db.rate),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
   };
@@ -17,15 +18,17 @@ export const dbInsurancePriceBenchmarkToDomain = (db: InsurancePriceBenchmarkDb)
 export const insurancePriceBenchmarkToDbCreate = (b: InsurancePriceBenchmark): Prisma.InsurancePriceBenchmarkCreateInput => {
   return {
     year: b.year,
-    maxMileageExclusive: b.maxMileageExclusive,
-    kmPrice: b.kmPrice,
+    maxCarPrice: b.maxCarPrice,
+    baseRate: b.baseRate,
+    rate: b.rate,
   };
 };
 
 export const insurancePriceBenchmarkToDbUpdate = (b: InsurancePriceBenchmark): Prisma.InsurancePriceBenchmarkUpdateInput => {
   return {
     year: b.year,
-    maxMileageExclusive: b.maxMileageExclusive,
-    kmPrice: b.kmPrice,
+    maxCarPrice: b.maxCarPrice,
+    baseRate: b.baseRate,
+    rate: b.rate,
   };
 };

@@ -21,7 +21,7 @@ interface InsurancePriceBenchmarksState {
 
 const SORT_COLUMN_MAP: Record<string, string> = {
   year: 'year',
-  maxMileageExclusive: 'maxMileageExclusive',
+  maxCarPrice: 'maxCarPrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
 };
@@ -64,8 +64,9 @@ export default function InsurancePriceBenchmarksPage() {
   const columnLabels = useMemo(
     () => ({
       year: t('columns.year'),
-      maxMileageExclusive: t('columns.maxMileageExclusive'),
-      kmPrice: t('columns.kmPrice'),
+      maxCarPrice: t('columns.maxCarPrice'),
+      baseRate: t('columns.baseRate'),
+      rate: t('columns.rate'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

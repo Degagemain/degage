@@ -1,4 +1,4 @@
-import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCode, SimulationStepStatus } from '@/domain/simulation.model';
+import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 
 export const simulation = (data: Partial<Simulation> = {}): Simulation => {
   return {
@@ -8,10 +8,14 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     fuelTypeId: data.fuelTypeId ?? '550e8400-e29b-41d4-a716-446655440002',
     carTypeId: data.carTypeId ?? null,
     carTypeOther: data.carTypeOther ?? null,
-    km: data.km ?? 50_000,
+    mileage: data.mileage ?? 50_000,
+    ownerKmPerYear: data.ownerKmPerYear ?? 10_000,
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
+    isNewCar: data.isNewCar ?? false,
+    purchasePrice: data.purchasePrice ?? null,
+    rejectionReason: data.rejectionReason ?? null,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
     estimatedPrice: data.estimatedPrice ?? null,
     cylinderCc: data.cylinderCc ?? null,
@@ -21,18 +25,15 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     consumption: data.consumption ?? null,
     steps: data.steps ?? [
       {
-        code: SimulationStepCode.KM_LIMIT,
-        status: SimulationStepStatus.OK,
+        status: SimulationStepIcon.OK,
         message: 'Less than 250 000 km',
       },
       {
-        code: SimulationStepCode.CAR_LIMIT,
-        status: SimulationStepStatus.OK,
+        status: SimulationStepIcon.OK,
         message: 'Car not older than 15 years',
       },
       {
-        code: SimulationStepCode.PRICE_ESTIMATED,
-        status: SimulationStepStatus.INFO,
+        status: SimulationStepIcon.INFO,
         message: 'Car price is estimated at 15k',
       },
     ],
@@ -50,9 +51,12 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     fuelType: data.fuelType ?? defaultIdName('550e8400-e29b-41d4-a716-446655440002'),
     carType: data.carType !== undefined ? data.carType : defaultIdName('550e8400-e29b-41d4-a716-446655440003'),
     carTypeOther: data.carTypeOther !== undefined ? data.carTypeOther : null,
-    km: data.km ?? 50_000,
+    mileage: data.mileage ?? 50_000,
+    ownerKmPerYear: data.ownerKmPerYear ?? 10_000,
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
+    isNewCar: data.isNewCar ?? false,
+    purchasePrice: data.purchasePrice ?? null,
   };
 };

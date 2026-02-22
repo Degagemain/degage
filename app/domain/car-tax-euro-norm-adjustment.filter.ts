@@ -10,6 +10,7 @@ export enum CarTaxEuroNormAdjustmentSortColumns {
 export const carTaxEuroNormAdjustmentFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
+    euroNormGroup: z.coerce.number().int().min(0).nullable().default(null),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z

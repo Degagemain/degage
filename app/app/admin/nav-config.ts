@@ -23,6 +23,7 @@ export const CAR_SETTINGS_ITEMS: {
 export const SIMULATION_ITEMS: {
   translationKey:
     | 'carPriceEstimates'
+    | 'carInfos'
     | 'insurancePriceBenchmarks'
     | 'systemParameters'
     | 'hubBenchmarks'
@@ -32,6 +33,7 @@ export const SIMULATION_ITEMS: {
   href: string;
 }[] = [
   { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
+  { translationKey: 'carInfos', href: '/app/admin/car-infos' },
   { translationKey: 'insurancePriceBenchmarks', href: '/app/admin/insurance-price-benchmarks' },
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },

@@ -71,6 +71,7 @@ model CarType {
     isActive           Boolean             @default(true)
     simulations        Simulation[]
     carPriceEstimates  CarPriceEstimate[]
+    carInfos           CarInfo[]
     createdAt          DateTime            @default(now())
     updatedAt          DateTime            @updatedAt
 }
@@ -95,9 +96,13 @@ model Simulation {
     carType           CarType?             @relation(fields: [carTypeId], references: [id])
     carTypeOther      String?
     km                Int
+    ownerKmPerYear    Int
     seats             Int                  @default(0)
     firstRegisteredAt DateTime
     isVan             Boolean              @default(false)
+    isNewCar          Boolean              @default(false)
+    purchasePrice     Decimal?
+    rejectionReason   String?
     resultCode        SimulationResultCode
     estimatedPrice    Decimal?
     cylinderCc        Int?
@@ -121,6 +126,7 @@ model EuroNorm {
     createdAt             DateTime          @default(now())
     updatedAt             DateTime          @updatedAt
     systemParameterValues SystemParameter[]
+    carInfos              CarInfo[]
 }
 
 model FiscalRegion {
@@ -202,6 +208,8 @@ model Hub {
     simMaxAgeForBonus         Int      @default(7)
     simDepreciationKm         Int      @default(250000)
     simDepreciationKmElectric Int      @default(320000)
+    simInspectionCostPerYear  Decimal  @default(43)
+    simMaintenanceCostPerYear Decimal  @default(950)
     towns                     Town[]
     benchmarks                HubBenchmark[]
     createdAt                 DateTime @default(now())
@@ -223,14 +231,15 @@ model HubBenchmark {
 }
 
 model InsurancePriceBenchmark {
-    id                    String   @id @default(uuid())
-    year                  Int
-    maxMileageExclusive   Int
-    kmPrice               Decimal
-    createdAt             DateTime @default(now())
-    updatedAt             DateTime @updatedAt
+    id          String   @id @default(uuid())
+    year        Int
+    maxCarPrice Int
+    baseRate    Decimal
+    rate        Decimal
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
-    @@unique([year, maxMileageExclusive])
+    @@unique([year, maxCarPrice])
 }
 
 model CarPriceEstimate {
@@ -246,6 +255,23 @@ model CarPriceEstimate {
     articleRefs String[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+}
+
+model CarInfo {
+    id          String    @id @default(uuid())
+    carTypeId   String
+    carType     CarType   @relation(fields: [carTypeId], references: [id], onDelete: Cascade)
+    year        Int
+    cylinderCc  Int
+    co2Emission Int
+    ecoscore    Int
+    euroNormId  String?
+    euroNorm    EuroNorm? @relation(fields: [euroNormId], references: [id])
+    consumption Float
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    @@unique([carTypeId, year])
 }
 
 model Town {

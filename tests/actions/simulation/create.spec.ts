@@ -5,21 +5,22 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
   dbSimulationCreate: vi.fn(),
 }));
 
-vi.mock('@/actions/car-price-estimate/car-price-estimator', () => ({
-  carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
-}));
-
-vi.mock('@/actions/simulation/car-info-estimator', () => ({
-  carInfoEstimator: vi.fn().mockResolvedValue({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' }),
-}));
-
-vi.mock('@/actions/system-parameter/get-simulation-params', () => ({
-  getSimulationParams: vi.fn().mockResolvedValue({ maxAgeYears: 15, maxKm: 250_000 }),
+vi.mock('@/actions/simulation/engine', () => ({
+  runSimulationEngine: vi.fn().mockResolvedValue({
+    resultCode: 'manualReview',
+    steps: [
+      { status: 'ok', message: 'simulation.step.mileage_limit' },
+      { status: 'ok', message: 'simulation.step.car_limit' },
+      { status: 'info', message: 'simulation.step.price_estimated' },
+      { status: 'info', message: 'simulation.step.car_info_estimated' },
+    ],
+    carInfo: { cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' },
+  }),
 }));
 
 import { createSimulation } from '@/actions/simulation/create';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
-import { SimulationStepStatus } from '@/domain/simulation.model';
+import { SimulationStepIcon } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
 describe('createSimulation', () => {
@@ -28,23 +29,22 @@ describe('createSimulation', () => {
   });
 
   it('validates input, runs engine and returns simulation', async () => {
-    const input = simulationRunInput({ km: 50_000 });
+    const input = simulationRunInput({ mileage: 50_000 });
     vi.mocked(dbSimulationCreate).mockImplementation(async (s) => ({ ...s, id: 'created-id' }));
 
     const result = await createSimulation(input);
 
     expect(result.brandId).toBe(input.brand.id);
     expect(result.fuelTypeId).toBe(input.fuelType.id);
-    expect(result.km).toBe(input.km);
+    expect(result.mileage).toBe(input.mileage);
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(4);
-    expect(result.steps[0].code).toBe('km_limit');
-    expect(result.steps[0].status).toBe(SimulationStepStatus.OK);
+    expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
   });
 
   it('throws ZodError when input is invalid', async () => {
-    const invalidInput = simulationRunInput({ km: -1 } as any);
+    const invalidInput = simulationRunInput({ mileage: -1 } as any);
 
     await expect(createSimulation(invalidInput)).rejects.toBeInstanceOf(ZodError);
     expect(dbSimulationCreate).not.toHaveBeenCalled();
@@ -58,12 +58,12 @@ describe('createSimulation', () => {
   });
 
   it('returns simulation without persisting when skipPersistence is true', async () => {
-    const input = simulationRunInput({ km: 50_000 });
+    const input = simulationRunInput({ mileage: 50_000 });
 
     const result = await createSimulation(input, { skipPersistence: true });
 
     expect(result.brandId).toBe(input.brand.id);
-    expect(result.km).toBe(input.km);
+    expect(result.mileage).toBe(input.mileage);
     expect(result.resultCode).toBe('manualReview');
     expect(result.id).toBeNull();
     expect(dbSimulationCreate).not.toHaveBeenCalled();

@@ -13,6 +13,8 @@ export const hubSchema = z
     simMaxAgeForBonus: z.number().int().min(0).default(7),
     simDepreciationKm: z.number().int().min(0).default(250_000),
     simDepreciationKmElectric: z.number().int().min(0).default(320_000),
+    simInspectionCostPerYear: z.number().min(0).default(43),
+    simMaintenanceCostPerYear: z.number().min(0).default(950),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
   })

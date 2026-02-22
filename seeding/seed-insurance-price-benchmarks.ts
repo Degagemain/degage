@@ -1,17 +1,17 @@
 import { PrismaClient } from '@/storage/client/client';
 
-/** Sentinel for "no upper bound" (mileage >= 10_000 km). */
-const UNBOUNDED_MILEAGE = 999_999_999;
+/** Sentinel for "no upper bound" on car price. */
+const UNBOUNDED_CAR_PRICE = 999_999_999;
 
-const SEED_DATA: { year: number; maxMileageExclusive: number; kmPrice: number }[] = [
-  // Mileage < 10_000 km
-  { year: 2024, maxMileageExclusive: 10_000, kmPrice: 0.015 },
-  { year: 2025, maxMileageExclusive: 10_000, kmPrice: 0.015 },
-  { year: 2026, maxMileageExclusive: 10_000, kmPrice: 0.0162 },
-  // Mileage >= 10_000 km
-  { year: 2024, maxMileageExclusive: UNBOUNDED_MILEAGE, kmPrice: 0.035 },
-  { year: 2025, maxMileageExclusive: UNBOUNDED_MILEAGE, kmPrice: 0.035 },
-  { year: 2026, maxMileageExclusive: UNBOUNDED_MILEAGE, kmPrice: 0.0378 },
+const SEED_DATA: { year: number; maxCarPrice: number; baseRate: number; rate: number }[] = [
+  // Low car price band
+  { year: 2024, maxCarPrice: 10_000, baseRate: 395, rate: 0.015 },
+  { year: 2025, maxCarPrice: 10_000, baseRate: 395, rate: 0.015 },
+  { year: 2026, maxCarPrice: 10_000, baseRate: 426, rate: 0.0162 },
+  // High car price band (unbounded)
+  { year: 2024, maxCarPrice: UNBOUNDED_CAR_PRICE, baseRate: 365, rate: 0.035 },
+  { year: 2025, maxCarPrice: UNBOUNDED_CAR_PRICE, baseRate: 365, rate: 0.035 },
+  { year: 2026, maxCarPrice: UNBOUNDED_CAR_PRICE, baseRate: 394.23, rate: 0.0378 },
 ];
 
 export async function seedInsurancePriceBenchmarks(prisma: PrismaClient) {

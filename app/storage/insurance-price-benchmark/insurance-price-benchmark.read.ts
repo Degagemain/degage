@@ -11,29 +11,48 @@ export const dbInsurancePriceBenchmarkRead = async (id: string): Promise<Insuran
 };
 
 /**
- * Returns the price benchmark that applies for the given year and mileage.
- * The applicable row is the one where mileage < maxMileageExclusive (bands are [0, maxMileageExclusive)).
- * Picks the band with the smallest maxMileageExclusive that is still > mileage.
- * If mileage exceeds all bands for that year, returns the row with the largest maxMileageExclusive (unbounded band).
+ * Returns the price benchmark that applies for the given year and car price.
+ * The applicable row is the one where carPrice < maxCarPrice (bands are [0, maxCarPrice)).
+ * Picks the band with the smallest maxCarPrice that is still > carPrice.
+ * If carPrice exceeds all bands for that year, returns the row with the largest maxCarPrice (unbounded band).
  * Returns null if no benchmarks exist for the year.
  */
-export const dbInsurancePriceBenchmarkFindByYearAndMileage = async (year: number, mileage: number): Promise<InsurancePriceBenchmark | null> => {
+export const dbInsurancePriceBenchmarkFindByYearAndCarPrice = async (
+  year: number,
+  carPrice: number,
+): Promise<InsurancePriceBenchmark | null> => {
   const prisma = getPrismaClient();
 
   const applicable = await prisma.insurancePriceBenchmark.findFirst({
     where: {
       year,
-      maxMileageExclusive: { gt: mileage },
+      maxCarPrice: { gt: carPrice },
     },
-    orderBy: { maxMileageExclusive: 'asc' },
+    orderBy: { maxCarPrice: 'asc' },
   });
 
   if (applicable) return dbInsurancePriceBenchmarkToDomain(applicable);
 
   const fallback = await prisma.insurancePriceBenchmark.findFirst({
     where: { year },
-    orderBy: { maxMileageExclusive: 'desc' },
+    orderBy: { maxCarPrice: 'desc' },
   });
 
   return fallback ? dbInsurancePriceBenchmarkToDomain(fallback) : null;
+};
+
+/**
+ * Returns the most recent insurance price benchmark (by updatedAt) for the given year
+ * where carValue < maxCarPrice (strictly). Returns null if no such record exists.
+ */
+export const dbInsurancePriceBenchmarkFindMostRecent = async (year: number, carValue: number): Promise<InsurancePriceBenchmark | null> => {
+  const prisma = getPrismaClient();
+  const row = await prisma.insurancePriceBenchmark.findFirst({
+    where: {
+      year,
+      maxCarPrice: { gt: carValue },
+    },
+    orderBy: { updatedAt: 'desc' },
+  });
+  return row ? dbInsurancePriceBenchmarkToDomain(row) : null;
 };

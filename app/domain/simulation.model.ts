@@ -11,35 +11,62 @@ export enum SimulationResultCode {
   MANUAL_REVIEW = 'manualReview',
 }
 
-// Step codes — used as translation keys and for unit testing
+// Step codes — used as translation keys (simulation.step.*) and for unit testing
 export enum SimulationStepCode {
-  KM_LIMIT = 'km_limit',
-  CAR_LIMIT = 'car_limit',
-  PRICE_ESTIMATED = 'price_estimated',
-  PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
+  EXTRA_BONUS_POINTS = 'extra_bonus_points',
+  BUILD_YEAR_BONUS = 'build_year_bonus',
   CAR_INFO_ESTIMATED = 'car_info_estimated',
   CAR_INFO_ESTIMATION_FAILED = 'car_info_estimation_failed',
-  YEARLY_KM_ESTIMATE = 'yearly_km_estimate',
-  PAYBACK_KM = 'payback_km',
+  CAR_INSURANCE_ESTIMATED = 'car_insurance_estimated',
+  CAR_INSURANCE_FAILED = 'car_insurance_failed',
+  CAR_LIMIT = 'car_limit',
+  CAR_TAX_CO2_ADJUSTMENT = 'car_tax_co2_adjustment',
+  CAR_TAX_ESTIMATED = 'car_tax_estimated',
+  CAR_TAX_ESTIMATED_ELECTRIC = 'car_tax_estimated_electric',
+  CAR_TAX_EURO_NORM_ADJUSTMENT = 'car_tax_euro_norm_adjustment',
+  CAR_TAX_FAILED = 'car_tax_failed',
+  DEPRECIATION_COST_PER_KM = 'depreciation_cost_per_km',
+  ECO_SCORE_BONUS = 'eco_score_bonus',
+  ERROR_DURING_STEP = 'error_during_step',
+  ERROR_MESSAGE = 'error_message',
+  FUEL_COST_PER_KM = 'fuel_cost_per_km',
+  INFO_MESSAGE = 'info_message',
+  KM_RATE_ESTIMATED = 'km_rate_estimated',
+  MILEAGE_BONUS = 'mileage_bonus',
+  MILEAGE_LIMIT = 'mileage_limit',
+  PAYBACK_MILEAGE = 'payback_mileage',
+  PRICE_CRITERIA_NOT_MET = 'price_criteria_not_met',
+  PRICE_ESTIMATED = 'price_estimated',
+  PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
+  QUALITY_CRITERIA_NOT_MET = 'quality_criteria_not_met',
+  YEARLY_MILEAGE_ESTIMATE = 'yearly_mileage_estimate',
 }
 
-// Step status — how the step is displayed (e.g. Check / Cross / Info)
-export enum SimulationStepStatus {
+// Step icon — how the step is displayed (e.g. Check / Cross / Info)
+export enum SimulationStepIcon {
   OK = 'ok',
   NOT_OK = 'not_ok',
   INFO = 'info',
   WARNING = 'warning',
 }
 
-export const simulationStepStatusSchema = z.enum(SimulationStepStatus);
+// Phase keys for error reporting (translation keys under simulation.phase.*)
+export enum SimulationPhase {
+  INITIAL_CHECKS = 'simulation.phase.initial_checks',
+  PRICE_ESTIMATION = 'simulation.phase.price_estimation',
+  CAR_INFO = 'simulation.phase.car_info',
+  CAR_TAX = 'simulation.phase.car_tax',
+  CAR_INSURANCE = 'simulation.phase.car_insurance',
+  KM_RATE = 'simulation.phase.km_rate',
+  UNKNOWN = 'simulation.phase.unknown',
+}
 
-export const simulationStepSchema = z
-  .object({
-    code: z.enum(SimulationStepCode),
-    status: simulationStepStatusSchema,
-    message: z.string(),
-  })
-  .strict();
+export const simulationStepIconSchema = z.enum(SimulationStepIcon);
+
+export const simulationStepSchema = z.object({
+  status: simulationStepIconSchema,
+  message: z.string(),
+});
 
 export type SimulationStep = z.infer<typeof simulationStepSchema>;
 
@@ -57,10 +84,13 @@ export const simulationRunInputSchema = z
     fuelType: idNameSchema,
     carType: idNameSchema.nullable().default(null),
     carTypeOther: z.string().nullable().default(null),
-    km: z.number().int().min(0),
+    mileage: z.number().int().min(0),
+    ownerKmPerYear: z.number().int().min(0),
     seats: z.number().int().min(1),
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
+    isNewCar: z.coerce.boolean().default(false),
+    purchasePrice: z.number().min(0).nullable().default(null),
   })
   .strict();
 
@@ -81,10 +111,14 @@ export const simulationSchema = z
     fuelTypeId: z.uuid(),
     carTypeId: z.uuid().nullable(),
     carTypeOther: z.string().nullable(),
-    km: z.number().int().min(0),
+    mileage: z.number().int().min(0),
+    ownerKmPerYear: z.number().int().min(0),
     seats: z.number().int().min(1),
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),
+    isNewCar: z.boolean().default(false),
+    purchasePrice: z.number().min(0).nullable().default(null),
+    rejectionReason: z.string().nullable().default(null),
     resultCode: z.enum(SimulationResultCode),
     estimatedPrice: z.number().nullable(),
     cylinderCc: z.number().int().nullable().default(null),
@@ -109,4 +143,24 @@ export interface PriceRange {
   price: number;
   min: number;
   max: number;
+}
+
+export interface SimulationCarInfo {
+  cylinderCc: number;
+  co2Emission: number;
+  ecoscore: number;
+  euroNormCode: string | null;
+  consumption: number;
+}
+
+export interface SimulationResultBuilder {
+  steps: SimulationStep[];
+}
+
+export interface SimulationEngineResult extends SimulationResultBuilder {
+  resultCode: SimulationResultCode;
+  carInfo: SimulationCarInfo | null;
+  currentStep: string | null;
+  /** When resultCode is NOT_OK, optional reason from the engine (e.g. step message). */
+  rejectionReason?: string | null;
 }

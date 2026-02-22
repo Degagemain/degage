@@ -8,6 +8,8 @@ This document describes the **simulation** feature from a functional point of vi
 
 The simulation checks **whether a car can be admitted to the car sharing system**. Someone (e.g. a back-office user) enters the car’s details; the system applies a fixed set of rules and returns a **result** plus a list of **steps** that explain what was checked and what the outcome was.
 
+Simulation is currently available only in the **admin zone** (Admin → Simulations → New). A consumer-oriented simulation flow is planned.
+
 ---
 
 ## Input: what the user provides

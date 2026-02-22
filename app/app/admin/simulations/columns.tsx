@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
@@ -42,6 +43,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultCode')} onSort={onSort} />,
       cell: ({ row }) => {
         const code = row.getValue('resultCode') as string;
+        const id = row.original.id;
+        if (id) {
+          return (
+            <Link href={`/app/admin/simulations/${id}`} className="text-primary hover:underline focus-visible:underline">
+              <ResultCodeCell code={code} />
+            </Link>
+          );
+        }
         return <ResultCodeCell code={code} />;
       },
       enableHiding: true,
@@ -75,11 +84,11 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
-      accessorKey: 'km',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.km')} onSort={onSort} />,
+      accessorKey: 'mileage',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.mileage')} onSort={onSort} />,
       cell: ({ row }) => {
-        const km = row.getValue('km') as number;
-        return <span className="font-mono text-sm">{km.toLocaleString()}</span>;
+        const mileage = row.getValue('mileage') as number;
+        return <span className="font-mono text-sm">{mileage.toLocaleString()}</span>;
       },
       enableHiding: true,
       enableSorting: false,
