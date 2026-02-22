@@ -14,6 +14,10 @@ export function addStep(result: SimulationResultBuilder, status: SimulationStepI
   result.steps.push({ status, message });
 }
 
+export function addSuccessMessage(result: SimulationResultBuilder, message: string): void {
+  addStep(result, SimulationStepIcon.OK, message);
+}
+
 export function addInfoMessage(result: SimulationResultBuilder, message: string): void {
   addStep(result, SimulationStepIcon.INFO, message);
 }

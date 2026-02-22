@@ -9,6 +9,17 @@
     "dark": "Dark",
     "automatic": "Automatic"
   },
+  "faq": {
+    "title": "Frequently asked questions",
+    "intro": "Find answers to the most common questions about the simulation and the fleet.",
+    "q1": "What does the simulation do?",
+    "a1": "The simulation checks whether your vehicle meets the conditions to join the fleet. You enter your details and get an immediate indication: approved, not approved, or manual review required.",
+    "q2": "My result is \"unclear\". What now?",
+    "a2": "When the result is unclear, a manual review is needed. You can submit a request via the \"Ask manual review\" button. Our team will review your case and get in touch.",
+    "q3": "Have another question?",
+    "a3": "Contact us via the details on the website. We are happy to help.",
+    "backToSimulation": "Back to simulation"
+  },
   "dataTable": {
     "noResults": "No results found.",
     "pagination": {
@@ -490,6 +501,26 @@
         "creating": "Creating…",
         "resultTitle": "Result",
         "noResult": "Fill in the form to see the simulation result."
+      },
+      "detailPage": {
+        "title": "Simulation details",
+        "description": "Read-only view. Result:",
+        "backToSimulations": "← Back to simulations",
+        "tryAgain": "Try again",
+        "stepsTitle": "Steps",
+        "stepsDescription": "Simulation steps and messages.",
+        "noSteps": "No steps recorded.",
+        "isNewCar": "New car",
+        "purchasePrice": "Purchase price (incl. VAT)",
+        "rejectionReason": "Rejection reason",
+        "estimatedPrice": "Estimated price",
+        "cylinderCc": "Cylinder capacity",
+        "co2Emission": "CO₂ emission",
+        "ecoscore": "Ecoscore",
+        "euroNormCode": "Euro norm",
+        "consumption": "Consumption",
+        "yes": "Yes",
+        "no": "No"
       }
     },
     "users": {
@@ -545,7 +576,15 @@
       "yearly_mileage_estimate": "User drives {mileagePerYear} km per year, estimated shared kilometers is {estimated}",
       "km_rate_estimated": "Estimated cost per km: €{estimated}",
       "payback_mileage": "With {mileage} km the car would be paid back around {paybackMileage} km",
-      "error_during_step": "An error occurred during: {step}"
+      "error_during_step": "An error occurred during: {step}",
+      "eco_score_bonus": "Ecoscore {ecoScore} qualifies for bonus",
+      "mileage_bonus": "Mileage {mileage} km qualifies for bonus",
+      "build_year_bonus": "Build year {buildYear} qualifies for bonus",
+      "quality_criteria_not_met": "Quality criteria were not met",
+      "fuel_cost_per_km": "Fuel cost per km: €{fuelCostPerKm}",
+      "price_criteria_not_met": "Price criteria were not met",
+      "depreciation_cost_per_km": "Depreciation cost per km: €{depreciationCostPerKm}",
+      "extra_bonus_points": "Extra bonus points: {bonusPoints}"
     },
     "resultCode": {
       "notOk": "Not OK",
@@ -593,6 +632,100 @@
       "errorValidDate": "Please enter a valid date.",
       "errorRequestFailed": "Request failed",
       "resultTitle": "Result"
+    },
+    "wizard": {
+      "intro": {
+        "title": "Welcome",
+        "body": "Thinking about sharing your car with others? Here you can check whether your car is eligible to join our fleet and get an estimate of how much you could earn. We'll ask you a few questions about your car and how you use it—it only takes a couple of minutes.",
+        "getStarted": "Get started"
+      },
+      "carChoice": {
+        "title": "What applies to you?",
+        "subtitle": "We'll tailor the next steps accordingly.",
+        "newCar": "New car",
+        "newCarDescription": "You're looking to buy a car and share it with the fleet.",
+        "existingCar": "I want to share my existing car",
+        "existingCarDescription": "You already own a car and want to see if it can join the fleet.",
+        "continue": "Continue"
+      },
+      "town": {
+        "title": "Where do you live?",
+        "description": "Based on your location we can estimate how many km per year the car will be shared.",
+        "label": "Town",
+        "searchPlaceholder": "Search town (zip or name)",
+        "cantSeeTown": "I can't see my town",
+        "cantSeeTownHelper": "We currently only operate in Belgium. You can pick the closest town to yours, if you don't see your town in the list.",
+        "back": "Back",
+        "continue": "Continue"
+      },
+      "carDetails": {
+        "title": "Tell us about your car",
+        "description": "Basic details about the vehicle.",
+        "brand": "Brand",
+        "brandPlaceholder": "Search brands…",
+        "fuelType": "Fuel type",
+        "fuelTypePlaceholder": "Select fuel type",
+        "carType": "Car type",
+        "carTypePlaceholder": "Select car type",
+        "carTypePlaceholderFirst": "Select brand and fuel type first",
+        "carTypeOther": "Car type (other)",
+        "carTypeOtherOption": "Other",
+        "carTypeOtherPlaceholder": "e.g. Custom model",
+        "seats": "Seats",
+        "seatsPlaceholder": "e.g. 5",
+        "isVan": "This vehicle is a van",
+        "back": "Back",
+        "continue": "Continue"
+      },
+      "mileage": {
+        "title": "Mileage and registration",
+        "description": "Current mileage and first registration date.",
+        "mileage": "Current mileage (km)",
+        "mileagePlaceholder": "e.g. 50000",
+        "firstRegistrationDate": "First registration date (of the vehicle)",
+        "pickDate": "Pick a date",
+        "ownerKmPerYear": "Estimated km per year",
+        "ownerKmPerYearHint": "Filled automatically from current mileage and first registration date. You can change it if needed.",
+        "ownerKmPerYearCalculated": "Based on your mileage and first registration date, we estimate you drive about {value} km per year.",
+        "ownerKmPerYearEmpty": "Fill in current mileage and first registration date above to see your estimated km per year.",
+        "newCarTitle": "Purchase price",
+        "newCarDescription": "Enter the purchase amount of the car, including VAT.",
+        "purchaseAmountInclVat": "Purchase amount (incl. VAT)",
+        "purchaseAmountPlaceholder": "e.g. 25000",
+        "back": "Back",
+        "continue": "Continue"
+      },
+      "loading": {
+        "title": "Running simulation",
+        "description": "This may take a moment…",
+        "errorTitle": "Something went wrong",
+        "retry": "Try again",
+        "funny1": "Asking the cars for permission…",
+        "funny2": "Teaching hamsters to turn the wheels…",
+        "funny3": "Counting the road stripes on the E40…",
+        "funny4": "Brewing a fresh pot of numbers…",
+        "funny5": "Consulting the oracle of parking spots…",
+        "funny6": "Waking up the calculator gnomes…",
+        "funny7": "Checking if the car has done its homework…",
+        "funny8": "Polishing the crystal ball…",
+        "funny9": "Negotiating with traffic cones…",
+        "funny10": "Almost there. No, really."
+      },
+      "results": {
+        "successTitle": "Success!",
+        "successBody": "Your car will most probably be allowed in the fleet.",
+        "notOkTitle": "Unfortunately!",
+        "notOkBody": "Your car does not meet the parameters to join the fleet.",
+        "unclearTitle": "Unclear",
+        "unclearBody": "Your car would need a manual review before being allowed into the fleet.",
+        "restart": "Start over",
+        "iHaveAQuestion": "I have a question",
+        "enrollInFleet": "Enroll in fleet",
+        "askManualReview": "Ask manual review",
+        "enrollModalTitle": "Work in progress",
+        "enrollModalBody": "This feature is not yet available.",
+        "enrollModalClose": "Close"
+      }
     }
   }
 }

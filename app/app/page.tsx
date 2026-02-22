@@ -59,18 +59,6 @@ function AuthenticatedHome({ name }: { name: string }) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Simulation</CardTitle>
-            <CardDescription>Check if a car can be admitted to the car sharing system.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/app/simulation">Start simulation</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
         {isAdmin && (
           <Card>
             <CardHeader>

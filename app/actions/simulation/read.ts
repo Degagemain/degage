@@ -1,5 +1,5 @@
-import { dbSimulationRead } from '@/storage/simulation/simulation.read';
+import { dbSimulationReadWithRelations } from '@/storage/simulation/simulation.read';
 
 export const readSimulation = async (id: string) => {
-  return dbSimulationRead(id);
+  return dbSimulationReadWithRelations(id);
 };

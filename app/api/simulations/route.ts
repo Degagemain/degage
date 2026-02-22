@@ -37,13 +37,8 @@ export const GET = withContext(async (request: NextRequest) => {
   return Response.json(result);
 });
 
+/** Public endpoint: run simulation (e.g. from public wizard). No auth required. */
 export const POST = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session?.user) {
-    return Response.json({ code: 'unauthorized', errors: [{ message: 'Authentication required' }] }, { status: statusCodes.UNAUTHORIZED });
-  }
-
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
 

@@ -65,19 +65,14 @@ describe('POST /api/simulations', () => {
 
   const validBody = simulationRunInput();
 
-  it('returns 401 when no session', async () => {
+  it('returns 201 and created simulation when valid body (public, no auth required)', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue(null);
-    const request = { json: vi.fn().mockResolvedValue(validBody) } as any;
-    const response = await POST(request);
-    expect(response.status).toBe(401);
-    expect(createSimulation).not.toHaveBeenCalled();
-  });
-
-  it('returns 201 and created simulation when valid body', async () => {
-    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
     const created = simulation({ id: 'new-id' });
     vi.mocked(createSimulation).mockResolvedValueOnce(created);
-    const request = { json: vi.fn().mockResolvedValue(validBody), nextUrl: new URL('http://localhost/api/simulations') } as any;
+    const request = {
+      json: vi.fn().mockResolvedValue(validBody),
+      nextUrl: new URL('http://localhost/api/simulations'),
+    } as any;
     const response = await POST(request);
     expect(response.status).toBe(201);
     const json = await response.json();

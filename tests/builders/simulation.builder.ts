@@ -13,6 +13,9 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
+    isNewCar: data.isNewCar ?? false,
+    purchasePrice: data.purchasePrice ?? null,
+    rejectionReason: data.rejectionReason ?? null,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
     estimatedPrice: data.estimatedPrice ?? null,
     cylinderCc: data.cylinderCc ?? null,
@@ -22,17 +25,14 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     consumption: data.consumption ?? null,
     steps: data.steps ?? [
       {
-        code: SimulationStepCode.MILEAGE_LIMIT,
         status: SimulationStepIcon.OK,
         message: 'Less than 250 000 km',
       },
       {
-        code: SimulationStepCode.CAR_LIMIT,
         status: SimulationStepIcon.OK,
         message: 'Car not older than 15 years',
       },
       {
-        code: SimulationStepCode.PRICE_ESTIMATED,
         status: SimulationStepIcon.INFO,
         message: 'Car price is estimated at 15k',
       },
@@ -56,5 +56,7 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     seats: data.seats ?? 5,
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
+    isNewCar: data.isNewCar ?? false,
+    purchasePrice: data.purchasePrice ?? null,
   };
 };

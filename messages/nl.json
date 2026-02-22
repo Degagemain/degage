@@ -9,6 +9,17 @@
     "dark": "Donker",
     "automatic": "Automatisch"
   },
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "intro": "Hier vind je antwoorden op de meest gestelde vragen over de simulatie en het wagenpark.",
+    "q1": "Wat doet de simulatie?",
+    "a1": "De simulatie controleert of je voertuig voldoet aan de voorwaarden om tot het wagenpark toe te treden. Je vult je gegevens in en krijgt direct een indicatie: toegelaten, niet toegelaten of handmatige beoordeling nodig.",
+    "q2": "Mijn resultaat is \"onduidelijk\". Wat nu?",
+    "a2": "Bij een onduidelijk resultaat is een handmatige beoordeling nodig. Je kunt via de knop \"Handmatige beoordeling aanvragen\" een verzoek indienen. Ons team bekijkt je dossier en neemt contact met je op.",
+    "q3": "Nog een andere vraag?",
+    "a3": "Neem contact met ons op via de contactgegevens op de website. We helpen je graag verder.",
+    "backToSimulation": "Terug naar simulatie"
+  },
   "dataTable": {
     "noResults": "Geen resultaten gevonden.",
     "pagination": {
@@ -490,6 +501,26 @@
         "creating": "Aanmaken…",
         "resultTitle": "Resultaat",
         "noResult": "Vul het formulier in om het simulatieresultaat te zien."
+      },
+      "detailPage": {
+        "title": "Simulatiedetails",
+        "description": "Alleen-lezen weergave. Resultaat:",
+        "backToSimulations": "← Terug naar simulaties",
+        "tryAgain": "Opnieuw proberen",
+        "stepsTitle": "Stappen",
+        "stepsDescription": "Simulatiestappen en berichten.",
+        "noSteps": "Geen stappen vastgelegd.",
+        "isNewCar": "Nieuwe auto",
+        "purchasePrice": "Aankoopprijs (incl. btw)",
+        "rejectionReason": "Afwijzingsreden",
+        "estimatedPrice": "Geschatte prijs",
+        "cylinderCc": "Cilinderinhoud",
+        "co2Emission": "CO₂-uitstoot",
+        "ecoscore": "Ecoscore",
+        "euroNormCode": "Euro norm",
+        "consumption": "Verbruik",
+        "yes": "Ja",
+        "no": "Nee"
       }
     },
     "users": {
@@ -545,7 +576,15 @@
       "yearly_mileage_estimate": "Gebruiker rijdt {mileagePerYear} km per jaar, geschatte gedeelde kilometers is {estimated}",
       "km_rate_estimated": "Geschatte kost per km: €{estimated}",
       "payback_mileage": "Met {mileage} km zou de auto rond {paybackMileage} km terugverdiend zijn",
-      "error_during_step": "Er is een fout opgetreden tijdens: {step}"
+      "error_during_step": "Er is een fout opgetreden tijdens: {step}",
+      "eco_score_bonus": "Ecoscore {ecoScore} komt in aanmerking voor bonus",
+      "mileage_bonus": "Kilometrage {mileage} km komt in aanmerking voor bonus",
+      "build_year_bonus": "Bouwjaar {buildYear} komt in aanmerking voor bonus",
+      "quality_criteria_not_met": "Kwaliteitscriteria zijn niet gehaald",
+      "fuel_cost_per_km": "Brandstofkosten per km: €{fuelCostPerKm}",
+      "price_criteria_not_met": "Prijscriteria zijn niet gehaald",
+      "depreciation_cost_per_km": "Afschrijvingskosten per km: €{depreciationCostPerKm}",
+      "extra_bonus_points": "Extra bonuspunten: {bonusPoints}"
     },
     "resultCode": {
       "notOk": "Niet OK",
@@ -593,6 +632,100 @@
       "errorValidDate": "Vul een geldige datum in.",
       "errorRequestFailed": "Verzoek mislukt",
       "resultTitle": "Resultaat"
+    },
+    "wizard": {
+      "intro": {
+        "title": "Welkom",
+        "body": "Overweeg je om je auto te delen? Hier kun je nagaan of je auto in aanmerking komt voor ons wagenpark en krijg je een inschatting van wat je zou kunnen besparen. We stellen een paar vragen over je auto en je gebruik—dat duurt maar een paar minuten.",
+        "getStarted": "Start"
+      },
+      "carChoice": {
+        "title": "Wat is op jou van toepassing?",
+        "subtitle": "We passen de volgende stappen daarop aan.",
+        "newCar": "Nieuwe auto",
+        "newCarDescription": "Je wilt een auto kopen en die met het wagenpark delen.",
+        "existingCar": "Ik wil mijn bestaande auto delen",
+        "existingCarDescription": "Je hebt al een auto en wilt weten of die bij het wagenpark kan.",
+        "continue": "Verder"
+      },
+      "town": {
+        "title": "Waar woon je?",
+        "description": "Aan de hand van uw locatie kunnen we inschatten hoeveel km per jaar de auto gedeeld zal worden.",
+        "label": "Gemeente",
+        "searchPlaceholder": "Zoek gemeente (postcode of naam)",
+        "cantSeeTown": "Ik zie mijn gemeente niet",
+        "cantSeeTownHelper": "We zijn momenteel alleen actief in België. Je kunt de dichtstbijzijnde gemeente kiezen als je de jouwe niet in de lijst ziet.",
+        "back": "Terug",
+        "continue": "Verder"
+      },
+      "carDetails": {
+        "title": "Vertel ons over je auto",
+        "description": "Basisgegevens over het voertuig.",
+        "brand": "Merk",
+        "brandPlaceholder": "Zoek merken…",
+        "fuelType": "Brandstoftype",
+        "fuelTypePlaceholder": "Selecteer brandstoftype",
+        "carType": "Autotype",
+        "carTypePlaceholder": "Selecteer autotype",
+        "carTypePlaceholderFirst": "Selecteer eerst merk en brandstoftype",
+        "carTypeOther": "Autotype (overig)",
+        "carTypeOtherOption": "Anders",
+        "carTypeOtherPlaceholder": "bijv. Aangepast model",
+        "seats": "Zitplaatsen",
+        "seatsPlaceholder": "bijv. 5",
+        "isVan": "Dit voertuig is een camionette",
+        "back": "Terug",
+        "continue": "Verder"
+      },
+      "mileage": {
+        "title": "Kilometerstand en inschrijving",
+        "description": "Huidige kilometerstand en datum eerste inschrijving.",
+        "mileage": "Huidige kilometerstand (km)",
+        "mileagePlaceholder": "bijv. 50000",
+        "firstRegistrationDate": "Eerste inschrijving (van het voertuig)",
+        "pickDate": "Kies een datum",
+        "ownerKmPerYear": "Geschat km per jaar",
+        "ownerKmPerYearHint": "Wordt automatisch ingevuld op basis van de huidige kilometerstand en eerste inschrijving. U kunt dit desgewenst aanpassen.",
+        "ownerKmPerYearCalculated": "Op basis van uw kilometerstand en eerste inschrijving schatten we dat u ongeveer {value} km per jaar rijdt.",
+        "ownerKmPerYearEmpty": "Vul hierboven de huidige kilometerstand en datum van eerste inschrijving in om uw geschatte km per jaar te zien.",
+        "newCarTitle": "Aankoopprijs",
+        "newCarDescription": "Vul het aankoopbedrag van de auto in, inclusief btw.",
+        "purchaseAmountInclVat": "Aankoopbedrag (incl. btw)",
+        "purchaseAmountPlaceholder": "bijv. 25000",
+        "back": "Terug",
+        "continue": "Verder"
+      },
+      "loading": {
+        "title": "Simulatie wordt uitgevoerd",
+        "description": "Dit kan even duren…",
+        "errorTitle": "Er is iets misgegaan",
+        "retry": "Opnieuw proberen",
+        "funny1": "We vragen de auto's om toestemming…",
+        "funny2": "Hamsters leren de wieltjes te draaien…",
+        "funny3": "Wegmarkeringen op de E40 tellen…",
+        "funny4": "Verse cijfers aan het zetten…",
+        "funny5": "Het orakel van parkeerplaatsen raadplegen…",
+        "funny6": "De rekenkabouters wakker maken…",
+        "funny7": "Controleren of de auto zijn huiswerk heeft gemaakt…",
+        "funny8": "De glazen bol op poetsen…",
+        "funny9": "Onderhandelen met verkeerspionnen…",
+        "funny10": "Bijna klaar. Echt waar."
+      },
+      "results": {
+        "successTitle": "Gelukt!",
+        "successBody": "Je auto wordt zeer waarschijnlijk toegelaten tot het wagenpark.",
+        "notOkTitle": "Helaas!",
+        "notOkBody": "Je auto voldoet niet aan de parameters om tot het wagenpark toe te treden.",
+        "unclearTitle": "Onduidelijk",
+        "unclearBody": "Je auto heeft een handmatige beoordeling nodig voordat deze tot het wagenpark kan worden toegelaten.",
+        "restart": "Opnieuw beginnen",
+        "iHaveAQuestion": "Ik heb een vraag",
+        "enrollInFleet": "Inschrijven in wagenpark",
+        "askManualReview": "Handmatige beoordeling aanvragen",
+        "enrollModalTitle": "In ontwikkeling",
+        "enrollModalBody": "Deze functie is nog niet beschikbaar.",
+        "enrollModalClose": "Sluiten"
+      }
     }
   }
 }

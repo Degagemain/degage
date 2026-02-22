@@ -9,12 +9,6 @@ import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateR
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session?.user) {
-    return unauthorizedResponse();
-  }
-
   const fuelTypeFilter = fuelTypeFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!fuelTypeFilter.success) {
     return fromZodParseResult(fuelTypeFilter);
