@@ -584,6 +584,8 @@
       "fuel_cost_per_km": "Brandstofkosten per km: €{fuelCostPerKm}",
       "price_criteria_not_met": "Prijscriteria zijn niet gehaald",
       "depreciation_cost_per_km": "Afschrijvingskosten per km: €{depreciationCostPerKm}",
+      "estimated_total_yearly_mileage": "Geschat totaal jaarkilometrage: {estimatedTotalYearlyMileage} km (eigenaar: {ownerKmPerYear} km/jaar)",
+      "fixed_year_cost": "Vaste jaarlijkse kost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonuspunten: {bonusPoints}"
     },
     "resultCode": {

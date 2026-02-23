@@ -584,6 +584,8 @@
       "fuel_cost_per_km": "Coût carburant au km : {fuelCostPerKm} €",
       "price_criteria_not_met": "Les critères de prix ne sont pas remplis",
       "depreciation_cost_per_km": "Coût d'amortissement au km : {depreciationCostPerKm} €",
+      "estimated_total_yearly_mileage": "Kilométrage annuel total estimé : {estimatedTotalYearlyMileage} km (propriétaire : {ownerKmPerYear} km/an)",
+      "fixed_year_cost": "Coût annuel fixe : {fixedYearCost} €",
       "extra_bonus_points": "Points bonus supplémentaires : {bonusPoints}"
     },
     "resultCode": {

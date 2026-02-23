@@ -584,6 +584,8 @@
       "fuel_cost_per_km": "Fuel cost per km: €{fuelCostPerKm}",
       "price_criteria_not_met": "Price criteria were not met",
       "depreciation_cost_per_km": "Depreciation cost per km: €{depreciationCostPerKm}",
+      "estimated_total_yearly_mileage": "Estimated total yearly mileage: {estimatedTotalYearlyMileage} km (owner: {ownerKmPerYear} km/year)",
+      "fixed_year_cost": "Fixed yearly cost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonus points: {bonusPoints}"
     },
     "resultCode": {
