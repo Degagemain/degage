@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE } from '@/domain/locale.model';
 import { User } from '@/domain/user.model';
 
 export const user = (data: Partial<User> = {}): User => {
@@ -7,7 +8,7 @@ export const user = (data: Partial<User> = {}): User => {
     email: data.email ?? 'test@example.com',
     emailVerified: data.emailVerified ?? false,
     image: data.image ?? null,
-    locale: data.locale ?? 'en',
+    locale: data.locale ?? DEFAULT_LOCALE,
     role: data.role ?? null,
     banned: data.banned ?? false,
     banReason: data.banReason ?? null,

@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { DEFAULT_LOCALE } from './locale.model';
 import { roleSchema } from './role.model';
 
 export const userSchema = z.object({
@@ -7,7 +8,7 @@ export const userSchema = z.object({
   email: z.string().email().max(255),
   emailVerified: z.boolean().default(false),
   image: z.string().nullable().default(null),
-  locale: z.string().nullable().default('en'),
+  locale: z.string().nullable().default(DEFAULT_LOCALE),
   role: roleSchema.nullable().default(null),
   banned: z.boolean().nullable().default(false),
   banReason: z.string().nullable().default(null),
