@@ -3,12 +3,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, X } from 'lucide-react';
+import { Check, Trash2, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { EuroNorm } from '@/domain/euro-norm.model';
 import { Page } from '@/domain/page.model';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
+import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
+import { BulkActionsButton } from '@/app/components/bulk-actions-button';
+import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -48,6 +53,8 @@ export default function EuroNormsPage() {
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [itemToDelete, setItemToDelete] = useState<EuroNorm | null>(null);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,7 +75,11 @@ export default function EuroNormsPage() {
     setPageIndex(0);
   }, []);
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+  const handleDeleteRequest = useCallback((item: EuroNorm) => {
+    setItemToDelete(item);
+  }, []);
+
+  const columns = useMemo(() => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t }), [handleSort, handleDeleteRequest, t]);
 
   const isActiveOptions: FacetedFilterOption[] = useMemo(
     () => [
@@ -134,6 +145,36 @@ export default function EuroNormsPage() {
     }
   }, [debouncedQuery, isActiveFilter, pageIndex, pageSize, sorting]);
 
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete?.id) return;
+    const response = await fetch(`/api/euro-norms/${itemToDelete.id}`, { method: 'DELETE' });
+    if (response.ok) {
+      toast.success(t('delete.success'));
+      setItemToDelete(null);
+      fetchEuroNorms();
+    } else if (response.status === 409) {
+      toast.error(t('delete.conflict'));
+    } else {
+      toast.error(t('delete.error'));
+    }
+  }, [itemToDelete, fetchEuroNorms, t]);
+
+  const selectedItems: BulkDeleteItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter(Boolean)
+        .map((item) => ({ id: item.id!, label: item.name })),
+    [rowSelection, state.data],
+  );
+
+  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/euro-norms/${id}`, { method: 'DELETE' }), []);
+
+  const handleBulkDeleteComplete = useCallback(() => {
+    setRowSelection({});
+    fetchEuroNorms();
+  }, [fetchEuroNorms]);
+
   useEffect(() => {
     fetchEuroNorms();
   }, [fetchEuroNorms]);
@@ -194,7 +235,17 @@ export default function EuroNormsPage() {
           searchValue={query}
           onSearchChange={setQuery}
           searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={filterSlot}
+          filterSlot={
+            <>
+              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                  <Trash2 />
+                  {t('bulkActions.delete')}
+                </DropdownMenuItem>
+              </BulkActionsButton>
+              {filterSlot}
+            </>
+          }
           columnLabels={columnLabels}
         />
       </div>
@@ -228,6 +279,37 @@ export default function EuroNormsPage() {
           </div>
         </>
       )}
+      <DeleteConfirmationDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => !open && setItemToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title={t('delete.title')}
+        description={t('delete.description', { name: itemToDelete?.name ?? '' })}
+        confirmLabel={t('delete.confirm')}
+        cancelLabel={t('delete.cancel')}
+      />
+
+      <BulkDeleteDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        items={selectedItems}
+        deleteItem={handleBulkDeleteItem}
+        onComplete={handleBulkDeleteComplete}
+        labels={{
+          title: t('bulkDelete.title'),
+          description: t('bulkDelete.description', { count: selectedItems.length }),
+          columnName: t('bulkDelete.columnName'),
+          columnStatus: t('bulkDelete.columnStatus'),
+          confirm: t('bulkDelete.confirm'),
+          cancel: t('bulkDelete.cancel'),
+          close: t('bulkDelete.close'),
+          statusPending: t('bulkDelete.statusPending'),
+          statusDeleting: t('bulkDelete.statusDeleting'),
+          statusSuccess: t('bulkDelete.statusSuccess'),
+          statusError: t('bulkDelete.statusError'),
+          statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
     </div>
   );
 }

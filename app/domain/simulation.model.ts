@@ -13,6 +13,8 @@ export enum SimulationResultCode {
 
 // Step codes — used as translation keys (simulation.step.*) and for unit testing
 export enum SimulationStepCode {
+  ESTIMATED_TOTAL_YEARLY_MILEAGE = 'estimated_total_yearly_mileage',
+  FIXED_YEAR_COST = 'fixed_year_cost',
   EXTRA_BONUS_POINTS = 'extra_bonus_points',
   BUILD_YEAR_BONUS = 'build_year_bonus',
   CAR_INFO_ESTIMATED = 'car_info_estimated',
@@ -69,12 +71,6 @@ export const simulationStepSchema = z.object({
 });
 
 export type SimulationStep = z.infer<typeof simulationStepSchema>;
-
-// Re-export for consumers that need entity-specific type names
-export type SimulationBrand = z.infer<typeof idNameSchema>;
-export type SimulationFuelType = z.infer<typeof idNameSchema>;
-export type SimulationCarType = z.infer<typeof idNameSchema>;
-export type SimulationTown = z.infer<typeof idNameSchema>;
 
 // Run input — used only for POST run simulation (request body). Uses IdName for relations.
 export const simulationRunInputSchema = z

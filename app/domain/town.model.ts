@@ -2,9 +2,6 @@ import * as z from 'zod';
 
 import { idNameSchema } from '@/domain/id-name.model';
 
-export type TownProvince = z.infer<typeof idNameSchema>;
-export type TownHub = z.infer<typeof idNameSchema>;
-
 export const townSchema = z
   .object({
     id: z.uuid().nullable(),

@@ -136,7 +136,20 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     throw new Error('No closest benchmark found');
   }
   const estimatedTotalYearlyMileage = input.ownerKmPerYear + (input.ownerKmPerYear / closestBenchmark.ownerKm) * closestBenchmark.sharedAvgKm;
+
+  addInfoMessage(
+    result,
+    await getSimulationMessage(SimulationStepCode.ESTIMATED_TOTAL_YEARLY_MILEAGE, {
+      estimatedTotalYearlyMileage: formatPriceInThousands(estimatedTotalYearlyMileage),
+      ownerKmPerYear: formatPriceInThousands(input.ownerKmPerYear),
+    }),
+  );
+
   const fixedYearCost = hub.simInspectionCostPerYear + hub.simMaintenanceCostPerYear + insurancePrice! + taxResult.rate!;
+  addInfoMessage(
+    result,
+    await getSimulationMessage(SimulationStepCode.FIXED_YEAR_COST, { fixedYearCost: formatPriceInThousands(fixedYearCost) }),
+  );
 
   const fuelCostPerKm = (fuelType.pricePer * carInfo.consumption) / 100;
   addInfoMessage(

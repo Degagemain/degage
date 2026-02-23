@@ -2,9 +2,6 @@ import * as z from 'zod';
 
 import { idNameSchema } from '@/domain/id-name.model';
 
-export type CarTypeBrand = z.infer<typeof idNameSchema>;
-export type CarTypeFuelType = z.infer<typeof idNameSchema>;
-
 export const carTypeSchema = z
   .object({
     id: z.uuid().nullable(),

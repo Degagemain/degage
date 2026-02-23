@@ -1,10 +1,12 @@
+import { DEFAULT_LOCALE } from '@/domain/locale.model';
+
 // ============================================
 // UI LOCALES — Supported in message files
 // ============================================
 
 export const uiLocales = ['en', 'nl', 'fr'] as const;
 export type UILocale = (typeof uiLocales)[number];
-export const defaultUILocale: UILocale = 'en';
+export const defaultUILocale: UILocale = DEFAULT_LOCALE;
 
 // ============================================
 // CONTENT LOCALES — Supported in database
@@ -12,7 +14,7 @@ export const defaultUILocale: UILocale = 'en';
 
 export const contentLocales = ['en', 'nl', 'fr'] as const;
 export type ContentLocale = (typeof contentLocales)[number];
-export const defaultContentLocale: ContentLocale = 'en';
+export const defaultContentLocale: ContentLocale = DEFAULT_LOCALE;
 
 export function isContentLocale(locale: string): locale is ContentLocale {
   return contentLocales.includes(locale as ContentLocale);

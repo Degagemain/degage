@@ -3,13 +3,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { toast } from 'sonner';
 import { Simulation } from '@/domain/simulation.model';
 import { Page } from '@/domain/page.model';
 import { SimulationSortColumns } from '@/domain/simulation.filter';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import {
   DataTable,
   DataTableFacetedFilter,
@@ -19,6 +21,9 @@ import {
   FacetedFilterOption,
   type SearchableOption,
 } from '@/app/components/ui/data-table';
+import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
+import { BulkActionsButton } from '@/app/components/bulk-actions-button';
+import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -61,6 +66,8 @@ export default function SimulationsPage() {
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [itemToDelete, setItemToDelete] = useState<Simulation | null>(null);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -92,7 +99,11 @@ export default function SimulationsPage() {
     setPageIndex(0);
   }, []);
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+  const handleDeleteRequest = useCallback((item: Simulation) => {
+    setItemToDelete(item);
+  }, []);
+
+  const columns = useMemo(() => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t }), [handleSort, handleDeleteRequest, t]);
 
   const resultCodeOptions: FacetedFilterOption[] = useMemo(
     () => [
@@ -164,6 +175,38 @@ export default function SimulationsPage() {
       }));
     }
   }, [debouncedQuery, brandIds, fuelTypeIds, resultCodeFilter, pageIndex, pageSize, sorting]);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete?.id) return;
+
+    const response = await fetch(`/api/simulations/${itemToDelete.id}`, { method: 'DELETE' });
+
+    if (response.ok) {
+      toast.success(t('delete.success'));
+      setItemToDelete(null);
+      fetchSimulations();
+    } else if (response.status === 409) {
+      toast.error(t('delete.conflict'));
+    } else {
+      toast.error(t('delete.error'));
+    }
+  }, [itemToDelete, fetchSimulations, t]);
+
+  const selectedItems: BulkDeleteItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter(Boolean)
+        .map((item) => ({ id: item.id!, label: `${item.town?.name ?? '—'} — ${item.brand?.name ?? '—'}` })),
+    [rowSelection, state.data],
+  );
+
+  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/simulations/${id}`, { method: 'DELETE' }), []);
+
+  const handleBulkDeleteComplete = useCallback(() => {
+    setRowSelection({});
+    fetchSimulations();
+  }, [fetchSimulations]);
 
   useEffect(() => {
     fetchSimulations();
@@ -254,7 +297,17 @@ export default function SimulationsPage() {
               </Link>
             </Button>
           }
-          filterSlot={filterSlot}
+          filterSlot={
+            <>
+              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                  <Trash2 />
+                  {t('bulkActions.delete')}
+                </DropdownMenuItem>
+              </BulkActionsButton>
+              {filterSlot}
+            </>
+          }
           columnLabels={columnLabels}
         />
       </div>
@@ -288,6 +341,38 @@ export default function SimulationsPage() {
           </div>
         </>
       )}
+
+      <DeleteConfirmationDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => !open && setItemToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title={t('delete.title')}
+        description={t('delete.description', { name: `${itemToDelete?.town?.name ?? ''} — ${itemToDelete?.brand?.name ?? ''}` })}
+        confirmLabel={t('delete.confirm')}
+        cancelLabel={t('delete.cancel')}
+      />
+
+      <BulkDeleteDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        items={selectedItems}
+        deleteItem={handleBulkDeleteItem}
+        onComplete={handleBulkDeleteComplete}
+        labels={{
+          title: t('bulkDelete.title'),
+          description: t('bulkDelete.description', { count: selectedItems.length }),
+          columnName: t('bulkDelete.columnName'),
+          columnStatus: t('bulkDelete.columnStatus'),
+          confirm: t('bulkDelete.confirm'),
+          cancel: t('bulkDelete.cancel'),
+          close: t('bulkDelete.close'),
+          statusPending: t('bulkDelete.statusPending'),
+          statusDeleting: t('bulkDelete.statusDeleting'),
+          statusSuccess: t('bulkDelete.statusSuccess'),
+          statusError: t('bulkDelete.statusError'),
+          statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
     </div>
   );
 }

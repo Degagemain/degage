@@ -3,11 +3,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { InsurancePriceBenchmark } from '@/domain/insurance-price-benchmark.model';
 import { Page } from '@/domain/page.model';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
+import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
+import { BulkActionsButton } from '@/app/components/bulk-actions-button';
+import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -48,6 +54,8 @@ export default function InsurancePriceBenchmarksPage() {
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [itemToDelete, setItemToDelete] = useState<InsurancePriceBenchmark | null>(null);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   const handleSort = useCallback((columnId: string, desc: boolean) => {
     setSorting([{ id: columnId, desc }]);
@@ -59,7 +67,11 @@ export default function InsurancePriceBenchmarksPage() {
     setPageIndex(0);
   }, []);
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+  const handleDeleteRequest = useCallback((item: InsurancePriceBenchmark) => {
+    setItemToDelete(item);
+  }, []);
+
+  const columns = useMemo(() => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t }), [handleSort, handleDeleteRequest, t]);
 
   const columnLabels = useMemo(
     () => ({
@@ -113,6 +125,38 @@ export default function InsurancePriceBenchmarksPage() {
       }));
     }
   }, [yearFilter, pageIndex, pageSize, sorting]);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete?.id) return;
+
+    const response = await fetch(`/api/insurance-price-benchmarks/${itemToDelete.id}`, { method: 'DELETE' });
+
+    if (response.ok) {
+      toast.success(t('delete.success'));
+      setItemToDelete(null);
+      fetchData();
+    } else if (response.status === 409) {
+      toast.error(t('delete.conflict'));
+    } else {
+      toast.error(t('delete.error'));
+    }
+  }, [itemToDelete, fetchData, t]);
+
+  const selectedItems: BulkDeleteItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter(Boolean)
+        .map((item) => ({ id: item.id!, label: `${item.year}` })),
+    [rowSelection, state.data],
+  );
+
+  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/insurance-price-benchmarks/${id}`, { method: 'DELETE' }), []);
+
+  const handleBulkDeleteComplete = useCallback(() => {
+    setRowSelection({});
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     fetchData();
@@ -169,7 +213,23 @@ export default function InsurancePriceBenchmarksPage() {
   return (
     <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
       <div className="px-3 md:px-4">
-        <DataTableToolbar table={table} searchValue="" onSearchChange={() => {}} filterSlot={filterSlot} columnLabels={columnLabels} />
+        <DataTableToolbar
+          table={table}
+          searchValue=""
+          onSearchChange={() => {}}
+          filterSlot={
+            <>
+              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                  <Trash2 />
+                  {t('bulkActions.delete')}
+                </DropdownMenuItem>
+              </BulkActionsButton>
+              {filterSlot}
+            </>
+          }
+          columnLabels={columnLabels}
+        />
       </div>
 
       {state.isLoading ? (
@@ -201,6 +261,38 @@ export default function InsurancePriceBenchmarksPage() {
           </div>
         </>
       )}
+
+      <DeleteConfirmationDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => !open && setItemToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title={t('delete.title')}
+        description={t('delete.description', { name: `${itemToDelete?.year ?? ''}` })}
+        confirmLabel={t('delete.confirm')}
+        cancelLabel={t('delete.cancel')}
+      />
+
+      <BulkDeleteDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        items={selectedItems}
+        deleteItem={handleBulkDeleteItem}
+        onComplete={handleBulkDeleteComplete}
+        labels={{
+          title: t('bulkDelete.title'),
+          description: t('bulkDelete.description', { count: selectedItems.length }),
+          columnName: t('bulkDelete.columnName'),
+          columnStatus: t('bulkDelete.columnStatus'),
+          confirm: t('bulkDelete.confirm'),
+          cancel: t('bulkDelete.cancel'),
+          close: t('bulkDelete.close'),
+          statusPending: t('bulkDelete.statusPending'),
+          statusDeleting: t('bulkDelete.statusDeleting'),
+          statusSuccess: t('bulkDelete.statusSuccess'),
+          statusError: t('bulkDelete.statusError'),
+          statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
     </div>
   );
 }
