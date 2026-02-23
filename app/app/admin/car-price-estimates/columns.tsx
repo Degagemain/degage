@@ -3,10 +3,14 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
+import { Button } from '@/app/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
+import { MoreHorizontal, Trash2 } from 'lucide-react';
 import { CarPriceEstimate } from '@/domain/car-price-estimate.model';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
+  onDelete?: (item: CarPriceEstimate) => void;
   t: (key: string) => string;
 }
 
@@ -108,6 +112,31 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarPriceEstimat
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const item = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-xs">
+                <span className="sr-only">{t('actions.openMenu')}</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem variant="destructive" onClick={() => options.onDelete?.(item)}>
+                <Trash2 />
+                {t('actions.delete')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
 };

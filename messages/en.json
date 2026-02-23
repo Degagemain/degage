@@ -168,7 +168,38 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search car brands...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete car brand",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car brand deleted successfully.",
+        "error": "Failed to delete car brand.",
+        "conflict": "This car brand is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car brands",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Car brand",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "fuelTypes": {
       "title": "Fuel Types",
@@ -187,7 +218,38 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search fuel types...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete fuel type",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Fuel type deleted successfully.",
+        "error": "Failed to delete fuel type.",
+        "conflict": "This fuel type is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete fuel types",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Fuel type",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "carTypes": {
       "title": "Car Types",
@@ -210,7 +272,38 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search car types...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete car type",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car type deleted successfully.",
+        "error": "Failed to delete car type.",
+        "conflict": "This car type is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car types",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Car type",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "euroNorms": {
       "title": "Euro Norms",
@@ -230,7 +323,38 @@
       "active": "Active",
       "inactive": "Inactive",
       "searchPlaceholder": "Search euro norms...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete euro norm",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Euro norm deleted successfully.",
+        "error": "Failed to delete euro norm.",
+        "conflict": "This euro norm is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete euro norms",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Euro norm",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "carPriceEstimates": {
       "title": "Car Price Estimates",
@@ -252,7 +376,38 @@
         "created": "Created",
         "updated": "Updated"
       },
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete car price estimate",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car price estimate deleted successfully.",
+        "error": "Failed to delete car price estimate.",
+        "conflict": "This car price estimate is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car price estimates",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Car price estimate",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "carInfos": {
       "title": "Car Info (estimates)",
@@ -269,7 +424,38 @@
         "created": "Created",
         "updated": "Updated"
       },
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete car info",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car info deleted successfully.",
+        "error": "Failed to delete car info.",
+        "conflict": "This car info is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car info records",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Car info",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "carTaxEuroNormAdjustments": {
       "title": "Fiscal Tax Euro Norms",
@@ -282,7 +468,38 @@
         "updated": "Updated"
       },
       "searchPlaceholder": "Search by fiscal region...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete euro norm adjustment",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Euro norm adjustment deleted successfully.",
+        "error": "Failed to delete euro norm adjustment.",
+        "conflict": "This record is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete euro norm adjustments",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Adjustment",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "fiscalRegions": {
       "title": "Fiscal Regions",
@@ -299,7 +516,38 @@
       "default": "Default",
       "notDefault": "Not default",
       "searchPlaceholder": "Search fiscal regions...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete fiscal region",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Fiscal region deleted successfully.",
+        "error": "Failed to delete fiscal region.",
+        "conflict": "This fiscal region is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete fiscal regions",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Fiscal region",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "provinces": {
       "title": "Provinces",
@@ -310,7 +558,38 @@
         "updated": "Updated"
       },
       "searchPlaceholder": "Search provinces...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete province",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Province deleted successfully.",
+        "error": "Failed to delete province.",
+        "conflict": "This province is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete provinces",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Province",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "hubs": {
       "title": "Hubs",
@@ -336,7 +615,38 @@
       "default": "Default",
       "notDefault": "Not default",
       "searchPlaceholder": "Search hubs...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete hub",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Hub deleted successfully.",
+        "error": "Failed to delete hub.",
+        "conflict": "This hub is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete hubs",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "hubBenchmarks": {
       "title": "Hub Benchmarks",
@@ -353,7 +663,38 @@
         "created": "Created",
         "updated": "Updated"
       },
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete hub benchmark",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Hub benchmark deleted successfully.",
+        "error": "Failed to delete hub benchmark.",
+        "conflict": "This hub benchmark is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete hub benchmarks",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Hub benchmark",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "carTaxBaseRates": {
       "title": "Fiscal Tax Base",
@@ -396,7 +737,38 @@
         "created": "Created",
         "updated": "Updated"
       },
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete insurance benchmark",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Insurance benchmark deleted successfully.",
+        "error": "Failed to delete insurance benchmark.",
+        "conflict": "This insurance benchmark is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete insurance benchmarks",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Benchmark",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "towns": {
       "title": "Towns",
@@ -424,7 +796,38 @@
       "hasActiveMembers": "Active members",
       "notHasActiveMembers": "No active members",
       "searchPlaceholder": "Search towns...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete town",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Town deleted successfully.",
+        "error": "Failed to delete town.",
+        "conflict": "This town is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete towns",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Town",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "systemParameters": {
       "title": "System Parameters",
@@ -492,6 +895,37 @@
       },
       "searchPlaceholder": "Search simulations...",
       "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete simulation",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Simulation deleted successfully.",
+        "error": "Failed to delete simulation.",
+        "conflict": "This simulation is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete simulations",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Simulation",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      },
       "new": "New",
       "newPage": {
         "title": "New simulation",

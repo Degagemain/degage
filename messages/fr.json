@@ -168,7 +168,38 @@
       "active": "Actif",
       "inactive": "Inactif",
       "searchPlaceholder": "Rechercher des marques...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la marque",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Marque supprimée avec succès.",
+        "error": "Échec de la suppression de la marque.",
+        "conflict": "Cette marque est liée à d'autres enregistrements et ne peut pas être supprimée."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des marques",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Marque",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "fuelTypes": {
       "title": "Types de Carburant",
@@ -187,7 +218,38 @@
       "active": "Actif",
       "inactive": "Inactif",
       "searchPlaceholder": "Rechercher des types de carburant...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le type de carburant",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Type de carburant supprimé avec succès.",
+        "error": "Échec de la suppression du type de carburant.",
+        "conflict": "Ce type de carburant est lié à d'autres enregistrements et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des types de carburant",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Type de carburant",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "carTypes": {
       "title": "Types de véhicules",
@@ -210,7 +272,38 @@
       "active": "Actif",
       "inactive": "Inactif",
       "searchPlaceholder": "Rechercher des types de véhicules...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le type de véhicule",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Type de véhicule supprimé avec succès.",
+        "error": "Échec de la suppression du type de véhicule.",
+        "conflict": "Ce type de véhicule est lié à d'autres enregistrements et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des types de véhicules",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Type de véhicule",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "euroNorms": {
       "title": "Normes Euro",
@@ -230,7 +323,38 @@
       "active": "Actif",
       "inactive": "Inactif",
       "searchPlaceholder": "Rechercher des normes euro...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la norme euro",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Norme euro supprimée avec succès.",
+        "error": "Échec de la suppression de la norme euro.",
+        "conflict": "Cette norme euro est liée à d'autres enregistrements et ne peut pas être supprimée."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des normes euro",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Norme euro",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "carPriceEstimates": {
       "title": "Estimations de prix",
@@ -252,7 +376,38 @@
         "created": "Créé le",
         "updated": "Modifié le"
       },
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Estimation du prix",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Estimation de prix supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des estimations de prix",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Estimation de prix",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "carInfos": {
       "title": "Infos voiture (estimations)",
@@ -269,7 +424,38 @@
         "created": "Créé le",
         "updated": "Modifié le"
       },
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer les infos voiture",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Info voiture supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des infos voiture",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Info voiture",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "carTaxEuroNormAdjustments": {
       "title": "Normes Euro (taxe auto)",
@@ -282,7 +468,38 @@
         "updated": "Modifié le"
       },
       "searchPlaceholder": "Rechercher par région fiscale...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer l'ajustement euro norm",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Ajustement supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des ajustements euro norm",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Ajustement",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "fiscalRegions": {
       "title": "Régions fiscales",
@@ -299,7 +516,38 @@
       "default": "Par défaut",
       "notDefault": "Non par défaut",
       "searchPlaceholder": "Rechercher des régions fiscales...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la région fiscale",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Région fiscale supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des régions fiscales",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Région fiscale",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "provinces": {
       "title": "Provinces",
@@ -310,7 +558,38 @@
         "updated": "Modifié le"
       },
       "searchPlaceholder": "Rechercher des provinces...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la province",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Province supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des provinces",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Province",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "hubs": {
       "title": "Hubs",
@@ -336,7 +615,38 @@
       "default": "Par défaut",
       "notDefault": "Non par défaut",
       "searchPlaceholder": "Rechercher des hubs...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le hub",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Hub supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des hubs",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Hub",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "hubBenchmarks": {
       "title": "Benchmarks de hub",
@@ -353,7 +663,38 @@
         "created": "Créé le",
         "updated": "Modifié le"
       },
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le benchmark hub",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Benchmark hub supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des benchmarks hub",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Benchmark hub",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "carTaxBaseRates": {
       "title": "Taux de base fiscal",
@@ -396,7 +737,38 @@
         "created": "Créé le",
         "updated": "Modifié le"
       },
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le benchmark assurance",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Benchmark supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des benchmarks assurance",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Benchmark",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "towns": {
       "title": "Villes / communes",
@@ -424,7 +796,38 @@
       "hasActiveMembers": "Membres actifs",
       "notHasActiveMembers": "Pas de membres actifs",
       "searchPlaceholder": "Rechercher des villes...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la ville",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Ville supprimée avec succès.",
+        "error": "Échec de la suppression de la ville.",
+        "conflict": "Cette ville est liée à d'autres enregistrements et ne peut pas être supprimée."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des villes",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Ville",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "systemParameters": {
       "title": "Paramètres système",
@@ -492,6 +895,37 @@
       },
       "searchPlaceholder": "Rechercher des simulations...",
       "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la simulation",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Simulation supprimé(e) avec succès.",
+        "error": "Échec de la suppression.",
+        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Actions",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des simulations",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Simulation",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      },
       "new": "Nouveau",
       "newPage": {
         "title": "Nouvelle simulation",

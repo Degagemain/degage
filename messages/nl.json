@@ -168,7 +168,38 @@
       "active": "Actief",
       "inactive": "Inactief",
       "searchPlaceholder": "Zoek automerken...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Automerk verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Automerk succesvol verwijderd.",
+        "error": "Automerk verwijderen mislukt.",
+        "conflict": "Dit automerk is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Automerken verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Automerk",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "fuelTypes": {
       "title": "Brandstoftypes",
@@ -187,7 +218,38 @@
       "active": "Actief",
       "inactive": "Inactief",
       "searchPlaceholder": "Zoek brandstoftypes...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Brandstoftype verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Brandstoftype succesvol verwijderd.",
+        "error": "Brandstoftype verwijderen mislukt.",
+        "conflict": "Dit brandstoftype is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Brandstoftypes verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Brandstoftype",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "carTypes": {
       "title": "Voertuigtypes",
@@ -210,7 +272,38 @@
       "active": "Actief",
       "inactive": "Inactief",
       "searchPlaceholder": "Zoek voertuigtypes...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Voertuigtype verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Voertuigtype succesvol verwijderd.",
+        "error": "Voertuigtype verwijderen mislukt.",
+        "conflict": "Dit voertuigtype is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Voertuigtypes verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Voertuigtype",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "euroNorms": {
       "title": "Euronormen",
@@ -230,7 +323,38 @@
       "active": "Actief",
       "inactive": "Inactief",
       "searchPlaceholder": "Zoek euronormen...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Euronorm verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Euronorm succesvol verwijderd.",
+        "error": "Euronorm verwijderen mislukt.",
+        "conflict": "Deze euronorm is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Euronormen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Euronorm",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "carPriceEstimates": {
       "title": "Prijsschattingen",
@@ -252,7 +376,38 @@
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Prijsschatting verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Prijsschatting succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Prijsschattingen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Prijsschatting",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "carInfos": {
       "title": "Auto Info (schattingen)",
@@ -269,7 +424,38 @@
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Autoinfo verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Autoinfo succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Auto-info records verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Autoinfo",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "carTaxEuroNormAdjustments": {
       "title": "Belastingen Euronorm correcties",
@@ -282,7 +468,38 @@
         "updated": "Bijgewerkt"
       },
       "searchPlaceholder": "Zoek op fiscale regio...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Euronorm-aanpassing verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Euronorm-aanpassing succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Euronorm-aanpassingen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Aanpassing",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "fiscalRegions": {
       "title": "Fiscale regio's",
@@ -299,7 +516,38 @@
       "default": "Standaard",
       "notDefault": "Niet standaard",
       "searchPlaceholder": "Zoek fiscale regio's...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Fiscale regio verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Fiscale regio succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Fiscale regio's verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Fiscale regio",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "provinces": {
       "title": "Provincies",
@@ -310,7 +558,38 @@
         "updated": "Bijgewerkt"
       },
       "searchPlaceholder": "Zoek provincies...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Provincie verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Provincie succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Provincies verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Provincie",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "hubs": {
       "title": "Hubs",
@@ -336,7 +615,38 @@
       "default": "Standaard",
       "notDefault": "Niet standaard",
       "searchPlaceholder": "Zoek hubs...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Hub verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Hub succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Hubs verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "hubBenchmarks": {
       "title": "Hub benchmarks",
@@ -353,7 +663,38 @@
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Hub-benchmark verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Hub-benchmark succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Hub-benchmarks verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Hub-benchmark",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "carTaxBaseRates": {
       "title": "Belastingen basistarieven",
@@ -396,7 +737,38 @@
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Verzekeringsbenchmark verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Verzekeringsbenchmark succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Verzekeringsbenchmarks verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Benchmark",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "towns": {
       "title": "Gemeenten",
@@ -424,7 +796,38 @@
       "hasActiveMembers": "Actieve leden",
       "notHasActiveMembers": "Geen actieve leden",
       "searchPlaceholder": "Zoek gemeenten...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Gemeente verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Gemeente succesvol verwijderd.",
+        "error": "Gemeente verwijderen mislukt.",
+        "conflict": "Deze gemeente is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Gemeenten verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Gemeente",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "systemParameters": {
       "title": "Systeemparameters",
@@ -492,6 +895,37 @@
       },
       "searchPlaceholder": "Zoek simulaties...",
       "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Simulatie verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Simulatie succesvol verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Acties",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Simulaties verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Simulatie",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      },
       "new": "Nieuw",
       "newPage": {
         "title": "Nieuwe simulatie",
