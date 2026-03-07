@@ -369,6 +369,7 @@
         "fuelType": "Type de carburant",
         "carType": "Type de voiture",
         "year": "Année",
+        "estimateYear": "Année d'estimation",
         "price": "Prix",
         "rangeMin": "Min",
         "rangeMax": "Max",

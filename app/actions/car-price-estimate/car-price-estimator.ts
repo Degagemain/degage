@@ -34,11 +34,12 @@ const responseSchema: Schema = {
   required: ['price', 'rangeMin', 'rangeMax', 'articleRefs'],
 };
 
-function buildPrompt(brandName: string, carTypeName: string, fuelTypeName: string, year: number): string {
+function buildPrompt(brandName: string, carTypeName: string, fuelTypeName: string, year: number, depreciationKm: number): string {
   return [
     `Estimate the current second-hand market price range for a ${brandName} ${carTypeName} (${fuelTypeName}) from ${year} in Belgium.`,
     'Base your estimate on listings from popular Belgian and European second-hand car websites (e.g. AutoScout24, 2dehands, CarDNA).',
     'Return the average expected price, a realistic minimum and maximum price range, and any relevant source URL links in the articles array.',
+    `The minimum price (rangeMin) should reflect the expected value of this car at ${depreciationKm.toLocaleString('en')} km on the odometer.`,
     'If there are noteworthy observations — such as limited availability, high demand,',
     'known reliability issues, or market trends — include them in the remarks field.',
     'All prices should be in EUR.',
@@ -57,11 +58,13 @@ export async function carValueEstimator(
   carTypeId: string | null,
   carTypeOther: string | null,
   firstRegistrationDate: Date,
+  depreciationKm: number,
 ): Promise<PriceRange> {
   const year = firstRegistrationDate.getFullYear();
+  const estimateYear = new Date().getFullYear();
 
   if (carTypeId) {
-    const cached = await dbCarPriceEstimateFindByCarTypeAndYear(carTypeId, year);
+    const cached = await dbCarPriceEstimateFindByCarTypeAndYear(carTypeId, year, estimateYear);
     if (cached) {
       return { price: cached.price, min: cached.rangeMin, max: cached.rangeMax };
     }
@@ -71,7 +74,7 @@ export async function carValueEstimator(
   const carType = carTypeId ? await dbCarTypeRead(carTypeId) : null;
   const carTypeName = carType?.name ?? carTypeOther ?? 'unknown model';
 
-  const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year);
+  const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year, depreciationKm);
   const result = await generateGroundedJson<GeminiPriceEstimate>(prompt, responseSchema);
 
   if (carTypeId && result.price > 0) {
@@ -79,6 +82,7 @@ export async function carValueEstimator(
       id: null,
       carType: { id: carTypeId },
       year,
+      estimateYear,
       price: result.price,
       rangeMin: result.rangeMin,
       rangeMax: result.rangeMax,

@@ -93,7 +93,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
-  const priceRange = await carValueEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
+  const priceRange = await carValueEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt, depreciationKm);
   const percentageDepreciated = Math.min(input.mileage, depreciationKm) / depreciationKm;
   const estimatedCarValue = priceRange.min + (priceRange.price - priceRange.min) * (1 - percentageDepreciated);
 

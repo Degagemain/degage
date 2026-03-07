@@ -160,6 +160,7 @@ describe('runSimulationEngine', () => {
       input.carType?.id ?? null,
       input.carTypeOther,
       input.firstRegisteredAt,
+      200_000,
     );
   });
 

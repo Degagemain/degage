@@ -72,6 +72,12 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarPriceEstimat
       enableHiding: true,
     },
     {
+      accessorKey: 'estimateYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.estimateYear')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{row.getValue('estimateYear')}</span>,
+      enableHiding: true,
+    },
+    {
       accessorKey: 'price',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.price')} onSort={onSort} />,
       cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.getValue('price') as number)}</span>,

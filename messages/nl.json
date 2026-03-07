@@ -369,6 +369,7 @@
         "fuelType": "Brandstoftype",
         "carType": "Autotype",
         "year": "Jaar",
+        "estimateYear": "Schattingsjaar",
         "price": "Prijs",
         "rangeMin": "Min",
         "rangeMax": "Max",
