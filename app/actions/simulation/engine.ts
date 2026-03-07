@@ -93,7 +93,15 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
-  const priceRange = await carValueEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt, depreciationKm);
+  const priceRange = await carValueEstimator(
+    input.brand.id,
+    fuelType,
+    input.carType?.id ?? null,
+    input.carTypeOther,
+    input.firstRegisteredAt,
+    depreciationKm,
+    input.backtestYear,
+  );
   const percentageDepreciated = Math.min(input.mileage, depreciationKm) / depreciationKm;
   const estimatedCarValue = priceRange.min + (priceRange.price - priceRange.min) * (1 - percentageDepreciated);
 
@@ -113,6 +121,10 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }),
   );
   result.carInfo = carInfo;
+  result.resultEuroNorm = carInfo.euroNormCode;
+  result.resultConsumption = carInfo.consumption;
+  result.resultCc = carInfo.cylinderCc;
+  result.resultCo2 = carInfo.co2Emission;
 
   setCurrentStep(result, SimulationPhase.CAR_TAX);
   const province = await dbProvinceRead(town.province.id);
@@ -127,14 +139,22 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     euroNorm,
   });
 
+  result.resultTaxCostPerYear = taxResult.rate;
+
   setCurrentStep(result, SimulationPhase.CAR_INSURANCE);
   const insurancePrice = await calculateCarInsurance(result, estimatedCarValue, new Date());
+  result.resultInsuranceCostPerYear = insurancePrice;
 
   setCurrentStep(result, SimulationPhase.KM_RATE);
+  result.resultInspectionCostPerYear = hub.simInspectionCostPerYear;
+
   const closestBenchmark = await dbHubBenchmarkFindClosest(hub.id!, input.ownerKmPerYear);
   if (!closestBenchmark) {
     throw new Error('No closest benchmark found');
   }
+  result.resultBenchmarkMinKm = closestBenchmark.sharedMinKm;
+  result.resultBenchmarkAvgKm = closestBenchmark.sharedAvgKm;
+  result.resultBenchmarkMaxKm = closestBenchmark.sharedMaxKm;
   const estimatedTotalYearlyMileage = input.ownerKmPerYear + (input.ownerKmPerYear / closestBenchmark.ownerKm) * closestBenchmark.sharedAvgKm;
 
   addInfoMessage(
@@ -174,6 +194,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   let bonusPoints = 0;
   const carType = input.carType?.id ? await dbCarTypeRead(input.carType.id) : null;
   const ecoScore = carType?.ecoscore ?? carInfo.ecoscore;
+  result.resultEcoScore = ecoScore;
   if (ecoScore >= hub.simMinEcoScoreForBonus) {
     bonusPoints += 1;
     addSuccessMessage(result, await getSimulationMessage(SimulationStepCode.ECO_SCORE_BONUS, { ecoScore }));

@@ -172,14 +172,13 @@ export default function SimulationDetailPage() {
             {simulation.rejectionReason != null && simulation.rejectionReason.trim() !== '' && (
               <FieldRow label={tDetail('rejectionReason')} value={simulation.rejectionReason} />
             )}
-            {simulation.estimatedPrice != null && (
-              <FieldRow label={tDetail('estimatedPrice')} value={`€ ${simulation.estimatedPrice.toLocaleString()}`} />
+            {simulation.resultCc != null && <FieldRow label={tDetail('cylinderCc')} value={`${simulation.resultCc} cc`} />}
+            {simulation.resultCo2 != null && <FieldRow label={tDetail('co2Emission')} value={`${simulation.resultCo2} g/km`} />}
+            {simulation.resultEcoScore != null && <FieldRow label={tDetail('ecoscore')} value={String(simulation.resultEcoScore)} />}
+            {simulation.resultEuroNorm != null && <FieldRow label={tDetail('euroNormCode')} value={simulation.resultEuroNorm} />}
+            {simulation.resultConsumption != null && (
+              <FieldRow label={tDetail('consumption')} value={`${simulation.resultConsumption} L/100km`} />
             )}
-            {simulation.cylinderCc != null && <FieldRow label={tDetail('cylinderCc')} value={`${simulation.cylinderCc} cc`} />}
-            {simulation.co2Emission != null && <FieldRow label={tDetail('co2Emission')} value={`${simulation.co2Emission} g/km`} />}
-            {simulation.ecoscore != null && <FieldRow label={tDetail('ecoscore')} value={String(simulation.ecoscore)} />}
-            {simulation.euroNormCode != null && <FieldRow label={tDetail('euroNormCode')} value={simulation.euroNormCode} />}
-            {simulation.consumption != null && <FieldRow label={tDetail('consumption')} value={`${simulation.consumption} L/100km`} />}
             {createdAt && <FieldRow label={tCol('created')} value={format(createdAt, 'dd-MM-yyyy HH:mm')} />}
             {updatedAt && <FieldRow label={tCol('updated')} value={format(updatedAt, 'dd-MM-yyyy HH:mm')} />}
           </CardContent>

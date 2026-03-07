@@ -17,12 +17,17 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     purchasePrice: data.purchasePrice ?? null,
     rejectionReason: data.rejectionReason ?? null,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
-    estimatedPrice: data.estimatedPrice ?? null,
-    cylinderCc: data.cylinderCc ?? null,
-    co2Emission: data.co2Emission ?? null,
-    ecoscore: data.ecoscore ?? null,
-    euroNormCode: data.euroNormCode ?? null,
-    consumption: data.consumption ?? null,
+    resultEuroNorm: data.resultEuroNorm ?? null,
+    resultEcoScore: data.resultEcoScore ?? null,
+    resultConsumption: data.resultConsumption ?? null,
+    resultCc: data.resultCc ?? null,
+    resultCo2: data.resultCo2 ?? null,
+    resultInsuranceCostPerYear: data.resultInsuranceCostPerYear ?? null,
+    resultTaxCostPerYear: data.resultTaxCostPerYear ?? null,
+    resultInspectionCostPerYear: data.resultInspectionCostPerYear ?? null,
+    resultBenchmarkMinKm: data.resultBenchmarkMinKm ?? null,
+    resultBenchmarkAvgKm: data.resultBenchmarkAvgKm ?? null,
+    resultBenchmarkMaxKm: data.resultBenchmarkMaxKm ?? null,
     steps: data.steps ?? [
       {
         status: SimulationStepIcon.OK,
@@ -58,5 +63,6 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     isVan: data.isVan ?? false,
     isNewCar: data.isNewCar ?? false,
     purchasePrice: data.purchasePrice ?? null,
+    backtestYear: data.backtestYear ?? null,
   };
 };

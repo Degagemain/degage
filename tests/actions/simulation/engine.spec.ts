@@ -161,6 +161,7 @@ describe('runSimulationEngine', () => {
       input.carTypeOther,
       input.firstRegisteredAt,
       200_000,
+      null,
     );
   });
 

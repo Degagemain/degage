@@ -104,12 +104,17 @@ model Simulation {
     purchasePrice     Decimal?
     rejectionReason   String?
     resultCode        SimulationResultCode
-    estimatedPrice    Decimal?
-    cylinderCc        Int?
-    co2Emission       Int?
-    ecoscore          Int?
-    euroNormCode      String?
-    consumption       Float?
+    resultEuroNorm    String?
+    resultEcoScore    Int?
+    resultConsumption Float?
+    resultCc          Int?
+    resultCo2         Int?
+    resultInsuranceCostPerYear Float?
+    resultTaxCostPerYear       Float?
+    resultInspectionCostPerYear Float?
+    resultBenchmarkMinKm       Int?
+    resultBenchmarkAvgKm       Int?
+    resultBenchmarkMaxKm       Int?
     steps             Json                 @default("[]")
     createdAt         DateTime             @default(now())
     updatedAt         DateTime             @updatedAt
