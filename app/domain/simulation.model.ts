@@ -125,9 +125,14 @@ export const simulationSchema = z
     resultInsuranceCostPerYear: z.number().nullable().default(null),
     resultTaxCostPerYear: z.number().nullable().default(null),
     resultInspectionCostPerYear: z.number().nullable().default(null),
+    resultMaintenanceCostPerYear: z.number().nullable().default(null),
     resultBenchmarkMinKm: z.number().int().nullable().default(null),
     resultBenchmarkAvgKm: z.number().int().nullable().default(null),
     resultBenchmarkMaxKm: z.number().int().nullable().default(null),
+    resultRoundedKmCost: z.number().nullable().default(null),
+    resultDepreciationCostKm: z.number().nullable().default(null),
+    resultEstimatedCarValue: z.number().nullable().default(null),
+    error: z.string().nullable().default(null),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
@@ -163,7 +168,6 @@ export interface SimulationEngineResult extends SimulationResultBuilder {
   resultCode: SimulationResultCode;
   carInfo: SimulationCarInfo | null;
   currentStep: string | null;
-  /** When resultCode is NOT_OK, optional reason from the engine (e.g. step message). */
   rejectionReason?: string | null;
   resultEuroNorm?: string | null;
   resultEcoScore?: number | null;
@@ -173,7 +177,15 @@ export interface SimulationEngineResult extends SimulationResultBuilder {
   resultInsuranceCostPerYear?: number | null;
   resultTaxCostPerYear?: number | null;
   resultInspectionCostPerYear?: number | null;
+  resultMaintenanceCostPerYear?: number | null;
   resultBenchmarkMinKm?: number | null;
   resultBenchmarkAvgKm?: number | null;
   resultBenchmarkMaxKm?: number | null;
+  resultRoundedKmCost?: number | null;
+  resultDepreciationCostKm?: number | null;
+  resultEstimatedCarValue?: number | null;
+  error?: string | null;
+
+  /* Read-only, not stored in the database */
+  estimate?: PriceRange;
 }

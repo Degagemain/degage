@@ -25,9 +25,13 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     resultInsuranceCostPerYear: data.resultInsuranceCostPerYear ?? null,
     resultTaxCostPerYear: data.resultTaxCostPerYear ?? null,
     resultInspectionCostPerYear: data.resultInspectionCostPerYear ?? null,
+    resultMaintenanceCostPerYear: data.resultMaintenanceCostPerYear ?? null,
     resultBenchmarkMinKm: data.resultBenchmarkMinKm ?? null,
     resultBenchmarkAvgKm: data.resultBenchmarkAvgKm ?? null,
     resultBenchmarkMaxKm: data.resultBenchmarkMaxKm ?? null,
+    resultRoundedKmCost: data.resultRoundedKmCost ?? null,
+    resultDepreciationCostKm: data.resultDepreciationCostKm ?? null,
+    error: data.error ?? null,
     steps: data.steps ?? [
       {
         status: SimulationStepIcon.OK,

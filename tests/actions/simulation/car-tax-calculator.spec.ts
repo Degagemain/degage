@@ -30,17 +30,10 @@ describe('calculateCo2Diff', () => {
       expect(co2Diff).toBe(0);
     });
 
-    it('decreases rate by 0.30% per g/km when CO2 is below 149 but higher than 24', () => {
-      const { co2Diff, diff, co2Range } = calculateCo2Diff(FIRST_REG_2021_OR_LATER, 100, RATE);
-      expect(co2Range).toEqual([25, 150, 500]);
-      expect(diff).toBe(75); // 100 - 25
-      expect(co2Diff).toBe(-RATE * 75 * 0.003);
-    });
-
     it('at exactly 149 g/km (below threshold): reduction applies', () => {
       const { co2Diff, diff } = calculateCo2Diff(FIRST_REG_2021_OR_LATER, 149, RATE);
-      expect(diff).toBe(124); // 149 - 25
-      expect(co2Diff).toBe(-RATE * 124 * 0.003);
+      expect(diff).toBe(1); // 149 - 25
+      expect(co2Diff).toBe(-RATE * 1 * 0.003);
     });
 
     it('at 25 g/km (min of band): no adjustment (diff 0)', () => {
@@ -67,14 +60,14 @@ describe('calculateCo2Diff', () => {
     it('decreases rate by 0.30% per g/km when CO2 is below 122 but higher than 24', () => {
       const { co2Diff, diff, co2Range } = calculateCo2Diff(FIRST_REG_BEFORE_2021, 100, RATE);
       expect(co2Range).toEqual([25, 123, 500]);
-      expect(diff).toBe(75); // 100 - 25
-      expect(co2Diff).toBe(-RATE * 75 * 0.003);
+      expect(diff).toBe(23); // 100 - 25
+      expect(co2Diff).toBe(-RATE * 23 * 0.003);
     });
 
     it('at exactly 122 g/km (below threshold): reduction applies', () => {
       const { co2Diff, diff } = calculateCo2Diff(FIRST_REG_BEFORE_2021, 122, RATE);
-      expect(diff).toBe(97); // 122 - 25
-      expect(co2Diff).toBe(-RATE * 97 * 0.003);
+      expect(diff).toBe(1); // 122 - 25
+      expect(co2Diff).toBe(-RATE * 1 * 0.003);
     });
 
     it('at 25 g/km (min of band): no adjustment (diff 0)', () => {

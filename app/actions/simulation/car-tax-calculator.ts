@@ -14,9 +14,21 @@ import { dbCarTaxBaseRateFindByFiscalRegionDateAndCc } from '@/storage/car-tax-b
 import { dbCarTaxEuroNormAdjustmentFindByFiscalRegionAndEuroNormGroup } from '@/storage/car-tax-euro-norm-adjustment/car-tax-euro-norm-adjustment.read';
 
 const TAX_CUTOFF_DATE = new Date(2016, 0, 1);
+
+/**
+ * Date from which the "2021" CO2 rules apply (first registration in 2021 or later).
+ * See: https://www.vlaanderen.be/belastingen-en-begroting/vlaamse-belastingen/verkeersbelastingen/verkeersbelastingen-voor-personenwagens
+ * - From 2021: WLTP, pivot 149 g/km (we use 150), band 24–500 g/km (we use 25–500).
+ * - Before 2021: NEDC, pivot 122 g/km (we use 123), same band.
+ */
 const CO2_RULE_DATE = new Date(2021, 0, 1);
-const CO2_THRESHOLDS_AFTER_DATE = [25, 150, 500];
-const CO2_THRESHOLDS_BEFORE_DATE = [25, 123, 500];
+
+/** [minGkm, pivotGkm, maxGkm] for first registration from 2021 (WLTP): no adjustment below 25; reduction 25–150; surcharge 150–500. */
+const CO2_THRESHOLDS_AFTER_DATE: [number, number, number] = [25, 150, 500];
+/** [minGkm, pivotGkm, maxGkm] for first registration before 2021 (NEDC): no adjustment below 25; reduction 25–123; surcharge 123–500. */
+const CO2_THRESHOLDS_BEFORE_DATE: [number, number, number] = [25, 123, 500];
+
+/** 0.30% per g/km — official rate for groene verkeersbelasting CO2 adjustment. */
 const CO2_FACTOR = 0.003;
 
 const OPDECIEM = 0.1;
@@ -30,26 +42,43 @@ export interface CarTaxCalculatorInput {
   euroNorm?: EuroNorm | null;
 }
 
-export interface CarTaxCalculatorResult {
-  rate: number;
-}
-
 export interface CalculateCo2DiffResult {
+  /** Amount to add (positive) or subtract (negative) from the base rate. */
   co2Diff: number;
+  /** diff * CO2_FACTOR (0.30%); multiplier before applying to rate. */
   co2Factor: number;
+  /** Number of g/km used in the adjustment (above pivot: distance to cap; below pivot: distance from min). */
   diff: number;
+  /** [min, pivot, max] g/km for the chosen rule (before vs from 2021). */
   co2Range: [number, number, number];
 }
 
+/**
+ * CO2 adjustment for the Flemish "groene verkeersbelasting" (green vehicle tax).
+ *
+ * Applies only to non‑leased vehicles registered from 01/01/2016. The base rate (from fiscal pk) is
+ * increased or decreased by 0.30% per g/km depending on CO2:
+ * - First registration **from 2021**: WLTP; pivot 149 g/km (code: 150). Below pivot → reduction; above → surcharge (cap 500).
+ * - First registration **before 2021**: NEDC; pivot 122 g/km (code: 123). Same logic.
+ * - No adjustment below 24 g/km (code: 25) or above 500 g/km.
+ *
+ * @see https://www.vlaanderen.be/belastingen-en-begroting/vlaamse-belastingen/verkeersbelastingen/verkeersbelastingen-voor-personenwagens
+ */
 export function calculateCo2Diff(firstRegistrationDate: Date, co2Emission: number, rate: number): CalculateCo2DiffResult {
-  const co2Range = (firstRegistrationDate < CO2_RULE_DATE ? CO2_THRESHOLDS_BEFORE_DATE : CO2_THRESHOLDS_AFTER_DATE) as [number, number, number];
-  const diff = co2Emission >= co2Range[1] ? Math.max(0, co2Range[2] - co2Emission) : co2Emission <= co2Range[0] ? 0 : co2Emission - co2Range[0];
+  const co2Range = firstRegistrationDate < CO2_RULE_DATE ? CO2_THRESHOLDS_BEFORE_DATE : CO2_THRESHOLDS_AFTER_DATE;
+
+  const isAbovePivot = co2Emission >= co2Range[1];
+  const isAtOrBelowMin = co2Emission <= co2Range[0];
+
+  const diff: number = isAbovePivot ? Math.max(0, co2Range[2] - co2Emission) : isAtOrBelowMin ? 0 : co2Range[1] - co2Emission;
+
   const co2Factor = diff * CO2_FACTOR;
-  const co2Diff = rate * (co2Emission >= co2Range[1] ? co2Factor : -co2Factor);
+  const co2Diff = rate * (isAbovePivot ? co2Factor : -co2Factor);
+
   return { co2Diff, co2Factor, diff, co2Range };
 }
 
-export async function calculateCarTax(result: SimulationResultBuilder, input: CarTaxCalculatorInput): Promise<CarTaxCalculatorResult> {
+export async function calculateCarTax(result: SimulationResultBuilder, input: CarTaxCalculatorInput): Promise<number> {
   const { fiscalRegion, fuelType } = input;
   if (!fiscalRegion.isDefault) {
     throw new Error('Car tax calculation is only supported for the default fiscal region');
@@ -64,7 +93,7 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
       SimulationStepIcon.INFO,
       await getSimulationMessage(SimulationStepCode.CAR_TAX_ESTIMATED_ELECTRIC, { registrationDate, rate }),
     );
-    return { rate };
+    return rate;
   }
 
   if (isEmpty(input.cc) || isEmpty(input.co2Emission) || input.euroNorm == null) {
@@ -92,7 +121,7 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
 
   if (input.firstRegistrationDate < TAX_CUTOFF_DATE) {
     rate *= 1 + OPDECIEM;
-    return { rate };
+    return rate;
   }
 
   const { co2Diff } = calculateCo2Diff(input.firstRegistrationDate, input.co2Emission!, rate);
@@ -105,7 +134,9 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
 
   const euroNormAdjustment = await dbCarTaxEuroNormAdjustmentFindByFiscalRegionAndEuroNormGroup(fiscalRegion.id!, euroNorm.group);
   if (!euroNormAdjustment) {
-    throw new Error('No car tax euro norm adjustment found for the given fiscal region and euro norm group');
+    throw new Error(
+      'No car tax euro norm adjustment found for the given fiscal region and euro norm group (euroNormGroup: ' + euroNorm.group + ')',
+    );
   }
   const adjustment = fuelType.code === 'diesel' ? euroNormAdjustment.dieselAdjustment : euroNormAdjustment.defaultAdjustment;
   const euroNormDiff = rate * adjustment;
@@ -117,5 +148,5 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
 
   rate = Math.round(rate + co2Diff + euroNormDiff);
 
-  return { rate };
+  return rate;
 }

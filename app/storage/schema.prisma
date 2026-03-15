@@ -112,9 +112,14 @@ model Simulation {
     resultInsuranceCostPerYear Float?
     resultTaxCostPerYear       Float?
     resultInspectionCostPerYear Float?
+    resultMaintenanceCostPerYear Float?
     resultBenchmarkMinKm       Int?
     resultBenchmarkAvgKm       Int?
     resultBenchmarkMaxKm       Int?
+    resultRoundedKmCost       Float?
+    resultDepreciationCostKm  Float?
+    resultEstimatedCarValue  Float?
+    error                    String?
     steps             Json                 @default("[]")
     createdAt         DateTime             @default(now())
     updatedAt         DateTime             @updatedAt

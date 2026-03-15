@@ -1,0 +1,1629 @@
+/* Dégage Mockup v8 — design tokens and scoped styles for /app/simulation only */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap');
+
+.root {
+  --sim-brand: #1a3d2b;
+  --sim-brand-mid: #285c40;
+  --sim-brand-light: #eaf3ec;
+  --sim-brand-border: #b4d4bc;
+  --sim-bg: #f6f3ee;
+  --sim-surface: #ffffff;
+  --sim-sand: #ede7dc;
+  --sim-border: #ddd6cb;
+  --sim-ink: #181510;
+  --sim-mid: #5a5248;
+  --sim-light: #9c9489;
+  --sim-blue: #1d548a;
+  --sim-blue-bg: #eaf1fa;
+  --sim-blue-border: #b5cde5;
+  --sim-amber: #c4860a;
+  --sim-amber-bg: #fdf3e0;
+  --sim-green: #2a7a48;
+  --sim-green-bg: #e8f5ee;
+  --sim-red: #b83232;
+  --sim-red-bg: #faeaea;
+  --sim-s8: 8px;
+  --sim-s16: 16px;
+  --sim-s24: 24px;
+  --sim-s32: 32px;
+  --sim-s48: 48px;
+  --sim-r8: 8px;
+  --sim-r12: 12px;
+  --sim-r20: 20px;
+  --sim-serif: 'Fraunces', Georgia, serif;
+  --sim-sans: 'DM Sans', system-ui, sans-serif;
+  --sim-max-w: 880px;
+
+  font-family: var(--sim-sans);
+  background: var(--sim-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  background: var(--sim-brand);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.headerInner {
+  max-width: var(--sim-max-w);
+  margin: 0 auto;
+  padding: 0 var(--sim-s24);
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: var(--sim-s24);
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--sim-r8);
+  background: rgba(255, 255, 255, 0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.logoTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1;
+}
+
+.logoSub {
+  font-family: var(--sim-sans);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 1px;
+}
+
+.stepDots {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.stepDot {
+  width: var(--sim-s32);
+  height: var(--sim-s32);
+  border-radius: 50%;
+  border: none;
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Step 4 — Second header bar (result phase) */
+.resultSecondBar {
+  background: var(--sim-brand-light);
+  border-bottom: 1px solid var(--sim-brand-border);
+  position: sticky;
+  top: 56px;
+  z-index: 40;
+}
+
+.resultSecondBarInner {
+  max-width: var(--sim-max-w);
+  margin: 0 auto;
+  padding: 0 var(--sim-s24);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sim-s16);
+}
+
+.resultSecondBarTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--sim-brand);
+}
+
+.resultSecondBarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s16);
+  flex-wrap: wrap;
+}
+
+.resultSecondBarOutcome {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-brand-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.resultPreviewBtns {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  flex-wrap: wrap;
+}
+
+.resultPreviewBtn,
+.resultPreviewBtnActive {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--sim-r8);
+  border: 1px solid var(--sim-brand-border);
+  background: var(--sim-surface);
+  color: var(--sim-brand-mid);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.resultPreviewBtn:hover {
+  background: var(--sim-brand-light);
+  color: var(--sim-brand);
+}
+
+.resultPreviewBtnActive {
+  background: var(--sim-brand);
+  color: #fff;
+  border-color: var(--sim-brand);
+}
+
+.secondBarButton {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-brand);
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-brand-border);
+  border-radius: var(--sim-r8);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.secondBarButton:hover:not(:disabled) {
+  background: var(--sim-brand-light);
+}
+.secondBarButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.stepDotPast {
+  background: var(--sim-brand-mid);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stepDotCurrent {
+  background: #fff;
+  color: var(--sim-brand);
+}
+
+.stepDotFuture {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.stepDotDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.stepConnector {
+  width: var(--sim-s32);
+  height: 2px;
+  transition: background 0.3s;
+}
+
+.stepConnectorPast {
+  background: var(--sim-brand-mid);
+}
+
+.stepConnectorFuture {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Language switcher trigger on dark header */
+.headerLangTrigger {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.headerLangTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Page layout */
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--sim-s48) var(--sim-s24) 120px;
+}
+
+.pageWide {
+  max-width: var(--sim-max-w);
+  margin: 0 auto;
+  padding: var(--sim-s48) var(--sim-s24) 120px;
+}
+
+.pageTwoCol {
+  max-width: var(--sim-max-w);
+  margin: 0 auto;
+  padding: var(--sim-s48) var(--sim-s24) 120px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--sim-s32);
+  align-items: start;
+}
+
+.eyebrow {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-brand-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.title {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--sim-ink);
+  line-height: 1.15;
+  margin-bottom: var(--sim-s16);
+  letter-spacing: -0.3px;
+}
+
+.body {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.65;
+}
+
+.btn {
+  font-family: var(--sim-sans);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--sim-r8);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btnPrimary {
+  background: var(--sim-brand);
+  color: #fff;
+}
+
+.btnPrimary:disabled {
+  background: var(--sim-sand);
+  color: var(--sim-light);
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: none;
+  color: var(--sim-mid);
+  border: 1.5px solid var(--sim-border);
+}
+
+/* Tiles (step 1) */
+.tileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sim-s16);
+  margin-bottom: var(--sim-s24);
+}
+
+.tile {
+  padding: var(--sim-s24);
+  border: 2px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  cursor: pointer;
+  background: var(--sim-surface);
+  transition: all 0.15s;
+  position: relative;
+}
+
+.tileSelected {
+  border-color: var(--sim-brand);
+  background: var(--sim-brand-light);
+}
+
+.tileRadio {
+  position: absolute;
+  top: var(--sim-s16);
+  right: var(--sim-s16);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  border: 2px solid var(--sim-border);
+}
+
+.tileRadioSelected {
+  background: var(--sim-brand);
+  border-color: var(--sim-brand);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tileIcon {
+  font-size: 32px;
+  margin-bottom: var(--sim-s16);
+}
+
+.tileTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sim-ink);
+  margin-bottom: var(--sim-s8);
+  line-height: 1.2;
+  padding-right: var(--sim-s32);
+}
+
+.tileDesc {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.55;
+}
+
+/* Form fields */
+.field {
+  margin-bottom: var(--sim-s24);
+}
+
+.fieldLabel {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  display: block;
+  margin-bottom: var(--sim-s8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fieldHint {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-light);
+  margin-bottom: var(--sim-s8);
+  line-height: 1.45;
+}
+
+.input {
+  width: 100%;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  border: 1.5px solid var(--sim-border);
+  border-radius: var(--sim-r8);
+  padding: 10px 16px;
+  background: var(--sim-surface);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: var(--sim-brand);
+}
+
+.inputReadOnly {
+  background: var(--sim-sand);
+  color: var(--sim-mid);
+  cursor: default;
+}
+
+.select {
+  appearance: none;
+  width: 100%;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  border: 1.5px solid var(--sim-border);
+  border-radius: var(--sim-r8);
+  padding: 10px 16px;
+  background: var(--sim-surface);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.toggleTrack {
+  width: 44px;
+  height: 24px;
+  border-radius: var(--sim-r20);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.toggleTrackOff {
+  background: var(--sim-sand);
+}
+
+.toggleTrackOn {
+  background: var(--sim-brand);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--sim-surface);
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggleThumbOn {
+  left: 22px;
+}
+
+.toggleThumbOff {
+  left: 3px;
+}
+
+/* FAQ placeholder */
+.faqPlaceholder {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-light);
+}
+
+.stickySidebar {
+  position: sticky;
+  top: 80px;
+}
+
+/* Result hero — badge + car animation */
+@keyframes resultPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes resultPuff {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.5) translateX(-6px);
+  }
+}
+
+.resultHero {
+  background: var(--sim-brand);
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+  margin-bottom: var(--sim-s24);
+}
+
+.resultHeroBanner {
+  position: relative;
+  height: 130px;
+  overflow: hidden;
+}
+
+.resultHeroBannerBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #1e4a30, #1a3d2b);
+}
+
+.resultHeroRoad {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.resultHeroRoadLine {
+  position: absolute;
+  top: 15px;
+  height: 4px;
+  width: 9%;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.resultHeroBadge {
+  position: absolute;
+  top: var(--sim-s16);
+  left: var(--sim-s24);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: var(--sim-r20);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: resultPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.resultHeroBadgeDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4caf7a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.resultHeroBadgeText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.resultHeroCarWrap {
+  position: absolute;
+  bottom: 8px;
+  left: 38%;
+  transform: translateX(-50%);
+  transition: left 2s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.resultHeroCarWrapDriving {
+  left: 110%;
+}
+
+.resultHeroCarWrapGone {
+  left: 115%;
+  transition: none;
+}
+
+.resultHeroPuff {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: resultPuff 0.7s ease-out infinite;
+}
+
+.resultHeroGoneMessage {
+  position: absolute;
+  bottom: var(--sim-s8);
+  right: var(--sim-s24);
+  animation: resultPopIn 0.4s ease;
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.resultHeroInner {
+  padding: var(--sim-s24) var(--sim-s32);
+}
+
+.resultHeroTitle {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: var(--sim-s24);
+}
+
+.resultStatGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sim-s16);
+}
+
+.resultStatBox {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.resultStatLabel {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.resultStatValue {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.resultStatSub {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Loading step */
+.loadingHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s16);
+  margin-bottom: var(--sim-s32);
+}
+
+.loadingProgressWrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.loadingProgressSvg {
+  display: block;
+}
+
+.loadingProgressInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingHeaderTitle {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--sim-ink);
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.loadingHeaderSubtitle {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+}
+
+.loadingSpinnerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: var(--sim-s24) 0;
+}
+
+.loadingFunnyText {
+  font-family: var(--sim-sans);
+  font-size: 14px;
+  color: var(--sim-brand-mid);
+  text-align: center;
+  min-height: 40px;
+  margin: 0;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--sim-sand);
+  border-top-color: var(--sim-brand);
+  border-radius: 50%;
+  animation: loadingSpin 0.8s linear infinite;
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+}
+
+.loadingRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sim-s16);
+  padding: var(--sim-s16) var(--sim-s24);
+  border-top: 1px solid var(--sim-sand);
+  transition: all 0.4s ease;
+}
+
+.loadingRow:first-child {
+  border-top: none;
+}
+
+.loadingRowPast {
+  background: var(--sim-brand-light);
+}
+
+.loadingRowActive {
+  border-color: var(--sim-brand-mid);
+}
+
+.loadingCircle {
+  width: var(--sim-s32);
+  height: var(--sim-s32);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.35s;
+}
+
+.loadingCirclePast {
+  background: var(--sim-brand);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.loadingCirclePending {
+  background: var(--sim-sand);
+}
+
+/* Scenario buttons (step 6) */
+.scenarioGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sim-s8);
+  margin-bottom: var(--sim-s24);
+}
+
+.scenarioBtn {
+  padding: var(--sim-s16);
+  border-radius: var(--sim-r12);
+  text-align: left;
+  border: 2px solid var(--sim-border);
+  background: var(--sim-surface);
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  font-family: var(--sim-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.scenarioBtnIcon {
+  font-size: 20px;
+  margin-bottom: var(--sim-s8);
+}
+
+.scenarioBtnLabel {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--sim-ink);
+  margin-bottom: 4px;
+  padding-right: var(--sim-s24);
+}
+
+.scenarioBtnSub {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  color: var(--sim-mid);
+  line-height: 1.5;
+}
+
+.scenarioMedianBadge {
+  margin-top: var(--sim-s8);
+  font-family: var(--sim-sans);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--sim-brand-mid);
+  background: rgba(180, 212, 188, 0.6);
+  border-radius: var(--sim-r8);
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+.scenarioBtnActive {
+  border-color: var(--sim-brand);
+  background: var(--sim-brand-light);
+}
+
+/* Step 5 — Kosten sidebar (right column) */
+.kostenSidebarCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+}
+
+.kostenSidebarHeader {
+  padding: var(--sim-s16) var(--sim-s24);
+  border-bottom: 1px solid var(--sim-border);
+  background: var(--sim-sand);
+}
+
+.kostenSidebarLabel {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenSidebarTotal {
+  font-family: var(--sim-serif);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--sim-ink);
+  line-height: 1;
+}
+
+.kostenSidebarPerYear {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sim-light);
+}
+
+.kostenSidebarRows {
+  padding: 10px var(--sim-s24) var(--sim-s16);
+}
+
+.kostenSidebarRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--sim-sand);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+}
+
+.kostenSidebarRow span:last-child {
+  font-weight: 600;
+  color: var(--sim-ink);
+  font-size: 15px;
+}
+
+.kostenPlaceholderText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-brand-mid);
+  font-weight: 600;
+}
+
+.kostenScenarioHint {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-brand-mid);
+  font-weight: 600;
+  margin-bottom: var(--sim-s24);
+}
+
+/* Step 5 — Detail blocks below scenario pickers */
+.kostenDetailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sim-s16);
+}
+
+.kostenDetailCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+}
+
+.kostenDetailSection {
+  padding: var(--sim-s24);
+  border-bottom: 1px solid var(--sim-sand);
+}
+
+.kostenDetailLabel {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenDetailGedekt {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 48px;
+  color: var(--sim-brand);
+  line-height: 1;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenDetailSub {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+  margin-bottom: var(--sim-s16);
+}
+
+.kostenProgressTrack {
+  height: var(--sim-s8);
+  background: var(--sim-sand);
+  border-radius: var(--sim-r8);
+  overflow: hidden;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenProgressFill {
+  height: 100%;
+  background: var(--sim-brand);
+  border-radius: var(--sim-r8);
+  transition: width 0.6s ease;
+}
+
+.kostenDetailNote {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  color: var(--sim-light);
+}
+
+.kostenDetailToggle {
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: var(--sim-s16) var(--sim-s24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-mid);
+}
+
+.kostenDetailBreakdown {
+  padding: 0 var(--sim-s24) var(--sim-s16);
+}
+
+.kostenDetailBreakdownRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenDetailRowLabel {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+}
+
+.kostenDetailRowVal {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-ink);
+}
+
+.kostenNettoFooter {
+  padding: var(--sim-s16) var(--sim-s24);
+  background: var(--sim-brand);
+}
+
+.kostenNettoLabel {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.kostenNettoValue {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: #fff;
+  line-height: 1;
+}
+
+.kostenNettoValue .kostenSidebarPerYear {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.kostenDetailRight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sim-s16);
+}
+
+.kostenRittenCard {
+  background: var(--sim-brand-light);
+  border: 1px solid var(--sim-brand-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+}
+
+.kostenRittenValue {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--sim-brand);
+  line-height: 1;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenWagensCard {
+  background: var(--sim-sand);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+}
+
+.kostenWagensNum {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--sim-brand);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.kostenWagensBody {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Bevestiging */
+.bevestigingIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--sim-brand-light);
+  border: 2px solid var(--sim-brand-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto var(--sim-s24);
+}
+
+.stepsList {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24) var(--sim-s32);
+  margin-bottom: var(--sim-s24);
+}
+
+.stepItem {
+  display: flex;
+  gap: var(--sim-s16);
+  padding-bottom: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+  border-bottom: 1px solid var(--sim-sand);
+}
+
+.stepItem:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.stepNum {
+  width: var(--sim-s32);
+  height: var(--sim-s32);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stepNumActive {
+  background: var(--sim-brand);
+  color: #fff;
+}
+
+.stepNumInactive {
+  background: var(--sim-sand);
+  color: var(--sim-light);
+}
+
+.ownerKmRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+}
+
+.ownerKmRow .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ownerKmEditBtn {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-brand-mid);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--sim-r8);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ownerKmEditBtn:hover {
+  color: var(--sim-brand);
+  background: var(--sim-brand-light);
+}
+
+.kmConfirmRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  margin-bottom: var(--sim-s24);
+  padding: var(--sim-s8) 0;
+}
+
+.amberBanner {
+  margin-bottom: var(--sim-s24);
+  background: var(--sim-amber-bg);
+  border: 1px solid #deca80;
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+}
+
+.amberBannerText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: #6a5000;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.locationBadge {
+  margin-top: var(--sim-s8);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  padding: 4px 12px;
+  border-radius: var(--sim-r20);
+}
+
+.locationBadgeGent {
+  background: var(--sim-brand-light);
+  border: 1px solid var(--sim-brand-border);
+}
+
+.locationBadgeOther {
+  background: var(--sim-amber-bg);
+  border: 1px solid #deca80;
+}
+
+.locationBadgeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.locationBadgeDotGent {
+  background: var(--sim-brand-mid);
+}
+
+.locationBadgeDotOther {
+  background: var(--sim-amber);
+}
+
+.locationBadgeText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.locationBadgeTextGent {
+  color: var(--sim-brand-mid);
+}
+
+.locationBadgeTextOther {
+  color: var(--sim-amber);
+}
+
+/* Search dropdown — used by components/search-dropdown.tsx */
+.searchDropdownTrigger {
+  width: 100%;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  border: 1.5px solid var(--sim-border);
+  border-radius: var(--sim-r8);
+  padding: 10px 16px;
+  background: var(--sim-surface);
+  outline: none;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.searchDropdownTrigger:focus {
+  border-color: var(--sim-brand);
+}
+
+.searchDropdownTrigger:disabled {
+  background: var(--sim-sand);
+  color: var(--sim-light);
+  cursor: not-allowed;
+}
+
+.searchDropdownPlaceholder {
+  color: var(--sim-light);
+}
+
+.searchDropdownList {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow: hidden;
+  background: var(--sim-surface);
+  border: 1.5px solid var(--sim-border);
+  border-radius: var(--sim-r8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.searchDropdownInput {
+  width: 100%;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid var(--sim-sand);
+  border-radius: var(--sim-r8) var(--sim-r8) 0 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.searchDropdownItem {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  cursor: pointer;
+  transition: background 0.1s;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+.searchDropdownItem:hover {
+  background: var(--sim-brand-light);
+}
+
+.searchDropdownItemSelected {
+  background: var(--sim-brand-light);
+  color: var(--sim-brand-mid);
+  font-weight: 600;
+}
+
+/* Utility for 2-col form grids (stacks on mobile) */
+.formGridTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sim-s16);
+}
+
+/* Utility for button rows (wraps on mobile) */
+.buttonRow {
+  display: flex;
+  gap: var(--sim-s16);
+  flex-wrap: wrap;
+}
+
+/* Mobile and small screens */
+@media (max-width: 768px) {
+  .headerInner {
+    padding: var(--sim-s12) var(--sim-s16);
+    gap: var(--sim-s8);
+    flex-wrap: wrap;
+    min-height: 56px;
+    height: auto;
+    align-content: center;
+  }
+
+  /* Step dots wrap to second row and take full width */
+  .headerInner > .stepDots {
+    flex: 1 1 100%;
+    order: 1;
+    min-width: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: var(--sim-s8);
+    padding-bottom: 2px;
+  }
+
+  .logoTitle {
+    font-size: 14px;
+  }
+
+  .logoSub {
+    font-size: 9px;
+  }
+
+  .stepDot {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .stepConnector {
+    width: 16px;
+    flex-shrink: 0;
+  }
+
+  .resultSecondBarInner {
+    padding: var(--sim-s8) var(--sim-s16);
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+    min-height: 44px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: var(--sim-s8);
+  }
+
+  .resultSecondBarTitle {
+    font-size: 14px;
+  }
+
+  .secondBarButton {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .page,
+  .pageWide {
+    padding: var(--sim-s24) var(--sim-s16) 80px;
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+  }
+
+  .pageTwoCol {
+    grid-template-columns: 1fr;
+    padding: var(--sim-s24) var(--sim-s16) 80px;
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+    gap: var(--sim-s16);
+  }
+
+  .kostenDetailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .formGridTwoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .buttonRow {
+    gap: var(--sim-s8);
+  }
+
+  .buttonRow .btn {
+    min-height: 44px;
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+
+  .input,
+  .select {
+    min-height: 44px;
+  }
+
+  .searchDropdownTrigger {
+    min-height: 44px;
+  }
+
+  .searchDropdownList {
+    max-height: min(300px, 60vh);
+  }
+
+  .tileGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tile {
+    padding: var(--sim-s16);
+  }
+
+  .tileTitle {
+    font-size: 16px;
+    padding-right: var(--sim-s24);
+  }
+
+  .tileIcon {
+    font-size: 28px;
+  }
+
+  .resultHeroBanner {
+    height: 100px;
+  }
+
+  .resultHeroInner {
+    padding: var(--sim-s16) var(--sim-s24);
+  }
+
+  .resultHeroTitle {
+    font-size: 22px;
+  }
+
+  .resultStatGrid {
+    grid-template-columns: 1fr;
+    gap: var(--sim-s8);
+  }
+
+  .resultStatBox {
+    padding: var(--sim-s12);
+  }
+
+  .resultStatValue {
+    font-size: 16px;
+  }
+
+  .scenarioGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .scenarioBtn {
+    min-height: 44px;
+  }
+
+  .loadingCard {
+    border-radius: var(--sim-r8);
+  }
+
+  .loadingRow {
+    padding: var(--sim-s16);
+  }
+
+  .stepsList {
+    padding: var(--sim-s16) var(--sim-s24);
+  }
+
+  .stepItem {
+    flex-wrap: wrap;
+  }
+
+  .faqPlaceholder {
+    padding: var(--sim-s16);
+  }
+
+  .stickySidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerInner {
+    padding: var(--sim-s12) var(--sim-s16);
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+  }
+
+  .logoBox > div {
+    max-width: 120px;
+    min-width: 0;
+  }
+
+  .logoTitle {
+    font-size: 13px;
+  }
+
+  .logoSub {
+    display: none;
+  }
+
+  .page,
+  .pageWide,
+  .pageTwoCol {
+    padding: var(--sim-s16) var(--sim-s16) 60px;
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+  }
+
+  .resultSecondBarInner {
+    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
+    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
+  }
+
+  .resultHeroBadge {
+    padding: 4px 10px;
+  }
+
+  .resultHeroBadgeText {
+    font-size: 11px;
+  }
+
+  .resultHeroGoneMessage {
+    font-size: 13px;
+    right: var(--sim-s16);
+  }
+}
