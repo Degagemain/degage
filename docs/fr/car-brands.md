@@ -1,0 +1,16 @@
+---
+title: Marques
+roles:
+  - admin
+---
+
+# Marques
+
+Liste de référence des marques de véhicules (ex. Tesla, Volkswagen), utilisée dans la simulation, les types de véhicules, les car infos et les
+estimations de prix.
+
+| Propriété | Description                                    |
+| --------- | ---------------------------------------------- |
+| Code      | Identifiant court unique de la marque.         |
+| Nom       | Nom d'affichage de la marque.                  |
+| Actif     | Si la marque est disponible pour la sélection. |

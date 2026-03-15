@@ -12,5 +12,11 @@ next-env.d.ts
 # vitest code coverage
 /coverage
 
+# Script output
+/tmp
+
 # Environment variables
 .env
+
+# Notes and todo files
+/todo

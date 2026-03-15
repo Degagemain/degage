@@ -1,0 +1,18 @@
+---
+title: Euronormen
+roles:
+  - admin
+---
+
+# Euronormen
+
+Referentielijst van emissienormen (bv. Euro 6), met groep en geldigheidsperiode. Gebruikt in car infos en fiscale euronormaanpassingen.
+
+| Eigenschap | Beschrijving                                         |
+| ---------- | ---------------------------------------------------- |
+| Code       | Unieke korte identificatie van de norm.              |
+| Naam       | Weergavenaam van de euronorm.                        |
+| Groep      | Groepslabel voor belastingaanpassingen.              |
+| Actief     | Of de norm beschikbaar is voor selectie.             |
+| Start      | Startdatum van de geldigheid.                        |
+| Einde      | Einddatum van de geldigheid (indien van toepassing). |

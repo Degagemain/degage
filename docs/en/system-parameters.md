@@ -1,12 +1,22 @@
-# System parameters
+---
+title: System Parameters
+roles:
+  - technical
+  - admin
+---
 
-System parameters are configuration values that control business rules (e.g. simulation limits). They are stored in the database, seeded by code, and **only their values** can be changed at runtime by admins. Definitions (code, category, type, name, description) are fixed by the seed.
+# System Parameters
 
-## Purpose
+Configurable values that control business rules (e.g. simulation limits). Only the value can be changed in the admin; code, category, type, and
+name are fixed.
 
-- Centralise configurable limits and options (e.g. max car age, max km for simulation).
-- Let admins adjust values without code changes or redeploys.
-- Keep definitions (code, category, type, translations) under version control via the seed script.
+| Property | Description                                                 |
+| -------- | ----------------------------------------------------------- |
+| Code     | Unique identifier (e.g. maxAgeYears, maxKm).                |
+| Category | Grouping (e.g. simulation) for filtering.                   |
+| Name     | Display name (translatable, read-only).                     |
+| Type     | How the value is stored: number, number range, or euronorm. |
+| Value    | The editable value(s) depending on type.                    |
 
 ## Structure
 
@@ -23,7 +33,8 @@ Each parameter has:
 
 ## Seeding
 
-The seed script (`seeding/seed-system-parameters.ts`) runs as part of `pnpm db:seed`. It **only creates** parameters that do not yet exist (by `code`). It does not overwrite existing rows, so any value changes made by admins are preserved.
+The seed script (`seeding/seed-system-parameters.ts`) runs as part of `pnpm db:seed`. It **only creates** parameters that do not yet exist (by
+`code`). It does not overwrite existing rows, so any value changes made by admins are preserved.
 
 First batch (category **simulation**):
 
@@ -32,25 +43,16 @@ First batch (category **simulation**):
 | `maxAgeYears` | Max age (years) | number | 15      | Used in the simulation to reject cars that exceed this age. Value in years. |
 | `maxKm`       | Maximum km      | number | 250 000 | Used in the simulation to reject cars that exceed this mileage.             |
 
-## Admin UI
-
-Under **Admin → System parameters**:
-
-- List is filtered by category and search (code/name).
-- **Edit** opens a dialog where only the value(s) for that parameter’s type can be changed (number, min/max, or euro norm select).
-- Saving sends a PATCH with only the value payload; code, category, type, and translations are never sent.
-
 ## API
 
 - **GET /api/system-parameters** — Paginated list (admin only). Query: `category`, `query`, `skip`, `take`, `sortBy`, `sortOrder`.
 - **GET /api/system-parameters/[id]** — Single parameter (admin only).
-- **PATCH /api/system-parameters/[id]** — Update only value fields (admin only). Body: `valueNumber`, `valueNumberMin`, `valueNumberMax`, `valueEuronormId` (all optional, depending on type).
+- **PATCH /api/system-parameters/[id]** — Update only value fields (admin only). Body: `valueNumber`, `valueNumberMin`, `valueNumberMax`,
+  `valueEuronormId` (all optional, depending on type).
 
 ## Usage in app
 
 Simulation uses parameters by code:
 
 - `getSimulationParams()` loads `maxAgeYears` and `maxKm` and returns `{ maxAgeYears, maxKm }`.
-- If a parameter is missing, defaults (15 years, 250 000 km) are used so the simulation still runs.
-
-See [simulation.md](./simulation.md) for how these limits are applied in the simulation engine.
+- If a parameter is missing, defaults (15 years, 250 000 km) are used so the simulation still runs.

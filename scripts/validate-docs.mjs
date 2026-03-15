@@ -93,11 +93,17 @@ function getMarkdownFiles() {
     files.push(readmePath);
   }
 
-  // Add all .md files from docs/
+  // Add all .md files from docs/{locale}/
   const docsDir = join(rootDir, 'docs');
   if (existsSync(docsDir)) {
-    const docsFiles = readdirSync(docsDir).filter((f) => f.endsWith('.md'));
-    files.push(...docsFiles.map((f) => join(docsDir, f)));
+    const locales = readdirSync(docsDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+    for (const locale of locales) {
+      const localeDir = join(docsDir, locale);
+      const docsFiles = readdirSync(localeDir).filter((f) => f.endsWith('.md'));
+      files.push(...docsFiles.map((f) => join(localeDir, f)));
+    }
   }
 
   return files;

@@ -31,6 +31,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     resultBenchmarkMaxKm: data.resultBenchmarkMaxKm ?? null,
     resultRoundedKmCost: data.resultRoundedKmCost ?? null,
     resultDepreciationCostKm: data.resultDepreciationCostKm ?? null,
+    resultEstimatedCarValue: data.resultEstimatedCarValue ?? null,
     error: data.error ?? null,
     steps: data.steps ?? [
       {
