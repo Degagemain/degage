@@ -1,6 +1,13 @@
+---
+title: Authentication
+roles:
+  - technical
+---
+
 # Authentication
 
-Authentication is implemented using [better-auth](https://www.better-auth.com/) with pre-built UI components from [@daveyplate/better-auth-ui](https://github.com/daveyplate/better-auth-ui).
+Authentication is implemented using [better-auth](https://www.better-auth.com/) with pre-built UI components from
+[@daveyplate/better-auth-ui](https://github.com/daveyplate/better-auth-ui).
 
 ## Environment Variables
 
@@ -12,9 +19,12 @@ Authentication is implemented using [better-auth](https://www.better-auth.com/) 
 
 ## Email verification and password reset
 
-Verification and password-reset emails are sent via [Resend](https://resend.com). Configure `RESEND_API_KEY` (and optionally `RESEND_FROM` for a custom sender).
+Verification and password-reset emails are sent via [Resend](https://resend.com). Configure `RESEND_API_KEY` (and optionally `RESEND_FROM` for a
+custom sender).
 
-- **Email verification**: Sent on sign-up (`sendOnSignUp`) and on sign-in when the user is not yet verified (`sendOnSignIn`). Login with email/password requires a verified email (`requireEmailVerification`). After the user clicks the verification link, they are signed in automatically (`autoSignInAfterVerification`).
+- **Email verification**: Sent on sign-up (`sendOnSignUp`) and on sign-in when the user is not yet verified (`sendOnSignIn`). Login with
+  email/password requires a verified email (`requireEmailVerification`). After the user clicks the verification link, they are signed in
+  automatically (`autoSignInAfterVerification`).
 - **Password reset**: Triggered from the forgot-password flow; the user receives a link to set a new password.
 
 ## Plugins

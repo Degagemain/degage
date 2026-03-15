@@ -21,6 +21,7 @@ export const dbCarPriceEstimateToDomain = (db: CarPriceEstimateDb): CarPriceEsti
     id: db.id,
     carType: { id: db.carTypeId },
     year: db.year,
+    estimateYear: db.estimateYear,
     price: Number(db.price),
     rangeMin: Number(db.rangeMin),
     rangeMax: Number(db.rangeMax),
@@ -60,6 +61,7 @@ export const carPriceEstimateToDbCreate = (cpe: CarPriceEstimate): Prisma.CarPri
   return {
     carType: { connect: { id: cpe.carType.id } },
     year: cpe.year,
+    estimateYear: cpe.estimateYear,
     price: cpe.price,
     rangeMin: cpe.rangeMin,
     rangeMax: cpe.rangeMax,
@@ -73,6 +75,7 @@ export const carPriceEstimateToDbUpdate = (cpe: CarPriceEstimate): Prisma.CarPri
   return {
     carType: { connect: { id: cpe.carType.id } },
     year: cpe.year,
+    estimateYear: cpe.estimateYear,
     price: cpe.price,
     rangeMin: cpe.rangeMin,
     rangeMax: cpe.rangeMax,

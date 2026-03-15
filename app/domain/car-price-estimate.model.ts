@@ -12,6 +12,7 @@ export const carPriceEstimateSchema = z
     id: z.uuid().nullable(),
     carType: carPriceEstimateCarTypeSchema,
     year: z.number().int(),
+    estimateYear: z.number().int(),
     price: z.number(),
     rangeMin: z.number(),
     rangeMax: z.number(),

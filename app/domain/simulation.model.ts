@@ -87,6 +87,7 @@ export const simulationRunInputSchema = z
     isVan: z.coerce.boolean().default(false),
     isNewCar: z.coerce.boolean().default(false),
     purchasePrice: z.number().min(0).nullable().default(null),
+    backtestYear: z.number().int().nullable().default(null),
   })
   .strict();
 
@@ -116,12 +117,22 @@ export const simulationSchema = z
     purchasePrice: z.number().min(0).nullable().default(null),
     rejectionReason: z.string().nullable().default(null),
     resultCode: z.enum(SimulationResultCode),
-    estimatedPrice: z.number().nullable(),
-    cylinderCc: z.number().int().nullable().default(null),
-    co2Emission: z.number().int().nullable().default(null),
-    ecoscore: z.number().int().min(0).max(100).nullable().default(null),
-    euroNormCode: z.string().nullable().default(null),
-    consumption: z.number().nullable().default(null),
+    resultEuroNorm: z.string().nullable().default(null),
+    resultEcoScore: z.number().int().nullable().default(null),
+    resultConsumption: z.number().nullable().default(null),
+    resultCc: z.number().int().nullable().default(null),
+    resultCo2: z.number().int().nullable().default(null),
+    resultInsuranceCostPerYear: z.number().nullable().default(null),
+    resultTaxCostPerYear: z.number().nullable().default(null),
+    resultInspectionCostPerYear: z.number().nullable().default(null),
+    resultMaintenanceCostPerYear: z.number().nullable().default(null),
+    resultBenchmarkMinKm: z.number().int().nullable().default(null),
+    resultBenchmarkAvgKm: z.number().int().nullable().default(null),
+    resultBenchmarkMaxKm: z.number().int().nullable().default(null),
+    resultRoundedKmCost: z.number().nullable().default(null),
+    resultDepreciationCostKm: z.number().nullable().default(null),
+    resultEstimatedCarValue: z.number().nullable().default(null),
+    error: z.string().nullable().default(null),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
@@ -157,6 +168,24 @@ export interface SimulationEngineResult extends SimulationResultBuilder {
   resultCode: SimulationResultCode;
   carInfo: SimulationCarInfo | null;
   currentStep: string | null;
-  /** When resultCode is NOT_OK, optional reason from the engine (e.g. step message). */
   rejectionReason?: string | null;
+  resultEuroNorm?: string | null;
+  resultEcoScore?: number | null;
+  resultConsumption?: number | null;
+  resultCc?: number | null;
+  resultCo2?: number | null;
+  resultInsuranceCostPerYear?: number | null;
+  resultTaxCostPerYear?: number | null;
+  resultInspectionCostPerYear?: number | null;
+  resultMaintenanceCostPerYear?: number | null;
+  resultBenchmarkMinKm?: number | null;
+  resultBenchmarkAvgKm?: number | null;
+  resultBenchmarkMaxKm?: number | null;
+  resultRoundedKmCost?: number | null;
+  resultDepreciationCostKm?: number | null;
+  resultEstimatedCarValue?: number | null;
+  error?: string | null;
+
+  /* Read-only, not stored in the database */
+  estimate?: PriceRange;
 }

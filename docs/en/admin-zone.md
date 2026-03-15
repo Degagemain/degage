@@ -1,6 +1,13 @@
+---
+title: Admin zone
+roles:
+  - technical
+---
+
 # Admin zone
 
-The admin zone (`app/app/admin/`) provides CRUD management for all entities. Each entity follows the same UI patterns: a data table with server-side pagination, sorting, filtering, and row actions.
+The admin zone (`app/app/admin/`) provides CRUD management for all entities. Each entity follows the same UI patterns: a data table with
+server-side pagination, sorting, filtering, and row actions.
 
 ## Entity page structure
 
@@ -13,7 +20,8 @@ Pages use the shared data table components from `app/app/components/ui/data-tabl
 
 ## Deleting records
 
-There are two deletion flows: single-row delete and bulk delete. Both call the entity's `DELETE /api/{entity}/{id}` endpoint and handle the same response codes:
+There are two deletion flows: single-row delete and bulk delete. Both call the entity's `DELETE /api/{entity}/{id}` endpoint and handle the same
+response codes:
 
 - **204** — Success.
 - **409** — The record is linked to other records (foreign key constraint) and cannot be deleted.
@@ -21,7 +29,8 @@ There are two deletion flows: single-row delete and bulk delete. Both call the e
 
 ### Single-row delete
 
-Each row has an **actions** column (three-dot menu) with a "Delete" option. Clicking it opens a `DeleteConfirmationDialog` — a simple confirmation modal.
+Each row has an **actions** column (three-dot menu) with a "Delete" option. Clicking it opens a `DeleteConfirmationDialog` — a simple
+confirmation modal.
 
 **Component:** `app/app/components/delete-confirmation-dialog.tsx`
 
@@ -37,11 +46,13 @@ Each row has an **actions** column (three-dot menu) with a "Delete" option. Clic
 />
 ```
 
-Props are all strings so translations are passed from the page. On confirm, the page calls the DELETE endpoint, shows a toast (success/conflict/error), and refreshes the table.
+Props are all strings so translations are passed from the page. On confirm, the page calls the DELETE endpoint, shows a toast
+(success/conflict/error), and refreshes the table.
 
 ### Bulk delete
 
-When rows are selected via checkboxes, a **"Actions (N)"** dropdown button appears in the toolbar (between the search box and the facet filters). It contains a "Delete selected" option that opens a `BulkDeleteDialog`.
+When rows are selected via checkboxes, a **"Actions (N)"** dropdown button appears in the toolbar (between the search box and the facet
+filters). It contains a "Delete selected" option that opens a `BulkDeleteDialog`.
 
 **Components:**
 

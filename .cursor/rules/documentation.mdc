@@ -9,21 +9,41 @@ Functional documentation lives in `docs/`. Keep it current when modifying featur
 
 ## Structure
 
+- One file per feature/topic per language: `docs/{locale}/{feature}.md` (e.g. `docs/en/simulation.md`, `docs/nl/simulation.md`, `docs/fr/simulation.md`). Locales: `en`, `nl`, `fr`.
+- Each doc **must** include YAML front matter with **roles** (target audience):
+
+```yaml
+---
+roles:
+  - technical   # for developers: implementation, APIs, config, code
+  - admin       # for administrators: how to use/operate (non-technical)
+  - user        # for end users: product usage (non-technical)
+---
 ```
-docs/
-└── {feature}.md
-```
+
+Use one or more roles per doc. Docs with role **admin** or **user** must stay non-technical (no code, file paths, or implementation details).
 
 ## Guidelines
 
-- Write for developers who need to understand or extend the feature
-- Include: purpose, functional usage and examples
-- Keep concise — link to external docs for library details
-- Update docs when changing related code
+- Write for the audience implied by the doc's roles.
+- **Technical**: include purpose, usage, code examples; link to external docs for libraries.
+- **Admin / user**: plain language; what the system does and how to use it; no code or APIs.
+- Keep docs concise. Update them when changing related code.
+
+## Admin zone entity docs
+
+For every entity that has an admin zone page (`app/app/admin/{entity}/`):
+
+- Create or update **`docs/{locale}/{entity}.md`** with role **admin** for each locale. Use the same terminology as in the app (see `messages/{locale}.json`, e.g. `admin.{entity}.title`, `admin.{entity}.columns.*`).
+- Content: a **short purpose** (one or two sentences) and a **properties table**.
+- The table lists each property (column/field shown in the admin) and a brief description. Omit UI-only columns (e.g. select, actions).
+- When you add, rename, or remove columns or fields on an admin entity page, update the corresponding doc and its properties table so they stay in sync.
 
 ## When to Document
 
 Document a feature when it:
+
 - Has configuration or environment variables
 - Integrates external services or libraries
 - Has non-obvious behavior or conventions
+- Has an admin zone page (see Admin zone entity docs above)

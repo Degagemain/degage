@@ -35,6 +35,7 @@ import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 
 export async function passesMileageRule(result: SimulationResultBuilder, mileage: number, maxMileage: number): Promise<boolean> {
   const passed = mileage <= maxMileage;
+  console.log('passesMileageRule', { mileage, maxMileage, passed });
   const status = passed ? SimulationStepIcon.OK : SimulationStepIcon.NOT_OK;
   addStep(result, status, await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage }));
   return passed;
@@ -50,6 +51,7 @@ export async function passesAgeRule(result: SimulationResultBuilder, firstRegist
 }
 
 export async function runSimulationEngine(input: SimulationRunInput): Promise<SimulationEngineResult> {
+  console.log('runSimulationEngine', input);
   const result: SimulationEngineResult = {
     resultCode: SimulationResultCode.MANUAL_REVIEW,
     steps: [],
@@ -58,8 +60,9 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   };
   try {
     return await tryRunSimulationEngine(input, result);
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
+    result.error = err instanceof Error ? err.message : String(err);
     const stepKey = result.currentStep ?? SimulationPhase.UNKNOWN;
     const stepLabel = await getMessage(stepKey);
     const message = await getSimulationMessage(SimulationStepCode.ERROR_DURING_STEP, { step: stepLabel });
@@ -80,28 +83,43 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   const depreciationKm = isElectricFuelType(fuelType) ? hub.simDepreciationKmElectric : hub.simDepreciationKm;
   const kmToDepreciation = Math.max(0, depreciationKm - input.mileage);
 
-  if (!(await passesMileageRule(result, input.mileage, maxKm))) {
-    result.resultCode = SimulationResultCode.NOT_OK;
-    result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: input.mileage });
-    return result;
+  if (!input.isNewCar) {
+    if (!(await passesMileageRule(result, input.mileage, maxKm))) {
+      result.resultCode = SimulationResultCode.NOT_OK;
+      result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: input.mileage });
+      return result;
+    }
+
+    if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
+      result.resultCode = SimulationResultCode.NOT_OK;
+      result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
+      return result;
+    }
+
+    setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
+    const priceRange = await carValueEstimator(
+      input.brand.id,
+      fuelType,
+      input.carType?.id ?? null,
+      input.carTypeOther,
+      input.firstRegisteredAt,
+      depreciationKm,
+      input.backtestYear,
+    );
+    result.estimate = priceRange;
+    const percentageDepreciated = Math.min(input.mileage, depreciationKm) / depreciationKm;
+    const estimatedCarValue = priceRange.min + (priceRange.price - priceRange.min) * (1 - percentageDepreciated);
+
+    result.resultEstimatedCarValue = Math.round(estimatedCarValue);
+    const priceParams = { price: formatPriceInThousands(estimatedCarValue) };
+    addInfoMessage(result, await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATED, priceParams));
+  } else {
+    result.resultEstimatedCarValue = input.purchasePrice;
+    input.mileage = 0;
   }
-
-  if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
-    result.resultCode = SimulationResultCode.NOT_OK;
-    result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
-    return result;
-  }
-
-  setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
-  const priceRange = await carValueEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, input.firstRegisteredAt);
-  const percentageDepreciated = Math.min(input.mileage, depreciationKm) / depreciationKm;
-  const estimatedCarValue = priceRange.min + (priceRange.price - priceRange.min) * (1 - percentageDepreciated);
-
-  const priceParams = { price: formatPriceInThousands(estimatedCarValue) };
-  addInfoMessage(result, await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATED, priceParams));
 
   setCurrentStep(result, SimulationPhase.CAR_INFO);
-  const estimatedBuildYear = input.firstRegisteredAt.getFullYear();
+  const estimatedBuildYear = input.isNewCar ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
   const carInfo = await carInfoEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, estimatedBuildYear);
   addInfoMessage(
     result,
@@ -113,12 +131,16 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }),
   );
   result.carInfo = carInfo;
+  result.resultEuroNorm = carInfo.euroNormCode;
+  result.resultConsumption = carInfo.consumption;
+  result.resultCc = carInfo.cylinderCc;
+  result.resultCo2 = carInfo.co2Emission;
 
   setCurrentStep(result, SimulationPhase.CAR_TAX);
   const province = await dbProvinceRead(town.province.id);
   const fiscalRegion = await dbFiscalRegionRead(province.fiscalRegion.id);
   const euroNorm = carInfo?.euroNormCode != null ? await dbEuroNormFindByCode(carInfo.euroNormCode) : null;
-  const taxResult = await calculateCarTax(result, {
+  const taxRate = await calculateCarTax(result, {
     fiscalRegion,
     fuelType,
     firstRegistrationDate: input.firstRegisteredAt,
@@ -126,15 +148,23 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     co2Emission: carInfo?.co2Emission,
     euroNorm,
   });
+  result.resultTaxCostPerYear = taxRate;
 
   setCurrentStep(result, SimulationPhase.CAR_INSURANCE);
-  const insurancePrice = await calculateCarInsurance(result, estimatedCarValue, new Date());
+  const insurancePrice = await calculateCarInsurance(result, result.resultEstimatedCarValue!, new Date());
+  result.resultInsuranceCostPerYear = insurancePrice;
 
   setCurrentStep(result, SimulationPhase.KM_RATE);
+  result.resultInspectionCostPerYear = hub.simInspectionCostPerYear;
+  result.resultMaintenanceCostPerYear = hub.simMaintenanceCostPerYear;
+
   const closestBenchmark = await dbHubBenchmarkFindClosest(hub.id!, input.ownerKmPerYear);
   if (!closestBenchmark) {
     throw new Error('No closest benchmark found');
   }
+  result.resultBenchmarkMinKm = closestBenchmark.sharedMinKm;
+  result.resultBenchmarkAvgKm = closestBenchmark.sharedAvgKm;
+  result.resultBenchmarkMaxKm = closestBenchmark.sharedMaxKm;
   const estimatedTotalYearlyMileage = input.ownerKmPerYear + (input.ownerKmPerYear / closestBenchmark.ownerKm) * closestBenchmark.sharedAvgKm;
 
   addInfoMessage(
@@ -145,7 +175,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }),
   );
 
-  const fixedYearCost = hub.simInspectionCostPerYear + hub.simMaintenanceCostPerYear + insurancePrice! + taxResult.rate!;
+  const fixedYearCost = hub.simInspectionCostPerYear + hub.simMaintenanceCostPerYear + insurancePrice! + taxRate;
   addInfoMessage(
     result,
     await getSimulationMessage(SimulationStepCode.FIXED_YEAR_COST, { fixedYearCost: formatPriceInThousands(fixedYearCost) }),
@@ -157,23 +187,26 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     await getSimulationMessage(SimulationStepCode.FUEL_COST_PER_KM, { fuelCostPerKm: Math.round(fuelCostPerKm * 100) / 100 }),
   );
 
-  const depreciationCostKm = kmToDepreciation > 0 ? estimatedCarValue / kmToDepreciation : 0;
+  const depreciationCostKm = kmToDepreciation > 0 ? result.resultEstimatedCarValue! / kmToDepreciation : 0;
+  result.resultDepreciationCostKm = depreciationCostKm;
 
   addInfoMessage(
     result,
     await getSimulationMessage(SimulationStepCode.DEPRECIATION_COST_PER_KM, {
-      depreciationCostPerKm: Math.round(depreciationCostKm * 100) / 100,
+      depreciationCostPerKm: Math.round(depreciationCostKm * 10000) / 10000,
     }),
   );
 
   const kmCost = fuelCostPerKm + fixedYearCost / estimatedTotalYearlyMileage + depreciationCostKm;
-  const roundedKmCost = Math.round(kmCost * 100) / 100;
+  const roundedKmCost = Math.round(kmCost * 10000) / 10000;
+  result.resultRoundedKmCost = roundedKmCost;
   addInfoMessage(result, await getSimulationMessage(SimulationStepCode.KM_RATE_ESTIMATED, { estimated: roundedKmCost }));
 
   // Quality criteria:
   let bonusPoints = 0;
   const carType = input.carType?.id ? await dbCarTypeRead(input.carType.id) : null;
   const ecoScore = carType?.ecoscore ?? carInfo.ecoscore;
+  result.resultEcoScore = ecoScore;
   if (ecoScore >= hub.simMinEcoScoreForBonus) {
     bonusPoints += 1;
     addSuccessMessage(result, await getSimulationMessage(SimulationStepCode.ECO_SCORE_BONUS, { ecoScore }));

@@ -9,10 +9,11 @@ import { Header } from './components/header';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminArea = pathname?.startsWith('/app/admin');
+  const isSimulationPage = pathname === '/app/simulation';
 
   return (
     <Providers>
-      {!isAdminArea && <Header />}
+      {!isAdminArea && !isSimulationPage && <Header />}
       {children}
       <Toaster />
     </Providers>

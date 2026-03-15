@@ -194,6 +194,7 @@ This log explains why packages were installed.
 | ShadCN Calendar / Date picker | react-day-picker, date-fns                                                                             |
 | Gemini AI integration         | @google/genai                                                                                          |
 | Transactional email (auth)    | resend                                                                                                 |
+| TS scripts with path aliases  | tsx                                                                                                    |
 
 ## Known Issues
 

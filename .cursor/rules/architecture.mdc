@@ -30,8 +30,7 @@ Follow this order:
 2. **Storage** (`app/storage/`)
    - Add model to `schema.prisma`
    - Create `{entity}/` folder with mappers and CRUD operations
-   - **Do not run migrations automatically** — prompt user to review schema changes first
-   - Migration command: `pnpm prisma migrate dev --name {migration_name}`
+   - **Prisma migrations**: Never create or edit migration SQL files. The user always runs `pnpm prisma migrate dev --name {migration_name}` manually; that command generates the migration file. Only change `schema.prisma` and then prompt the user to run the migration.
 
 3. **Actions** (`app/actions/`)
    - Create `{entity}/` folder with business logic functions

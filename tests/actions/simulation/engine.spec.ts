@@ -11,7 +11,7 @@ vi.mock('@/actions/simulation/car-info-estimator', () => ({
 vi.mock('@/actions/simulation/car-tax-calculator', () => ({
   calculateCarTax: vi.fn().mockImplementation(async (result: { steps: { push: (step: unknown) => void } }) => {
     result.steps.push({ status: 'info', message: 'simulation.step.car_tax_estimated' });
-    return { rate: 250 };
+    return 250;
   }),
 }));
 
@@ -160,6 +160,8 @@ describe('runSimulationEngine', () => {
       input.carType?.id ?? null,
       input.carTypeOther,
       input.firstRegisteredAt,
+      200_000,
+      null,
     );
   });
 

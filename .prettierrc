@@ -3,5 +3,13 @@
   "useTabs": false,
   "singleQuote": true,
   "printWidth": 144,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "files": ["docs/**/*.md"],
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
 }

@@ -3,6 +3,7 @@ import { DefaultTake, MaxTake, SortOrder } from './utils';
 
 export enum CarPriceEstimateSortColumns {
   YEAR = 'year',
+  ESTIMATE_YEAR = 'estimateYear',
   PRICE = 'price',
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',

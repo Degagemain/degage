@@ -20,7 +20,8 @@
     "db:reset": "docker compose down --volumes --remove-orphans && pnpm db:start && pnpm db:migrate && pnpm db:seed",
     "db:migrate": "env $(cat .env | xargs) prisma migrate dev",
     "db:seed": "env $(cat .env | xargs) prisma db seed",
-    "docs": "node scripts/validate-docs.mjs"
+    "docs": "node scripts/validate-docs.mjs",
+    "benchmark": "env $(cat .env | xargs) pnpx tsx scripts/benchmark.ts"
   },
   "keywords": [],
   "author": "Mathias Colpaert",
@@ -81,6 +82,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "prisma": "^7.3.0",
+    "tsx": "^4.21.0",
     "typescript": "5.9.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
