@@ -22,6 +22,8 @@ Dat gebeurt via:
 - Financiele schattingen (waarde, belasting, verzekering, onderhoud, keuring, brandstof, afschrijving)
 - Kwaliteitsscore (ecoscore, kilometerstand, leeftijd en vraagcontext)
 - Eindregels voor categorie (A, B, hoger tarief of afwijzing)
+- Optionele hub **maximale autoprijs**: als die is ingevuld, kan een run die anders als categorie A, B of hoger tarief zou eindigen **Handmatige
+  beoordeling** worden (zie verder)
 
 Elke run geeft een resultaat plus een lijst met stappen/boodschappen, zodat admins de beslissing kunnen volgen.
 
@@ -103,15 +105,21 @@ Als de kwaliteitscriteria slagen, worden categorieregels toegepast:
 - **Hoger tarief**: regel voor bestelwagens
 - **Niet OK**: als prijscriteria niet gehaald worden
 
+**Handmatige beoordeling bij hoge waarde (hubinstelling):** De hub kan een **maximale autoprijs** voor automatische acceptatie instellen. Als
+die grens is ingevuld en de **geschatte voertuigwaarde** (tweedehands) of **aankoopprijs** (nieuw) is **hoger**, loopt de simulatie toch
+volledig door. Alleen wanneer het resultaat **Categorie A**, **Categorie B** of **Hoger tarief** zou zijn, vervangt de engine dat door
+**Handmatige beoordeling**. Een stapmelding vermeldt welke categorie of welk tarief anders zou zijn toegekend. Zou het resultaat **Niet OK**
+zijn, dan wijzigt de prijslimiet **niets**. Zie [Hubs](hubs.md) voor uitleg en configuratie.
+
 ## Resultaatcodes
 
-| Code                       | Betekenis                                                                                                                    |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Categorie A**            | Voertuig voldoet aan het standaard lagere km-tariefprofiel.                                                                  |
-| **Categorie B**            | Voertuig voldoet aan alternatieve categorieregel (typisch meer zitplaatsen).                                                 |
-| **Hoger tarief**           | Voertuig wordt aanvaard onder hoger-tarieflogica (bestelwagengeval).                                                         |
-| **Niet OK**                | Voertuig faalt op toelating, kwaliteit of prijscriteria.                                                                     |
-| **Handmatige beoordeling** | Veiligheids-/fallback-uitkomst wanneer de run niet normaal kan afronden (bv. ontbrekende referentiegegevens of runtimefout). |
+| Code                       | Betekenis                                                                                                                                                                                                                                                                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Categorie A**            | Voertuig voldoet aan het standaard lagere km-tariefprofiel.                                                                                                                                                                                                                                                                        |
+| **Categorie B**            | Voertuig voldoet aan alternatieve categorieregel (typisch meer zitplaatsen).                                                                                                                                                                                                                                                       |
+| **Hoger tarief**           | Voertuig wordt aanvaard onder hoger-tarieflogica (bestelwagengeval).                                                                                                                                                                                                                                                               |
+| **Niet OK**                | Voertuig faalt op toelating, kwaliteit of prijscriteria.                                                                                                                                                                                                                                                                           |
+| **Handmatige beoordeling** | Ofwel: (1) **Hoge autowaarde** — hubgrens voor maximale prijs is overschreden en de regels zouden het voertuig geaccepteerd hebben (categorie A, B of hoger tarief); zie de stappen voor de bedoelde categorie. Ofwel: (2) **Technische fallback** — de run is niet afgewerkt (ontbrekende referentiegegevens, runtimefout, enz.). |
 
 ## Tabellen die de simulatie gebruikt
 
@@ -153,5 +161,6 @@ De lijst toont simulatieruns: gemeente, resultaat en ingevoerde autodata. Open e
 ## Richtlijnen voor admins
 
 - Houd referentietabellen volledig en actueel voor grote simulatiebatches.
-- Als veel runs **Handmatige beoordeling** geven, controleer eerst ontbrekende benchmarkgegevens.
+- Als veel runs **Handmatige beoordeling** geven, controleer of de hub **maximale autoprijs** daarvoor verantwoord is (hoge waarde: er is een
+  verklarende stap); zo niet, controleer ontbrekende benchmark- en overige referentiegegevens.
 - Herbekijk hubdrempels regelmatig: ze hebben sterke invloed op acceptatie en categorieresultaten.

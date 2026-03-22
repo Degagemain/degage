@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/actions/car-price-estimate/car-price-estimator', () => ({
   carValueEstimator: vi.fn().mockResolvedValue({ price: 15_000, min: 12_000, max: 18_000 }),
@@ -26,16 +26,25 @@ vi.mock('@/storage/town/town.read', () => ({
 vi.mock('@/storage/hub/hub.read', () => ({
   dbHubRead: vi.fn().mockResolvedValue({
     id: 'hub-1',
+    name: 'hub',
+    isDefault: true,
     simMaxAge: 15,
     simMaxKm: 250_000,
+    simMinEuroNormGroupDiesel: 5,
     simDepreciationKm: 200_000,
     simDepreciationKmElectric: 300_000,
     simInspectionCostPerYear: 43,
     simMaintenanceCostPerYear: 950,
+    simMaxPrice: null,
+    simAcceptedPriceCategoryA: 0.38,
+    simAcceptedPriceCategoryB: 0.46,
+    simAcceptedDepreciationCostKm: 0.32,
+    simAcceptedElectricDepreciationCostKm: 0.33,
     simMinEcoScoreForBonus: 60,
     simMaxKmForBonus: 140_000,
     simMaxAgeForBonus: 7,
-    isDefault: true,
+    createdAt: null,
+    updatedAt: null,
   }),
 }));
 
@@ -72,8 +81,14 @@ vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
 
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
+import { hubSchema } from '@/domain/hub.model';
 import { SimulationStepIcon } from '@/domain/simulation.model';
+import { dbHubRead } from '@/storage/hub/hub.read';
 import { simulationRunInput } from '../../builders/simulation.builder';
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 const DEFAULT_MAX_MILEAGE = 250_000;
 
@@ -142,6 +157,44 @@ describe('runSimulationEngine', () => {
     expect(result.steps).toHaveLength(2);
     expect(result.steps[1].status).toBe(SimulationStepIcon.NOT_OK);
     expect(carValueEstimator).not.toHaveBeenCalled();
+  });
+
+  it('returns manualReview when value exceeds simMaxPrice but rules would accept (higher rate)', async () => {
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400aa',
+        name: 'hub',
+        isDefault: true,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        simMaxPrice: 10_000,
+        simAcceptedPriceCategoryA: 0.38,
+        simAcceptedPriceCategoryB: 0.46,
+        simAcceptedDepreciationCostKm: 0.32,
+        simAcceptedElectricDepreciationCostKm: 0.33,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+    const input = simulationRunInput({
+      mileage: 50_000,
+      firstRegisteredAt: new Date('2020-01-01'),
+      isVan: true,
+    });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.rejectionReason).toBe('simulation.step.car_price_manual_review_would_accept');
+    const lastInfo = result.steps.filter((s) => s.status === SimulationStepIcon.INFO).pop();
+    expect(lastInfo?.message).toBe('simulation.step.car_price_manual_review_would_accept');
+    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
   });
 
   it('calls carValueEstimator and returns steps when rules pass', async () => {

@@ -38,6 +38,7 @@ export enum SimulationStepCode {
   MILEAGE_LIMIT = 'mileage_limit',
   PAYBACK_MILEAGE = 'payback_mileage',
   PRICE_CRITERIA_NOT_MET = 'price_criteria_not_met',
+  CAR_PRICE_MANUAL_REVIEW_WOULD_ACCEPT = 'car_price_manual_review_would_accept',
   PRICE_ESTIMATED = 'price_estimated',
   PRICE_ESTIMATION_FAILED = 'price_estimation_failed',
   QUALITY_CRITERIA_NOT_MET = 'quality_criteria_not_met',

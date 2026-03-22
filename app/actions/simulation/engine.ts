@@ -32,6 +32,30 @@ import { dbTownRead } from '@/storage/town/town.read';
 import { dbProvinceRead } from '@/storage/province/province.read';
 import { dbHubBenchmarkFindClosest } from '@/storage/hub-benchmark/hub-benchmark.read';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
+import type { Hub } from '@/domain/hub.model';
+
+type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B | SimulationResultCode.HIGHER_RATE;
+
+async function resolveAcceptanceOrMaxPriceReview(
+  result: SimulationEngineResult,
+  hub: Hub,
+  wouldHaveBeen: AcceptanceResultCode,
+): Promise<SimulationEngineResult> {
+  if (hub.simMaxPrice != null && result.resultEstimatedCarValue != null && result.resultEstimatedCarValue > hub.simMaxPrice) {
+    const outcomeLabel = await getMessage(`simulation.resultCode.${wouldHaveBeen}`);
+    const reviewMessage = await getSimulationMessage(SimulationStepCode.CAR_PRICE_MANUAL_REVIEW_WOULD_ACCEPT, {
+      outcome: outcomeLabel,
+      maxPrice: formatPriceInThousands(hub.simMaxPrice),
+      estimatedPrice: formatPriceInThousands(result.resultEstimatedCarValue),
+    });
+    addInfoMessage(result, reviewMessage);
+    result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+    result.rejectionReason = reviewMessage;
+    return result;
+  }
+  result.resultCode = wouldHaveBeen;
+  return result;
+}
 
 export async function passesMileageRule(result: SimulationResultBuilder, mileage: number, maxMileage: number): Promise<boolean> {
   const passed = mileage <= maxMileage;
@@ -257,28 +281,25 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
 
   // Todo: system parameters  (also below)
   // First round of acceptances based of quality criteria
-  if (roundedKmCost <= 0.38 && input.seats < 7) {
-    result.resultCode = SimulationResultCode.CATEGORY_A;
-    return result;
-  } else if (input.seats >= 7 && roundedKmCost <= 0.46) {
-    result.resultCode = SimulationResultCode.CATEGORY_B;
-    return result;
-  } else if (input.isVan) {
-    result.resultCode = SimulationResultCode.HIGHER_RATE;
-    return result;
+  if (roundedKmCost <= hub.simAcceptedPriceCategoryA && input.seats < 7) {
+    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
+  }
+  if (input.seats >= 7 && roundedKmCost <= hub.simAcceptedPriceCategoryB) {
+    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_B);
+  }
+  if (input.isVan) {
+    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.HIGHER_RATE);
   }
 
   if (hub.isDefault) {
-    if (depreciationCostKm <= 0.32) {
-      result.resultCode = SimulationResultCode.CATEGORY_A;
-      return result;
+    if (depreciationCostKm <= hub.simAcceptedDepreciationCostKm) {
+      return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
     }
   }
 
   if (isElectricFuelType(fuelType)) {
-    if (depreciationCostKm <= 0.33) {
-      result.resultCode = SimulationResultCode.CATEGORY_A;
-      return result;
+    if (depreciationCostKm <= hub.simAcceptedElectricDepreciationCostKm) {
+      return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
     }
   }
 

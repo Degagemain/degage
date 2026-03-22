@@ -16,6 +16,11 @@ export const dbHubToDomain = (hub: Prisma.HubGetPayload<object>): Hub => {
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
     simInspectionCostPerYear: Number(hub.simInspectionCostPerYear),
     simMaintenanceCostPerYear: Number(hub.simMaintenanceCostPerYear),
+    simMaxPrice: hub.simMaxPrice ?? null,
+    simAcceptedPriceCategoryA: Number(hub.simAcceptedPriceCategoryA),
+    simAcceptedPriceCategoryB: Number(hub.simAcceptedPriceCategoryB),
+    simAcceptedDepreciationCostKm: Number(hub.simAcceptedDepreciationCostKm),
+    simAcceptedElectricDepreciationCostKm: Number(hub.simAcceptedElectricDepreciationCostKm),
     createdAt: hub.createdAt,
     updatedAt: hub.updatedAt,
   };
@@ -35,6 +40,11 @@ export const hubToDbCreate = (hub: Hub): Prisma.HubCreateInput => {
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
     simInspectionCostPerYear: hub.simInspectionCostPerYear,
     simMaintenanceCostPerYear: hub.simMaintenanceCostPerYear,
+    simMaxPrice: hub.simMaxPrice,
+    simAcceptedPriceCategoryA: hub.simAcceptedPriceCategoryA,
+    simAcceptedPriceCategoryB: hub.simAcceptedPriceCategoryB,
+    simAcceptedDepreciationCostKm: hub.simAcceptedDepreciationCostKm,
+    simAcceptedElectricDepreciationCostKm: hub.simAcceptedElectricDepreciationCostKm,
   };
 };
 
@@ -52,5 +62,10 @@ export const hubToDbUpdate = (hub: Hub): Prisma.HubUpdateInput => {
     simDepreciationKmElectric: hub.simDepreciationKmElectric,
     simInspectionCostPerYear: hub.simInspectionCostPerYear,
     simMaintenanceCostPerYear: hub.simMaintenanceCostPerYear,
+    simMaxPrice: hub.simMaxPrice,
+    simAcceptedPriceCategoryA: hub.simAcceptedPriceCategoryA,
+    simAcceptedPriceCategoryB: hub.simAcceptedPriceCategoryB,
+    simAcceptedDepreciationCostKm: hub.simAcceptedDepreciationCostKm,
+    simAcceptedElectricDepreciationCostKm: hub.simAcceptedElectricDepreciationCostKm,
   };
 };

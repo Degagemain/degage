@@ -147,6 +147,60 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'simMaxPrice',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMaxPrice')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simMaxPrice') as number | null | undefined;
+        return <span className="font-mono text-sm">{val != null ? `€${val.toLocaleString()}` : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simAcceptedPriceCategoryA',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simAcceptedPriceCategoryA')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simAcceptedPriceCategoryA') as number;
+        return <span className="font-mono text-sm">€{val.toFixed(2)}/km</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simAcceptedPriceCategoryB',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simAcceptedPriceCategoryB')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simAcceptedPriceCategoryB') as number;
+        return <span className="font-mono text-sm">€{val.toFixed(2)}/km</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simAcceptedDepreciationCostKm',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.simAcceptedDepreciationCostKm')} onSort={options.onSort} />
+      ),
+      cell: ({ row }) => {
+        const val = row.getValue('simAcceptedDepreciationCostKm') as number;
+        return <span className="font-mono text-sm">€{val.toFixed(4)}/km</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'simAcceptedElectricDepreciationCostKm',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.simAcceptedElectricDepreciationCostKm')} onSort={options.onSort} />
+      ),
+      cell: ({ row }) => {
+        const val = row.getValue('simAcceptedElectricDepreciationCostKm') as number;
+        return <span className="font-mono text-sm">€{val.toFixed(4)}/km</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
