@@ -1,0 +1,32 @@
+---
+description: Prefer self-explanatory code; limit JSDoc and block comments
+alwaysApply: true
+---
+
+# In-Code Comments and Docstrings
+
+Rely on **clear names**, **straightforward structure**, and **types** so readers understand the code without narrative.
+
+## Default
+
+- **Do not** add JSDoc, `/** … */`, or block comments that merely repeat what the signature or a quick read already shows.
+- **Do not** add docstrings on obvious private helpers, CRUD handlers, or UI event handlers.
+- **Avoid** commenting every section or restating framework behavior (e.g. “fetch data on mount”).
+
+## When a short comment is OK
+
+Use a **brief** line comment only when the code cannot be made obvious cheaply, for example:
+
+- A **non-obvious invariant**, edge case, or workaround (ideally with a ticket or issue reference if external).
+- **Safety or correctness** constraints that are easy to break later.
+- **Public or stable APIs** consumed across package boundaries—minimal JSDoc for contract (params, return, errors), not a tutorial.
+
+## Documentation belongs elsewhere
+
+- **User-facing** or **operator** documentation → `docs/` (per documentation rules), not long comments in source.
+- **Architecture** and entity flow → existing architecture/domain rules, not duplicated in file headers.
+
+## Refactors
+
+- Do **not** remove existing comments or docstrings **unrelated** to the current task.
+- When touching a function, you may **trim** redundant docstrings if they only duplicate types or the function name.

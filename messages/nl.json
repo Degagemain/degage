@@ -11,6 +11,7 @@
   },
   "faq": {
     "title": "Veelgestelde vragen",
+    "docFaqPanelHeading": "Documentatie",
     "intro": "Hier vind je antwoorden op de meest gestelde vragen over de simulatie en het wagenpark.",
     "q1": "Wat doet de simulatie?",
     "a1": "De simulatie controleert of je voertuig voldoet aan de voorwaarden om tot het wagenpark toe te treden. Je vult je gegevens in en krijgt direct een indicatie: toegelaten, niet toegelaten of handmatige beoordeling nodig.",
@@ -987,6 +988,73 @@
       },
       "searchPlaceholder": "Zoek gebruikers...",
       "tryAgain": "Opnieuw proberen"
+    },
+    "documentation": {
+      "title": "Documentatie",
+      "helpLink": "Hulp bij deze pagina",
+      "add": "Documentatie toevoegen",
+      "edit": "Bewerken",
+      "searchPlaceholder": "Zoek documentatie...",
+      "tryAgain": "Opnieuw proberen",
+      "filters": {
+        "isFaq": "FAQ",
+        "source": "Bron",
+        "format": "Formaat",
+        "formatMarkdown": "Markdown",
+        "formatText": "Platte tekst",
+        "sourceRepository": "Repository",
+        "sourceNotion": "Notion",
+        "sourceManual": "Handmatig"
+      },
+      "columns": {
+        "externalId": "Externe ID",
+        "source": "Bron",
+        "isFaq": "FAQ",
+        "tags": "Tags",
+        "roles": "Rollen",
+        "audienceRole": {
+          "technical": "Technisch",
+          "admin": "Beheerder",
+          "user": "Gebruiker",
+          "public": "Publiek"
+        },
+        "title": "Titel",
+        "format": "Formaat",
+        "updated": "Bijgewerkt"
+      },
+      "form": {
+        "createTitle": "Documentatie aanmaken",
+        "editTitle": "Documentatie bewerken",
+        "externalId": "Externe ID",
+        "externalIdHint": "Leeg laten om automatisch te genereren (manual:…)",
+        "source": "Bron",
+        "format": "Formaat",
+        "isFaq": "FAQ-item",
+        "audience": "Doelpubliek",
+        "tags": "Tags",
+        "locale": "Taal",
+        "titleField": "Titel",
+        "content": "Inhoud",
+        "save": "Opslaan",
+        "saveSuccess": "Opgeslagen.",
+        "saveError": "Opslaan mislukt.",
+        "cancel": "Annuleren",
+        "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden."
+      },
+      "yes": "Ja",
+      "no": "Nee",
+      "actions": {
+        "openMenu": "Menu openen",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Documentatie verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Documentatie verwijderd.",
+        "error": "Verwijderen mislukt."
+      }
     }
   },
   "simulation": {
