@@ -94,7 +94,7 @@ export function SearchDropdown({
   const displayLabel = selectedLabel ?? (value ? (allOptions.find((o) => o.id === value)?.name ?? '') : null);
 
   return (
-    <div ref={containerRef} className={`relative ${className}`}>
+    <div ref={containerRef} className={className} style={{ position: 'relative' }}>
       <button
         type="button"
         onClick={() => !disabled && setOpen((o) => !o)}
@@ -104,7 +104,7 @@ export function SearchDropdown({
         aria-haspopup="listbox"
       >
         <span className={!displayLabel ? styles.searchDropdownPlaceholder : ''}>{displayLabel || placeholder}</span>
-        <span aria-hidden style={{ marginLeft: 'auto', fontSize: '10px' }}>
+        <span aria-hidden className={styles.searchDropdownChevron}>
           {open ? '▲' : '▼'}
         </span>
       </button>
@@ -119,12 +119,12 @@ export function SearchDropdown({
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
           />
-          <div className="max-h-[260px] overflow-y-auto">
+          <div className={styles.searchDropdownScroll}>
             {loading ? (
-              <div className="px-4 py-3 text-sm text-[var(--sim-light)]">Laden…</div>
+              <div className={styles.searchDropdownStatus}>Laden…</div>
             ) : (
               <>
-                {allOptions.length === 0 && !loading && <div className="px-4 py-3 text-sm text-[var(--sim-light)]">Geen resultaten.</div>}
+                {allOptions.length === 0 && !loading && <div className={styles.searchDropdownStatus}>Geen resultaten.</div>}
                 {allOptions.map((option) => (
                   <button
                     key={option.id}
