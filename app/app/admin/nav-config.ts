@@ -1,13 +1,14 @@
 import type { LucideIcon } from 'lucide-react';
-import { Calculator, LineChart, MapPin, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, LineChart, MapPin, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
-  translationKey: 'simulations' | 'users';
+  translationKey: 'simulations' | 'users' | 'documentation';
   href: string;
   icon: LucideIcon;
 }[] = [
   { translationKey: 'simulations', href: '/app/admin/simulations', icon: Calculator },
   { translationKey: 'users', href: '/app/admin/users', icon: Users },
+  { translationKey: 'documentation', href: '/app/admin/documentation', icon: BookOpen },
 ];
 
 export const CAR_SETTINGS_ITEMS: {

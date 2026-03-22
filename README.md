@@ -167,35 +167,75 @@ pnpm run docs
 
 This log explains why packages were installed.
 
-| Reason                        | Package(s)                                                                                             |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Next.js setup                 | next@latest, react@latest, react-dom@latest                                                            |
-| commit message linting        | @commitlint/config-conventional, @commitlint/cli, husky                                                |
-| ESLint via Next.js            | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
-| validating models             | zod                                                                                                    |
-| prisma ORM setup              | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
-| Unit testing setup            | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
-| Unit test coverage            | @vitest/coverage-v8                                                                                    |
-| Tailwind setup                | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
-| ShadCn setup                  | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
-| Button Component              | @radix-ui/react-slot                                                                                   |
-| Dropdown Menu Component       | @radix-ui/react-dropdown-menu                                                                          |
-| Dark mode                     | next-themes                                                                                            |
-| Label Component               | @radix-ui/react-label                                                                                  |
-| Separator Component           | @radix-ui/react-separator                                                                              |
-| Auth setup                    | better-auth                                                                                            |
-| Auth UI Setup                 | @daveyplate/better-auth-ui                                                                             |
-| Toastr Component              | sonner                                                                                                 |
-| ShadCN Table/Select           | radix-ui                                                                                               |
-| Data Table                    | @tanstack/react-table                                                                                  |
-| Sidebar Component             | (shadcn generated - uses radix-ui)                                                                     |
-| Navigation Menu/Avatar        | (shadcn generated - uses radix-ui)                                                                     |
-| Faceted Filter                | cmdk (shadcn command component)                                                                        |
-| Internationalization          | next-intl                                                                                              |
-| ShadCN Calendar / Date picker | react-day-picker, date-fns                                                                             |
-| Gemini AI integration         | @google/genai                                                                                          |
-| Transactional email (auth)    | resend                                                                                                 |
-| TS scripts with path aliases  | tsx                                                                                                    |
+| Reason                         | Package(s)                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Next.js setup                  | next@latest, react@latest, react-dom@latest                                                            |
+| commit message linting         | @commitlint/config-conventional, @commitlint/cli, husky                                                |
+| ESLint via Next.js             | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
+| validating models              | zod                                                                                                    |
+| prisma ORM setup               | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
+| Unit testing setup             | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
+| Unit test coverage             | @vitest/coverage-v8                                                                                    |
+| Tailwind setup                 | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
+| ShadCn setup                   | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
+| Button Component               | @radix-ui/react-slot                                                                                   |
+| Dropdown Menu Component        | @radix-ui/react-dropdown-menu                                                                          |
+| Dark mode                      | next-themes                                                                                            |
+| Label Component                | @radix-ui/react-label                                                                                  |
+| Separator Component            | @radix-ui/react-separator                                                                              |
+| Auth setup                     | better-auth                                                                                            |
+| Auth UI Setup                  | @daveyplate/better-auth-ui                                                                             |
+| Toastr Component               | sonner                                                                                                 |
+| ShadCN Table/Select            | radix-ui                                                                                               |
+| Data Table                     | @tanstack/react-table                                                                                  |
+| Sidebar Component              | (shadcn generated - uses radix-ui)                                                                     |
+| Navigation Menu/Avatar         | (shadcn generated - uses radix-ui)                                                                     |
+| Faceted Filter                 | cmdk (shadcn command component)                                                                        |
+| Internationalization           | next-intl                                                                                              |
+| ShadCN Calendar / Date picker  | react-day-picker, date-fns                                                                             |
+| Gemini AI integration          | @google/genai                                                                                          |
+| Transactional email (auth)     | resend                                                                                                 |
+| TS scripts with path aliases   | tsx                                                                                                    |
+| Seed / parse docs front matter | gray-matter                                                                                            |
+| In-app Markdown rendering      | react-markdown, remark-gfm                                                                             |
+| Notion webhooks & page fetch   | @notionhq/client                                                                                       |
+
+### Notion Integration
+
+#### Webhook setup
+
+1. **Integration** — In [Notion integrations](https://www.notion.so/my-integrations), create or open an integration and copy its secret into `NOTION_API_KEY`. Invite that integration to every page (or parent) it must read; otherwise webhooks may not fire or page fetch will fail.
+2. **Public URL** — Notion requires **HTTPS** and a host reachable from the internet (not `localhost`). Register the webhook at **`/api/webhooks/notion`** on that host (your public origin + that path).
+
+3. **Create the subscription** — In the integration → **Webhooks**, add a subscription with that URL. Subscribe to page events this app handles: **`page.created`**, **`page.content_updated`**, **`page.properties_updated`**, **`page.moved`**, **`page.undeleted`**, **`page.deleted`**. Other event types are accepted but ignored.
+4. **Verify** — Notion sends a one-time `POST` to your URL. The JSON body contains **`verification_token`** (Notion does not show this token in its own UI—you must read it from the **incoming HTTP request**). This app answers with **200** and an empty body. Then in Notion, open **Verify** on the subscription and **paste that same token string**. Where to read it:
+   - **While `NOTION_WEBHOOK_VERIFICATION_TOKEN` is unset:** the token is **printed to server logs** (`stdout`) for every verification request, in any environment (local or hosted). After you set that env var, the app stops logging it (use request inspection if you still need the raw body).
+   - **ngrok:** while `ngrok http` is running, open the **Web Interface** URL printed in the ngrok terminal (default local port **4040**), find the `POST` to `/api/webhooks/notion`, and copy `verification_token` from the request body.
+   - **Hosted deploy (when the env var is already set):** use your host’s request logs or observability for that endpoint’s POST body. Official walkthrough: [Notion webhooks](https://developers.notion.com/reference/webhooks).
+5. **`NOTION_WEBHOOK_VERIFICATION_TOKEN`** — After verification, set this env var to the **same** `verification_token` value so incoming requests can be checked against `X-Notion-Signature` (HMAC-SHA256 of the raw body). **Tip:** Leave this unset until the verification request succeeds; if it is set incorrectly before verification, Notion’s first request may get **401**.
+
+#### Local testing with ngrok
+
+Use a tunnel so Notion can reach your machine. **Install the [ngrok agent](https://ngrok.com/download)** (Homebrew: `brew install ngrok/ngrok/ngrok`) on your system — do **not** add ngrok as an npm devDependency; it is a separate CLI, not something the app imports.
+
+1. Follow [ngrok getting started](https://ngrok.com/docs/getting-started/) to create an account, install the agent, and run **`ngrok config add-authtoken <token>`** once.
+2. Start the app: **`pnpm dev`** (default Next.js port **3000** with this repo’s `dev` script).
+3. In another terminal: **`ngrok http 3000`**.
+4. In the ngrok output, copy the **https** URL next to **Forwarding** and append **`/api/webhooks/notion`** — that full string is the webhook URL in Notion.
+5. Complete verification in Notion as above (token from server logs while `NOTION_WEBHOOK_VERIFICATION_TOKEN` is unset, or from the ngrok inspector). On the free tier the hostname may change each time you restart ngrok; update the subscription or use a [reserved domain](https://ngrok.com/docs/guides/how-to-set-up-a-custom-domain/) on a paid plan if you need a stable URL.
+
+| Variable                               | Purpose                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NOTION_API_KEY`                       | Integration token to fetch pages after webhook events                                                                                                                                                                                                                                                                                                      |
+| `NOTION_WEBHOOK_VERIFICATION_TOKEN`    | Token from Notion webhook verification; used for `X-Notion-Signature` validation                                                                                                                                                                                                                                                                           |
+| `NOTION_DOC_LOCALE_TITLE_PROPERTIES`   | Optional per-locale Notion property names for titles: comma-separated `locale=Property` (e.g. `en=Title EN,nl=Titel NL,fr=Titre FR`). Each property may be **rich_text** or **title**. If unset, the page’s primary **title** property is used for all locales. If set for a locale but that property is empty, the primary title is used for that locale. |
+| `NOTION_DOC_LOCALE_CONTENT_PROPERTIES` | Optional per-locale body: same `locale=Property` format; properties should be **rich_text**. If unset for a locale, or that property is empty, the body falls back to the first **rich_text** on the page named **`Content`** or **`Body`** (in that order).                                                                                               |
+| `NOTION_DOC_IS_FAQ_PROPERTY`           | Optional checkbox property name. If unset, or the property is missing or not a checkbox: **`false`**. If set, uses the checkbox value (`true` / `false`).                                                                                                                                                                                                  |
+| `NOTION_DOC_AUDIENCE_PROPERTY`         | Optional **multi_select** property name. Selected option names must match audience roles (`technical`, `admin`, `user`, `public`). If unset, empty selection, or no valid options after parsing: **`user`, `public`**.                                                                                                                                     |
+| `NOTION_DOC_TAGS_PROPERTY`             | Optional **multi_select** property name. Selected option names must match documentation tags (e.g. `simulation_step_1`, `simulation_step_2_approved` / `_rejected` / `_review`, `simulation_step_3`, `simulation_step_4`). If unset or empty: **no tags**. Invalid options are skipped.                                                                    |
+| `NOTION_DOC_FORMAT_PROPERTY`           | Optional select or rich_text: `markdown` or `text`. If unset, unsupported type, or value does not parse: **`markdown`**.                                                                                                                                                                                                                                   |
+
+The page **title** is taken from the Notion **title** property when no per-locale title map is configured; if none has text, it defaults to **`Untitled`**. With `NOTION_DOC_LOCALE_TITLE_PROPERTIES`, each of `en` / `nl` / `fr` can use its own field, still falling back to the primary title when that field is empty.
 
 ## Known Issues
 

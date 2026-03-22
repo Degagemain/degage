@@ -409,3 +409,54 @@ model Verification {
 
     @@map("verification")
 }
+
+enum DocumentationSource {
+    repository
+    notion
+    manual
+}
+
+enum DocumentationFormat {
+    markdown
+    text
+}
+
+enum DocumentationAudienceRole {
+    technical
+    admin
+    user
+    public
+}
+
+enum DocumentationTag {
+    simulation_step_1
+    simulation_step_2_approved
+    simulation_step_2_rejected
+    simulation_step_2_review
+    simulation_step_3
+    simulation_step_4
+}
+
+model Documentation {
+    id              String                      @id @default(uuid())
+    source          DocumentationSource
+    externalId      String                      @unique
+    isFaq           Boolean                     @default(false)
+    format          DocumentationFormat
+    audienceRoles   DocumentationAudienceRole[]
+    tags            DocumentationTag[]
+    translations    DocumentationTranslation[]
+    createdAt       DateTime                    @default(now())
+    updatedAt       DateTime                    @updatedAt
+}
+
+model DocumentationTranslation {
+    id              String        @id @default(uuid())
+    documentationId String
+    documentation   Documentation @relation(fields: [documentationId], references: [id], onDelete: Cascade)
+    locale          String
+    title           String
+    content         String        @default("")
+
+    @@unique([documentationId, locale])
+}

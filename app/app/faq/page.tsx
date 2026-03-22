@@ -7,6 +7,7 @@ import { ArrowLeft, ChevronDown, HelpCircle } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Card, CardContent } from '@/app/components/ui/card';
+import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
 
 const FAQ_ITEM_IDS = ['1', '3'] as const;
 
@@ -25,6 +26,7 @@ export default function FaqPage() {
         </header>
 
         <div className="space-y-3">
+          <FaqByTags tags={['simulation_step_1']} className="mb-6" heading={t('docFaqPanelHeading')} />
           {FAQ_ITEM_IDS.map((id) => (
             <Collapsible key={id} defaultOpen={id === '1'}>
               <Card className="overflow-hidden border transition-shadow hover:shadow-sm [[data-state=open]_&]:shadow-sm [[data-state=open]_&]:ring-1 [[data-state=open]_&]:ring-emerald-500/20">

@@ -11,6 +11,7 @@
   },
   "faq": {
     "title": "Frequently asked questions",
+    "docFaqPanelHeading": "Documentation",
     "intro": "Find answers to the most common questions about the simulation and the fleet.",
     "q1": "What does the simulation do?",
     "a1": "The simulation checks whether your vehicle meets the conditions to join the fleet. You enter your details and get an immediate indication: approved, not approved, or manual review required.",
@@ -987,6 +988,73 @@
       },
       "searchPlaceholder": "Search users...",
       "tryAgain": "Try again"
+    },
+    "documentation": {
+      "title": "Documentation",
+      "helpLink": "Help for this page",
+      "add": "Add documentation",
+      "edit": "Edit",
+      "searchPlaceholder": "Search documentation...",
+      "tryAgain": "Try again",
+      "filters": {
+        "isFaq": "FAQ",
+        "source": "Source",
+        "format": "Format",
+        "formatMarkdown": "Markdown",
+        "formatText": "Plain text",
+        "sourceRepository": "Repository",
+        "sourceNotion": "Notion",
+        "sourceManual": "Manual"
+      },
+      "columns": {
+        "externalId": "External ID",
+        "source": "Source",
+        "isFaq": "FAQ",
+        "tags": "Tags",
+        "roles": "Roles",
+        "audienceRole": {
+          "technical": "Technical",
+          "admin": "Admin",
+          "user": "User",
+          "public": "Public"
+        },
+        "title": "Title",
+        "format": "Format",
+        "updated": "Updated"
+      },
+      "form": {
+        "createTitle": "Create documentation",
+        "editTitle": "Edit documentation",
+        "externalId": "External ID",
+        "externalIdHint": "Leave empty to auto-generate (manual:…)",
+        "source": "Source",
+        "format": "Format",
+        "isFaq": "FAQ entry",
+        "audience": "Audience roles",
+        "tags": "Tags",
+        "locale": "Locale",
+        "titleField": "Title",
+        "content": "Content",
+        "save": "Save",
+        "saveSuccess": "Saved successfully.",
+        "saveError": "Could not save.",
+        "cancel": "Cancel",
+        "sourceLocked": "Source is fixed after creation."
+      },
+      "yes": "Yes",
+      "no": "No",
+      "actions": {
+        "openMenu": "Open menu",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete documentation",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Documentation deleted.",
+        "error": "Failed to delete documentation."
+      }
     }
   },
   "simulation": {

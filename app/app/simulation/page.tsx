@@ -3,13 +3,29 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { FaqByTags, type FaqPanelClassNames } from '@/app/components/documentation/faq-by-tags';
 import { SimulationResultCode } from '@/domain/simulation.model';
+import type { DocumentationTag } from '@/domain/documentation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { LanguageSwitcher } from '@/app/components/language-switcher';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { cn } from '@/app/lib/utils';
 import { SearchDropdown } from './components/search-dropdown';
 import styles from './simulation.module.css';
+
+const SIM_FAQ_PANEL: Partial<FaqPanelClassNames> = {
+  panel: styles.faqPanel,
+  headerButton: styles.faqPanelHeaderBtn,
+  headerRight: styles.faqPanelHeaderRight,
+  title: styles.faqPanelTitle,
+  countBadge: styles.faqPanelCount,
+  sectionChevron: styles.faqPanelSectionChevron,
+  item: styles.faqPanelItem,
+  itemTrigger: styles.faqPanelQBtn,
+  questionText: styles.faqPanelQText,
+  questionChevron: styles.faqPanelQChevron,
+  itemContent: styles.faqPanelAnswer,
+};
 
 const STEP_SITUATION = 1;
 const STEP_CAR_INFO = 2;
@@ -66,6 +82,15 @@ const CONFIRMATION_PATH_OPTIONS: { id: ConfirmationMemberPath; labelKey: string 
 ];
 
 const DEV_UI_ENABLED = process.env.NEXT_PUBLIC_DEV_UI === 'true';
+
+const SIMULATION_FAQ_TAGS = {
+  step1: ['simulation_step_1'],
+  step2Approved: ['simulation_step_2_approved'],
+  step2Rejected: ['simulation_step_2_rejected'],
+  step2Review: ['simulation_step_2_review'],
+  step3: ['simulation_step_3'],
+  step4: ['simulation_step_4'],
+} as const satisfies Record<string, DocumentationTag[]>;
 
 export default function SimulationPage() {
   const t = useTranslations('simulationPublic');
@@ -137,12 +162,6 @@ export default function SimulationPage() {
     }
     prevScreenRef.current = screen;
   }, [screen]);
-
-  const faqCollapsed = (extraClass?: string) => (
-    <div className={`${styles.faqCollapsed} ${extraClass ?? ''}`.trim()} role="region" aria-label={t('faqCollapsedTitle')}>
-      <span className={styles.faqCollapsedTitle}>{t('faqCollapsedTitle')}</span>
-    </div>
-  );
 
   const isSuccessResult =
     simulationResult &&
@@ -606,8 +625,6 @@ export default function SimulationPage() {
 
             <p className={styles.koopgidsFooter}>{t('situatie.koopgidsFooter')}</p>
           </section>
-
-          <div className={styles.marginTop32}>{faqCollapsed()}</div>
         </div>
       )}
 
@@ -843,7 +860,9 @@ export default function SimulationPage() {
             </div>
           </div>
 
-          <div className={styles.stickySidebar}>{faqCollapsed()}</div>
+          <div className={styles.stickySidebar}>
+            <FaqByTags tags={SIMULATION_FAQ_TAGS.step1} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
+          </div>
         </div>
       )}
 
@@ -933,7 +952,9 @@ export default function SimulationPage() {
             </>
           )}
 
-          <div className={styles.marginTop32}>{faqCollapsed()}</div>
+          <div className={styles.marginTop32}>
+            <FaqByTags tags={SIMULATION_FAQ_TAGS.step1} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
+          </div>
         </div>
       )}
 
@@ -1140,7 +1161,19 @@ export default function SimulationPage() {
 
           <p className={styles.footnote}>{t('result.disclaimer')}</p>
 
-          <div className={styles.marginBottom24}>{faqCollapsed()}</div>
+          <div className={styles.marginBottom24}>
+            <FaqByTags
+              tags={
+                displaySuccess
+                  ? SIMULATION_FAQ_TAGS.step2Approved
+                  : displayNotOk
+                    ? SIMULATION_FAQ_TAGS.step2Rejected
+                    : SIMULATION_FAQ_TAGS.step2Review
+              }
+              heading={t('faqCollapsedTitle')}
+              classNames={SIM_FAQ_PANEL}
+            />
+          </div>
 
           <div className={styles.buttonRow}>
             <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
@@ -1345,7 +1378,9 @@ export default function SimulationPage() {
                   {t('kosten.nextCta')}
                 </button>
               </div>
-              <div className={styles.marginTop32}>{faqCollapsed()}</div>
+              <div className={styles.marginTop32}>
+                <FaqByTags tags={SIMULATION_FAQ_TAGS.step3} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
+              </div>
               <p className={styles.kostenBillingDisclaimer}>{t('kosten.billingDataDisclaimer')}</p>
             </div>
           );
@@ -1482,7 +1517,9 @@ export default function SimulationPage() {
             </div>
           )}
 
-          <div className={styles.marginBottom24}>{faqCollapsed()}</div>
+          <div className={styles.marginBottom24}>
+            <FaqByTags tags={SIMULATION_FAQ_TAGS.step4} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
+          </div>
 
           <div className={styles.bevestigingBackRow}>
             <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>

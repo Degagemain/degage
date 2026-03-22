@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, CircleHelp } from 'lucide-react';
 
 import {
   ALL_PAGE_ITEMS,
@@ -13,6 +13,7 @@ import {
   SIDEBAR_SETTINGS_ICONS,
   SIMULATION_ITEMS,
 } from '@/app/admin/nav-config';
+import { getAdminDocExternalIdForPath } from '@/app/admin/admin-doc-help';
 import { AdminCommandPalette } from '@/app/admin/admin-command-palette';
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
@@ -59,6 +60,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { isAdmin, isPending } = useIsAdmin();
   const { data: session, isPending: isSessionPending } = authClient.useSession();
   const pageTitle = usePageTitle(t);
+  const docHelpExternalId = pathname ? getAdminDocExternalIdForPath(pathname) : null;
 
   if (isPending) {
     return (
@@ -258,7 +260,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            {pageTitle && <span className="text-sm font-semibold">{pageTitle}</span>}
+            {pageTitle && (
+              <span className="flex items-center gap-1.5">
+                <span className="text-sm font-semibold">{pageTitle}</span>
+                {docHelpExternalId && (
+                  <Link
+                    href={`/app/docs/${encodeURIComponent(docHelpExternalId)}`}
+                    className="text-muted-foreground hover:text-foreground inline-flex shrink-0 rounded-md p-1 transition-colors"
+                    title={t('documentation.helpLink')}
+                    aria-label={t('documentation.helpLink')}
+                  >
+                    <CircleHelp className="size-4" />
+                  </Link>
+                )}
+              </span>
+            )}
             <div className="ml-auto flex items-center gap-2">
               {isSessionPending ? (
                 <Skeleton className="h-8 w-8 rounded-full" />

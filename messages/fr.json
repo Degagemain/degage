@@ -11,6 +11,7 @@
   },
   "faq": {
     "title": "Questions fréquentes",
+    "docFaqPanelHeading": "Documentation",
     "intro": "Retrouvez les réponses aux questions les plus courantes sur la simulation et la flotte.",
     "q1": "À quoi sert la simulation ?",
     "a1": "La simulation vérifie si votre véhicule remplit les conditions pour rejoindre la flotte. Vous saisissez vos informations et obtenez une indication immédiate : admis, non admis ou examen manuel requis.",
@@ -987,6 +988,73 @@
       },
       "searchPlaceholder": "Rechercher des utilisateurs...",
       "tryAgain": "Réessayer"
+    },
+    "documentation": {
+      "title": "Documentation",
+      "helpLink": "Aide pour cette page",
+      "add": "Ajouter une documentation",
+      "edit": "Modifier",
+      "searchPlaceholder": "Rechercher dans la documentation...",
+      "tryAgain": "Réessayer",
+      "filters": {
+        "isFaq": "FAQ",
+        "source": "Source",
+        "format": "Format",
+        "formatMarkdown": "Markdown",
+        "formatText": "Texte brut",
+        "sourceRepository": "Dépôt",
+        "sourceNotion": "Notion",
+        "sourceManual": "Manuel"
+      },
+      "columns": {
+        "externalId": "ID externe",
+        "source": "Source",
+        "isFaq": "FAQ",
+        "tags": "Tags",
+        "roles": "Rôles",
+        "audienceRole": {
+          "technical": "Technique",
+          "admin": "Administrateur",
+          "user": "Utilisateur",
+          "public": "Public"
+        },
+        "title": "Titre",
+        "format": "Format",
+        "updated": "Modifié le"
+      },
+      "form": {
+        "createTitle": "Créer une documentation",
+        "editTitle": "Modifier la documentation",
+        "externalId": "ID externe",
+        "externalIdHint": "Laisser vide pour générer automatiquement (manual:…)",
+        "source": "Source",
+        "format": "Format",
+        "isFaq": "Entrée FAQ",
+        "audience": "Rôles cibles",
+        "tags": "Tags",
+        "locale": "Langue",
+        "titleField": "Titre",
+        "content": "Contenu",
+        "save": "Enregistrer",
+        "saveSuccess": "Enregistré.",
+        "saveError": "Échec de l’enregistrement.",
+        "cancel": "Annuler",
+        "sourceLocked": "La source ne peut pas être modifiée après création."
+      },
+      "yes": "Oui",
+      "no": "Non",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer la documentation",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Documentation supprimée.",
+        "error": "Échec de la suppression."
+      }
     }
   },
   "simulation": {

@@ -727,22 +727,118 @@
   margin: var(--sim-s32) 0 0;
 }
 
-.faqCollapsed {
-  display: flex;
-  align-items: center;
+/* FAQ block — aligned with Degage mockup v10 (FaqCollapsed) */
+.faqPanel {
+  overflow: hidden;
   background: var(--sim-surface);
   border: 1px solid var(--sim-border);
   border-radius: var(--sim-r12);
-  padding: var(--sim-s16) var(--sim-s24);
 }
 
-.faqCollapsedTitle {
+.faqPanelHeaderBtn {
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: var(--sim-s16) var(--sim-s24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sim-sans);
+}
+
+.faqPanelHeaderBtn:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.faqPanelHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+}
+
+.faqPanelTitle {
   font-family: var(--sim-sans);
   font-size: 12px;
   font-weight: 600;
   color: var(--sim-ink);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.faqPanelCount {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--sim-brand);
+  color: #fff;
+  border-radius: var(--sim-r20);
+  padding: 1px 8px;
+  line-height: 18px;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.faqPanelSectionChevron {
+  color: var(--sim-light);
+  transition: transform 0.2s;
+}
+
+.faqPanelHeaderBtn[data-state='open'] .faqPanelSectionChevron {
+  transform: rotate(180deg);
+}
+
+.faqPanelItem {
+  border-top: 1px solid var(--sim-sand);
+}
+
+.faqPanelQBtn {
+  width: 100%;
+  text-align: left;
+  padding: var(--sim-s16) var(--sim-s24);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sim-s8);
+  font-family: var(--sim-sans);
+}
+
+.faqPanelQBtn[data-state='open'] {
+  background: var(--sim-brand-light);
+}
+
+.faqPanelQText {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--sim-ink);
+  line-height: 1.45;
+}
+
+.faqPanelQChevron {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--sim-light);
+  transition: transform 0.2s;
+}
+
+.faqPanelQBtn[data-state='open'] .faqPanelQChevron {
+  transform: rotate(180deg);
+}
+
+.faqPanelAnswer {
+  padding: 0 var(--sim-s24) var(--sim-s16);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+  line-height: 1.6;
+}
+
+.faqPanelAnswer :global(.documentation-markdown) {
+  color: var(--sim-mid);
 }
 
 .bevestigingHeader {
@@ -2570,10 +2666,6 @@
 
   .stepItem {
     flex-wrap: wrap;
-  }
-
-  .faqCollapsed {
-    padding: var(--sim-s16);
   }
 
   .stickySidebar {

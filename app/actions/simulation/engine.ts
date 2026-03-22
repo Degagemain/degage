@@ -279,7 +279,6 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     return result;
   }
 
-  // Todo: system parameters  (also below)
   // First round of acceptances based of quality criteria
   if (roundedKmCost <= hub.simAcceptedPriceCategoryA && input.seats < 7) {
     return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
