@@ -133,12 +133,13 @@ These models are automatically created when running the auth migration.
 
 Copy `.env.example` to `.env` and fill in your values. The app loads `.env` locally; `.env` is gitignored and not used in CI/CD.
 
-| Variable              | Description                                            |
-| --------------------- | ------------------------------------------------------ |
-| DATABASE_URL          | The database url.                                      |
-| DATABASE_URL_UNPOOLED | Direct database url, without connection pooling.       |
-| GITHUB_CLIENT_ID      | GitHub OAuth client ID (required for GitHub auth).     |
-| GITHUB_CLIENT_SECRET  | GitHub OAuth client secret (required for GitHub auth). |
+| Variable              | Description                                                    |
+| --------------------- | -------------------------------------------------------------- |
+| DATABASE_URL          | The database url.                                              |
+| DATABASE_URL_UNPOOLED | Direct database url, without connection pooling.               |
+| GITHUB_CLIENT_ID      | GitHub OAuth client ID (required for GitHub auth).             |
+| GITHUB_CLIENT_SECRET  | GitHub OAuth client secret (required for GitHub auth).         |
+| NEXT_PUBLIC_DEV_UI    | Optional. Set to `true` to enable extra features only for dev. |
 
 ## Frontend
 

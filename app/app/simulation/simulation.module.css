@@ -1,4 +1,3 @@
-/* Dégage Mockup v8 — design tokens and scoped styles for /app/simulation only */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap');
 
 .root {
@@ -18,6 +17,7 @@
   --sim-blue-border: #b5cde5;
   --sim-amber: #c4860a;
   --sim-amber-bg: #fdf3e0;
+  --sim-amber-border: #deca80;
   --sim-green: #2a7a48;
   --sim-green-bg: #e8f5ee;
   --sim-red: #b83232;
@@ -40,7 +40,6 @@
   overflow-x: hidden;
 }
 
-/* Header */
 .header {
   background: var(--sim-brand);
   position: sticky;
@@ -56,6 +55,12 @@
   align-items: center;
   height: 56px;
   gap: var(--sim-s24);
+}
+
+.headerEnd {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .logoBox {
@@ -90,9 +95,139 @@
 
 .logoSub {
   font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 0;
+}
+
+.koopgidsSection {
+  border-top: 1px solid var(--sim-border);
+  padding-top: var(--sim-s32);
+  margin-top: var(--sim-s48);
+}
+
+.koopgidsEyebrow {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-brand-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.koopgidsTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sim-ink);
+  margin-bottom: var(--sim-s8);
+  line-height: 1.2;
+}
+
+.koopgidsBody {
+  margin-bottom: var(--sim-s24);
+}
+
+.koopgidsCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  margin-bottom: var(--sim-s16);
+}
+
+.koopgidsCardTitle {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: var(--sim-s16);
+}
+
+.koopgidsCardTitleKnockout {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: var(--sim-s16);
+  color: var(--sim-red);
+}
+
+.koopgidsCardTitleIdeal {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: var(--sim-s16);
+  color: var(--sim-brand-mid);
+}
+
+.koopgidsCriterionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  margin-bottom: var(--sim-s8);
+}
+
+.koopgidsCriterionRow:last-child {
+  margin-bottom: 0;
+}
+
+.koopgidsIconKnockout {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--sim-red-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.5);
-  margin-top: 1px;
+  color: var(--sim-red);
+  font-weight: 700;
+}
+
+.koopgidsIconIdeal {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--sim-brand-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--sim-brand-mid);
+  font-weight: 700;
+}
+
+.koopgidsCriterionText {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  line-height: 1.45;
+}
+
+.koopgidsTip {
+  background: var(--sim-blue-bg);
+  border: 1px solid var(--sim-blue-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.koopgidsTipText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-blue);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.koopgidsFooter {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-light);
+  line-height: 1.55;
 }
 
 .stepDots {
@@ -119,7 +254,6 @@
   flex-shrink: 0;
 }
 
-/* Step 4 — Second header bar (result phase) */
 .resultSecondBar {
   background: var(--sim-brand-light);
   border-bottom: 1px solid var(--sim-brand-border);
@@ -159,7 +293,7 @@
   font-weight: 600;
   color: var(--sim-brand-mid);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .resultPreviewBtns {
@@ -174,7 +308,7 @@
   font-family: var(--sim-sans);
   font-size: 11px;
   font-weight: 600;
-  padding: 4px 10px;
+  padding: var(--sim-s8) var(--sim-s16);
   border-radius: var(--sim-r8);
   border: 1px solid var(--sim-brand-border);
   background: var(--sim-surface);
@@ -202,7 +336,7 @@
   background: var(--sim-surface);
   border: 1px solid var(--sim-brand-border);
   border-radius: var(--sim-r8);
-  padding: 6px 12px;
+  padding: var(--sim-s8) var(--sim-s16);
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -249,7 +383,6 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Language switcher trigger on dark header */
 .headerLangTrigger {
   color: rgba(255, 255, 255, 0.8);
 }
@@ -259,7 +392,6 @@
   color: #fff;
 }
 
-/* Page layout */
 .page {
   max-width: 700px;
   margin: 0 auto;
@@ -309,6 +441,699 @@
   line-height: 1.65;
 }
 
+.bodyAfterTitle {
+  margin-bottom: var(--sim-s32);
+}
+
+.marginTop24 {
+  margin-top: var(--sim-s24);
+}
+
+.marginTop32 {
+  margin-top: var(--sim-s32);
+}
+
+.marginBottom24 {
+  margin-bottom: var(--sim-s24);
+}
+
+.marginBottom32 {
+  margin-bottom: var(--sim-s32);
+}
+
+.stepDotsCluster {
+  display: flex;
+  align-items: center;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s16);
+  padding-top: var(--sim-s8);
+}
+
+.captionInline {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  line-height: 1.5;
+}
+
+.loadingCardError {
+  padding: var(--sim-s24);
+}
+
+.loadingErrorActions {
+  display: flex;
+  gap: var(--sim-s16);
+  flex-wrap: wrap;
+}
+
+.loadingCardSpaced {
+  margin-top: var(--sim-s24);
+}
+
+.loadingRowLead {
+  font-weight: 600;
+  margin-bottom: var(--sim-s8);
+}
+
+.loadingRowSub {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+}
+
+.resultCheckRowLead {
+  font-weight: 600;
+  margin-bottom: var(--sim-s8);
+}
+
+.resultCheckRowSub {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+}
+
+.resultOutcomeHero {
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+  margin-bottom: var(--sim-s24);
+}
+
+.resultOutcomeHeroNoGo {
+  background: var(--sim-red-bg);
+  border: 1px solid rgba(184, 50, 50, 0.25);
+}
+
+.resultOutcomeHeroUnclear {
+  background: var(--sim-amber-bg);
+  border: 1px solid var(--sim-amber-border);
+}
+
+.resultOutcomeInner {
+  padding: var(--sim-s32);
+  text-align: center;
+}
+
+.resultOutcomeCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--sim-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--sim-s16);
+}
+
+.resultOutcomeCircleNoGo {
+  border: 2px solid var(--sim-red);
+}
+
+.resultOutcomeCircleUnclear {
+  border: 2px solid var(--sim-amber);
+}
+
+.resultOutcomeIconNoGo {
+  color: var(--sim-red);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.resultOutcomeIconUnclear {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.resultOutcomeTitle {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--sim-ink);
+  line-height: 1.2;
+  margin-bottom: var(--sim-s16);
+}
+
+.resultOutcomeBody {
+  margin: 0;
+}
+
+.noGoCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  overflow: hidden;
+  margin-bottom: var(--sim-s24);
+}
+
+.noGoHero {
+  background: var(--sim-red-bg);
+  padding: var(--sim-s32);
+  text-align: center;
+}
+
+.noGoHeroTitle {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--sim-ink);
+  line-height: 1.2;
+  margin: 0 0 var(--sim-s8);
+}
+
+.noGoHeroIntro {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.noGoReason {
+  padding: var(--sim-s24);
+}
+
+.noGoReasonEyebrow {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s8);
+}
+
+.noGoReasonTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sim-ink);
+  line-height: 1.25;
+  margin-bottom: var(--sim-s8);
+}
+
+.noGoReasonBody {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.noGoWhatNow {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.noGoWhatNowTitle {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s16);
+}
+
+.noGoWhatNowRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sim-s16);
+  margin-bottom: var(--sim-s16);
+}
+
+.noGoWhatNowRowLast {
+  margin-bottom: 0;
+}
+
+.noGoWhatNowArrow {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-brand-mid);
+  flex-shrink: 0;
+  line-height: 1.55;
+}
+
+.noGoWhatNowText {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.noGoRestartBtn {
+  margin-top: var(--sim-s8);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--sim-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--sim-r8);
+  padding: var(--sim-s8) var(--sim-s16);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.noGoRestartBtn:hover {
+  background: var(--sim-brand-mid);
+}
+
+.footnote {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sim-light);
+  line-height: 1.55;
+  margin-bottom: var(--sim-s24);
+}
+
+.kostenBillingDisclaimer {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--sim-light);
+  line-height: 1.6;
+  margin: var(--sim-s32) 0 0;
+}
+
+.faqCollapsed {
+  display: flex;
+  align-items: center;
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+}
+
+.faqCollapsedTitle {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bevestigingHeader {
+  text-align: center;
+  margin-bottom: var(--sim-s32);
+}
+
+.bevestigingFormCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingFieldTight {
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingPathList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sim-s8);
+}
+
+.bevestigingPathBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s16);
+  padding: var(--sim-s16);
+  border-radius: var(--sim-r12);
+  text-align: left;
+  border: 2px solid var(--sim-border);
+  background: var(--sim-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.bevestigingPathBtnSelected {
+  border-color: var(--sim-brand);
+  background: var(--sim-brand-light);
+  color: var(--sim-brand);
+  font-weight: 600;
+}
+
+.bevestigingPathBtnUnselected {
+  color: var(--sim-mid);
+  font-weight: 400;
+}
+
+.bevestigingPathCheck {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--sim-border);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+  color: transparent;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.bevestigingPathCheckActive {
+  background: var(--sim-brand);
+  border-color: var(--sim-brand);
+  color: #fff;
+}
+
+.bevestigingSentRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s16);
+}
+
+.bevestigingSentIcon {
+  width: var(--sim-s32);
+  height: var(--sim-s32);
+  border-radius: 50%;
+  background: var(--sim-green-bg);
+  border: 1.5px solid var(--sim-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--sim-green);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bevestigingSentTitle {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sim-ink);
+}
+
+.bevestigingSentSub {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-mid);
+  margin-top: 4px;
+}
+
+.bevestigingNextCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24) var(--sim-s32);
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingNextEyebrow {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingNextBlue {
+  background: var(--sim-blue-bg);
+  border: 1px solid var(--sim-blue-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingNextBlueText {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-blue);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.bevestigingNextStepRow {
+  display: flex;
+  gap: var(--sim-s16);
+  padding-bottom: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+  border-bottom: 1px solid var(--sim-sand);
+}
+
+.bevestigingNextStepRow:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.bevestigingNextStepNum {
+  width: var(--sim-s32);
+  height: var(--sim-s32);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bevestigingNextStepNumActive {
+  background: var(--sim-brand);
+  color: #fff;
+}
+
+.bevestigingNextStepNumInactive {
+  background: var(--sim-sand);
+  color: var(--sim-light);
+}
+
+.bevestigingNextStepBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.bevestigingNextStepLabel {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  margin-bottom: 4px;
+}
+
+.bevestigingNextStepLabelActive {
+  font-weight: 600;
+}
+
+.bevestigingNextStepLabelInactive {
+  font-weight: 500;
+}
+
+.bevestigingNextStepMeta {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-light);
+}
+
+.bevestigingInfosessieCta {
+  margin-top: var(--sim-s8);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--sim-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--sim-r8);
+  padding: var(--sim-s8) var(--sim-s16);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.25;
+}
+
+.bevestigingInfosessieCta:hover {
+  opacity: 0.92;
+}
+
+.bevestigingKoopCard {
+  background: var(--sim-amber-bg);
+  border: 1px solid var(--sim-amber-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.bevestigingKoopTitle {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sim-ink);
+  margin-bottom: var(--sim-s8);
+}
+
+.bevestigingKoopBody {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: #6a5000;
+  line-height: 1.6;
+  margin: 0 0 var(--sim-s16);
+}
+
+.bevestigingKoopBtn {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--sim-amber);
+  color: #fff;
+  border: none;
+  border-radius: var(--sim-r8);
+  padding: var(--sim-s8) var(--sim-s16);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.25;
+}
+
+.bevestigingKoopBtn:hover {
+  opacity: 0.92;
+}
+
+.bevestigingBackRow {
+  margin-top: var(--sim-s24);
+}
+
+.sectionHeading {
+  font-family: var(--sim-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sim-ink);
+  line-height: 1.25;
+  margin-bottom: var(--sim-s24);
+}
+
+.stepMeta {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-light);
+}
+
+.stepLabelActive {
+  font-weight: 600;
+  margin-bottom: var(--sim-s8);
+}
+
+.stepLabelInactive {
+  font-weight: 500;
+  margin-bottom: var(--sim-s8);
+}
+
+.kostenIntroBox {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
+}
+
+.kostenIntroBox p {
+  margin: 0;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-mid);
+  line-height: 1.65;
+}
+
+.kostenIntroStrong {
+  color: var(--sim-ink);
+  font-weight: 600;
+}
+
+.kostenBodySpacing {
+  margin-bottom: var(--sim-s24);
+}
+
+.kostenBodySpacingTight {
+  margin-bottom: var(--sim-s16);
+}
+
+.kostenScenarioBlock {
+  margin-bottom: var(--sim-s24);
+}
+
+.kostenDetailBlock {
+  margin-bottom: var(--sim-s24);
+}
+
+.kostenToggleChevron {
+  transition: transform 0.2s ease;
+}
+
+.kostenToggleChevronOpen {
+  transform: rotate(180deg);
+}
+
+.kostenBreakdownSep {
+  border-top: 1px solid var(--sim-sand);
+  padding-top: var(--sim-s8);
+  margin-top: var(--sim-s8);
+}
+
+.resultHeroBadgeCheck {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.resultHeroTitleLight {
+  color: #fff;
+}
+
+.resultHeroCarPuffs {
+  position: absolute;
+  right: 100%;
+  top: var(--sim-s16);
+  display: flex;
+  gap: var(--sim-s8);
+  align-items: center;
+}
+
+.resultHeroPuffSm {
+  width: var(--sim-s8);
+  height: var(--sim-s8);
+}
+
+.resultHeroPuffXs {
+  width: var(--sim-s8);
+  height: var(--sim-s8);
+  opacity: 0.85;
+}
+
 .btn {
   font-family: var(--sim-sans);
   font-weight: 600;
@@ -337,7 +1162,6 @@
   border: 1.5px solid var(--sim-border);
 }
 
-/* Tiles (step 1) */
 .tileGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -404,7 +1228,6 @@
   line-height: 1.55;
 }
 
-/* Form fields */
 .field {
   margin-bottom: var(--sim-s24);
 }
@@ -418,6 +1241,55 @@
   margin-bottom: var(--sim-s8);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.fieldLabelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sim-s8);
+  margin-bottom: var(--sim-s8);
+}
+
+.fieldLabelInline {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sim-mid);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fieldHelpTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--sim-border);
+  border-radius: 50%;
+  background: var(--sim-surface);
+  color: var(--sim-mid);
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: help;
+  line-height: 1;
+  flex-shrink: 0;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.fieldHelpTrigger:hover {
+  border-color: var(--sim-brand-border);
+  color: var(--sim-brand-mid);
+}
+
+.fieldHelpTrigger:focus-visible {
+  outline: 2px solid var(--sim-brand);
+  outline-offset: 2px;
 }
 
 .fieldHint {
@@ -502,23 +1374,11 @@
   left: 3px;
 }
 
-/* FAQ placeholder */
-.faqPlaceholder {
-  background: var(--sim-surface);
-  border: 1px solid var(--sim-border);
-  border-radius: var(--sim-r12);
-  padding: var(--sim-s16) var(--sim-s24);
-  font-family: var(--sim-sans);
-  font-size: 12px;
-  color: var(--sim-light);
-}
-
 .stickySidebar {
   position: sticky;
   top: 80px;
 }
 
-/* Result hero — badge + car animation */
 @keyframes resultPopIn {
   from {
     opacity: 0;
@@ -585,7 +1445,7 @@
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   border-radius: var(--sim-r20);
-  padding: 6px 14px;
+  padding: var(--sim-s8) var(--sim-s16);
   display: flex;
   align-items: center;
   gap: var(--sim-s8);
@@ -613,7 +1473,7 @@
 
 .resultHeroCarWrap {
   position: absolute;
-  bottom: 8px;
+  bottom: var(--sim-s8);
   left: 38%;
   transform: translateX(-50%);
   transition: left 2s cubic-bezier(0.4, 0, 0.6, 1);
@@ -688,7 +1548,7 @@
   font-weight: 700;
   font-size: 18px;
   color: #fff;
-  margin-bottom: 2px;
+  margin-bottom: var(--sim-s8);
 }
 
 .resultStatSub {
@@ -697,7 +1557,6 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* Loading step */
 .loadingHeader {
   display: flex;
   align-items: center;
@@ -730,7 +1589,7 @@
   font-size: 28px;
   color: var(--sim-ink);
   line-height: 1.15;
-  margin-bottom: 4px;
+  margin-bottom: var(--sim-s8);
 }
 
 .loadingHeaderSubtitle {
@@ -749,7 +1608,7 @@
 
 .loadingFunnyText {
   font-family: var(--sim-sans);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--sim-brand-mid);
   text-align: center;
   min-height: 40px;
@@ -821,7 +1680,6 @@
   background: var(--sim-sand);
 }
 
-/* Scenario buttons (step 6) */
 .scenarioGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -839,14 +1697,38 @@
   transition: all 0.15s;
   position: relative;
   font-family: var(--sim-sans);
+}
+
+.scenarioBtnCheck {
+  position: absolute;
+  top: var(--sim-s8);
+  right: var(--sim-s8);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--sim-border);
+  background: none;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  pointer-events: none;
+  color: transparent;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.scenarioBtnCheckActive {
+  background: var(--sim-brand);
+  border-color: var(--sim-brand);
+  color: #fff;
 }
 
 .scenarioBtnIcon {
   font-size: 20px;
+  line-height: 1;
   margin-bottom: var(--sim-s8);
 }
 
@@ -856,7 +1738,8 @@
   font-size: 15px;
   color: var(--sim-ink);
   margin-bottom: 4px;
-  padding-right: var(--sim-s24);
+  line-height: 1.25;
+  padding-right: calc(20px + var(--sim-s8) + var(--sim-s8));
 }
 
 .scenarioBtnSub {
@@ -864,6 +1747,7 @@
   font-size: 11px;
   color: var(--sim-mid);
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .scenarioMedianBadge {
@@ -876,6 +1760,9 @@
   border-radius: var(--sim-r8);
   padding: 2px 8px;
   display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
 }
 
 .scenarioBtnActive {
@@ -883,7 +1770,6 @@
   background: var(--sim-brand-light);
 }
 
-/* Step 5 — Kosten sidebar (right column) */
 .kostenSidebarCard {
   background: var(--sim-surface);
   border: 1px solid var(--sim-border);
@@ -923,14 +1809,14 @@
 }
 
 .kostenSidebarRows {
-  padding: 10px var(--sim-s24) var(--sim-s16);
+  padding: var(--sim-s8) var(--sim-s24) var(--sim-s16);
 }
 
 .kostenSidebarRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: var(--sim-s8) 0;
   border-top: 1px solid var(--sim-sand);
   font-family: var(--sim-sans);
   font-size: 12px;
@@ -958,7 +1844,6 @@
   margin-bottom: var(--sim-s24);
 }
 
-/* Step 5 — Detail blocks below scenario pickers */
 .kostenDetailGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1075,7 +1960,7 @@
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 4px;
+  margin-bottom: var(--sim-s8);
 }
 
 .kostenNettoValue {
@@ -1112,6 +1997,82 @@
   margin-bottom: var(--sim-s8);
 }
 
+.kostenMensenCard {
+  background: var(--sim-surface);
+  border: 1px solid var(--sim-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s24);
+  flex: 1;
+}
+
+.kostenMensenNum {
+  font-family: var(--sim-serif);
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--sim-ink);
+  line-height: 1;
+  margin-bottom: var(--sim-s16);
+}
+
+.kostenMensenNumSuffix {
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--sim-mid);
+}
+
+.kostenMensenDots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: var(--sim-s16);
+}
+
+.kostenMensje {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.kostenMensjeDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: background 0.15s ease;
+}
+
+.kostenMensjeDotOn {
+  background: var(--sim-brand);
+}
+
+.kostenMensjeDotOff {
+  background: var(--sim-sand);
+}
+
+.kostenMensjeTorso {
+  width: 12px;
+  height: 14px;
+  border-radius: 5px 5px 3px 3px;
+  transition: background 0.15s ease;
+}
+
+.kostenMensjeTorsoOn {
+  background: var(--sim-brand-mid);
+}
+
+.kostenMensjeTorsoOff {
+  background: var(--sim-sand);
+}
+
+.kostenMensenFootnote {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  color: var(--sim-mid);
+  line-height: 1.55;
+  margin: 0;
+}
+
 .kostenWagensCard {
   background: var(--sim-sand);
   border: 1px solid var(--sim-border);
@@ -1125,7 +2086,7 @@
   font-size: 18px;
   color: var(--sim-brand);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: var(--sim-s8);
 }
 
 .kostenWagensBody {
@@ -1136,7 +2097,6 @@
   margin: 0;
 }
 
-/* Bevestiging */
 .bevestigingIcon {
   width: 64px;
   height: 64px;
@@ -1214,7 +2174,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: var(--sim-s8) var(--sim-s16);
   border-radius: var(--sim-r8);
   flex-shrink: 0;
   white-space: nowrap;
@@ -1236,9 +2196,34 @@
 .amberBanner {
   margin-bottom: var(--sim-s24);
   background: var(--sim-amber-bg);
-  border: 1px solid #deca80;
+  border: 1px solid var(--sim-amber-border);
   border-radius: var(--sim-r12);
   padding: var(--sim-s16) var(--sim-s24);
+}
+
+.kostenQuarterVariance {
+  margin-bottom: var(--sim-s16);
+  background: var(--sim-amber-bg);
+  border: 1px solid var(--sim-amber-border);
+  border-radius: var(--sim-r12);
+  padding: var(--sim-s16) var(--sim-s24);
+}
+
+.kostenQuarterVarianceTitle {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #6a5000;
+  margin: 0 0 4px;
+}
+
+.kostenQuarterVarianceBody {
+  font-family: var(--sim-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: #6a5000;
+  line-height: 1.55;
+  margin: 0;
 }
 
 .amberBannerText {
@@ -1254,7 +2239,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sim-s8);
-  padding: 4px 12px;
+  padding: var(--sim-s8) var(--sim-s16);
   border-radius: var(--sim-r20);
 }
 
@@ -1265,7 +2250,7 @@
 
 .locationBadgeOther {
   background: var(--sim-amber-bg);
-  border: 1px solid #deca80;
+  border: 1px solid var(--sim-amber-border);
 }
 
 .locationBadgeDot {
@@ -1296,7 +2281,6 @@
   color: var(--sim-amber);
 }
 
-/* Search dropdown — used by components/search-dropdown.tsx */
 .searchDropdownTrigger {
   width: 100%;
   font-family: var(--sim-sans);
@@ -1333,7 +2317,7 @@
 .searchDropdownList {
   position: absolute;
   z-index: 50;
-  top: calc(100% + 4px);
+  top: calc(100% + var(--sim-s8));
   left: 0;
   right: 0;
   max-height: 300px;
@@ -1348,7 +2332,7 @@
   width: 100%;
   font-family: var(--sim-sans);
   font-size: 15px;
-  padding: 8px 12px;
+  padding: var(--sim-s8) var(--sim-s16);
   border: none;
   border-bottom: 1px solid var(--sim-sand);
   border-radius: var(--sim-r8) var(--sim-r8) 0 0;
@@ -1380,24 +2364,41 @@
   font-weight: 600;
 }
 
-/* Utility for 2-col form grids (stacks on mobile) */
+.searchDropdownChevron {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sim-light);
+  flex-shrink: 0;
+}
+
+.searchDropdownScroll {
+  max-height: min(260px, 60vh);
+  overflow-y: auto;
+}
+
+.searchDropdownStatus {
+  padding: var(--sim-s16) var(--sim-s24);
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-light);
+}
+
 .formGridTwoCol {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--sim-s16);
 }
 
-/* Utility for button rows (wraps on mobile) */
 .buttonRow {
   display: flex;
   gap: var(--sim-s16);
   flex-wrap: wrap;
 }
 
-/* Mobile and small screens */
 @media (max-width: 768px) {
   .headerInner {
-    padding: var(--sim-s12) var(--sim-s16);
+    padding: var(--sim-s8) var(--sim-s16);
     gap: var(--sim-s8);
     flex-wrap: wrap;
     min-height: 56px;
@@ -1405,7 +2406,6 @@
     align-content: center;
   }
 
-  /* Step dots wrap to second row and take full width */
   .headerInner > .stepDots {
     flex: 1 1 100%;
     order: 1;
@@ -1541,7 +2541,7 @@
   }
 
   .resultStatBox {
-    padding: var(--sim-s12);
+    padding: var(--sim-s16);
   }
 
   .resultStatValue {
@@ -1553,7 +2553,7 @@
   }
 
   .scenarioBtn {
-    min-height: 44px;
+    min-height: 0;
   }
 
   .loadingCard {
@@ -1572,7 +2572,7 @@
     flex-wrap: wrap;
   }
 
-  .faqPlaceholder {
+  .faqCollapsed {
     padding: var(--sim-s16);
   }
 
@@ -1583,7 +2583,7 @@
 
 @media (max-width: 480px) {
   .headerInner {
-    padding: var(--sim-s12) var(--sim-s16);
+    padding: var(--sim-s8) var(--sim-s16);
     padding-left: max(var(--sim-s16), env(safe-area-inset-left));
     padding-right: max(var(--sim-s16), env(safe-area-inset-right));
   }

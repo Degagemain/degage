@@ -6,29 +6,73 @@ import { useTranslations } from 'next-intl';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { LanguageSwitcher } from '@/app/components/language-switcher';
+import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
+import { cn } from '@/app/lib/utils';
 import { SearchDropdown } from './components/search-dropdown';
 import styles from './simulation.module.css';
 
-const STEP_SITUATIE = 1;
-const STEP_WAGENINFO = 2;
+const STEP_SITUATION = 1;
+const STEP_CAR_INFO = 2;
 const STEP_LOADING = 3;
 const STEP_RESULT = 4;
-const STEP_KOSTEN_SCENARIOS = 5;
-const STEP_BEVESTIGING = 6;
+const STEP_COST_SCENARIOS = 5;
+const STEP_CONFIRMATION = 6;
 
-const SCREEN_IDS = ['situatie', 'wageninfo', 'laden', 'resultaat', 'kosten', 'bevestiging'] as const;
+const NUMBERED_STEP_TOTAL = 4;
+
+const COST_SCENARIO_PEOPLE_BY_INDEX = [8, 14, 20] as const;
 
 const CAR_TYPE_OTHER = '__other__';
 
 type CarChoice = 'existing' | 'newCar';
 
-export default function SimulatiePage() {
-  const t = useTranslations('simulatie');
+type ConfirmationMemberPath = 'infosessie' | 'lid' | 'nieuw';
+
+type ConfirmationStepDef = {
+  n: number;
+  labelKey: string;
+  metaKey: string;
+  cta?: boolean;
+};
+
+const CONFIRMATION_STEPS_BY_PATH: Record<ConfirmationMemberPath, ConfirmationStepDef[]> = {
+  infosessie: [
+    { n: 1, labelKey: 'insStep1Label', metaKey: 'insStep1Meta' },
+    { n: 2, labelKey: 'insStep2Label', metaKey: 'insStep2Meta' },
+    { n: 3, labelKey: 'insStep3Label', metaKey: 'insStep3Meta' },
+    { n: 4, labelKey: 'insStep4Label', metaKey: 'insStep4Meta' },
+  ],
+  lid: [
+    { n: 1, labelKey: 'lidStep1Label', metaKey: 'lidStep1Meta', cta: true },
+    { n: 2, labelKey: 'lidStep2Label', metaKey: 'lidStep2Meta' },
+    { n: 3, labelKey: 'lidStep3Label', metaKey: 'lidStep3Meta' },
+    { n: 4, labelKey: 'lidStep4Label', metaKey: 'lidStep4Meta' },
+    { n: 5, labelKey: 'lidStep5Label', metaKey: 'lidStep5Meta' },
+  ],
+  nieuw: [
+    { n: 1, labelKey: 'newStep1Label', metaKey: 'newStep1Meta' },
+    { n: 2, labelKey: 'newStep2Label', metaKey: 'newStep2Meta', cta: true },
+    { n: 3, labelKey: 'newStep3Label', metaKey: 'newStep3Meta' },
+    { n: 4, labelKey: 'newStep4Label', metaKey: 'newStep4Meta' },
+    { n: 5, labelKey: 'newStep5Label', metaKey: 'newStep5Meta' },
+    { n: 6, labelKey: 'newStep6Label', metaKey: 'newStep6Meta' },
+  ],
+};
+
+const CONFIRMATION_PATH_OPTIONS: { id: ConfirmationMemberPath; labelKey: string }[] = [
+  { id: 'infosessie', labelKey: 'pathInfosessie' },
+  { id: 'lid', labelKey: 'pathLid' },
+  { id: 'nieuw', labelKey: 'pathNieuw' },
+];
+
+const DEV_UI_ENABLED = process.env.NEXT_PUBLIC_DEV_UI === 'true';
+
+export default function SimulationPage() {
+  const t = useTranslations('simulationPublic');
   const tWizard = useTranslations('simulation.wizard');
   const [screen, setScreen] = useState(1);
   const [carChoice, setCarChoice] = useState<CarChoice | null>(null);
 
-  // Step 2 — wageninfo
   const [townId, setTownId] = useState('');
   const [townLabel, setTownLabel] = useState('');
   const [brandId, setBrandId] = useState('');
@@ -70,13 +114,35 @@ export default function SimulatiePage() {
   const [loadingFunnyIndex, setLoadingFunnyIndex] = useState(0);
   const [resultHeroAutoState, setResultHeroAutoState] = useState<'parked' | 'driving' | 'gone'>('parked');
   const [resultDisplayOverride, setResultDisplayOverride] = useState<null | 'success' | 'notOk' | 'unclear'>(null);
-  const [kostenScenarioIndex, setKostenScenarioIndex] = useState(1);
-  const [kostenDetailOpen, setKostenDetailOpen] = useState(false);
-  const [bevestigingEmail, setBevestigingEmail] = useState('');
-  const [bevestigingIsMember, setBevestigingIsMember] = useState<'yes' | 'no' | null>(null);
+  const [costScenarioIndex, setCostScenarioIndex] = useState(1);
+  const [costDetailOpen, setCostDetailOpen] = useState(false);
+  const [costScenarioPeopleDisplayed, setCostScenarioPeopleDisplayed] = useState(14);
+  const [confirmationEmail, setConfirmationEmail] = useState('');
+  const [confirmationMemberPath, setConfirmationMemberPath] = useState<ConfirmationMemberPath | null>(null);
+  const [confirmationSent, setConfirmationSent] = useState(false);
   const simulationRequestInFlight = useRef(false);
+  const prevScreenRef = useRef(screen);
 
-  const isBevestigingValid = bevestigingEmail.trim().length > 0 && bevestigingEmail.trim().includes('@') && bevestigingIsMember !== null;
+  const isConfirmationValid = confirmationEmail.trim().length > 0 && confirmationEmail.trim().includes('@') && confirmationMemberPath !== null;
+
+  const confirmationSteps = useMemo(
+    () => (confirmationMemberPath ? CONFIRMATION_STEPS_BY_PATH[confirmationMemberPath] : []),
+    [confirmationMemberPath],
+  );
+
+  useEffect(() => {
+    if (prevScreenRef.current === STEP_CONFIRMATION && screen !== STEP_CONFIRMATION) {
+      setConfirmationSent(false);
+      setConfirmationMemberPath(null);
+    }
+    prevScreenRef.current = screen;
+  }, [screen]);
+
+  const faqCollapsed = (extraClass?: string) => (
+    <div className={`${styles.faqCollapsed} ${extraClass ?? ''}`.trim()} role="region" aria-label={t('faqCollapsedTitle')}>
+      <span className={styles.faqCollapsedTitle}>{t('faqCollapsedTitle')}</span>
+    </div>
+  );
 
   const isSuccessResult =
     simulationResult &&
@@ -143,7 +209,7 @@ export default function SimulatiePage() {
     [brandId, fuelTypeId],
   );
 
-  async function fillWageninfoExample() {
+  async function fillCarInfoExample() {
     setFillExampleLoading(true);
     setCarChoice('existing');
     try {
@@ -199,7 +265,7 @@ export default function SimulatiePage() {
     }
   }
 
-  const isWageninfoValid = useMemo(() => {
+  const isCarInfoValid = useMemo(() => {
     if (!townId || !brandId || !fuelTypeId || !carTypeId) return false;
     if (carTypeId === CAR_TYPE_OTHER && !carTypeOther.trim()) return false;
     const seatsNum = parseInt(seats.trim(), 10);
@@ -324,7 +390,6 @@ export default function SimulatiePage() {
     return lower.includes('gent') || /^90\d\d/.test(zip);
   }, [townLabel]);
 
-  // Cycle funny message in spinner area while loading
   useEffect(() => {
     if (screen !== STEP_LOADING || simulationError !== null) return;
     setLoadingFunnyIndex(0);
@@ -334,7 +399,6 @@ export default function SimulatiePage() {
     return () => clearInterval(id);
   }, [screen, simulationError]);
 
-  // Step 4 success hero: badge + car animation (parked → driving → gone)
   useEffect(() => {
     if (screen !== STEP_RESULT || !isSuccessResult) {
       setResultHeroAutoState('parked');
@@ -349,22 +413,33 @@ export default function SimulatiePage() {
     };
   }, [screen, isSuccessResult]);
 
-  const maxReachableStep = !simulationResult ? (carChoice ? STEP_WAGENINFO : STEP_SITUATIE) : isSuccessResult ? STEP_BEVESTIGING : STEP_RESULT;
-
-  const isStepReachable = (stepNum: number) => {
-    if (stepNum === STEP_LOADING) return screen === STEP_LOADING;
-    return stepNum <= maxReachableStep;
-  };
+  useEffect(() => {
+    if (screen !== STEP_COST_SCENARIOS) return undefined;
+    const target = COST_SCENARIO_PEOPLE_BY_INDEX[costScenarioIndex] ?? 14;
+    const id = window.setInterval(() => {
+      setCostScenarioPeopleDisplayed((c) => {
+        if (c === target) {
+          window.clearInterval(id);
+          return c;
+        }
+        return c + (target > c ? 1 : -1);
+      });
+    }, 55);
+    return () => window.clearInterval(id);
+  }, [screen, costScenarioIndex]);
 
   const goNext = () => {
     if (screen === STEP_RESULT) setResultDisplayOverride(null);
-    setScreen((s) => Math.min(s + 1, STEP_BEVESTIGING));
+    setScreen((s) => Math.min(s + 1, STEP_CONFIRMATION));
   };
-  const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATIE));
-  const goTo = (step: number) => {
-    if (!isStepReachable(step)) return;
-    if (screen === STEP_RESULT) setResultDisplayOverride(null);
-    setScreen(step);
+  const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATION));
+
+  const restartSimulationFromNotOk = () => {
+    setResultDisplayOverride(null);
+    setSimulationResult(null);
+    setCarChoice(null);
+    simulationRequestInFlight.current = false;
+    setScreen(STEP_SITUATION);
   };
 
   return (
@@ -378,37 +453,13 @@ export default function SimulatiePage() {
               <div className={styles.logoSub}>{t('header.logoSub')}</div>
             </div>
           </div>
-          <div className={styles.stepDots}>
-            {SCREEN_IDS.map((id, i) => {
-              const stepNum = i + 1;
-              const isPast = screen > stepNum;
-              const isCurrent = screen === stepNum;
-              const reachable = isStepReachable(stepNum);
-              return (
-                <div key={id} style={{ display: 'flex', alignItems: 'center' }}>
-                  <button
-                    type="button"
-                    onClick={() => goTo(stepNum)}
-                    title={t(`screens.${id}`)}
-                    disabled={!reachable}
-                    aria-disabled={!reachable}
-                    className={`${styles.stepDot} ${isPast ? styles.stepDotPast : isCurrent ? styles.stepDotCurrent : styles.stepDotFuture} ${!reachable ? styles.stepDotDisabled : ''}`}
-                  >
-                    {isPast ? '✓' : stepNum}
-                  </button>
-                  {i < SCREEN_IDS.length - 1 && (
-                    <div className={`${styles.stepConnector} ${isPast ? styles.stepConnectorPast : styles.stepConnectorFuture}`} />
-                  )}
-                </div>
-              );
-            })}
+          <div className={styles.headerEnd}>
+            <LanguageSwitcher triggerClassName={styles.headerLangTrigger} showLabel />
           </div>
-          <LanguageSwitcher triggerClassName={styles.headerLangTrigger} showLabel />
         </div>
       </header>
 
-      {/* Step 4 — Second header bar (result phase) */}
-      {screen === STEP_RESULT && simulationResult && (
+      {DEV_UI_ENABLED && screen === STEP_RESULT && simulationResult && (
         <div className={styles.resultSecondBar}>
           <div className={styles.resultSecondBarInner}>
             <span className={styles.resultSecondBarTitle}>{t('result.secondBarTitle')}</span>
@@ -459,26 +510,21 @@ export default function SimulatiePage() {
         </div>
       )}
 
-      {/* Step 2 — Second header bar (wageninfo) */}
-      {screen === STEP_WAGENINFO && (
+      {DEV_UI_ENABLED && screen === STEP_CAR_INFO && (
         <div className={styles.resultSecondBar}>
           <div className={styles.resultSecondBarInner}>
             <span className={styles.resultSecondBarTitle}>{t('wageninfo.secondBarTitle')}</span>
-            <button type="button" onClick={fillWageninfoExample} disabled={fillExampleLoading} className={styles.secondBarButton}>
+            <button type="button" onClick={fillCarInfoExample} disabled={fillExampleLoading} className={styles.secondBarButton}>
               {fillExampleLoading ? '…' : t('wageninfo.fillExample')}
             </button>
           </div>
         </div>
       )}
 
-      {/* Step 1 — Situatie */}
-      {screen === STEP_SITUATIE && (
+      {screen === STEP_SITUATION && (
         <div className={styles.page}>
-          <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: 6 })}</p>
           <h1 className={styles.title}>{t('situatie.title')}</h1>
-          <p className={styles.body} style={{ marginBottom: 32 }}>
-            {t('situatie.body')}
-          </p>
+          <p className={`${styles.body} ${styles.bodyAfterTitle}`}>{t('situatie.body')}</p>
           <div className={styles.tileGrid}>
             {[
               {
@@ -517,26 +563,60 @@ export default function SimulatiePage() {
               <p className={styles.amberBannerText}>{t('situatie.kooptBanner')}</p>
             </div>
           )}
-          <div className={styles.buttonRow} style={{ marginTop: 24 }}>
+          <div className={`${styles.buttonRow} ${styles.marginTop24}`}>
             <button type="button" onClick={goNext} disabled={!carChoice} className={`${styles.btn} ${styles.btnPrimary}`}>
-              {t('continue')}
+              {t('situatie.startCta')}
             </button>
           </div>
-          <div className={styles.faqPlaceholder} style={{ marginTop: 32 }}>
-            {t('faqPlaceholder')}
-          </div>
+
+          <section className={styles.koopgidsSection} aria-label={t('situatie.koopgidsEyebrow')}>
+            <p className={styles.koopgidsEyebrow}>{t('situatie.koopgidsEyebrow')}</p>
+            <h2 className={styles.koopgidsTitle}>{t('situatie.koopgidsTitle')}</h2>
+            <p className={`${styles.body} ${styles.koopgidsBody}`}>{t('situatie.koopgidsBody')}</p>
+
+            <div className={styles.koopgidsCard}>
+              <div className={styles.koopgidsCardTitleKnockout}>{t('situatie.koopgidsKnockoutTitle')}</div>
+              {(['situatie.koopgidsKnockout1', 'situatie.koopgidsKnockout2', 'situatie.koopgidsKnockout3'] as const).map((key) => (
+                <div key={key} className={styles.koopgidsCriterionRow}>
+                  <span className={styles.koopgidsIconKnockout} aria-hidden>
+                    !
+                  </span>
+                  <span className={styles.koopgidsCriterionText}>{t(key)}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.koopgidsCard}>
+              <div className={styles.koopgidsCardTitleIdeal}>{t('situatie.koopgidsIdealTitle')}</div>
+              {(['situatie.koopgidsIdeal1', 'situatie.koopgidsIdeal2', 'situatie.koopgidsIdeal3'] as const).map((key) => (
+                <div key={key} className={styles.koopgidsCriterionRow}>
+                  <span className={styles.koopgidsIconIdeal} aria-hidden>
+                    ✓
+                  </span>
+                  <span className={styles.koopgidsCriterionText}>{t(key)}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.koopgidsTip}>
+              <p className={styles.koopgidsTipText}>
+                <strong>{t('situatie.koopgidsTipLead')}</strong> {t('situatie.koopgidsTipBody')}
+              </p>
+            </div>
+
+            <p className={styles.koopgidsFooter}>{t('situatie.koopgidsFooter')}</p>
+          </section>
+
+          <div className={styles.marginTop32}>{faqCollapsed()}</div>
         </div>
       )}
 
-      {/* Step 2 — Wageninfo */}
-      {screen === STEP_WAGENINFO && (
+      {screen === STEP_CAR_INFO && (
         <div className={styles.pageTwoCol}>
           <div>
-            <p className={styles.eyebrow}>{t('stepOf', { current: 2, total: 6 })}</p>
+            <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: NUMBERED_STEP_TOTAL })}</p>
             <h1 className={styles.title}>{t('wageninfo.title')}</h1>
-            <p className={styles.body} style={{ marginBottom: 32 }}>
-              {t('wageninfo.body')}
-            </p>
+            <p className={`${styles.body} ${styles.bodyAfterTitle}`}>{t('wageninfo.body')}</p>
 
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
@@ -644,11 +724,17 @@ export default function SimulatiePage() {
             <div className={styles.formGridTwoCol}>
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>{t('wageninfo.seatsLabel')}</label>
-                <input type="number" min={2} max={9} value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.input} />
+                <select value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.select}>
+                  {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={String(n)}>
+                      {n}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>{t('wageninfo.isVanLabel')}</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 16, paddingTop: 8 }}>
+                <div className={styles.toggleRow}>
                   <button
                     type="button"
                     onClick={() => setIsVan(!isVan)}
@@ -657,9 +743,7 @@ export default function SimulatiePage() {
                   >
                     <span className={`${styles.toggleThumb} ${isVan ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
                   </button>
-                  <span className={styles.body} style={{ fontSize: 12 }}>
-                    {isVan ? t('wageninfo.isVanYes') : t('wageninfo.isVanNo')}
-                  </span>
+                  <span className={styles.captionInline}>{isVan ? t('wageninfo.isVanYes') : t('wageninfo.isVanNo')}</span>
                 </div>
               </div>
             </div>
@@ -693,8 +777,23 @@ export default function SimulatiePage() {
                   />
                 </div>
                 <div className={styles.field}>
-                  <label className={styles.fieldLabel}>{t('wageninfo.firstRegistrationLabel')}</label>
+                  <div className={styles.fieldLabelRow}>
+                    <label htmlFor="sim-first-registration" className={styles.fieldLabelInline}>
+                      {t('wageninfo.firstRegistrationLabel')}
+                    </label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button type="button" className={styles.fieldHelpTrigger} aria-label={t('wageninfo.firstRegistrationHelpAria')}>
+                          ?
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
+                        <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <input
+                    id="sim-first-registration"
                     type="date"
                     value={firstRegisteredAt}
                     onChange={(e) => setFirstRegisteredAt(e.target.value)}
@@ -734,36 +833,31 @@ export default function SimulatiePage() {
               </p>
             </div>
 
-            <div className={styles.buttonRow} style={{ marginTop: 24 }}>
+            <div className={`${styles.buttonRow} ${styles.marginTop24}`}>
               <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
                 {t('back')}
               </button>
-              <button type="button" onClick={goNext} disabled={!isWageninfoValid} className={`${styles.btn} ${styles.btnPrimary}`}>
+              <button type="button" onClick={goNext} disabled={!isCarInfoValid} className={`${styles.btn} ${styles.btnPrimary}`}>
                 {t('wageninfo.submit')}
               </button>
             </div>
           </div>
 
-          <div className={styles.stickySidebar}>
-            <div className={styles.faqPlaceholder}>{t('faqPlaceholder')}</div>
-          </div>
+          <div className={styles.stickySidebar}>{faqCollapsed()}</div>
         </div>
       )}
 
-      {/* Step 3 — Loading */}
       {screen === STEP_LOADING && (
         <div className={styles.page}>
           {simulationError ? (
-            <div className={styles.loadingCard} style={{ padding: 24 }}>
-              <p className={styles.body} style={{ marginBottom: 16 }}>
-                {simulationError}
-              </p>
-              <div style={{ display: 'flex', gap: 12 }}>
+            <div className={`${styles.loadingCard} ${styles.loadingCardError}`}>
+              <p className={`${styles.body} ${styles.marginBottom24}`}>{simulationError}</p>
+              <div className={styles.loadingErrorActions}>
                 <button
                   type="button"
                   onClick={() => {
                     setSimulationError(null);
-                    setScreen(STEP_SITUATIE);
+                    setScreen(STEP_SITUATION);
                   }}
                   className={`${styles.btn} ${styles.btnSecondary}`}
                 >
@@ -784,7 +878,6 @@ export default function SimulatiePage() {
             </div>
           ) : (
             <>
-              {/* Header: progress circle + title + subtitle (mockup step 3) */}
               <div className={styles.loadingHeader}>
                 <div className={styles.loadingProgressWrap}>
                   <svg width="56" height="56" className={styles.loadingProgressSvg}>
@@ -822,7 +915,6 @@ export default function SimulatiePage() {
                   </div>
                 </div>
               </div>
-              {/* All steps pending */}
               <div className={styles.loadingCard}>
                 {[
                   { icon: '📍', labelKey: 'loading.checkingLocation' as const },
@@ -833,9 +925,7 @@ export default function SimulatiePage() {
                   <div key={row.labelKey} className={styles.loadingRow}>
                     <div className={`${styles.loadingCircle} ${styles.loadingCirclePending}`}>{row.icon}</div>
                     <div>
-                      <div className={styles.body} style={{ fontWeight: 600, marginBottom: 2 }}>
-                        {t(row.labelKey)}
-                      </div>
+                      <div className={`${styles.body} ${styles.loadingRowLead}`}>{t(row.labelKey)}</div>
                     </div>
                   </div>
                 ))}
@@ -843,22 +933,18 @@ export default function SimulatiePage() {
             </>
           )}
 
-          <div className={styles.faqPlaceholder} style={{ marginTop: 32 }}>
-            {t('faqPlaceholder')}
-          </div>
+          <div className={styles.marginTop32}>{faqCollapsed()}</div>
         </div>
       )}
 
-      {/* Step 4 — Result */}
       {screen === STEP_RESULT && simulationResult && (
         <div className={styles.page}>
-          <p className={styles.eyebrow}>{t('stepOf', { current: 4, total: 6 })}</p>
+          <p className={styles.eyebrow}>{t('stepOf', { current: 2, total: NUMBERED_STEP_TOTAL })}</p>
 
           {displaySuccess && (
             <div className={styles.resultHero}>
               <div className={styles.resultHeroBanner}>
                 <div className={styles.resultHeroBannerBg} />
-                {/* Decorative car silhouettes */}
                 {[
                   { left: 0, w: 48, h: 60, op: 0.2 },
                   { left: 50, w: 32, h: 44, op: 0.15 },
@@ -897,12 +983,16 @@ export default function SimulatiePage() {
                 </div>
                 <div className={styles.resultHeroBadge}>
                   <div className={styles.resultHeroBadgeDot}>
-                    <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>✓</span>
+                    <span className={styles.resultHeroBadgeCheck}>✓</span>
                   </div>
                   <span className={styles.resultHeroBadgeText}>{t('result.badgeEligible')}</span>
                 </div>
                 <div
-                  className={`${styles.resultHeroCarWrap} ${resultHeroAutoState === 'driving' ? styles.resultHeroCarWrapDriving : ''} ${resultHeroAutoState === 'gone' ? styles.resultHeroCarWrapGone : ''}`}
+                  className={cn(
+                    styles.resultHeroCarWrap,
+                    resultHeroAutoState === 'driving' && styles.resultHeroCarWrapDriving,
+                    resultHeroAutoState === 'gone' && styles.resultHeroCarWrapGone,
+                  )}
                 >
                   <svg width="72" height="34" viewBox="0 0 72 34">
                     <circle cx="16" cy="28" r="6" fill="#111" />
@@ -916,28 +1006,17 @@ export default function SimulatiePage() {
                     <rect x="4" y="18" width="3.5" height="4" rx="1" fill="#B83232" />
                   </svg>
                   {resultHeroAutoState === 'driving' && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        right: '100%',
-                        top: 14,
-                        display: 'flex',
-                        gap: 3,
-                        alignItems: 'center',
-                      }}
-                    >
+                    <div className={styles.resultHeroCarPuffs}>
                       <div className={styles.resultHeroPuff} style={{ animationDuration: '0.7s' }} />
-                      <div className={styles.resultHeroPuff} style={{ width: 8, height: 8, animationDuration: '0.9s' }} />
-                      <div className={styles.resultHeroPuff} style={{ width: 6, height: 6, animationDuration: '1.1s' }} />
+                      <div className={`${styles.resultHeroPuff} ${styles.resultHeroPuffSm}`} style={{ animationDuration: '0.9s' }} />
+                      <div className={`${styles.resultHeroPuff} ${styles.resultHeroPuffXs}`} style={{ animationDuration: '1.1s' }} />
                     </div>
                   )}
                 </div>
                 {resultHeroAutoState === 'gone' && <div className={styles.resultHeroGoneMessage}>{t('result.goneMessage')}</div>}
               </div>
               <div className={styles.resultHeroInner}>
-                <h2 className={styles.resultHeroTitle} style={{ color: '#fff' }}>
-                  {t('result.successTitle')}
-                </h2>
+                <h2 className={`${styles.resultHeroTitle} ${styles.resultHeroTitleLight}`}>{t('result.successTitle')}</h2>
                 <div className={styles.resultStatGrid}>
                   <div className={styles.resultStatBox}>
                     <div className={styles.resultStatLabel}>{t('result.statTariefgroep')}</div>
@@ -971,7 +1050,10 @@ export default function SimulatiePage() {
                     <div className={styles.resultStatLabel}>{t('result.statSlijtage')}</div>
                     <div className={styles.resultStatValue}>
                       {simulationResult?.resultDepreciationCostKm != null
-                        ? `€ ${Number(simulationResult.resultDepreciationCostKm).toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                        ? `€ ${Number(simulationResult.resultDepreciationCostKm).toLocaleString('nl-BE', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}`
                         : t('result.statSlijtageValue')}
                     </div>
                     <div className={styles.resultStatSub}>{t('result.statSlijtageSub')}</div>
@@ -982,7 +1064,7 @@ export default function SimulatiePage() {
           )}
 
           {displaySuccess && (
-            <div className={styles.loadingCard} style={{ marginTop: 24 }}>
+            <div className={`${styles.loadingCard} ${styles.loadingCardSpaced}`}>
               {[
                 { labelKey: 'loading.checkLocation' as const, subKey: 'loading.checkedLocationSub' as const },
                 { labelKey: 'loading.checkAgeKm' as const, subKey: 'loading.checkedAgeKmSub' as const },
@@ -993,10 +1075,8 @@ export default function SimulatiePage() {
                 <div key={row.labelKey} className={`${styles.loadingRow} ${styles.loadingRowPast}`}>
                   <div className={`${styles.loadingCircle} ${styles.loadingCirclePast}`}>✓</div>
                   <div>
-                    <div className={styles.body} style={{ fontWeight: 600, marginBottom: 2 }}>
-                      {t(row.labelKey)}
-                    </div>
-                    <div style={{ fontFamily: 'var(--sim-sans)', fontSize: 12, color: 'var(--sim-mid)' }}>{t(row.subKey)}</div>
+                    <div className={`${styles.body} ${styles.resultCheckRowLead}`}>{t(row.labelKey)}</div>
+                    <div className={styles.resultCheckRowSub}>{t(row.subKey)}</div>
                   </div>
                 </div>
               ))}
@@ -1004,77 +1084,63 @@ export default function SimulatiePage() {
           )}
 
           {displayNotOk && (
-            <div className={styles.resultHero} style={{ background: 'var(--sim-red-bg)' }}>
-              <div className={styles.resultHeroInner} style={{ padding: 32, textAlign: 'center' }}>
-                <div
-                  style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: '50%',
-                    background: 'var(--sim-surface)',
-                    border: '2px solid var(--sim-red)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px',
-                  }}
-                >
-                  <span style={{ color: 'var(--sim-red)', fontSize: 24, fontWeight: 700 }}>✕</span>
+            <>
+              <div className={styles.noGoCard}>
+                <div className={styles.noGoHero}>
+                  <div className={`${styles.resultOutcomeCircle} ${styles.resultOutcomeCircleNoGo}`}>
+                    <span className={styles.resultOutcomeIconNoGo} aria-hidden>
+                      ✕
+                    </span>
+                  </div>
+                  <h2 className={styles.noGoHeroTitle}>{t('result.notOkTitle')}</h2>
+                  <p className={styles.noGoHeroIntro}>{t('result.notOkIntro')}</p>
                 </div>
-                <h2 className={styles.resultHeroTitle} style={{ color: 'var(--sim-ink)' }}>
-                  {t('result.notOkTitle')}
-                </h2>
-                <p className={styles.body} style={{ margin: 0 }}>
-                  {simulationResult.message || tWizard('results.notOkBody')}
-                </p>
+                <div className={styles.noGoReason}>
+                  <div className={styles.noGoReasonEyebrow}>{t('result.notOkReasonEyebrow')}</div>
+                  <div className={styles.noGoReasonTitle}>{simulationResult?.message?.trim() || t('result.notOkReasonTitleFallback')}</div>
+                  <p className={styles.noGoReasonBody}>{t('result.notOkReasonDetail')}</p>
+                </div>
               </div>
-            </div>
+              <div className={styles.noGoWhatNow}>
+                <div className={styles.noGoWhatNowTitle}>{t('result.whatNextTitle')}</div>
+                <div className={styles.noGoWhatNowRow}>
+                  <span className={styles.noGoWhatNowArrow} aria-hidden>
+                    →
+                  </span>
+                  <div>
+                    <p className={styles.noGoWhatNowText}>{t('result.whatNextOtherCar')}</p>
+                    <button type="button" className={styles.noGoRestartBtn} onClick={restartSimulationFromNotOk}>
+                      {t('result.newSimulationCta')}
+                    </button>
+                  </div>
+                </div>
+                <div className={`${styles.noGoWhatNowRow} ${styles.noGoWhatNowRowLast}`}>
+                  <span className={styles.noGoWhatNowArrow} aria-hidden>
+                    →
+                  </span>
+                  <p className={styles.noGoWhatNowText}>{t('result.whatNextContact')}</p>
+                </div>
+              </div>
+            </>
           )}
 
           {displayUnclear && (
-            <div className={styles.resultHero} style={{ background: 'var(--sim-amber-bg)' }}>
-              <div className={styles.resultHeroInner} style={{ padding: 32, textAlign: 'center' }}>
-                <div
-                  style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: '50%',
-                    background: 'var(--sim-surface)',
-                    border: '2px solid var(--sim-amber)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px',
-                  }}
-                >
-                  <span style={{ fontSize: 24 }}>🔍</span>
+            <div className={`${styles.resultOutcomeHero} ${styles.resultOutcomeHeroUnclear}`}>
+              <div className={styles.resultOutcomeInner}>
+                <div className={`${styles.resultOutcomeCircle} ${styles.resultOutcomeCircleUnclear}`}>
+                  <span className={styles.resultOutcomeIconUnclear} aria-hidden>
+                    🔍
+                  </span>
                 </div>
-                <h2 className={styles.resultHeroTitle} style={{ color: 'var(--sim-ink)' }}>
-                  {t('result.unclearTitle')}
-                </h2>
-                <p className={styles.body} style={{ margin: 0 }}>
-                  {tWizard('results.unclearBody')}
-                </p>
+                <h2 className={styles.resultOutcomeTitle}>{t('result.unclearTitle')}</h2>
+                <p className={`${styles.body} ${styles.resultOutcomeBody}`}>{tWizard('results.unclearBody')}</p>
               </div>
             </div>
           )}
 
-          <p
-            style={{
-              fontFamily: 'var(--sim-sans)',
-              fontSize: 11,
-              color: 'var(--sim-light)',
-              lineHeight: 1.55,
-              fontStyle: 'italic',
-              marginBottom: 24,
-            }}
-          >
-            {t('result.disclaimer')}
-          </p>
+          <p className={styles.footnote}>{t('result.disclaimer')}</p>
 
-          <div className={styles.faqPlaceholder} style={{ marginBottom: 24 }}>
-            {t('faqPlaceholder')}
-          </div>
+          <div className={styles.marginBottom24}>{faqCollapsed()}</div>
 
           <div className={styles.buttonRow}>
             <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
@@ -1089,276 +1155,340 @@ export default function SimulatiePage() {
         </div>
       )}
 
-      {/* Step 5 — Kosten + Scenarios (merged): costs on right, scenario pickers + blocks below */}
-      {screen === STEP_KOSTEN_SCENARIOS &&
+      {screen === STEP_COST_SCENARIOS &&
         (() => {
-          const ins = simulationResult?.resultInsuranceCostPerYear ?? 0;
-          const tax = simulationResult?.resultTaxCostPerYear ?? 0;
-          const insp = simulationResult?.resultInspectionCostPerYear ?? 0;
-          const maint = simulationResult?.resultMaintenanceCostPerYear ?? 0;
-          const totalCost = ins + tax + insp + maint;
+          const annualInsurance = simulationResult?.resultInsuranceCostPerYear ?? 0;
+          const annualTax = simulationResult?.resultTaxCostPerYear ?? 0;
+          const annualInspection = simulationResult?.resultInspectionCostPerYear ?? 0;
+          const annualMaintenance = simulationResult?.resultMaintenanceCostPerYear ?? 0;
+          const totalCost = annualInsurance + annualTax + annualInspection + annualMaintenance;
           const hasCosts = totalCost > 0;
           const ownerKm = simulationResult?.ownerKmPerYear ?? 0;
           const benchMin = simulationResult?.resultBenchmarkMinKm ?? 0;
           const benchAvg = simulationResult?.resultBenchmarkAvgKm ?? 0;
           const benchMax = simulationResult?.resultBenchmarkMaxKm ?? 0;
-          const sharedKm = [benchMin, benchAvg, benchMax][kostenScenarioIndex] ?? 0;
+          const sharedKm = [benchMin, benchAvg, benchMax][costScenarioIndex] ?? 0;
           const totalKm = ownerKm + sharedKm;
           const fractionRepaid = totalKm > 0 ? sharedKm / totalKm : 0;
           const amountRepaid = totalCost * fractionRepaid;
-          const gedekt = totalCost > 0 ? Math.min(100, Math.round((amountRepaid / totalCost) * 100)) : 0;
-          const netto = amountRepaid - totalCost;
-
-          const CostCard = () =>
-            hasCosts ? (
-              <div className={styles.kostenSidebarCard}>
-                <div className={styles.kostenSidebarHeader}>
-                  <div className={styles.kostenSidebarLabel}>{t('kosten.yourCostsTotal')}</div>
-                  <div className={styles.kostenSidebarTotal}>
-                    € {Math.round(totalCost).toLocaleString('nl-BE')}
-                    <span className={styles.kostenSidebarPerYear}>{t('kosten.perYear')}</span>
-                  </div>
-                </div>
-                <div className={styles.kostenSidebarRows}>
-                  {ins > 0 && (
-                    <div className={styles.kostenSidebarRow}>
-                      <span>{t('kosten.insurance')}</span>
-                      <span>€ {Math.round(ins).toLocaleString('nl-BE')}</span>
-                    </div>
-                  )}
-                  {tax > 0 && (
-                    <div className={styles.kostenSidebarRow}>
-                      <span>{t('kosten.tax')}</span>
-                      <span>€ {Math.round(tax).toLocaleString('nl-BE')}</span>
-                    </div>
-                  )}
-                  {insp > 0 && (
-                    <div className={styles.kostenSidebarRow}>
-                      <span>{t('kosten.inspection')}</span>
-                      <span>€ {Math.round(insp).toLocaleString('nl-BE')}</span>
-                    </div>
-                  )}
-                  {maint > 0 && (
-                    <div className={styles.kostenSidebarRow}>
-                      <span>{t('kosten.maintenance')}</span>
-                      <span>€ {Math.round(maint).toLocaleString('nl-BE')}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <p className={styles.kostenPlaceholderText}>{t('kosten.placeholder')}</p>
-            );
+          const depPerKm = simulationResult?.resultDepreciationCostKm ?? 0;
+          const depAnnualEuro = Math.round(depPerKm * sharedKm);
+          const scenarioTotalPerYear = totalCost + depAnnualEuro;
+          const neighbourCostSharePercent =
+            scenarioTotalPerYear > 0 ? Math.min(100, Math.round((amountRepaid / scenarioTotalPerYear) * 100)) : 0;
+          const netBalancePerYear = amountRepaid - scenarioTotalPerYear;
+          const estimatedTripsPerYear = Math.max(1, Math.round(sharedKm / 82));
+          const fmtEuro = (n: number) => `€ ${Math.round(n).toLocaleString('nl-BE')}`;
 
           return (
-            <div className={styles.pageTwoCol}>
-              <div>
-                <p className={styles.eyebrow}>{t('stepOf', { current: 5, total: 6 })}</p>
-                <h1 className={styles.title}>{t('kosten.title')}</h1>
-                <p className={styles.body} style={{ marginBottom: hasCosts ? 16 : 24 }}>
-                  {hasCosts ? t('kosten.bodyWithTotal', { total: Math.round(totalCost).toLocaleString('nl-BE') }) : t('kosten.body')}
-                </p>
-                <p className={styles.kostenScenarioHint}>{t('kosten.scenarioHint')}</p>
+            <div className={styles.pageWide}>
+              <p className={styles.eyebrow}>{t('stepOf', { current: 3, total: NUMBERED_STEP_TOTAL })}</p>
+              <h1 className={styles.title}>{t('kosten.title')}</h1>
 
-                <div className={styles.scenarioGrid} style={{ marginBottom: 24 }}>
-                  {[
-                    {
-                      i: 0,
-                      icon: '🌙',
-                      labelKey: 'kosten.scenarioWeinig' as const,
-                      subKey: 'kosten.scenarioWeinigSub' as const,
-                      highlight: false,
-                    },
-                    {
-                      i: 1,
-                      icon: '📅',
-                      labelKey: 'kosten.scenarioRegelmatig' as const,
-                      subKey: 'kosten.scenarioRegelmatigSub' as const,
-                      highlight: true,
-                    },
-                    { i: 2, icon: '⭐', labelKey: 'kosten.scenarioVaak' as const, subKey: 'kosten.scenarioVaakSub' as const, highlight: false },
-                  ].map((s) => (
-                    <button
-                      key={s.i}
-                      type="button"
-                      onClick={() => setKostenScenarioIndex(s.i)}
-                      className={kostenScenarioIndex === s.i ? `${styles.scenarioBtn} ${styles.scenarioBtnActive}` : styles.scenarioBtn}
-                    >
-                      <div className={styles.scenarioBtnIcon}>{s.icon}</div>
-                      <div className={styles.scenarioBtnLabel}>{t(s.labelKey)}</div>
-                      <div className={styles.scenarioBtnSub}>{t(s.subKey)}</div>
-                      {s.highlight && <span className={styles.scenarioMedianBadge}>{t('kosten.scenarioMedianBadge')}</span>}
-                    </button>
-                  ))}
+              {hasCosts ? (
+                <div className={styles.kostenIntroBox}>
+                  <p>
+                    {t('kosten.introPart1')}
+                    <strong className={styles.kostenIntroStrong}>
+                      {fmtEuro(totalCost)}
+                      {t('kosten.perYear')}
+                    </strong>
+                    {t('kosten.introPart2')}
+                  </p>
                 </div>
+              ) : (
+                <p className={`${styles.body} ${styles.kostenBodySpacing}`}>{t('kosten.body')}</p>
+              )}
 
-                {/* Blocks below pickers: pro-rata repayment + right column */}
-                {hasCosts && (
-                  <div className={styles.kostenDetailGrid} style={{ marginBottom: 24 }}>
-                    <div className={styles.kostenDetailCard}>
-                      <div className={styles.kostenDetailSection}>
-                        <div className={styles.kostenDetailLabel}>{t('kosten.burenBetalingLabel')}</div>
-                        <div className={styles.kostenDetailGedekt}>{gedekt}%</div>
-                        <div className={styles.kostenDetailSub}>
-                          {t('kosten.burenBetalingOf', { total: Math.round(totalCost).toLocaleString('nl-BE') })}
-                        </div>
-                        <div className={styles.kostenProgressTrack}>
-                          <div className={styles.kostenProgressFill} style={{ width: `${gedekt}%` }} />
-                        </div>
-                        <div className={styles.kostenDetailNote}>
-                          = € {Math.round(totalCost).toLocaleString('nl-BE')} vaste kosten · {Math.round(fractionRepaid * 100)}% gedeeld
-                        </div>
+              <p className={styles.kostenScenarioHint}>{t('kosten.scenarioHint')}</p>
+
+              <div className={`${styles.scenarioGrid} ${styles.kostenScenarioBlock}`}>
+                {[
+                  {
+                    i: 0,
+                    icon: '🌙',
+                    labelKey: 'kosten.scenarioWeinig' as const,
+                    subKey: 'kosten.scenarioWeinigSub' as const,
+                    highlight: false,
+                  },
+                  {
+                    i: 1,
+                    icon: '📅',
+                    labelKey: 'kosten.scenarioRegelmatig' as const,
+                    subKey: 'kosten.scenarioRegelmatigSub' as const,
+                    highlight: true,
+                  },
+                  { i: 2, icon: '⭐', labelKey: 'kosten.scenarioVaak' as const, subKey: 'kosten.scenarioVaakSub' as const, highlight: false },
+                ].map((s) => (
+                  <button
+                    key={s.i}
+                    type="button"
+                    onClick={() => setCostScenarioIndex(s.i)}
+                    className={costScenarioIndex === s.i ? `${styles.scenarioBtn} ${styles.scenarioBtnActive}` : styles.scenarioBtn}
+                  >
+                    <div className={cn(styles.scenarioBtnCheck, costScenarioIndex === s.i && styles.scenarioBtnCheckActive)} aria-hidden>
+                      {costScenarioIndex === s.i ? '✓' : null}
+                    </div>
+                    <div className={styles.scenarioBtnIcon}>{s.icon}</div>
+                    <div className={styles.scenarioBtnLabel}>{t(s.labelKey)}</div>
+                    <div className={styles.scenarioBtnSub}>{t(s.subKey)}</div>
+                    {s.highlight && <span className={styles.scenarioMedianBadge}>{t('kosten.scenarioMedianBadge')}</span>}
+                  </button>
+                ))}
+              </div>
+
+              {hasCosts && (
+                <div className={`${styles.kostenDetailGrid} ${styles.kostenDetailBlock}`}>
+                  <div className={styles.kostenDetailCard}>
+                    <div className={styles.kostenDetailSection}>
+                      <div className={styles.kostenDetailLabel}>{t('kosten.burenBetalingLabel')}</div>
+                      <div className={styles.kostenDetailGedekt}>{neighbourCostSharePercent}%</div>
+                      <div className={styles.kostenDetailSub}>
+                        {t('kosten.burenBetalingOf', { total: `${fmtEuro(scenarioTotalPerYear)}${t('kosten.perYear')}` })}
                       </div>
-                      <button type="button" onClick={() => setKostenDetailOpen(!kostenDetailOpen)} className={styles.kostenDetailToggle}>
-                        <span>{t('kosten.kostenverdelingLabel')}</span>
-                        <span style={{ transform: kostenDetailOpen ? 'rotate(180deg)' : 'none' }}>▼</span>
-                      </button>
-                      {kostenDetailOpen && (
-                        <div className={styles.kostenDetailBreakdown}>
-                          <div className={styles.kostenDetailBreakdownRow}>
-                            <div>
-                              <span className={styles.kostenDetailRowLabel}>{t('kosten.vasteKostenLabel')}</span>
-                              <div className={styles.kostenDetailNote}>{t('kosten.vasteKostenNote')}</div>
-                            </div>
-                            <span className={styles.kostenDetailRowVal}>€ {Math.round(totalCost).toLocaleString('nl-BE')}</span>
-                          </div>
-                          <div
-                            className={styles.kostenDetailBreakdownRow}
-                            style={{ borderTop: '1px solid var(--sim-sand)', paddingTop: 8, marginTop: 8 }}
-                          >
-                            <span className={styles.kostenDetailRowLabel}>{t('kosten.opbrengstLabel')}</span>
-                            <span className={styles.kostenDetailRowVal}>€ {Math.round(amountRepaid).toLocaleString('nl-BE')}</span>
-                          </div>
-                        </div>
-                      )}
-                      <div className={styles.kostenNettoFooter}>
-                        <div className={styles.kostenNettoLabel}>{netto >= 0 ? t('kosten.nettoVoordeel') : t('kosten.nogBijteLegen')}</div>
-                        <div className={styles.kostenNettoValue}>
-                          € {Math.round(Math.abs(netto)).toLocaleString('nl-BE')}
-                          <span className={styles.kostenSidebarPerYear}> /jaar</span>
-                        </div>
+                      <div className={styles.kostenProgressTrack}>
+                        <div className={styles.kostenProgressFill} style={{ width: `${neighbourCostSharePercent}%` }} />
                       </div>
                     </div>
-                    <div className={styles.kostenDetailRight}>
-                      <div className={styles.kostenRittenCard}>
-                        <div className={styles.kostenDetailLabel}>{t('kosten.kmGedeeldLabel')}</div>
-                        <div className={styles.kostenRittenValue}>~{Math.round(sharedKm).toLocaleString('nl-BE')}</div>
-                        <div className={styles.kostenDetailSub}>km gedeeld per jaar in dit scenario</div>
+                    <button type="button" onClick={() => setCostDetailOpen(!costDetailOpen)} className={styles.kostenDetailToggle}>
+                      <span>{t('kosten.kostenverdelingLabel')}</span>
+                      <span className={`${styles.kostenToggleChevron} ${costDetailOpen ? styles.kostenToggleChevronOpen : ''}`}>▼</span>
+                    </button>
+                    {costDetailOpen && (
+                      <div className={styles.kostenDetailBreakdown}>
+                        <div className={styles.kostenDetailBreakdownRow}>
+                          <div>
+                            <span className={styles.kostenDetailRowLabel}>{t('kosten.vasteKostenLabel')}</span>
+                            <div className={styles.kostenDetailNote}>{t('kosten.vasteKostenNote')}</div>
+                          </div>
+                          <span className={styles.kostenDetailRowVal}>{fmtEuro(totalCost)}</span>
+                        </div>
+                        <div className={styles.kostenDetailBreakdownRow}>
+                          <div>
+                            <span className={styles.kostenDetailRowLabel}>{t('kosten.slijtageBreakdownLabel')}</span>
+                            <div className={styles.kostenDetailNote}>{t('kosten.slijtageNote')}</div>
+                          </div>
+                          <span className={styles.kostenDetailRowVal}>{fmtEuro(depAnnualEuro)}</span>
+                        </div>
+                        <div className={`${styles.kostenDetailBreakdownRow} ${styles.kostenBreakdownSep}`}>
+                          <span className={styles.kostenDetailRowLabel}>{t('kosten.opbrengstLabel')}</span>
+                          <span className={styles.kostenDetailRowVal}>{fmtEuro(amountRepaid)}</span>
+                        </div>
                       </div>
-                      <div className={styles.kostenWagensCard}>
-                        <div className={styles.kostenWagensNum}>11</div>
-                        <div className={styles.kostenDetailLabel}>{t('kosten.wagensMinderLabel')}</div>
-                        <p className={styles.kostenWagensBody}>{t('kosten.wagensMinderBody', { n: 11 })}</p>
+                    )}
+                    <div className={styles.kostenNettoFooter}>
+                      <div className={styles.kostenNettoLabel}>
+                        {netBalancePerYear >= 0 ? t('kosten.nettoVoordeel') : t('kosten.nogBijteLegen')}
+                      </div>
+                      <div className={styles.kostenNettoValue}>
+                        € {Math.round(Math.abs(netBalancePerYear)).toLocaleString('nl-BE')}
+                        <span className={styles.kostenSidebarPerYear}> /jaar</span>
                       </div>
                     </div>
                   </div>
-                )}
 
-                <div className={styles.buttonRow}>
-                  <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
-                    {t('back')}
-                  </button>
-                  <button type="button" onClick={goNext} className={`${styles.btn} ${styles.btnPrimary}`}>
-                    {t('kosten.nextCta')}
-                  </button>
+                  <div className={styles.kostenDetailRight}>
+                    <div className={styles.kostenRittenCard}>
+                      <div className={styles.kostenDetailLabel}>{t('kosten.rittenPerYearLabel')}</div>
+                      <div className={styles.kostenRittenValue}>~{estimatedTripsPerYear.toLocaleString('nl-BE')}</div>
+                      <div className={styles.kostenDetailSub}>
+                        {t('kosten.rittenPerYearSub', {
+                          km: Math.round(sharedKm).toLocaleString('nl-BE'),
+                        })}
+                      </div>
+                    </div>
+                    <div className={styles.kostenMensenCard}>
+                      <div className={styles.kostenDetailLabel}>{t('kosten.mensenHelpTitle')}</div>
+                      <div className={styles.kostenMensenNum}>
+                        ~{costScenarioPeopleDisplayed}
+                        <span className={styles.kostenMensenNumSuffix}> {t('kosten.mensenHelpSuffix')}</span>
+                      </div>
+                      <div className={styles.kostenMensenDots} aria-hidden>
+                        {Array.from({ length: 20 }).map((_, i) => (
+                          <div key={i} className={styles.kostenMensje}>
+                            <div
+                              className={cn(
+                                styles.kostenMensjeDot,
+                                i < costScenarioPeopleDisplayed ? styles.kostenMensjeDotOn : styles.kostenMensjeDotOff,
+                              )}
+                            />
+                            <div
+                              className={cn(
+                                styles.kostenMensjeTorso,
+                                i < costScenarioPeopleDisplayed ? styles.kostenMensjeTorsoOn : styles.kostenMensjeTorsoOff,
+                              )}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <p className={styles.kostenMensenFootnote}>{t('kosten.mensenHelpBody')}</p>
+                    </div>
+                    <div className={styles.kostenWagensCard}>
+                      <p className={styles.kostenWagensBody}>{t('kosten.wagensReplaceBody', { n: 11 })}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.faqPlaceholder} style={{ marginTop: 32 }}>
-                  {t('faqPlaceholder')}
-                </div>
+              )}
+
+              {!hasCosts && <p className={styles.kostenPlaceholderText}>{t('kosten.placeholder')}</p>}
+
+              <div className={styles.kostenQuarterVariance} role="note">
+                <div className={styles.kostenQuarterVarianceTitle}>{t('kosten.quarterVarianceTitle')}</div>
+                <p className={styles.kostenQuarterVarianceBody}>{t('kosten.quarterVarianceBody')}</p>
               </div>
-              <div className={styles.stickySidebar}>
-                <CostCard />
+
+              <div className={styles.buttonRow}>
+                <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
+                  {t('back')}
+                </button>
+                <button type="button" onClick={goNext} className={`${styles.btn} ${styles.btnPrimary}`}>
+                  {t('kosten.nextCta')}
+                </button>
               </div>
+              <div className={styles.marginTop32}>{faqCollapsed()}</div>
+              <p className={styles.kostenBillingDisclaimer}>{t('kosten.billingDataDisclaimer')}</p>
             </div>
           );
         })()}
 
-      {/* Step 6 — Bevestiging */}
-      {screen === STEP_BEVESTIGING && (
+      {screen === STEP_CONFIRMATION && (
         <div className={styles.page}>
-          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div className={styles.bevestigingHeader}>
             <div className={styles.bevestigingIcon}>🎉</div>
             <h1 className={styles.title}>{t('bevestiging.title')}</h1>
             <p className={styles.body}>{t('bevestiging.body')}</p>
           </div>
 
-          <div
-            style={{
-              background: 'var(--sim-surface)',
-              border: '1px solid var(--sim-border)',
-              borderRadius: 12,
-              padding: 24,
-              marginBottom: 24,
-            }}
-          >
-            <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('bevestiging.emailLabel')}</label>
-              <input
-                type="email"
-                placeholder={t('bevestiging.emailPlaceholder')}
-                className={styles.input}
-                value={bevestigingEmail}
-                onChange={(e) => setBevestigingEmail(e.target.value)}
-              />
-            </div>
-            <div className={styles.field} style={{ marginBottom: 24 }}>
-              <label className={styles.fieldLabel}>{t('bevestiging.isMemberLabel')}</label>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button
-                  type="button"
-                  onClick={() => setBevestigingIsMember('yes')}
-                  className={`${styles.btn} ${bevestigingIsMember === 'yes' ? styles.btnPrimary : styles.btnSecondary}`}
-                  style={{ flex: 1 }}
-                  aria-pressed={bevestigingIsMember === 'yes'}
-                >
-                  {t('bevestiging.isMemberYes')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBevestigingIsMember('no')}
-                  className={`${styles.btn} ${bevestigingIsMember === 'no' ? styles.btnPrimary : styles.btnSecondary}`}
-                  style={{ flex: 1 }}
-                  aria-pressed={bevestigingIsMember === 'no'}
-                >
-                  {t('bevestiging.isMemberNo')}
-                </button>
-              </div>
-            </div>
-            <button type="button" className={`${styles.btn} ${styles.btnPrimary}`} disabled={!isBevestigingValid}>
-              {t('bevestiging.submit')}
-            </button>
-          </div>
-
-          <div className={styles.stepsList}>
-            <div className={styles.fieldLabel} style={{ marginBottom: 24 }}>
-              {t('bevestiging.whatNext')}
-            </div>
-            {[
-              { n: 1, labelKey: 'bevestiging.step1Label' as const, metaKey: 'bevestiging.step1Meta' as const },
-              { n: 2, labelKey: 'bevestiging.step2Label' as const, metaKey: 'bevestiging.step2Meta' as const },
-              { n: 3, labelKey: 'bevestiging.step3Label' as const, metaKey: 'bevestiging.step3Meta' as const },
-              { n: 4, labelKey: 'bevestiging.step4Label' as const, metaKey: 'bevestiging.step4Meta' as const },
-              { n: 5, labelKey: 'bevestiging.step5Label' as const, metaKey: 'bevestiging.step5Meta' as const },
-            ].map((s, stepIndex) => (
-              <div key={s.n} className={styles.stepItem}>
-                <div className={`${styles.stepNum} ${stepIndex === 0 ? styles.stepNumActive : styles.stepNumInactive}`}>{s.n}</div>
-                <div>
-                  <div className={styles.body} style={{ fontWeight: stepIndex === 0 ? 600 : 500, marginBottom: 4 }}>
-                    {t(s.labelKey)}
+          <div className={styles.bevestigingFormCard}>
+            {!confirmationSent ? (
+              <>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel}>{t('bevestiging.emailLabel')}</label>
+                  <input
+                    type="email"
+                    placeholder={t('bevestiging.emailPlaceholder')}
+                    className={styles.input}
+                    value={confirmationEmail}
+                    onChange={(e) => setConfirmationEmail(e.target.value)}
+                    autoComplete="email"
+                  />
+                </div>
+                <div className={`${styles.field} ${styles.bevestigingFieldTight}`}>
+                  <label className={styles.fieldLabel}>{t('bevestiging.isMemberLabel')}</label>
+                  <div className={styles.bevestigingPathList} role="group" aria-label={t('bevestiging.isMemberLabel')}>
+                    {CONFIRMATION_PATH_OPTIONS.map((p) => {
+                      const selected = confirmationMemberPath === p.id;
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => setConfirmationMemberPath(p.id)}
+                          className={cn(
+                            styles.bevestigingPathBtn,
+                            selected ? styles.bevestigingPathBtnSelected : styles.bevestigingPathBtnUnselected,
+                          )}
+                          aria-pressed={selected}
+                        >
+                          <span className={cn(styles.bevestigingPathCheck, selected && styles.bevestigingPathCheckActive)} aria-hidden>
+                            {selected ? '✓' : null}
+                          </span>
+                          {t(`bevestiging.${p.labelKey}`)}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <div style={{ fontFamily: 'var(--sim-sans)', fontSize: 12, color: 'var(--sim-light)' }}>{t(s.metaKey)}</div>
+                </div>
+                <button
+                  type="button"
+                  className={`${styles.btn} ${styles.btnPrimary}`}
+                  disabled={!isConfirmationValid}
+                  onClick={() => {
+                    if (isConfirmationValid) setConfirmationSent(true);
+                  }}
+                >
+                  {t('bevestiging.submit')}
+                </button>
+              </>
+            ) : (
+              <div className={styles.bevestigingSentRow}>
+                <div className={styles.bevestigingSentIcon} aria-hidden>
+                  ✓
+                </div>
+                <div>
+                  <div className={styles.bevestigingSentTitle}>{t('bevestiging.sentTitle', { email: confirmationEmail.trim() })}</div>
+                  <div className={styles.bevestigingSentSub}>
+                    {confirmationMemberPath === 'infosessie' && t('bevestiging.sentSubInfosessie')}
+                    {confirmationMemberPath === 'lid' && t('bevestiging.sentSubLid')}
+                    {confirmationMemberPath === 'nieuw' && t('bevestiging.sentSubNieuw')}
+                  </div>
                 </div>
               </div>
-            ))}
+            )}
           </div>
 
-          <div className={styles.faqPlaceholder} style={{ marginBottom: 24 }}>
-            {t('faqPlaceholder')}
-          </div>
+          {confirmationSent && confirmationMemberPath && (
+            <div className={styles.bevestigingNextCard}>
+              <div className={styles.bevestigingNextEyebrow}>{t('bevestiging.whatNext')}</div>
+              {confirmationMemberPath === 'nieuw' && (
+                <div className={styles.bevestigingNextBlue}>
+                  <p className={styles.bevestigingNextBlueText}>
+                    <strong>{t('bevestiging.nieuwMemberHintBold')}</strong> {t('bevestiging.nieuwMemberHintRest')}
+                  </p>
+                </div>
+              )}
+              {confirmationSteps.map((s, i) => (
+                <div key={`${confirmationMemberPath}-${s.n}`} className={styles.bevestigingNextStepRow}>
+                  <div
+                    className={cn(
+                      styles.bevestigingNextStepNum,
+                      i === 0 ? styles.bevestigingNextStepNumActive : styles.bevestigingNextStepNumInactive,
+                    )}
+                  >
+                    {s.n}
+                  </div>
+                  <div className={styles.bevestigingNextStepBody}>
+                    <div
+                      className={cn(
+                        styles.bevestigingNextStepLabel,
+                        i === 0 ? styles.bevestigingNextStepLabelActive : styles.bevestigingNextStepLabelInactive,
+                      )}
+                    >
+                      {t(`bevestiging.${s.labelKey}`)}
+                    </div>
+                    <div className={styles.bevestigingNextStepMeta}>{t(`bevestiging.${s.metaKey}`)}</div>
+                    {s.cta && (
+                      <a
+                        href={t('bevestiging.infosessiePlanHref')}
+                        className={styles.bevestigingInfosessieCta}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t('bevestiging.infosessiePlanCta')}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-          <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
-            {t('back')}
-          </button>
+          {carChoice === 'newCar' && (
+            <div className={styles.bevestigingKoopCard}>
+              <div className={styles.bevestigingKoopTitle}>{t('bevestiging.koopBannerTitle')}</div>
+              <p className={styles.bevestigingKoopBody}>{t('bevestiging.koopBannerBody')}</p>
+              <a href={t('bevestiging.koopBannerHref')} className={styles.bevestigingKoopBtn} target="_blank" rel="noopener noreferrer">
+                {t('bevestiging.koopBannerCta')}
+              </a>
+            </div>
+          )}
+
+          <div className={styles.marginBottom24}>{faqCollapsed()}</div>
+
+          <div className={styles.bevestigingBackRow}>
+            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
+              {t('back')}
+            </button>
+          </div>
         </div>
       )}
     </div>
