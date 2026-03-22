@@ -15,6 +15,11 @@ export const hubSchema = z
     simDepreciationKmElectric: z.number().int().min(0).default(320_000),
     simInspectionCostPerYear: z.number().min(0).default(43),
     simMaintenanceCostPerYear: z.number().min(0).default(950),
+    simMaxPrice: z.number().int().positive().nullable().default(null),
+    simAcceptedPriceCategoryA: z.number().min(0).default(0.38),
+    simAcceptedPriceCategoryB: z.number().min(0).default(0.46),
+    simAcceptedDepreciationCostKm: z.number().min(0).default(0.32),
+    simAcceptedElectricDepreciationCostKm: z.number().min(0).default(0.33),
     createdAt: z.date().nullable().default(null),
     updatedAt: z.date().nullable().default(null),
   })
