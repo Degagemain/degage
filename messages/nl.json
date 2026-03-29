@@ -996,6 +996,13 @@
       "edit": "Bewerken",
       "searchPlaceholder": "Zoek documentatie...",
       "tryAgain": "Opnieuw proberen",
+      "embeddings": {
+        "sync": "Sync",
+        "syncing": "Sync…",
+        "syncTitle": "Genereert en werkt documentatie-embeddings bij voor zoeken.",
+        "syncError": "Embeddings genereren mislukt.",
+        "syncSuccess": "Embeddings bijgewerkt. Totaal: {total}, bijgewerkt: {updated}, overgeslagen: {skipped}, mislukt: {failed}."
+      },
       "filters": {
         "isFaq": "FAQ",
         "source": "Bron",
@@ -1474,6 +1481,34 @@
       "kosten": "Jouw kosten",
       "bevestiging": "Bevestiging"
     }
+  },
+  "chat": {
+    "nav": "Support Chat",
+    "openChat": "Support Chat openen",
+    "supportChat": "Support Chat",
+    "openChatCardTitle": "Support Chat",
+    "openChatCardDescription": "Stel vragen over het platform. Antwoorden gebruiken je documentatie waar relevant.",
+    "closeChat": "Support Chat sluiten",
+    "conversations": "Gesprekken",
+    "newConversation": "Nieuw gesprek",
+    "conversationCreatedLabel": "Aangemaakt {time}",
+    "deleteConversation": "Gesprek verwijderen",
+    "emptyConversationTitle": "Stel een vraag",
+    "emptyConversationDescription": "Je kunt elke vraag over Degage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
+    "inputPlaceholder": "Stel je vraag...",
+    "inputCharacterCount": "{current} / {max}",
+    "send": "Versturen",
+    "stop": "Stop",
+    "you": "Jij",
+    "assistant": "Assistent",
+    "assistantWorking": "Bezig met je antwoord...",
+    "searchingDocs": "Documentatie doorzoeken...",
+    "searchingDocsFor": "Documentatie doorzoeken voor: {query}",
+    "docsFound": "{count} relevante documentatie-chunks gevonden.",
+    "docsSearchError": "Opzoeken in documentatie mislukt.",
+    "signIn": "Aanmelden",
+    "openDocumentation": "Documentatie openen",
+    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
   },
   "docs": {
     "table": {

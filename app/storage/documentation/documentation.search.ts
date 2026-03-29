@@ -1,16 +1,11 @@
 import type { Documentation } from '@/domain/documentation.model';
 import type { DocumentationFilter } from '@/domain/documentation.filter';
-import { documentationAdminOnlyAudiences } from '@/domain/documentation-audience.utils';
 import { Page } from '@/domain/page.model';
 import { getPrismaClient } from '@/storage/utils';
 import { Prisma } from '@/storage/client/client';
 import { dbDocumentationToDomain } from './documentation.mappers';
 
-export type DocumentationSearchOptions = {
-  restrictToPublicAudiences: boolean;
-};
-
-export const filterToQuery = (filter: DocumentationFilter, options: DocumentationSearchOptions): Prisma.DocumentationWhereInput => {
+export const filterToQuery = (filter: DocumentationFilter): Prisma.DocumentationWhereInput => {
   const q = filter.query?.trim();
   const translationSearch: Prisma.DocumentationTranslationListRelationFilter | undefined = q
     ? {
@@ -28,11 +23,9 @@ export const filterToQuery = (filter: DocumentationFilter, options: Documentatio
       : undefined;
 
   const parts: Prisma.DocumentationWhereInput[] = [];
-  if (options.restrictToPublicAudiences) {
+  if (filter.audiences && filter.audiences.length > 0) {
     parts.push({
-      NOT: {
-        audienceRoles: { hasSome: documentationAdminOnlyAudiences },
-      },
+      audienceRoles: { hasSome: filter.audiences },
     });
   }
 
@@ -59,9 +52,9 @@ export const filterToQuery = (filter: DocumentationFilter, options: Documentatio
   return { AND: parts };
 };
 
-export const dbDocumentationSearch = async (filter: DocumentationFilter, options: DocumentationSearchOptions): Promise<Page<Documentation>> => {
+export const dbDocumentationSearch = async (filter: DocumentationFilter): Promise<Page<Documentation>> => {
   const prisma = getPrismaClient();
-  const whereClause = filterToQuery(filter, options);
+  const whereClause = filterToQuery(filter);
   const total = await prisma.documentation.count({ where: whereClause });
   const rows = await prisma.documentation.findMany({
     where: whereClause,

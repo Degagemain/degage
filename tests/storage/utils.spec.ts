@@ -16,6 +16,24 @@ vi.mock('@/storage/client/client', () => ({
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@/storage/client/client';
+import { sha256Hex } from '@/storage/utils';
+
+describe('sha256Hex', () => {
+  const documentationTranslationSource = (title: string, content: string): string => `${title.trim()}\n${content.trim()}`;
+
+  it('matches the documentation translation merge after trim', () => {
+    const a = sha256Hex(documentationTranslationSource('  Title  ', '  hello  \n'));
+    const b = sha256Hex(documentationTranslationSource('Title', 'hello'));
+    expect(a).toBe(b);
+    expect(a).toHaveLength(64);
+  });
+
+  it('changes when merged title or body differs', () => {
+    const h1 = sha256Hex(documentationTranslationSource('A', 'b'));
+    const h2 = sha256Hex(documentationTranslationSource('A', 'c'));
+    expect(h1).not.toBe(h2);
+  });
+});
 
 describe('getPrismaClient', () => {
   const originalEnv = process.env;

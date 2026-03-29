@@ -56,7 +56,10 @@ describe('API Route /api/documentation', () => {
     const request = { nextUrl: new URL('http://localhost/api/documentation?isFaq=true&take=10') } as any;
     const res = await GET(request);
     expect(res.status).toBe(200);
-    expect(searchDocumentation).toHaveBeenCalledWith(expect.any(Object), false);
+    expect(searchDocumentation).toHaveBeenCalledWith(expect.any(Object), {
+      isViewerAdmin: false,
+      isAuthenticated: true,
+    });
   });
 
   it('GET uses admin flag for search', async () => {
@@ -65,7 +68,10 @@ describe('API Route /api/documentation', () => {
     const request = { nextUrl: new URL('http://localhost/api/documentation?take=10') } as any;
     const res = await GET(request);
     expect(res.status).toBe(200);
-    expect(searchDocumentation).toHaveBeenCalledWith(expect.any(Object), true);
+    expect(searchDocumentation).toHaveBeenCalledWith(expect.any(Object), {
+      isViewerAdmin: true,
+      isAuthenticated: true,
+    });
     const json = await res.json();
     expect(json.total).toBe(1);
   });

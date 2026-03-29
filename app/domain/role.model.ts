@@ -7,7 +7,8 @@ export const Role = {
 
 export type Role = (typeof Role)[keyof typeof Role];
 
-export const roleSchema = z.enum([Role.ADMIN, Role.USER]);
+export const roleValues = [Role.ADMIN, Role.USER] as const;
+export const roleSchema = z.enum(roleValues);
 
 export type UserWithRole = {
   id: string;

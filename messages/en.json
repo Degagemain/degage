@@ -996,6 +996,13 @@
       "edit": "Edit",
       "searchPlaceholder": "Search documentation...",
       "tryAgain": "Try again",
+      "embeddings": {
+        "sync": "Sync",
+        "syncing": "Syncing…",
+        "syncTitle": "Generate and update documentation embeddings for search.",
+        "syncError": "Failed to generate embeddings.",
+        "syncSuccess": "Embedding sync complete. Total: {total}, updated: {updated}, skipped: {skipped}, failed: {failed}."
+      },
       "filters": {
         "isFaq": "FAQ",
         "source": "Source",
@@ -1474,6 +1481,34 @@
       "kosten": "Your costs",
       "bevestiging": "Confirmation"
     }
+  },
+  "chat": {
+    "nav": "Support Chat",
+    "openChat": "Open Support Chat",
+    "supportChat": "Support Chat",
+    "openChatCardTitle": "Support Chat",
+    "openChatCardDescription": "Ask questions about the platform. Answers use your documentation when relevant.",
+    "closeChat": "Close Support Chat",
+    "conversations": "Conversations",
+    "newConversation": "New conversation",
+    "conversationCreatedLabel": "Created {time}",
+    "deleteConversation": "Delete conversation",
+    "emptyConversationTitle": "Ask anything",
+    "emptyConversationDescription": "You can ask any question about Degage. Replies use your documentation when it helps.",
+    "inputPlaceholder": "Ask your question...",
+    "inputCharacterCount": "{current} / {max}",
+    "send": "Send",
+    "stop": "Stop",
+    "you": "You",
+    "assistant": "Assistant",
+    "assistantWorking": "Working on your answer...",
+    "searchingDocs": "Searching documentation...",
+    "searchingDocsFor": "Searching documentation for: {query}",
+    "docsFound": "Found {count} relevant documentation chunks.",
+    "docsSearchError": "Documentation lookup failed.",
+    "signIn": "Sign in",
+    "openDocumentation": "Open documentation",
+    "faqFallbackOpenChat": "Still need help? Open Support Chat"
   },
   "docs": {
     "table": {

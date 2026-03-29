@@ -3,13 +3,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, X } from 'lucide-react';
+import { BookOpen, Check, Database, FileText, Loader2, RefreshCw, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
 import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { Button } from '@/app/components/ui/button';
 import {
   DataTable,
   DataTableFacetedFilter,
@@ -70,6 +72,7 @@ export default function DocumentationAdminPage() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
   });
+  const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -136,6 +139,39 @@ export default function DocumentationAdminPage() {
       }));
     }
   }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, pageIndex, pageSize, sorting]);
+
+  const handleEmbeddingSync = useCallback(async () => {
+    setIsSyncingEmbeddings(true);
+    try {
+      const response = await fetch('/api/documentation/embeddings', { method: 'POST' });
+      if (!response.ok) {
+        if (response.status === 401) throw new Error('Authentication required');
+        if (response.status === 403) throw new Error('Access denied');
+        throw new Error('Embedding sync failed');
+      }
+
+      const result: {
+        totalDocumentation: number;
+        updatedDocumentation: number;
+        skippedDocumentation: number;
+        failedDocumentation: number;
+      } = await response.json();
+
+      toast.success(
+        t('embeddings.syncSuccess', {
+          total: result.totalDocumentation,
+          updated: result.updatedDocumentation,
+          skipped: result.skippedDocumentation,
+          failed: result.failedDocumentation,
+        }),
+      );
+      await fetchDocs();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('embeddings.syncError'));
+    } finally {
+      setIsSyncingEmbeddings(false);
+    }
+  }, [fetchDocs, t]);
 
   useEffect(() => {
     void fetchDocs();
@@ -223,6 +259,23 @@ export default function DocumentationAdminPage() {
 
   const filterSlot = (
     <>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="h-9 shrink-0 gap-1.5"
+        onClick={() => void handleEmbeddingSync()}
+        disabled={isSyncingEmbeddings}
+        title={t('embeddings.syncTitle')}
+        aria-busy={isSyncingEmbeddings}
+      >
+        {isSyncingEmbeddings ? (
+          <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
+        ) : (
+          <RefreshCw className="size-4 shrink-0" aria-hidden />
+        )}
+        <span className="max-w-[10ch] truncate">{isSyncingEmbeddings ? t('embeddings.syncing') : t('embeddings.sync')}</span>
+      </Button>
       <DataTableFacetedFilter
         title={t('filters.isFaq')}
         options={isFaqOptions}

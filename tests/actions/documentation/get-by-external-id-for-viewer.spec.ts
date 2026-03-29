@@ -25,12 +25,6 @@ describe('getDocumentationByExternalIdForViewer', () => {
     expect(r).toEqual({ ok: false, reason: 'forbidden' });
   });
 
-  it('returns forbidden for technical-audience doc when viewer is not admin', async () => {
-    vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(documentation({ audienceRoles: ['technical'], externalId: 'repo:x' }));
-    const r = await getDocumentationByExternalIdForViewer('repo:x', 'en', false);
-    expect(r).toEqual({ ok: false, reason: 'forbidden' });
-  });
-
   it('returns forbidden when doc mixes user and admin audience and viewer is not admin', async () => {
     vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(documentation({ audienceRoles: ['user', 'admin'], externalId: 'repo:x' }));
     const r = await getDocumentationByExternalIdForViewer('repo:x', 'en', false);

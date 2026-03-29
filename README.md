@@ -133,13 +133,16 @@ These models are automatically created when running the auth migration.
 
 Copy `.env.example` to `.env` and fill in your values. The app loads `.env` locally; `.env` is gitignored and not used in CI/CD.
 
-| Variable              | Description                                                    |
-| --------------------- | -------------------------------------------------------------- |
-| DATABASE_URL          | The database url.                                              |
-| DATABASE_URL_UNPOOLED | Direct database url, without connection pooling.               |
-| GITHUB_CLIENT_ID      | GitHub OAuth client ID (required for GitHub auth).             |
-| GITHUB_CLIENT_SECRET  | GitHub OAuth client secret (required for GitHub auth).         |
-| NEXT_PUBLIC_DEV_UI    | Optional. Set to `true` to enable extra features only for dev. |
+| Variable                     | Description                                                     |
+| ---------------------------- | --------------------------------------------------------------- |
+| DATABASE_URL                 | The database url.                                               |
+| DATABASE_URL_UNPOOLED        | Direct database url, without connection pooling.                |
+| GITHUB_CLIENT_ID             | GitHub OAuth client ID (required for GitHub auth).              |
+| GITHUB_CLIENT_SECRET         | GitHub OAuth client secret (required for GitHub auth).          |
+| GOOGLE_GENERATIVE_AI_API_KEY | API key for Gemini chat responses and documentation embeddings. |
+| ADMIN_EMAIL_DOMAINS          | Comma-separated email domains allowed for admin users.          |
+| RESEND_API_KEY               | API key for transactional emails sent by auth flows.            |
+| NEXT_PUBLIC_DEV_UI           | Optional. Set to `true` to enable extra features only for dev.  |
 
 ## Frontend
 
@@ -194,6 +197,15 @@ This log explains why packages were installed.
 | Internationalization           | next-intl                                                                                              |
 | ShadCN Calendar / Date picker  | react-day-picker, date-fns                                                                             |
 | Gemini AI integration          | @google/genai                                                                                          |
+| AI SDK chat + streaming        | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
+| AI Elements chat UI            | streamdown, use-stick-to-bottom, nanoid                                                                |
+| AI markdown plugins            | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
+| Chat canvas/state utilities    | @radix-ui/react-use-controllable-state, motion                                                         |
+| Graph/flow editor UI           | @xyflow/react                                                                                          |
+| Carousel support               | embla-carousel-react                                                                                   |
+| Rich media rendering           | media-chrome, react-jsx-parser                                                                         |
+| Syntax highlighting/runtime    | shiki, tokenlens, ansi-to-react                                                                        |
+| Rive animations                | @rive-app/react-webgl2                                                                                 |
 | Transactional email (auth)     | resend                                                                                                 |
 | TS scripts with path aliases   | tsx                                                                                                    |
 | Seed / parse docs front matter | gray-matter                                                                                            |

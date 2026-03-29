@@ -11,6 +11,7 @@ import { withContext } from '@/api/with-context';
 export const GET = withContext(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: await headers() });
   const viewerIsAdmin = session?.user ? isAdmin(session.user) : false;
+  const isAuthenticated = Boolean(session?.user);
 
   const rawParams = documentationFilterFromSearchParams(request.nextUrl.searchParams);
   const filterResult = documentationFilterSchema.safeParse(rawParams);
@@ -23,7 +24,7 @@ export const GET = withContext(async (request: NextRequest) => {
     return forbiddenResponse('Only FAQ listings are available without admin access');
   }
 
-  const result = await searchDocumentation(filter, viewerIsAdmin);
+  const result = await searchDocumentation(filter, { isViewerAdmin: viewerIsAdmin, isAuthenticated });
   return Response.json(result);
 });
 

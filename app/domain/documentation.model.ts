@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { roleValues } from './role.model';
 
 export const documentationSourceValues = ['repository', 'notion', 'manual'] as const;
 export const documentationSourceSchema = z.enum(documentationSourceValues);
@@ -8,9 +9,10 @@ export const documentationFormatValues = ['markdown', 'text'] as const;
 export const documentationFormatSchema = z.enum(documentationFormatValues);
 export type DocumentationFormat = z.infer<typeof documentationFormatSchema>;
 
-export const documentationAudienceRoleValues = ['technical', 'admin', 'user', 'public'] as const;
+export const documentationAudienceRoleValues = [...roleValues, 'public'] as const;
 export const documentationAudienceRoleSchema = z.enum(documentationAudienceRoleValues);
 export type DocumentationAudienceRole = z.infer<typeof documentationAudienceRoleSchema>;
+export const documentationAudienceRolesInputSchema = z.array(documentationAudienceRoleSchema).default([]);
 
 export const documentationTagValues = [
   'simulation_step_1',
@@ -39,7 +41,7 @@ export const documentationSchema = z
     externalId: z.string().max(500),
     isFaq: z.boolean().default(false),
     format: documentationFormatSchema,
-    audienceRoles: z.array(documentationAudienceRoleSchema).default([]),
+    audienceRoles: documentationAudienceRolesInputSchema,
     tags: z.array(documentationTagSchema).default([]),
     translations: z.array(documentationTranslationSchema).min(1),
     createdAt: z.coerce.date().nullable().default(null),
