@@ -33,6 +33,7 @@ export const dbChatMessageToDomain = (message: DbChatMessage): ChatMessage => {
     id: message.id,
     conversationId: message.conversationId,
     externalId: message.externalId,
+    externalMessageId: message.externalMessageId,
     role: message.role === 'assistant' ? 'assistant' : 'user',
     content: message.content,
     citations: parseCitations(message.citations),
@@ -44,6 +45,8 @@ export const dbChatConversationToDomain = (conversation: DbChatConversation): Ch
   return {
     id: conversation.id,
     userId: conversation.userId,
+    medium: conversation.medium,
+    emailThreadId: conversation.emailThreadId,
     title: conversation.title,
     messages: conversation.messages.map(dbChatMessageToDomain),
     createdAt: conversation.createdAt,

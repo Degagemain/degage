@@ -10,19 +10,27 @@ export type SendEmailOptions = {
   subject: string;
   text: string;
   html?: string;
+  headers?: Record<string, string>;
+  replyTo?: string | string[];
 };
 
 /**
  * Send an email via Resend. No-ops if RESEND_API_KEY is not set (e.g. local dev without Resend).
  * Do not await this in auth flows to avoid timing attacks; use void sendEmail(...).
  */
-export async function sendEmail(options: SendEmailOptions): Promise<void> {
-  if (!resend) return;
-  await resend.emails.send({
+export const getResendClient = (): Resend | null => resend;
+
+export async function sendEmail(options: SendEmailOptions): Promise<{ id: string | null }> {
+  if (!resend) return { id: null };
+  const result = await resend.emails.send({
     from,
     to: options.to,
+    replyTo: options.replyTo,
     subject: options.subject,
     text: options.text,
     html: options.html,
+    headers: options.headers,
   });
+  const id = typeof result?.data?.id === 'string' ? result.data.id : null;
+  return { id };
 }

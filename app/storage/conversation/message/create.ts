@@ -5,6 +5,7 @@ import { getPrismaClient } from '@/storage/utils';
 export const dbChatMessageCreate = async (input: {
   conversationId: string;
   externalId?: string | null;
+  externalMessageId?: string | null;
   role: ChatMessageRole;
   content: string;
   citations?: ChatCitation[];
@@ -14,6 +15,7 @@ export const dbChatMessageCreate = async (input: {
     data: {
       conversationId: input.conversationId,
       externalId: input.externalId ?? null,
+      externalMessageId: input.externalMessageId ?? null,
       role: input.role,
       content: input.content,
       citations: (input.citations ?? []) as unknown as Prisma.InputJsonValue,

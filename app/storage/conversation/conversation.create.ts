@@ -7,6 +7,8 @@ export const dbChatConversationCreate = async (input: ChatConversationCreateInpu
   const row = await prisma.chatConversation.create({
     data: {
       userId: input.userId ?? null,
+      medium: input.medium ?? 'frontend',
+      emailThreadId: input.emailThreadId ?? null,
       title: input.title ?? '',
     },
     include: { messages: { orderBy: { createdAt: 'asc' } } },

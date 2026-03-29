@@ -23,6 +23,7 @@ describe('createMessage', () => {
     expect(dbChatMessageCreate).toHaveBeenCalledWith({
       conversationId: 'b7490381-1d67-4f34-bb54-bd725adf3f8e',
       externalId: null,
+      externalMessageId: null,
       role: 'user',
       content: 'hello',
       citations: [],
