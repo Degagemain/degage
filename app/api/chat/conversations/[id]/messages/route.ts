@@ -19,6 +19,7 @@ const citationSchema = z.object({
 
 const appendSchema = z.object({
   externalId: z.string().min(1).optional(),
+  externalMessageId: z.string().min(1).optional(),
   role: z.enum(['user', 'assistant']),
   content: z.string().min(1).max(chatUserMessageMaxLength),
   citations: z.array(citationSchema).optional().default([]),
@@ -50,6 +51,7 @@ export const POST = withContext(async (request: NextRequest, context?: { params:
   await createMessage({
     conversationId,
     externalId: parsed.data.externalId ?? null,
+    externalMessageId: parsed.data.externalMessageId ?? null,
     role: parsed.data.role,
     content: parsed.data.content,
     citations: parsed.data.citations,

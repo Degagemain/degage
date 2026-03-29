@@ -438,6 +438,11 @@ enum DocumentationTag {
     simulation_step_4
 }
 
+enum ChatConversationMedium {
+    frontend
+    email
+}
+
 model Documentation {
     id            String                      @id @default(uuid())
     source        DocumentationSource
@@ -482,28 +487,34 @@ model DocumentationChunk {
 }
 
 model ChatConversation {
-    id        String        @id @default(uuid())
-    userId    String?
-    user      User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
-    title     String        @default("")
-    messages  ChatMessage[]
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @updatedAt
+    id            String                 @id @default(uuid())
+    userId        String?
+    user          User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    medium        ChatConversationMedium @default(frontend)
+    emailThreadId String?
+    title         String                 @default("")
+    messages      ChatMessage[]
+    createdAt     DateTime               @default(now())
+    updatedAt     DateTime               @updatedAt
 
     @@index([userId])
     @@index([updatedAt])
+    @@index([medium, emailThreadId])
+    @@unique([medium, emailThreadId])
 }
 
 model ChatMessage {
-    id             String           @id @default(uuid())
-    conversationId String
-    conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-    externalId     String?
-    role           String
-    content        String
-    citations      Json             @default("[]")
-    createdAt      DateTime         @default(now())
+    id                String           @id @default(uuid())
+    conversationId    String
+    conversation      ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    externalId        String?
+    externalMessageId String?
+    role              String
+    content           String
+    citations         Json             @default("[]")
+    createdAt         DateTime         @default(now())
 
     @@unique([conversationId, externalId])
+    @@unique([conversationId, externalMessageId])
     @@index([conversationId, createdAt])
 }

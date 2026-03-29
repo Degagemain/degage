@@ -10,6 +10,8 @@ import { dbChatConversationRead } from '@/storage/conversation/conversation.read
 const conversation = (overrides: Partial<Awaited<ReturnType<typeof readChatConversation>>> = {}) => ({
   id: '0c5bd3fa-876e-4b4f-a72f-3366a716874c',
   userId: 'viewer-1',
+  medium: 'frontend',
+  emailThreadId: null,
   title: 'test',
   messages: [],
   createdAt: new Date(),

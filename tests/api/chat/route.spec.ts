@@ -13,16 +13,6 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
-vi.mock('@ai-sdk/google', () => ({
-  google: vi.fn().mockReturnValue('mock-model'),
-}));
-
-vi.mock('ai', () => ({
-  convertToModelMessages: vi.fn().mockResolvedValue([]),
-  stepCountIs: vi.fn().mockReturnValue(() => false),
-  streamText: vi.fn(),
-}));
-
 vi.mock('@/actions/conversation/create', () => ({
   createChatConversation: vi.fn(),
 }));
@@ -39,14 +29,14 @@ vi.mock('@/actions/conversation/message/create', () => ({
   createMessage: vi.fn(),
 }));
 
-vi.mock('@/actions/documentation/search-rag', () => ({
-  searchDocumentationForRag: vi.fn(),
+vi.mock('@/actions/support/generate-reply', () => ({
+  generateSupportReplyStream: vi.fn(),
 }));
 
-import { streamText } from 'ai';
 import { createChatConversation } from '@/actions/conversation/create';
 import { createMessage } from '@/actions/conversation/message/create';
 import { readChatConversation } from '@/actions/conversation/read';
+import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { auth } from '@/auth';
 import { POST } from '@/api/chat/route';
 
@@ -63,16 +53,21 @@ describe('POST /api/chat', () => {
     vi.mocked(createChatConversation).mockResolvedValueOnce({
       id: '6eccebe4-069a-4292-8d89-1f40392b935d',
       userId: 'user-1',
+      medium: 'frontend',
+      emailThreadId: null,
       title: '',
       messages: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    vi.mocked(streamText).mockImplementationOnce((args: any) => {
-      void args.onFinish?.({ text: 'assistant answer' });
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async (_messages: any, options: any) => {
+      await options.onFinish?.({ text: 'assistant answer', citations: [] });
       return {
-        toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
-      } as any;
+        result: {
+          toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+        } as any,
+        getLatestCitations: () => [],
+      };
     });
 
     const request = new Request('http://localhost/api/chat', {

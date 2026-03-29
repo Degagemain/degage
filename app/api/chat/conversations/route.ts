@@ -39,6 +39,7 @@ export const POST = withContext(async (request: NextRequest) => {
   const body = (data ?? {}) as { title?: string };
   const conversation = await createChatConversation({
     userId: session.user.id,
+    medium: 'frontend',
     title: body.title?.trim() || '',
   });
 

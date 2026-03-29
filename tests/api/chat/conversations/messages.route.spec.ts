@@ -67,6 +67,8 @@ describe('POST /api/chat/conversations/[id]/messages', () => {
     vi.mocked(readChatConversation).mockResolvedValueOnce({
       id: '8d65ad66-faea-4b2f-a627-c23e7359af4c',
       userId: 'user-1',
+      medium: 'frontend',
+      emailThreadId: null,
       title: '',
       messages: [],
       createdAt: new Date(),

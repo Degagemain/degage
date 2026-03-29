@@ -142,6 +142,9 @@ Copy `.env.example` to `.env` and fill in your values. The app loads `.env` loca
 | GOOGLE_GENERATIVE_AI_API_KEY | API key for Gemini chat responses and documentation embeddings. |
 | ADMIN_EMAIL_DOMAINS          | Comma-separated email domains allowed for admin users.          |
 | RESEND_API_KEY               | API key for transactional emails sent by auth flows.            |
+| RESEND_FROM                  | Sender address used by Resend (for auth and support replies).   |
+| BOT_SUPPORT_MAIL             | Inbound support mailbox address handled by the webhook.         |
+| RESEND_WEBHOOK_SECRET        | Optional secret to verify Resend webhook signatures.            |
 | NEXT_PUBLIC_DEV_UI           | Optional. Set to `true` to enable extra features only for dev.  |
 
 ## Frontend
@@ -246,6 +249,18 @@ Use a tunnel so Notion can reach your machine. **Install the [ngrok agent](https
 | `NOTION_DOC_AUDIENCE_PROPERTY`         | Optional **multi_select** property name. Selected option names must match audience roles (`technical`, `admin`, `user`, `public`). If unset, empty selection, or no valid options after parsing: **`user`, `public`**.                                                                                                                                     |
 | `NOTION_DOC_TAGS_PROPERTY`             | Optional **multi_select** property name. Selected option names must match documentation tags (e.g. `simulation_step_1`, `simulation_step_2_approved` / `_rejected` / `_review`, `simulation_step_3`, `simulation_step_4`). If unset or empty: **no tags**. Invalid options are skipped.                                                                    |
 | `NOTION_DOC_FORMAT_PROPERTY`           | Optional select or rich_text: `markdown` or `text`. If unset, unsupported type, or value does not parse: **`markdown`**.                                                                                                                                                                                                                                   |
+
+### Resend inbound support email
+
+Configure Resend to receive support emails and forward them to this app webhook.
+
+1. Set `BOT_SUPPORT_MAIL` to your support mailbox (for example `support@yourdomain.com`).
+2. In Resend, set up inbound receiving for the domain that handles `BOT_SUPPORT_MAIL`.
+3. Create a webhook and subscribe to `email.received`.
+4. (Recommended) set `RESEND_WEBHOOK_SECRET` and keep signature verification enabled.
+5. Keep `RESEND_API_KEY` configured so the app can fetch full received content (`text`, `html`, `headers`) and send replies.
+
+The webhook responds immediately with `200`, then processes the email asynchronously (fetches content, links it to a conversation thread, generates a support answer, and sends a reply email).
 
 The page **title** is taken from the Notion **title** property when no per-locale title map is configured; if none has text, it defaults to **`Untitled`**. With `NOTION_DOC_LOCALE_TITLE_PROPERTIES`, each of `en` / `nl` / `fr` can use its own field, still falling back to the primary title when that field is empty.
 
