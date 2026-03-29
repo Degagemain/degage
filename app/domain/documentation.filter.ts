@@ -1,6 +1,11 @@
 import * as z from 'zod';
 import { DefaultTake, MaxTake, SortOrder } from './utils';
-import { documentationFormatSchema, documentationSourceSchema, documentationTagSchema } from './documentation.model';
+import {
+  documentationAudienceRoleSchema,
+  documentationFormatSchema,
+  documentationSourceSchema,
+  documentationTagSchema,
+} from './documentation.model';
 
 export enum DocumentationSortColumns {
   UPDATED_AT = 'updatedAt',
@@ -10,53 +15,37 @@ export enum DocumentationSortColumns {
   IS_FAQ = 'isFaq',
 }
 
+const optionalRepeatedParam = <T extends z.ZodTypeAny>(item: T) =>
+  z.preprocess((val) => {
+    if (val == null) return undefined;
+    if (Array.isArray(val)) return val;
+    if (typeof val === 'string') {
+      const t = val.trim();
+      return t === '' ? undefined : [t];
+    }
+    return val;
+  }, z.array(item).optional());
+
 export const documentationFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
-    isFaq: z
-      .union([z.boolean(), z.string().transform((v) => v === 'true')])
-      .nullable()
-      .default(null),
-    sources: z.preprocess((val) => {
-      if (val === undefined || val === null) return undefined;
-      if (Array.isArray(val)) return val;
-      if (typeof val === 'string')
-        return val
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-      return val;
-    }, z.array(documentationSourceSchema).optional()),
-    tags: z.preprocess((val) => {
-      if (val === undefined || val === null) return undefined;
-      if (Array.isArray(val)) return val;
-      if (typeof val === 'string')
-        return val
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean);
-      return val;
-    }, z.array(documentationTagSchema).optional()),
-    formats: z.preprocess((val) => {
-      if (val === undefined || val === null) return undefined;
-      if (Array.isArray(val)) return val;
-      if (typeof val === 'string')
-        return val
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-      return val;
-    }, z.array(documentationFormatSchema).optional()),
+    isFaq: z.boolean().nullable().default(null),
+    sources: optionalRepeatedParam(documentationSourceSchema),
+    tags: optionalRepeatedParam(documentationTagSchema),
+    formats: optionalRepeatedParam(documentationFormatSchema),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
-    sortBy: z.enum(Object.values(DocumentationSortColumns) as [string, ...string[]]).default(DocumentationSortColumns.UPDATED_AT),
-    sortOrder: z.enum(Object.values(SortOrder) as [string, ...string[]]).default(SortOrder.DESC),
+    sortBy: z.nativeEnum(DocumentationSortColumns).default(DocumentationSortColumns.UPDATED_AT),
+    sortOrder: z.nativeEnum(SortOrder).default(SortOrder.DESC),
+    audiences: optionalRepeatedParam(documentationAudienceRoleSchema).optional(),
   })
   .strict();
 
 export type DocumentationFilter = z.infer<typeof documentationFilterSchema>;
 
-const appendMulti = (out: Record<string, string | string[]>, key: 'tags' | 'sources' | 'formats', value: string) => {
+type RawDocumentationFilterParams = Record<string, string | string[] | boolean>;
+
+const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' | 'formats' | 'audiences', value: string) => {
   const existing = out[key];
   if (Array.isArray(existing)) {
     existing.push(value);
@@ -67,8 +56,8 @@ const appendMulti = (out: Record<string, string | string[]>, key: 'tags' | 'sour
   }
 };
 
-export const documentationFilterFromSearchParams = (params: URLSearchParams): Record<string, string | string[]> => {
-  const out: Record<string, string | string[]> = {};
+export const documentationFilterFromSearchParams = (params: URLSearchParams): RawDocumentationFilterParams => {
+  const out: RawDocumentationFilterParams = {};
   for (const [key, value] of params.entries()) {
     if (key === 'tags') {
       appendMulti(out, 'tags', value);
@@ -80,6 +69,17 @@ export const documentationFilterFromSearchParams = (params: URLSearchParams): Re
     }
     if (key === 'format') {
       appendMulti(out, 'formats', value);
+      continue;
+    }
+    if (key === 'audience') {
+      appendMulti(out, 'audiences', value);
+      continue;
+    }
+    if (key === 'isFaq') {
+      const t = value.trim();
+      if (t === 'true') out.isFaq = true;
+      else if (t === 'false') out.isFaq = false;
+      else if (t !== '') out.isFaq = value;
       continue;
     }
     out[key] = value;

@@ -9,6 +9,9 @@ roles:
 Central place for help content from the repository, Notion, or manual records (created via the API). The admin zone lists entries; create and
 edit UIs are not shown for now.
 
+Use the **Sync** button to refresh search embeddings after major documentation updates. Sync reports totals for updated, skipped, and failed
+records.
+
 | Property    | Description                                                                                                                                                                                                              |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | External ID | Stable identifier; repository docs use `repo:{topic}`, Notion uses `notion:{page-id}`, manual entries can use `manual:…`.                                                                                                |
@@ -19,3 +22,4 @@ edit UIs are not shown for now.
 | Tags        | Labels such as `simulation_step_1`; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (result step); `simulation_step_3`; `simulation_step_4` for targeting FAQ lists.              |
 | Title       | Per language (English, Dutch, French).                                                                                                                                                                                   |
 | Content     | Per language; Markdown is supported when format is markdown.                                                                                                                                                             |
+| Embeddings  | Admin action to regenerate AI-search embeddings for current documentation content and review sync counters (updated/skipped/failed).                                                                                     |

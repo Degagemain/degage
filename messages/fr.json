@@ -996,6 +996,13 @@
       "edit": "Modifier",
       "searchPlaceholder": "Rechercher dans la documentation...",
       "tryAgain": "Réessayer",
+      "embeddings": {
+        "sync": "Sync",
+        "syncing": "Sync…",
+        "syncTitle": "Génère et met à jour les embeddings de la documentation pour la recherche.",
+        "syncError": "Échec de la génération des embeddings.",
+        "syncSuccess": "Synchronisation terminée. Total: {total}, mis à jour: {updated}, ignorés: {skipped}, échecs: {failed}."
+      },
       "filters": {
         "isFaq": "FAQ",
         "source": "Source",
@@ -1474,6 +1481,34 @@
       "kosten": "Vos coûts",
       "bevestiging": "Confirmation"
     }
+  },
+  "chat": {
+    "nav": "Support Chat",
+    "openChat": "Ouvrir Support Chat",
+    "supportChat": "Support Chat",
+    "openChatCardTitle": "Support Chat",
+    "openChatCardDescription": "Posez des questions sur la plateforme. Les réponses s’appuient sur votre documentation lorsque c’est pertinent.",
+    "closeChat": "Fermer Support Chat",
+    "conversations": "Conversations",
+    "newConversation": "Nouvelle conversation",
+    "conversationCreatedLabel": "Créée le {time}",
+    "deleteConversation": "Supprimer la conversation",
+    "emptyConversationTitle": "Posez une question",
+    "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Degage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
+    "inputPlaceholder": "Posez votre question...",
+    "inputCharacterCount": "{current} / {max}",
+    "send": "Envoyer",
+    "stop": "Stop",
+    "you": "Vous",
+    "assistant": "Assistant",
+    "assistantWorking": "Préparation de la réponse...",
+    "searchingDocs": "Recherche dans la documentation...",
+    "searchingDocsFor": "Recherche dans la documentation pour: {query}",
+    "docsFound": "{count} extraits de documentation pertinents trouvés.",
+    "docsSearchError": "La recherche dans la documentation a échoué.",
+    "signIn": "Se connecter",
+    "openDocumentation": "Ouvrir la documentation",
+    "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat"
   },
   "docs": {
     "table": {

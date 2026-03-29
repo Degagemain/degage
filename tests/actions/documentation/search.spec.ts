@@ -15,15 +15,21 @@ describe('searchDocumentation (API role → list filter)', () => {
 
   const filter = documentationFilterSchema.parse({ isFaq: true });
 
-  it('restricts to public-safe audiences when viewer is not admin', async () => {
+  it('uses public-only audiences when anonymous', async () => {
     vi.mocked(dbDocumentationSearch).mockResolvedValueOnce({ records: [], total: 0 });
-    await searchDocumentation(filter, false);
-    expect(dbDocumentationSearch).toHaveBeenCalledWith(filter, { restrictToPublicAudiences: true });
+    await searchDocumentation(filter, { isViewerAdmin: false, isAuthenticated: false });
+    expect(dbDocumentationSearch).toHaveBeenCalledWith({ ...filter, audiences: ['public'] });
   });
 
-  it('does not restrict audiences when viewer is admin', async () => {
+  it('uses user and public for authenticated non-admin', async () => {
     vi.mocked(dbDocumentationSearch).mockResolvedValueOnce({ records: [], total: 0 });
-    await searchDocumentation(filter, true);
-    expect(dbDocumentationSearch).toHaveBeenCalledWith(filter, { restrictToPublicAudiences: false });
+    await searchDocumentation(filter, { isViewerAdmin: false, isAuthenticated: true });
+    expect(dbDocumentationSearch).toHaveBeenCalledWith({ ...filter, audiences: ['user', 'public'] });
+  });
+
+  it('uses admin, user, and public for admin viewer', async () => {
+    vi.mocked(dbDocumentationSearch).mockResolvedValueOnce({ records: [], total: 0 });
+    await searchDocumentation(filter, { isViewerAdmin: true, isAuthenticated: true });
+    expect(dbDocumentationSearch).toHaveBeenCalledWith({ ...filter, audiences: ['admin', 'user', 'public'] });
   });
 });

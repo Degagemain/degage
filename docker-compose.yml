@@ -3,7 +3,7 @@ name: neurotic-web
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     restart: unless-stopped
     ports:
       - '5432:5432'

@@ -22,7 +22,7 @@ describe('documentationFilterSchema', () => {
   it('parses tags array from repeated-style object', () => {
     const r = documentationFilterSchema.safeParse({
       tags: ['simulation_step_1', 'simulation_step_2_approved'],
-      isFaq: 'true',
+      isFaq: true,
     });
     expect(r.success).toBe(true);
     if (r.success) {

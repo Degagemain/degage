@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import { authClient } from '@/app/lib/auth';
 import { Skeleton } from './ui/skeleton';
@@ -10,6 +11,15 @@ import { UserMenu } from './user-menu';
 
 export function Header() {
   const { data: session, isPending } = authClient.useSession();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const showAuthenticatedUi = mounted && Boolean(session);
+  const showGuestUi = mounted && !session;
+  const showLoadingUi = !mounted || isPending;
 
   return (
     <header className="bg-background sticky top-0 z-50 border-b">
@@ -21,16 +31,16 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          {!session && (
+          {showGuestUi && (
             <>
               <LanguageSwitcher />
               <ThemeToggle />
             </>
           )}
 
-          {isPending ? (
+          {showLoadingUi ? (
             <Skeleton className="h-9 w-9 rounded-full" />
-          ) : session ? (
+          ) : showAuthenticatedUi && session ? (
             <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} />
           ) : null}
         </div>

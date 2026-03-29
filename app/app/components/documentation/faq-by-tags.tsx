@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, MessagesSquare } from 'lucide-react';
 
 import type { Documentation } from '@/domain/documentation.model';
 import type { DocumentationTag } from '@/domain/documentation.model';
@@ -13,6 +13,8 @@ import { Card, CardContent } from '@/app/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DocumentationMarkdown } from '@/app/components/documentation/documentation-markdown';
+import { useSupportChat } from '@/app/components/support-chat-provider';
+import { Button } from '@/app/components/ui/button';
 
 const faqCardClass = [
   'overflow-hidden border transition-shadow hover:shadow-sm',
@@ -51,6 +53,7 @@ type Props = {
   variant?: 'panel' | 'cards';
   /** Optional class names for the panel layout (simulation theme). */
   classNames?: Partial<FaqPanelClassNames>;
+  showChatFallback?: boolean;
 };
 
 function pickTranslation(doc: Documentation, locale: string) {
@@ -97,9 +100,11 @@ function panelDefaults(classNames: Partial<FaqPanelClassNames> | undefined, head
   };
 }
 
-export function FaqByTags({ tags, className, heading, headingClassName, variant = 'panel', classNames }: Props) {
+export function FaqByTags({ tags, className, heading, headingClassName, variant = 'panel', classNames, showChatFallback = true }: Props) {
   const uiLocale = useLocale();
   const tSim = useTranslations('simulationPublic');
+  const tChat = useTranslations('chat');
+  const { openChat } = useSupportChat();
   const displayHeading = heading != null && heading !== '' ? heading : tSim('faqCollapsedTitle');
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : undefined;
@@ -150,7 +155,14 @@ export function FaqByTags({ tags, className, heading, headingClassName, variant 
 
   if (variant === 'cards') {
     return (
-      <FaqByTagsCards className={className} heading={heading} headingClassName={headingClassName} state={state} contentLocale={contentLocale} />
+      <FaqByTagsCards
+        className={className}
+        heading={heading}
+        headingClassName={headingClassName}
+        state={state}
+        contentLocale={contentLocale}
+        showChatFallback={showChatFallback}
+      />
     );
   }
 
@@ -199,7 +211,17 @@ export function FaqByTags({ tags, className, heading, headingClassName, variant 
   }
 
   if (state.items.length === 0) {
-    return null;
+    if (!showChatFallback) {
+      return null;
+    }
+    return (
+      <div className={className}>
+        <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+          <MessagesSquare className="size-4 shrink-0" aria-hidden />
+          {tChat('supportChat')}
+        </Button>
+      </div>
+    );
   }
 
   const count = state.items.length;
@@ -240,6 +262,14 @@ export function FaqByTags({ tags, className, heading, headingClassName, variant 
               </Collapsible>
             );
           })}
+          {showChatFallback ? (
+            <div className="border-border border-t px-6 py-4">
+              <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+                <MessagesSquare className="size-4 shrink-0" aria-hidden />
+                {tChat('supportChat')}
+              </Button>
+            </div>
+          ) : null}
         </CollapsibleContent>
       </Collapsible>
     </div>
@@ -253,13 +283,17 @@ function FaqByTagsCards({
   headingClassName,
   state,
   contentLocale,
+  showChatFallback = true,
 }: {
   className?: string;
   heading?: string;
   headingClassName?: string;
   state: { items: Documentation[]; loading: boolean; error: string | null };
   contentLocale: string;
+  showChatFallback?: boolean;
 }) {
+  const tChat = useTranslations('chat');
+  const { openChat } = useSupportChat();
   const headingEl = heading != null && heading !== '' ? <h2 className={headingClassName}>{heading}</h2> : null;
 
   if (state.loading) {
@@ -288,7 +322,20 @@ function FaqByTagsCards({
   }
 
   if (state.items.length === 0) {
-    return null;
+    if (!showChatFallback) {
+      return null;
+    }
+    return (
+      <div className={className}>
+        {headingEl}
+        <div className={headingEl ? 'mt-3' : undefined}>
+          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+            <MessagesSquare className="size-4 shrink-0" aria-hidden />
+            {tChat('supportChat')}
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -321,6 +368,14 @@ function FaqByTagsCards({
           );
         })}
       </div>
+      {showChatFallback ? (
+        <div className="mt-3">
+          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+            <MessagesSquare className="size-4 shrink-0" aria-hidden />
+            {tChat('supportChat')}
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 }

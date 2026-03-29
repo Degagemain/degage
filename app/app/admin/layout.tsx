@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronDown, ChevronsUpDown, CircleHelp } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, CircleHelp, MessagesSquare } from 'lucide-react';
 
 import {
   ALL_PAGE_ITEMS,
@@ -40,6 +40,7 @@ import {
   SidebarTrigger,
 } from '@/app/components/ui/sidebar';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { useSupportChat } from '@/app/components/support-chat-provider';
 import { UserMenu } from '@/app/components/user-menu';
 
 function usePageTitle(t: (key: string) => string) {
@@ -57,6 +58,8 @@ function usePageTitle(t: (key: string) => string) {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const t = useTranslations('admin');
+  const tChat = useTranslations('chat');
+  const { isOpen: isChatOpen, toggleChat } = useSupportChat();
   const { isAdmin, isPending } = useIsAdmin();
   const { data: session, isPending: isSessionPending } = authClient.useSession();
   const pageTitle = usePageTitle(t);
@@ -229,6 +232,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton type="button" onClick={toggleChat} tooltip={tChat('supportChat')} aria-pressed={isChatOpen}>
+                  <MessagesSquare className="size-4 shrink-0" aria-hidden />
+                  <span>{tChat('supportChat')}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 {isSessionPending ? (
                   <div className="flex items-center gap-2 px-2 py-1.5">
