@@ -1508,6 +1508,9 @@
     "docsSearchError": "La recherche dans la documentation a échoué.",
     "signIn": "Se connecter",
     "openDocumentation": "Ouvrir la documentation",
+    "referencesMore": "... plus",
+    "referencesExpandAria": "Afficher {count} références de plus",
+    "referencesShowLess": "Afficher moins",
     "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat"
   },
   "docs": {

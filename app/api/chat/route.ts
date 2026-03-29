@@ -170,7 +170,7 @@ export const POST = withContext(async (request: NextRequest) => {
           const viewerAudienceRole = !user ? 'public' : isAdmin(user) ? Role.ADMIN : Role.USER;
           const search = await searchDocumentationForRag(query, {
             viewerAudienceRole,
-            limit: 8,
+            limit: 15,
           });
           latestCitations = search.citations;
           return search;

@@ -1508,6 +1508,9 @@
     "docsSearchError": "Documentation lookup failed.",
     "signIn": "Sign in",
     "openDocumentation": "Open documentation",
+    "referencesMore": "... more",
+    "referencesExpandAria": "Show {count} more references",
+    "referencesShowLess": "Show less",
     "faqFallbackOpenChat": "Still need help? Open Support Chat"
   },
   "docs": {

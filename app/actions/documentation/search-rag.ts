@@ -39,7 +39,7 @@ export const searchDocumentationForRag = async (
 
   const rows = await dbDocumentationChunkSearch(queryEmbedding, {
     viewerAudienceRole: options.viewerAudienceRole,
-    limit: options.limit ?? 8,
+    limit: options.limit ?? 15,
     locale,
   });
 

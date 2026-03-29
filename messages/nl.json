@@ -1508,6 +1508,9 @@
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
     "openDocumentation": "Documentatie openen",
+    "referencesMore": "... meer",
+    "referencesExpandAria": "Nog {count} referenties tonen",
+    "referencesShowLess": "Minder tonen",
     "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
   },
   "docs": {
