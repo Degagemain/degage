@@ -77,6 +77,8 @@ const mapStoredMessagesToUi = (messages: ConversationDetail['messages']): UIMess
   }));
 };
 
+const CITATIONS_PREVIEW_COUNT = 3;
+
 const stripBracketCitationMarkers = (text: string): string => {
   return text
     .replace(/\[\d+\]/g, '')
@@ -114,6 +116,76 @@ const toolSearchStatusToLine = (
   }
   return null;
 };
+
+function MessageCitations({ citations, messageId }: { citations: ChatCitation[]; messageId: string }) {
+  const t = useTranslations('chat');
+  const [expanded, setExpanded] = useState(false);
+  const hasMore = citations.length > CITATIONS_PREVIEW_COUNT;
+  const visibleCitations = !hasMore || expanded ? citations : citations.slice(0, CITATIONS_PREVIEW_COUNT);
+  const hiddenCount = citations.length - CITATIONS_PREVIEW_COUNT;
+
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2">
+      {visibleCitations.map((citation) => (
+        <InlineCitation key={`${messageId}-citation-${citation.documentationId}`}>
+          <InlineCitationCard>
+            <InlineCitationCardTrigger label={citation.title} sources={[citation.url]} />
+            <InlineCitationCardBody>
+              <InlineCitationCarousel>
+                <InlineCitationCarouselHeader>
+                  <InlineCitationCarouselPrev />
+                  <InlineCitationCarouselNext />
+                  <InlineCitationCarouselIndex />
+                </InlineCitationCarouselHeader>
+                <InlineCitationCarouselContent>
+                  <InlineCitationCarouselItem>
+                    <InlineCitationSource title={citation.title}>
+                      {/^https?:\/\//i.test(citation.url) ? (
+                        <a
+                          href={citation.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
+                        >
+                          {t('openDocumentation')}
+                        </a>
+                      ) : (
+                        <Link href={citation.url} className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline">
+                          {t('openDocumentation')}
+                        </Link>
+                      )}
+                    </InlineCitationSource>
+                  </InlineCitationCarouselItem>
+                </InlineCitationCarouselContent>
+              </InlineCitationCarousel>
+            </InlineCitationCardBody>
+          </InlineCitationCard>
+        </InlineCitation>
+      ))}
+      {hasMore && !expanded ? (
+        <button
+          type="button"
+          className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
+          aria-label={t('referencesExpandAria', { count: hiddenCount })}
+          aria-expanded={false}
+          onClick={() => setExpanded(true)}
+        >
+          {t('referencesMore')}
+        </button>
+      ) : null}
+      {hasMore && expanded ? (
+        <button
+          type="button"
+          className="text-muted-foreground hover:text-foreground text-sm underline underline-offset-2 hover:no-underline"
+          aria-expanded={true}
+          onClick={() => setExpanded(false)}
+        >
+          {t('referencesShowLess')}
+        </button>
+      ) : null}
+    </div>
+  );
+}
 
 export type SupportChatDialogProps = {
   open: boolean;
@@ -325,9 +397,11 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         ) : (
           <Card className="flex min-h-0 flex-1 flex-col border-0 shadow-none">
             <CardHeader className="shrink-0 pb-2">
-              <div className="flex items-center justify-between gap-2">
-                <CardTitle className="truncate pr-2 text-sm">{isHistoryOpen ? t('conversations') : activeConversationLabel}</CardTitle>
-                <div className="flex items-center gap-1">
+              <div className="flex min-w-0 items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="truncate text-sm">{isHistoryOpen ? t('conversations') : activeConversationLabel}</CardTitle>
+                </div>
+                <div className="flex shrink-0 items-center gap-1">
                   {session?.user ? (
                     <>
                       <Button
@@ -470,49 +544,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                             {!hasTextPart && message.role === 'assistant' && (
                               <p className="text-muted-foreground text-sm italic">{t('assistantWorking')}</p>
                             )}
-                            {citations.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-2">
-                                {citations.map((citation) => (
-                                  <InlineCitation key={`${message.id}-citation-${citation.documentationId}`}>
-                                    <InlineCitationCard>
-                                      <InlineCitationCardTrigger label={citation.title} sources={[citation.url]} />
-                                      <InlineCitationCardBody>
-                                        <InlineCitationCarousel>
-                                          <InlineCitationCarouselHeader>
-                                            <InlineCitationCarouselPrev />
-                                            <InlineCitationCarouselNext />
-                                            <InlineCitationCarouselIndex />
-                                          </InlineCitationCarouselHeader>
-                                          <InlineCitationCarouselContent>
-                                            <InlineCitationCarouselItem>
-                                              <InlineCitationSource title={citation.title}>
-                                                {/^https?:\/\//i.test(citation.url) ? (
-                                                  <a
-                                                    href={citation.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
-                                                  >
-                                                    {t('openDocumentation')}
-                                                  </a>
-                                                ) : (
-                                                  <Link
-                                                    href={citation.url}
-                                                    className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
-                                                  >
-                                                    {t('openDocumentation')}
-                                                  </Link>
-                                                )}
-                                              </InlineCitationSource>
-                                            </InlineCitationCarouselItem>
-                                          </InlineCitationCarouselContent>
-                                        </InlineCitationCarousel>
-                                      </InlineCitationCardBody>
-                                    </InlineCitationCard>
-                                  </InlineCitation>
-                                ))}
-                              </div>
-                            )}
+                            {citations.length > 0 && <MessageCitations citations={citations} messageId={message.id} />}
                           </MessageContent>
                         </Message>
                       );
