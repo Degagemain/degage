@@ -105,10 +105,14 @@ const toolSearchStatusToLine = (
     return t('searchingDocsFor', { query });
   }
   if (part.state === 'output-available') {
-    const found =
-      part.output && typeof part.output === 'object' && 'chunks' in part.output && Array.isArray(part.output.chunks)
-        ? part.output.chunks.length
-        : 0;
+    const output = part.output && typeof part.output === 'object' ? (part.output as Record<string, unknown>) : null;
+    const found = output
+      ? Array.isArray(output.fullDocuments)
+        ? output.fullDocuments.length
+        : Array.isArray(output.chunks)
+          ? output.chunks.length
+          : 0
+      : 0;
     return t('docsFound', { count: found });
   }
   if (part.state === 'output-error') {
@@ -383,11 +387,12 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
       <DialogContent
         showCloseButton={false}
         withOverlay={false}
-        className={[
-          'fixed top-auto right-4 bottom-4 left-auto z-50 flex h-[min(88vh,720px)] max-h-[min(88vh,720px)]',
-          'w-[min(100vw-2rem,520px)] max-w-none translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden border p-0 shadow-lg',
-          'sm:max-w-none',
-        ].join(' ')}
+        className={cn(
+          'fixed z-50 flex flex-col gap-0 overflow-hidden p-0 shadow-lg',
+          'inset-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 rounded-none border-0',
+          'sm:inset-auto sm:top-auto sm:right-4 sm:bottom-4 sm:left-auto',
+          'sm:h-[min(88vh,720px)] sm:max-h-[min(88vh,720px)] sm:w-[min(100vw-2rem,520px)] sm:rounded-lg sm:border',
+        )}
       >
         <DialogTitle className="sr-only">{dialogAccessibilityTitle}</DialogTitle>
         {isPending ? (
@@ -395,7 +400,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
             <Skeleton className="h-48 w-full" />
           </div>
         ) : (
-          <Card className="flex min-h-0 flex-1 flex-col border-0 shadow-none">
+          <Card className="flex min-h-0 flex-1 flex-col rounded-none border-0 shadow-none sm:rounded-xl">
             <CardHeader className="shrink-0 pb-2">
               <div className="flex min-w-0 items-center justify-between gap-2">
                 <div className="min-w-0 flex-1">

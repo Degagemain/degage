@@ -22,7 +22,10 @@ Inbound support emails are handled through Resend webhooks and stored in the sam
 4. Background processing fetches the full inbound email content with `resend.emails.receiving.get(email_id)`.
 5. A conversation is found or created with medium `email` and `emailThreadId`.
 6. Inbound message is stored with `externalMessageId` (`message_id` from webhook event).
-7. Shared support generation logic produces a plain, formal email reply as a public viewer.
+7. Shared support generation logic produces a plain, formal email reply as a public viewer. Documentation RAG searches **all** configured
+   content locales (`en`, `nl`, `fr`), because inbound email has no UI locale cookie—unlike the frontend chat, which searches the user’s current
+   content locale only. Vector hits are grouped by page; the **full translated article** for each of the top matches (up to five) is passed to
+   the model for the reply.
 8. Reply is sent with threading headers (`In-Reply-To`, `References`) when available, and the assistant message is persisted.
 
 ## Storage model changes

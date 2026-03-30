@@ -5,6 +5,7 @@ import { searchDocumentationForRag } from '@/actions/documentation/search-rag';
 import { Role, type UserWithRole } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation } from '@/domain/chat.model';
+import { type ContentLocale } from '@/i18n/locales';
 
 const SUPPORT_SYSTEM_PROMPT = [
   'You are a polite and supportive support assistant for the Degage platform only.',
@@ -16,9 +17,15 @@ const SUPPORT_SYSTEM_PROMPT = [
   'If the user insists on talking to a human, a real person, or live support, politely explain that this chat is automated.',
   'Direct them to contact info@degage.be for human assistance.',
   'Use the searchDocumentation tool to look up factual product or process details.',
+  'Tool results include fullDocuments with complete article text for the best-matching pages.',
+  'Ground answers in that full text, not only short excerpts.',
   'Do not invent citations or fake source markers.',
   'If searchDocumentation returns noResults=true, still answer helpfully: note no match, ask a clarifying question, suggest rephrasing.',
 ].join(' ');
+
+const SEARCH_DOCUMENTATION_TOOL_DESCRIPTION =
+  'Search internal documentation. Returns fullDocuments (complete articles for top matches) ' +
+  'and citations—prefer fullDocuments when answering.';
 
 const toPlainText = (value: string): string => {
   return value
@@ -83,6 +90,7 @@ type CommonSupportOptions = {
   outputFormat?: 'markdown' | 'plain';
   replyStyle?: 'chat' | 'formal_email';
   userLocale?: string | null;
+  searchLocales?: readonly ContentLocale[];
 };
 
 export const generateSupportReplyStream = async (
@@ -106,7 +114,7 @@ export const generateSupportReplyStream = async (
     stopWhen: stepCountIs(5),
     tools: {
       searchDocumentation: {
-        description: 'Search internal documentation for support answers.',
+        description: SEARCH_DOCUMENTATION_TOOL_DESCRIPTION,
         inputSchema: z.object({
           query: z.string().min(3),
         }),
@@ -114,7 +122,7 @@ export const generateSupportReplyStream = async (
           const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false);
           const search = await searchDocumentationForRag(query, {
             viewerAudienceRole,
-            limit: 15,
+            ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
           latestCitations = includeCitations ? search.citations : [];
           return search;
@@ -162,7 +170,7 @@ export const generateSupportReplyText = async (
     stopWhen: stepCountIs(5),
     tools: {
       searchDocumentation: {
-        description: 'Search internal documentation for support answers.',
+        description: SEARCH_DOCUMENTATION_TOOL_DESCRIPTION,
         inputSchema: z.object({
           query: z.string().min(3),
         }),
@@ -170,7 +178,7 @@ export const generateSupportReplyText = async (
           const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false);
           const search = await searchDocumentationForRag(query, {
             viewerAudienceRole,
-            limit: 15,
+            ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
           latestCitations = includeCitations ? search.citations : [];
           return search;

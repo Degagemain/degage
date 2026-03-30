@@ -3,7 +3,7 @@ import { createMessage } from '@/actions/conversation/message/create';
 import { readChatConversationByMediumAndThread } from '@/actions/conversation/read-by-medium-thread';
 import { generateSupportReplyText } from '@/actions/support/generate-reply';
 import { withRequestContext } from '@/context/request-context';
-import { defaultUILocale, getContentLocale } from '@/i18n/locales';
+import { contentLocales, defaultUILocale, getContentLocale } from '@/i18n/locales';
 import { getResendClient, sendEmail } from '@/integrations/resend';
 
 type ResendReceivedEvent = {
@@ -293,6 +293,7 @@ export const processInboundSupportEmail = async (event: ResendReceivedEvent): Pr
         includeCitations: false,
         outputFormat: 'plain',
         replyStyle: 'formal_email',
+        searchLocales: contentLocales,
       }),
   );
 
