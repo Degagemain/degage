@@ -18,10 +18,10 @@
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
     "db:reset": "docker compose down --volumes --remove-orphans && pnpm db:start && pnpm db:migrate && pnpm db:seed",
-    "db:migrate": "env $(cat .env | xargs) prisma migrate dev",
-    "db:seed": "env $(cat .env | xargs) prisma db seed",
+    "db:migrate": "dotenv -e .env -- prisma migrate dev",
+    "db:seed": "dotenv -e .env -- prisma db seed",
     "docs": "node scripts/validate-docs.mjs",
-    "benchmark": "env $(cat .env | xargs) pnpx tsx scripts/benchmark.ts"
+    "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
   },
   "keywords": [],
   "author": "Mathias Colpaert",
@@ -103,6 +103,7 @@
     "@types/react": "19.1.12",
     "@vitejs/plugin-react": "^5.0.2",
     "@vitest/coverage-v8": "^3.2.4",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.34.0",
     "eslint-config-next": "15.5.2",
     "eslint-config-prettier": "^10.1.8",
