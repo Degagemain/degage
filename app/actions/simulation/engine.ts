@@ -33,6 +33,7 @@ import { dbProvinceRead } from '@/storage/province/province.read';
 import { dbHubBenchmarkFindClosest } from '@/storage/hub-benchmark/hub-benchmark.read';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import type { Hub } from '@/domain/hub.model';
+import { captureEvent, captureException } from '@/integrations/posthog';
 
 type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B | SimulationResultCode.HIGHER_RATE;
 
@@ -83,7 +84,9 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     currentStep: null,
   };
   try {
-    return await tryRunSimulationEngine(input, result);
+    const simulationResult = await tryRunSimulationEngine(input, result);
+    captureEvent('simulation', simulationResult);
+    return simulationResult;
   } catch (err) {
     console.error(err);
     result.error = err instanceof Error ? err.message : String(err);
@@ -92,6 +95,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     const message = await getSimulationMessage(SimulationStepCode.ERROR_DURING_STEP, { step: stepLabel });
     addErrorMessage(result, message);
     result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+    captureException(err as Error);
     return result;
   }
 }
