@@ -184,7 +184,7 @@
         "conflict": "Cette marque est liée à d'autres enregistrements et ne peut pas être supprimée."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -234,7 +234,7 @@
         "conflict": "Ce type de carburant est lié à d'autres enregistrements et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -288,7 +288,7 @@
         "conflict": "Ce type de véhicule est lié à d'autres enregistrements et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -339,7 +339,7 @@
         "conflict": "Cette norme euro est liée à d'autres enregistrements et ne peut pas être supprimée."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -393,7 +393,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -441,7 +441,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -485,7 +485,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -533,7 +533,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -575,7 +575,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -637,7 +637,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -685,7 +685,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -759,7 +759,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -818,7 +818,7 @@
         "conflict": "Cette ville est liée à d'autres enregistrements et ne peut pas être supprimée."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -916,7 +916,7 @@
         "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Sélection",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -1504,13 +1504,10 @@
     "assistantWorking": "Préparation de la réponse...",
     "searchingDocs": "Recherche dans la documentation...",
     "searchingDocsFor": "Recherche dans la documentation pour: {query}",
-    "docsFound": "{count} extraits de documentation pertinents trouvés.",
+    "docsFound": "{count, plural, one {# source pertinente trouvée} other {# sources pertinentes trouvées}}",
     "docsSearchError": "La recherche dans la documentation a échoué.",
     "signIn": "Se connecter",
-    "openDocumentation": "Ouvrir la documentation",
-    "referencesMore": "... plus",
-    "referencesExpandAria": "Afficher {count} références de plus",
-    "referencesShowLess": "Afficher moins",
+    "sourcesUsed": "{count, plural, one {# source utilisée} other {# sources utilisées}}",
     "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat"
   },
   "docs": {

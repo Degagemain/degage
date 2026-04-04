@@ -51,7 +51,7 @@ Props are all strings so translations are passed from the page. On confirm, the 
 
 ### Bulk delete
 
-When rows are selected via checkboxes, a **"Actions (N)"** dropdown button appears in the toolbar (between the search box and the facet
+When rows are selected via checkboxes, a **"Selection (N)"** dropdown button appears in the toolbar (between the search box and the facet
 filters). It contains a "Delete selected" option that opens a `BulkDeleteDialog`.
 
 **Components:**

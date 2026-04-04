@@ -15,15 +15,12 @@ const parseCitations = (value: unknown): ChatCitation[] => {
     .map((item) => {
       if (!item || typeof item !== 'object') return null;
       const citation = item as Partial<ChatCitation>;
-      if (!citation.documentationId || !citation.externalId || !citation.title || !citation.url) {
+      const title = typeof citation.title === 'string' ? citation.title : '';
+      const url = typeof citation.url === 'string' ? citation.url : '';
+      if (!title || !url) {
         return null;
       }
-      return {
-        documentationId: citation.documentationId,
-        externalId: citation.externalId,
-        title: citation.title,
-        url: citation.url,
-      };
+      return { title, url };
     })
     .filter((item): item is ChatCitation => item !== null);
 };

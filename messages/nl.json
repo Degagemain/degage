@@ -184,7 +184,7 @@
         "conflict": "Dit automerk is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -234,7 +234,7 @@
         "conflict": "Dit brandstoftype is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -288,7 +288,7 @@
         "conflict": "Dit voertuigtype is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -339,7 +339,7 @@
         "conflict": "Deze euronorm is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -393,7 +393,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -441,7 +441,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -485,7 +485,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -533,7 +533,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -575,7 +575,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -637,7 +637,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -685,7 +685,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -759,7 +759,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -818,7 +818,7 @@
         "conflict": "Deze gemeente is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -916,7 +916,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -1504,13 +1504,10 @@
     "assistantWorking": "Bezig met je antwoord...",
     "searchingDocs": "Documentatie doorzoeken...",
     "searchingDocsFor": "Documentatie doorzoeken voor: {query}",
-    "docsFound": "{count} relevante documentatie-chunks gevonden.",
+    "docsFound": "{count, plural, one {# relevante bron gevonden} other {# relevante bronnen gevonden}}",
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
-    "openDocumentation": "Documentatie openen",
-    "referencesMore": "... meer",
-    "referencesExpandAria": "Nog {count} referenties tonen",
-    "referencesShowLess": "Minder tonen",
+    "sourcesUsed": "{count, plural, one {# bron gebruikt} other {# bronnen gebruikt}}",
     "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
   },
   "docs": {

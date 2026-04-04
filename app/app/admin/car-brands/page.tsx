@@ -2,15 +2,23 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Check, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarBrand } from '@/domain/car-brand.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
-import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
+import {
+  AdminTablePage,
+  DataTable,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableToolbar,
+  FacetedFilterOption,
+} from '@/app/components/ui/data-table';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
@@ -40,12 +48,16 @@ export default function CarBrandsPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'code', desc: false }]);
-  const [isActiveFilter, setIsActiveFilter] = useState<string[]>([]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'code', desc: false },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['isActive'],
+    });
+
+  const isActiveFilter = csv.isActive;
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     code: false,
     createdAt: false,
@@ -55,24 +67,19 @@ export default function CarBrandsPage() {
   const [itemToDelete, setItemToDelete] = useState<CarBrand | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0);
-    }, 300);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
-
-  const handleIsActiveChange = useCallback((values: string[]) => {
-    setIsActiveFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleIsActiveChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isActive', values);
+    },
+    [setCsvParam],
+  );
 
   const handleDeleteRequest = useCallback((item: CarBrand) => {
     setItemToDelete(item);
@@ -105,7 +112,7 @@ export default function CarBrandsPage() {
     try {
       const params = new URLSearchParams();
       if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]);
+      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -186,7 +193,7 @@ export default function CarBrandsPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -198,15 +205,6 @@ export default function CarBrandsPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => {
-    setPageIndex(page);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -231,57 +229,57 @@ export default function CarBrandsPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={
-            <>
-              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
-                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
-                  <Trash2 />
-                  {t('bulkActions.delete')}
-                </DropdownMenuItem>
-              </BulkActionsButton>
-              {filterSlot}
-            </>
-          }
-          columnLabels={columnLabels}
-        />
-      </div>
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            filterSlot={
+              <>
+                <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                    <Trash2 />
+                    {t('bulkActions.delete')}
+                  </DropdownMenuItem>
+                </BulkActionsButton>
+                {filterSlot}
+              </>
+            }
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-5 w-14 rounded-full" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-5 w-14 rounded-full" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
       <DeleteConfirmationDialog
         open={itemToDelete !== null}
         onOpenChange={(open) => !open && setItemToDelete(null)}
@@ -313,6 +311,6 @@ export default function CarBrandsPage() {
           statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
-    </div>
+    </>
   );
 }

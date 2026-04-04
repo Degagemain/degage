@@ -184,7 +184,7 @@
         "conflict": "This car brand is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -234,7 +234,7 @@
         "conflict": "This fuel type is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -288,7 +288,7 @@
         "conflict": "This car type is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -339,7 +339,7 @@
         "conflict": "This euro norm is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -393,7 +393,7 @@
         "conflict": "This car price estimate is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -441,7 +441,7 @@
         "conflict": "This car info is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -485,7 +485,7 @@
         "conflict": "This record is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -533,7 +533,7 @@
         "conflict": "This fiscal region is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -575,7 +575,7 @@
         "conflict": "This province is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -637,7 +637,7 @@
         "conflict": "This hub is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -685,7 +685,7 @@
         "conflict": "This hub benchmark is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -759,7 +759,7 @@
         "conflict": "This insurance benchmark is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -818,7 +818,7 @@
         "conflict": "This town is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -916,7 +916,7 @@
         "conflict": "This simulation is linked to other records and cannot be deleted."
       },
       "bulkActions": {
-        "label": "Actions",
+        "label": "Selection",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -1504,13 +1504,10 @@
     "assistantWorking": "Working on your answer...",
     "searchingDocs": "Searching documentation...",
     "searchingDocsFor": "Searching documentation for: {query}",
-    "docsFound": "Found {count} relevant documentation chunks.",
+    "docsFound": "{count, plural, one {Found # relevant source.} other {Found # relevant sources.}}",
     "docsSearchError": "Documentation lookup failed.",
     "signIn": "Sign in",
-    "openDocumentation": "Open documentation",
-    "referencesMore": "... more",
-    "referencesExpandAria": "Show {count} more references",
-    "referencesShowLess": "Show less",
+    "sourcesUsed": "{count, plural, one {# source used} other {# sources used}}",
     "faqFallbackOpenChat": "Still need help? Open Support Chat"
   },
   "docs": {

@@ -1,28 +1,14 @@
 'use client';
 
 import { capture } from '@/app/lib/posthog';
-import Link from 'next/link';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
-import { History, Plus, Trash2, X } from 'lucide-react';
+import { ChevronDownIcon, History, Plus, Trash2, X } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from '@/app/components/ai-elements/conversation';
-import {
-  InlineCitation,
-  InlineCitationCard,
-  InlineCitationCardBody,
-  InlineCitationCardTrigger,
-  InlineCitationCarousel,
-  InlineCitationCarouselContent,
-  InlineCitationCarouselHeader,
-  InlineCitationCarouselIndex,
-  InlineCitationCarouselItem,
-  InlineCitationCarouselNext,
-  InlineCitationCarouselPrev,
-  InlineCitationSource,
-} from '@/app/components/ai-elements/inline-citation';
 import { Reasoning, ReasoningContent, ReasoningTrigger } from '@/app/components/ai-elements/reasoning';
+import { Source, Sources, SourcesContent, SourcesTrigger } from '@/app/components/ai-elements/sources';
 import {
   PromptInput,
   PromptInputBody,
@@ -33,20 +19,13 @@ import {
   PromptInputTools,
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
-import { chatUserMessageMaxLength } from '@/domain/chat.model';
+import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
 import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Dialog, DialogContent, DialogTitle } from '@/app/components/ui/dialog';
 import { Skeleton } from '@/app/components/ui/skeleton';
-
-type ChatCitation = {
-  documentationId: string;
-  externalId: string;
-  title: string;
-  url: string;
-};
 
 type ConversationListItem = {
   id: string;
@@ -77,8 +56,6 @@ const mapStoredMessagesToUi = (messages: ConversationDetail['messages']): UIMess
     metadata: { citations: message.citations },
   }));
 };
-
-const CITATIONS_PREVIEW_COUNT = 3;
 
 const stripBracketCitationMarkers = (text: string): string => {
   return text
@@ -122,73 +99,23 @@ const toolSearchStatusToLine = (
   return null;
 };
 
-function MessageCitations({ citations, messageId }: { citations: ChatCitation[]; messageId: string }) {
+function MessageSources({ citations, messageId }: { citations: ChatCitation[]; messageId: string }) {
   const t = useTranslations('chat');
-  const [expanded, setExpanded] = useState(false);
-  const hasMore = citations.length > CITATIONS_PREVIEW_COUNT;
-  const visibleCitations = !hasMore || expanded ? citations : citations.slice(0, CITATIONS_PREVIEW_COUNT);
-  const hiddenCount = citations.length - CITATIONS_PREVIEW_COUNT;
-
+  if (citations.length === 0) {
+    return null;
+  }
   return (
-    <div className="mt-2 flex flex-wrap items-center gap-2">
-      {visibleCitations.map((citation) => (
-        <InlineCitation key={`${messageId}-citation-${citation.documentationId}`}>
-          <InlineCitationCard>
-            <InlineCitationCardTrigger label={citation.title} sources={[citation.url]} />
-            <InlineCitationCardBody>
-              <InlineCitationCarousel>
-                <InlineCitationCarouselHeader>
-                  <InlineCitationCarouselPrev />
-                  <InlineCitationCarouselNext />
-                  <InlineCitationCarouselIndex />
-                </InlineCitationCarouselHeader>
-                <InlineCitationCarouselContent>
-                  <InlineCitationCarouselItem>
-                    <InlineCitationSource title={citation.title}>
-                      {/^https?:\/\//i.test(citation.url) ? (
-                        <a
-                          href={citation.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
-                        >
-                          {t('openDocumentation')}
-                        </a>
-                      ) : (
-                        <Link href={citation.url} className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline">
-                          {t('openDocumentation')}
-                        </Link>
-                      )}
-                    </InlineCitationSource>
-                  </InlineCitationCarouselItem>
-                </InlineCitationCarouselContent>
-              </InlineCitationCarousel>
-            </InlineCitationCardBody>
-          </InlineCitationCard>
-        </InlineCitation>
-      ))}
-      {hasMore && !expanded ? (
-        <button
-          type="button"
-          className="text-primary text-sm font-medium underline underline-offset-2 hover:no-underline"
-          aria-label={t('referencesExpandAria', { count: hiddenCount })}
-          aria-expanded={false}
-          onClick={() => setExpanded(true)}
-        >
-          {t('referencesMore')}
-        </button>
-      ) : null}
-      {hasMore && expanded ? (
-        <button
-          type="button"
-          className="text-muted-foreground hover:text-foreground text-sm underline underline-offset-2 hover:no-underline"
-          aria-expanded={true}
-          onClick={() => setExpanded(false)}
-        >
-          {t('referencesShowLess')}
-        </button>
-      ) : null}
-    </div>
+    <Sources className="mt-2 w-full">
+      <SourcesTrigger count={citations.length}>
+        <p className="font-medium">{t('sourcesUsed', { count: citations.length })}</p>
+        <ChevronDownIcon className="h-4 w-4 shrink-0" />
+      </SourcesTrigger>
+      <SourcesContent>
+        {citations.map((citation, index) => (
+          <Source key={`${messageId}-source-${index}`} href={citation.url} title={citation.title} />
+        ))}
+      </SourcesContent>
+    </Sources>
   );
 }
 
@@ -554,7 +481,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                             {!hasTextPart && message.role === 'assistant' && (
                               <p className="text-muted-foreground text-sm italic">{t('assistantWorking')}</p>
                             )}
-                            {citations.length > 0 && <MessageCitations citations={citations} messageId={message.id} />}
+                            {citations.length > 0 && <MessageSources citations={citations} messageId={message.id} />}
                           </MessageContent>
                         </Message>
                       );

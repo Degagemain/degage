@@ -21,6 +21,7 @@ interface DataTableToolbarProps<TData> {
   columnLabels?: Record<string, string>;
   /** Slot for action buttons (shown after view options) */
   actionSlot?: React.ReactNode;
+  showSearch?: boolean;
 }
 
 export function DataTableToolbar<TData>({
@@ -32,6 +33,7 @@ export function DataTableToolbar<TData>({
   filterSlot,
   columnLabels,
   actionSlot,
+  showSearch = true,
 }: DataTableToolbarProps<TData>) {
   const t = useTranslations('dataTable.toolbar');
   const isFiltered = searchValue.length > 0;
@@ -40,21 +42,23 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
       {leadingSlot}
-      <div className="relative w-full sm:max-w-64">
-        <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-        <Input placeholder={placeholder} value={searchValue} onChange={(e) => onSearchChange(e.target.value)} className="h-9 pr-9 pl-9" />
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-1/2 right-1 h-6 w-6 -translate-y-1/2 p-0"
-            onClick={() => onSearchChange('')}
-          >
-            <X className="h-3.5 w-3.5" />
-            <span className="sr-only">{t('clearSearch')}</span>
-          </Button>
-        )}
-      </div>
+      {showSearch ? (
+        <div className="relative w-full sm:max-w-64">
+          <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+          <Input placeholder={placeholder} value={searchValue} onChange={(e) => onSearchChange(e.target.value)} className="h-9 pr-9 pl-9" />
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-1/2 right-1 h-6 w-6 -translate-y-1/2 p-0"
+              onClick={() => onSearchChange('')}
+            >
+              <X className="h-3.5 w-3.5" />
+              <span className="sr-only">{t('clearSearch')}</span>
+            </Button>
+          )}
+        </div>
+      ) : null}
       {filterSlot}
       <div className="ml-auto flex shrink-0 items-center gap-2">
         <DataTableViewOptions table={table} columnLabels={columnLabels} />

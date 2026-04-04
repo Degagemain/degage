@@ -30,7 +30,7 @@ export function DataTablePagination({
   const canNextPage = pageIndex < pageCount - 1;
 
   return (
-    <div className="flex items-center justify-between py-1">
+    <div className="flex min-h-8 items-center justify-between py-0">
       <div className="text-muted-foreground text-xs">
         {selectedCount > 0
           ? t('selected', { selected: selectedCount, total: totalItems })
@@ -39,7 +39,13 @@ export function DataTablePagination({
       <div className="flex items-center gap-3">
         <div className="hidden items-center gap-2 md:flex">
           <span className="text-muted-foreground text-xs">{t('rowsPerPage')}</span>
-          <Select value={`${pageSize}`} onValueChange={(value) => onPageSizeChange(Number(value))}>
+          <Select
+            value={`${pageSize}`}
+            onValueChange={(value) => {
+              const next = Number(value);
+              if (next !== pageSize) onPageSizeChange(next);
+            }}
+          >
             <SelectTrigger className="h-7 w-[68px] text-xs">
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>

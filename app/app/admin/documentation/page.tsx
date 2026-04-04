@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { BookOpen, Check, Database, FileText, Loader2, RefreshCw, X } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -10,9 +10,11 @@ import type { Documentation } from '@/domain/documentation.model';
 import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { Button } from '@/app/components/ui/button';
 import {
+  AdminTablePage,
   DataTable,
   DataTableFacetedFilter,
   DataTablePagination,
@@ -61,46 +63,50 @@ export default function DocumentationAdminPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'updatedAt', desc: true }]);
-  const [isFaqFilter, setIsFaqFilter] = useState<string[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<string[]>([]);
-  const [formatFilter, setFormatFilter] = useState<string[]>([]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'updatedAt', desc: true },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['isFaq', 'sources', 'formats'],
+    });
+
+  const isFaqFilter = csv.isFaq;
+  const sourceFilter = csv.sources;
+  const formatFilter = csv.formats;
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
   });
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
+  const handleIsFaqFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isFaq', values);
+    },
+    [setCsvParam],
+  );
 
-  const handleIsFaqFilterChange = useCallback((values: string[]) => {
-    setIsFaqFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleSourceFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('sources', values);
+    },
+    [setCsvParam],
+  );
 
-  const handleSourceFilterChange = useCallback((values: string[]) => {
-    setSourceFilter(values);
-    setPageIndex(0);
-  }, []);
-
-  const handleFormatFilterChange = useCallback((values: string[]) => {
-    setFormatFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleFormatFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('formats', values);
+    },
+    [setCsvParam],
+  );
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -236,7 +242,7 @@ export default function DocumentationAdminPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     manualPagination: true,
     manualSorting: true,
@@ -298,20 +304,19 @@ export default function DocumentationAdminPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
+    <AdminTablePage
+      toolbar={
         <DataTableToolbar
           table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
+          searchValue={queryInput}
+          onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
           filterSlot={filterSlot}
           columnLabels={columnLabels}
         />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
+      }
+      tableArea={
+        state.isLoading ? (
           <div className="divide-y">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-4 py-3">
@@ -321,26 +326,21 @@ export default function DocumentationAdminPage() {
               </div>
             ))}
           </div>
-        </div>
-      ) : (
-        <>
+        ) : (
           <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={Math.ceil(state.total / pageSize)}
-              totalItems={state.total}
-              selectedCount={0}
-              onPageChange={setPageIndex}
-              onPageSizeChange={(size) => {
-                setPageSize(size);
-                setPageIndex(0);
-              }}
-            />
-          </div>
-        </>
-      )}
-    </div>
+        )
+      }
+      pagination={
+        <DataTablePagination
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          pageCount={Math.ceil(state.total / pageSize)}
+          totalItems={state.total}
+          selectedCount={0}
+          onPageChange={setPageIndex}
+          onPageSizeChange={setPageSize}
+        />
+      }
+    />
   );
 }
