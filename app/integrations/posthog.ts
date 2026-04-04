@@ -1,3 +1,4 @@
+import { getRequestUserId } from '@/context/request-context';
 import { PostHog } from 'posthog-node';
 
 let posthogClient: PostHog | null = null;
@@ -18,16 +19,29 @@ export const getPostHogClient = (): PostHog => {
   return posthogClient;
 };
 
-export const captureEvent = (event: string, userId: string, properties?: Record<string, string | number | boolean | null>) => {
+/**
+ * Capture an event, if posthog is enabled.
+ * @param event The event to capture.
+ * @param properties The properties to capture.
+ */
+export const captureEvent = (
+  event: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Record<string, string | number | any>,
+) => {
   if (!isPostHogEnabled) {
     return;
   }
-  getPostHogClient().capture({ distinctId: userId, event, properties });
+  getPostHogClient().capture({ distinctId: getRequestUserId(), event, properties });
 };
 
-export const captureAnonymousEvent = (event: string, properties?: Record<string, string | number | boolean | null>) => {
+/**
+ * Capture an exception, if posthog is enabled.
+ * @param error The error to capture.
+ */
+export const captureException = (error: Error) => {
   if (!isPostHogEnabled) {
     return;
   }
-  getPostHogClient().capture({ event, properties });
+  getPostHogClient().captureException(error, getRequestUserId());
 };

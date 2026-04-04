@@ -1,3 +1,4 @@
+'use client';
 import { capture } from '@/app/lib/posthog';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
