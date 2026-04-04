@@ -6,6 +6,7 @@ import { Role, type UserWithRole } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation } from '@/domain/chat.model';
 import { type ContentLocale } from '@/i18n/locales';
+import { isPostHogEnabled } from '@/integrations/posthog';
 
 const SUPPORT_SYSTEM_PROMPT = [
   'You are a polite and supportive support assistant for the Degage platform only.',
@@ -112,6 +113,13 @@ export const generateSupportReplyStream = async (
     }),
     messages: await convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
+    experimental_telemetry: {
+      isEnabled: isPostHogEnabled,
+      functionId: 'support-chat-stream',
+      metadata: {
+        ...(options.viewer?.id ? { posthog_distinct_id: options.viewer.id } : {}),
+      },
+    },
     tools: {
       searchDocumentation: {
         description: SEARCH_DOCUMENTATION_TOOL_DESCRIPTION,
@@ -168,6 +176,13 @@ export const generateSupportReplyText = async (
       content: message.content,
     })),
     stopWhen: stepCountIs(5),
+    experimental_telemetry: {
+      isEnabled: isPostHogEnabled,
+      functionId: 'support-reply-text',
+      metadata: {
+        ...(options.viewer?.id ? { posthog_distinct_id: options.viewer.id } : {}),
+      },
+    },
     tools: {
       searchDocumentation: {
         description: SEARCH_DOCUMENTATION_TOOL_DESCRIPTION,

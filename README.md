@@ -133,19 +133,21 @@ These models are automatically created when running the auth migration.
 
 Copy `.env.example` to `.env` and fill in your values. The app loads `.env` locally; `.env` is gitignored and not used in CI/CD.
 
-| Variable                     | Description                                                     |
-| ---------------------------- | --------------------------------------------------------------- |
-| DATABASE_URL                 | The database url.                                               |
-| DATABASE_URL_UNPOOLED        | Direct database url, without connection pooling.                |
-| GITHUB_CLIENT_ID             | GitHub OAuth client ID (required for GitHub auth).              |
-| GITHUB_CLIENT_SECRET         | GitHub OAuth client secret (required for GitHub auth).          |
-| GOOGLE_GENERATIVE_AI_API_KEY | API key for Gemini chat responses and documentation embeddings. |
-| ADMIN_EMAIL_DOMAINS          | Comma-separated email domains allowed for admin users.          |
-| RESEND_API_KEY               | API key for transactional emails sent by auth flows.            |
-| RESEND_FROM                  | Sender address used by Resend (for auth and support replies).   |
-| BOT_SUPPORT_MAIL             | Inbound support mailbox address handled by the webhook.         |
-| RESEND_WEBHOOK_SECRET        | Optional secret to verify Resend webhook signatures.            |
-| NEXT_PUBLIC_DEV_UI           | Optional. Set to `true` to enable extra features only for dev.  |
+| Variable                          | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| DATABASE_URL                      | The database url.                                               |
+| DATABASE_URL_UNPOOLED             | Direct database url, without connection pooling.                |
+| GITHUB_CLIENT_ID                  | GitHub OAuth client ID (required for GitHub auth).              |
+| GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).          |
+| GOOGLE_GENERATIVE_AI_API_KEY      | API key for Gemini chat responses and documentation embeddings. |
+| ADMIN_EMAIL_DOMAINS               | Comma-separated email domains allowed for admin users.          |
+| RESEND_API_KEY                    | API key for transactional emails sent by auth flows.            |
+| RESEND_FROM                       | Sender address used by Resend (for auth and support replies).   |
+| BOT_SUPPORT_MAIL                  | Inbound support mailbox address handled by the webhook.         |
+| RESEND_WEBHOOK_SECRET             | Optional secret to verify Resend webhook signatures.            |
+| NEXT_PUBLIC_DEV_UI                | Optional. Set to `true` to enable extra features only for dev.  |
+| NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN | PostHog project API key (public; used client and server).       |
+| NEXT_PUBLIC_POSTHOG_HOST          | PostHog ingest origin (https + host).                           |
 
 ## Frontend
 
@@ -168,6 +170,22 @@ To validate URLs locally:
 ```bash
 pnpm run docs
 ```
+
+## PostHog
+
+[PostHog](https://posthog.com/) is used for product analytics (simulation funnel, support chat) and for LLM observability on support AI replies.
+
+### Client and proxy
+
+- **Initialization** — `instrumentation-client.ts` loads `posthog-js`. For Next.js App Router, initializing the browser SDK from [instrumentation](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation) (client hook) is the supported pattern from Next.js 15.3 onward.
+- **Rewrites (disabled!)** — `next.config.ts` maps `/ingest`, `/ingest/static`, and `/ingest/array` to the EU PostHog ingest and asset hosts (static and array must hit the asset host so remote config and lazy recorder scripts load correctly). If you use another region, update those destinations and `ui_host` in `instrumentation-client.ts` to match [PostHog’s docs](https://posthog.com/docs/advanced/proxy#nextjs-rewrites).
+
+### Server
+
+- **Node client** — `app/integrations/posthog.ts` uses `posthog-node` for events from API routes (e.g. simulations).
+- **LLM analytics** — `instrumentation.ts` registers OpenTelemetry with `PostHogTraceExporter` from `@posthog/ai/otel`. Support reply generation in `app/actions/support/generate-reply.ts` enables the Vercel AI SDK’s `experimental_telemetry` on both `streamText` and `generateText`, which sends `$ai_generation` events (model, latency, token usage, cost). When the viewer is authenticated, their user id is attached as `posthog_distinct_id`.
+
+Set `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` and `NEXT_PUBLIC_POSTHOG_HOST` in `.env` for local development.
 
 ## Package Log
 
@@ -214,6 +232,7 @@ This log explains why packages were installed.
 | Seed / parse docs front matter | gray-matter                                                                                            |
 | In-app Markdown rendering      | react-markdown, remark-gfm                                                                             |
 | Notion webhooks & page fetch   | @notionhq/client                                                                                       |
+| PostHog (client, server, LLM)  | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
 
 ### Notion Integration
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { capture } from '@/app/lib/posthog';
 import Link from 'next/link';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
@@ -377,9 +378,13 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
       const text = message.text.trim().slice(0, chatUserMessageMaxLength);
       if (!text) return;
       sendMessage({ text });
+      capture('support_chat_message_sent', {
+        conversation_id: activeConversationId,
+        message_length: text.length,
+      });
       setInput('');
     },
-    [sendMessage, status],
+    [sendMessage, status, activeConversationId],
   );
 
   return (

@@ -1,4 +1,4 @@
-'use client';
+import { capture } from '@/app/lib/posthog';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -448,7 +448,12 @@ export default function SimulationPage() {
   }, [screen, costScenarioIndex]);
 
   const goNext = () => {
-    if (screen === STEP_RESULT) setResultDisplayOverride(null);
+    if (screen === STEP_RESULT) {
+      setResultDisplayOverride(null);
+    }
+    capture(`step_${screen}`, {
+      result_code: simulationResult?.resultCode ?? null,
+    });
     setScreen((s) => Math.min(s + 1, STEP_CONFIRMATION));
   };
   const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATION));
@@ -1438,7 +1443,9 @@ export default function SimulationPage() {
                   className={`${styles.btn} ${styles.btnPrimary}`}
                   disabled={!isConfirmationValid}
                   onClick={() => {
-                    if (isConfirmationValid) setConfirmationSent(true);
+                    if (isConfirmationValid) {
+                      setConfirmationSent(true);
+                    }
                   }}
                 >
                   {t('bevestiging.submit')}
