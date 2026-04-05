@@ -55,3 +55,7 @@ For each simulation run, the hub of the selected town is applied. This means adm
 - Review **Sim max km**, **Sim max age**, **Sim min ecoscore for bonus**, and depreciation fields regularly, because they directly drive
   rejection and bonus scoring.
 - Fill yearly cost fields explicitly to keep km-rate outcomes stable and comparable across hubs.
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

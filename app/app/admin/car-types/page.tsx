@@ -333,6 +333,7 @@ export default function CarTypesPage() {
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
             filterSlot={filterSlot}
+            exportEndpoint="/api/car-types/export"
             columnLabels={columnLabels}
           />
         }

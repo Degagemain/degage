@@ -275,6 +275,7 @@ export default function HubsPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/hubs/export"
             columnLabels={columnLabels}
           />
         }

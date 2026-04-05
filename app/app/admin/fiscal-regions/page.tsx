@@ -246,6 +246,7 @@ export default function FiscalRegionsPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/fiscal-regions/export"
             columnLabels={columnLabels}
           />
         }

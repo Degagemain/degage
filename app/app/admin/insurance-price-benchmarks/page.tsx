@@ -240,6 +240,7 @@ export default function InsurancePriceBenchmarksPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/insurance-price-benchmarks/export"
             columnLabels={columnLabels}
           />
         }

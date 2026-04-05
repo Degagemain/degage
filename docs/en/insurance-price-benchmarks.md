@@ -14,3 +14,7 @@ Reference insurance cost data by year: maximum car price, base rate, and rate. U
 | Max car price | Maximum car price for this bracket (or no limit). |
 | Base rate     | Base rate value.                                  |
 | Rate          | Rate value.                                       |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

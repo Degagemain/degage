@@ -362,6 +362,7 @@ export default function TownsPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/towns/export"
             columnLabels={columnLabels}
           />
         }

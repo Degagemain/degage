@@ -154,6 +154,7 @@ export default function CarTaxFlatRatesPage() {
           searchValue={queryInput}
           onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
+          exportEndpoint="/api/car-tax-flat-rates/export"
           columnLabels={columnLabels}
         />
       }

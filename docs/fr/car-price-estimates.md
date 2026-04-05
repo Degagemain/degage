@@ -20,3 +20,7 @@ référence interne.
 | Min fourchette   | Minimum de la fourchette.                 |
 | Max fourchette   | Maximum de la fourchette.                 |
 | Remarques        | Notes optionnelles.                       |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

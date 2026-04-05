@@ -20,3 +20,7 @@ referentie.
 | Bereik min     | Minimum van het waardebereik.               |
 | Bereik max     | Maximum van het waardebereik.               |
 | Opmerkingen    | Optionele notities.                         |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

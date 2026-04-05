@@ -207,6 +207,7 @@ export default function CarTaxEuroNormAdjustmentsPage() {
                 </DropdownMenuItem>
               </BulkActionsButton>
             }
+            exportEndpoint="/api/car-tax-euro-norm-adjustments/export"
             columnLabels={columnLabels}
           />
         }

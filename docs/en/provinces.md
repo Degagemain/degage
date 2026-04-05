@@ -12,3 +12,7 @@ Reference list of provinces, each linked to a fiscal region. Used to group towns
 | ------------- | ------------------------------------------- |
 | Name          | Display name of the province.               |
 | Fiscal region | The fiscal region this province belongs to. |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

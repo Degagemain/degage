@@ -16,3 +16,7 @@ prijsschatingen.
 | Brandstof  | Brandstoftype dat bij dit type hoort.     |
 | Ecoscore   | Milieuscore (bv. A–E).                    |
 | Actief     | Of het type beschikbaar is voor selectie. |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

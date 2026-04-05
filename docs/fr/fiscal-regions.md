@@ -15,3 +15,7 @@ définis par région fiscale. Il n'existe actuellement qu'une région fiscale : 
 | Code      | Identifiant court unique de la région.    |
 | Nom       | Nom d'affichage de la région fiscale.     |
 | Défaut    | Si cette région est la région par défaut. |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

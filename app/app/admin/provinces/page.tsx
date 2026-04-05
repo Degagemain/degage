@@ -205,6 +205,7 @@ export default function ProvincesPage() {
                 </DropdownMenuItem>
               </BulkActionsButton>
             }
+            exportEndpoint="/api/provinces/export"
             columnLabels={columnLabels}
           />
         }

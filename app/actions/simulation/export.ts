@@ -1,12 +1,12 @@
 import { getTranslations } from 'next-intl/server';
 import { searchSimulations } from '@/actions/simulation/search';
-import { Simulation } from '@/domain/simulation.model';
-import { SimulationExportFilter } from '@/domain/simulation.filter';
+import { pageAll } from '@/actions/utils';
+import { type SimulationFilter } from '@/domain/simulation.filter';
+import { type Simulation } from '@/domain/simulation.model';
 import { type CsvColumn, DashPlaceholder, asTextOrDash, buildCsvLinesFromColumns, encodeCsvDocument, formatDateOrDash } from '@/domain/utils';
 import { getRequestLocale } from '@/context/request-context';
-import { pageAll } from '../utils';
 
-export const exportSimulations = async (filter: SimulationExportFilter): Promise<Simulation[]> => {
+export const exportSimulations = async (filter: SimulationFilter): Promise<Simulation[]> => {
   return pageAll(searchSimulations, filter);
 };
 
@@ -31,7 +31,7 @@ const buildSimulationExportColumns = async (locale: string): Promise<CsvColumn<S
   ];
 };
 
-export const exportSimulationsCsv = async (filter: SimulationExportFilter): Promise<string> => {
+export const exportSimulationsCsv = async (filter: SimulationFilter): Promise<string> => {
   const records = await exportSimulations(filter);
   const locale = getRequestLocale();
   const columns = await buildSimulationExportColumns(locale);

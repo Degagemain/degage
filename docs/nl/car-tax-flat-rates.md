@@ -14,3 +14,7 @@ verkeersbelasting.
 | Fiscale regio | De regio waarop dit tarief van toepassing is. |
 | Start         | Startdatum van de geldigheid.                 |
 | Tarief        | Vast belastingbedrag.                         |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

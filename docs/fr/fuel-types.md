@@ -16,3 +16,7 @@ prix.
 | Actif            | Si le type est disponible pour la sélection.   |
 | Prix par l/kWh   | Valeur utilisée dans les calculs.              |
 | Contribution CO₂ | Valeur utilisée dans les calculs.              |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

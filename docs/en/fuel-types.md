@@ -15,3 +15,7 @@ Reference list of fuel types (petrol, diesel, electric, etc.), used in the simul
 | Active           | Whether the fuel type is available for selection. |
 | Price per        | Price-per-unit value used in calculations.        |
 | CO2 contribution | CO2 contribution value used in calculations.      |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

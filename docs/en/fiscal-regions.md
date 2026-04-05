@@ -15,3 +15,7 @@ is currently only one fiscal region: **Vlaanderen**. The car tax calculation fol
 | Code     | Unique short identifier for the region. |
 | Name     | Display name of the fiscal region.      |
 | Default  | Whether this region is the default.     |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

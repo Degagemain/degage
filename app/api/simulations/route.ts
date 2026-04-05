@@ -3,12 +3,26 @@ import { headers } from 'next/headers';
 import { auth } from '@/auth';
 import { searchSimulations } from '@/actions/simulation/search';
 import { createSimulation } from '@/actions/simulation/create';
-import { parseSimulationFilterFromSearchParams } from '@/api/simulations/simulation-query-params';
+import { simulationFilterSchema } from '@/domain/simulation.filter';
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
-import { safeParseRequestJson } from '@/api/utils';
+import { badRequestResponseFromZod, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withContext } from '@/api/with-context';
 import { ZodError } from 'zod';
+
+const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<string, unknown> => {
+  return {
+    query: sp.get('query') ?? undefined,
+    brandIds: sp.getAll('brandId'),
+    fuelTypeIds: sp.getAll('fuelTypeId'),
+    carTypeIds: sp.getAll('carTypeId'),
+    resultCodes: sp.getAll('resultCode'),
+    skip: sp.get('skip') ?? undefined,
+    take: sp.get('take') ?? undefined,
+    sortBy: sp.get('sortBy') ?? undefined,
+    sortOrder: sp.get('sortOrder') ?? undefined,
+  };
+};
 
 export const GET = withContext(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -17,10 +31,12 @@ export const GET = withContext(async (request: NextRequest) => {
     return Response.json({ code: 'unauthorized', errors: [{ message: 'Authentication required' }] }, { status: statusCodes.UNAUTHORIZED });
   }
 
-  const { data: filter, errorResponse } = parseSimulationFilterFromSearchParams(request.nextUrl.searchParams);
-  if (errorResponse) return errorResponse;
+  const filter = simulationFilterSchema.safeParse(simulationFilterInputFromSearchParams(request.nextUrl.searchParams));
+  if (!filter.success) {
+    return badRequestResponseFromZod(filter);
+  }
 
-  const result = await searchSimulations(filter);
+  const result = await searchSimulations(filter.data);
   return Response.json(result);
 });
 

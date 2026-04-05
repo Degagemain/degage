@@ -15,3 +15,7 @@ Données de référence par hub : km propriétaire, km partagés moy/min/max. Ut
 | Km partagés moy. | Kilométrage partagé moyen (km).        |
 | Km partagés min. | Kilométrage partagé minimum (km).      |
 | Km partagés max. | Kilométrage partagé maximum (km).      |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

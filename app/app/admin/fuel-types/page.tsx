@@ -252,6 +252,7 @@ export default function FuelTypesPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/fuel-types/export"
             columnLabels={columnLabels}
           />
         }

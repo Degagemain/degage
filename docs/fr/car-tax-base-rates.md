@@ -17,3 +17,7 @@ l'étape prix de la simulation).
 | Début          | Date de début de validité.                |
 | Fin            | Date de fin de validité (le cas échéant). |
 | Tarif          | Valeur du taux.                           |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

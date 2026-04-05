@@ -23,3 +23,7 @@ résultats de simulation plus rapides et plus cohérents.
 | Écoscore      | Score environnemental.                    |
 | Norme euro    | Norme d'émission.                         |
 | Consommation  | Valeur de consommation.                   |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

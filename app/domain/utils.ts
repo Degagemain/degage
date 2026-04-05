@@ -61,6 +61,42 @@ export const formatDateOrDash = (value: Date | string | null | undefined, locale
   return includeTime ? d.toLocaleString(locale) : d.toLocaleDateString(locale);
 };
 
+export const formatExportValueByKey = (key: string, value: unknown, locale: string): string => {
+  const isDateKey = key === 'createdAt' || key === 'updatedAt' || key === 'start' || key === 'end' || key === 'firstRegisteredAt';
+
+  if (isDateKey) {
+    return formatDateOrDash(value as Date | string | null | undefined, locale, false);
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? '✓' : DashPlaceholder;
+  }
+
+  if (typeof value === 'number') {
+    return value.toLocaleString(locale);
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === 'string' ? item.trim() : String(item)))
+      .filter((item) => item.length > 0)
+      .join(', ');
+  }
+
+  if (value && typeof value === 'object') {
+    if ('name' in value && typeof value.name === 'string') {
+      return asTextOrDash(value.name);
+    }
+    return asTextOrDash(String(value));
+  }
+
+  if (typeof value === 'string') {
+    return asTextOrDash(value);
+  }
+
+  return DashPlaceholder;
+};
+
 export interface CsvColumn<Row> {
   label: string;
   format: (row: Row) => string;

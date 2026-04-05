@@ -13,3 +13,7 @@ Fixed tax amounts per fiscal region and validity period. Used together with base
 | Fiscal region | The region this rate applies to. |
 | Start         | Start date of validity.          |
 | Rate          | Flat tax amount.                 |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

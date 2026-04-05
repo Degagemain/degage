@@ -248,6 +248,7 @@ export default function EuroNormsPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/euro-norms/export"
             columnLabels={columnLabels}
           />
         }

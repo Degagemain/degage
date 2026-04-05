@@ -15,3 +15,7 @@ Benchmarkgegevens per hub: eigenaar km, gedeeld gem./min/max km. Gebruikt voor r
 | Gedeeld gem. km | Gemiddelde gedeelde kilometerstand (km).        |
 | Gedeeld min km  | Minimale gedeelde kilometerstand (km).          |
 | Gedeeld max km  | Maximale gedeelde kilometerstand (km).          |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

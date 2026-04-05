@@ -17,3 +17,7 @@ verkeersbelasting (bv. in de simulatiestap prijs).
 | Start         | Startdatum van de geldigheid.                        |
 | Einde         | Einddatum van de geldigheid (indien van toepassing). |
 | Tarief        | Tariefwaarde.                                        |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

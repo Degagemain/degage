@@ -15,3 +15,7 @@ dans le calcul de la taxe véhicule.
 | Groupe euro norme | Groupe d'émission (ex. Euro 6).                    |
 | Ajustement défaut | Facteur d'ajustement pour le carburant par défaut. |
 | Ajustement diesel | Facteur d'ajustement pour le diesel.               |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

@@ -211,6 +211,7 @@ export default function SystemParametersPage() {
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
             filterSlot={filterSlot}
+            exportEndpoint="/api/system-parameters/export"
             columnLabels={columnLabels}
           />
         }

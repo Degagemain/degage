@@ -15,3 +15,7 @@ Reference list of vehicle types (e.g. sedan, SUV), linked to a brand and fuel ty
 | Fuel type | Fuel type associated with this type.         |
 | Ecoscore  | Environmental score (e.g. A–E).              |
 | Active    | Whether the type is available for selection. |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

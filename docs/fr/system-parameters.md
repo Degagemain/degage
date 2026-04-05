@@ -17,3 +17,7 @@ catégorie, type et nom sont fixes.
 | Nom       | Nom d'affichage (traduisible, lecture seule).               |
 | Type      | Comment la valeur est stockée : nombre, plage ou euronorme. |
 | Valeur    | La ou les valeur(s) éditables selon le type.                |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

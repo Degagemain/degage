@@ -16,3 +16,7 @@ infos et les estimations de prix.
 | Carburant | Type de carburant associé à ce type.         |
 | Écoscore  | Score environnemental (ex. A–E).             |
 | Actif     | Si le type est disponible pour la sélection. |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

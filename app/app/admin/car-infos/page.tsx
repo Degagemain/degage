@@ -213,6 +213,7 @@ export default function CarInfosPage() {
                 </DropdownMenuItem>
               </BulkActionsButton>
             }
+            exportEndpoint="/api/car-infos/export"
             columnLabels={columnLabels}
           />
         }

@@ -312,6 +312,7 @@ export default function DocumentationAdminPage() {
           onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
           filterSlot={filterSlot}
+          exportEndpoint="/api/documentation/export"
           columnLabels={columnLabels}
         />
       }

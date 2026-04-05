@@ -159,6 +159,7 @@ export default function CarTaxBaseRatesPage() {
           searchValue={queryInput}
           onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
+          exportEndpoint="/api/car-tax-base-rates/export"
           columnLabels={columnLabels}
         />
       }

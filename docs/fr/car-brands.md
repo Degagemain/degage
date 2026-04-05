@@ -14,3 +14,7 @@ estimations de prix.
 | Code      | Identifiant court unique de la marque.         |
 | Nom       | Nom d'affichage de la marque.                  |
 | Actif     | Si la marque est disponible pour la sélection. |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

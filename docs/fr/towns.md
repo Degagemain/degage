@@ -18,3 +18,7 @@ filtrage géographique.
 | Hub            | Hub auquel la commune est assignée.        |
 | Forte demande  | Si la commune est marquée forte demande.   |
 | Membres actifs | Si la commune a des membres actifs.        |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

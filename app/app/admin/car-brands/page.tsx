@@ -248,6 +248,7 @@ export default function CarBrandsPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/car-brands/export"
             columnLabels={columnLabels}
           />
         }

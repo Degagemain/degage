@@ -263,6 +263,7 @@ export default function HubBenchmarksPage() {
                 {filterSlot}
               </>
             }
+            exportEndpoint="/api/hub-benchmarks/export"
             columnLabels={columnLabels}
           />
         }

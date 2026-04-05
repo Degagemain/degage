@@ -211,6 +211,7 @@ export default function CarPriceEstimatesPage() {
                 </DropdownMenuItem>
               </BulkActionsButton>
             }
+            exportEndpoint="/api/car-price-estimates/export"
             columnLabels={columnLabels}
           />
         }

@@ -18,3 +18,7 @@ filtering.
 | Hub                | Hub the town is assigned to.               |
 | High demand        | Whether the town is marked as high demand. |
 | Has active members | Whether the town has active members.       |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.
