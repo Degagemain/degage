@@ -93,7 +93,7 @@ describe('API Route - GET /api/users', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
     });
 
     it('returns 403 when user has no role', async () => {

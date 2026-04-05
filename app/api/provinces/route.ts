@@ -1,11 +1,11 @@
 import { type NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 import { auth } from '@/auth';
-import { isAdmin } from '@/domain/role.utils';
 import { searchProvinces } from '@/actions/province/search';
 import { createProvince } from '@/actions/province/create';
 import { provinceFilterSchema } from '@/domain/province.filter';
-import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
+import { badRequestResponseFromZod, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -25,15 +25,8 @@ export const GET = withContext(async (request: NextRequest) => {
 });
 
 export const POST = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session?.user) {
-    return unauthorizedResponse();
-  }
-
-  if (!isAdmin(session.user)) {
-    return forbiddenResponse('Admin access required');
-  }
+  const denied = await errorResponseIfNotAdmin();
+  if (denied) return denied;
 
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;

@@ -179,7 +179,7 @@ describe('API Route - PUT /api/fuel-types/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(updateFuelType).not.toHaveBeenCalled();
     });
 
@@ -245,7 +245,7 @@ describe('API Route - DELETE /api/fuel-types/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(deleteFuelType).not.toHaveBeenCalled();
     });
 
