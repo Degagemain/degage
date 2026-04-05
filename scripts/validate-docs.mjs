@@ -15,6 +15,7 @@ const URL_REGEX = /(https?:\/\/[^\s\)]+|git@[^\s\)]+|https?:\/\/[^\s\)]+)/g;
 const SKIP_PATTERNS = [
   /^git@/, // Skip SSH git URLs
   /\.git$/, // Skip .git URLs (they're usually not directly accessible)
+  /^https:\/\/mcp(-eu)?\.posthog\.com\/mcp$/, // MCP endpoint; HEAD without auth returns 401
 ];
 
 function extractUrls(content) {
@@ -23,8 +24,8 @@ function extractUrls(content) {
 
   for (const match of matches) {
     let url = match[0];
-    // Remove trailing punctuation that might be part of markdown
-    url = url.replace(/[.,;:!?\)]+$/, '');
+    // Remove trailing punctuation that might be part of markdown or JSON
+    url = url.replace(/[.,;:!?\)"'`]+$/, '');
 
     // Skip if matches skip patterns
     if (SKIP_PATTERNS.some((pattern) => pattern.test(url))) {

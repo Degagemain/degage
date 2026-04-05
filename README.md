@@ -17,6 +17,37 @@ Check the env file and to start the dev server run:
 pnpm dev
 ```
 
+## Cursor MCP
+
+Optional [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers for [Cursor](https://cursor.com/) live in **`.cursor/mcp.json`** at the repo root (project scope). That file is **gitignored** (see `.cursor/.gitignore`) so API keys and tokens are not committed.
+
+| Server      | Role                                 | Setup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Resend**  | Email send/manage via the agent      | Runs locally with `npx`; set `RESEND_API_KEY` in the server `env`. See [Resend MCP](https://resend.com/docs/mcp-server).                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **PostHog** | Query analytics, flags, errors, etc. | MCP host must match your PostHog region: EU `https://mcp-eu.posthog.com/mcp`, US `https://mcp.posthog.com/mcp`. **Recommended:** create a personal API key with the **MCP Server** preset ([EU](https://eu.posthog.com/settings/user-api-keys?preset=mcp_server) / [US](https://app.posthog.com/settings/user-api-keys?preset=mcp_server)) and set `headers.Authorization` to `Bearer phx_...`. **Alternative:** omit `headers` and sign in when the agent first uses the server (OAuth). See [PostHog MCP for Cursor](https://posthog.com/docs/model-context-protocol/cursor). |
+
+Example **`.cursor/mcp.json`** (replace placeholder values; do not commit real secrets):
+
+```json
+{
+  "mcpServers": {
+    "resend": {
+      "command": "npx",
+      "args": ["-y", "resend-mcp"],
+      "env": {
+        "RESEND_API_KEY": "your_resend_api_key"
+      }
+    },
+    "posthog": {
+      "url": "https://mcp-eu.posthog.com/mcp",
+      "headers": {
+        "Authorization": "Bearer your_posthog_personal_api_key"
+      }
+    }
+  }
+}
+```
+
 # Technologies
 
 ## Next.js
@@ -270,7 +301,24 @@ Use a tunnel so Notion can reach your machine. **Install the [ngrok agent](https
 | `NOTION_DOC_TAGS_PROPERTY`             | Optional **multi_select** property name. Selected option names must match documentation tags (e.g. `simulation_step_1`, `simulation_step_2_approved` / `_rejected` / `_review`, `simulation_step_3`, `simulation_step_4`). If unset or empty: **no tags**. Invalid options are skipped.                                                                    |
 | `NOTION_DOC_FORMAT_PROPERTY`           | Optional select or rich_text: `markdown` or `text`. If unset, unsupported type, or value does not parse: **`markdown`**.                                                                                                                                                                                                                                   |
 
-### Resend inbound support email
+The page **title** is taken from the Notion **title** property when no per-locale title map is configured; if none has text, it defaults to **`Untitled`**. With `NOTION_DOC_LOCALE_TITLE_PROPERTIES`, each of `en` / `nl` / `fr` can use its own field, still falling back to the primary title when that field is empty.
+
+### Resend
+
+[Resend](https://resend.com) is used for **outbound** transactional auth email and **inbound** support mail handled by this app’s webhook.
+
+#### Outbound (transactional)
+
+Auth flows send mail using **published** templates. In the dashboard, each row below is implemented as three aliases with a locale suffix (`-en`, `-nl`, `-fr`); the app picks the variant from the user’s saved locale (`TemplatesEnum` / `getTemplate` in `app/integrations/resend.ts`).
+
+| Template (base alias)  | Purpose                        |
+| ---------------------- | ------------------------------ |
+| `verification-email`   | Better Auth email verification |
+| `reset-password-email` | Better Auth password reset     |
+
+Variables and setup: [docs/en/authentication.md](docs/en/authentication.md).
+
+#### Inbound (support)
 
 Configure Resend to receive support emails and forward them to this app webhook.
 
@@ -281,8 +329,6 @@ Configure Resend to receive support emails and forward them to this app webhook.
 5. Keep `RESEND_API_KEY` configured so the app can fetch full received content (`text`, `html`, `headers`) and send replies.
 
 The webhook responds immediately with `200`, then processes the email asynchronously (fetches content, links it to a conversation thread, generates a support answer, and sends a reply email).
-
-The page **title** is taken from the Notion **title** property when no per-locale title map is configured; if none has text, it defaults to **`Untitled`**. With `NOTION_DOC_LOCALE_TITLE_PROPERTIES`, each of `en` / `nl` / `fr` can use its own field, still falling back to the primary title when that field is empty.
 
 ## Known Issues
 
