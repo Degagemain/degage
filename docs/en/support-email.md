@@ -10,6 +10,7 @@ Inbound support emails are handled through Resend webhooks and stored in the sam
 ## Environment variables
 
 - `BOT_SUPPORT_MAIL`: mailbox address accepted by the support webhook.
+- `SUPPORT_REPLY_TO_EMAIL`: address the AI support assistant should tell users to contact for human help (RAG and chat/email prompts).
 - `RESEND_API_KEY`: required to fetch inbound email content and send support replies.
 - `RESEND_FROM`: sender used for outbound support replies.
 - `RESEND_WEBHOOK_SECRET`: optional webhook signature secret (`whsec_...`).

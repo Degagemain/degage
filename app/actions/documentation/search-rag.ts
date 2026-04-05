@@ -1,5 +1,6 @@
 import type { DocumentationAudienceRole } from '@/domain/documentation.model';
 import { getRequestContentLocale } from '@/context/request-context';
+import { getSupportReplyToEmail } from '@/actions/utils';
 import { type ContentLocale } from '@/i18n/locales';
 import { generateEmbedding } from '@/integrations/gemini';
 import { dbDocumentationChunkSearch } from '@/storage/documentation-chunk/documentation-chunk.search';
@@ -120,7 +121,7 @@ export const searchDocumentationForRag = async (
     noResultsGuidance: noResults
       ? [
           'Retrieval found similar chunks but full documentation text could not be loaded.',
-          'Respond helpfully and suggest contacting info@degage.be if needed.',
+          `Respond helpfully and suggest contacting ${getSupportReplyToEmail()} if needed.`,
         ].join(' ')
       : null,
   };
