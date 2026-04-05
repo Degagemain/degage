@@ -4,7 +4,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin } from 'better-auth/plugins';
 import { getPrismaClient } from './storage/utils';
 import { dbUserGetLocale } from './storage/user/user.read';
-import { sendEmail } from './integrations/resend';
+import { TemplatesEnum, sendTemplatedEmail } from './integrations/resend';
 
 const prisma = getPrismaClient();
 
@@ -22,10 +22,12 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     sendResetPassword: async ({ user, url }, _request) => {
-      await sendEmail({
+      const locale = await dbUserGetLocale(user.id);
+      await sendTemplatedEmail({
         to: user.email,
-        subject: 'Reset your password',
-        text: `Click the link to reset your password: ${url}`,
+        template: TemplatesEnum.ResetPasswordEmail,
+        locale,
+        variables: { PASSWORD_RESET_URL: url },
       });
     },
   },
@@ -34,10 +36,12 @@ export const auth = betterAuth({
     sendOnSignIn: true,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }, _request) => {
-      await sendEmail({
+      const locale = await dbUserGetLocale(user.id);
+      await sendTemplatedEmail({
         to: user.email,
-        subject: 'Verify your email address',
-        text: `Click the link to verify your email: ${url}`,
+        template: TemplatesEnum.VerificationEmail,
+        locale,
+        variables: { VERIFICATION_URL: url },
       });
     },
   },

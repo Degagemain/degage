@@ -22,10 +22,42 @@ Authentication is implemented using [better-auth](https://www.better-auth.com/) 
 Verification and password-reset emails are sent via [Resend](https://resend.com). Configure `RESEND_API_KEY` (and optionally `RESEND_FROM` for a
 custom sender).
 
+### Email verification templates (Resend)
+
+Verification uses **published** Resend templates so copy and layout can be edited in the [Resend dashboard](https://resend.com/templates)
+without deploying code.
+
+The app picks the template from the user’s saved **locale** (`en`, `nl`, `fr`):
+
+| Resend alias            | When used                                    |
+| ----------------------- | -------------------------------------------- |
+| `verification-email-en` | User locale is `en`                          |
+| `verification-email-nl` | User locale is `nl` or unsupported / missing |
+| `verification-email-fr` | User locale is `fr`                          |
+
+Each template must expose the string variable **`VERIFICATION_URL`** (the Better Auth verification link). No other variables are sent.
+
+For a new Resend workspace, create and publish three templates with those aliases and the same variable name, or duplicate an existing template
+per language.
+
+Resend reserves some variable names (e.g. `EMAIL`, `FIRST_NAME`); do not use those for custom placeholders.
+
+### Password reset templates (Resend)
+
+Password reset uses the same locale rules as verification. Published aliases:
+
+| Resend alias              | When used                                    |
+| ------------------------- | -------------------------------------------- |
+| `reset-password-email-en` | User locale is `en`                          |
+| `reset-password-email-nl` | User locale is `nl` or unsupported / missing |
+| `reset-password-email-fr` | User locale is `fr`                          |
+
+Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
+
 - **Email verification**: Sent on sign-up (`sendOnSignUp`) and on sign-in when the user is not yet verified (`sendOnSignIn`). Login with
   email/password requires a verified email (`requireEmailVerification`). After the user clicks the verification link, they are signed in
   automatically (`autoSignInAfterVerification`).
-- **Password reset**: Triggered from the forgot-password flow; the user receives a link to set a new password.
+- **Password reset**: Triggered from the forgot-password flow; the user receives a localized templated email with a link to set a new password.
 
 ## Plugins
 
