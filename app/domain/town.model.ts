@@ -12,8 +12,8 @@ export const townSchema = z
     hub: idNameSchema,
     highDemand: z.boolean().default(false),
     hasActiveMembers: z.boolean().default(false),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

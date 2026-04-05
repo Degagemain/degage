@@ -10,8 +10,8 @@ export const hubBenchmarkSchema = z
     sharedMinKm: z.number().int().min(0).default(0),
     sharedMaxKm: z.number().int().min(0).default(0),
     sharedAvgKm: z.number().int().min(0).default(0),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
     hub: idNameSchema.optional(),
   })
   .strict();

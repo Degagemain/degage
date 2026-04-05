@@ -8,12 +8,12 @@ import * as z from 'zod';
 
 import { FuelType } from '@/domain/fuel-type.model';
 import { ContentLocale, contentLocales, defaultContentLocale } from '@/i18n/locales';
-import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/app/components/ui/field';
-import { Input } from '@/app/components/ui/input';
-import { NumberFieldControl } from './fields/number-field-control';
-import { LocaleTabsControl } from './fields/locale-tabs-control';
-import { SwitchFieldControl } from './fields/switch-field-control';
-import { TextFieldControl } from './fields/text-field-control';
+import { FieldGroup } from '@/app/components/ui/field';
+import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
+import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
+import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
+import { AdminTranslatedStringField } from '@/app/components/form/admin-translated-string-field';
+import { emptyContentLocaleRecord } from '@/app/components/form/empty-content-locale-record';
 
 export const FUEL_TYPE_FORM_ID = 'fuel-type-editor-form';
 
@@ -32,14 +32,8 @@ interface FuelTypeFormValues {
   translations: Record<ContentLocale, string>;
 }
 
-const emptyTranslations = (): Record<ContentLocale, string> => ({
-  en: '',
-  nl: '',
-  fr: '',
-});
-
 const getInitialState = (fuelType?: FuelType): FuelTypeFormValues => {
-  const translations = emptyTranslations();
+  const translations = emptyContentLocaleRecord();
 
   if (fuelType?.translations) {
     for (const translation of fuelType.translations) {
@@ -100,9 +94,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
     setActiveLocale(defaultContentLocale);
   }, [form, initialState, initialStateKey]);
 
-  const localeLabel = useMemo(() => activeLocale.toUpperCase(), [activeLocale]);
   const translationErrors = form.formState.errors.translations;
-  const localesWithErrors = useMemo(() => contentLocales.filter((locale) => Boolean(translationErrors?.[locale])), [translationErrors]);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload: FuelType = {
@@ -130,7 +122,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
           name="code"
           control={form.control}
           render={({ field, fieldState }) => (
-            <TextFieldControl
+            <AdminTextFieldControl
               label={t('columns.code')}
               value={field.value}
               onChange={field.onChange}
@@ -146,7 +138,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
           name="isActive"
           control={form.control}
           render={({ field }) => (
-            <SwitchFieldControl
+            <AdminSwitchFieldControl
               id="fuel-type-is-active"
               label={t('columns.active')}
               checked={field.value}
@@ -161,7 +153,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
           name="pricePer"
           control={form.control}
           render={({ field, fieldState }) => (
-            <NumberFieldControl
+            <AdminNumberFieldControl
               label={t('columns.pricePer')}
               value={field.value}
               onChange={field.onChange}
@@ -178,7 +170,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
           name="co2Contribution"
           control={form.control}
           render={({ field, fieldState }) => (
-            <NumberFieldControl
+            <AdminNumberFieldControl
               label={t('columns.co2Contribution')}
               value={field.value}
               onChange={field.onChange}
@@ -191,42 +183,15 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
           )}
         />
 
-        <Field className="max-w-xl">
-          <FieldContent>
-            <div className="flex items-center justify-between gap-3">
-              <FieldLabel className="mb-0">{t('columns.name')}</FieldLabel>
-              <LocaleTabsControl
-                locales={contentLocales}
-                activeLocale={activeLocale}
-                onLocaleChange={setActiveLocale}
-                errorLocales={localesWithErrors}
-                disabled={isSubmitting}
-              />
-            </div>
-
-            <Controller
-              name="translations"
-              control={form.control}
-              render={({ field }) => (
-                <>
-                  <Input
-                    value={field.value?.[activeLocale] ?? ''}
-                    onChange={(event) =>
-                      field.onChange({
-                        ...(field.value ?? emptyTranslations()),
-                        [activeLocale]: event.target.value,
-                      })
-                    }
-                    placeholder={t('form.placeholders.translationName', { locale: activeLocale.toUpperCase() })}
-                    aria-invalid={Boolean(translationErrors?.[activeLocale])}
-                    disabled={isSubmitting}
-                  />
-                  <FieldError>{translationErrors?.[activeLocale]?.message}</FieldError>
-                </>
-              )}
-            />
-          </FieldContent>
-        </Field>
+        <AdminTranslatedStringField<FuelTypeFormValues>
+          control={form.control}
+          activeLocale={activeLocale}
+          onActiveLocaleChange={setActiveLocale}
+          label={t('columns.name')}
+          getPlaceholder={(locale) => t('form.placeholders.translationName', { locale: locale.toUpperCase() })}
+          disabled={isSubmitting}
+          errors={translationErrors}
+        />
       </FieldGroup>
     </form>
   );

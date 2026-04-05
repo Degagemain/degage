@@ -3,7 +3,7 @@
 import { ContentLocale } from '@/i18n/locales';
 import { cn } from '@/app/lib/utils';
 
-interface LocaleTabsControlProps {
+interface AdminLocaleTabsControlProps {
   locales: readonly ContentLocale[];
   activeLocale: ContentLocale;
   onLocaleChange: (locale: ContentLocale) => void;
@@ -11,7 +11,7 @@ interface LocaleTabsControlProps {
   disabled?: boolean;
 }
 
-export function LocaleTabsControl({ locales, activeLocale, onLocaleChange, errorLocales = [], disabled }: LocaleTabsControlProps) {
+export function AdminLocaleTabsControl({ locales, activeLocale, onLocaleChange, errorLocales = [], disabled }: AdminLocaleTabsControlProps) {
   return (
     <div className="inline-flex items-center gap-0.5 rounded-md border p-0.5">
       {locales.map((locale) => {

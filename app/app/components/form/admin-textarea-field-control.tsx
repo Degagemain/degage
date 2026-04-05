@@ -1,9 +1,9 @@
 'use client';
 
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '@/app/components/ui/field';
-import { Input } from '@/app/components/ui/input';
+import { Textarea } from '@/app/components/ui/textarea';
 
-interface TextFieldControlProps {
+interface AdminTextareaFieldControlProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -11,19 +11,30 @@ interface TextFieldControlProps {
   placeholder?: string;
   description?: string;
   error?: string;
+  rows?: number;
 }
 
-export function TextFieldControl({ label, value, onChange, disabled, placeholder, description, error }: TextFieldControlProps) {
+export function AdminTextareaFieldControl({
+  label,
+  value,
+  onChange,
+  disabled,
+  placeholder,
+  description,
+  error,
+  rows = 4,
+}: AdminTextareaFieldControlProps) {
   return (
     <Field data-invalid={Boolean(error)} className="max-w-xl">
       <FieldLabel>{label}</FieldLabel>
       <FieldContent>
-        <Input
+        <Textarea
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
           aria-invalid={Boolean(error)}
           disabled={disabled}
+          rows={rows}
         />
         {description ? <FieldDescription>{description}</FieldDescription> : null}
         <FieldError>{error}</FieldError>

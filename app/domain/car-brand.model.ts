@@ -18,8 +18,8 @@ export const carBrandSchema = z
     name: z.string().min(1).max(100),
     isActive: z.boolean().default(true),
     translations: z.array(carBrandTranslationSchema).default([]),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

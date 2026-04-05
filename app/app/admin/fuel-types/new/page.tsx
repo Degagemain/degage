@@ -7,24 +7,13 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FuelType } from '@/domain/fuel-type.model';
+import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { FUEL_TYPE_FORM_ID, FuelTypeForm } from '../components/fuel-type-form';
 
 const FUEL_TYPES_OVERVIEW_PATH = '/app/admin/fuel-types';
 
-const getApiErrorMessage = async (response: Response, fallback: string): Promise<string> => {
-  const body = await response.json().catch(() => null);
-  if (body && typeof body === 'object' && Array.isArray((body as { errors?: unknown[] }).errors)) {
-    const firstError = (body as { errors: Array<{ message?: string }> }).errors[0];
-    if (firstError?.message) {
-      return firstError.message;
-    }
-  }
-  return fallback;
-};
-
 export default function NewFuelTypePage() {
-  const t = useTranslations('admin.fuelTypes');
   const tCommon = useTranslations('admin.common');
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -39,7 +28,7 @@ export default function NewFuelTypePage() {
       });
 
       if (!response.ok) {
-        const message = await getApiErrorMessage(response, tCommon('feedback.saveError'));
+        const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));
         toast.error(message);
         return;
       }

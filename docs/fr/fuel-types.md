@@ -17,6 +17,9 @@ prix.
 | Prix par l/kWh   | Valeur utilisée dans les calculs.              |
 | Contribution CO₂ | Valeur utilisée dans les calculs.              |
 
+Utilisez **Nouveau** à côté de la recherche pour ajouter un type de carburant, ou ouvrez-le depuis son nom ou l’action **Modifier** pour le
+mettre à jour (y compris les noms par langue).
+
 ## Export
 
 Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

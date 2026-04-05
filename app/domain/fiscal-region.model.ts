@@ -14,8 +14,8 @@ export const fiscalRegionSchema = z
     name: z.string().min(1).max(100),
     isDefault: z.boolean().default(true),
     translations: z.array(fiscalRegionTranslationSchema).default([]),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

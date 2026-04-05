@@ -18,8 +18,8 @@ export const carInfoSchema = z
     euroNormId: z.uuid().nullable().default(null),
     euroNorm: idNameSchema.optional(), // populated when loaded with relations (e.g. name = code)
     consumption: z.number(),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

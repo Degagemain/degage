@@ -16,6 +16,9 @@ Referentielijst van brandstoftypes (benzine, diesel, elektrisch, enz.), gebruikt
 | Prijs per l/kWh | Waarde gebruikt in berekeningen.                  |
 | CO₂-bijdrage    | CO₂-bijdrage gebruikt in berekeningen.            |
 
+Gebruik **Nieuw** naast het zoekveld om een brandstoftype toe te voegen, of open een type via de naam of de actie **Bewerken** om het aan te
+passen (inclusief namen per taal).
+
 ## Export
 
 Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

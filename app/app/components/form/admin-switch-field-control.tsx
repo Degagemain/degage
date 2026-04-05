@@ -3,7 +3,7 @@
 import { Field, FieldDescription, FieldLabel } from '@/app/components/ui/field';
 import { Switch } from '@/app/components/ui/switch';
 
-interface SwitchFieldControlProps {
+interface AdminSwitchFieldControlProps {
   id: string;
   label: string;
   checked: boolean;
@@ -12,7 +12,7 @@ interface SwitchFieldControlProps {
   description?: string;
 }
 
-export function SwitchFieldControl({ id, label, checked, onChange, disabled, description }: SwitchFieldControlProps) {
+export function AdminSwitchFieldControl({ id, label, checked, onChange, disabled, description }: AdminSwitchFieldControlProps) {
   return (
     <Field orientation="horizontal" className="max-w-xl">
       <Switch id={id} checked={checked} onCheckedChange={(value) => onChange(value === true)} disabled={disabled} />

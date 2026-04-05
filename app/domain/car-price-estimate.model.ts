@@ -19,8 +19,8 @@ export const carPriceEstimateSchema = z
     prompt: z.string().nullable().default(null),
     remarks: z.string().nullable().default(null),
     articleRefs: z.array(z.string()).default([]),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

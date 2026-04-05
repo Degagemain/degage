@@ -1,14 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Trash2, X } from 'lucide-react';
+import { Check, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FiscalRegion } from '@/domain/fiscal-region.model';
 import { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import {
@@ -42,6 +44,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function FiscalRegionsPage() {
   const t = useTranslations('admin.fiscalRegions');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<FiscalRegionsState>({
     data: [],
     total: 0,
@@ -235,6 +238,14 @@ export default function FiscalRegionsPage() {
             searchValue={queryInput}
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/fiscal-regions/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={
               <>
                 <BulkActionsButton count={selectedFiscalRegions.length} label={t('bulkActions.label')}>

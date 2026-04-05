@@ -17,6 +17,9 @@ prijsschatingen.
 | Ecoscore   | Milieuscore (bv. A–E).                    |
 | Actief     | Of het type beschikbaar is voor selectie. |
 
+Gebruik **Nieuw** naast het zoekveld om een voertuigtype toe te voegen, of open een type via de naam of de actie **Bewerken** om het aan te
+passen.
+
 ## Export
 
 Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

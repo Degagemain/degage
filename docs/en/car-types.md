@@ -16,6 +16,8 @@ Reference list of vehicle types (e.g. sedan, SUV), linked to a brand and fuel ty
 | Ecoscore  | Environmental score (e.g. A–E).              |
 | Active    | Whether the type is available for selection. |
 
+Use **New** next to the search box to add a car type, or open one from its name or the row **Edit** action to change it.
+
 ## Export
 
 Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

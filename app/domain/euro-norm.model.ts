@@ -13,8 +13,8 @@ export const euroNormSchema = z
     isActive: z.boolean().default(true),
     start: z.coerce.date(),
     end: z.coerce.date().nullable().default(null),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

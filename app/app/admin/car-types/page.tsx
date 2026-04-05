@@ -1,14 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Trash2, X } from 'lucide-react';
+import { Check, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarType } from '@/domain/car-type.model';
 import { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import {
@@ -44,6 +46,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function CarTypesPage() {
   const t = useTranslations('admin.carTypes');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<CarTypesState>({
     data: [],
     total: 0,
@@ -332,6 +335,14 @@ export default function CarTypesPage() {
             searchValue={queryInput}
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/car-types/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={filterSlot}
             exportEndpoint="/api/car-types/export"
             columnLabels={columnLabels}

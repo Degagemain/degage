@@ -1,14 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarPriceEstimate } from '@/domain/car-price-estimate.model';
 import { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
@@ -35,6 +37,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function CarPriceEstimatesPage() {
   const t = useTranslations('admin.carPriceEstimates');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<CarPriceEstimatesState>({
     data: [],
     total: 0,
@@ -203,6 +206,14 @@ export default function CarPriceEstimatesPage() {
             searchValue=""
             onSearchChange={() => {}}
             showSearch={false}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/car-price-estimates/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={
               <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
                 <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>

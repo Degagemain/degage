@@ -6,8 +6,35 @@ roles:
 
 # Admin create and edit forms
 
-This document describes the pattern for **list + create + edit** admin screens, using **fuel types** as the reference implementation
-(`app/app/admin/fuel-types/`).
+This document describes the pattern for **list + create + edit** admin screens. **Fuel types** and **car brands** are the reference
+implementations.
+
+## Admin entities with `POST` + `PUT` (JSON CRUD)
+
+These are the API resources that support **create** (`POST` on the collection) and **replace** (`PUT` on `/{id}`), aligned with the admin table
+entities that will get matching **new** and **`[id]`** pages.
+
+| Admin area (folder under `app/app/admin/`) | Collection `POST`                    | Item `PUT`                 | Translations in domain      | Create/edit UI status        |
+| ------------------------------------------ | ------------------------------------ | -------------------------- | --------------------------- | ---------------------------- |
+| `fuel-types`                               | `/api/fuel-types`                    | `/api/fuel-types/{id}`     | Yes (`translations[]`)      | Done                         |
+| `car-brands`                               | `/api/car-brands`                    | `/api/car-brands/{id}`     | Yes                         | Done                         |
+| `car-types`                                | `/api/car-types`                     | `/api/car-types/{id}`      | No (single `name`)          | Done                         |
+| `euro-norms`                               | `/api/euro-norms`                    | `/api/euro-norms/{id}`     | No                          | Done                         |
+| `provinces`                                | `/api/provinces`                     | `/api/provinces/{id}`      | No                          | Done                         |
+| `towns`                                    | `/api/towns`                         | `/api/towns/{id}`          | No                          | Done                         |
+| `fiscal-regions`                           | `/api/fiscal-regions`                | `/api/fiscal-regions/{id}` | No                          | Done                         |
+| `hubs`                                     | `/api/hubs`                          | `/api/hubs/{id}`           | No                          | Done                         |
+| `car-tax-euro-norm-adjustments`            | `/api/car-tax-euro-norm-adjustments` | `…/{id}`                   | No                          | Done                         |
+| `car-price-estimates`                      | `/api/car-price-estimates`           | `…/{id}`                   | No                          | Done                         |
+| `car-infos`                                | `/api/car-infos`                     | `/api/car-infos/{id}`      | No                          | Done                         |
+| `hub-benchmarks`                           | `/api/hub-benchmarks`                | `…/{id}`                   | No                          | Done                         |
+| `insurance-price-benchmarks`               | `/api/insurance-price-benchmarks`    | `…/{id}`                   | No                          | Done                         |
+| `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`  | Per-locale content (custom) | Separate flow                |
+| `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)       | N/A                         | Has `new` + read-only `[id]` |
+
+**Not in this table:** `car-tax-base-rates` and `car-tax-flat-rates` admin lists have **GET-only** collection routes (no `POST`). **System
+parameters** use **`PATCH`** on `/api/system-parameters/{id}` (values only), not full `PUT` body replace. **Users** has no admin `POST`/`PUT` in
+the same sense.
 
 ## Routes and navigation
 
@@ -25,68 +52,73 @@ List page conventions:
 
 ## Top action row (create and edit)
 
-Both `new` and `[id]` pages use a **sticky-style** top bar (`border-b`, `h-14`) with actions on the **left**:
+Both `new` and `[id]` pages use a **top bar** (`border-b`, `h-14`) with actions on the **left**:
 
-- **Save** first — `type="submit"` with `form={FUEL_TYPE_FORM_ID}` (shared form id constant), `variant="outline"`, `size="sm"`, small save icon.
+- **Save** first — `type="submit"` with `form={…_FORM_ID}`, `variant="outline"`, `size="sm"`, small save icon.
 - **Delete** — only on edit; opens `DeleteConfirmationDialog`, then `DELETE /api/{entity}/{id}`, same toasts and redirect to list as the table
   delete flow.
 
-## Shared form
+## Shared form layout
 
 - One form component (e.g. `components/{entity}-form.tsx`) used by **new** and **edit**.
-- **No** card or bordered panel on the form itself; padding on the `<form>` and a constrained width (`max-w-2xl` on the field group) keep the
-  layout compact.
-- **React Hook Form** + **Zod** (`zodResolver`) validate client-side. Error messages come from **`admin.common.validation.*`** so they can be
-  reused across entities.
-- Entity-specific copy stays under **`admin.{entity}`** (column labels, placeholders, field help text).
+- **No** card or bordered panel on the form itself; padding on the `<form>` and `max-w-2xl` on the field group.
+- **React Hook Form** + **Zod** (`zodResolver`). Validation copy from **`admin.common.validation.*`**.
+- Entity copy under **`admin.{entity}`** (columns, delete, form help, placeholders).
 
-## Field controls
+## Reusable admin form building blocks
 
-Reusable wrappers live in `components/fields/` next to the form (e.g. text, number, switch). They compose shadcn-style primitives (`Field`,
-`Input`, `Switch`) and accept `error` / `data-invalid` for accessibility.
+Shared UI lives under **`app/app/components/form/`** (not per-entity `fields/`):
+
+| Module                                   | Role                                                                                    |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `form/admin-text-field-control.tsx`      | Label + input + description + error                                                     |
+| `form/admin-number-field-control.tsx`    | Same for `type="number"`                                                                |
+| `form/admin-switch-field-control.tsx`    | Horizontal switch + label                                                               |
+| `form/admin-locale-tabs-control.tsx`     | Compact locale tabs + error styling per tab                                             |
+| `form/admin-translated-string-field.tsx` | Name row: label + tabs + **single** `translations` RHF field with merge-on-change       |
+| `form/admin-searchable-select-field.tsx` | Label + `SearchableSelect` + description + error (relations: brand, fuel type, town, …) |
+| `form/admin-date-field-control.tsx`      | Date input with validation helpers in `form/date-input-helpers.ts`                      |
+| `form/admin-textarea-field-control.tsx`  | Label + textarea + description + error (multi-line text, lists split by line)           |
+| `form/empty-content-locale-record.ts`    | `Record<ContentLocale, string>` initialiser                                             |
+
+Use **`parseApiErrorMessage`** from `app/app/lib/parse-api-error-message.ts` for failed `POST`/`PUT` responses.
 
 ## Translated fields (locale tabs)
 
-Content locales are defined in `app/i18n/locales.ts` (`contentLocales`: `en`, `nl`, `fr`).
+Content locales: `app/i18n/locales.ts` (`contentLocales`: `en`, `nl`, `fr`).
 
-**Important:** Register **one** RHF field for the whole translations map (`name="translations"`), not a separate controller per locale that
-swaps with the active tab. The visible input binds to `field.value[activeLocale]` and `onChange` **merges** into the existing object so
-switching tabs does not clear other languages.
+**Important:** Use **`AdminTranslatedStringField`** (or the same pattern): one RHF field `translations` as `Record<ContentLocale, string>`, bind
+input to `value[activeLocale]`, and merge on `onChange`. Do not swap `Controller` `name` per tab.
 
-The locale picker (`LocaleTabsControl`) sits on the same row as the field label. Pass locales that have validation errors so tabs can show an
-error state (e.g. ring + dot).
+On submit:
 
-On submit, the API payload must include:
-
-- `translations`: array of `{ locale, name }` for every content locale.
-- Top-level `name`: mirror the **currently active** locale tab value (or your product rule), because the domain model still carries a display
-  `name` alongside translations.
+- `translations`: `{ locale, name }[]` for every content locale.
+- Top-level `name`: from the **active** tab (or your agreed rule).
 
 ## API and domain
 
-- **Create** — `POST /api/{entity}` with JSON body; expect **201** and returned entity.
-- **Update** — `PUT /api/{entity}/{id}`; body `id` must match the path; response is **204 No Content** (reload the entity with `GET` after save
-  if the UI needs fresh data).
-- **Load (edit)** — `GET /api/{entity}/{id}`.
+- **Create** — `POST /api/{entity}`; typically **201** + body.
+- **Update** — `PUT /api/{entity}/{id}`; `id` in body must match path; often **204** — reload with `GET` if needed.
+- **Load** — `GET /api/{entity}/{id}`.
 
-If the client sends ISO date strings for `createdAt` / `updatedAt`, the domain schema should use **`z.coerce.date()`** for those fields so
-`fuelTypeSchema.parse` accepts JSON from the browser.
+Domain models that round-trip JSON through `parse` should use **`z.coerce.date()`** for `createdAt` / `updatedAt` (and any similar timestamp
+fields) so ISO strings from the client validate.
 
 ## Internationalization (shared vs entity)
 
-| Namespace                   | Use for                                                                |
-| --------------------------- | ---------------------------------------------------------------------- |
-| `admin.common.actions.*`    | New, Save                                                              |
-| `admin.common.status.*`     | Saving…                                                                |
-| `admin.common.feedback.*`   | Save/load success and generic errors                                   |
-| `admin.common.validation.*` | Required, numeric constraints                                          |
-| `admin.{entity}.*`          | Table columns, delete copy, entity-specific form help and placeholders |
+| Namespace                   | Use for                                       |
+| --------------------------- | --------------------------------------------- |
+| `admin.common.actions.*`    | New, Save                                     |
+| `admin.common.status.*`     | Saving…                                       |
+| `admin.common.feedback.*`   | Save/load success and generic errors          |
+| `admin.common.validation.*` | Required, numeric constraints                 |
+| `admin.{entity}.*`          | Table, delete, entity form help, placeholders |
 
-## Reference files (fuel types)
+## Reference implementations
 
-- `app/app/admin/fuel-types/page.tsx` — list + New + links.
-- `app/app/admin/fuel-types/columns.tsx` — linked name, Edit action.
-- `app/app/admin/fuel-types/new/page.tsx` — create + save row.
-- `app/app/admin/fuel-types/[id]/page.tsx` — load, save, delete row.
-- `app/app/admin/fuel-types/components/fuel-type-form.tsx` — form + locale field.
-- `app/app/admin/fuel-types/components/fields/` — field controls + locale tabs.
+**Fuel types:** `app/app/admin/fuel-types/` — `page.tsx`, `columns.tsx`, `new/page.tsx`, `[id]/page.tsx`, `components/fuel-type-form.tsx`.
+
+**Car brands:** `app/app/admin/car-brands/` — same structure, `components/car-brand-form.tsx`.
+
+**Car types:** `app/app/admin/car-types/` — `components/car-type-form.tsx` (brand + fuel type via searchable API selects, single `name`,
+ecoscore). `GET /api/car-types/{id}` resolves brand/fuel display names using the request content locale.

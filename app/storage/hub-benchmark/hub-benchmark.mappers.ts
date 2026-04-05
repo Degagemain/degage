@@ -5,7 +5,9 @@ type HubBenchmarkDb = Prisma.HubBenchmarkGetPayload<object>;
 
 type HubBenchmarkWithHub = Prisma.HubBenchmarkGetPayload<{ include: { hub: true } }>;
 
-export const dbHubBenchmarkToDomain = (db: HubBenchmarkDb): HubBenchmark => {
+export const dbHubBenchmarkToDomain = (db: HubBenchmarkDb | HubBenchmarkWithHub): HubBenchmark => {
+  const hub = 'hub' in db && db.hub != null ? { id: db.hub.id, name: db.hub.name } : undefined;
+
   return {
     id: db.id,
     hubId: db.hubId,
@@ -15,13 +17,7 @@ export const dbHubBenchmarkToDomain = (db: HubBenchmarkDb): HubBenchmark => {
     sharedAvgKm: db.sharedAvgKm,
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
-  };
-};
-
-export const dbHubBenchmarkToDomainWithRelations = (db: HubBenchmarkWithHub): HubBenchmark => {
-  return {
-    ...dbHubBenchmarkToDomain(db),
-    hub: { id: db.hubId, name: db.hub.name },
+    ...(hub ? { hub } : {}),
   };
 };
 

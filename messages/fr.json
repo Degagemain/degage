@@ -170,7 +170,11 @@
       "validation": {
         "required": "Ce champ est obligatoire.",
         "nonNegativeNumber": "Saisissez un nombre positif ou nul.",
-        "nonNegativeInteger": "Saisissez un entier positif ou nul."
+        "nonNegativeInteger": "Saisissez un entier positif ou nul.",
+        "integer": "Saisissez un nombre entier.",
+        "yearRange": "Saisissez une année entre 1900 et 2100.",
+        "optionalPositiveInteger": "Saisissez un entier strictement positif ou laissez vide.",
+        "ecoscoreRange": "Saisissez un entier entre 0 et 100."
       },
       "export": {
         "title": "Exporter",
@@ -204,7 +208,18 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "help": {
+          "code": "Identifiant court unique (stocké en minuscules).",
+          "active": "Les marques inactives sont masquées dans les listes de sélection."
+        },
+        "placeholders": {
+          "code": "ex. tesla",
+          "translationName": "Nom ({locale})"
+        }
       },
       "delete": {
         "title": "Supprimer la marque",
@@ -322,7 +337,23 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "brand": "Choisir une marque…",
+          "fuelType": "Choisir un type de carburant…",
+          "name": "Nom du modèle ou de la variante",
+          "ecoscore": "0–100"
+        },
+        "help": {
+          "brand": "Marque à laquelle appartient ce type.",
+          "fuelType": "Catégorie de carburant pour ce type.",
+          "name": "Affiché dans les listes et sélecteurs.",
+          "ecoscore": "Score environnemental utilisé dans le produit (0–100).",
+          "active": "Les types inactifs sont masqués pour les nouveaux choix le cas échéant."
+        }
       },
       "delete": {
         "title": "Supprimer le type de véhicule",
@@ -373,7 +404,23 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "code": "ex. euro-6",
+          "name": "Nom affiché",
+          "group": "0"
+        },
+        "help": {
+          "code": "Identifiant stable (enregistré en minuscules avec tirets).",
+          "name": "Libellé dans les listes d’administration et sélecteurs.",
+          "group": "Groupe numérique pour le tri ou les règles.",
+          "active": "Les normes inactives peuvent être masquées pour les nouveaux rattachements.",
+          "start": "Date d’entrée en vigueur.",
+          "end": "Date de fin facultative ; laisser vide si toujours en vigueur."
+        }
       },
       "delete": {
         "title": "Supprimer la norme euro",
@@ -427,7 +474,29 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "fields": {
+          "prompt": "Invite",
+          "articleRefs": "Références d’articles"
+        },
+        "placeholders": {
+          "carType": "Sélectionner un type de voiture…",
+          "articleRefs": "Une référence par ligne"
+        },
+        "help": {
+          "carType": "Modèle concerné. Non modifiable après création.",
+          "year": "Année-modèle. Non modifiable après création.",
+          "estimateYear": "Année visée par l’estimation de prix.",
+          "price": "Valeur estimée du prix.",
+          "rangeMin": "Borne inférieure de la fourchette.",
+          "rangeMax": "Borne supérieure de la fourchette.",
+          "prompt": "Texte facultatif pour la génération ou l’affichage.",
+          "remarks": "Notes ; chaque ligne devient une remarque distincte.",
+          "articleRefs": "Références, une par ligne."
+        }
       },
       "delete": {
         "title": "Estimation du prix",
@@ -475,7 +544,24 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "euroNormNone": "Aucune",
+        "placeholders": {
+          "carType": "Sélectionner un type de voiture…",
+          "euroNorm": "Norme Euro (facultatif)"
+        },
+        "help": {
+          "carType": "Modèle décrit par cette ligne. Non modifiable après création.",
+          "year": "Année-modèle. Non modifiable après création.",
+          "cylinderCc": "Cylindrée en cm³.",
+          "co2Emission": "Émissions de CO₂ en g/km.",
+          "ecoscore": "Score de 0 à 100.",
+          "euroNorm": "Norme d’émissions facultative ; choisir Aucune pour effacer.",
+          "consumption": "Consommation enregistrée pour cette fiche."
+        }
       },
       "delete": {
         "title": "Supprimer les infos voiture",
@@ -519,7 +605,19 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "fiscalRegion": "Sélectionner une région fiscale…"
+        },
+        "help": {
+          "fiscalRegion": "Région fiscale. Non modifiable après création.",
+          "euroNormGroup": "Indice de groupe de norme Euro. Non modifiable après création.",
+          "defaultAdjustment": "Ajustement pour les véhicules non diesel.",
+          "dieselAdjustment": "Ajustement pour les véhicules diesel."
+        }
       },
       "delete": {
         "title": "Supprimer l'ajustement euro norm",
@@ -567,7 +665,18 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "code": "ex. flandre",
+          "translationName": "Nom ({locale})"
+        },
+        "help": {
+          "code": "Code court unique pour cette région.",
+          "default": "Une seule région peut être définie par défaut."
+        }
       },
       "delete": {
         "title": "Supprimer la région fiscale",
@@ -609,7 +718,18 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Nom de la province",
+          "fiscalRegion": "Sélectionner une région fiscale…"
+        },
+        "help": {
+          "name": "Nom de la province.",
+          "fiscalRegion": "Région fiscale de rattachement."
+        }
       },
       "delete": {
         "title": "Supprimer la province",
@@ -671,7 +791,19 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Nom du hub",
+          "simMaxPrice": "Plafond facultatif (entier)"
+        },
+        "help": {
+          "name": "Nom affiché du hub.",
+          "default": "Un seul hub peut être défini par défaut.",
+          "simMaxPrice": "Prix maximum de voiture pour relecture manuelle ; vide pour aucun plafond."
+        }
       },
       "delete": {
         "title": "Supprimer le hub",
@@ -719,7 +851,20 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "hub": "Sélectionner un hub…"
+        },
+        "help": {
+          "hub": "Hub concerné. Non modifiable après création.",
+          "ownerKm": "Kilomètres annuels du propriétaire. Non modifiable après création.",
+          "sharedMinKm": "Minimum des kilomètres partagés dans l’échantillon.",
+          "sharedMaxKm": "Maximum des kilomètres partagés dans l’échantillon.",
+          "sharedAvgKm": "Moyenne des kilomètres partagés."
+        }
       },
       "delete": {
         "title": "Supprimer le benchmark hub",
@@ -793,7 +938,16 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "help": {
+          "year": "Année civile du benchmark. Non modifiable après création.",
+          "maxCarPrice": "Prix maximum de voiture (hors taxes) couvert par cette ligne.",
+          "baseRate": "Taux de base d’assurance.",
+          "rate": "Tarif en € par kilomètre."
+        }
       },
       "delete": {
         "title": "Supprimer le benchmark assurance",
@@ -852,7 +1006,26 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "zip": "Code postal",
+          "name": "Nom de la localité",
+          "municipality": "Commune",
+          "province": "Sélectionner une province…",
+          "hub": "Sélectionner un hub…"
+        },
+        "help": {
+          "zip": "Code postal.",
+          "name": "Nom de la localité.",
+          "municipality": "Nom de la commune.",
+          "province": "Province de rattachement.",
+          "hub": "Hub associé le cas échéant.",
+          "highDemand": "Indique une forte demande.",
+          "activeMembers": "Indique la présence de membres actifs."
+        }
       },
       "delete": {
         "title": "Supprimer la ville",

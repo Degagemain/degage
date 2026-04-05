@@ -1,11 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
-import { Check, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Check, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Town } from '@/domain/town.model';
 
 interface ColumnOptions {
@@ -46,7 +47,17 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Town>[] => {
     {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.name')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="font-medium">{row.getValue('name')}</span>,
+      cell: ({ row }) => {
+        const item = row.original;
+        if (!item.id) {
+          return <span className="font-medium">{row.getValue('name')}</span>;
+        }
+        return (
+          <Link href={`/app/admin/towns/${item.id}`} className="font-medium hover:underline">
+            {row.getValue('name')}
+          </Link>
+        );
+      },
       enableHiding: true,
       enableSorting: false,
     },
@@ -129,6 +140,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Town>[] => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
+              {town.id && (
+                <DropdownMenuItem asChild>
+                  <Link href={`/app/admin/towns/${town.id}`}>
+                    <Pencil />
+                    {t('actions.edit')}
+                  </Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem variant="destructive" onClick={() => options.onDelete?.(town)}>
                 <Trash2 />
                 {t('actions.delete')}
