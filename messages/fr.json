@@ -1109,6 +1109,7 @@
         "seats": "Places assises",
         "firstRegisteredAt": "Première immatriculation",
         "carTypeOther": "Type de véhicule (autre)",
+        "duration": "Durée (s)",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -1173,6 +1174,7 @@
         "isNewCar": "Voiture neuve",
         "purchasePrice": "Prix d'achat (TVA incl.)",
         "rejectionReason": "Motif de rejet",
+        "duration": "Durée d'exécution (secondes)",
         "estimatedPrice": "Prix estimé",
         "cylinderCc": "Cylindrée",
         "co2Emission": "Émission CO₂",
@@ -1540,6 +1542,7 @@
       "headerTitle": "Évaluation de votre voiture…",
       "headerTitleWithName": "Évaluation de {name}…",
       "headerSubtitle": "Étape {current} sur {total}",
+      "progressAriaLabel": "Simulation en cours. La barre peut aller jusqu'à 45 secondes ; le résultat peut apparaître plus tôt.",
       "busy": "en cours…",
       "checkingLocation": "Vérification de la localisation…",
       "checkingAgeKm": "Vérification âge et km…",

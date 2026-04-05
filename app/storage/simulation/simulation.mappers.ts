@@ -65,6 +65,7 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
     resultDepreciationCostKm: db.resultDepreciationCostKm != null ? Number(db.resultDepreciationCostKm) : null,
     resultEstimatedCarValue: db.resultEstimatedCarValue != null ? Number(db.resultEstimatedCarValue) : null,
     error: db.error,
+    duration: db.duration,
     steps: parseSteps(db.steps),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -127,6 +128,7 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
     resultDepreciationCostKm: simulation.resultDepreciationCostKm ?? undefined,
     resultEstimatedCarValue: simulation.resultEstimatedCarValue ?? undefined,
     error: simulation.error ?? undefined,
+    duration: simulation.duration,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };
@@ -163,6 +165,7 @@ export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationU
     resultDepreciationCostKm: simulation.resultDepreciationCostKm ?? undefined,
     resultEstimatedCarValue: simulation.resultEstimatedCarValue ?? undefined,
     error: simulation.error ?? undefined,
+    duration: simulation.duration,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
   };
 };

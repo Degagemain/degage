@@ -40,6 +40,7 @@ function buildSimulationFromResult(
     resultDepreciationCostKm: result.resultDepreciationCostKm ?? null,
     resultEstimatedCarValue: result.resultEstimatedCarValue ?? null,
     error: result.error ?? null,
+    duration: result.duration ?? 45,
     steps: result.steps,
     createdAt: null,
     updatedAt: null,

@@ -1109,6 +1109,7 @@
         "seats": "Zitplaatsen",
         "firstRegisteredAt": "Eerste inschrijving",
         "carTypeOther": "Autotype (overig)",
+        "duration": "Duur (s)",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -1173,6 +1174,7 @@
         "isNewCar": "Nieuwe auto",
         "purchasePrice": "Aankoopprijs (incl. btw)",
         "rejectionReason": "Afwijzingsreden",
+        "duration": "Looptijd (seconden)",
         "estimatedPrice": "Geschatte prijs",
         "cylinderCc": "Cilinderinhoud",
         "co2Emission": "CO₂-uitstoot",
@@ -1540,6 +1542,7 @@
       "headerTitle": "Je wagen beoordelen…",
       "headerTitleWithName": "{name} beoordelen…",
       "headerSubtitle": "Stap {current} van {total}",
+      "progressAriaLabel": "Simulatie bezig. De balk kan tot 45 seconden duren; je resultaat kan sneller verschijnen.",
       "busy": "bezig…",
       "checkingLocation": "Locatie controleren…",
       "checkingAgeKm": "Leeftijd & km controleren…",

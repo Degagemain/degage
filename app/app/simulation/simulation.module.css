@@ -1653,30 +1653,9 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-.loadingHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--sim-s16);
+.simLoadingSection {
+  width: 100%;
   margin-bottom: var(--sim-s32);
-}
-
-.loadingProgressWrap {
-  position: relative;
-  width: 56px;
-  height: 56px;
-  flex-shrink: 0;
-}
-
-.loadingProgressSvg {
-  display: block;
-}
-
-.loadingProgressInner {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .loadingHeaderTitle {
@@ -1685,44 +1664,35 @@
   font-size: 28px;
   color: var(--sim-ink);
   line-height: 1.15;
-  margin-bottom: var(--sim-s8);
+  margin: 0 0 var(--sim-s16);
 }
 
-.loadingHeaderSubtitle {
-  font-family: var(--sim-sans);
-  font-size: 15px;
-  color: var(--sim-mid);
+.simLoadingBarTrack {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sim-sand);
+  overflow: hidden;
 }
 
-.loadingSpinnerBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: var(--sim-s24) 0;
+.simLoadingBarFill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: var(--sim-brand);
+  animation-name: simLoadingBarGrow;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
-.loadingFunnyText {
-  font-family: var(--sim-sans);
-  font-size: 15px;
-  color: var(--sim-brand-mid);
-  text-align: center;
-  min-height: 40px;
-  margin: 0;
-}
+@keyframes simLoadingBarGrow {
+  from {
+    transform: scaleX(0);
+  }
 
-.loadingSpinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--sim-sand);
-  border-top-color: var(--sim-brand);
-  border-radius: 50%;
-  animation: loadingSpin 0.8s linear infinite;
-}
-
-@keyframes loadingSpin {
   to {
-    transform: rotate(360deg);
+    transform: scaleX(1);
   }
 }
 

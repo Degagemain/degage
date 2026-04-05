@@ -37,6 +37,10 @@ import { captureEvent, captureException } from '@/integrations/posthog';
 
 type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B | SimulationResultCode.HIGHER_RATE;
 
+function elapsedWholeSeconds(sinceMs: number): number {
+  return Math.max(0, Math.round((Date.now() - sinceMs) / 1000));
+}
+
 async function resolveAcceptanceOrMaxPriceReview(
   result: SimulationEngineResult,
   hub: Hub,
@@ -77,6 +81,7 @@ export async function passesAgeRule(result: SimulationResultBuilder, firstRegist
 
 export async function runSimulationEngine(input: SimulationRunInput): Promise<SimulationEngineResult> {
   console.log('runSimulationEngine', input);
+  const startedAt = Date.now();
   const result: SimulationEngineResult = {
     resultCode: SimulationResultCode.MANUAL_REVIEW,
     steps: [],
@@ -85,6 +90,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   };
   try {
     const simulationResult = await tryRunSimulationEngine(input, result);
+    simulationResult.duration = elapsedWholeSeconds(startedAt);
     captureEvent('simulation', simulationResult);
     return simulationResult;
   } catch (err) {
@@ -95,6 +101,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     const message = await getSimulationMessage(SimulationStepCode.ERROR_DURING_STEP, { step: stepLabel });
     addErrorMessage(result, message);
     result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+    result.duration = elapsedWholeSeconds(startedAt);
     captureException(err as Error);
     return result;
   }

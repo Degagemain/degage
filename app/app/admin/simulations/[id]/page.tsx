@@ -172,6 +172,7 @@ export default function SimulationDetailPage() {
             {simulation.rejectionReason != null && simulation.rejectionReason.trim() !== '' && (
               <FieldRow label={tDetail('rejectionReason')} value={simulation.rejectionReason} />
             )}
+            <FieldRow label={tDetail('duration')} value={String(simulation.duration)} />
             {simulation.resultCc != null && <FieldRow label={tDetail('cylinderCc')} value={`${simulation.resultCc} cc`} />}
             {simulation.resultCo2 != null && <FieldRow label={tDetail('co2Emission')} value={`${simulation.resultCo2} g/km`} />}
             {simulation.resultEcoScore != null && <FieldRow label={tDetail('ecoscore')} value={String(simulation.resultEcoScore)} />}

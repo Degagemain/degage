@@ -120,6 +120,7 @@ model Simulation {
     resultDepreciationCostKm     Float?
     resultEstimatedCarValue      Float?
     error                        String?
+    duration                     Int                  @default(45)
     steps                        Json                 @default("[]")
     createdAt                    DateTime             @default(now())
     updatedAt                    DateTime             @updatedAt

@@ -206,6 +206,8 @@ describe('runSimulationEngine', () => {
     expect(result.steps[1].status).toBe(SimulationStepIcon.OK);
     expect(result.steps[2].status).toBe(SimulationStepIcon.INFO);
     expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
+    expect(typeof result.duration).toBe('number');
+    expect(result.duration).toBeGreaterThanOrEqual(0);
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
     expect(carValueEstimator).toHaveBeenCalledWith(
       input.brand.id,
@@ -227,5 +229,7 @@ describe('runSimulationEngine', () => {
     const lastStep = result.steps[result.steps.length - 1];
     expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
     expect(lastStep.message).toBe('simulation.step.error_during_step');
+    expect(typeof result.duration).toBe('number');
+    expect(result.duration).toBeGreaterThanOrEqual(0);
   });
 });

@@ -124,6 +124,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
+      accessorKey: 'duration',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.duration')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{row.getValue('duration')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={onSort} />,
       cell: ({ row }) => {

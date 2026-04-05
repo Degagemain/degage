@@ -157,6 +157,7 @@ De lijst toont simulatieruns: gemeente, resultaat en ingevoerde autodata. Open e
 | Zitplaatsen         | Aantal zitplaatsen.                                         |
 | Eerste inschrijving | Datum eerste inschrijving.                                  |
 | Autotype (overig)   | Aangepaste typebeschrijving bij «Overig».                   |
+| Duur                | Hoelang de engine-run duurde, in hele seconden.             |
 
 Je kunt de rijen die bij de huidige filters en sortering horen downloaden via **Meer** en daarna **Exporteren**. Kies een
 spreadsheetvriendelijke export of een gestructureerde data-export. Kolomtitels komen overeen met wat je in de lijst ziet (ook kolommen die je
