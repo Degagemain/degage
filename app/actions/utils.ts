@@ -16,3 +16,7 @@ export const pageAll = async <T, TFilter extends Record<string, unknown>>(
   }
   return out;
 };
+
+export const getSupportReplyToEmail = (): string => {
+  return process.env.SUPPORT_REPLY_TO_EMAIL!;
+};
