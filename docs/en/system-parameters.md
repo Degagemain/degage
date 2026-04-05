@@ -50,6 +50,10 @@ First batch (category **simulation**):
 - **PATCH /api/system-parameters/[id]** — Update only value fields (admin only). Body: `valueNumber`, `valueNumberMin`, `valueNumberMax`,
   `valueEuronormId` (all optional, depending on type).
 
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.
+
 ## Usage in app
 
 Simulation uses parameters by code:

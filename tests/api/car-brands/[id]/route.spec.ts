@@ -179,7 +179,7 @@ describe('API Route - PUT /api/car-brands/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(updateCarBrand).not.toHaveBeenCalled();
     });
 
@@ -245,7 +245,7 @@ describe('API Route - DELETE /api/car-brands/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(deleteCarBrand).not.toHaveBeenCalled();
     });
 

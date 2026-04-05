@@ -1,16 +1,20 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Trash2, X } from 'lucide-react';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Check, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarType } from '@/domain/car-type.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import {
+  AdminTablePage,
   DataTable,
   DataTableFacetedFilter,
   DataTablePagination,
@@ -42,6 +46,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function CarTypesPage() {
   const t = useTranslations('admin.carTypes');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<CarTypesState>({
     data: [],
     total: 0,
@@ -49,16 +54,65 @@ export default function CarTypesPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'ecoscore', desc: true }]);
-  const [brandIds, setBrandIds] = useState<string[]>([]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'ecoscore', desc: true },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['brandIds', 'fuelTypeIds', 'isActive'],
+    });
+
+  const brandIds = csv.brandIds;
+  const fuelTypeIds = csv.fuelTypeIds;
+  const isActiveFilter = csv.isActive;
+
   const [brandOptions, setBrandOptions] = useState<SearchableOption[]>([]);
-  const [fuelTypeIds, setFuelTypeIds] = useState<string[]>([]);
   const [fuelTypeOptions, setFuelTypeOptions] = useState<SearchableOption[]>([]);
-  const [isActiveFilter, setIsActiveFilter] = useState<string[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (brandIds.length === 0) {
+      setBrandOptions([]);
+      return;
+    }
+    (async () => {
+      const resolved = await Promise.all(
+        brandIds.map(async (id) => {
+          const res = await fetch(`/api/car-brands/${encodeURIComponent(id)}`);
+          if (!res.ok) return { id, name: id };
+          const b = await res.json();
+          return { id: b.id, name: b.name };
+        }),
+      );
+      if (!cancelled) setBrandOptions(resolved);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [brandIds]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (fuelTypeIds.length === 0) {
+      setFuelTypeOptions([]);
+      return;
+    }
+    (async () => {
+      const resolved = await Promise.all(
+        fuelTypeIds.map(async (id) => {
+          const res = await fetch(`/api/fuel-types/${encodeURIComponent(id)}`);
+          if (!res.ok) return { id, name: id };
+          const f = await res.json();
+          return { id: f.id, name: f.name };
+        }),
+      );
+      if (!cancelled) setFuelTypeOptions(resolved);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [fuelTypeIds]);
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     createdAt: false,
     updatedAt: false,
@@ -67,36 +121,35 @@ export default function CarTypesPage() {
   const [itemToDelete, setItemToDelete] = useState<CarType | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0);
-    }, 300);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-    return () => clearTimeout(timer);
-  }, [query]);
+  const handleBrandChange = useCallback(
+    (values: string[], options: SearchableOption[]) => {
+      setCsvParam('brandIds', values);
+      setBrandOptions(options);
+    },
+    [setCsvParam],
+  );
 
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
+  const handleFuelTypeChange = useCallback(
+    (values: string[], options: SearchableOption[]) => {
+      setCsvParam('fuelTypeIds', values);
+      setFuelTypeOptions(options);
+    },
+    [setCsvParam],
+  );
 
-  const handleBrandChange = useCallback((values: string[], options: SearchableOption[]) => {
-    setBrandIds(values);
-    setBrandOptions(options);
-    setPageIndex(0);
-  }, []);
-
-  const handleFuelTypeChange = useCallback((values: string[], options: SearchableOption[]) => {
-    setFuelTypeIds(values);
-    setFuelTypeOptions(options);
-    setPageIndex(0);
-  }, []);
-
-  const handleIsActiveChange = useCallback((values: string[]) => {
-    setIsActiveFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleIsActiveChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isActive', values);
+    },
+    [setCsvParam],
+  );
 
   const handleDeleteRequest = useCallback((item: CarType) => {
     setItemToDelete(item);
@@ -133,7 +186,7 @@ export default function CarTypesPage() {
       if (debouncedQuery) params.set('query', debouncedQuery);
       brandIds.forEach((id) => params.append('brandId', id));
       fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]);
+      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -214,7 +267,7 @@ export default function CarTypesPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -226,15 +279,6 @@ export default function CarTypesPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => {
-    setPageIndex(page);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -283,47 +327,56 @@ export default function CarTypesPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={filterSlot}
-          columnLabels={columnLabels}
-        />
-      </div>
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/car-types/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
+            filterSlot={filterSlot}
+            exportEndpoint="/api/car-types/export"
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-5 w-14 rounded-full" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-5 w-14 rounded-full" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
       <DeleteConfirmationDialog
         open={itemToDelete !== null}
         onOpenChange={(open) => !open && setItemToDelete(null)}
@@ -355,6 +408,6 @@ export default function CarTypesPage() {
           statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
-    </div>
+    </>
   );
 }

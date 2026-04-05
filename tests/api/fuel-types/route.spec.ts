@@ -193,7 +193,7 @@ describe('API Route - POST /api/fuel-types', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(createFuelType).not.toHaveBeenCalled();
     });
 

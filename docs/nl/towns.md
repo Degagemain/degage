@@ -18,3 +18,7 @@ geografisch filteren.
 | Hub           | Hub waaraan de gemeente is toegewezen.       |
 | Hoge vraag    | Of de gemeente is gemarkeerd als hoge vraag. |
 | Actieve leden | Of de gemeente actieve leden heeft.          |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

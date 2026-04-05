@@ -23,3 +23,7 @@ overgeslagen en mislukt.
 | Titel       | Per taal (EN, NL, FR).                                                                                                                                                                           |
 | Inhoud      | Per taal; bij markdown-formaat wordt Markdown ondersteund.                                                                                                                                       |
 | Embeddings  | Beheeractie om AI-zoekembeddings opnieuw te genereren op basis van de huidige content en de aantallen bijgewerkt/overgeslagen/mislukt te controleren.                                            |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

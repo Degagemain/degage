@@ -154,6 +154,42 @@
       "empty": "Geen pagina gevonden.",
       "goToPage": "Ga naar pagina"
     },
+    "common": {
+      "actions": {
+        "new": "Nieuw",
+        "save": "Opslaan"
+      },
+      "status": {
+        "saving": "Opslaan…"
+      },
+      "feedback": {
+        "saveSuccess": "Succesvol opgeslagen.",
+        "saveError": "Opslaan mislukt.",
+        "loadError": "Laden mislukt."
+      },
+      "validation": {
+        "required": "Dit veld is verplicht.",
+        "nonNegativeNumber": "Voer een niet-negatief getal in.",
+        "nonNegativeInteger": "Voer een niet-negatief geheel getal in.",
+        "integer": "Voer een geheel getal in.",
+        "yearRange": "Voer een jaartal tussen 1900 en 2100 in.",
+        "optionalPositiveInteger": "Voer een positief geheel getal in of laat leeg.",
+        "ecoscoreRange": "Voer een geheel getal tussen 0 en 100 in."
+      },
+      "export": {
+        "title": "Exporteren",
+        "description": "Download alle rijen die overeenkomen met de huidige filters en sortering. Grote lijsten kunnen even duren.",
+        "format": "Formaat",
+        "formatCsv": "CSV",
+        "formatJson": "JSON",
+        "submit": "Exporteren",
+        "submitting": "Bezig met exporteren…",
+        "cancel": "Annuleren",
+        "error": "Exporteren mislukt.",
+        "more": "Meer",
+        "openExport": "Exporteren"
+      }
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {
@@ -172,7 +208,18 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "help": {
+          "code": "Korte unieke identificatie (opgeslagen in kleine letters).",
+          "active": "Inactieve merken worden niet getoond in selecties."
+        },
+        "placeholders": {
+          "code": "bv. tesla",
+          "translationName": "Naam ({locale})"
+        }
       },
       "delete": {
         "title": "Automerk verwijderen",
@@ -184,7 +231,7 @@
         "conflict": "Dit automerk is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -222,7 +269,21 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "help": {
+          "code": "Korte unieke identificatie die het systeem gebruikt.",
+          "active": "Inactieve brandstoftypes worden niet getoond in selecties.",
+          "pricePer": "Huidige prijs per liter of kWh gebruikt in berekeningen.",
+          "co2Contribution": "CO2-bijdrage gebruikt in berekeningen.",
+          "translations": "Vul een naam in voor elke taal-tab."
+        },
+        "placeholders": {
+          "code": "bv. petrol",
+          "translationName": "Naam ({locale})"
+        }
       },
       "delete": {
         "title": "Brandstoftype verwijderen",
@@ -234,7 +295,7 @@
         "conflict": "Dit brandstoftype is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -276,7 +337,23 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "brand": "Selecteer merk…",
+          "fuelType": "Selecteer brandstoftype…",
+          "name": "Model- of variantnaam",
+          "ecoscore": "0–100"
+        },
+        "help": {
+          "brand": "Voertuigmerk waartoe dit type behoort.",
+          "fuelType": "Brandstofcategorie voor dit type.",
+          "name": "Zichtbaar in lijsten en keuzelijsten.",
+          "ecoscore": "Milieu-score gebruikt in het product (0–100).",
+          "active": "Inactieve types worden waar van toepassing verborgen voor nieuwe selecties."
+        }
       },
       "delete": {
         "title": "Voertuigtype verwijderen",
@@ -288,7 +365,7 @@
         "conflict": "Dit voertuigtype is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -327,7 +404,23 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "code": "bijv. euro-6",
+          "name": "Weergavenaam",
+          "group": "0"
+        },
+        "help": {
+          "code": "Stabiele code (opgeslagen als kleine letters met koppeltekens).",
+          "name": "Label in beheerlijsten en keuzelijsten.",
+          "group": "Numerieke groep voor sortering of beleidsregels.",
+          "active": "Inactieve normen kunnen verborgen worden voor nieuwe koppelingen.",
+          "start": "Datum waarop deze norm ingaat.",
+          "end": "Optionele einddatum; leeg laten als nog geldig."
+        }
       },
       "delete": {
         "title": "Euronorm verwijderen",
@@ -339,7 +432,7 @@
         "conflict": "Deze euronorm is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -381,7 +474,29 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "fields": {
+          "prompt": "Prompt",
+          "articleRefs": "Artikelreferenties"
+        },
+        "placeholders": {
+          "carType": "Selecteer autotype…",
+          "articleRefs": "Eén referentie per regel"
+        },
+        "help": {
+          "carType": "Model waarop deze schatting betrekking heeft. Niet wijzigbaar na aanmaak.",
+          "year": "Modeljaar. Niet wijzigbaar na aanmaak.",
+          "estimateYear": "Jaar waarvoor de prijsschatting geldt.",
+          "price": "Geschatte prijs.",
+          "rangeMin": "Ondergrens van het schattingsbereik.",
+          "rangeMax": "Bovengrens van het schattingsbereik.",
+          "prompt": "Optionele tekst bij generatie of weergave.",
+          "remarks": "Notities; elke regel wordt een aparte opmerking.",
+          "articleRefs": "Referenties, één per regel."
+        }
       },
       "delete": {
         "title": "Prijsschatting verwijderen",
@@ -393,7 +508,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -429,7 +544,24 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "euroNormNone": "Geen",
+        "placeholders": {
+          "carType": "Selecteer autotype…",
+          "euroNorm": "Optionele euronorm"
+        },
+        "help": {
+          "carType": "Model dat deze rij beschrijft. Niet wijzigbaar na aanmaak.",
+          "year": "Modeljaar. Niet wijzigbaar na aanmaak.",
+          "cylinderCc": "Cilinderinhoud in cc.",
+          "co2Emission": "CO₂-uitstoot in g/km.",
+          "ecoscore": "Score van 0 tot 100.",
+          "euroNorm": "Optionele emissienorm; kies Geen om te wissen.",
+          "consumption": "Verbruik of energieverbruik voor dit record."
+        }
       },
       "delete": {
         "title": "Autoinfo verwijderen",
@@ -441,7 +573,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -473,7 +605,19 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "fiscalRegion": "Selecteer fiscale regio…"
+        },
+        "help": {
+          "fiscalRegion": "Belastingregio. Niet wijzigbaar na aanmaak.",
+          "euroNormGroup": "Euronorm-groepindex. Niet wijzigbaar na aanmaak.",
+          "defaultAdjustment": "Correctie voor niet-dieselvoertuigen.",
+          "dieselAdjustment": "Correctie voor dieselvoertuigen."
+        }
       },
       "delete": {
         "title": "Euronorm-aanpassing verwijderen",
@@ -485,7 +629,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -521,7 +665,18 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "code": "bijv. vlaanderen",
+          "translationName": "Naam ({locale})"
+        },
+        "help": {
+          "code": "Korte unieke code voor deze regio.",
+          "default": "Slechts één regio kan als standaard worden aangemerkt."
+        }
       },
       "delete": {
         "title": "Fiscale regio verwijderen",
@@ -533,7 +688,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -563,7 +718,18 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Provincienaam",
+          "fiscalRegion": "Selecteer fiscale regio…"
+        },
+        "help": {
+          "name": "Naam van de provincie.",
+          "fiscalRegion": "Fiscale regio waartoe deze provincie behoort."
+        }
       },
       "delete": {
         "title": "Provincie verwijderen",
@@ -575,7 +741,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -625,7 +791,19 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Hubnaam",
+          "simMaxPrice": "Optioneel plafond (geheel getal)"
+        },
+        "help": {
+          "name": "Weergavenaam van deze hub.",
+          "default": "Slechts één hub kan standaard zijn.",
+          "simMaxPrice": "Optionele maximale autoprijs voor handmatige beoordeling; leeg voor geen limiet."
+        }
       },
       "delete": {
         "title": "Hub verwijderen",
@@ -637,7 +815,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -673,7 +851,20 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "hub": "Selecteer hub…"
+        },
+        "help": {
+          "hub": "Hub waartoe deze benchmark hoort. Niet wijzigbaar na aanmaak.",
+          "ownerKm": "Jaarkilometers eigenaar. Niet wijzigbaar na aanmaak.",
+          "sharedMinKm": "Minimum gedeelde kilometers in de steekproef.",
+          "sharedMaxKm": "Maximum gedeelde kilometers in de steekproef.",
+          "sharedAvgKm": "Gemiddelde gedeelde kilometers."
+        }
       },
       "delete": {
         "title": "Hub-benchmark verwijderen",
@@ -685,7 +876,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -747,7 +938,16 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "help": {
+          "year": "Kalenderjaar voor deze benchmark. Niet wijzigbaar na aanmaak.",
+          "maxCarPrice": "Maximale autoprijs (excl.) waarvoor deze rij geldt.",
+          "baseRate": "Basis verzekeringstarief.",
+          "rate": "Tarief in € per kilometer."
+        }
       },
       "delete": {
         "title": "Verzekeringsbenchmark verwijderen",
@@ -759,7 +959,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -806,7 +1006,26 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "zip": "Postcode",
+          "name": "Plaatsnaam",
+          "municipality": "Gemeente",
+          "province": "Selecteer provincie…",
+          "hub": "Selecteer hub…"
+        },
+        "help": {
+          "zip": "Post- of postcode.",
+          "name": "Naam van de plaats.",
+          "municipality": "Naam van de gemeente.",
+          "province": "Provincie waartoe deze plaats behoort.",
+          "hub": "Gekoppelde hub, indien van toepassing.",
+          "highDemand": "Markeert de plaats als hoge vraag.",
+          "activeMembers": "Of de plaats momenteel actieve leden heeft."
+        }
       },
       "delete": {
         "title": "Gemeente verwijderen",
@@ -818,7 +1037,7 @@
         "conflict": "Deze gemeente is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -916,7 +1135,7 @@
         "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
       },
       "bulkActions": {
-        "label": "Acties",
+        "label": "Selectie",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -1504,13 +1723,10 @@
     "assistantWorking": "Bezig met je antwoord...",
     "searchingDocs": "Documentatie doorzoeken...",
     "searchingDocsFor": "Documentatie doorzoeken voor: {query}",
-    "docsFound": "{count} relevante documentatie-chunks gevonden.",
+    "docsFound": "{count, plural, one {# relevante bron gevonden} other {# relevante bronnen gevonden}}",
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
-    "openDocumentation": "Documentatie openen",
-    "referencesMore": "... meer",
-    "referencesExpandAria": "Nog {count} referenties tonen",
-    "referencesShowLess": "Minder tonen",
+    "sourcesUsed": "{count, plural, one {# bron gebruikt} other {# bronnen gebruikt}}",
     "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
   },
   "docs": {

@@ -14,3 +14,7 @@ Referentiegegevens verzekeringskosten per jaar: maximale autoprijs, basistarief 
 | Max autoprijs (excl.) | Maximale autoprijs voor deze schijf (of geen limiet). |
 | Basistarief           | Waarde basistarief.                                   |
 | €/km                  | Tariefwaarde.                                         |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

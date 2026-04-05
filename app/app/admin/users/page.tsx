@@ -2,16 +2,24 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { Ban, Shield, UserCheck, UserIcon } from 'lucide-react';
 
 import { User } from '@/domain/user.model';
 import { Page } from '@/domain/page.model';
 import { Role } from '@/domain/role.model';
 import { ALL_USER_ROLES, ALL_USER_STATUSES, UserStatus } from '@/domain/user.filter';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { useIsMobile } from '@/app/hooks/use-mobile';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
+import {
+  AdminTablePage,
+  DataTable,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableToolbar,
+  FacetedFilterOption,
+} from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -23,7 +31,6 @@ interface UsersState {
   error: string | null;
 }
 
-// Map column IDs to backend sort columns
 const SORT_COLUMN_MAP: Record<string, string> = {
   name: 'name',
   email: 'email',
@@ -41,19 +48,22 @@ export default function UsersPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [statuses, setStatuses] = useState<string[]>([]);
-  const [roles, setRoles] = useState<string[]>([]);
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'updatedAt', desc: true }]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'updatedAt', desc: true },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['statuses', 'roles'],
+    });
+
+  const statuses = csv.statuses;
+  const roles = csv.roles;
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  // Adjust default column visibility based on screen size
   useEffect(() => {
     if (isMobile) {
       setColumnVisibility((prev) => ({
@@ -66,34 +76,16 @@ export default function UsersPage() {
     }
   }, [isMobile]);
 
-  // Debounce search query
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0); // Reset to first page on search
-    }, 300);
+  const handleStatusChange = (values: string[]) => setCsvParam('statuses', values);
+  const handleRoleChange = (values: string[]) => setCsvParam('roles', values);
 
-    return () => clearTimeout(timer);
-  }, [query]);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-  // Reset to first page when filters change
-  const handleStatusChange = (values: string[]) => {
-    setStatuses(values);
-    setPageIndex(0);
-  };
-
-  const handleRoleChange = (values: string[]) => {
-    setRoles(values);
-    setPageIndex(0);
-  };
-
-  // Handle server-side sort
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0); // Reset to first page on sort change
-  }, []);
-
-  // Create columns with sort handler and translations
   const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
 
   const statusOptions: FacetedFilterOption[] = useMemo(
@@ -130,7 +122,6 @@ export default function UsersPage() {
     [t],
   );
 
-  // Fetch users
   const fetchUsers = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
@@ -142,7 +133,6 @@ export default function UsersPage() {
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
-      // Add sorting params
       if (sorting.length > 0) {
         const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
         if (sortColumn) {
@@ -190,7 +180,7 @@ export default function UsersPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -202,15 +192,6 @@ export default function UsersPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => {
-    setPageIndex(page);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -238,20 +219,19 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
+    <AdminTablePage
+      toolbar={
         <DataTableToolbar
           table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
+          searchValue={queryInput}
+          onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
           filterSlot={filterSlot}
           columnLabels={columnLabels}
         />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
+      }
+      tableArea={
+        state.isLoading ? (
           <div className="divide-y">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-4 py-3">
@@ -265,23 +245,21 @@ export default function UsersPage() {
               </div>
             ))}
           </div>
-        </div>
-      ) : (
-        <>
+        ) : (
           <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
-    </div>
+        )
+      }
+      pagination={
+        <DataTablePagination
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          pageCount={pageCount}
+          totalItems={state.total}
+          selectedCount={Object.keys(rowSelection).length}
+          onPageChange={setPageIndex}
+          onPageSizeChange={setPageSize}
+        />
+      }
+    />
   );
 }

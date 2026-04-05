@@ -17,3 +17,7 @@ fiscaux euro normes.
 | Actif     | Si la norme est disponible pour la sélection.   |
 | Début     | Date de début de validité.                      |
 | Fin       | Date de fin de validité (le cas échéant).       |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

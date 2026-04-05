@@ -10,8 +10,8 @@ export const carTaxBaseRateSchema = z
     start: z.date().nullable().default(null),
     end: z.date().nullable().default(null),
     rate: z.number().min(0),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

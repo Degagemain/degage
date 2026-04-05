@@ -1,16 +1,19 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Trash2 } from 'lucide-react';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { InsurancePriceBenchmark } from '@/domain/insurance-price-benchmark.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
-import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
+import { AdminTablePage, DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
@@ -38,6 +41,7 @@ const YEAR_FACET_OPTIONS = YEAR_VALUES.map((y) => ({ label: String(y), value: St
 
 export default function InsurancePriceBenchmarksPage() {
   const t = useTranslations('admin.insurancePriceBenchmarks');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<InsurancePriceBenchmarksState>({
     data: [],
     total: 0,
@@ -45,10 +49,20 @@ export default function InsurancePriceBenchmarksPage() {
     error: null,
   });
 
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [yearFilter, setYearFilter] = useState<number | null>(null);
+  const { pageIndex, pageSize, sorting, strings, setPageIndex, setPageSize, setSort, setStringParam } = useAdminListUrlSync({
+    defaultPageSize: DEFAULT_PAGE_SIZE,
+    defaultSort: null,
+    validSortIds: Object.keys(SORT_COLUMN_MAP),
+    stringParamNames: ['year'],
+  });
+
+  const yearFilter = useMemo(() => {
+    const raw = strings.year;
+    if (raw == null) return null;
+    const n = parseInt(raw, 10);
+    return YEAR_VALUES.includes(n) ? n : null;
+  }, [strings.year]);
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     createdAt: false,
     updatedAt: false,
@@ -57,15 +71,20 @@ export default function InsurancePriceBenchmarksPage() {
   const [itemToDelete, setItemToDelete] = useState<InsurancePriceBenchmark | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-  const handleYearChange = useCallback((values: string[]) => {
-    setYearFilter(values.length ? parseInt(values[values.length - 1], 10) : null);
-    setPageIndex(0);
-  }, []);
+  const handleYearChange = useCallback(
+    (values: string[]) => {
+      const last = values.length ? values[values.length - 1]! : null;
+      setStringParam('year', last);
+    },
+    [setStringParam],
+  );
 
   const handleDeleteRequest = useCallback((item: InsurancePriceBenchmark) => {
     setItemToDelete(item);
@@ -169,7 +188,7 @@ export default function InsurancePriceBenchmarksPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -181,12 +200,6 @@ export default function InsurancePriceBenchmarksPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => setPageIndex(page);
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -211,56 +224,65 @@ export default function InsurancePriceBenchmarksPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue=""
-          onSearchChange={() => {}}
-          filterSlot={
-            <>
-              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
-                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
-                  <Trash2 />
-                  {t('bulkActions.delete')}
-                </DropdownMenuItem>
-              </BulkActionsButton>
-              {filterSlot}
-            </>
-          }
-          columnLabels={columnLabels}
-        />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue=""
+            onSearchChange={() => {}}
+            showSearch={false}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/insurance-price-benchmarks/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
+            filterSlot={
+              <>
+                <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                    <Trash2 />
+                    {t('bulkActions.delete')}
+                  </DropdownMenuItem>
+                </BulkActionsButton>
+                {filterSlot}
+              </>
+            }
+            exportEndpoint="/api/insurance-price-benchmarks/export"
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
       <DeleteConfirmationDialog
         open={itemToDelete !== null}
@@ -293,6 +315,6 @@ export default function InsurancePriceBenchmarksPage() {
           statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
-    </div>
+    </>
   );
 }

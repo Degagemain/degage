@@ -6,6 +6,7 @@ export const dbHubBenchmarkRead = async (id: string): Promise<HubBenchmark> => {
   const prisma = getPrismaClient();
   const hb = await prisma.hubBenchmark.findUniqueOrThrow({
     where: { id },
+    include: { hub: true },
   });
   return dbHubBenchmarkToDomain(hb);
 };

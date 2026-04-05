@@ -18,6 +18,8 @@ Each entity folder typically contains:
 
 Pages use the shared data table components from `app/app/components/ui/data-table/`.
 
+For **create and edit** screens (shared form, locale tabs, common copy, API flow), see [Admin create and edit forms](./admin-crud-forms.md).
+
 ## Deleting records
 
 There are two deletion flows: single-row delete and bulk delete. Both call the entity's `DELETE /api/{entity}/{id}` endpoint and handle the same
@@ -51,7 +53,7 @@ Props are all strings so translations are passed from the page. On confirm, the 
 
 ### Bulk delete
 
-When rows are selected via checkboxes, a **"Actions (N)"** dropdown button appears in the toolbar (between the search box and the facet
+When rows are selected via checkboxes, a **"Selection (N)"** dropdown button appears in the toolbar (between the search box and the facet
 filters). It contains a "Delete selected" option that opens a `BulkDeleteDialog`.
 
 **Components:**

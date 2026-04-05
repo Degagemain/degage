@@ -20,10 +20,12 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
   const isSorted = column.getIsSorted();
 
   const handleClick = () => {
-    // Toggle: unsorted -> asc -> desc -> asc -> desc ...
     const nextDesc = isSorted === 'asc';
-    column.toggleSorting(nextDesc);
-    onSort?.(column.id, nextDesc);
+    if (onSort) {
+      onSort(column.id, nextDesc);
+    } else {
+      column.toggleSorting(nextDesc);
+    }
   };
 
   return (

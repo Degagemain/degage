@@ -6,8 +6,8 @@ export const provinceSchema = z
     id: z.uuid().nullable(),
     name: z.string().min(1).max(100),
     fiscalRegion: idNameSchema,
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

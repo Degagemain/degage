@@ -57,3 +57,7 @@ regio.
 - Herbekijk vooral regelmatig **Max km**, **Max leeftijd**, **Min ecoscore (bonus)** en afschrijvingswaarden: die sturen afwijzingen en
   bonusscore direct.
 - Vul jaarlijkse kosten expliciet in zodat het km-tarief stabiel en vergelijkbaar blijft tussen hubs.
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

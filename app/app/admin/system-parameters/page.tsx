@@ -2,11 +2,19 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { SystemParameter } from '@/domain/system-parameter.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
+import {
+  AdminTablePage,
+  DataTable,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableToolbar,
+  FacetedFilterOption,
+} from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
 import { EditParameterDialog } from './edit-parameter-dialog';
 
@@ -35,34 +43,34 @@ export default function SystemParametersPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'code', desc: false }]);
-  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'code', desc: false },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['category'],
+    });
+
+  const categoryFilter = csv.category;
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ code: false });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [editParameter, setEditParameter] = useState<SystemParameter | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
-
-  const handleCategoryChange = useCallback((values: string[]) => {
-    setCategoryFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleCategoryChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('category', values);
+    },
+    [setCsvParam],
+  );
 
   const handleEdit = useCallback((param: SystemParameter) => {
     setEditParameter(param);
@@ -75,7 +83,7 @@ export default function SystemParametersPage() {
     try {
       const params = new URLSearchParams();
       if (debouncedQuery) params.set('query', debouncedQuery);
-      if (categoryFilter.length === 1) params.set('category', categoryFilter[0]);
+      if (categoryFilter.length === 1) params.set('category', categoryFilter[0]!);
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -158,7 +166,7 @@ export default function SystemParametersPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -170,12 +178,6 @@ export default function SystemParametersPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => setPageIndex(page);
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -200,49 +202,49 @@ export default function SystemParametersPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={filterSlot}
-          columnLabels={columnLabels}
-        />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-16" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            filterSlot={filterSlot}
+            exportEndpoint="/api/system-parameters/export"
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
       <EditParameterDialog parameter={editParameter} open={dialogOpen} onOpenChange={setDialogOpen} onSave={handleSave} t={t} />
-    </div>
+    </>
   );
 }

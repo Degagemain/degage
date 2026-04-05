@@ -3,7 +3,7 @@ import { HubBenchmarkFilter } from '@/domain/hub-benchmark.filter';
 import { getPrismaClient } from '@/storage/utils';
 import { Page } from '@/domain/page.model';
 import { Prisma } from '@/storage/client/client';
-import { dbHubBenchmarkToDomainWithRelations } from './hub-benchmark.mappers';
+import { dbHubBenchmarkToDomain } from './hub-benchmark.mappers';
 
 export const filterToQuery = (filter: HubBenchmarkFilter): Prisma.HubBenchmarkWhereInput => {
   return {
@@ -23,7 +23,7 @@ export const dbHubBenchmarkSearch = async (filter: HubBenchmarkFilter): Promise<
     orderBy: filter.sortBy ? [{ hub: { name: 'asc' } }, { [filter.sortBy]: filter.sortOrder }] : [{ hub: { name: 'asc' } }, { ownerKm: 'asc' }],
   });
   return {
-    records: records.map(dbHubBenchmarkToDomainWithRelations),
+    records: records.map(dbHubBenchmarkToDomain),
     total,
   };
 };

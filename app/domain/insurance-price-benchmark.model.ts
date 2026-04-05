@@ -7,8 +7,8 @@ export const insurancePriceBenchmarkSchema = z
     maxCarPrice: z.number().int().min(0),
     baseRate: z.number().min(0),
     rate: z.number().min(0),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

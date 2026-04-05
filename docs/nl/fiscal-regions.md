@@ -15,3 +15,7 @@ gedefinieerd. Er is momenteel slechts één fiscale regio: **Vlaanderen**. De be
 | Code       | Unieke korte identificatie van de regio. |
 | Naam       | Weergavenaam van de fiscale regio.       |
 | Standaard  | Of deze regio de standaard is.           |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

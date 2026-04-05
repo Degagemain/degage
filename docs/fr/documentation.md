@@ -23,3 +23,7 @@ affiche les compteurs total/mis à jour/ignorés/en échec.
 | Titre        | Par langue (anglais, néerlandais, français).                                                                                                                                                                       |
 | Contenu      | Par langue ; le Markdown est pris en charge si le format est markdown.                                                                                                                                             |
 | Embeddings   | Action admin pour régénérer les embeddings de recherche IA selon le contenu actuel et suivre les compteurs mis à jour/ignorés/en échec.                                                                            |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

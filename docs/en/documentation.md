@@ -23,3 +23,7 @@ records.
 | Title       | Per language (English, Dutch, French).                                                                                                                                                                                   |
 | Content     | Per language; Markdown is supported when format is markdown.                                                                                                                                                             |
 | Embeddings  | Admin action to regenerate AI-search embeddings per content language; support chat RAG retrieves vector chunks then loads **full** page text for the top matching documents for generation.                              |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

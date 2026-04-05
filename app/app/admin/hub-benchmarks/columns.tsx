@@ -1,11 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
-import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { HubBenchmark } from '@/domain/hub-benchmark.model';
 
 interface ColumnOptions {
@@ -41,7 +42,18 @@ export const createColumns = (options: ColumnOptions): ColumnDef<HubBenchmark>[]
       accessorKey: 'hub',
       accessorFn: (row) => row.hub?.name ?? '—',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.hub')} onSort={onSort} />,
-      cell: ({ row }) => <span className="text-sm font-medium">{row.original.hub?.name ?? '—'}</span>,
+      cell: ({ row }) => {
+        const item = row.original;
+        const label = item.hub?.name ?? '—';
+        if (!item.id) {
+          return <span className="text-sm font-medium">{label}</span>;
+        }
+        return (
+          <Link href={`/app/admin/hub-benchmarks/${item.id}`} className="text-sm font-medium hover:underline">
+            {label}
+          </Link>
+        );
+      },
       enableHiding: true,
       enableSorting: false,
     },
@@ -112,6 +124,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<HubBenchmark>[]
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
+              {item.id && (
+                <DropdownMenuItem asChild>
+                  <Link href={`/app/admin/hub-benchmarks/${item.id}`}>
+                    <Pencil />
+                    {t('actions.edit')}
+                  </Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem variant="destructive" onClick={() => options.onDelete?.(item)}>
                 <Trash2 />
                 {t('actions.delete')}

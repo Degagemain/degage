@@ -10,8 +10,6 @@ export type ChatMessageRole = z.infer<typeof chatMessageRoleSchema>;
 
 export const chatCitationSchema = z
   .object({
-    documentationId: z.uuid(),
-    externalId: z.string().min(1),
     title: z.string().min(1),
     url: z.string().min(1),
   })

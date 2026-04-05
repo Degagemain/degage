@@ -1,5 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { DefaultTake, MaxTake, SortOrder, calculateOwnerKmPerYear, formatPriceInThousands } from '@/domain/utils';
+import {
+  DashPlaceholder,
+  DefaultTake,
+  MaxTake,
+  SortOrder,
+  asTextOrDash,
+  buildCsvLinesFromColumns,
+  calculateOwnerKmPerYear,
+  encodeCsvDocument,
+  escapeCsvCell,
+  formatDateOrDash,
+  formatPriceInThousands,
+  joinCsvRow,
+} from '@/domain/utils';
 
 describe('calculateOwnerKmPerYear', () => {
   it('returns mileage divided by years since first registration', () => {
@@ -30,6 +43,50 @@ describe('formatPriceInThousands', () => {
   it('rounds to nearest thousand', () => {
     expect(formatPriceInThousands(15_400)).toBe('15k');
     expect(formatPriceInThousands(15_600)).toBe('16k');
+  });
+});
+
+describe('csv', () => {
+  it('escapeCsvCell quotes fields that need it', () => {
+    expect(escapeCsvCell('a')).toBe('a');
+    expect(escapeCsvCell('a,b')).toBe('"a,b"');
+    expect(escapeCsvCell('say "hi"')).toBe('"say ""hi"""');
+    expect(escapeCsvCell('a\nb')).toBe('"a\nb"');
+  });
+
+  it('joinCsvRow escapes each cell', () => {
+    expect(joinCsvRow(['x', 'y, z'])).toBe('x,"y, z"');
+  });
+
+  it('encodeCsvDocument prefixes BOM and uses CRLF', () => {
+    expect(encodeCsvDocument(['a', 'b'])).toBe('\uFEFFa\r\nb');
+  });
+
+  it('buildCsvLinesFromColumns builds header and lines', () => {
+    const lines = buildCsvLinesFromColumns(
+      [{ a: 'x', b: 1 }],
+      [
+        { label: 'A', format: (row) => row.a },
+        { label: 'B', format: (row) => String(row.b) },
+      ],
+    );
+    expect(lines).toEqual(['A,B', 'x,1']);
+  });
+});
+
+describe('dash formatters', () => {
+  it('asTextOrDash returns dash for null and blank values', () => {
+    expect(asTextOrDash(null)).toBe(DashPlaceholder);
+    expect(asTextOrDash('   ')).toBe(DashPlaceholder);
+  });
+
+  it('asTextOrDash trims non-empty values', () => {
+    expect(asTextOrDash('  abc  ')).toBe('abc');
+  });
+
+  it('formatDateOrDash returns dash for invalid date values', () => {
+    expect(formatDateOrDash(null, 'en', false)).toBe(DashPlaceholder);
+    expect(formatDateOrDash('not-a-date', 'en', false)).toBe(DashPlaceholder);
   });
 });
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -42,6 +43,14 @@ import {
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { useSupportChat } from '@/app/components/support-chat-provider';
 import { UserMenu } from '@/app/components/user-menu';
+
+function AdminMainFallback() {
+  return (
+    <div className="flex min-h-[240px] flex-1 items-center justify-center px-4">
+      <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
+    </div>
+  );
+}
 
 function usePageTitle(t: (key: string) => string) {
   const pathname = usePathname();
@@ -102,7 +111,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <SidebarMenuItem>
                 <SidebarMenuButton size="lg" asChild tooltip={t('sidebar.backToApp')}>
                   <Link href="/app">
-                    <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg text-xs font-semibold">
+                    <div
+                      className={
+                        'bg-primary text-primary-foreground flex aspect-square size-8 ' +
+                        'items-center justify-center rounded-lg text-xs font-semibold'
+                      }
+                    >
                       N
                     </div>
                     <div className="flex flex-col gap-0.5 leading-none">
@@ -266,7 +280,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <SidebarRail />
         </Sidebar>
         <SidebarInset>
-          <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur">
+          <header
+            className={
+              'bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 ' +
+              'flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur'
+            }
+          >
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             {pageTitle && (
@@ -292,7 +311,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               ) : null}
             </div>
           </header>
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <Suspense fallback={<AdminMainFallback />}>{children}</Suspense>
+          </main>
         </SidebarInset>
       </SidebarProvider>
     </>

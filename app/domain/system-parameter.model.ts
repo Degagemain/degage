@@ -31,8 +31,8 @@ export const systemParameterSchema = z
     valueNumberMin: z.number().nullable().default(null),
     valueNumberMax: z.number().nullable().default(null),
     valueEuronormId: z.string().uuid().nullable().default(null),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

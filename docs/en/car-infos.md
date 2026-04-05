@@ -23,3 +23,7 @@ results faster and more consistent.
 | Ecoscore     | Environmental score.            |
 | Euro norm    | Emission standard.              |
 | Consumption  | Consumption value.              |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

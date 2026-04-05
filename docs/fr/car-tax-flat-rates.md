@@ -14,3 +14,7 @@ véhicule.
 | Région fiscale | La région à laquelle ce taux s'applique. |
 | Début          | Date de début de validité.               |
 | Tarif          | Montant fixe.                            |
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

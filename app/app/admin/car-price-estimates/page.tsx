@@ -1,16 +1,19 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Trash2 } from 'lucide-react';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarPriceEstimate } from '@/domain/car-price-estimate.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
-import { DataTable, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
+import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
@@ -34,6 +37,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function CarPriceEstimatesPage() {
   const t = useTranslations('admin.carPriceEstimates');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<CarPriceEstimatesState>({
     data: [],
     total: 0,
@@ -41,9 +45,12 @@ export default function CarPriceEstimatesPage() {
     error: null,
   });
 
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const { pageIndex, pageSize, sorting, setPageIndex, setPageSize, setSort } = useAdminListUrlSync({
+    defaultPageSize: DEFAULT_PAGE_SIZE,
+    defaultSort: null,
+    validSortIds: Object.keys(SORT_COLUMN_MAP),
+  });
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     remarks: false,
     createdAt: false,
@@ -53,10 +60,12 @@ export default function CarPriceEstimatesPage() {
   const [itemToDelete, setItemToDelete] = useState<CarPriceEstimate | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
   const handleDeleteRequest = useCallback((item: CarPriceEstimate) => {
     setItemToDelete(item);
@@ -162,7 +171,7 @@ export default function CarPriceEstimatesPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -174,12 +183,6 @@ export default function CarPriceEstimatesPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => setPageIndex(page);
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -195,54 +198,63 @@ export default function CarPriceEstimatesPage() {
   }
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue=""
-          onSearchChange={() => {}}
-          filterSlot={
-            <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
-              <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
-                <Trash2 />
-                {t('bulkActions.delete')}
-              </DropdownMenuItem>
-            </BulkActionsButton>
-          }
-          columnLabels={columnLabels}
-        />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue=""
+            onSearchChange={() => {}}
+            showSearch={false}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/car-price-estimates/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
+            filterSlot={
+              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                  <Trash2 />
+                  {t('bulkActions.delete')}
+                </DropdownMenuItem>
+              </BulkActionsButton>
+            }
+            exportEndpoint="/api/car-price-estimates/export"
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
       <DeleteConfirmationDialog
         open={itemToDelete !== null}
@@ -275,6 +287,6 @@ export default function CarPriceEstimatesPage() {
           statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
-    </div>
+    </>
   );
 }

@@ -178,7 +178,7 @@ describe('API Route - PUT /api/euro-norms/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(updateEuroNorm).not.toHaveBeenCalled();
     });
 
@@ -244,7 +244,7 @@ describe('API Route - DELETE /api/euro-norms/[id]', () => {
 
       expect(response.status).toBe(403);
       expect(json.code).toBe('forbidden');
-      expect(json.errors[0].message).toBe('Admin access required');
+      expect(json.errors[0].message).toBe('Access denied');
       expect(deleteEuroNorm).not.toHaveBeenCalled();
     });
 

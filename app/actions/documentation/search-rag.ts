@@ -9,8 +9,6 @@ const DEFAULT_CHUNK_SEARCH_LIMIT = 30;
 const DEFAULT_MAX_FULL_DOCUMENTS = 5;
 
 export type RagDocumentationCitation = {
-  documentationId: string;
-  externalId: string;
   title: string;
   url: string;
 };
@@ -109,8 +107,6 @@ export const searchDocumentationForRag = async (
   }
 
   const citations: RagDocumentationCitation[] = fullDocuments.map((doc) => ({
-    documentationId: doc.documentationId,
-    externalId: doc.externalId,
     title: doc.title,
     url: doc.citationUrl,
   }));

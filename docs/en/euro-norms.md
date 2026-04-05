@@ -16,3 +16,7 @@ Reference list of emission standards (e.g. Euro 6), with group and validity peri
 | Active   | Whether the norm is available for selection. |
 | Start    | Start date of validity.                      |
 | End      | End date of validity (if applicable).        |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

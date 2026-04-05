@@ -57,3 +57,7 @@ donc varier selon la zone.
 - Revoir regulierement **Sim max km**, **Sim max age**, **Sim min ecoscore for bonus** et les champs de depreciation, car ils influencent
   directement rejet et score qualite.
 - Renseigner explicitement les couts annuels pour garder des taux km stables et comparables entre hubs.
+
+## Export
+
+Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.

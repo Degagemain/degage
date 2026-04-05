@@ -19,3 +19,7 @@ Estimated value ranges for vehicles by brand, fuel type, car type, and year. Use
 | Range min     | Minimum of the value range.   |
 | Range max     | Maximum of the value range.   |
 | Remarks       | Optional notes.               |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

@@ -11,8 +11,6 @@ import { isAdmin } from '@/domain/role.utils';
 import { chatUserMessageMaxLength } from '@/domain/chat.model';
 
 const citationSchema = z.object({
-  documentationId: z.uuid(),
-  externalId: z.string().min(1),
   title: z.string().min(1),
   url: z.string().min(1),
 });

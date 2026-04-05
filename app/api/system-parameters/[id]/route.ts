@@ -1,40 +1,22 @@
 import type { NextRequest } from 'next/server';
-import { headers } from 'next/headers';
 import { ZodError } from 'zod';
-import { auth } from '@/auth';
-import { isAdmin } from '@/domain/role.utils';
+import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
 import {
   IdRouteParams,
   NotFoundError,
-  forbiddenResponse,
   getIdFromRoute,
   isPrismaNotFoundError,
   notFoundResponse,
   safeParseRequestJson,
   tryReadResource,
-  unauthorizedResponse,
 } from '@/api/utils';
 import { readSystemParameter } from '@/actions/system-parameter/read';
 import { updateSystemParameterValues } from '@/actions/system-parameter/update-values';
 import { withContext } from '@/api/with-context';
 import { statusCodes } from '@/api/status-codes';
 
-const requireAdmin = async (): Promise<Response | null> => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session?.user) {
-    return unauthorizedResponse();
-  }
-
-  if (!isAdmin(session.user)) {
-    return forbiddenResponse('Admin access required');
-  }
-
-  return null;
-};
-
 export const GET = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
-  const denied = await requireAdmin();
+  const denied = await errorResponseIfNotAdmin();
   if (denied) return denied;
 
   const id = await getIdFromRoute(context as IdRouteParams);
@@ -42,7 +24,7 @@ export const GET = withContext(async (request: NextRequest, context?: { params: 
 });
 
 export const PATCH = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
-  const denied = await requireAdmin();
+  const denied = await errorResponseIfNotAdmin();
   if (denied) return denied;
 
   const id = await getIdFromRoute(context as IdRouteParams);

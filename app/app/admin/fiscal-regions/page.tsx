@@ -1,16 +1,26 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { RowSelectionState, SortingState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Trash2, X } from 'lucide-react';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Check, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FiscalRegion } from '@/domain/fiscal-region.model';
 import { Page } from '@/domain/page.model';
+import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
-import { DataTable, DataTableFacetedFilter, DataTablePagination, DataTableToolbar, FacetedFilterOption } from '@/app/components/ui/data-table';
+import {
+  AdminTablePage,
+  DataTable,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableToolbar,
+  FacetedFilterOption,
+} from '@/app/components/ui/data-table';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
@@ -34,6 +44,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function FiscalRegionsPage() {
   const t = useTranslations('admin.fiscalRegions');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<FiscalRegionsState>({
     data: [],
     total: 0,
@@ -41,12 +52,16 @@ export default function FiscalRegionsPage() {
     error: null,
   });
 
-  const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'code', desc: false }]);
-  const [isDefaultFilter, setIsDefaultFilter] = useState<string[]>([]);
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'code', desc: false },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['isDefault'],
+    });
+
+  const isDefaultFilter = csv.isDefault;
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     createdAt: false,
     updatedAt: false,
@@ -55,24 +70,19 @@ export default function FiscalRegionsPage() {
   const [fiscalRegionToDelete, setFiscalRegionToDelete] = useState<FiscalRegion | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-      setPageIndex(0);
-    }, 300);
+  const handleSort = useCallback(
+    (columnId: string, desc: boolean) => {
+      setSort(columnId, desc);
+    },
+    [setSort],
+  );
 
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  const handleSort = useCallback((columnId: string, desc: boolean) => {
-    setSorting([{ id: columnId, desc }]);
-    setPageIndex(0);
-  }, []);
-
-  const handleIsDefaultChange = useCallback((values: string[]) => {
-    setIsDefaultFilter(values);
-    setPageIndex(0);
-  }, []);
+  const handleIsDefaultChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isDefault', values);
+    },
+    [setCsvParam],
+  );
 
   const handleDeleteRequest = useCallback((fiscalRegion: FiscalRegion) => {
     setFiscalRegionToDelete(fiscalRegion);
@@ -105,7 +115,7 @@ export default function FiscalRegionsPage() {
     try {
       const params = new URLSearchParams();
       if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isDefaultFilter.length === 1) params.set('isDefault', isDefaultFilter[0]);
+      if (isDefaultFilter.length === 1) params.set('isDefault', isDefaultFilter[0]!);
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -184,7 +194,7 @@ export default function FiscalRegionsPage() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
@@ -196,12 +206,6 @@ export default function FiscalRegionsPage() {
       rowSelection,
     },
   });
-
-  const handlePageChange = (page: number) => setPageIndex(page);
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPageIndex(0);
-  };
 
   if (state.error) {
     return (
@@ -226,56 +230,64 @@ export default function FiscalRegionsPage() {
   );
 
   return (
-    <div className="flex flex-col gap-3 pt-2 pb-3 md:pt-3 md:pb-4">
-      <div className="px-3 md:px-4">
-        <DataTableToolbar
-          table={table}
-          searchValue={query}
-          onSearchChange={setQuery}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={
-            <>
-              <BulkActionsButton count={selectedFiscalRegions.length} label={t('bulkActions.label')}>
-                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
-                  <Trash2 />
-                  {t('bulkActions.delete')}
-                </DropdownMenuItem>
-              </BulkActionsButton>
-              {filterSlot}
-            </>
-          }
-          columnLabels={columnLabels}
-        />
-      </div>
-
-      {state.isLoading ? (
-        <div className="border-y">
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-5 w-14 rounded-full" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-          <DataTable table={table} columns={columns} />
-          <div className="px-3 md:px-4">
-            <DataTablePagination
-              pageIndex={pageIndex}
-              pageSize={pageSize}
-              pageCount={pageCount}
-              totalItems={state.total}
-              selectedCount={Object.keys(rowSelection).length}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
-        </>
-      )}
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/fiscal-regions/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
+            filterSlot={
+              <>
+                <BulkActionsButton count={selectedFiscalRegions.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                    <Trash2 />
+                    {t('bulkActions.delete')}
+                  </DropdownMenuItem>
+                </BulkActionsButton>
+                {filterSlot}
+              </>
+            }
+            exportEndpoint="/api/fiscal-regions/export"
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-5 w-14 rounded-full" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={pageCount}
+            totalItems={state.total}
+            selectedCount={Object.keys(rowSelection).length}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
 
       <DeleteConfirmationDialog
         open={fiscalRegionToDelete !== null}
@@ -308,6 +320,6 @@ export default function FiscalRegionsPage() {
           statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
-    </div>
+    </>
   );
 }

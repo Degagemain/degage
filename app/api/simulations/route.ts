@@ -5,10 +5,24 @@ import { searchSimulations } from '@/actions/simulation/search';
 import { createSimulation } from '@/actions/simulation/create';
 import { simulationFilterSchema } from '@/domain/simulation.filter';
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
-import { fromZodParseResult, safeParseRequestJson } from '@/api/utils';
+import { badRequestResponseFromZod, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withContext } from '@/api/with-context';
 import { ZodError } from 'zod';
+
+const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<string, unknown> => {
+  return {
+    query: sp.get('query') ?? undefined,
+    brandIds: sp.getAll('brandId'),
+    fuelTypeIds: sp.getAll('fuelTypeId'),
+    carTypeIds: sp.getAll('carTypeId'),
+    resultCodes: sp.getAll('resultCode'),
+    skip: sp.get('skip') ?? undefined,
+    take: sp.get('take') ?? undefined,
+    sortBy: sp.get('sortBy') ?? undefined,
+    sortOrder: sp.get('sortOrder') ?? undefined,
+  };
+};
 
 export const GET = withContext(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -17,23 +31,12 @@ export const GET = withContext(async (request: NextRequest) => {
     return Response.json({ code: 'unauthorized', errors: [{ message: 'Authentication required' }] }, { status: statusCodes.UNAUTHORIZED });
   }
 
-  const sp = request.nextUrl.searchParams;
-  const params: Record<string, unknown> = {};
-  for (const [key, value] of sp.entries()) {
-    if (key === 'brandId' || key === 'fuelTypeId' || key === 'carTypeId' || key === 'resultCode') continue;
-    params[key] = value;
-  }
-  params.brandIds = sp.getAll('brandId');
-  params.fuelTypeIds = sp.getAll('fuelTypeId');
-  params.carTypeIds = sp.getAll('carTypeId');
-  params.resultCodes = sp.getAll('resultCode');
-
-  const filterResult = simulationFilterSchema.safeParse(params);
-  if (!filterResult.success) {
-    return fromZodParseResult(filterResult);
+  const filter = simulationFilterSchema.safeParse(simulationFilterInputFromSearchParams(request.nextUrl.searchParams));
+  if (!filter.success) {
+    return badRequestResponseFromZod(filter);
   }
 
-  const result = await searchSimulations(filterResult.data);
+  const result = await searchSimulations(filter.data);
   return Response.json(result);
 });
 

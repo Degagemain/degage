@@ -17,3 +17,7 @@ type en naam zijn vast.
 | Naam       | Weergavenaam (vertaalbaar, alleen-lezen).                       |
 | Type       | Hoe de waarde wordt opgeslagen: getal, getalbereik of euronorm. |
 | Waarde     | De bewerkbare waarde(n) afhankelijk van het type.               |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

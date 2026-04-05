@@ -86,8 +86,6 @@ describe('searchDocumentationForRag', () => {
     });
     expect(result.citations).toEqual([
       {
-        documentationId: 'd1',
-        externalId: 'repo:first',
         title: 'First',
         url: '/app/docs/repo%3Afirst',
       },

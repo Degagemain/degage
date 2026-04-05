@@ -15,3 +15,7 @@ berekening van de verkeersbelasting.
 | Euronormgroep       | Emissiegroep (bv. Euro 6).                         |
 | Standaardaanpassing | Aanpassingsfactor voor standaardbrandstof.         |
 | Dieselaanpassing    | Aanpassingsfactor voor diesel.                     |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

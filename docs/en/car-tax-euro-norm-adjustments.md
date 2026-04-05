@@ -14,3 +14,7 @@ Tax adjustments by emission class (euro norm group) and fuel type per fiscal reg
 | Euro norm group    | Emission group (e.g. Euro 6).          |
 | Default adjustment | Adjustment factor for default fuel.    |
 | Diesel adjustment  | Adjustment factor for diesel.          |
+
+## Export
+
+Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

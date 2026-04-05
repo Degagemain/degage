@@ -16,3 +16,7 @@ Referentielijst van emissienormen (bv. Euro 6), met groep en geldigheidsperiode.
 | Actief     | Of de norm beschikbaar is voor selectie.             |
 | Start      | Startdatum van de geldigheid.                        |
 | Einde      | Einddatum van de geldigheid (indien van toepassing). |
+
+## Export
+
+Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.

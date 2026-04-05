@@ -8,8 +8,8 @@ export const carTaxEuroNormAdjustmentSchema = z
     euroNormGroup: z.number().int().min(0),
     defaultAdjustment: z.number(),
     dieselAdjustment: z.number(),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 

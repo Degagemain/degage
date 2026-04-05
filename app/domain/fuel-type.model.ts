@@ -16,8 +16,8 @@ export const fuelTypeSchema = z
     pricePer: z.number().min(0).default(0),
     co2Contribution: z.number().int().min(0).default(0),
     translations: z.array(fuelTypeTranslationSchema).default([]),
-    createdAt: z.date().nullable().default(null),
-    updatedAt: z.date().nullable().default(null),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
   })
   .strict();
 
