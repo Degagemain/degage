@@ -84,6 +84,9 @@ const CONFIRMATION_PATH_OPTIONS: { id: ConfirmationMemberPath; labelKey: string 
 
 const DEV_UI_ENABLED = process.env.NEXT_PUBLIC_DEV_UI === 'true';
 
+/** Visual max duration for the public loading bar (seconds); the result screen shows as soon as the API responds. */
+const SIMULATION_LOADING_BAR_SECONDS = 60;
+
 const SIMULATION_FAQ_TAGS = {
   step1: ['simulation_step_1'],
   step2Approved: ['simulation_step_2_approved'],
@@ -137,7 +140,6 @@ export default function SimulationPage() {
   } | null>(null);
   const [simulationError, setSimulationError] = useState<string | null>(null);
   const [loadingAttempt, setLoadingAttempt] = useState(0);
-  const [loadingFunnyIndex, setLoadingFunnyIndex] = useState(0);
   const [resultHeroAutoState, setResultHeroAutoState] = useState<'parked' | 'driving' | 'gone'>('parked');
   const [resultDisplayOverride, setResultDisplayOverride] = useState<null | 'success' | 'notOk' | 'unclear'>(null);
   const [costScenarioIndex, setCostScenarioIndex] = useState(1);
@@ -409,15 +411,6 @@ export default function SimulationPage() {
     const zip = townLabel.replace(/\s/g, '').slice(0, 4);
     return lower.includes('gent') || /^90\d\d/.test(zip);
   }, [townLabel]);
-
-  useEffect(() => {
-    if (screen !== STEP_LOADING || simulationError !== null) return;
-    setLoadingFunnyIndex(0);
-    const id = setInterval(() => {
-      setLoadingFunnyIndex((i) => (i + 1) % 4);
-    }, 1200);
-    return () => clearInterval(id);
-  }, [screen, simulationError]);
 
   useEffect(() => {
     if (screen !== STEP_RESULT || !isSuccessResult) {
@@ -903,41 +896,24 @@ export default function SimulationPage() {
             </div>
           ) : (
             <>
-              <div className={styles.loadingHeader}>
-                <div className={styles.loadingProgressWrap}>
-                  <svg width="56" height="56" className={styles.loadingProgressSvg}>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke="var(--sim-sand)" strokeWidth="3.5" />
-                    <circle
-                      cx="28"
-                      cy="28"
-                      r="22"
-                      fill="none"
-                      stroke="var(--sim-brand)"
-                      strokeWidth="3.5"
-                      strokeDasharray={2 * Math.PI * 22}
-                      strokeDashoffset={2 * Math.PI * 22 * (1 - ((loadingFunnyIndex + 1) * 25) / 100)}
-                      strokeLinecap="round"
-                      transform="rotate(-90 28 28)"
-                      style={{ transition: 'stroke-dashoffset 0.5s ease' }}
-                    />
-                  </svg>
-                  <div className={styles.loadingProgressInner} aria-hidden />
-                </div>
-                <div>
-                  <div className={styles.loadingHeaderTitle}>
-                    {brandLabel && carTypeName
-                      ? t('loading.headerTitleWithName', { name: `${brandLabel} ${carTypeName}` })
-                      : t('loading.headerTitle')}
-                  </div>
-                  <div className={styles.loadingHeaderSubtitle}>
-                    {tWizard(
-                      ['loading.funny1', 'loading.funny2', 'loading.funny3', 'loading.funny4'][loadingFunnyIndex] as
-                        | 'loading.funny1'
-                        | 'loading.funny2'
-                        | 'loading.funny3'
-                        | 'loading.funny4',
-                    )}
-                  </div>
+              <div className={styles.simLoadingSection} aria-busy="true">
+                <h1 className={styles.loadingHeaderTitle}>
+                  {brandLabel && carTypeName
+                    ? t('loading.headerTitleWithName', { name: `${brandLabel} ${carTypeName}` })
+                    : t('loading.headerTitle')}
+                </h1>
+                <div
+                  className={styles.simLoadingBarTrack}
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={t('loading.progressAriaLabel')}
+                >
+                  <div
+                    key={loadingAttempt}
+                    className={styles.simLoadingBarFill}
+                    style={{ animationDuration: `${SIMULATION_LOADING_BAR_SECONDS}s` }}
+                  />
                 </div>
               </div>
               <div className={styles.loadingCard}>

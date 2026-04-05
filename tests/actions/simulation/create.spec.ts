@@ -8,6 +8,7 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
 vi.mock('@/actions/simulation/engine', () => ({
   runSimulationEngine: vi.fn().mockResolvedValue({
     resultCode: 'manualReview',
+    duration: 0,
     steps: [
       { status: 'ok', message: 'simulation.step.mileage_limit' },
       { status: 'ok', message: 'simulation.step.car_limit' },
@@ -40,6 +41,7 @@ describe('createSimulation', () => {
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(4);
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
+    expect(result.duration).toBe(0);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
   });
 

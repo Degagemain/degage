@@ -134,6 +134,7 @@ export const simulationSchema = z
     resultDepreciationCostKm: z.number().nullable().default(null),
     resultEstimatedCarValue: z.number().nullable().default(null),
     error: z.string().nullable().default(null),
+    duration: z.number().int().min(0).default(45),
     steps: z.array(simulationStepSchema).default([]),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -186,6 +187,7 @@ export interface SimulationEngineResult extends SimulationResultBuilder {
   resultDepreciationCostKm?: number | null;
   resultEstimatedCarValue?: number | null;
   error?: string | null;
+  duration?: number;
 
   /* Read-only, not stored in the database */
   estimate?: PriceRange;

@@ -1109,6 +1109,7 @@
         "seats": "Seats",
         "firstRegisteredAt": "First registered",
         "carTypeOther": "Car type (other)",
+        "duration": "Duration (s)",
         "created": "Created",
         "updated": "Updated"
       },
@@ -1173,6 +1174,7 @@
         "isNewCar": "New car",
         "purchasePrice": "Purchase price (incl. VAT)",
         "rejectionReason": "Rejection reason",
+        "duration": "Run duration (seconds)",
         "estimatedPrice": "Estimated price",
         "cylinderCc": "Cylinder capacity",
         "co2Emission": "CO₂ emission",
@@ -1540,6 +1542,7 @@
       "headerTitle": "Assessing your car…",
       "headerTitleWithName": "Assessing {name}…",
       "headerSubtitle": "Step {current} of {total}",
+      "progressAriaLabel": "Simulation in progress. The bar may take up to 45 seconds; your result can appear sooner.",
       "busy": "in progress…",
       "checkingLocation": "Checking location…",
       "checkingAgeKm": "Checking age & km…",
