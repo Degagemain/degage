@@ -159,6 +159,10 @@ d'etapes.
 | Première immatriculation | Date de première immatriculation.                       |
 | Type autre               | Description personnalisée lorsque « Autre » est choisi. |
 
+Vous pouvez télécharger les lignes correspondant aux filtres et au tri actuels via **Plus**, puis **Exporter**. Choisissez un fichier adapté aux
+tableurs ou un fichier de données structurées. Les intitulés de colonnes correspondent à la liste (y compris les colonnes masquées). Seuls les
+administrateurs peuvent exporter.
+
 ## Conseils pour les admins
 
 - Garder les tables de reference completes et a jour avant les batchs de simulation.

@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchCarPriceEstimates } from '@/actions/car-price-estimate/search';
 import { createCarPriceEstimate } from '@/actions/car-price-estimate/create';
 import { carPriceEstimateFilterSchema } from '@/domain/car-price-estimate.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -21,7 +21,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const filter = carPriceEstimateFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
-    return fromZodParseResult(filter);
+    return badRequestResponseFromZod(filter);
   }
 
   const result = await searchCarPriceEstimates(filter.data);

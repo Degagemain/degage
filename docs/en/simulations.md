@@ -157,6 +157,10 @@ The list shows simulation runs: town, result, and entered car data. Open a row t
 | First registered at | First registration date.                         |
 | Car type other      | Custom type description when “Other” was chosen. |
 
+You can download the rows that match the current filters and sort order using **More**, then **Export**. Choose a spreadsheet-friendly download
+or a structured data download. Column labels match what you see in the list (including columns you may have hidden). Only administrators can
+export.
+
 ## Admin guidance
 
 - Keep reference tables complete and up to date before running large simulation batches.

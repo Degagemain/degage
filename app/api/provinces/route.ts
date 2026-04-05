@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchProvinces } from '@/actions/province/search';
 import { createProvince } from '@/actions/province/create';
 import { provinceFilterSchema } from '@/domain/province.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -17,7 +17,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const provinceFilter = provinceFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!provinceFilter.success) {
-    return fromZodParseResult(provinceFilter);
+    return badRequestResponseFromZod(provinceFilter);
   }
 
   const result = await searchProvinces(provinceFilter.data);

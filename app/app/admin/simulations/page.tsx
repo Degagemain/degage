@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { toast } from 'sonner';
 import { Simulation } from '@/domain/simulation.model';
@@ -12,7 +12,7 @@ import { SimulationSortColumns } from '@/domain/simulation.filter';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import {
   AdminTablePage,
   DataTable,
@@ -26,6 +26,7 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { AdminExportDialog, type AdminExportFormat } from '@/app/admin/components/admin-export-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -46,6 +47,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function SimulationsPage() {
   const t = useTranslations('admin.simulations');
+  const tExport = useTranslations('admin.common.export');
   const [state, setState] = useState<SimulationsState>({
     data: [],
     total: 0,
@@ -119,6 +121,7 @@ export default function SimulationsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<Simulation | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -226,6 +229,26 @@ export default function SimulationsPage() {
       }));
     }
   }, [debouncedQuery, brandIds, fuelTypeIds, resultCodeFilter, pageIndex, pageSize, sorting]);
+
+  const buildSimulationsExportUrl = useCallback(
+    (format: AdminExportFormat) => {
+      const params = new URLSearchParams();
+      if (debouncedQuery.trim()) params.set('query', debouncedQuery.trim());
+      brandIds.forEach((id) => params.append('brandId', id));
+      fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
+      resultCodeFilter.forEach((code) => params.append('resultCode', code));
+      if (sorting.length > 0) {
+        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+        if (sortColumn) {
+          params.set('sortBy', sortColumn);
+          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+        }
+      }
+      params.set('format', format);
+      return `/api/simulations/export?${params.toString()}`;
+    },
+    [debouncedQuery, brandIds, fuelTypeIds, resultCodeFilter, sorting],
+  );
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
@@ -349,6 +372,22 @@ export default function SimulationsPage() {
                   </DropdownMenuItem>
                 </BulkActionsButton>
                 {filterSlot}
+              </>
+            }
+            postFilterSlot={
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-9">
+                      {tExport('more')}
+                      <ChevronDown className="ml-1 size-4 opacity-70" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    <DropdownMenuItem onSelect={() => setExportDialogOpen(true)}>{tExport('openExport')}</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <AdminExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} buildExportUrl={buildSimulationsExportUrl} />
               </>
             }
             columnLabels={columnLabels}

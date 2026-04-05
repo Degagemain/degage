@@ -154,6 +154,21 @@
       "empty": "Aucune page trouvée.",
       "goToPage": "Aller à la page"
     },
+    "common": {
+      "export": {
+        "title": "Exporter",
+        "description": "Télécharger toutes les lignes correspondant aux filtres et au tri actuels. Les grandes listes peuvent prendre un moment.",
+        "format": "Format",
+        "formatCsv": "CSV",
+        "formatJson": "JSON",
+        "submit": "Exporter",
+        "submitting": "Export en cours…",
+        "cancel": "Annuler",
+        "error": "Échec de l'export.",
+        "more": "Plus",
+        "openExport": "Exporter"
+      }
+    },
     "carBrands": {
       "title": "Marques",
       "filters": {

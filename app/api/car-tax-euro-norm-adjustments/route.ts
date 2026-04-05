@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchCarTaxEuroNormAdjustments } from '@/actions/car-tax-euro-norm-adjustment/search';
 import { createCarTaxEuroNormAdjustment } from '@/actions/car-tax-euro-norm-adjustment/create';
 import { carTaxEuroNormAdjustmentFilterSchema } from '@/domain/car-tax-euro-norm-adjustment.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -21,7 +21,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const filter = carTaxEuroNormAdjustmentFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
-    return fromZodParseResult(filter);
+    return badRequestResponseFromZod(filter);
   }
 
   const result = await searchCarTaxEuroNormAdjustments(filter.data);

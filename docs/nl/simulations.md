@@ -158,6 +158,10 @@ De lijst toont simulatieruns: gemeente, resultaat en ingevoerde autodata. Open e
 | Eerste inschrijving | Datum eerste inschrijving.                                  |
 | Autotype (overig)   | Aangepaste typebeschrijving bij «Overig».                   |
 
+Je kunt de rijen die bij de huidige filters en sortering horen downloaden via **Meer** en daarna **Exporteren**. Kies een
+spreadsheetvriendelijke export of een gestructureerde data-export. Kolomtitels komen overeen met wat je in de lijst ziet (ook kolommen die je
+verborgen hebt). Alleen beheerders kunnen exporteren.
+
 ## Richtlijnen voor admins
 
 - Houd referentietabellen volledig en actueel voor grote simulatiebatches.

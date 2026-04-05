@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { isAdmin } from '@/domain/role.utils';
 import { searchCarTaxBaseRates } from '@/actions/car-tax-base-rate/search';
 import { carTaxBaseRateFilterSchema } from '@/domain/car-tax-base-rate.filter';
-import { forbiddenResponse, fromZodParseResult, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -20,7 +20,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const filter = carTaxBaseRateFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
-    return fromZodParseResult(filter);
+    return badRequestResponseFromZod(filter);
   }
 
   const result = await searchCarTaxBaseRates(filter.data);

@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchEuroNorms } from '@/actions/euro-norm/search';
 import { createEuroNorm } from '@/actions/euro-norm/create';
 import { euroNormFilterSchema } from '@/domain/euro-norm.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -17,7 +17,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const euroNormFilter = euroNormFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!euroNormFilter.success) {
-    return fromZodParseResult(euroNormFilter);
+    return badRequestResponseFromZod(euroNormFilter);
   }
 
   const result = await searchEuroNorms(euroNormFilter.data);

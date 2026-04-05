@@ -24,3 +24,13 @@ export const simulationFilterSchema = z
   .strict();
 
 export type SimulationFilter = z.infer<typeof simulationFilterSchema>;
+
+export const simulationExportFilterSchema = simulationFilterSchema.omit({ skip: true, take: true });
+
+export type SimulationExportFilter = z.infer<typeof simulationExportFilterSchema>;
+
+export const simulationExportRequestSchema = simulationExportFilterSchema.extend({
+  format: z.enum(['csv', 'json']),
+});
+
+export type SimulationExportRequest = z.infer<typeof simulationExportRequestSchema>;

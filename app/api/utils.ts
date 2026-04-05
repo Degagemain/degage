@@ -54,7 +54,7 @@ export const tryCreateResource = async <T>(createResource: (resource: T) => Prom
   }
 };
 
-export const fromZodParseResult = <T>(parseResult: ZodSafeParseResult<T>): Response => {
+export const badRequestResponseFromZod = <T>(parseResult: ZodSafeParseResult<T>): Response => {
   return Response.json(
     {
       code: 'invalid query parameters',
@@ -82,6 +82,24 @@ export const unauthorizedResponse = (message: string = 'Authentication required'
 
 export const forbiddenResponse = (message: string = 'Access denied'): Response => {
   return Response.json({ code: 'forbidden', errors: [{ message }] }, { status: statusCodes.FORBIDDEN });
+};
+
+const attachmentDownloadResponse = (body: string, filename: string, contentType: string): Response => {
+  return new Response(body, {
+    status: statusCodes.OK,
+    headers: {
+      'Content-Type': contentType,
+      'Content-Disposition': `attachment; filename="${filename}"`,
+    },
+  });
+};
+
+export const attachmentDownloadJsonResponse = (body: string, filename: string = 'download.json'): Response => {
+  return attachmentDownloadResponse(body, filename, 'application/json; charset=utf-8');
+};
+
+export const attachmentDownloadCsvResponse = (body: string, filename: string = 'download.csv'): Response => {
+  return attachmentDownloadResponse(body, filename, 'text/csv; charset=utf-8');
 };
 
 const uuidSchema = z.uuid();

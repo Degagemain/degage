@@ -3,9 +3,9 @@ import { headers } from 'next/headers';
 import { auth } from '@/auth';
 import { searchSimulations } from '@/actions/simulation/search';
 import { createSimulation } from '@/actions/simulation/create';
-import { simulationFilterSchema } from '@/domain/simulation.filter';
+import { parseSimulationFilterFromSearchParams } from '@/api/simulations/simulation-query-params';
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
-import { fromZodParseResult, safeParseRequestJson } from '@/api/utils';
+import { safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withContext } from '@/api/with-context';
 import { ZodError } from 'zod';
@@ -17,23 +17,10 @@ export const GET = withContext(async (request: NextRequest) => {
     return Response.json({ code: 'unauthorized', errors: [{ message: 'Authentication required' }] }, { status: statusCodes.UNAUTHORIZED });
   }
 
-  const sp = request.nextUrl.searchParams;
-  const params: Record<string, unknown> = {};
-  for (const [key, value] of sp.entries()) {
-    if (key === 'brandId' || key === 'fuelTypeId' || key === 'carTypeId' || key === 'resultCode') continue;
-    params[key] = value;
-  }
-  params.brandIds = sp.getAll('brandId');
-  params.fuelTypeIds = sp.getAll('fuelTypeId');
-  params.carTypeIds = sp.getAll('carTypeId');
-  params.resultCodes = sp.getAll('resultCode');
+  const { data: filter, errorResponse } = parseSimulationFilterFromSearchParams(request.nextUrl.searchParams);
+  if (errorResponse) return errorResponse;
 
-  const filterResult = simulationFilterSchema.safeParse(params);
-  if (!filterResult.success) {
-    return fromZodParseResult(filterResult);
-  }
-
-  const result = await searchSimulations(filterResult.data);
+  const result = await searchSimulations(filter);
   return Response.json(result);
 });
 

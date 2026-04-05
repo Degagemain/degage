@@ -5,13 +5,13 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchFuelTypes } from '@/actions/fuel-type/search';
 import { createFuelType } from '@/actions/fuel-type/create';
 import { fuelTypeFilterSchema } from '@/domain/fuel-type.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
   const fuelTypeFilter = fuelTypeFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!fuelTypeFilter.success) {
-    return fromZodParseResult(fuelTypeFilter);
+    return badRequestResponseFromZod(fuelTypeFilter);
   }
 
   const result = await searchFuelTypes(fuelTypeFilter.data);

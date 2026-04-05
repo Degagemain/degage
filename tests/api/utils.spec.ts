@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   NotFoundError,
-  fromZodParseResult,
+  attachmentDownloadCsvResponse,
+  attachmentDownloadJsonResponse,
+  badRequestResponseFromZod,
   getIdFromRoute,
   isPrismaNotFoundError,
   noContentResponse,
@@ -15,6 +17,26 @@ import {
 import { ZodError } from 'zod';
 
 describe('API Utils', () => {
+  describe('attachmentDownloadJsonResponse', () => {
+    it('returns 200 with JSON Content-Type and attachment filename', async () => {
+      const res = attachmentDownloadJsonResponse('{"a":1}', 'out.json');
+      expect(res.status).toBe(200);
+      expect(res.headers.get('Content-Type')).toBe('application/json; charset=utf-8');
+      expect(res.headers.get('Content-Disposition')).toBe('attachment; filename="out.json"');
+      expect(await res.text()).toBe('{"a":1}');
+    });
+  });
+
+  describe('attachmentDownloadCsvResponse', () => {
+    it('returns 200 with CSV Content-Type and attachment filename', async () => {
+      const res = attachmentDownloadCsvResponse('a,b', 'out.csv');
+      expect(res.status).toBe(200);
+      expect(res.headers.get('Content-Type')).toBe('text/csv; charset=utf-8');
+      expect(res.headers.get('Content-Disposition')).toBe('attachment; filename="out.csv"');
+      expect(await res.text()).toBe('a,b');
+    });
+  });
+
   describe('isPrismaNotFoundError', () => {
     it('returns true for P2025 error code', () => {
       const error = { code: 'P2025' };
@@ -129,7 +151,7 @@ describe('API Utils', () => {
         },
       } as any;
 
-      const response = fromZodParseResult(mockParseResult);
+      const response = badRequestResponseFromZod(mockParseResult);
       const responseData = await response.json();
 
       expect(response.status).toBe(400);
@@ -145,7 +167,7 @@ describe('API Utils', () => {
         error: null,
       } as any;
 
-      const response = fromZodParseResult(mockParseResult);
+      const response = badRequestResponseFromZod(mockParseResult);
       const responseData = await response.json();
 
       expect(response.status).toBe(400);

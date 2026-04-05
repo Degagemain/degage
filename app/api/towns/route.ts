@@ -5,13 +5,13 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchTowns } from '@/actions/town/search';
 import { createTown } from '@/actions/town/create';
 import { townFilterSchema } from '@/domain/town.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
   const filter = townFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
-    return fromZodParseResult(filter);
+    return badRequestResponseFromZod(filter);
   }
 
   const result = await searchTowns(filter.data);

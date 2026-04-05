@@ -34,3 +34,40 @@ export function formatPriceInThousands(price: number): string {
 
 export const DefaultTake = 24;
 export const MaxTake = 100;
+
+export const escapeCsvCell = (value: string): string => {
+  if (/[",\r\n]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+};
+
+export const joinCsvRow = (cells: string[]): string => cells.map(escapeCsvCell).join(',');
+
+export const encodeCsvDocument = (lines: string[]): string => `\uFEFF${lines.join('\r\n')}`;
+
+export const DashPlaceholder = '—';
+
+export const asTextOrDash = (value: string | null | undefined): string => {
+  if (value == null) return DashPlaceholder;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : DashPlaceholder;
+};
+
+export const formatDateOrDash = (value: Date | string | null | undefined, locale: string, includeTime: boolean): string => {
+  if (value == null) return DashPlaceholder;
+  const d = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(d.getTime())) return DashPlaceholder;
+  return includeTime ? d.toLocaleString(locale) : d.toLocaleDateString(locale);
+};
+
+export interface CsvColumn<Row> {
+  label: string;
+  format: (row: Row) => string;
+}
+
+export const buildCsvLinesFromColumns = <Row>(rows: Row[], columns: CsvColumn<Row>[]): string[] => {
+  const header = joinCsvRow(columns.map((column) => column.label));
+  const lines = rows.map((row) => joinCsvRow(columns.map((column) => column.format(row))));
+  return [header, ...lines];
+};

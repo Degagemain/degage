@@ -154,6 +154,21 @@
       "empty": "Geen pagina gevonden.",
       "goToPage": "Ga naar pagina"
     },
+    "common": {
+      "export": {
+        "title": "Exporteren",
+        "description": "Download alle rijen die overeenkomen met de huidige filters en sortering. Grote lijsten kunnen even duren.",
+        "format": "Formaat",
+        "formatCsv": "CSV",
+        "formatJson": "JSON",
+        "submit": "Exporteren",
+        "submitting": "Bezig met exporteren…",
+        "cancel": "Annuleren",
+        "error": "Exporteren mislukt.",
+        "more": "Meer",
+        "openExport": "Exporteren"
+      }
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {

@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
 import { searchDocumentation } from '@/actions/documentation/search';
 import { createDocumentation } from '@/actions/documentation/create';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -16,7 +16,7 @@ export const GET = withContext(async (request: NextRequest) => {
   const rawParams = documentationFilterFromSearchParams(request.nextUrl.searchParams);
   const filterResult = documentationFilterSchema.safeParse(rawParams);
   if (!filterResult.success) {
-    return fromZodParseResult(filterResult);
+    return badRequestResponseFromZod(filterResult);
   }
   const filter = filterResult.data;
 

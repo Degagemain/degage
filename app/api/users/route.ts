@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { isAdmin } from '@/domain/role.utils';
 import { userFilterSchema } from '@/domain/user.filter';
 import { searchUsers } from '@/actions/user/search';
-import { forbiddenResponse, fromZodParseResult, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, unauthorizedResponse } from '@/api/utils';
 
 export async function GET(request: NextRequest) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
   const userFilter = userFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!userFilter.success) {
-    return fromZodParseResult(userFilter);
+    return badRequestResponseFromZod(userFilter);
   }
 
   const result = await searchUsers(userFilter.data);

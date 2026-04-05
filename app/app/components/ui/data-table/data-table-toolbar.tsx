@@ -17,6 +17,8 @@ interface DataTableToolbarProps<TData> {
   /** Slot rendered to the left of the search input */
   leadingSlot?: React.ReactNode;
   filterSlot?: React.ReactNode;
+  /** Rendered after facet filters, before view options (e.g. “More” menu). */
+  postFilterSlot?: React.ReactNode;
   /** Optional map of column id -> display label for the column picker */
   columnLabels?: Record<string, string>;
   /** Slot for action buttons (shown after view options) */
@@ -31,6 +33,7 @@ export function DataTableToolbar<TData>({
   searchPlaceholder,
   leadingSlot,
   filterSlot,
+  postFilterSlot,
   columnLabels,
   actionSlot,
   showSearch = true,
@@ -60,6 +63,7 @@ export function DataTableToolbar<TData>({
         </div>
       ) : null}
       {filterSlot}
+      {postFilterSlot}
       <div className="ml-auto flex shrink-0 items-center gap-2">
         <DataTableViewOptions table={table} columnLabels={columnLabels} />
         {actionSlot}

@@ -154,6 +154,21 @@
       "empty": "No page found.",
       "goToPage": "Go to page"
     },
+    "common": {
+      "export": {
+        "title": "Export",
+        "description": "Download all rows matching the current filters and sort. Large lists may take a moment.",
+        "format": "Format",
+        "formatCsv": "CSV",
+        "formatJson": "JSON",
+        "submit": "Export",
+        "submitting": "Exporting…",
+        "cancel": "Cancel",
+        "error": "Export failed.",
+        "more": "More",
+        "openExport": "Export"
+      }
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {

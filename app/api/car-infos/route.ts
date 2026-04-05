@@ -5,7 +5,7 @@ import { isAdmin } from '@/domain/role.utils';
 import { searchCarInfos } from '@/actions/car-info/search';
 import { createCarInfo } from '@/actions/car-info/create';
 import { carInfoFilterSchema } from '@/domain/car-info.filter';
-import { forbiddenResponse, fromZodParseResult, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
+import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource, unauthorizedResponse } from '@/api/utils';
 import { withContext } from '@/api/with-context';
 
 export const GET = withContext(async (request: NextRequest) => {
@@ -21,7 +21,7 @@ export const GET = withContext(async (request: NextRequest) => {
 
   const filter = carInfoFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
-    return fromZodParseResult(filter);
+    return badRequestResponseFromZod(filter);
   }
 
   const result = await searchCarInfos(filter.data);
