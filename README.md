@@ -233,6 +233,7 @@ This log explains why packages were installed.
 | In-app Markdown rendering      | react-markdown, remark-gfm                                                                             |
 | Notion webhooks & page fetch   | @notionhq/client                                                                                       |
 | PostHog (client, server, LLM)  | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
+| ShadCN forms (RHF + Zod)       | react-hook-form, @hookform/resolvers                                                                   |
 
 ### Notion Integration
 

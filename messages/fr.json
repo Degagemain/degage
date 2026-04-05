@@ -155,6 +155,23 @@
       "goToPage": "Aller à la page"
     },
     "common": {
+      "actions": {
+        "new": "Nouveau",
+        "save": "Enregistrer"
+      },
+      "status": {
+        "saving": "Enregistrement…"
+      },
+      "feedback": {
+        "saveSuccess": "Enregistré avec succès.",
+        "saveError": "Échec de l'enregistrement.",
+        "loadError": "Échec du chargement."
+      },
+      "validation": {
+        "required": "Ce champ est obligatoire.",
+        "nonNegativeNumber": "Saisissez un nombre positif ou nul.",
+        "nonNegativeInteger": "Saisissez un entier positif ou nul."
+      },
       "export": {
         "title": "Exporter",
         "description": "Télécharger toutes les lignes correspondant aux filtres et au tri actuels. Les grandes listes peuvent prendre un moment.",
@@ -237,7 +254,21 @@
       "tryAgain": "Réessayer",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
         "delete": "Supprimer"
+      },
+      "form": {
+        "help": {
+          "code": "Identifiant court unique utilisé par le système.",
+          "active": "Les types inactifs sont masqués dans les listes de sélection.",
+          "pricePer": "Prix actuel par litre ou kWh utilisé dans les calculs.",
+          "co2Contribution": "Contribution CO2 utilisée dans les calculs.",
+          "translations": "Renseignez un nom pour chaque onglet de langue."
+        },
+        "placeholders": {
+          "code": "ex. petrol",
+          "translationName": "Nom ({locale})"
+        }
       },
       "delete": {
         "title": "Supprimer le type de carburant",

@@ -1,14 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Trash2, X } from 'lucide-react';
+import { Check, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FuelType } from '@/domain/fuel-type.model';
 import { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import {
@@ -43,6 +45,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function FuelTypesPage() {
   const t = useTranslations('admin.fuelTypes');
+  const tCommon = useTranslations('admin.common');
   const [state, setState] = useState<FuelTypesState>({
     data: [],
     total: 0,
@@ -241,6 +244,14 @@ export default function FuelTypesPage() {
             searchValue={queryInput}
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/fuel-types/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={
               <>
                 <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>

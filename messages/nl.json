@@ -155,6 +155,23 @@
       "goToPage": "Ga naar pagina"
     },
     "common": {
+      "actions": {
+        "new": "Nieuw",
+        "save": "Opslaan"
+      },
+      "status": {
+        "saving": "Opslaan…"
+      },
+      "feedback": {
+        "saveSuccess": "Succesvol opgeslagen.",
+        "saveError": "Opslaan mislukt.",
+        "loadError": "Laden mislukt."
+      },
+      "validation": {
+        "required": "Dit veld is verplicht.",
+        "nonNegativeNumber": "Voer een niet-negatief getal in.",
+        "nonNegativeInteger": "Voer een niet-negatief geheel getal in."
+      },
       "export": {
         "title": "Exporteren",
         "description": "Download alle rijen die overeenkomen met de huidige filters en sortering. Grote lijsten kunnen even duren.",
@@ -237,7 +254,21 @@
       "tryAgain": "Opnieuw proberen",
       "actions": {
         "openMenu": "Menu openen",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
+      },
+      "form": {
+        "help": {
+          "code": "Korte unieke identificatie die het systeem gebruikt.",
+          "active": "Inactieve brandstoftypes worden niet getoond in selecties.",
+          "pricePer": "Huidige prijs per liter of kWh gebruikt in berekeningen.",
+          "co2Contribution": "CO2-bijdrage gebruikt in berekeningen.",
+          "translations": "Vul een naam in voor elke taal-tab."
+        },
+        "placeholders": {
+          "code": "bv. petrol",
+          "translationName": "Naam ({locale})"
+        }
       },
       "delete": {
         "title": "Brandstoftype verwijderen",

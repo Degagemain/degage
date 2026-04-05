@@ -18,6 +18,8 @@ Each entity folder typically contains:
 
 Pages use the shared data table components from `app/app/components/ui/data-table/`.
 
+For **create and edit** screens (shared form, locale tabs, common copy, API flow), see [Admin create and edit forms](./admin-crud-forms.md).
+
 ## Deleting records
 
 There are two deletion flows: single-row delete and bulk delete. Both call the entity's `DELETE /api/{entity}/{id}` endpoint and handle the same

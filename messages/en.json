@@ -155,6 +155,23 @@
       "goToPage": "Go to page"
     },
     "common": {
+      "actions": {
+        "new": "New",
+        "save": "Save"
+      },
+      "status": {
+        "saving": "Saving…"
+      },
+      "feedback": {
+        "saveSuccess": "Saved successfully.",
+        "saveError": "Failed to save.",
+        "loadError": "Failed to load."
+      },
+      "validation": {
+        "required": "This field is required.",
+        "nonNegativeNumber": "Enter a non-negative number.",
+        "nonNegativeInteger": "Enter a non-negative integer."
+      },
       "export": {
         "title": "Export",
         "description": "Download all rows matching the current filters and sort. Large lists may take a moment.",
@@ -237,7 +254,21 @@
       "tryAgain": "Try again",
       "actions": {
         "openMenu": "Open menu",
+        "edit": "Edit",
         "delete": "Delete"
+      },
+      "form": {
+        "help": {
+          "code": "Short unique identifier used by the system.",
+          "active": "Inactive fuel types are hidden in selection lists.",
+          "pricePer": "Current price per liter or kWh used in calculations.",
+          "co2Contribution": "CO2 contribution used in calculations.",
+          "translations": "Provide a name for each locale tab."
+        },
+        "placeholders": {
+          "code": "e.g. petrol",
+          "translationName": "Name ({locale})"
+        }
       },
       "delete": {
         "title": "Delete fuel type",
