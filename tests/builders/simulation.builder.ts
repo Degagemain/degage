@@ -34,6 +34,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     resultEstimatedCarValue: data.resultEstimatedCarValue ?? null,
     error: data.error ?? null,
     duration: data.duration ?? 45,
+    email: data.email !== undefined ? data.email : null,
     steps: data.steps ?? [
       {
         status: SimulationStepIcon.OK,

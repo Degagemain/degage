@@ -1,5 +1,4 @@
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
-import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
 import { runSimulationEngine } from './engine';
 import type { Simulation, SimulationRunInput } from '@/domain/simulation.model';
@@ -16,7 +15,7 @@ function buildSimulationFromResult(
     carTypeId: validated.carType?.id ?? null,
     carTypeOther: validated.carTypeOther,
     mileage: validated.mileage,
-    ownerKmPerYear: calculateOwnerKmPerYear(validated.mileage, validated.firstRegisteredAt),
+    ownerKmPerYear: validated.ownerKmPerYear,
     seats: validated.seats,
     firstRegisteredAt: validated.firstRegisteredAt,
     isVan: validated.isVan,
@@ -42,6 +41,7 @@ function buildSimulationFromResult(
     error: result.error ?? null,
     duration: result.duration ?? 45,
     steps: result.steps,
+    email: null,
     createdAt: null,
     updatedAt: null,
   };

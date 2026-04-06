@@ -131,6 +131,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
+      accessorKey: 'email',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.email')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.email;
+        return <span className="text-muted-foreground text-sm">{v ?? '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={onSort} />,
       cell: ({ row }) => {

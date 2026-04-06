@@ -10,9 +10,21 @@ const resend = apiKey ? new Resend(apiKey) : null;
 export enum TemplatesEnum {
   VerificationEmail = 'verification-email',
   ResetPasswordEmail = 'reset-password-email',
+  SimulationResultsEmail = 'simulation-results-email',
+  SimulationResultsSupportEmail = 'simulation-results-support',
+  SimulationManualReviewEmail = 'simulation-manual-review-email',
+  SimulationManualReviewSupportEmail = 'simulation-manual-review-support',
 }
 
+const nonLocalizedTemplateIds: ReadonlySet<string> = new Set([
+  TemplatesEnum.SimulationResultsSupportEmail,
+  TemplatesEnum.SimulationManualReviewSupportEmail,
+]);
+
 export function getTemplate(template: TemplatesEnum, locale: string | null | undefined): string {
+  if (nonLocalizedTemplateIds.has(template)) {
+    return template;
+  }
   const code = locale && uiLocales.includes(locale as UILocale) ? locale : defaultUILocale;
   return `${template}-${code}`;
 }

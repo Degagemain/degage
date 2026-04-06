@@ -67,6 +67,7 @@ export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
     error: db.error,
     duration: db.duration,
     steps: parseSteps(db.steps),
+    email: db.email ?? null,
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
   };
@@ -130,6 +131,7 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
     error: simulation.error ?? undefined,
     duration: simulation.duration,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
+    email: simulation.email ?? undefined,
   };
 };
 
@@ -167,5 +169,6 @@ export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationU
     error: simulation.error ?? undefined,
     duration: simulation.duration,
     steps: simulation.steps as unknown as Prisma.InputJsonValue,
+    email: simulation.email ?? undefined,
   };
 };

@@ -8,9 +8,11 @@ import { format } from 'date-fns';
 import { Check, Info, X } from 'lucide-react';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
-import { SimulationStepIcon } from '@/domain/simulation.model';
+import { SimulationResultCode, SimulationStepIcon } from '@/domain/simulation.model';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 function StepIcon({ status }: { status: SimulationStep['status'] }) {
@@ -46,6 +48,9 @@ export default function SimulationDetailPage() {
   const [simulation, setSimulation] = useState<Simulation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [emailDraft, setEmailDraft] = useState('');
+  const [isSavingEmail, setIsSavingEmail] = useState(false);
+  const [emailSaveMessage, setEmailSaveMessage] = useState<'success' | 'error' | 'validation' | null>(null);
 
   const fetchSimulation = useCallback(async () => {
     if (!id) return;
@@ -72,6 +77,43 @@ export default function SimulationDetailPage() {
   useEffect(() => {
     fetchSimulation();
   }, [fetchSimulation]);
+
+  useEffect(() => {
+    if (!simulation) return;
+    setEmailDraft(simulation.email ?? '');
+  }, [simulation]);
+
+  const saveEmail = useCallback(async () => {
+    if (!simulation?.id) return;
+    setIsSavingEmail(true);
+    setEmailSaveMessage(null);
+    const trimmed = emailDraft.trim();
+    const body = {
+      id: simulation.id,
+      email: trimmed === '' ? null : trimmed,
+    };
+    try {
+      const res = await fetch(`/api/simulations/${simulation.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.status === 204) {
+        setEmailSaveMessage('success');
+        await fetchSimulation();
+        return;
+      }
+      if (res.status === 400) {
+        setEmailSaveMessage('validation');
+        return;
+      }
+      setEmailSaveMessage('error');
+    } catch {
+      setEmailSaveMessage('error');
+    } finally {
+      setIsSavingEmail(false);
+    }
+  }, [simulation, emailDraft, fetchSimulation]);
 
   if (isLoading) {
     return (
@@ -133,6 +175,10 @@ export default function SimulationDetailPage() {
         : null;
   const createdAt = simulation.createdAt instanceof Date ? simulation.createdAt : simulation.createdAt ? new Date(simulation.createdAt) : null;
   const updatedAt = simulation.updatedAt instanceof Date ? simulation.updatedAt : simulation.updatedAt ? new Date(simulation.updatedAt) : null;
+  const showResultEmailBlock =
+    simulation.resultCode === SimulationResultCode.CATEGORY_A ||
+    simulation.resultCode === SimulationResultCode.CATEGORY_B ||
+    simulation.resultCode === SimulationResultCode.HIGHER_RATE;
 
   return (
     <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
@@ -151,24 +197,25 @@ export default function SimulationDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-0 divide-y">
-            <FieldRow label={tForm('town')} value={simulation.town?.name} />
+            <FieldRow label={tForm('town')} value={simulation.town?.name ?? simulation.townId} />
             <FieldRow label={tCol('resultCode')} value={tResult(simulation.resultCode)} />
-            <FieldRow label={tForm('brand')} value={simulation.brand?.name} />
-            <FieldRow label={tForm('fuelType')} value={simulation.fuelType?.name} />
+            <FieldRow label={tForm('brand')} value={simulation.brand?.name ?? simulation.brandId} />
+            <FieldRow label={tForm('fuelType')} value={simulation.fuelType?.name ?? simulation.fuelTypeId} />
             <FieldRow
               label={tForm('carType')}
-              value={simulation.carType?.name ?? (simulation.carTypeOther ? `Other: ${simulation.carTypeOther}` : null)}
+              value={simulation.carType?.name ?? simulation.carTypeId ?? (simulation.carTypeOther ? `Other: ${simulation.carTypeOther}` : null)}
             />
-            {simulation.carTypeOther && <FieldRow label={tCol('carTypeOther')} value={simulation.carTypeOther} />}
+            <FieldRow label={tCol('carTypeOther')} value={simulation.carTypeOther} />
             <FieldRow label={tCol('mileage')} value={simulation.mileage.toLocaleString()} />
             <FieldRow label={tForm('ownerKmPerYear')} value={simulation.ownerKmPerYear.toLocaleString()} />
             <FieldRow label={tForm('seats')} value={String(simulation.seats)} />
             <FieldRow label={tForm('firstRegistrationDate')} value={firstRegisteredAt ? format(firstRegisteredAt, 'dd-MM-yyyy') : null} />
             <FieldRow label={tForm('isVan')} value={simulation.isVan ? tDetail('yes') : tDetail('no')} />
             <FieldRow label={tDetail('isNewCar')} value={simulation.isNewCar ? tDetail('yes') : tDetail('no')} />
-            {simulation.purchasePrice != null && (
-              <FieldRow label={tDetail('purchasePrice')} value={`€ ${simulation.purchasePrice.toLocaleString()}`} />
-            )}
+            <FieldRow
+              label={tDetail('purchasePrice')}
+              value={simulation.purchasePrice != null ? `€ ${simulation.purchasePrice.toLocaleString()}` : null}
+            />
             {simulation.rejectionReason != null && simulation.rejectionReason.trim() !== '' && (
               <FieldRow label={tDetail('rejectionReason')} value={simulation.rejectionReason} />
             )}
@@ -185,26 +232,63 @@ export default function SimulationDetailPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{tDetail('stepsTitle')}</CardTitle>
-            <CardDescription>{tDetail('stepsDescription')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {simulation.steps && simulation.steps.length > 0 ? (
-              <ul className="space-y-2">
-                {simulation.steps.map((step, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm">
-                    <StepIcon status={step.status} />
-                    <span>{step.message}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted-foreground text-sm">{tDetail('noSteps')}</p>
-            )}
-          </CardContent>
-        </Card>
+        <div className="flex flex-col gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{tDetail('stepsTitle')}</CardTitle>
+              <CardDescription>{tDetail('stepsDescription')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {simulation.steps && simulation.steps.length > 0 ? (
+                <ul className="space-y-2">
+                  {simulation.steps.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <StepIcon status={step.status} />
+                      <span>{step.message}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-muted-foreground text-sm">{tDetail('noSteps')}</p>
+              )}
+            </CardContent>
+          </Card>
+
+          {showResultEmailBlock && (
+            <Card>
+              <CardHeader>
+                <CardTitle>{tDetail('emailSectionTitle')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="simulation-result-email">{tDetail('emailLabel')}</Label>
+                  <Input
+                    id="simulation-result-email"
+                    type="email"
+                    autoComplete="email"
+                    value={emailDraft}
+                    onChange={(e) => {
+                      setEmailDraft(e.target.value);
+                      setEmailSaveMessage(null);
+                    }}
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <p className="text-muted-foreground text-xs">{tDetail('emailHint')}</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button type="button" size="sm" onClick={() => void saveEmail()} disabled={isSavingEmail || !simulation.id}>
+                    {tDetail('saveEmail')}
+                  </Button>
+                  {emailSaveMessage === 'success' && (
+                    <span className="text-sm text-green-700 dark:text-green-500">{tDetail('saveSuccess')}</span>
+                  )}
+                  {emailSaveMessage === 'error' && <span className="text-destructive text-sm">{tDetail('saveError')}</span>}
+                  {emailSaveMessage === 'validation' && <span className="text-destructive text-sm">{tDetail('validationError')}</span>}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );

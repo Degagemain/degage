@@ -147,11 +147,16 @@ export default function SimulationPage() {
   const [costScenarioPeopleDisplayed, setCostScenarioPeopleDisplayed] = useState(14);
   const [confirmationEmail, setConfirmationEmail] = useState('');
   const [confirmationMemberPath, setConfirmationMemberPath] = useState<ConfirmationMemberPath | null>(null);
-  const [confirmationSent, setConfirmationSent] = useState(false);
+  const [confirmationStatus, setConfirmationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [createdSimulationId, setCreatedSimulationId] = useState<string | null>(null);
+  const [manualReviewEmail, setManualReviewEmail] = useState('');
+  const [manualReviewStatus, setManualReviewStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const simulationRequestInFlight = useRef(false);
   const prevScreenRef = useRef(screen);
 
-  const isConfirmationValid = confirmationEmail.trim().length > 0 && confirmationEmail.trim().includes('@') && confirmationMemberPath !== null;
+  const confirmationEmailOk = confirmationEmail.trim().length > 0 && confirmationEmail.trim().includes('@');
+  const confirmationPathOk = true;
+  const isConfirmationValid = confirmationEmailOk && confirmationPathOk;
 
   const confirmationSteps = useMemo(
     () => (confirmationMemberPath ? CONFIRMATION_STEPS_BY_PATH[confirmationMemberPath] : []),
@@ -160,10 +165,17 @@ export default function SimulationPage() {
 
   useEffect(() => {
     if (prevScreenRef.current === STEP_CONFIRMATION && screen !== STEP_CONFIRMATION) {
-      setConfirmationSent(false);
+      setConfirmationStatus('idle');
       setConfirmationMemberPath(null);
     }
     prevScreenRef.current = screen;
+  }, [screen]);
+
+  useEffect(() => {
+    if (screen !== STEP_RESULT) {
+      setManualReviewStatus('idle');
+      setManualReviewEmail('');
+    }
   }, [screen]);
 
   const isSuccessResult =
@@ -324,7 +336,7 @@ export default function SimulationPage() {
       ? new Date().toISOString().slice(0, 10)
       : firstRegisteredAt.trim() || new Date().toISOString().slice(0, 10);
     const mileageNum = isNewCar ? 0 : parseInt(mileage.trim(), 10) || 0;
-    const ownerKmNum = isNewCar ? 0 : (effectiveOwnerKmPerYear ?? 0);
+    const ownerKmNum = effectiveOwnerKmPerYear ?? 0;
 
     const body = {
       town: { id: townId, name: townLabel },
@@ -379,6 +391,7 @@ export default function SimulationPage() {
           resultRoundedKmCost: data.resultRoundedKmCost ?? null,
           resultDepreciationCostKm: data.resultDepreciationCostKm ?? null,
         });
+        setCreatedSimulationId(typeof data.id === 'string' ? data.id : null);
         setScreen(STEP_RESULT);
       })
       .catch((err: Error) => {
@@ -456,8 +469,54 @@ export default function SimulationPage() {
     setResultDisplayOverride(null);
     setSimulationResult(null);
     setCarChoice(null);
+    setCreatedSimulationId(null);
+    setManualReviewEmail('');
+    setManualReviewStatus('idle');
     simulationRequestInFlight.current = false;
     setScreen(STEP_SITUATION);
+  };
+
+  const submitManualReviewRequest = async () => {
+    const email = manualReviewEmail.trim();
+    if (!createdSimulationId || !email.includes('@')) return;
+    setManualReviewStatus('loading');
+    try {
+      const res = await fetch('/api/simulations/request-manual-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: createdSimulationId,
+          email,
+        }),
+      });
+      if (res.status === 204) {
+        setManualReviewStatus('success');
+        return;
+      }
+      setManualReviewStatus('error');
+    } catch {
+      setManualReviewStatus('error');
+    }
+  };
+
+  const submitConfirmationResultEmail = async () => {
+    const email = confirmationEmail.trim();
+    if (!createdSimulationId || !email.includes('@') || !isConfirmationValid) return;
+    setConfirmationStatus('loading');
+    try {
+      const res = await fetch('/api/simulations/confirm-result-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: createdSimulationId, email }),
+      });
+      if (res.status === 204) {
+        setConfirmationStatus('success');
+        return;
+      }
+      setConfirmationStatus('error');
+    } catch {
+      setConfirmationStatus('error');
+    }
   };
 
   return (
@@ -1128,17 +1187,60 @@ export default function SimulationPage() {
           )}
 
           {displayUnclear && (
-            <div className={`${styles.resultOutcomeHero} ${styles.resultOutcomeHeroUnclear}`}>
-              <div className={styles.resultOutcomeInner}>
-                <div className={`${styles.resultOutcomeCircle} ${styles.resultOutcomeCircleUnclear}`}>
-                  <span className={styles.resultOutcomeIconUnclear} aria-hidden>
-                    🔍
-                  </span>
+            <>
+              <div className={`${styles.resultOutcomeHero} ${styles.resultOutcomeHeroUnclear}`}>
+                <div className={styles.resultOutcomeInner}>
+                  <div className={`${styles.resultOutcomeCircle} ${styles.resultOutcomeCircleUnclear}`}>
+                    <span className={styles.resultOutcomeIconUnclear} aria-hidden>
+                      🔍
+                    </span>
+                  </div>
+                  <h2 className={styles.resultOutcomeTitle}>{t('result.unclearTitle')}</h2>
+                  <p className={`${styles.body} ${styles.resultOutcomeBody}`}>{tWizard('results.unclearBody')}</p>
                 </div>
-                <h2 className={styles.resultOutcomeTitle}>{t('result.unclearTitle')}</h2>
-                <p className={`${styles.body} ${styles.resultOutcomeBody}`}>{tWizard('results.unclearBody')}</p>
               </div>
-            </div>
+              <div className={`${styles.bevestigingFormCard} ${styles.marginBottom24}`}>
+                {manualReviewStatus === 'success' ? (
+                  <p className={`${styles.body} ${styles.marginBottom0}`}>{t('result.manualReviewSent')}</p>
+                ) : (
+                  <>
+                    <div className={styles.field}>
+                      <label className={styles.fieldLabel} htmlFor="manual-review-email">
+                        {t('result.manualReviewEmailLabel')}
+                      </label>
+                      <input
+                        id="manual-review-email"
+                        type="email"
+                        autoComplete="email"
+                        className={styles.input}
+                        placeholder={t('result.manualReviewEmailPlaceholder')}
+                        value={manualReviewEmail}
+                        onChange={(e) => {
+                          setManualReviewEmail(e.target.value);
+                          if (manualReviewStatus === 'error') setManualReviewStatus('idle');
+                        }}
+                        disabled={manualReviewStatus === 'loading' || !createdSimulationId}
+                      />
+                    </div>
+                    <p className={styles.fieldHint}>{t('result.manualReviewHint')}</p>
+                    {!createdSimulationId && <p className={styles.manualReviewMuted}>{t('result.manualReviewUnavailable')}</p>}
+                    {manualReviewStatus === 'error' && (
+                      <p className={styles.manualReviewAlert} role="alert">
+                        {t('result.manualReviewError')}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      className={`${styles.btn} ${styles.btnPrimary}`}
+                      disabled={manualReviewStatus === 'loading' || !createdSimulationId || !manualReviewEmail.trim().includes('@')}
+                      onClick={() => void submitManualReviewRequest()}
+                    >
+                      {t('result.manualReviewCta')}
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
           )}
 
           <p className={styles.footnote}>{t('result.disclaimer')}</p>
@@ -1377,7 +1479,7 @@ export default function SimulationPage() {
           </div>
 
           <div className={styles.bevestigingFormCard}>
-            {!confirmationSent ? (
+            {confirmationStatus !== 'success' ? (
               <>
                 <div className={styles.field}>
                   <label className={styles.fieldLabel}>{t('bevestiging.emailLabel')}</label>
@@ -1386,11 +1488,15 @@ export default function SimulationPage() {
                     placeholder={t('bevestiging.emailPlaceholder')}
                     className={styles.input}
                     value={confirmationEmail}
-                    onChange={(e) => setConfirmationEmail(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmationEmail(e.target.value);
+                      if (confirmationStatus === 'error') setConfirmationStatus('idle');
+                    }}
                     autoComplete="email"
+                    disabled={confirmationStatus === 'loading'}
                   />
                 </div>
-                <div className={`${styles.field} ${styles.bevestigingFieldTight}`}>
+                <div hidden={carChoice === 'existing' || carChoice === 'newCar'} className={`${styles.field} ${styles.bevestigingFieldTight}`}>
                   <label className={styles.fieldLabel}>{t('bevestiging.isMemberLabel')}</label>
                   <div className={styles.bevestigingPathList} role="group" aria-label={t('bevestiging.isMemberLabel')}>
                     {CONFIRMATION_PATH_OPTIONS.map((p) => {
@@ -1399,12 +1505,16 @@ export default function SimulationPage() {
                         <button
                           key={p.id}
                           type="button"
-                          onClick={() => setConfirmationMemberPath(p.id)}
+                          onClick={() => {
+                            setConfirmationMemberPath(p.id);
+                            if (confirmationStatus === 'error') setConfirmationStatus('idle');
+                          }}
                           className={cn(
                             styles.bevestigingPathBtn,
                             selected ? styles.bevestigingPathBtnSelected : styles.bevestigingPathBtnUnselected,
                           )}
                           aria-pressed={selected}
+                          disabled={confirmationStatus === 'loading'}
                         >
                           <span className={cn(styles.bevestigingPathCheck, selected && styles.bevestigingPathCheckActive)} aria-hidden>
                             {selected ? '✓' : null}
@@ -1415,15 +1525,17 @@ export default function SimulationPage() {
                     })}
                   </div>
                 </div>
+                {!createdSimulationId && <p className={styles.manualReviewMuted}>{t('bevestiging.submitUnavailable')}</p>}
+                {confirmationStatus === 'error' && (
+                  <p className={styles.manualReviewAlert} role="alert">
+                    {t('bevestiging.submitError')}
+                  </p>
+                )}
                 <button
                   type="button"
                   className={`${styles.btn} ${styles.btnPrimary}`}
-                  disabled={!isConfirmationValid}
-                  onClick={() => {
-                    if (isConfirmationValid) {
-                      setConfirmationSent(true);
-                    }
-                  }}
+                  disabled={!isConfirmationValid || !createdSimulationId || confirmationStatus === 'loading'}
+                  onClick={() => void submitConfirmationResultEmail()}
                 >
                   {t('bevestiging.submit')}
                 </button>
@@ -1436,16 +1548,29 @@ export default function SimulationPage() {
                 <div>
                   <div className={styles.bevestigingSentTitle}>{t('bevestiging.sentTitle', { email: confirmationEmail.trim() })}</div>
                   <div className={styles.bevestigingSentSub}>
-                    {confirmationMemberPath === 'infosessie' && t('bevestiging.sentSubInfosessie')}
-                    {confirmationMemberPath === 'lid' && t('bevestiging.sentSubLid')}
-                    {confirmationMemberPath === 'nieuw' && t('bevestiging.sentSubNieuw')}
+                    {carChoice === 'existing'
+                      ? t('bevestiging.sentSubRegularCar')
+                      : confirmationMemberPath === 'infosessie'
+                        ? t('bevestiging.sentSubInfosessie')
+                        : confirmationMemberPath === 'lid'
+                          ? t('bevestiging.sentSubLid')
+                          : confirmationMemberPath === 'nieuw'
+                            ? t('bevestiging.sentSubNieuw')
+                            : null}
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {confirmationSent && confirmationMemberPath && (
+          {confirmationStatus === 'success' && carChoice === 'existing' && (
+            <div className={styles.bevestigingNextCard}>
+              <div className={styles.bevestigingNextEyebrow}>{t('bevestiging.whatNext')}</div>
+              <p className={`${styles.body} ${styles.bevestigingNextRegularBody}`}>{t('bevestiging.whatNextRegularBody')}</p>
+            </div>
+          )}
+
+          {confirmationStatus === 'success' && confirmationMemberPath && carChoice === 'newCar' && (
             <div className={styles.bevestigingNextCard}>
               <div className={styles.bevestigingNextEyebrow}>{t('bevestiging.whatNext')}</div>
               {confirmationMemberPath === 'nieuw' && (
@@ -1495,9 +1620,6 @@ export default function SimulationPage() {
             <div className={styles.bevestigingKoopCard}>
               <div className={styles.bevestigingKoopTitle}>{t('bevestiging.koopBannerTitle')}</div>
               <p className={styles.bevestigingKoopBody}>{t('bevestiging.koopBannerBody')}</p>
-              <a href={t('bevestiging.koopBannerHref')} className={styles.bevestigingKoopBtn} target="_blank" rel="noopener noreferrer">
-                {t('bevestiging.koopBannerCta')}
-              </a>
             </div>
           )}
 

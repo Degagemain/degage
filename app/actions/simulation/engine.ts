@@ -121,7 +121,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   if (!input.isNewCar) {
     if (!(await passesMileageRule(result, input.mileage, maxKm))) {
       result.resultCode = SimulationResultCode.NOT_OK;
-      result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: input.mileage });
+      result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: maxKm });
       return result;
     }
 
@@ -285,8 +285,10 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   if (bonusPoints < 2) {
+    const qualityFailure = await getSimulationMessage(SimulationStepCode.QUALITY_CRITERIA_NOT_MET);
+    addErrorMessage(result, qualityFailure);
     result.resultCode = SimulationResultCode.NOT_OK;
-    result.rejectionReason = await getSimulationMessage(SimulationStepCode.QUALITY_CRITERIA_NOT_MET);
+    result.rejectionReason = qualityFailure;
     return result;
   }
 
@@ -313,8 +315,10 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }
   }
 
+  const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
+  addErrorMessage(result, priceFailure);
   result.resultCode = SimulationResultCode.NOT_OK;
-  result.rejectionReason = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
+  result.rejectionReason = priceFailure;
 
   return result;
 }

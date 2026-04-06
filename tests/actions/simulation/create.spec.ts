@@ -30,7 +30,7 @@ describe('createSimulation', () => {
   });
 
   it('validates input, runs engine and returns simulation', async () => {
-    const input = simulationRunInput({ mileage: 50_000 });
+    const input = simulationRunInput({ mileage: 50_000, ownerKmPerYear: 12_345 });
     vi.mocked(dbSimulationCreate).mockImplementation(async (s) => ({ ...s, id: 'created-id' }));
 
     const result = await createSimulation(input);
@@ -38,6 +38,7 @@ describe('createSimulation', () => {
     expect(result.brandId).toBe(input.brand.id);
     expect(result.fuelTypeId).toBe(input.fuelType.id);
     expect(result.mileage).toBe(input.mileage);
+    expect(result.ownerKmPerYear).toBe(input.ownerKmPerYear);
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(4);
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
@@ -60,12 +61,13 @@ describe('createSimulation', () => {
   });
 
   it('returns simulation without persisting when skipPersistence is true', async () => {
-    const input = simulationRunInput({ mileage: 50_000 });
+    const input = simulationRunInput({ mileage: 50_000, ownerKmPerYear: 4_321 });
 
     const result = await createSimulation(input, { skipPersistence: true });
 
     expect(result.brandId).toBe(input.brand.id);
     expect(result.mileage).toBe(input.mileage);
+    expect(result.ownerKmPerYear).toBe(input.ownerKmPerYear);
     expect(result.resultCode).toBe('manualReview');
     expect(result.id).toBeNull();
     expect(dbSimulationCreate).not.toHaveBeenCalled();

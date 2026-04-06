@@ -122,6 +122,7 @@ model Simulation {
     error                        String?
     duration                     Int                  @default(45)
     steps                        Json                 @default("[]")
+    email                        String?
     createdAt                    DateTime             @default(now())
     updatedAt                    DateTime             @updatedAt
 }
