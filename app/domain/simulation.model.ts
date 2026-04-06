@@ -136,6 +136,7 @@ export const simulationSchema = z
     error: z.string().nullable().default(null),
     duration: z.number().int().min(0).default(45),
     steps: z.array(simulationStepSchema).default([]),
+    email: z.string().email().nullable().default(null),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
     town: idNameSchema.optional(),
@@ -146,6 +147,18 @@ export const simulationSchema = z
   .strict();
 
 export type Simulation = z.infer<typeof simulationSchema>;
+
+export const simulationUpdateBodySchema = z
+  .object({
+    id: z.uuid(),
+    email: z
+      .union([z.string().email(), z.literal('')])
+      .nullable()
+      .transform((v) => (v === '' || v == null ? null : v)),
+  })
+  .strict();
+
+export type SimulationUpdateBody = z.infer<typeof simulationUpdateBodySchema>;
 
 // Price range returned by car value estimator (integrations)
 export interface PriceRange {

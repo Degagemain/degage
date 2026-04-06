@@ -147,18 +147,23 @@ La simulation lit des tables operationnelles et de reference de l'administration
 La liste affiche les executions : commune, resultat et donnees vehicule saisies. Ouvrir une ligne pour voir le resultat detaille et les messages
 d'etapes.
 
-| Propriété                | Description                                             |
-| ------------------------ | ------------------------------------------------------- |
-| Commune                  | Commune sélectionnée pour l'exécution (le cas échéant). |
-| Code résultat            | Résultat global (ex. Not OK, Manual review).            |
-| Marque                   | Marque saisie.                                          |
-| Type de carburant        | Type de carburant saisi.                                |
-| Type de véhicule         | Type ou description « Autre ».                          |
-| Kilométrage              | Kilométrage en km.                                      |
-| Places                   | Nombre de places.                                       |
-| Première immatriculation | Date de première immatriculation.                       |
-| Type autre               | Description personnalisée lorsque « Autre » est choisi. |
-| Durée                    | Temps d'exécution du moteur, en secondes entières.      |
+| Propriété                | Description                                                           |
+| ------------------------ | --------------------------------------------------------------------- |
+| Commune                  | Commune sélectionnée pour l'exécution (le cas échéant).               |
+| Code résultat            | Résultat global (ex. Not OK, Manual review).                          |
+| Marque                   | Marque saisie.                                                        |
+| Type de carburant        | Type de carburant saisi.                                              |
+| Type de véhicule         | Type ou description « Autre ».                                        |
+| Kilométrage              | Kilométrage en km.                                                    |
+| Places                   | Nombre de places.                                                     |
+| Première immatriculation | Date de première immatriculation.                                     |
+| Type autre               | Description personnalisée lorsque « Autre » est choisi.               |
+| Durée                    | Temps d'exécution du moteur, en secondes entières.                    |
+| E-mail du résultat       | Adresse utilisée pour envoyer le résultat par e-mail (si renseignée). |
+
+Sur l’écran **détail** d’une simulation, vous pouvez saisir ou modifier cette adresse. L’e-mail au destinataire utilise la **langue actuelle de
+l’interface**. Pour les simulations terminées avec succès (pas **Non OK**, et sans erreur moteur), l’enregistrement d’une adresse **nouvelle ou
+modifiée** envoie le résultat à cette adresse et prévient le support avec un résumé et un lien vers l’administration.
 
 Vous pouvez télécharger les lignes correspondant aux filtres et au tri actuels via **Plus**, puis **Exporter**. Choisissez un fichier adapté aux
 tableurs ou un fichier de données structurées. Les intitulés de colonnes correspondent à la liste (y compris les colonnes masquées). Seuls les

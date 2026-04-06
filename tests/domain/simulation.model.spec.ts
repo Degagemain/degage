@@ -5,6 +5,7 @@ import {
   simulationRunInputParseSchema,
   simulationSchema,
   simulationStepSchema,
+  simulationUpdateBodySchema,
 } from '@/domain/simulation.model';
 
 describe('simulationStepSchema', () => {
@@ -90,10 +91,58 @@ describe('simulationSchema', () => {
       rejectionReason: null,
       resultCode: SimulationResultCode.NOT_OK,
       steps: [],
+      email: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
     expect(result.success).toBe(true);
+  });
+
+  it('accepts valid email when set', () => {
+    const result = simulationSchema.safeParse({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      townId: '550e8400-e29b-41d4-a716-446655440099',
+      brandId: '550e8400-e29b-41d4-a716-446655440001',
+      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
+      carTypeId: null,
+      carTypeOther: null,
+      mileage: 0,
+      ownerKmPerYear: 0,
+      seats: 5,
+      firstRegisteredAt: new Date(),
+      isVan: false,
+      isNewCar: false,
+      purchasePrice: null,
+      rejectionReason: null,
+      resultCode: SimulationResultCode.CATEGORY_A,
+      steps: [],
+      email: 'user@example.com',
+      createdAt: null,
+      updatedAt: null,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects invalid email', () => {
+    const result = simulationSchema.safeParse({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      townId: '550e8400-e29b-41d4-a716-446655440099',
+      brandId: '550e8400-e29b-41d4-a716-446655440001',
+      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
+      carTypeId: null,
+      carTypeOther: null,
+      mileage: 0,
+      ownerKmPerYear: 0,
+      seats: 5,
+      firstRegisteredAt: new Date(),
+      isVan: false,
+      resultCode: SimulationResultCode.CATEGORY_A,
+      steps: [],
+      email: 'not-an-email',
+      createdAt: null,
+      updatedAt: null,
+    });
+    expect(result.success).toBe(false);
   });
 
   it('rejects mileage less than 0', () => {
@@ -113,6 +162,28 @@ describe('simulationSchema', () => {
       steps: [],
       createdAt: null,
       updatedAt: null,
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('simulationUpdateBodySchema', () => {
+  it('parses id and email and coerces empty string to null', () => {
+    const result = simulationUpdateBodySchema.safeParse({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      email: '',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.email).toBe(null);
+    }
+  });
+
+  it('rejects unknown fields', () => {
+    const result = simulationUpdateBodySchema.safeParse({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      email: 'a@b.co',
+      emailLocale: 'fr',
     });
     expect(result.success).toBe(false);
   });

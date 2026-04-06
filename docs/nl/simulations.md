@@ -146,18 +146,23 @@ De simulatie leest operationele en referentietabellen uit de admin data.
 
 De lijst toont simulatieruns: gemeente, resultaat en ingevoerde autodata. Open een rij voor het volledige resultaat en de stapmeldingen.
 
-| Eigenschap          | Beschrijving                                                |
-| ------------------- | ----------------------------------------------------------- |
-| Gemeente            | Voor de run geselecteerde gemeente (indien van toepassing). |
-| Resultaat           | Algemeen resultaat (bv. Niet OK, Handmatige beoordeling).   |
-| Merk                | Ingevoerd automerk.                                         |
-| Brandstoftype       | Ingevoerd brandstoftype.                                    |
-| Autotype            | Autotype of beschrijving «Overig».                          |
-| Kilometerstand (km) | Kilometerstand in km.                                       |
-| Zitplaatsen         | Aantal zitplaatsen.                                         |
-| Eerste inschrijving | Datum eerste inschrijving.                                  |
-| Autotype (overig)   | Aangepaste typebeschrijving bij «Overig».                   |
-| Duur                | Hoelang de engine-run duurde, in hele seconden.             |
+| Eigenschap          | Beschrijving                                                               |
+| ------------------- | -------------------------------------------------------------------------- |
+| Gemeente            | Voor de run geselecteerde gemeente (indien van toepassing).                |
+| Resultaat           | Algemeen resultaat (bv. Niet OK, Handmatige beoordeling).                  |
+| Merk                | Ingevoerd automerk.                                                        |
+| Brandstoftype       | Ingevoerd brandstoftype.                                                   |
+| Autotype            | Autotype of beschrijving «Overig».                                         |
+| Kilometerstand (km) | Kilometerstand in km.                                                      |
+| Zitplaatsen         | Aantal zitplaatsen.                                                        |
+| Eerste inschrijving | Datum eerste inschrijving.                                                 |
+| Autotype (overig)   | Aangepaste typebeschrijving bij «Overig».                                  |
+| Duur                | Hoelang de engine-run duurde, in hele seconden.                            |
+| Resultaat e-mail    | Adres waarmee het simulatieresultaat kan worden gemaild (indien ingevuld). |
+
+Op het **detailscherm** van een simulatie kun je dit adres invullen of wijzigen. De e-mail naar de ontvanger gebruikt je **huidige
+interfacetaal**. Voor simulaties die geslaagd zijn afgelopen (niet **Niet OK**, en zonder enginefout), stuurt het bewaren van een **nieuw of
+gewijzigd** adres het resultaat naar dat adres en verwittigt het support met een samenvatting en een adminlink.
 
 Je kunt de rijen die bij de huidige filters en sortering horen downloaden via **Meer** en daarna **Exporteren**. Kies een
 spreadsheetvriendelijke export of een gestructureerde data-export. Kolomtitels komen overeen met wat je in de lijst ziet (ook kolommen die je

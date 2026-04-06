@@ -145,18 +145,23 @@ The simulation reads operational/reference tables from the admin data set.
 
 The list shows simulation runs: town, result, and entered car data. Open a row to view full result details and step messages.
 
-| Property            | Description                                      |
-| ------------------- | ------------------------------------------------ |
-| Town                | Town selected for the run (if any).              |
-| Result code         | Overall result (e.g. Not OK, Manual review).     |
-| Brand               | Car brand entered.                               |
-| Fuel type           | Fuel type entered.                               |
-| Car type            | Car type or “Other” description.                 |
-| Mileage             | Mileage in km.                                   |
-| Seats               | Number of seats.                                 |
-| First registered at | First registration date.                         |
-| Car type other      | Custom type description when “Other” was chosen. |
-| Duration            | How long the engine run took, in whole seconds.  |
+| Property            | Description                                             |
+| ------------------- | ------------------------------------------------------- |
+| Town                | Town selected for the run (if any).                     |
+| Result code         | Overall result (e.g. Not OK, Manual review).            |
+| Brand               | Car brand entered.                                      |
+| Fuel type           | Fuel type entered.                                      |
+| Car type            | Car type or “Other” description.                        |
+| Mileage             | Mileage in km.                                          |
+| Seats               | Number of seats.                                        |
+| First registered at | First registration date.                                |
+| Car type other      | Custom type description when “Other” was chosen.        |
+| Duration            | How long the engine run took, in whole seconds.         |
+| Result email        | Address used to e-mail the simulation outcome (if set). |
+
+On the simulation **detail** screen you can enter or change this address. The e-mail to the recipient uses your **current interface language**.
+For simulations that finished successfully (not **Not OK**, and without an engine error), saving a **new or changed** address sends the result
+to that address and notifies support with a summary and an admin link.
 
 You can download the rows that match the current filters and sort order using **More**, then **Export**. Choose a spreadsheet-friendly download
 or a structured data download. Column labels match what you see in the list (including columns you may have hidden). Only administrators can

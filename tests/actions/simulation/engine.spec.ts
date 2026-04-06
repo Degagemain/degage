@@ -81,6 +81,7 @@ vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
 
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
+import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { hubSchema } from '@/domain/hub.model';
 import { SimulationStepIcon } from '@/domain/simulation.model';
 import { dbHubRead } from '@/storage/hub/hub.read';
@@ -231,5 +232,78 @@ describe('runSimulationEngine', () => {
     expect(lastStep.message).toBe('simulation.step.error_during_step');
     expect(typeof result.duration).toBe('number');
     expect(result.duration).toBeGreaterThanOrEqual(0);
+  });
+
+  it('adds an explicit NOT_OK step when quality criteria are not met', async () => {
+    vi.mocked(dbCarTypeRead).mockResolvedValueOnce({ id: 'car-type-1', ecoscore: 40 } as any);
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400ab',
+        name: 'hub-quality-fail',
+        isDefault: true,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.38,
+        simAcceptedPriceCategoryB: 0.46,
+        simAcceptedDepreciationCostKm: 0.32,
+        simAcceptedElectricDepreciationCostKm: 0.33,
+        simMinEcoScoreForBonus: 999,
+        simMaxKmForBonus: 0,
+        simMaxAgeForBonus: 0,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });
+    const result = await runSimulationEngine(input);
+
+    expect(result.resultCode).toBe('notOk');
+    expect(result.rejectionReason).toBe('simulation.step.quality_criteria_not_met');
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.quality_criteria_not_met');
+  });
+
+  it('adds an explicit NOT_OK step when price criteria are not met', async () => {
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400ac',
+        name: 'hub-price-fail',
+        isDefault: true,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.01,
+        simAcceptedPriceCategoryB: 0.01,
+        simAcceptedDepreciationCostKm: 0.01,
+        simAcceptedElectricDepreciationCostKm: 0.01,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01'), isVan: false, seats: 5 });
+    const result = await runSimulationEngine(input);
+
+    expect(result.resultCode).toBe('notOk');
+    expect(result.rejectionReason).toBe('simulation.step.price_criteria_not_met');
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.price_criteria_not_met');
   });
 });
