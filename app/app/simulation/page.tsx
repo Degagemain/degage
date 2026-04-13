@@ -653,7 +653,14 @@ export default function SimulationPage() {
 
             <div className={styles.koopgidsCard}>
               <div className={styles.koopgidsCardTitleKnockout}>{t('situatie.koopgidsKnockoutTitle')}</div>
-              {(['situatie.koopgidsKnockout1', 'situatie.koopgidsKnockout2', 'situatie.koopgidsKnockout3'] as const).map((key) => (
+              {(
+                [
+                  'situatie.koopgidsKnockout1',
+                  'situatie.koopgidsKnockout2',
+                  'situatie.koopgidsKnockout3',
+                  'situatie.koopgidsKnockout4',
+                ] as const
+              ).map((key) => (
                 <div key={key} className={styles.koopgidsCriterionRow}>
                   <span className={styles.koopgidsIconKnockout} aria-hidden>
                     !
