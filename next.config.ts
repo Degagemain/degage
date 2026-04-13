@@ -22,7 +22,7 @@ const resolvedConfig = usePostHogSourcemaps
       sourcemaps: {
         enabled: true,
         deleteAfterUpload: true,
-        releaseVersion: commitSha ?? undefined,
+        releaseVersion: commitSha,
       },
     })
   : intlConfig;

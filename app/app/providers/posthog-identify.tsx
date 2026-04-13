@@ -5,16 +5,21 @@ import { useEffect, useRef } from 'react';
 import { authClient } from '@/app/lib/auth';
 import { identifyPostHogUser, resetPostHog } from '@/app/lib/posthog';
 
-export function PosthogIdentify() {
+export function PostHogIdentify() {
   const { data: session, isPending } = authClient.useSession();
   const hadIdentifiedSessionRef = useRef(false);
+
+  const user = session?.user;
+  const userId = user?.id;
+  const userEmail = user?.email;
+  const userRole = user?.role;
+  const userName = user?.name;
 
   useEffect(() => {
     if (isPending) return;
 
-    const user = session?.user;
-    if (user) {
-      identifyPostHogUser(user.id, user.email, user.role ?? 'user', user.name);
+    if (userId && userEmail) {
+      identifyPostHogUser(userId, userEmail, userRole ?? 'user', userName ?? null);
       hadIdentifiedSessionRef.current = true;
       return;
     }
@@ -23,7 +28,7 @@ export function PosthogIdentify() {
       resetPostHog();
       hadIdentifiedSessionRef.current = false;
     }
-  }, [isPending, session?.user]);
+  }, [isPending, userId, userEmail, userRole, userName]);
 
   return null;
 }
