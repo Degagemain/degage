@@ -11,7 +11,14 @@ const getClient = (): GoogleGenAI => {
   if (!apiKey || apiKey.trim() === '') {
     throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is not set');
   }
-  return new GoogleGenAI({ apiKey });
+  return new GoogleGenAI({
+    apiKey,
+    httpOptions: {
+      retryOptions: {
+        attempts: 10,
+      },
+    },
+  });
 };
 
 /**
