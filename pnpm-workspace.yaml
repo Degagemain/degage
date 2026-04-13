@@ -3,6 +3,7 @@ ignoredBuiltDependencies:
   - unrs-resolver
 
 onlyBuiltDependencies:
+  - '@posthog/cli'
   - '@prisma/client'
   - '@prisma/engines'
   - esbuild

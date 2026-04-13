@@ -164,21 +164,23 @@ These models are automatically created when running the auth migration.
 
 Copy `.env.example` to `.env` and fill in your values. The app loads `.env` locally; `.env` is gitignored and not used in CI/CD.
 
-| Variable                          | Description                                                     |
-| --------------------------------- | --------------------------------------------------------------- |
-| DATABASE_URL                      | The database url.                                               |
-| DATABASE_URL_UNPOOLED             | Direct database url, without connection pooling.                |
-| GITHUB_CLIENT_ID                  | GitHub OAuth client ID (required for GitHub auth).              |
-| GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).          |
-| GOOGLE_GENERATIVE_AI_API_KEY      | API key for Gemini chat responses and documentation embeddings. |
-| ADMIN_EMAIL_DOMAINS               | Comma-separated email domains allowed for admin users.          |
-| RESEND_API_KEY                    | API key for transactional emails sent by auth flows.            |
-| RESEND_FROM                       | Sender address used by Resend (for auth and support replies).   |
-| BOT_SUPPORT_MAIL                  | Inbound support mailbox address handled by the webhook.         |
-| RESEND_WEBHOOK_SECRET             | Optional secret to verify Resend webhook signatures.            |
-| NEXT_PUBLIC_DEV_UI                | Optional. Set to `true` to enable extra features only for dev.  |
-| NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN | PostHog project API key (public; used client and server).       |
-| NEXT_PUBLIC_POSTHOG_HOST          | PostHog ingest origin (https + host).                           |
+| Variable                          | Description                                                                                                                                                                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DATABASE_URL                      | The database url.                                                                                                                                                                                                                    |
+| DATABASE_URL_UNPOOLED             | Direct database url, without connection pooling.                                                                                                                                                                                     |
+| GITHUB_CLIENT_ID                  | GitHub OAuth client ID (required for GitHub auth).                                                                                                                                                                                   |
+| GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).                                                                                                                                                                               |
+| GOOGLE_GENERATIVE_AI_API_KEY      | API key for Gemini chat responses and documentation embeddings.                                                                                                                                                                      |
+| ADMIN_EMAIL_DOMAINS               | Comma-separated email domains allowed for admin users.                                                                                                                                                                               |
+| RESEND_API_KEY                    | API key for transactional emails sent by auth flows.                                                                                                                                                                                 |
+| RESEND_FROM                       | Sender address used by Resend (for auth and support replies).                                                                                                                                                                        |
+| BOT_SUPPORT_MAIL                  | Inbound support mailbox address handled by the webhook.                                                                                                                                                                              |
+| RESEND_WEBHOOK_SECRET             | Optional secret to verify Resend webhook signatures.                                                                                                                                                                                 |
+| NEXT_PUBLIC_DEV_UI                | Optional. Set to `true` to enable extra features only for dev.                                                                                                                                                                       |
+| NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN | PostHog **project API key** (public `phc_…` token from [project settings](https://app.posthog.com/settings/project#variables)). Required for `posthog-js`, `posthog-node`, and OpenTelemetry export when PostHog is enabled in code. |
+| NEXT_PUBLIC_POSTHOG_HOST          | PostHog **ingest API origin** used by the browser and server SDKs and passed to `@posthog/nextjs-config` when set.                                                                                                                   |
+| POSTHOG_API_KEY                   | Optional. [Personal API key](https://app.posthog.com/settings/user-api-keys) (`phx_…`) with error-tracking write.                                                                                                                    |
+| POSTHOG_PROJECT_ID                | Optional. Project **numeric id** from [project settings](https://app.posthog.com/settings/project#variables).                                                                                                                        |
 
 ## Frontend
 
@@ -216,55 +218,65 @@ pnpm run docs
 - **Node client** — `app/integrations/posthog.ts` uses `posthog-node` for events from API routes (e.g. simulations).
 - **LLM analytics** — `instrumentation.ts` registers OpenTelemetry with `PostHogTraceExporter` from `@posthog/ai/otel`. Support reply generation in `app/actions/support/generate-reply.ts` enables the Vercel AI SDK’s `experimental_telemetry` on both `streamText` and `generateText`, which sends `$ai_generation` events (model, latency, token usage, cost). When the viewer is authenticated, their user id is attached as `posthog_distinct_id`.
 
-Set `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` and `NEXT_PUBLIC_POSTHOG_HOST` in `.env` for local development.
+For local development, set at least **`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`** and **`NEXT_PUBLIC_POSTHOG_HOST`** in `.env` so analytics, server events, and exception capture work (see `app/integrations/posthog.ts` and `instrumentation-client.ts`).
+
+### Error tracking and source maps
+
+Server and client exceptions can be sent to PostHog; minified stacks need [uploaded source maps](https://posthog.com/docs/error-tracking/upload-source-maps/nextjs). This repo uses `@posthog/nextjs-config` in `next.config.ts` **only when** `POSTHOG_API_KEY`, `POSTHOG_PROJECT_ID`, and `VERCEL_GIT_COMMIT_SHA` are set (Vercel provides the commit SHA automatically). Otherwise the build is unchanged (no upload, no `chunkId` injection).
+
+On **Vercel** (or any host that runs `next build` for deploy), set:
+
+- **`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`** and **`NEXT_PUBLIC_POSTHOG_HOST`** — same as locally; required for the app to send events and exceptions to PostHog at runtime.
+- **`POSTHOG_API_KEY`** and **`POSTHOG_PROJECT_ID`** — optional; with Vercel’s **`VERCEL_GIT_COMMIT_SHA`**, enable source map inject and upload during the deploy build. If any of these are missing, error stacks in PostHog stay minified for that deployment.
 
 ## Package Log
 
 This log explains why packages were installed.
 
-| Reason                         | Package(s)                                                                                             |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| Next.js setup                  | next@latest, react@latest, react-dom@latest                                                            |
-| commit message linting         | @commitlint/config-conventional, @commitlint/cli, husky                                                |
-| ESLint via Next.js             | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
-| validating models              | zod                                                                                                    |
-| prisma ORM setup               | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
-| Unit testing setup             | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
-| Unit test coverage             | @vitest/coverage-v8                                                                                    |
-| Tailwind setup                 | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
-| ShadCn setup                   | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
-| Button Component               | @radix-ui/react-slot                                                                                   |
-| Dropdown Menu Component        | @radix-ui/react-dropdown-menu                                                                          |
-| Dark mode                      | next-themes                                                                                            |
-| Label Component                | @radix-ui/react-label                                                                                  |
-| Separator Component            | @radix-ui/react-separator                                                                              |
-| Auth setup                     | better-auth                                                                                            |
-| Auth UI Setup                  | @daveyplate/better-auth-ui                                                                             |
-| Toastr Component               | sonner                                                                                                 |
-| ShadCN Table/Select            | radix-ui                                                                                               |
-| Data Table                     | @tanstack/react-table                                                                                  |
-| Sidebar Component              | (shadcn generated - uses radix-ui)                                                                     |
-| Navigation Menu/Avatar         | (shadcn generated - uses radix-ui)                                                                     |
-| Faceted Filter                 | cmdk (shadcn command component)                                                                        |
-| Internationalization           | next-intl                                                                                              |
-| ShadCN Calendar / Date picker  | react-day-picker, date-fns                                                                             |
-| Gemini AI integration          | @google/genai                                                                                          |
-| AI SDK chat + streaming        | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
-| AI Elements chat UI            | streamdown, use-stick-to-bottom, nanoid                                                                |
-| AI markdown plugins            | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
-| Chat canvas/state utilities    | @radix-ui/react-use-controllable-state, motion                                                         |
-| Graph/flow editor UI           | @xyflow/react                                                                                          |
-| Carousel support               | embla-carousel-react                                                                                   |
-| Rich media rendering           | media-chrome, react-jsx-parser                                                                         |
-| Syntax highlighting/runtime    | shiki, tokenlens, ansi-to-react                                                                        |
-| Rive animations                | @rive-app/react-webgl2                                                                                 |
-| Transactional email (auth)     | resend                                                                                                 |
-| TS scripts with path aliases   | tsx                                                                                                    |
-| Seed / parse docs front matter | gray-matter                                                                                            |
-| In-app Markdown rendering      | react-markdown, remark-gfm                                                                             |
-| Notion webhooks & page fetch   | @notionhq/client                                                                                       |
-| PostHog (client, server, LLM)  | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
-| ShadCN forms (RHF + Zod)       | react-hook-form, @hookform/resolvers                                                                   |
+| Reason                                     | Package(s)                                                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Next.js setup                              | next@latest, react@latest, react-dom@latest                                                            |
+| commit message linting                     | @commitlint/config-conventional, @commitlint/cli, husky                                                |
+| ESLint via Next.js                         | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
+| validating models                          | zod                                                                                                    |
+| prisma ORM setup                           | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
+| Unit testing setup                         | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
+| Unit test coverage                         | @vitest/coverage-v8                                                                                    |
+| Tailwind setup                             | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
+| ShadCn setup                               | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
+| Button Component                           | @radix-ui/react-slot                                                                                   |
+| Dropdown Menu Component                    | @radix-ui/react-dropdown-menu                                                                          |
+| Dark mode                                  | next-themes                                                                                            |
+| Label Component                            | @radix-ui/react-label                                                                                  |
+| Separator Component                        | @radix-ui/react-separator                                                                              |
+| Auth setup                                 | better-auth                                                                                            |
+| Auth UI Setup                              | @daveyplate/better-auth-ui                                                                             |
+| Toastr Component                           | sonner                                                                                                 |
+| ShadCN Table/Select                        | radix-ui                                                                                               |
+| Data Table                                 | @tanstack/react-table                                                                                  |
+| Sidebar Component                          | (shadcn generated - uses radix-ui)                                                                     |
+| Navigation Menu/Avatar                     | (shadcn generated - uses radix-ui)                                                                     |
+| Faceted Filter                             | cmdk (shadcn command component)                                                                        |
+| Internationalization                       | next-intl                                                                                              |
+| ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
+| Gemini AI integration                      | @google/genai                                                                                          |
+| AI SDK chat + streaming                    | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
+| AI Elements chat UI                        | streamdown, use-stick-to-bottom, nanoid                                                                |
+| AI markdown plugins                        | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
+| Chat canvas/state utilities                | @radix-ui/react-use-controllable-state, motion                                                         |
+| Graph/flow editor UI                       | @xyflow/react                                                                                          |
+| Carousel support                           | embla-carousel-react                                                                                   |
+| Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
+| Syntax highlighting/runtime                | shiki, tokenlens, ansi-to-react                                                                        |
+| Rive animations                            | @rive-app/react-webgl2                                                                                 |
+| Transactional email (auth)                 | resend                                                                                                 |
+| TS scripts with path aliases               | tsx                                                                                                    |
+| Seed / parse docs front matter             | gray-matter                                                                                            |
+| In-app Markdown rendering                  | react-markdown, remark-gfm                                                                             |
+| Notion webhooks & page fetch               | @notionhq/client                                                                                       |
+| PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
+| PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
+| ShadCN forms (RHF + Zod)                   | react-hook-form, @hookform/resolvers                                                                   |
 
 ### Notion Integration
 
