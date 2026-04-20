@@ -9,13 +9,6 @@ generator client {
     importFileExtension = "ts"
 }
 
-model Car {
-    id        String   @id @default(uuid())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model FuelType {
     id              String                @id @default(uuid())
     code            String                @unique

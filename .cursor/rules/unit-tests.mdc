@@ -23,9 +23,9 @@ tests/
 Use builders from `tests/builders/` for domain model instances:
 
 ```typescript
-import { car } from '../../builders/car.builder';
+import { carBrand } from '../../builders/car-brand.builder';
 
-const testCar = car({ name: 'Tesla' }); // Override only what you need
+const testBrand = carBrand({ name: 'Tesla' }); // Override only what you need
 ```
 
 When adding an entity, create `tests/builders/{entity}.builder.ts`:
@@ -47,13 +47,13 @@ Mock dependencies BEFORE importing the module under test:
 
 ```typescript
 // 1. Mocks first
-vi.mock('@/storage/car/car.create', () => ({
-  dbCarCreate: vi.fn(),
+vi.mock('@/storage/car-brand/car-brand.create', () => ({
+  dbCarBrandCreate: vi.fn(),
 }));
 
 // 2. Then imports
-import { createCar } from '@/actions/car/create';
-import { dbCarCreate } from '@/storage/car/car.create';
+import { createCarBrand } from '@/actions/car-brand/create';
+import { dbCarBrandCreate } from '@/storage/car-brand/car-brand.create';
 ```
 
 Always clear mocks:
@@ -71,7 +71,7 @@ Test Zod schemas directly. No mocking needed.
 
 ```typescript
 it('fails when name is empty', () => {
-  const result = carSchema.safeParse({ id: 'x', name: '' });
+  const result = carBrandSchema.safeParse({ id: 'x', code: 'audi', name: '' });
   expect(result.success).toBe(false);
 });
 ```
@@ -81,9 +81,9 @@ Mock Prisma client and mappers. Verify correct calls.
 
 ```typescript
 vi.mock('@/storage/utils', () => ({ getPrismaClient: vi.fn() }));
-vi.mock('@/storage/car/car.mappers', () => ({
-  carToDbCar: vi.fn(),
-  dbCarToDomain: vi.fn(),
+vi.mock('@/storage/car-brand/car-brand.mappers', () => ({
+  carBrandToDbCarBrand: vi.fn(),
+  dbCarBrandToDomain: vi.fn(),
 }));
 ```
 
@@ -91,17 +91,17 @@ vi.mock('@/storage/car/car.mappers', () => ({
 Mock storage layer. Test business logic only.
 
 ```typescript
-vi.mock('@/storage/car/car.create', () => ({ dbCarCreate: vi.fn() }));
+vi.mock('@/storage/car-brand/car-brand.create', () => ({ dbCarBrandCreate: vi.fn() }));
 ```
 
 ### API (`tests/api/`)
 Mock actions. Test HTTP status codes and response shapes.
 
 ```typescript
-vi.mock('@/actions/car/create', () => ({ createCar: vi.fn() }));
+vi.mock('@/actions/car-brand/create', () => ({ createCarBrand: vi.fn() }));
 
 it('returns 201 when valid', async () => {
-  vi.mocked(createCar).mockResolvedValueOnce(mockCar);
+  vi.mocked(createCarBrand).mockResolvedValueOnce(mockCarBrand);
   const response = await POST(request);
   expect(response.status).toBe(201);
 });
