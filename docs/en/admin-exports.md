@@ -24,7 +24,7 @@ This project uses one reusable export flow for admin table pages:
 
 ## API route pattern
 
-- Guard access with `errorResponseIfNotAdmin()`.
+- Guard access by wrapping the handler in `withAdmin` from `@/api/with-context`.
 - Accept export format from `exportFormat` (and fallback `format` for compatibility).
 - Parse filter input with the same filter schema used by the normal list endpoint.
 - Return downloadable response with:

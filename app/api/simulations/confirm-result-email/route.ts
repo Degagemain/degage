@@ -2,10 +2,10 @@ import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { isPrismaNotFoundError, noContentResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
-import { withContext } from '@/api/with-context';
+import { withPublic } from '@/api/with-context';
 import { publicConfirmResultEmail } from '@/actions/simulation/public-confirm-result-email';
 
-export const POST = withContext(async (request: NextRequest) => {
+export const POST = withPublic(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
 

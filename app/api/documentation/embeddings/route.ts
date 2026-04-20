@@ -1,11 +1,7 @@
 import { syncDocumentationEmbeddings } from '@/actions/documentation/embed';
-import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
-import { withContext } from '@/api/with-context';
+import { withAdmin } from '@/api/with-context';
 
-export const POST = withContext(async () => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const POST = withAdmin(async () => {
   try {
     const result = await syncDocumentationEmbeddings();
     return Response.json(result);

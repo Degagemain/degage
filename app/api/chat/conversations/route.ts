@@ -1,17 +1,10 @@
 import type { NextRequest } from 'next/server';
-import { headers } from 'next/headers';
-import { auth } from '@/auth';
 import { createChatConversation } from '@/actions/conversation/create';
 import { searchChatConversations } from '@/actions/conversation/search';
-import { safeParseRequestJson, unauthorizedResponse } from '@/api/utils';
-import { withContext } from '@/api/with-context';
+import { safeParseRequestJson } from '@/api/utils';
+import { withAuth } from '@/api/with-context';
 
-export const GET = withContext(async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user?.id) {
-    return unauthorizedResponse();
-  }
-
+export const GET = withAuth(async (_request, _context, session) => {
   const conversations = await searchChatConversations({ userId: session.user.id });
   const items = conversations.map((conversation) => {
     const lastMessage = conversation.messages[conversation.messages.length - 1];
@@ -27,12 +20,7 @@ export const GET = withContext(async () => {
   return Response.json(items);
 });
 
-export const POST = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user?.id) {
-    return unauthorizedResponse();
-  }
-
+export const POST = withAuth(async (request: NextRequest, _context, session) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
 

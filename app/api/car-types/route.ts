@@ -2,11 +2,10 @@ import { type NextRequest } from 'next/server';
 import { searchCarTypes } from '@/actions/car-type/search';
 import { createCarType } from '@/actions/car-type/create';
 import { carTypeFilterSchema } from '@/domain/car-type.filter';
-import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
 import { badRequestResponseFromZod, safeParseRequestJson, tryCreateResource } from '@/api/utils';
-import { withContext } from '@/api/with-context';
+import { withAdmin, withPublic } from '@/api/with-context';
 
-export const GET = withContext(async (request: NextRequest) => {
+export const GET = withPublic(async (request: NextRequest) => {
   const sp = request.nextUrl.searchParams;
   const params: Record<string, unknown> = {};
   for (const [key, value] of sp.entries()) {
@@ -25,10 +24,7 @@ export const GET = withContext(async (request: NextRequest) => {
   return Response.json(result);
 });
 
-export const POST = withContext(async (request: NextRequest) => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const POST = withAdmin(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
   return tryCreateResource(createCarType, data);

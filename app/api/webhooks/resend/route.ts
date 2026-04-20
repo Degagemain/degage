@@ -1,6 +1,7 @@
 import { NextResponse, after } from 'next/server';
 import { processInboundSupportEmail } from '@/actions/support/process-inbound-email';
 import { getResendClient } from '@/integrations/resend';
+import { withPublic } from '@/api/with-context';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -47,7 +48,7 @@ const parseEvent = async (rawBody: string, request: Request): Promise<ResendRece
   }
 };
 
-export async function POST(request: Request): Promise<Response> {
+export const POST = withPublic(async (request) => {
   const botSupportMail = process.env.BOT_SUPPORT_MAIL?.trim().toLowerCase();
   if (!botSupportMail) {
     console.error('[resend webhook] missing BOT_SUPPORT_MAIL configuration');
@@ -79,4 +80,4 @@ export async function POST(request: Request): Promise<Response> {
   });
 
   return new NextResponse(null, { status: 200 });
-}
+});

@@ -2,8 +2,7 @@ import { type NextRequest } from 'next/server';
 import { exportSimulations, exportSimulationsCsv } from '@/actions/simulation/export';
 import { simulationFilterSchema } from '@/domain/simulation.filter';
 import { attachmentDownloadCsvResponse, attachmentDownloadJsonResponse, badRequestResponseFromZod } from '@/api/utils';
-import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
-import { withContext } from '@/api/with-context';
+import { withAdmin } from '@/api/with-context';
 
 const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<string, unknown> => {
   return {
@@ -17,10 +16,7 @@ const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<stri
   };
 };
 
-export const GET = withContext(async (request: NextRequest) => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const GET = withAdmin(async (request: NextRequest) => {
   const exportFormat = request.nextUrl.searchParams.get('exportFormat') ?? request.nextUrl.searchParams.get('format');
   if (exportFormat !== 'csv' && exportFormat !== 'json') {
     return Response.json({ code: 'invalid query parameters', errors: [{ message: 'format must be csv or json' }] }, { status: 400 });

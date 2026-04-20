@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { deleteNotionDocumentation, syncNotionPageToDocumentation } from '@/actions/notion/sync-page-to-documentation';
 import { verifyNotionWebhookSignature } from '@/actions/notion/verify-webhook-signature';
+import { withPublic } from '@/api/with-context';
 
 export const runtime = 'nodejs';
 
@@ -10,7 +11,7 @@ type NotionWebhookBody = {
   entity?: { id?: string; type?: string };
 };
 
-export async function POST(request: Request): Promise<Response> {
+export const POST = withPublic(async (request) => {
   const verificationToken = process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN;
   const rawBody = await request.text();
   const signature = request.headers.get('x-notion-signature');
@@ -64,4 +65,4 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   return new NextResponse(null, { status: 200 });
-}
+});

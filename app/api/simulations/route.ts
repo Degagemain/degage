@@ -1,14 +1,12 @@
 import { type NextRequest } from 'next/server';
-import { headers } from 'next/headers';
-import { auth } from '@/auth';
+import { ZodError } from 'zod';
 import { searchSimulations } from '@/actions/simulation/search';
 import { createSimulation } from '@/actions/simulation/create';
 import { simulationFilterSchema } from '@/domain/simulation.filter';
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
 import { badRequestResponseFromZod, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
-import { withContext } from '@/api/with-context';
-import { ZodError } from 'zod';
+import { withAuth, withPublic } from '@/api/with-context';
 
 const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<string, unknown> => {
   return {
@@ -24,13 +22,7 @@ const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<stri
   };
 };
 
-export const GET = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session?.user) {
-    return Response.json({ code: 'unauthorized', errors: [{ message: 'Authentication required' }] }, { status: statusCodes.UNAUTHORIZED });
-  }
-
+export const GET = withAuth(async (request: NextRequest) => {
   const filter = simulationFilterSchema.safeParse(simulationFilterInputFromSearchParams(request.nextUrl.searchParams));
   if (!filter.success) {
     return badRequestResponseFromZod(filter);
@@ -41,7 +33,7 @@ export const GET = withContext(async (request: NextRequest) => {
 });
 
 /** Public endpoint: run simulation (e.g. from public wizard). No auth required. */
-export const POST = withContext(async (request: NextRequest) => {
+export const POST = withPublic(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
 

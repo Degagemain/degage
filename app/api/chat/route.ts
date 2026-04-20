@@ -1,15 +1,13 @@
 import type { NextRequest } from 'next/server';
-import { headers } from 'next/headers';
 import { z } from 'zod';
 import { type UIMessage } from 'ai';
-import { auth } from '@/auth';
 import { createChatConversation } from '@/actions/conversation/create';
 import { readChatConversation } from '@/actions/conversation/read';
 import { updateChatConversation } from '@/actions/conversation/update';
 import { createMessage } from '@/actions/conversation/message/create';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { forbiddenResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
-import { withContext } from '@/api/with-context';
+import { withPublic } from '@/api/with-context';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
 
@@ -38,8 +36,9 @@ const toUiMessagesFromStoredConversation = (
   }));
 };
 
-export const POST = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
+// Chat supports both anonymous visitors (public support widget) and authenticated users;
+// authenticated conversations are persisted, anonymous ones stream without persistence.
+export const POST = withPublic(async (request: NextRequest, _context, session) => {
   const user = session?.user;
   const isAuthenticated = Boolean(user?.id);
 

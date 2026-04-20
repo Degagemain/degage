@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { NextRequest } from 'next/server';
 
 vi.mock('next/server', async () => {
   const actual = await vi.importActual<typeof import('next/server')>('next/server');
@@ -9,6 +10,15 @@ vi.mock('next/server', async () => {
     },
   };
 });
+
+vi.mock('@/auth', () => ({
+  auth: { api: { getSession: vi.fn().mockResolvedValue(null) } },
+}));
+
+vi.mock('next/headers', () => ({
+  headers: vi.fn().mockResolvedValue(new Headers()),
+  cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
+}));
 
 vi.mock('@/actions/support/process-inbound-email', () => ({
   processInboundSupportEmail: vi.fn(),
@@ -37,7 +47,7 @@ describe('POST /api/webhooks/resend', () => {
   });
 
   it('returns 200 and triggers background processing for matching recipient', async () => {
-    const request = new Request('http://localhost/api/webhooks/resend', {
+    const request = new NextRequest('http://localhost/api/webhooks/resend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -55,7 +65,7 @@ describe('POST /api/webhooks/resend', () => {
   });
 
   it('returns 200 but ignores emails not sent to BOT_SUPPORT_MAIL', async () => {
-    const request = new Request('http://localhost/api/webhooks/resend', {
+    const request = new NextRequest('http://localhost/api/webhooks/resend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
