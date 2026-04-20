@@ -1281,6 +1281,7 @@
       "no": "Non",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "view": "Voir",
         "delete": "Supprimer"
       },
       "delete": {

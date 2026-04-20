@@ -1281,6 +1281,7 @@
       "no": "No",
       "actions": {
         "openMenu": "Open menu",
+        "view": "View",
         "delete": "Delete"
       },
       "delete": {

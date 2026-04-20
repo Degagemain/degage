@@ -1,12 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Check } from 'lucide-react';
+import { Check, Eye, MoreHorizontal } from 'lucide-react';
 
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Badge } from '@/app/components/ui/badge';
+import { Button } from '@/app/components/ui/button';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 
 export type DocumentationColumnsCtx = {
   t: (key: string) => string;
@@ -27,7 +30,16 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       id: 'title',
       accessorFn: (row) => getTitle(row),
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.title')} />,
-      cell: ({ row }) => <span className="max-w-[200px] truncate">{getTitle(row.original)}</span>,
+      cell: ({ row }) => (
+        <Link
+          href={`/app/docs/${encodeURIComponent(row.original.externalId)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary block max-w-[200px] truncate hover:underline"
+        >
+          {getTitle(row.original)}
+        </Link>
+      ),
       enableSorting: false,
     },
     {
@@ -87,6 +99,32 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
         if (!d) return '—';
         const date = typeof d === 'string' ? new Date(d) : d;
         return date.toLocaleDateString();
+      },
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const doc = row.original;
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-xs">
+                <span className="sr-only">{t('actions.openMenu')}</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem asChild>
+                <Link href={`/app/docs/${encodeURIComponent(doc.externalId)}`} target="_blank" rel="noopener noreferrer">
+                  <Eye />
+                  {t('actions.view')}
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
       },
     },
   ];

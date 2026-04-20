@@ -1,6 +1,6 @@
 # Quickstart
 
-To get started, you need [pnpm](https://pnpm.io/) and [docker](https://www.docker.com/).
+To get started, you need [git](https://git-scm.com/), [NodeJs](https://nodejs.org/en), [pnpm](https://pnpm.io/) and [docker](https://www.docker.com/). For the exact NodeJs version, please refer to package.json file.
 
 ```bash
 git clone https://github.com/degagemain/degage.git
@@ -272,7 +272,6 @@ This log explains why packages were installed.
 | Transactional email (auth)                 | resend                                                                                                 |
 | TS scripts with path aliases               | tsx                                                                                                    |
 | Seed / parse docs front matter             | gray-matter                                                                                            |
-| In-app Markdown rendering                  | react-markdown, remark-gfm                                                                             |
 | Notion webhooks & page fetch               | @notionhq/client                                                                                       |
 | PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
 | PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
