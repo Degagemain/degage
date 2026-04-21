@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/integrations/posthog', () => ({
-  isPostHogEnabled: true,
   captureEvent: vi.fn(),
   captureException: vi.fn(),
+  isPostHogEnabled: true,
 }));
 
 vi.mock('@/context/request-context', () => ({
@@ -25,39 +25,23 @@ describe('toError', () => {
   });
 });
 
-describe('logger under NODE_ENV=production', () => {
-  beforeEach(() => {
-    vi.stubEnv('NODE_ENV', 'production');
-    vi.resetModules();
-  });
-
+describe('logger', () => {
   afterEach(() => {
-    vi.unstubAllEnvs();
     vi.clearAllMocks();
   });
 
-  it('warn maps to backend_log capture', async () => {
-    const posthog = await import('@/integrations/posthog');
-    const { logger: prodLogger } = await import('@/lib/logger');
+  it('does not send routine logs as PostHog analytics events (captureEvent)', () => {
+    logger.warn('hello', { detail: 1 });
+    logger.info('hi');
+    logger.error('oops');
 
-    prodLogger.warn('hello', { detail: 1 });
-
-    expect(posthog.captureEvent).toHaveBeenCalledWith(
-      'backend_log',
-      expect.objectContaining({
-        level: 'warn',
-        message: 'hello',
-        detail: 1,
-      }),
-    );
+    expect(captureEvent).not.toHaveBeenCalled();
+    expect(captureException).not.toHaveBeenCalled();
   });
 
-  it('exception delegates to captureException', async () => {
-    const posthog = await import('@/integrations/posthog');
-    const { logger: prodLogger } = await import('@/lib/logger');
+  it('sends exceptions to PostHog when enabled', () => {
+    logger.exception(new Error('boom'), { k: 'v' });
 
-    prodLogger.exception(new Error('boom'), { simulationPhase: 'x' });
-
-    expect(posthog.captureException).toHaveBeenCalledWith(expect.any(Error), { simulationPhase: 'x' });
+    expect(captureException).toHaveBeenCalledWith(expect.any(Error), { k: 'v' });
   });
 });

@@ -216,9 +216,16 @@ pnpm run docs
 ### Server
 
 - **Node client** — `app/integrations/posthog.ts` uses `posthog-node` for events from API routes (e.g. simulations).
+- **Logs (OTLP)** — `app/lib/posthog-otel-logs.ts` configures OpenTelemetry Logs for PostHog using `LoggerProvider` + `BatchLogRecordProcessor` + `OTLPLogExporter` to `.../i/v1/logs` (initialized from `instrumentation.ts`). Route handlers schedule/force a flush via `with-context` so batched logs are not dropped on short-lived runtimes.
 - **LLM analytics** — `instrumentation.ts` registers OpenTelemetry with `PostHogTraceExporter` from `@posthog/ai/otel`. Support reply generation in `app/actions/support/generate-reply.ts` enables the Vercel AI SDK’s `experimental_telemetry` on both `streamText` and `generateText`, which sends `$ai_generation` events (model, latency, token usage, cost). When the viewer is authenticated, their user id is attached as `posthog_distinct_id`.
 
 For local development, set at least **`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`** and **`NEXT_PUBLIC_POSTHOG_HOST`** in `.env` so analytics, server events, and exception capture work (see `app/integrations/posthog.ts` and `instrumentation-client.ts`).
+
+### Logs vs exceptions (short version)
+
+- **Logs** (application log lines): emitted through `app/lib/logger.ts` and sent to stdout/stderr; in production they are also emitted via OpenTelemetry Logs (OTLP) to PostHog Logs (`/i/v1/logs`).
+- **Exceptions** (error tracking): `logger.exception(...)` also calls `captureException` from `posthog-node` in production, creating PostHog error-tracking events (`$exception`).
+- **Analytics events** (product telemetry): explicit `captureEvent(...)` calls (for example simulation analytics) are separate from logs and exceptions.
 
 ### Error tracking and source maps
 
@@ -274,6 +281,7 @@ This log explains why packages were installed.
 | Seed / parse docs front matter             | gray-matter                                                                                            |
 | Notion webhooks & page fetch               | @notionhq/client                                                                                       |
 | PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
+| PostHog Logs (OpenTelemetry OTLP)          | @opentelemetry/sdk-logs, @opentelemetry/exporter-logs-otlp-http, @opentelemetry/api-logs               |
 | PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
 | ShadCN forms (RHF + Zod)                   | react-hook-form, @hookform/resolvers                                                                   |
 

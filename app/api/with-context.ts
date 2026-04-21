@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { cookies, headers } from 'next/headers';
 import { auth } from '@/auth';
 import { withRequestContext } from '@/context/request-context';
+import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
 import { type UILocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { forbiddenResponse, unauthorizedResponse } from '@/api/utils';
 import { isAdmin } from '@/domain/role.utils';
@@ -37,7 +38,13 @@ const runWithContext = async (
       contentLocale: getContentLocale(locale),
       userId: session?.user?.id,
     },
-    () => step(session),
+    async () => {
+      try {
+        return await step(session);
+      } finally {
+        await flushPostHogOtelLogs();
+      }
+    },
   );
 };
 
