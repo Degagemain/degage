@@ -91,21 +91,27 @@ export default function CarPriceEstimatesPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [sorting]);
+
   const fetchData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-price-estimates?${params.toString()}`);
 
@@ -129,7 +135,7 @@ export default function CarPriceEstimatesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
@@ -237,6 +243,7 @@ export default function CarPriceEstimatesPage() {
               </BulkActionsButton>
             }
             exportEndpoint="/api/car-price-estimates/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

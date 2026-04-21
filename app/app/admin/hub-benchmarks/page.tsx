@@ -128,22 +128,28 @@ export default function HubBenchmarksPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [hubIds, sorting]);
+
   const fetchData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/hub-benchmarks?${params.toString()}`);
 
@@ -167,7 +173,7 @@ export default function HubBenchmarksPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [hubIds, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
@@ -289,6 +295,7 @@ export default function HubBenchmarksPage() {
               </>
             }
             exportEndpoint="/api/hub-benchmarks/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

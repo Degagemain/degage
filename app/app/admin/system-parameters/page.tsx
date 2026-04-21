@@ -78,23 +78,29 @@ export default function SystemParametersPage() {
     setDialogOpen(true);
   }, []);
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (categoryFilter.length === 1) params.set('category', categoryFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, categoryFilter, sorting]);
+
   const fetchSystemParameters = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (categoryFilter.length === 1) params.set('category', categoryFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/system-parameters?${params.toString()}`);
 
@@ -118,7 +124,7 @@ export default function SystemParametersPage() {
         error: err instanceof Error ? err.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, categoryFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleSave = useCallback(
     async (id: string, payload: Record<string, unknown>) => {
@@ -209,6 +215,7 @@ export default function SystemParametersPage() {
             searchPlaceholder={t('searchPlaceholder')}
             filterSlot={filterSlot}
             exportEndpoint="/api/system-parameters/export"
+            buildExportParams={buildApiParams}
             columnLabels={columnLabels}
           />
         }

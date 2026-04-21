@@ -181,25 +181,31 @@ export default function CarTypesPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    brandIds.forEach((id) => params.append('brandId', id));
+    fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
+    if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, brandIds, fuelTypeIds, isActiveFilter, sorting]);
+
   const fetchCarTypes = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      brandIds.forEach((id) => params.append('brandId', id));
-      fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-types?${params.toString()}`);
 
@@ -227,7 +233,7 @@ export default function CarTypesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, brandIds, fuelTypeIds, isActiveFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
@@ -359,6 +365,7 @@ export default function CarTypesPage() {
             }
             filterSlot={filterSlot}
             exportEndpoint="/api/car-types/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

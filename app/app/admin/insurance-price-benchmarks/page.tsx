@@ -107,22 +107,28 @@ export default function InsurancePriceBenchmarksPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (yearFilter != null) params.set('year', String(yearFilter));
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [yearFilter, sorting]);
+
   const fetchData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (yearFilter != null) params.set('year', String(yearFilter));
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/insurance-price-benchmarks?${params.toString()}`);
 
@@ -146,7 +152,7 @@ export default function InsurancePriceBenchmarksPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [yearFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
@@ -266,6 +272,7 @@ export default function InsurancePriceBenchmarksPage() {
               </>
             }
             exportEndpoint="/api/insurance-price-benchmarks/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

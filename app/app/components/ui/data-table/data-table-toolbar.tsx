@@ -23,6 +23,12 @@ interface DataTableToolbarProps<TData> {
   postFilterSlot?: React.ReactNode;
   exportEndpoint?: string;
   exportFormatParamName?: string;
+  /**
+   * Builds the query params sent to the export endpoint (excluding the export
+   * format param, which is appended by the toolbar). Callers should mirror the
+   * param names used by their list fetch so filters/sort survive the export.
+   */
+  buildExportParams?: () => URLSearchParams;
   /** When provided, adds an "Import" item in the More menu that calls this callback. */
   onImportClick?: () => void;
   /** Optional map of column id -> display label for the column picker */
@@ -42,6 +48,7 @@ export function DataTableToolbar<TData>({
   postFilterSlot,
   exportEndpoint,
   exportFormatParamName = 'exportFormat',
+  buildExportParams,
   onImportClick,
   columnLabels,
   actionSlot,
@@ -56,13 +63,13 @@ export function DataTableToolbar<TData>({
   const buildExportUrl = React.useCallback(
     (format: AdminExportFormat) => {
       if (!exportEndpoint) return '';
-      const params = new URLSearchParams(window.location.search);
+      const params = buildExportParams ? buildExportParams() : new URLSearchParams();
       params.delete('skip');
       params.delete('take');
       params.set(exportFormatParamName, format);
       return `${exportEndpoint}?${params.toString()}`;
     },
-    [exportEndpoint, exportFormatParamName],
+    [exportEndpoint, exportFormatParamName, buildExportParams],
   );
 
   return (

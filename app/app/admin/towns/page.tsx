@@ -201,26 +201,32 @@ export default function TownsPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (provinceIds.length > 0) params.set('provinceId', provinceIds[0]!);
+    if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+    if (highDemandFilter.length === 1) params.set('highDemand', highDemandFilter[0]!);
+    if (hasActiveMembersFilter.length === 1) params.set('hasActiveMembers', hasActiveMembersFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, provinceIds, hubIds, highDemandFilter, hasActiveMembersFilter, sorting]);
+
   const fetchTowns = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (provinceIds.length > 0) params.set('provinceId', provinceIds[0]!);
-      if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
-      if (highDemandFilter.length === 1) params.set('highDemand', highDemandFilter[0]!);
-      if (hasActiveMembersFilter.length === 1) params.set('hasActiveMembers', hasActiveMembersFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/towns?${params.toString()}`);
 
@@ -244,7 +250,7 @@ export default function TownsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, provinceIds, hubIds, highDemandFilter, hasActiveMembersFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!townToDelete?.id) return;
@@ -388,6 +394,7 @@ export default function TownsPage() {
               </>
             }
             exportEndpoint="/api/towns/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

@@ -111,27 +111,32 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
+    for (const s of sourceFilter) {
+      params.append('source', s);
+    }
+    for (const fmt of formatFilter) {
+      params.append('format', fmt);
+    }
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+    return params;
+  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, sorting]);
+
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
-      for (const s of sourceFilter) {
-        params.append('source', s);
-      }
-      for (const fmt of formatFilter) {
-        params.append('format', fmt);
-      }
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
       const response = await fetch(`/api/documentation?${params.toString()}`);
       if (!response.ok) {
         if (response.status === 401) throw new Error('Authentication required');
@@ -147,7 +152,7 @@ export default function DocumentationAdminPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleUpsertDocumentation = useCallback(async (record: Documentation): Promise<Response> => {
     if (record.id) {
@@ -328,6 +333,7 @@ export default function DocumentationAdminPage() {
             searchPlaceholder={t('searchPlaceholder')}
             filterSlot={filterSlot}
             exportEndpoint="/api/documentation/export"
+            buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />

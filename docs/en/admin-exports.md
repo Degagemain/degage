@@ -34,10 +34,14 @@ This project uses one reusable export flow for admin table pages:
 ## UI pattern
 
 - `DataTableToolbar` renders the **More -> Export** flow when `exportEndpoint` is provided.
-- The export URL is built from current URL params:
-  - keep active filters/sort
-  - remove `skip` and `take`
-  - add `exportFormat=csv|json`
+- The page MUST also pass a `buildExportParams` callback returning a `URLSearchParams`. The toolbar only appends `exportFormat` on top of those
+  params; it does not read `window.location.search` on its own.
+- The convention on every admin list page is to extract a `buildApiParams()` callback that returns the params used by the list fetch (query,
+  filters, sort — translated to the names expected by the backend filter schema), **without** `skip`/`take`. Then:
+  - `fetchX` calls `buildApiParams()` and sets `skip`/`take` itself.
+  - `DataTableToolbar` gets `buildExportParams={buildApiParams}`.
+- This keeps the normal list fetch and the export in sync and avoids leaking internal URL-bar encodings (e.g. the plural CSV `provinceIds=a,b`)
+  into the export endpoint, which validates params against the same filter schema as the list endpoint.
 
 ## Notes
 

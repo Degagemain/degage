@@ -73,22 +73,28 @@ export default function CarTaxBaseRatesPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, sorting]);
+
   const fetchRates = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-tax-base-rates?${params.toString()}`);
 
@@ -112,7 +118,7 @@ export default function CarTaxBaseRatesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   useEffect(() => {
     fetchRates();
@@ -160,6 +166,7 @@ export default function CarTaxBaseRatesPage() {
           onSearchChange={setQueryInput}
           searchPlaceholder={t('searchPlaceholder')}
           exportEndpoint="/api/car-tax-base-rates/export"
+          buildExportParams={buildApiParams}
           columnLabels={columnLabels}
         />
       }
