@@ -24,6 +24,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -90,6 +92,7 @@ export default function HubBenchmarksPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<HubBenchmark | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -125,22 +128,28 @@ export default function HubBenchmarksPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [hubIds, sorting]);
+
   const fetchData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/hub-benchmarks?${params.toString()}`);
 
@@ -164,12 +173,12 @@ export default function HubBenchmarksPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [hubIds, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/hub-benchmarks/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/hub-benchmarks/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -191,10 +200,21 @@ export default function HubBenchmarksPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/hub-benchmarks/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/hub-benchmarks/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchData();
+  }, [fetchData]);
+
+  const handleUpsertHubBenchmark = useCallback(async (record: HubBenchmark): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/hub-benchmarks/${record.id}`, record);
+    }
+    return apiPost('/api/hub-benchmarks', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchData();
   }, [fetchData]);
 
@@ -275,6 +295,8 @@ export default function HubBenchmarksPage() {
               </>
             }
             exportEndpoint="/api/hub-benchmarks/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -337,6 +359,19 @@ export default function HubBenchmarksPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<HubBenchmark>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.hub?.name ?? record.hubId}
+        upsertRecord={handleUpsertHubBenchmark}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

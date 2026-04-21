@@ -23,6 +23,14 @@ interface DataTableToolbarProps<TData> {
   postFilterSlot?: React.ReactNode;
   exportEndpoint?: string;
   exportFormatParamName?: string;
+  /**
+   * Builds the query params sent to the export endpoint (excluding the export
+   * format param, which is appended by the toolbar). Callers should mirror the
+   * param names used by their list fetch so filters/sort survive the export.
+   */
+  buildExportParams?: () => URLSearchParams;
+  /** When provided, adds an "Import" item in the More menu that calls this callback. */
+  onImportClick?: () => void;
   /** Optional map of column id -> display label for the column picker */
   columnLabels?: Record<string, string>;
   /** Slot for action buttons (shown after view options) */
@@ -40,25 +48,28 @@ export function DataTableToolbar<TData>({
   postFilterSlot,
   exportEndpoint,
   exportFormatParamName = 'exportFormat',
+  buildExportParams,
+  onImportClick,
   columnLabels,
   actionSlot,
   showSearch = true,
 }: DataTableToolbarProps<TData>) {
   const t = useTranslations('dataTable.toolbar');
   const tExport = useTranslations('admin.common.export');
+  const tImport = useTranslations('admin.common.import');
   const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
   const isFiltered = searchValue.length > 0;
   const placeholder = searchPlaceholder ?? t('searchPlaceholder');
   const buildExportUrl = React.useCallback(
     (format: AdminExportFormat) => {
       if (!exportEndpoint) return '';
-      const params = new URLSearchParams(window.location.search);
+      const params = buildExportParams ? buildExportParams() : new URLSearchParams();
       params.delete('skip');
       params.delete('take');
       params.set(exportFormatParamName, format);
       return `${exportEndpoint}?${params.toString()}`;
     },
-    [exportEndpoint, exportFormatParamName],
+    [exportEndpoint, exportFormatParamName, buildExportParams],
   );
 
   return (
@@ -93,6 +104,7 @@ export function DataTableToolbar<TData>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem onClick={() => setExportDialogOpen(true)}>{tExport('openExport')}</DropdownMenuItem>
+              {onImportClick ? <DropdownMenuItem onClick={onImportClick}>{tImport('openImport')}</DropdownMenuItem> : null}
             </DropdownMenuContent>
           </DropdownMenu>
           <AdminExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} buildExportUrl={buildExportUrl} />

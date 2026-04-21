@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { deleteNotionDocumentation, syncNotionPageToDocumentation } from '@/actions/notion/sync-page-to-documentation';
 import { verifyNotionWebhookSignature } from '@/actions/notion/verify-webhook-signature';
+import { withPublic } from '@/api/with-context';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 
@@ -10,7 +12,7 @@ type NotionWebhookBody = {
   entity?: { id?: string; type?: string };
 };
 
-export async function POST(request: Request): Promise<Response> {
+export const POST = withPublic(async (request) => {
   const verificationToken = process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN;
   const rawBody = await request.text();
   const signature = request.headers.get('x-notion-signature');
@@ -31,6 +33,7 @@ export async function POST(request: Request): Promise<Response> {
 
   if (body.verification_token !== undefined && body.type === undefined) {
     if (!verificationToken) {
+      // Notion one-time token: use host logs only, not `logger` (avoids PostHog `meta`).
       console.info(
         '[notion webhook] Verification: paste into Notion → Webhooks → Verify; then set NOTION_WEBHOOK_VERIFICATION_TOKEN.\n',
         body.verification_token,
@@ -59,9 +62,9 @@ export async function POST(request: Request): Promise<Response> {
       await syncNotionPageToDocumentation(pageId);
     }
   } catch (e) {
-    console.error('[notion webhook]', e);
+    logger.exception(e, { webhook: 'notion' });
     return NextResponse.json({ code: 'sync_failed', errors: [{ message: 'Failed to sync documentation' }] }, { status: 500 });
   }
 
   return new NextResponse(null, { status: 200 });
-}
+});

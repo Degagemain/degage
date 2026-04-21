@@ -188,6 +188,25 @@
         "error": "Exporteren mislukt.",
         "more": "Meer",
         "openExport": "Exporteren"
+      },
+      "import": {
+        "openImport": "Importeren",
+        "title": "Importeren",
+        "description": "Selecteer een JSON-bestand dat eerder vanaf deze pagina is geëxporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "selectFile": "JSON-bestand selecteren",
+        "parseError": "Kan bestand niet lezen. Verwacht een JSON-array met records.",
+        "columnAction": "Actie",
+        "actionInsert": "Toevoegen",
+        "actionUpdate": "Bijwerken",
+        "columnStatus": "Status",
+        "statusPending": "In wachtrij",
+        "statusRunning": "Bezig met importeren…",
+        "statusSuccess": "Geïmporteerd",
+        "statusError": "Mislukt",
+        "statusConflict": "Conflict",
+        "confirm": "Alles importeren",
+        "cancel": "Annuleren",
+        "close": "Sluiten"
       }
     },
     "carBrands": {
@@ -247,6 +266,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Automerken importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Automerk"
       }
     },
     "fuelTypes": {
@@ -311,6 +335,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Brandstoftypes importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Brandstoftype"
       }
     },
     "carTypes": {
@@ -381,6 +410,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Autotypes importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Autotype"
       }
     },
     "euroNorms": {
@@ -448,6 +482,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Euronormen importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Euronorm"
       }
     },
     "carPriceEstimates": {
@@ -524,6 +563,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Prijsschattingen importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Prijsschatting"
       }
     },
     "carInfos": {
@@ -589,6 +633,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Auto-info importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Auto-info"
       }
     },
     "carTaxEuroNormAdjustments": {
@@ -645,6 +694,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Euronorm-correcties importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Correctie"
       }
     },
     "fiscalRegions": {
@@ -704,6 +758,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Fiscale regio's importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Fiscale regio"
       }
     },
     "provinces": {
@@ -757,6 +816,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Provincies importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Provincie"
       }
     },
     "hubs": {
@@ -831,6 +895,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Hubs importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Hub"
       }
     },
     "hubBenchmarks": {
@@ -892,6 +961,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Hub-benchmarks importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Hub-benchmark"
       }
     },
     "carTaxBaseRates": {
@@ -975,6 +1049,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Verzekeringspremie-benchmarks importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Benchmark"
       }
     },
     "towns": {
@@ -1053,6 +1132,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Gemeenten importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Gemeente"
       }
     },
     "systemParameters": {
@@ -1281,6 +1365,7 @@
       "no": "Nee",
       "actions": {
         "openMenu": "Menu openen",
+        "view": "Bekijken",
         "delete": "Verwijderen"
       },
       "delete": {
@@ -1290,6 +1375,11 @@
         "cancel": "Annuleren",
         "success": "Documentatie verwijderd.",
         "error": "Verwijderen mislukt."
+      },
+      "bulkImport": {
+        "title": "Documentatie importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Documentatie"
       }
     }
   },
@@ -1734,7 +1824,7 @@
     "conversationCreatedLabel": "Aangemaakt {time}",
     "deleteConversation": "Gesprek verwijderen",
     "emptyConversationTitle": "Stel een vraag",
-    "emptyConversationDescription": "Je kunt elke vraag over Degage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
+    "emptyConversationDescription": "Je kunt elke vraag over Dégage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
     "inputPlaceholder": "Stel je vraag...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Versturen",

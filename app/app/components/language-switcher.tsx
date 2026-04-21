@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { Globe } from 'lucide-react';
 import { toast } from 'sonner';
+import { apiPatch } from '@/app/lib/api-client';
 import { cn } from '@/app/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Button } from './ui/button';
@@ -15,11 +16,7 @@ export function LanguageSwitcher({ triggerClassName, showLabel = false }: { trig
   const t = useTranslations('language');
 
   const switchLocale = async (newLocale: string) => {
-    const response = await fetch('/api/user/locale', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ locale: newLocale }),
-    });
+    const response = await apiPatch('/api/user/locale', { locale: newLocale });
     if (!response.ok) {
       toast.error(t('updateFailed'));
       return;

@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { InsurancePriceBenchmark } from '@/domain/insurance-price-benchmark.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { INSURANCE_PRICE_BENCHMARK_FORM_ID, InsurancePriceBenchmarkForm } from '../components/insurance-price-benchmark-form';
@@ -21,11 +22,7 @@ export default function NewInsurancePriceBenchmarkPage() {
   const handleCreate = async (row: InsurancePriceBenchmark) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/insurance-price-benchmarks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(row),
-      });
+      const response = await apiPost('/api/insurance-price-benchmarks', row);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

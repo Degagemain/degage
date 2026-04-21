@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FiscalRegion } from '@/domain/fiscal-region.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { FISCAL_REGION_FORM_ID, FiscalRegionForm } from '../components/fiscal-region-form';
@@ -21,11 +22,7 @@ export default function NewFiscalRegionPage() {
   const handleCreate = async (fiscalRegion: FiscalRegion) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/fiscal-regions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fiscalRegion),
-      });
+      const response = await apiPost('/api/fiscal-regions', fiscalRegion);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

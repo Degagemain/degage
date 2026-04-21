@@ -188,6 +188,25 @@
         "error": "Échec de l'export.",
         "more": "Plus",
         "openExport": "Exporter"
+      },
+      "import": {
+        "openImport": "Importer",
+        "title": "Importer",
+        "description": "Sélectionnez un fichier JSON précédemment exporté depuis cette page. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "selectFile": "Sélectionner un fichier JSON",
+        "parseError": "Impossible de lire le fichier. Un tableau JSON d'enregistrements est attendu.",
+        "columnAction": "Action",
+        "actionInsert": "Ajouter",
+        "actionUpdate": "Mettre à jour",
+        "columnStatus": "Statut",
+        "statusPending": "En attente",
+        "statusRunning": "Import en cours…",
+        "statusSuccess": "Importé",
+        "statusError": "Échec",
+        "statusConflict": "Conflit",
+        "confirm": "Tout importer",
+        "cancel": "Annuler",
+        "close": "Fermer"
       }
     },
     "carBrands": {
@@ -247,6 +266,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des marques de voitures",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Marque de voiture"
       }
     },
     "fuelTypes": {
@@ -311,6 +335,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des types de carburant",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Type de carburant"
       }
     },
     "carTypes": {
@@ -381,6 +410,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des types de voitures",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Type de voiture"
       }
     },
     "euroNorms": {
@@ -448,6 +482,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des normes Euro",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Norme Euro"
       }
     },
     "carPriceEstimates": {
@@ -524,6 +563,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des estimations de prix",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Estimation de prix"
       }
     },
     "carInfos": {
@@ -589,6 +633,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des infos voiture",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Info voiture"
       }
     },
     "carTaxEuroNormAdjustments": {
@@ -645,6 +694,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des corrections de normes Euro",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Correction"
       }
     },
     "fiscalRegions": {
@@ -704,6 +758,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des régions fiscales",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Région fiscale"
       }
     },
     "provinces": {
@@ -757,6 +816,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des provinces",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Province"
       }
     },
     "hubs": {
@@ -831,6 +895,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des hubs",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Hub"
       }
     },
     "hubBenchmarks": {
@@ -892,6 +961,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des benchmarks de hubs",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Benchmark de hub"
       }
     },
     "carTaxBaseRates": {
@@ -975,6 +1049,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des benchmarks de primes d'assurance",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Benchmark"
       }
     },
     "towns": {
@@ -1053,6 +1132,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des villes",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Ville"
       }
     },
     "systemParameters": {
@@ -1281,6 +1365,7 @@
       "no": "Non",
       "actions": {
         "openMenu": "Ouvrir le menu",
+        "view": "Voir",
         "delete": "Supprimer"
       },
       "delete": {
@@ -1290,6 +1375,11 @@
         "cancel": "Annuler",
         "success": "Documentation supprimée.",
         "error": "Échec de la suppression."
+      },
+      "bulkImport": {
+        "title": "Importer la documentation",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Documentation"
       }
     }
   },
@@ -1734,7 +1824,7 @@
     "conversationCreatedLabel": "Créée le {time}",
     "deleteConversation": "Supprimer la conversation",
     "emptyConversationTitle": "Posez une question",
-    "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Degage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
+    "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Dégage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
     "inputPlaceholder": "Posez votre question...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Envoyer",

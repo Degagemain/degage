@@ -17,6 +17,8 @@ import { AdminTablePage, DataTable, DataTableFacetedFilter, DataTablePagination,
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -70,6 +72,7 @@ export default function InsurancePriceBenchmarksPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<InsurancePriceBenchmark | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -104,22 +107,28 @@ export default function InsurancePriceBenchmarksPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (yearFilter != null) params.set('year', String(yearFilter));
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [yearFilter, sorting]);
+
   const fetchData = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (yearFilter != null) params.set('year', String(yearFilter));
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/insurance-price-benchmarks?${params.toString()}`);
 
@@ -143,12 +152,12 @@ export default function InsurancePriceBenchmarksPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [yearFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/insurance-price-benchmarks/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/insurance-price-benchmarks/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -170,10 +179,21 @@ export default function InsurancePriceBenchmarksPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/insurance-price-benchmarks/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/insurance-price-benchmarks/${id}`), []);
+
+  const handleUpsertInsurancePriceBenchmark = useCallback(async (record: InsurancePriceBenchmark): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/insurance-price-benchmarks/${record.id}`, record);
+    }
+    return apiPost('/api/insurance-price-benchmarks', { ...record, id: null });
+  }, []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchData();
+  }, [fetchData]);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchData();
   }, [fetchData]);
 
@@ -252,6 +272,8 @@ export default function InsurancePriceBenchmarksPage() {
               </>
             }
             exportEndpoint="/api/insurance-price-benchmarks/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -313,6 +335,19 @@ export default function InsurancePriceBenchmarksPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<InsurancePriceBenchmark>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => `${record.year}`}
+        upsertRecord={handleUpsertInsurancePriceBenchmark}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

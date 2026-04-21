@@ -26,6 +26,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -120,6 +122,7 @@ export default function CarTypesPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarType | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -178,25 +181,31 @@ export default function CarTypesPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    brandIds.forEach((id) => params.append('brandId', id));
+    fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
+    if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, brandIds, fuelTypeIds, isActiveFilter, sorting]);
+
   const fetchCarTypes = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      brandIds.forEach((id) => params.append('brandId', id));
-      fuelTypeIds.forEach((id) => params.append('fuelTypeId', id));
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-types?${params.toString()}`);
 
@@ -224,11 +233,11 @@ export default function CarTypesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, brandIds, fuelTypeIds, isActiveFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
-    const response = await fetch(`/api/car-types/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-types/${itemToDelete.id}`);
     if (response.ok) {
       toast.success(t('delete.success'));
       setItemToDelete(null);
@@ -249,10 +258,21 @@ export default function CarTypesPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/car-types/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/car-types/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchCarTypes();
+  }, [fetchCarTypes]);
+
+  const handleUpsertCarType = useCallback(async (record: CarType): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/car-types/${record.id}`, record);
+    }
+    return apiPost('/api/car-types', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchCarTypes();
   }, [fetchCarTypes]);
 
@@ -345,6 +365,8 @@ export default function CarTypesPage() {
             }
             filterSlot={filterSlot}
             exportEndpoint="/api/car-types/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -406,6 +428,19 @@ export default function CarTypesPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<CarType>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertCarType}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

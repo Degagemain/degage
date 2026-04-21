@@ -1,10 +1,11 @@
-import { cookies, headers } from 'next/headers';
-import { auth } from '@/auth';
+import type { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
 import { dbUserUpdateLocale } from '@/storage/user/user.update';
 import { type UILocale, uiLocales } from '@/i18n/locales';
 import { safeParseRequestJson } from '@/api/utils';
+import { withPublic } from '@/api/with-context';
 
-export async function PATCH(request: Request) {
+export const PATCH = withPublic(async (request: NextRequest, _context, session) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
   const { locale } = data as { locale: string };
@@ -20,10 +21,9 @@ export async function PATCH(request: Request) {
     sameSite: 'lax',
   });
 
-  const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user?.id) {
     await dbUserUpdateLocale(session.user.id, locale);
   }
 
   return Response.json({ success: true });
-}
+});

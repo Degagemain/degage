@@ -26,6 +26,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -123,6 +125,7 @@ export default function TownsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [townToDelete, setTownToDelete] = useState<Town | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -198,26 +201,32 @@ export default function TownsPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (provinceIds.length > 0) params.set('provinceId', provinceIds[0]!);
+    if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
+    if (highDemandFilter.length === 1) params.set('highDemand', highDemandFilter[0]!);
+    if (hasActiveMembersFilter.length === 1) params.set('hasActiveMembers', hasActiveMembersFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, provinceIds, hubIds, highDemandFilter, hasActiveMembersFilter, sorting]);
+
   const fetchTowns = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (provinceIds.length > 0) params.set('provinceId', provinceIds[0]!);
-      if (hubIds.length > 0) params.set('hubId', hubIds[0]!);
-      if (highDemandFilter.length === 1) params.set('highDemand', highDemandFilter[0]!);
-      if (hasActiveMembersFilter.length === 1) params.set('hasActiveMembers', hasActiveMembersFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/towns?${params.toString()}`);
 
@@ -241,12 +250,12 @@ export default function TownsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, provinceIds, hubIds, highDemandFilter, hasActiveMembersFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!townToDelete?.id) return;
 
-    const response = await fetch(`/api/towns/${townToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/towns/${townToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -268,10 +277,21 @@ export default function TownsPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/towns/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/towns/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchTowns();
+  }, [fetchTowns]);
+
+  const handleUpsertTown = useCallback(async (town: Town): Promise<Response> => {
+    if (town.id) {
+      return apiPut(`/api/towns/${town.id}`, town);
+    }
+    return apiPost('/api/towns', { ...town, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchTowns();
   }, [fetchTowns]);
 
@@ -374,6 +394,8 @@ export default function TownsPage() {
               </>
             }
             exportEndpoint="/api/towns/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -436,6 +458,19 @@ export default function TownsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<Town>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(town) => `${town.zip} — ${town.name}`}
+        upsertRecord={handleUpsertTown}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

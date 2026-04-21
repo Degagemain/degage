@@ -24,6 +24,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -69,6 +71,7 @@ export default function CarBrandsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarBrand | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -109,23 +112,29 @@ export default function CarBrandsPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, isActiveFilter, sorting]);
+
   const fetchCarBrands = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-brands?${params.toString()}`);
 
@@ -153,11 +162,11 @@ export default function CarBrandsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, isActiveFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
-    const response = await fetch(`/api/car-brands/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-brands/${itemToDelete.id}`);
     if (response.ok) {
       toast.success(t('delete.success'));
       setItemToDelete(null);
@@ -178,10 +187,21 @@ export default function CarBrandsPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/car-brands/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/car-brands/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchCarBrands();
+  }, [fetchCarBrands]);
+
+  const handleUpsertCarBrand = useCallback(async (record: CarBrand): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/car-brands/${record.id}`, record);
+    }
+    return apiPost('/api/car-brands', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchCarBrands();
   }, [fetchCarBrands]);
 
@@ -260,6 +280,8 @@ export default function CarBrandsPage() {
               </>
             }
             exportEndpoint="/api/car-brands/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -321,6 +343,19 @@ export default function CarBrandsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<CarBrand>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertCarBrand}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

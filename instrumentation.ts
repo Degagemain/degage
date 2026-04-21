@@ -4,9 +4,13 @@ import { PostHogTraceExporter } from '@posthog/ai/otel';
 import { NextRequest } from 'next/server';
 import type { RequestErrorContext } from 'next/dist/server/instrumentation/types';
 
+import { initPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+
 const isPostHogEnabled = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
 export async function register() {
+  initPostHogOtelLogs();
+
   if (isPostHogEnabled) {
     const sdk = new NodeSDK({
       resource: resourceFromAttributes({
@@ -21,7 +25,13 @@ export async function register() {
   }
 }
 
-export const onRequestError = async (err: Error, request: NextRequest, context: RequestErrorContext) => {
+export const onRequestError = async (
+  err: Error,
+  request: NextRequest,
+  // Required by Next.js instrumentation hook signature.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _context: RequestErrorContext,
+) => {
   if (process.env.NEXT_RUNTIME === 'nodejs' && isPostHogEnabled) {
     const { getPostHogClient } = require('./app/integrations/posthog'); // eslint-disable-line @typescript-eslint/no-require-imports
     const posthog = getPostHogClient();

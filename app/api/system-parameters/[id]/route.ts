@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
-import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
 import {
   IdRouteParams,
   NotFoundError,
@@ -12,21 +11,15 @@ import {
 } from '@/api/utils';
 import { readSystemParameter } from '@/actions/system-parameter/read';
 import { updateSystemParameterValues } from '@/actions/system-parameter/update-values';
-import { withContext } from '@/api/with-context';
+import { withAdmin } from '@/api/with-context';
 import { statusCodes } from '@/api/status-codes';
 
-export const GET = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const GET = withAdmin(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
   const id = await getIdFromRoute(context as IdRouteParams);
   return tryReadResource(readSystemParameter, id);
 });
 
-export const PATCH = withContext(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const PATCH = withAdmin(async (request: NextRequest, context?: { params: Promise<Record<string, string>> }) => {
   const id = await getIdFromRoute(context as IdRouteParams);
 
   const { data, errorResponse } = await safeParseRequestJson(request);

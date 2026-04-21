@@ -24,6 +24,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -71,6 +73,7 @@ export default function FuelTypesPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<FuelType | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -113,23 +116,29 @@ export default function FuelTypesPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, isActiveFilter, sorting]);
+
   const fetchFuelTypes = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isActiveFilter.length === 1) params.set('isActive', isActiveFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/fuel-types?${params.toString()}`);
 
@@ -157,11 +166,11 @@ export default function FuelTypesPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, isActiveFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
-    const response = await fetch(`/api/fuel-types/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/fuel-types/${itemToDelete.id}`);
     if (response.ok) {
       toast.success(t('delete.success'));
       setItemToDelete(null);
@@ -182,10 +191,21 @@ export default function FuelTypesPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/fuel-types/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/fuel-types/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchFuelTypes();
+  }, [fetchFuelTypes]);
+
+  const handleUpsertFuelType = useCallback(async (record: FuelType): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/fuel-types/${record.id}`, record);
+    }
+    return apiPost('/api/fuel-types', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchFuelTypes();
   }, [fetchFuelTypes]);
 
@@ -264,6 +284,8 @@ export default function FuelTypesPage() {
               </>
             }
             exportEndpoint="/api/fuel-types/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -325,6 +347,19 @@ export default function FuelTypesPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<FuelType>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertFuelType}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

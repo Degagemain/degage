@@ -10,6 +10,7 @@ import { CalendarIcon, Check, Info, X } from 'lucide-react';
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
 import { SimulationStepIcon } from '@/domain/simulation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
+import { apiPost } from '@/app/lib/api-client';
 import { Button } from '@/app/components/ui/button';
 import { Calendar } from '@/app/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -219,11 +220,7 @@ export default function NewSimulationPage() {
       setPreviewError(null);
       try {
         const body = buildRequestBody(form);
-        const res = await fetch('/api/simulations?skipPersistence=true', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
+        const res = await apiPost('/api/simulations?skipPersistence=true', body);
         const data = await res.json();
 
         if (!res.ok) {
@@ -255,11 +252,7 @@ export default function NewSimulationPage() {
     setIsCreating(true);
     try {
       const body = buildRequestBody(form);
-      const res = await fetch('/api/simulations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      const res = await apiPost('/api/simulations', body);
       const data = await res.json();
 
       if (!res.ok) {

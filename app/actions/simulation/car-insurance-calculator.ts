@@ -1,4 +1,4 @@
-import { SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
+import { SimulationStepCode } from '@/domain/simulation.model';
 import type { SimulationResultBuilder } from '@/domain/simulation.model';
 import { addInfoMessage, getSimulationMessage } from '@/actions/simulation/simulation-utils';
 import { dbInsurancePriceBenchmarkFindMostRecent } from '@/storage/insurance-price-benchmark/insurance-price-benchmark.read';

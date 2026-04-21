@@ -7,6 +7,7 @@ import { Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarTaxEuroNormAdjustment } from '@/domain/car-tax-euro-norm-adjustment.model';
+import { apiDelete, apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { Button } from '@/app/components/ui/button';
@@ -58,11 +59,7 @@ export default function EditCarTaxEuroNormAdjustmentPage() {
     if (!id) return;
     setIsSaving(true);
     try {
-      const response = await fetch(`/api/car-tax-euro-norm-adjustments/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, id }),
-      });
+      const response = await apiPut(`/api/car-tax-euro-norm-adjustments/${id}`, { ...payload, id });
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));
@@ -81,7 +78,7 @@ export default function EditCarTaxEuroNormAdjustmentPage() {
 
   const handleDelete = async () => {
     if (!id) return;
-    const response = await fetch(`/api/car-tax-euro-norm-adjustments/${id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-tax-euro-norm-adjustments/${id}`);
     if (response.ok) {
       toast.success(t('delete.success'));
       setIsDeleteDialogOpen(false);

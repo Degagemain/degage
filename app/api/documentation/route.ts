@@ -1,16 +1,14 @@
 import type { NextRequest } from 'next/server';
-import { headers } from 'next/headers';
-import { auth } from '@/auth';
 import { isAdmin } from '@/domain/role.utils';
 import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
 import { searchDocumentation } from '@/actions/documentation/search';
 import { createDocumentation } from '@/actions/documentation/create';
-import { errorResponseIfNotAdmin } from '@/api/authorization-utils';
 import { badRequestResponseFromZod, forbiddenResponse, safeParseRequestJson, tryCreateResource } from '@/api/utils';
-import { withContext } from '@/api/with-context';
+import { withAdmin, withPublic } from '@/api/with-context';
 
-export const GET = withContext(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: await headers() });
+// GET is public to allow anonymous visitors to read FAQ entries. Non-admins may
+// only request the FAQ subset — any broader query requires admin access.
+export const GET = withPublic(async (request: NextRequest, _context, session) => {
   const viewerIsAdmin = session?.user ? isAdmin(session.user) : false;
   const isAuthenticated = Boolean(session?.user);
 
@@ -29,10 +27,7 @@ export const GET = withContext(async (request: NextRequest) => {
   return Response.json(result);
 });
 
-export const POST = withContext(async (request: NextRequest) => {
-  const denied = await errorResponseIfNotAdmin();
-  if (denied) return denied;
-
+export const POST = withAdmin(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
   return tryCreateResource(createDocumentation, data);

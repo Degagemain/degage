@@ -14,6 +14,7 @@ vi.mock('@/actions/user/search', () => ({
 
 vi.mock('next/headers', () => ({
   headers: vi.fn().mockResolvedValue(new Headers()),
+  cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
 import { GET } from '@/api/users/route';

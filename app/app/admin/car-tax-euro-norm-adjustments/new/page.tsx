@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarTaxEuroNormAdjustment } from '@/domain/car-tax-euro-norm-adjustment.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { CAR_TAX_EURO_NORM_ADJUSTMENT_FORM_ID, CarTaxEuroNormAdjustmentForm } from '../components/car-tax-euro-norm-adjustment-form';
@@ -21,11 +22,7 @@ export default function NewCarTaxEuroNormAdjustmentPage() {
   const handleCreate = async (row: CarTaxEuroNormAdjustment) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/car-tax-euro-norm-adjustments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(row),
-      });
+      const response = await apiPost('/api/car-tax-euro-norm-adjustments', row);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

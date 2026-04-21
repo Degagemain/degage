@@ -8,6 +8,7 @@ import { dbDocumentationSearch } from '@/storage/documentation/documentation.sea
 import { dbDocumentationChunkReadHashesByLocale } from '@/storage/documentation-chunk/documentation-chunk.read';
 import { dbDocumentationChunkReplaceForLocale } from '@/storage/documentation-chunk/documentation-chunk.upsert';
 import { sha256Hex } from '@/storage/utils';
+import { logger } from '@/lib/logger';
 
 const CONTENT_CHUNK_SIZE = 2000;
 const CONTENT_CHUNK_OVERLAP = 300;
@@ -86,7 +87,7 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
     existingHashesByLocale.set(locale, await dbDocumentationChunkReadHashesByLocale(locale));
   }
 
-  console.info('[embeddings] sync started', { locales: [...contentLocales], documentationCount: docs.length });
+  logger.info('[embeddings] sync started', { locales: [...contentLocales], documentationCount: docs.length });
 
   let updatedDocumentation = 0;
   let skippedDocumentation = 0;
@@ -95,7 +96,7 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
   for (const doc of docs) {
     if (!doc.id) {
       failedDocumentation += 1;
-      console.error('[embeddings] failed, documentation id is missing', { externalId: doc.externalId });
+      logger.error('[embeddings] failed, documentation id is missing', { externalId: doc.externalId });
       continue;
     }
 
@@ -105,7 +106,7 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
     for (const locale of contentLocales) {
       const translation = doc.translations.find((item) => item.locale === locale);
       if (!translation) {
-        console.info('[embeddings] skipped, missing locale translation', { locale, docRef });
+        logger.info('[embeddings] skipped, missing locale translation', { locale, docRef });
         skippedDocumentation += 1;
         continue;
       }
@@ -113,7 +114,7 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
       const normalizedTitle = translation.title.trim();
       const normalizedContent = translation.content.trim();
       if (!normalizedTitle) {
-        console.info('[embeddings] skipped, empty title', { docRef, locale });
+        logger.info('[embeddings] skipped, empty title', { docRef, locale });
         skippedDocumentation += 1;
         continue;
       }
@@ -122,13 +123,13 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
       const existingHashes = existingHashesByLocale.get(locale)!;
       const previousHash = existingHashes.get(docId);
       if (previousHash && previousHash === contentHash) {
-        console.info('[embeddings] skipped, hash unchanged', { docRef, locale });
+        logger.info('[embeddings] skipped, hash unchanged', { docRef, locale });
         skippedDocumentation += 1;
         continue;
       }
 
       const chunkDrafts = buildChunkDrafts(normalizedTitle, normalizedContent);
-      console.info('[embeddings] processing', {
+      logger.info('[embeddings] processing', {
         docRef,
         locale,
         titleLength: normalizedTitle.length,
@@ -160,11 +161,11 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
         );
       } catch (error) {
         failedDocumentation += 1;
-        console.error('[embeddings] failed while generating chunk embeddings', {
+        logger.exception(error, {
           docRef,
           locale,
           chunkCount: chunkDrafts.length,
-          error,
+          phase: 'generate-chunk-embeddings',
         });
         continue;
       }
@@ -173,20 +174,20 @@ export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbedd
         await dbDocumentationChunkReplaceForLocale(docId, locale, chunksWithEmbeddings);
         updatedDocumentation += 1;
         existingHashes.set(docId, contentHash);
-        console.info('[embeddings] upsert succeeded', { docRef, locale, chunkCount: chunksWithEmbeddings.length });
+        logger.info('[embeddings] upsert succeeded', { docRef, locale, chunkCount: chunksWithEmbeddings.length });
       } catch (error) {
         failedDocumentation += 1;
-        console.error('[embeddings] failed while upserting chunks', {
+        logger.exception(error, {
           docRef,
           locale,
-          chunkCount: chunksWithEmbeddings.length,
-          error,
+          chunkCount: chunksWithEmbeddings?.length,
+          phase: 'upsert-chunks',
         });
       }
     }
   }
 
-  console.info('[embeddings] sync finished', {
+  logger.info('[embeddings] sync finished', {
     totalDocumentation: docs.length,
     updatedDocumentation,
     skippedDocumentation,

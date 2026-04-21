@@ -24,6 +24,8 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -69,6 +71,7 @@ export default function FiscalRegionsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [fiscalRegionToDelete, setFiscalRegionToDelete] = useState<FiscalRegion | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -109,23 +112,29 @@ export default function FiscalRegionsPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (isDefaultFilter.length === 1) params.set('isDefault', isDefaultFilter[0]!);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, isDefaultFilter, sorting]);
+
   const fetchFiscalRegions = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isDefaultFilter.length === 1) params.set('isDefault', isDefaultFilter[0]!);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/fiscal-regions?${params.toString()}`);
 
@@ -149,12 +158,12 @@ export default function FiscalRegionsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, isDefaultFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!fiscalRegionToDelete?.id) return;
 
-    const response = await fetch(`/api/fiscal-regions/${fiscalRegionToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/fiscal-regions/${fiscalRegionToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -176,10 +185,21 @@ export default function FiscalRegionsPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/fiscal-regions/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/fiscal-regions/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchFiscalRegions();
+  }, [fetchFiscalRegions]);
+
+  const handleUpsertFiscalRegion = useCallback(async (record: FiscalRegion): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/fiscal-regions/${record.id}`, record);
+    }
+    return apiPost('/api/fiscal-regions', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchFiscalRegions();
   }, [fetchFiscalRegions]);
 
@@ -258,6 +278,8 @@ export default function FiscalRegionsPage() {
               </>
             }
             exportEndpoint="/api/fiscal-regions/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -318,6 +340,19 @@ export default function FiscalRegionsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<FiscalRegion>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertFiscalRegion}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

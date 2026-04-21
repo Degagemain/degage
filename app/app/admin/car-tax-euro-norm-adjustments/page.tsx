@@ -17,6 +17,8 @@ import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -57,6 +59,7 @@ export default function CarTaxEuroNormAdjustmentsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarTaxEuroNormAdjustment | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -83,22 +86,28 @@ export default function CarTaxEuroNormAdjustmentsPage() {
     [t],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+
+    return params;
+  }, [debouncedQuery, sorting]);
+
   const fetchAdjustments = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
 
       const response = await fetch(`/api/car-tax-euro-norm-adjustments?${params.toString()}`);
 
@@ -122,12 +131,12 @@ export default function CarTaxEuroNormAdjustmentsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/car-tax-euro-norm-adjustments/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-tax-euro-norm-adjustments/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -149,10 +158,21 @@ export default function CarTaxEuroNormAdjustmentsPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/car-tax-euro-norm-adjustments/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/car-tax-euro-norm-adjustments/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchAdjustments();
+  }, [fetchAdjustments]);
+
+  const handleUpsertAdjustment = useCallback(async (record: CarTaxEuroNormAdjustment): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/car-tax-euro-norm-adjustments/${record.id}`, record);
+    }
+    return apiPost('/api/car-tax-euro-norm-adjustments', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchAdjustments();
   }, [fetchAdjustments]);
 
@@ -219,6 +239,8 @@ export default function CarTaxEuroNormAdjustmentsPage() {
               </BulkActionsButton>
             }
             exportEndpoint="/api/car-tax-euro-norm-adjustments/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -280,6 +302,19 @@ export default function CarTaxEuroNormAdjustmentsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<CarTaxEuroNormAdjustment>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => `${record.fiscalRegion?.name ?? ''} — ${record.euroNormGroup}`}
+        upsertRecord={handleUpsertAdjustment}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

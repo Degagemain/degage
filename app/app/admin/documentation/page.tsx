@@ -11,6 +11,7 @@ import { documentationFormatValues, documentationSourceValues } from '@/domain/d
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { apiPost, apiPut } from '@/app/lib/api-client';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { Button } from '@/app/components/ui/button';
 import {
@@ -21,6 +22,7 @@ import {
   DataTableToolbar,
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -79,6 +81,7 @@ export default function DocumentationAdminPage() {
     externalId: false,
   });
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -108,27 +111,32 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const buildApiParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (debouncedQuery) params.set('query', debouncedQuery);
+    if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
+    for (const s of sourceFilter) {
+      params.append('source', s);
+    }
+    for (const fmt of formatFilter) {
+      params.append('format', fmt);
+    }
+    if (sorting.length > 0) {
+      const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
+      if (sortColumn) {
+        params.set('sortBy', sortColumn);
+        params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
+      }
+    }
+    return params;
+  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, sorting]);
+
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const params = new URLSearchParams();
-      if (debouncedQuery) params.set('query', debouncedQuery);
-      if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
-      for (const s of sourceFilter) {
-        params.append('source', s);
-      }
-      for (const fmt of formatFilter) {
-        params.append('format', fmt);
-      }
+      const params = buildApiParams();
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
-      if (sorting.length > 0) {
-        const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
-        if (sortColumn) {
-          params.set('sortBy', sortColumn);
-          params.set('sortOrder', sorting[0].desc ? 'desc' : 'asc');
-        }
-      }
       const response = await fetch(`/api/documentation?${params.toString()}`);
       if (!response.ok) {
         if (response.status === 401) throw new Error('Authentication required');
@@ -144,12 +152,23 @@ export default function DocumentationAdminPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, pageIndex, pageSize, sorting]);
+  }, [buildApiParams, pageIndex, pageSize]);
+
+  const handleUpsertDocumentation = useCallback(async (record: Documentation): Promise<Response> => {
+    if (record.id) {
+      return apiPut(`/api/documentation/${record.id}`, record);
+    }
+    return apiPost('/api/documentation', { ...record, id: null });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    void fetchDocs();
+  }, [fetchDocs]);
 
   const handleEmbeddingSync = useCallback(async () => {
     setIsSyncingEmbeddings(true);
     try {
-      const response = await fetch('/api/documentation/embeddings', { method: 'POST' });
+      const response = await apiPost('/api/documentation/embeddings');
       if (!response.ok) {
         if (response.status === 401) throw new Error('Authentication required');
         if (response.status === 403) throw new Error('Access denied');
@@ -304,44 +323,61 @@ export default function DocumentationAdminPage() {
   );
 
   return (
-    <AdminTablePage
-      toolbar={
-        <DataTableToolbar
-          table={table}
-          searchValue={queryInput}
-          onSearchChange={setQueryInput}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={filterSlot}
-          exportEndpoint="/api/documentation/export"
-          columnLabels={columnLabels}
-        />
-      }
-      tableArea={
-        state.isLoading ? (
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <DataTable table={table} columns={columns} />
-        )
-      }
-      pagination={
-        <DataTablePagination
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          pageCount={Math.ceil(state.total / pageSize)}
-          totalItems={state.total}
-          selectedCount={0}
-          onPageChange={setPageIndex}
-          onPageSizeChange={setPageSize}
-        />
-      }
-    />
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            filterSlot={filterSlot}
+            exportEndpoint="/api/documentation/export"
+            buildExportParams={buildApiParams}
+            onImportClick={() => setBulkImportOpen(true)}
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={Math.ceil(state.total / pageSize)}
+            totalItems={state.total}
+            selectedCount={0}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
+
+      <BulkImportDialog<Documentation>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={getTitle}
+        upsertRecord={handleUpsertDocumentation}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
+        }}
+      />
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { SortingState } from '@tanstack/react-table';
 
@@ -133,13 +133,22 @@ export function useAdminListUrlSync({
   );
 
   const [queryInput, setQueryInput] = useState(parsed.q);
+  // Tracks the last value we committed to the URL. Used to distinguish a URL
+  // change caused by our own debounced write (which must not clobber input the
+  // user has typed in the meantime) from an external URL change like back/
+  // forward navigation or a deep link (which should resync the input).
+  const lastCommittedQueryRef = useRef(parsed.q);
   useEffect(() => {
-    setQueryInput(parsed.q);
+    if (parsed.q !== lastCommittedQueryRef.current) {
+      lastCommittedQueryRef.current = parsed.q;
+      setQueryInput(parsed.q);
+    }
   }, [parsed.q]);
 
   useEffect(() => {
     const id = window.setTimeout(() => {
       if (queryInput === parsed.q) return;
+      lastCommittedQueryRef.current = queryInput;
       updateParams((sp) => {
         if (queryInput) sp.set('q', queryInput);
         else sp.delete('q');
