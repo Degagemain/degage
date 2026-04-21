@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { HubBenchmark } from '@/domain/hub-benchmark.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { HUB_BENCHMARK_FORM_ID, HubBenchmarkForm } from '../components/hub-benchmark-form';
@@ -21,11 +22,7 @@ export default function NewHubBenchmarkPage() {
   const handleCreate = async (row: HubBenchmark) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/hub-benchmarks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(row),
-      });
+      const response = await apiPost('/api/hub-benchmarks', row);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

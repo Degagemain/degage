@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarBrand } from '@/domain/car-brand.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { CAR_BRAND_FORM_ID, CarBrandForm } from '../components/car-brand-form';
@@ -21,11 +22,7 @@ export default function NewCarBrandPage() {
   const handleCreate = async (carBrand: CarBrand) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/car-brands', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(carBrand),
-      });
+      const response = await apiPost('/api/car-brands', carBrand);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

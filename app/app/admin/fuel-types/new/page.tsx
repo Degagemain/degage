@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { FuelType } from '@/domain/fuel-type.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { FUEL_TYPE_FORM_ID, FuelTypeForm } from '../components/fuel-type-form';
@@ -21,11 +22,7 @@ export default function NewFuelTypePage() {
   const handleCreate = async (fuelType: FuelType) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/fuel-types', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fuelType),
-      });
+      const response = await apiPost('/api/fuel-types', fuelType);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Town } from '@/domain/town.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { TOWN_FORM_ID, TownForm } from '../components/town-form';
@@ -21,11 +22,7 @@ export default function NewTownPage() {
   const handleCreate = async (town: Town) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/towns', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(town),
-      });
+      const response = await apiPost('/api/towns', town);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

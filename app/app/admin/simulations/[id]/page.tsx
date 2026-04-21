@@ -9,6 +9,7 @@ import { Check, Info, X } from 'lucide-react';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
 import { SimulationResultCode, SimulationStepIcon } from '@/domain/simulation.model';
+import { apiPut } from '@/app/lib/api-client';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
@@ -93,11 +94,7 @@ export default function SimulationDetailPage() {
       email: trimmed === '' ? null : trimmed,
     };
     try {
-      const res = await fetch(`/api/simulations/${simulation.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      const res = await apiPut(`/api/simulations/${simulation.id}`, body);
       if (res.status === 204) {
         setEmailSaveMessage('success');
         await fetchSimulation();

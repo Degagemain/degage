@@ -8,6 +8,7 @@ import { LogOut, Monitor, Moon, Settings, Shield, Sun } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { localeDisplayNames, uiLocales } from '@/i18n/locales';
+import { apiPatch } from '@/app/lib/api-client';
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -43,11 +44,7 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
   };
 
   const switchLocale = async (newLocale: string) => {
-    const response = await fetch('/api/user/locale', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ locale: newLocale }),
-    });
+    const response = await apiPatch('/api/user/locale', { locale: newLocale });
     if (!response.ok) {
       toast.error(t('updateFailed'));
       return;

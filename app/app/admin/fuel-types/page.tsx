@@ -25,6 +25,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -163,7 +164,7 @@ export default function FuelTypesPage() {
 
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
-    const response = await fetch(`/api/fuel-types/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/fuel-types/${itemToDelete.id}`);
     if (response.ok) {
       toast.success(t('delete.success'));
       setItemToDelete(null);
@@ -184,7 +185,7 @@ export default function FuelTypesPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/fuel-types/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/fuel-types/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
@@ -193,17 +194,9 @@ export default function FuelTypesPage() {
 
   const handleUpsertFuelType = useCallback(async (record: FuelType): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/fuel-types/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/fuel-types/${record.id}`, record);
     }
-    return fetch('/api/fuel-types', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/fuel-types', { ...record, id: null });
   }, []);
 
   const handleBulkImportComplete = useCallback(() => {

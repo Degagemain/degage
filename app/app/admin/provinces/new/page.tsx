@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Province } from '@/domain/province.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { PROVINCE_FORM_ID, ProvinceForm } from '../components/province-form';
@@ -21,11 +22,7 @@ export default function NewProvincePage() {
   const handleCreate = async (province: Province) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/provinces', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(province),
-      });
+      const response = await apiPost('/api/provinces', province);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

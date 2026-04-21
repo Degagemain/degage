@@ -25,6 +25,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -156,7 +157,7 @@ export default function FiscalRegionsPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!fiscalRegionToDelete?.id) return;
 
-    const response = await fetch(`/api/fiscal-regions/${fiscalRegionToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/fiscal-regions/${fiscalRegionToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -178,7 +179,7 @@ export default function FiscalRegionsPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/fiscal-regions/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/fiscal-regions/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
@@ -187,17 +188,9 @@ export default function FiscalRegionsPage() {
 
   const handleUpsertFiscalRegion = useCallback(async (record: FiscalRegion): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/fiscal-regions/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/fiscal-regions/${record.id}`, record);
     }
-    return fetch('/api/fiscal-regions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/fiscal-regions', { ...record, id: null });
   }, []);
 
   const handleBulkImportComplete = useCallback(() => {

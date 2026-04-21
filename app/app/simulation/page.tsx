@@ -8,6 +8,7 @@ import { FaqByTags, type FaqPanelClassNames } from '@/app/components/documentati
 import { SimulationResultCode } from '@/domain/simulation.model';
 import type { DocumentationTag } from '@/domain/documentation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
+import { apiPost } from '@/app/lib/api-client';
 import { LanguageSwitcher } from '@/app/components/language-switcher';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { cn } from '@/app/lib/utils';
@@ -362,11 +363,7 @@ export default function SimulationPage() {
     simulationRequestInFlight.current = true;
     setSimulationError(null);
 
-    fetch('/api/simulations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
+    apiPost('/api/simulations', body)
       .then(async (res) => {
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
@@ -481,13 +478,9 @@ export default function SimulationPage() {
     if (!createdSimulationId || !email.includes('@')) return;
     setManualReviewStatus('loading');
     try {
-      const res = await fetch('/api/simulations/request-manual-review', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: createdSimulationId,
-          email,
-        }),
+      const res = await apiPost('/api/simulations/request-manual-review', {
+        id: createdSimulationId,
+        email,
       });
       if (res.status === 204) {
         setManualReviewStatus('success');
@@ -504,11 +497,7 @@ export default function SimulationPage() {
     if (!createdSimulationId || !email.includes('@') || !isConfirmationValid) return;
     setConfirmationStatus('loading');
     try {
-      const res = await fetch('/api/simulations/confirm-result-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: createdSimulationId, email }),
-      });
+      const res = await apiPost('/api/simulations/confirm-result-email', { id: createdSimulationId, email });
       if (res.status === 204) {
         setConfirmationStatus('success');
         return;

@@ -6,6 +6,7 @@ import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel,
 import { SystemParameter } from '@/domain/system-parameter.model';
 import { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { apiPatch } from '@/app/lib/api-client';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import {
   AdminTablePage,
@@ -121,11 +122,7 @@ export default function SystemParametersPage() {
 
   const handleSave = useCallback(
     async (id: string, payload: Record<string, unknown>) => {
-      const res = await fetch(`/api/system-parameters/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await apiPatch(`/api/system-parameters/${id}`, payload);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.errors?.[0]?.message ?? 'Failed to update parameter');

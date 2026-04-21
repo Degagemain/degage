@@ -18,6 +18,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -150,7 +151,7 @@ export default function InsurancePriceBenchmarksPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/insurance-price-benchmarks/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/insurance-price-benchmarks/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -172,21 +173,13 @@ export default function InsurancePriceBenchmarksPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/insurance-price-benchmarks/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/insurance-price-benchmarks/${id}`), []);
 
   const handleUpsertInsurancePriceBenchmark = useCallback(async (record: InsurancePriceBenchmark): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/insurance-price-benchmarks/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/insurance-price-benchmarks/${record.id}`, record);
     }
-    return fetch('/api/insurance-price-benchmarks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/insurance-price-benchmarks', { ...record, id: null });
   }, []);
 
   const handleBulkDeleteComplete = useCallback(() => {

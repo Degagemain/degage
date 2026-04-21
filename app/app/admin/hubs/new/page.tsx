@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Hub } from '@/domain/hub.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { HUB_FORM_ID, HubForm } from '../components/hub-form';
@@ -21,11 +22,7 @@ export default function NewHubPage() {
   const handleCreate = async (hub: Hub) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/hubs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(hub),
-      });
+      const response = await apiPost('/api/hubs', hub);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

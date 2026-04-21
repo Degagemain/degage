@@ -18,6 +18,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -135,7 +136,7 @@ export default function CarInfosPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/car-infos/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-infos/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -157,7 +158,7 @@ export default function CarInfosPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/car-infos/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/car-infos/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
@@ -166,17 +167,9 @@ export default function CarInfosPage() {
 
   const handleUpsertCarInfo = useCallback(async (record: CarInfo): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/car-infos/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/car-infos/${record.id}`, record);
     }
-    return fetch('/api/car-infos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/car-infos', { ...record, id: null });
   }, []);
 
   const handleBulkImportComplete = useCallback(() => {

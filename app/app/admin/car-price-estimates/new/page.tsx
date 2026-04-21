@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarPriceEstimate } from '@/domain/car-price-estimate.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { CAR_PRICE_ESTIMATE_FORM_ID, CarPriceEstimateForm } from '../components/car-price-estimate-form';
@@ -21,11 +22,7 @@ export default function NewCarPriceEstimatePage() {
   const handleCreate = async (row: CarPriceEstimate) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/car-price-estimates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(row),
-      });
+      const response = await apiPost('/api/car-price-estimates', row);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

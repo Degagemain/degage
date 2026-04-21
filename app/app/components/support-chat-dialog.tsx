@@ -20,6 +20,7 @@ import {
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { apiDelete, apiPost } from '@/app/lib/api-client';
 import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
 import { Button } from '@/app/components/ui/button';
@@ -223,11 +224,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   }, [session?.user, setMessages]);
 
   const createConversation = useCallback(async () => {
-    const response = await fetch('/api/chat/conversations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    });
+    const response = await apiPost('/api/chat/conversations', {});
     if (!response.ok) {
       throw new Error('Failed to create conversation');
     }
@@ -259,7 +256,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
 
   const deleteConversation = useCallback(
     async (conversationId: string) => {
-      const response = await fetch(`/api/chat/conversations/${conversationId}`, { method: 'DELETE' });
+      const response = await apiDelete(`/api/chat/conversations/${conversationId}`);
       if (!response.ok) return;
       const nextList = conversationList.filter((item) => item.id !== conversationId);
       setConversationList(nextList);

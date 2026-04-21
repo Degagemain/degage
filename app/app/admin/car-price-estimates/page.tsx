@@ -18,6 +18,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -133,7 +134,7 @@ export default function CarPriceEstimatesPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!itemToDelete?.id) return;
 
-    const response = await fetch(`/api/car-price-estimates/${itemToDelete.id}`, { method: 'DELETE' });
+    const response = await apiDelete(`/api/car-price-estimates/${itemToDelete.id}`);
 
     if (response.ok) {
       toast.success(t('delete.success'));
@@ -155,7 +156,7 @@ export default function CarPriceEstimatesPage() {
     [rowSelection, state.data],
   );
 
-  const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/car-price-estimates/${id}`, { method: 'DELETE' }), []);
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/car-price-estimates/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
@@ -164,17 +165,9 @@ export default function CarPriceEstimatesPage() {
 
   const handleUpsertCarPriceEstimate = useCallback(async (record: CarPriceEstimate): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/car-price-estimates/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/car-price-estimates/${record.id}`, record);
     }
-    return fetch('/api/car-price-estimates', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/car-price-estimates', { ...record, id: null });
   }, []);
 
   const handleBulkImportComplete = useCallback(() => {

@@ -11,6 +11,7 @@ import { documentationFormatValues, documentationSourceValues } from '@/domain/d
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
+import { apiPost, apiPut } from '@/app/lib/api-client';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { Button } from '@/app/components/ui/button';
 import {
@@ -150,17 +151,9 @@ export default function DocumentationAdminPage() {
 
   const handleUpsertDocumentation = useCallback(async (record: Documentation): Promise<Response> => {
     if (record.id) {
-      return fetch(`/api/documentation/${record.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
+      return apiPut(`/api/documentation/${record.id}`, record);
     }
-    return fetch('/api/documentation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...record, id: null }),
-    });
+    return apiPost('/api/documentation', { ...record, id: null });
   }, []);
 
   const handleBulkImportComplete = useCallback(() => {
@@ -170,7 +163,7 @@ export default function DocumentationAdminPage() {
   const handleEmbeddingSync = useCallback(async () => {
     setIsSyncingEmbeddings(true);
     try {
-      const response = await fetch('/api/documentation/embeddings', { method: 'POST' });
+      const response = await apiPost('/api/documentation/embeddings');
       if (!response.ok) {
         if (response.status === 401) throw new Error('Authentication required');
         if (response.status === 403) throw new Error('Access denied');

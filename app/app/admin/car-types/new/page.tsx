@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarType } from '@/domain/car-type.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { CAR_TYPE_FORM_ID, CarTypeForm } from '../components/car-type-form';
@@ -21,11 +22,7 @@ export default function NewCarTypePage() {
   const handleCreate = async (carType: CarType) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/car-types', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(carType),
-      });
+      const response = await apiPost('/api/car-types', carType);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));

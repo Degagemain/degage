@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { EuroNorm } from '@/domain/euro-norm.model';
+import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { EURO_NORM_FORM_ID, EuroNormForm } from '../components/euro-norm-form';
@@ -21,11 +22,7 @@ export default function NewEuroNormPage() {
   const handleCreate = async (euroNorm: EuroNorm) => {
     setIsSaving(true);
     try {
-      const response = await fetch('/api/euro-norms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(euroNorm),
-      });
+      const response = await apiPost('/api/euro-norms', euroNorm);
 
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));
