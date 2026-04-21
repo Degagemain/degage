@@ -61,53 +61,72 @@ describe('getPrismaClient', () => {
     const neonUrl = 'postgresql://user:pass@ep-example.region.neon.tech/db?sslmode=require';
     process.env.DATABASE_URL = neonUrl;
 
-    const mockPrismaNeon = { connectionString: neonUrl };
-    const mockPrismaClient = {};
-
-    vi.mocked(PrismaNeon).mockReturnValue(mockPrismaNeon as any);
-    vi.mocked(PrismaClient).mockReturnValue(mockPrismaClient as any);
+    vi.mocked(PrismaNeon).mockImplementation(
+      class PrismaNeonMock {
+        constructor() {}
+      } as any,
+    );
+    vi.mocked(PrismaClient).mockImplementation(
+      class PrismaClientMock {
+        constructor() {}
+      } as any,
+    );
 
     const { getPrismaClient } = await import('@/storage/utils');
     const result = getPrismaClient();
+    const neonAdapterInstance = vi.mocked(PrismaNeon).mock.instances[0];
+    const prismaClientInstance = vi.mocked(PrismaClient).mock.instances[0];
 
     expect(PrismaNeon).toHaveBeenCalledTimes(1);
     expect(PrismaNeon).toHaveBeenCalledWith({ connectionString: neonUrl });
     expect(PrismaPg).not.toHaveBeenCalled();
     expect(PrismaClient).toHaveBeenCalledTimes(1);
-    expect(PrismaClient).toHaveBeenCalledWith({ adapter: mockPrismaNeon });
-    expect(result).toBe(mockPrismaClient);
+    expect(PrismaClient).toHaveBeenCalledWith({ adapter: neonAdapterInstance });
+    expect(result).toBe(prismaClientInstance);
   });
 
   it('uses PrismaPg adapter when DATABASE_URL does not contain .neon.tech', async () => {
     const pgUrl = 'postgresql://user:pass@localhost:5432/db';
     process.env.DATABASE_URL = pgUrl;
 
-    const mockPrismaPg = { connectionString: pgUrl };
-    const mockPrismaClient = {};
-
-    vi.mocked(PrismaPg).mockReturnValue(mockPrismaPg as any);
-    vi.mocked(PrismaClient).mockReturnValue(mockPrismaClient as any);
+    vi.mocked(PrismaPg).mockImplementation(
+      class PrismaPgMock {
+        constructor() {}
+      } as any,
+    );
+    vi.mocked(PrismaClient).mockImplementation(
+      class PrismaClientMock {
+        constructor() {}
+      } as any,
+    );
 
     const { getPrismaClient } = await import('@/storage/utils');
     const result = getPrismaClient();
+    const pgAdapterInstance = vi.mocked(PrismaPg).mock.instances[0];
+    const prismaClientInstance = vi.mocked(PrismaClient).mock.instances[0];
 
     expect(PrismaPg).toHaveBeenCalledTimes(1);
     expect(PrismaPg).toHaveBeenCalledWith({ connectionString: pgUrl });
     expect(PrismaNeon).not.toHaveBeenCalled();
     expect(PrismaClient).toHaveBeenCalledTimes(1);
-    expect(PrismaClient).toHaveBeenCalledWith({ adapter: mockPrismaPg });
-    expect(result).toBe(mockPrismaClient);
+    expect(PrismaClient).toHaveBeenCalledWith({ adapter: pgAdapterInstance });
+    expect(result).toBe(prismaClientInstance);
   });
 
   it('returns the same instance on subsequent calls (singleton pattern)', async () => {
     const pgUrl = 'postgresql://user:pass@localhost:5432/db';
     process.env.DATABASE_URL = pgUrl;
 
-    const mockPrismaPg = { connectionString: pgUrl };
-    const mockPrismaClient = { isMockClient: true };
-
-    vi.mocked(PrismaPg).mockReturnValue(mockPrismaPg as any);
-    vi.mocked(PrismaClient).mockReturnValue(mockPrismaClient as any);
+    vi.mocked(PrismaPg).mockImplementation(
+      class PrismaPgMock {
+        constructor() {}
+      } as any,
+    );
+    vi.mocked(PrismaClient).mockImplementation(
+      class PrismaClientMock {
+        constructor() {}
+      } as any,
+    );
 
     const { getPrismaClient } = await import('@/storage/utils');
 

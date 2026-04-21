@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     coverage: {
+      include: ['app/**/*.{ts,tsx}'],
       reporter: ['text', 'json-summary', 'json'],
       reportOnFailure: true,
       exclude: ['node_modules', 'app/storage/client', '.next', 'tests', '**.config.**', 'middleware.ts', 'app/app'],

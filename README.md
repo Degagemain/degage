@@ -267,6 +267,7 @@ This log explains why packages were installed.
 | Internationalization                       | next-intl                                                                                              |
 | ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
 | Gemini AI integration                      | @google/genai                                                                                          |
+| Temporary transitive vuln mitigation       | pnpm override: protobufjs@^7.5.5 (remove once upstream deps use a safe version)                        |
 | AI SDK chat + streaming                    | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
 | AI Elements chat UI                        | streamdown, use-stick-to-bottom, nanoid                                                                |
 | AI markdown plugins                        | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
