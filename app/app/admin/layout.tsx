@@ -1,8 +1,8 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { ChevronDown, ChevronsUpDown, CircleHelp, MessagesSquare } from 'lucide-react';
 
@@ -17,6 +17,7 @@ import {
 import { getAdminDocExternalIdForPath } from '@/app/admin/admin-doc-help';
 import { AdminCommandPalette } from '@/app/admin/admin-command-palette';
 import { authClient } from '@/app/lib/auth';
+import { buildPostSignInReturnPath, buildSignInUrlWithReturnPath } from '@/app/lib/sign-in-return-path';
 import { useIsAdmin } from '@/app/lib/role';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
@@ -40,7 +41,6 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/app/components/ui/sidebar';
-import { Skeleton } from '@/app/components/ui/skeleton';
 import { useSupportChat } from '@/app/components/support-chat-provider';
 import { UserMenu } from '@/app/components/user-menu';
 
@@ -64,22 +64,41 @@ function usePageTitle(t: (key: string) => string) {
   }
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutLoading() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
+    </div>
+  );
+}
+
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const queryString = searchParams.toString();
   const t = useTranslations('admin');
   const tChat = useTranslations('chat');
   const { isOpen: isChatOpen, toggleChat } = useSupportChat();
   const { isAdmin, isPending } = useIsAdmin();
-  const { data: session, isPending: isSessionPending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const pageTitle = usePageTitle(t);
   const docHelpExternalId = pathname ? getAdminDocExternalIdForPath(pathname) : null;
 
+  useEffect(() => {
+    if (isPending) return;
+    if (!session?.user) {
+      const returnPath = buildPostSignInReturnPath(pathname ?? '', queryString);
+      router.replace(buildSignInUrlWithReturnPath(returnPath));
+    }
+  }, [isPending, session?.user, pathname, queryString, router]);
+
   if (isPending) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
-      </div>
-    );
+    return <AdminLayoutLoading />;
+  }
+
+  if (!session?.user) {
+    return <AdminLayoutLoading />;
   }
 
   if (!isAdmin) {
@@ -253,27 +272,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                {isSessionPending ? (
-                  <div className="flex items-center gap-2 px-2 py-1.5">
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                    <div className="flex-1 group-data-[collapsible=icon]:hidden">
-                      <Skeleton className="mb-1 h-3 w-20" />
-                      <Skeleton className="h-3 w-28" />
-                    </div>
+                <SidebarMenuButton size="lg" tooltip={session.user.name}>
+                  <Avatar size="sm">
+                    {session.user.image && <AvatarImage src={session.user.image} alt={session.user.name} />}
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex min-w-0 flex-col gap-0.5 leading-none">
+                    <span className="truncate text-sm font-medium">{session.user.name}</span>
+                    <span className="text-muted-foreground truncate text-xs">{session.user.email}</span>
                   </div>
-                ) : session ? (
-                  <SidebarMenuButton size="lg" tooltip={session.user.name}>
-                    <Avatar size="sm">
-                      {session.user.image && <AvatarImage src={session.user.image} alt={session.user.name} />}
-                      <AvatarFallback>{initials}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex min-w-0 flex-col gap-0.5 leading-none">
-                      <span className="truncate text-sm font-medium">{session.user.name}</span>
-                      <span className="text-muted-foreground truncate text-xs">{session.user.email}</span>
-                    </div>
-                    <ChevronsUpDown className="text-muted-foreground ml-auto h-4 w-4 shrink-0" />
-                  </SidebarMenuButton>
-                ) : null}
+                  <ChevronsUpDown className="text-muted-foreground ml-auto h-4 w-4 shrink-0" />
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarFooter>
@@ -304,11 +313,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </span>
             )}
             <div className="ml-auto flex items-center gap-2">
-              {isSessionPending ? (
-                <Skeleton className="h-8 w-8 rounded-full" />
-              ) : session ? (
-                <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} size="sm" />
-              ) : null}
+              <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} size="sm" />
             </div>
           </header>
           <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -317,5 +322,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </SidebarInset>
       </SidebarProvider>
     </>
+  );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<AdminLayoutLoading />}>
+      <AdminLayoutInner>{children}</AdminLayoutInner>
+    </Suspense>
   );
 }
