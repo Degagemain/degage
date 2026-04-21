@@ -49,10 +49,7 @@ export const captureEvent = (
 /**
  * Capture an exception, if posthog is enabled.
  */
-export const captureException = (
-  error: unknown,
-  additionalProperties?: Record<string, unknown>,
-) => {
+export const captureException = (error: unknown, additionalProperties?: Record<string, unknown>) => {
   if (!isPostHogEnabled) {
     return;
   }

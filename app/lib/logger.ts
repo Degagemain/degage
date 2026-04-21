@@ -1,9 +1,7 @@
 import { getRequestId, getRequestUserId } from '@/context/request-context';
 import { captureEvent, isPostHogEnabled, captureException as posthogCaptureException } from '@/integrations/posthog';
 
-/** Development and Vitest: structured console only (no PostHog fan-out for routine logs). */
-const useConsoleLogging =
-  process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+const useConsoleLogging = process.env.NODE_ENV === 'development';
 
 export function toError(reason: unknown): Error {
   if (reason instanceof Error) return reason;

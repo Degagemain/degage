@@ -25,24 +25,6 @@ describe('toError', () => {
   });
 });
 
-describe('logger under NODE_ENV=test', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('uses console-style path and does not emit backend_log for warn', () => {
-    logger.warn('hello', { detail: 1 });
-
-    expect(captureEvent).not.toHaveBeenCalled();
-  });
-
-  it('does not delegate exceptions to PostHog captureException', () => {
-    logger.exception(new Error('boom'), { simulationPhase: 'x' });
-
-    expect(captureException).not.toHaveBeenCalled();
-  });
-});
-
 describe('logger under NODE_ENV=production', () => {
   beforeEach(() => {
     vi.stubEnv('NODE_ENV', 'production');
