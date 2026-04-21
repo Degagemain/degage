@@ -2,6 +2,7 @@ import { NextResponse, after } from 'next/server';
 import { processInboundSupportEmail } from '@/actions/support/process-inbound-email';
 import { getResendClient } from '@/integrations/resend';
 import { withPublic } from '@/api/with-context';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -51,21 +52,21 @@ const parseEvent = async (rawBody: string, request: Request): Promise<ResendRece
 export const POST = withPublic(async (request) => {
   const botSupportMail = process.env.BOT_SUPPORT_MAIL?.trim().toLowerCase();
   if (!botSupportMail) {
-    console.error('[resend webhook] missing BOT_SUPPORT_MAIL configuration');
+    logger.error('[resend webhook] missing BOT_SUPPORT_MAIL configuration');
     return NextResponse.json({ code: 'missing_config', errors: [{ message: 'BOT_SUPPORT_MAIL is not configured' }] }, { status: 500 });
   }
 
   const rawBody = await request.text();
   const event = await parseEvent(rawBody, request);
   if (!event) {
-    console.warn('[resend webhook] rejected invalid webhook payload/signature');
+    logger.warn('[resend webhook] rejected invalid webhook payload/signature');
     return NextResponse.json({ code: 'invalid_webhook', errors: [{ message: 'Invalid webhook payload' }] }, { status: 401 });
   }
 
   const recipients = (event.data?.to ?? []).map((value) => normalizeAddress(value));
   const addressedToSupport = recipients.includes(botSupportMail);
   if (!addressedToSupport) {
-    console.warn('[resend webhook] ignored event not addressed to support mailbox', {
+    logger.warn('[resend webhook] ignored event not addressed to support mailbox', {
       recipientCount: recipients.length,
     });
     return new NextResponse(null, { status: 200 });
@@ -75,7 +76,7 @@ export const POST = withPublic(async (request) => {
     try {
       await processInboundSupportEmail(event);
     } catch (error) {
-      console.error('[resend webhook]', error);
+      logger.exception(error, { phase: 'processInboundSupportEmail' });
     }
   });
 

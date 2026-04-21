@@ -7,6 +7,7 @@ import { simulationRunInputParseSchema } from '@/domain/simulation.model';
 import { badRequestResponseFromZod, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withAuth, withPublic } from '@/api/with-context';
+import { logger } from '@/lib/logger';
 
 const simulationFilterInputFromSearchParams = (sp: URLSearchParams): Record<string, unknown> => {
   return {
@@ -47,7 +48,7 @@ export const POST = withPublic(async (request: NextRequest) => {
     if (error instanceof ZodError) {
       return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
     }
-    console.error(error);
+    logger.exception(error, { route: 'POST /api/simulations' });
     return Response.json(
       { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
       { status: statusCodes.INTERNAL_SERVER_ERROR },

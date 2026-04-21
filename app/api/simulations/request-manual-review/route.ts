@@ -4,6 +4,7 @@ import { isPrismaNotFoundError, noContentResponse, notFoundResponse, safeParseRe
 import { statusCodes } from '@/api/status-codes';
 import { withPublic } from '@/api/with-context';
 import { publicRequestManualReview } from '@/actions/simulation/public-request-manual-review';
+import { logger } from '@/lib/logger';
 
 export const POST = withPublic(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
@@ -19,7 +20,7 @@ export const POST = withPublic(async (request: NextRequest) => {
     if (isPrismaNotFoundError(error)) {
       return notFoundResponse();
     }
-    console.error('[public-request-manual-review]', error);
+    logger.exception(error, { route: 'public-request-manual-review' });
     return Response.json(
       { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
       { status: statusCodes.INTERNAL_SERVER_ERROR },

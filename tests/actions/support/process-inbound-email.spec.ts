@@ -17,6 +17,8 @@ vi.mock('@/actions/support/generate-reply', () => ({
 }));
 
 vi.mock('@/context/request-context', () => ({
+  getRequestId: vi.fn(() => 'test-req'),
+  getRequestUserId: vi.fn(),
   withRequestContext: vi.fn((_, fn) => fn()),
 }));
 

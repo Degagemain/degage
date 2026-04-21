@@ -4,6 +4,7 @@ import { isPrismaNotFoundError, noContentResponse, notFoundResponse, safeParseRe
 import { statusCodes } from '@/api/status-codes';
 import { withPublic } from '@/api/with-context';
 import { publicConfirmResultEmail } from '@/actions/simulation/public-confirm-result-email';
+import { logger } from '@/lib/logger';
 
 export const POST = withPublic(async (request: NextRequest) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
@@ -19,7 +20,7 @@ export const POST = withPublic(async (request: NextRequest) => {
     if (isPrismaNotFoundError(error)) {
       return notFoundResponse();
     }
-    console.error('[confirm-result-email]', error);
+    logger.exception(error, { route: 'confirm-result-email' });
     return Response.json(
       { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
       { status: statusCodes.INTERNAL_SERVER_ERROR },

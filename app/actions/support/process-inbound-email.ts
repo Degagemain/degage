@@ -5,6 +5,7 @@ import { generateSupportReplyText } from '@/actions/support/generate-reply';
 import { withRequestContext } from '@/context/request-context';
 import { contentLocales, defaultUILocale, getContentLocale } from '@/i18n/locales';
 import { getResendClient, sendEmail } from '@/integrations/resend';
+import { logger } from '@/lib/logger';
 
 type ResendReceivedEvent = {
   type?: string;
@@ -96,7 +97,7 @@ const toHeaderMap = (rawHeaders: unknown): Record<string, string> => {
 const getReceivedBodyAndHeaders = async (emailId: string): Promise<ParsedInboundEmail | null> => {
   const resend = getResendClient();
   if (!resend) {
-    console.error('[support email] RESEND_API_KEY missing; cannot fetch received email content');
+    logger.error('[support email] RESEND_API_KEY missing; cannot fetch received email content');
     return null;
   }
 
@@ -109,7 +110,7 @@ const getReceivedBodyAndHeaders = async (emailId: string): Promise<ParsedInbound
       };
 
       if (response.error) {
-        console.warn('[support email] failed to fetch received email from Resend API', {
+        logger.warn('[support email] failed to fetch received email from Resend API', {
           emailId,
           attempt,
           error: toErrorMessage(response.error),
@@ -123,7 +124,7 @@ const getReceivedBodyAndHeaders = async (emailId: string): Promise<ParsedInbound
 
       const payload = response.data;
       if (!payload || typeof payload !== 'object') {
-        console.warn('[support email] received email payload is empty', {
+        logger.warn('[support email] received email payload is empty', {
           emailId,
           attempt,
           hasData: Boolean(payload),
@@ -150,7 +151,7 @@ const getReceivedBodyAndHeaders = async (emailId: string): Promise<ParsedInbound
           email.raw && typeof email.raw === 'object' && 'download_url' in email.raw && typeof email.raw.download_url === 'string'
             ? email.raw.download_url
             : null;
-        console.warn('[support email] received email has no text/html content', {
+        logger.warn('[support email] received email has no text/html content', {
           emailId,
           attempt,
           hasText: Boolean(text),
@@ -165,7 +166,7 @@ const getReceivedBodyAndHeaders = async (emailId: string): Promise<ParsedInbound
         headers,
       };
     } catch (error) {
-      console.warn('[support email] unexpected error while fetching received email content', {
+      logger.warn('[support email] unexpected error while fetching received email content', {
         emailId,
         attempt,
         error: toErrorMessage(error),
@@ -218,19 +219,19 @@ export const processInboundSupportEmail = async (event: ResendReceivedEvent): Pr
 
   const senderEmail = parseSenderEmail(from);
   if (!senderEmail) {
-    console.warn('[support email] ignored event with unparseable sender address', { from });
+    logger.warn('[support email] ignored event with unparseable sender address', { from });
     return;
   }
 
   const received = await getReceivedBodyAndHeaders(emailId);
   if (!received) {
-    console.warn('[support email] unable to parse inbound content after retrieval attempts', { emailId });
+    logger.warn('[support email] unable to parse inbound content after retrieval attempts', { emailId });
     return;
   }
 
   const incomingText = received.text.trim();
   if (!incomingText) {
-    console.warn('[support email] inbound email text is empty after normalization', { emailId });
+    logger.warn('[support email] inbound email text is empty after normalization', { emailId });
     return;
   }
 
@@ -251,7 +252,7 @@ export const processInboundSupportEmail = async (event: ResendReceivedEvent): Pr
 
   const conversationId = conversation.id;
   if (!conversationId) {
-    console.warn('[support email] conversation has no id', { emailId });
+    logger.warn('[support email] conversation has no id', { emailId });
     return;
   }
 
@@ -265,7 +266,7 @@ export const processInboundSupportEmail = async (event: ResendReceivedEvent): Pr
   } catch (error) {
     // Duplicate provider message id in the same conversation means we already processed this inbound event.
     if (isUniqueConstraintError(error)) {
-      console.warn('[support email] duplicate inbound message detected, skipping', {
+      logger.warn('[support email] duplicate inbound message detected, skipping', {
         conversationId,
         inboundMessageId: eventMessageId,
       });

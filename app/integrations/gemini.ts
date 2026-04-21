@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import { logger } from '@/lib/logger';
 import type { EmbedContentResponse, Schema } from '@google/genai';
 
 const INFERENCE_MODEL = 'gemini-2.5-pro';
@@ -40,7 +41,7 @@ export async function generateEmbedding(text: string, taskType: EmbeddingTaskTyp
       },
     });
   } catch (error) {
-    console.error('[embeddings] Gemini embedContent failed', { taskType, inputLength: text.length, error });
+    logger.exception(error, { taskType, inputLength: text.length, integration: 'gemini-embedContent' });
     throw error;
   }
 

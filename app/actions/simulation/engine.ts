@@ -33,7 +33,8 @@ import { dbProvinceRead } from '@/storage/province/province.read';
 import { dbHubBenchmarkFindClosest } from '@/storage/hub-benchmark/hub-benchmark.read';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import type { Hub } from '@/domain/hub.model';
-import { captureEvent, captureException } from '@/integrations/posthog';
+import { captureEvent } from '@/integrations/posthog';
+import { logger } from '@/lib/logger';
 
 type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B | SimulationResultCode.HIGHER_RATE;
 
@@ -64,7 +65,7 @@ async function resolveAcceptanceOrMaxPriceReview(
 
 export async function passesMileageRule(result: SimulationResultBuilder, mileage: number, maxMileage: number): Promise<boolean> {
   const passed = mileage <= maxMileage;
-  console.log('passesMileageRule', { mileage, maxMileage, passed });
+  logger.debug('passesMileageRule', { mileage, maxMileage, passed });
   const status = passed ? SimulationStepIcon.OK : SimulationStepIcon.NOT_OK;
   addStep(result, status, await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage }));
   return passed;
@@ -80,7 +81,15 @@ export async function passesAgeRule(result: SimulationResultBuilder, firstRegist
 }
 
 export async function runSimulationEngine(input: SimulationRunInput): Promise<SimulationEngineResult> {
-  console.log('runSimulationEngine', input);
+  logger.debug('runSimulationEngine', {
+    townId: input.town.id,
+    brandId: input.brand.id,
+    fuelTypeId: input.fuelType.id,
+    mileage: input.mileage,
+    isNewCar: input.isNewCar,
+    isVan: input.isVan,
+    seats: input.seats,
+  });
   const startedAt = Date.now();
   const result: SimulationEngineResult = {
     resultCode: SimulationResultCode.MANUAL_REVIEW,
@@ -91,10 +100,9 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   try {
     const simulationResult = await tryRunSimulationEngine(input, result);
     simulationResult.duration = elapsedWholeSeconds(startedAt);
-    captureEvent('simulation', simulationResult);
+    captureEvent('simulation', simulationResult as unknown as Record<string, unknown>);
     return simulationResult;
   } catch (err) {
-    console.error(err);
     result.error = err instanceof Error ? err.message : String(err);
     const stepKey = result.currentStep ?? SimulationPhase.UNKNOWN;
     const stepLabel = await getMessage(stepKey);
@@ -102,7 +110,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     addErrorMessage(result, message);
     result.resultCode = SimulationResultCode.MANUAL_REVIEW;
     result.duration = elapsedWholeSeconds(startedAt);
-    captureException(err as Error);
+    logger.exception(err, { simulationPhase: stepKey });
     return result;
   }
 }
