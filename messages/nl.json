@@ -188,6 +188,25 @@
         "error": "Exporteren mislukt.",
         "more": "Meer",
         "openExport": "Exporteren"
+      },
+      "import": {
+        "openImport": "Importeren",
+        "title": "Importeren",
+        "description": "Selecteer een JSON-bestand dat eerder vanaf deze pagina is geëxporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "selectFile": "JSON-bestand selecteren",
+        "parseError": "Kan bestand niet lezen. Verwacht een JSON-array met records.",
+        "columnAction": "Actie",
+        "actionInsert": "Toevoegen",
+        "actionUpdate": "Bijwerken",
+        "columnStatus": "Status",
+        "statusPending": "In wachtrij",
+        "statusRunning": "Bezig met importeren…",
+        "statusSuccess": "Geïmporteerd",
+        "statusError": "Mislukt",
+        "statusConflict": "Conflict",
+        "confirm": "Alles importeren",
+        "cancel": "Annuleren",
+        "close": "Sluiten"
       }
     },
     "carBrands": {
@@ -1053,6 +1072,11 @@
         "statusSuccess": "Verwijderd",
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Gemeenten importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Gemeente"
       }
     },
     "systemParameters": {

@@ -188,6 +188,25 @@
         "error": "Export failed.",
         "more": "More",
         "openExport": "Export"
+      },
+      "import": {
+        "openImport": "Import",
+        "title": "Import",
+        "description": "Select a JSON file previously exported from this page. Records with an id will be updated; records without an id will be inserted.",
+        "selectFile": "Select JSON file",
+        "parseError": "Could not parse file. Expected a JSON array of records.",
+        "columnAction": "Action",
+        "actionInsert": "Insert",
+        "actionUpdate": "Update",
+        "columnStatus": "Status",
+        "statusPending": "Pending",
+        "statusRunning": "Importing…",
+        "statusSuccess": "Imported",
+        "statusError": "Failed",
+        "statusConflict": "Conflict",
+        "confirm": "Import all",
+        "cancel": "Cancel",
+        "close": "Close"
       }
     },
     "carBrands": {
@@ -1053,6 +1072,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import towns",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Town"
       }
     },
     "systemParameters": {

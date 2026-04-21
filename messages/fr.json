@@ -188,6 +188,25 @@
         "error": "Échec de l'export.",
         "more": "Plus",
         "openExport": "Exporter"
+      },
+      "import": {
+        "openImport": "Importer",
+        "title": "Importer",
+        "description": "Sélectionnez un fichier JSON précédemment exporté depuis cette page. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "selectFile": "Sélectionner un fichier JSON",
+        "parseError": "Impossible de lire le fichier. Un tableau JSON d'enregistrements est attendu.",
+        "columnAction": "Action",
+        "actionInsert": "Ajouter",
+        "actionUpdate": "Mettre à jour",
+        "columnStatus": "Statut",
+        "statusPending": "En attente",
+        "statusRunning": "Import en cours…",
+        "statusSuccess": "Importé",
+        "statusError": "Échec",
+        "statusConflict": "Conflit",
+        "confirm": "Tout importer",
+        "cancel": "Annuler",
+        "close": "Fermer"
       }
     },
     "carBrands": {
@@ -1053,6 +1072,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des villes",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Ville"
       }
     },
     "systemParameters": {

@@ -26,6 +26,7 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -49,6 +50,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function TownsPage() {
   const t = useTranslations('admin.towns');
   const tCommon = useTranslations('admin.common');
+  const tImport = useTranslations('admin.common.import');
   const [state, setState] = useState<TownsState>({
     data: [],
     total: 0,
@@ -123,6 +125,7 @@ export default function TownsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [townToDelete, setTownToDelete] = useState<Town | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -275,6 +278,25 @@ export default function TownsPage() {
     fetchTowns();
   }, [fetchTowns]);
 
+  const handleUpsertTown = useCallback(async (town: Town): Promise<Response> => {
+    if (town.id) {
+      return fetch(`/api/towns/${town.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(town),
+      });
+    }
+    return fetch('/api/towns', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...town, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchTowns();
+  }, [fetchTowns]);
+
   useEffect(() => {
     fetchTowns();
   }, [fetchTowns]);
@@ -374,6 +396,7 @@ export default function TownsPage() {
               </>
             }
             exportEndpoint="/api/towns/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -436,6 +459,33 @@ export default function TownsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<Town>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(town) => `${town.zip} — ${town.name}`}
+        upsertRecord={handleUpsertTown}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          selectFile: tImport('selectFile'),
+          parseError: tImport('parseError'),
+          columnName: t('bulkImport.columnName'),
+          columnAction: tImport('columnAction'),
+          actionInsert: tImport('actionInsert'),
+          actionUpdate: tImport('actionUpdate'),
+          columnStatus: tImport('columnStatus'),
+          statusPending: tImport('statusPending'),
+          statusRunning: tImport('statusRunning'),
+          statusSuccess: tImport('statusSuccess'),
+          statusError: tImport('statusError'),
+          statusConflict: tImport('statusConflict'),
+          confirm: tImport('confirm'),
+          cancel: tImport('cancel'),
+          close: tImport('close'),
         }}
       />
     </>
