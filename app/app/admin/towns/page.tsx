@@ -50,7 +50,6 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function TownsPage() {
   const t = useTranslations('admin.towns');
   const tCommon = useTranslations('admin.common');
-  const tImport = useTranslations('admin.common.import');
   const [state, setState] = useState<TownsState>({
     data: [],
     total: 0,
@@ -471,21 +470,7 @@ export default function TownsPage() {
         labels={{
           title: t('bulkImport.title'),
           description: t('bulkImport.description'),
-          selectFile: tImport('selectFile'),
-          parseError: tImport('parseError'),
           columnName: t('bulkImport.columnName'),
-          columnAction: tImport('columnAction'),
-          actionInsert: tImport('actionInsert'),
-          actionUpdate: tImport('actionUpdate'),
-          columnStatus: tImport('columnStatus'),
-          statusPending: tImport('statusPending'),
-          statusRunning: tImport('statusRunning'),
-          statusSuccess: tImport('statusSuccess'),
-          statusError: tImport('statusError'),
-          statusConflict: tImport('statusConflict'),
-          confirm: tImport('confirm'),
-          cancel: tImport('cancel'),
-          close: tImport('close'),
         }}
       />
     </>

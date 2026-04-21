@@ -1,6 +1,7 @@
 'use client';
 
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { CircleCheck, CircleX, Loader2, Minus, Upload } from 'lucide-react';
 
 import { Badge } from '@/app/components/ui/badge';
@@ -16,24 +17,11 @@ interface ItemResult {
   error?: string;
 }
 
+/** Per-entity strings supplied by the caller. Everything else is read from `admin.common.import`. */
 export interface BulkImportLabels {
   title: string;
   description: string;
-  selectFile: string;
-  parseError: string;
   columnName: string;
-  columnAction: string;
-  actionInsert: string;
-  actionUpdate: string;
-  columnStatus: string;
-  statusPending: string;
-  statusRunning: string;
-  statusSuccess: string;
-  statusError: string;
-  statusConflict: string;
-  confirm: string;
-  cancel: string;
-  close: string;
 }
 
 export interface BulkImportDialogProps<T extends { id?: string | null }> {
@@ -52,6 +40,23 @@ export interface BulkImportDialogProps<T extends { id?: string | null }> {
   labels: BulkImportLabels;
 }
 
+type CommonLabels = {
+  selectFile: string;
+  parseError: string;
+  columnAction: string;
+  actionInsert: string;
+  actionUpdate: string;
+  columnStatus: string;
+  statusPending: string;
+  statusRunning: string;
+  statusSuccess: string;
+  statusError: string;
+  statusConflict: string;
+  confirm: string;
+  cancel: string;
+  close: string;
+};
+
 function defaultParseFile<T>(text: string): T[] {
   const parsed = JSON.parse(text);
   if (!Array.isArray(parsed)) {
@@ -60,27 +65,27 @@ function defaultParseFile<T>(text: string): T[] {
   return parsed as T[];
 }
 
-function StatusCell({ result, labels }: { result: ItemResult; labels: BulkImportLabels }) {
+function StatusCell({ result, common }: { result: ItemResult; common: CommonLabels }) {
   switch (result.status) {
     case 'pending':
       return (
         <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
           <Minus className="size-4" />
-          {labels.statusPending}
+          {common.statusPending}
         </span>
       );
     case 'running':
       return (
         <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
           <Loader2 className="size-4 animate-spin" />
-          {labels.statusRunning}
+          {common.statusRunning}
         </span>
       );
     case 'success':
       return (
         <span className="flex items-center gap-1.5 text-sm text-green-600 dark:text-green-400">
           <CircleCheck className="size-4" />
-          {labels.statusSuccess}
+          {common.statusSuccess}
         </span>
       );
     case 'error':
@@ -103,6 +108,27 @@ export function BulkImportDialog<T extends { id?: string | null }>({
   parseFile,
   labels,
 }: BulkImportDialogProps<T>) {
+  const tCommon = useTranslations('admin.common.import');
+  const common = useMemo<CommonLabels>(
+    () => ({
+      selectFile: tCommon('selectFile'),
+      parseError: tCommon('parseError'),
+      columnAction: tCommon('columnAction'),
+      actionInsert: tCommon('actionInsert'),
+      actionUpdate: tCommon('actionUpdate'),
+      columnStatus: tCommon('columnStatus'),
+      statusPending: tCommon('statusPending'),
+      statusRunning: tCommon('statusRunning'),
+      statusSuccess: tCommon('statusSuccess'),
+      statusError: tCommon('statusError'),
+      statusConflict: tCommon('statusConflict'),
+      confirm: tCommon('confirm'),
+      cancel: tCommon('cancel'),
+      close: tCommon('close'),
+    }),
+    [tCommon],
+  );
+
   const [records, setRecords] = useState<T[]>([]);
   const [parseError, setParseError] = useState<string | null>(null);
   const [results, setResults] = useState<Record<number, ItemResult>>({});
@@ -135,10 +161,10 @@ export function BulkImportDialog<T extends { id?: string | null }>({
         setRecords(parsed);
       } catch {
         setRecords([]);
-        setParseError(labels.parseError);
+        setParseError(common.parseError);
       }
     },
-    [parseFile, labels.parseError],
+    [parseFile, common.parseError],
   );
 
   const handleConfirm = useCallback(async () => {
@@ -153,9 +179,9 @@ export function BulkImportDialog<T extends { id?: string | null }>({
         if (response.ok) {
           setResults((prev) => ({ ...prev, [index]: { status: 'success' } }));
         } else if (response.status === 409) {
-          setResults((prev) => ({ ...prev, [index]: { status: 'error', error: labels.statusConflict } }));
+          setResults((prev) => ({ ...prev, [index]: { status: 'error', error: common.statusConflict } }));
         } else {
-          setResults((prev) => ({ ...prev, [index]: { status: 'error', error: labels.statusError } }));
+          setResults((prev) => ({ ...prev, [index]: { status: 'error', error: common.statusError } }));
         }
       },
       concurrency,
@@ -163,7 +189,7 @@ export function BulkImportDialog<T extends { id?: string | null }>({
         if (!settled.ok) {
           setResults((prev) =>
             prev[settled.index]?.status === 'running' || !prev[settled.index]
-              ? { ...prev, [settled.index]: { status: 'error', error: labels.statusError } }
+              ? { ...prev, [settled.index]: { status: 'error', error: common.statusError } }
               : prev,
           );
         }
@@ -172,7 +198,7 @@ export function BulkImportDialog<T extends { id?: string | null }>({
     );
 
     setIsRunning(false);
-  }, [records, upsertRecord, concurrency, labels.statusConflict, labels.statusError]);
+  }, [records, upsertRecord, concurrency, common.statusConflict, common.statusError]);
 
   const handleClose = useCallback(() => {
     abortRef.current = true;
@@ -210,7 +236,7 @@ export function BulkImportDialog<T extends { id?: string | null }>({
           <div className="flex flex-col items-start gap-2 py-2">
             <Button variant="outline" onClick={() => fileInputRef.current?.click()} disabled={isRunning}>
               <Upload className="mr-2 size-4" />
-              {labels.selectFile}
+              {common.selectFile}
             </Button>
             <input ref={fileInputRef} type="file" accept="application/json,.json" className="hidden" onChange={handleFileChange} />
             {parseError ? <p className="text-destructive text-sm">{parseError}</p> : null}
@@ -221,8 +247,8 @@ export function BulkImportDialog<T extends { id?: string | null }>({
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
                   <TableHead>{labels.columnName}</TableHead>
-                  <TableHead className="w-28">{labels.columnAction}</TableHead>
-                  <TableHead className="w-40">{labels.columnStatus}</TableHead>
+                  <TableHead className="w-28">{common.columnAction}</TableHead>
+                  <TableHead className="w-40">{common.columnStatus}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -230,10 +256,10 @@ export function BulkImportDialog<T extends { id?: string | null }>({
                   <TableRow key={row.key}>
                     <TableCell className="font-medium">{row.name}</TableCell>
                     <TableCell>
-                      <Badge variant={row.isUpdate ? 'secondary' : 'outline'}>{row.isUpdate ? labels.actionUpdate : labels.actionInsert}</Badge>
+                      <Badge variant={row.isUpdate ? 'secondary' : 'outline'}>{row.isUpdate ? common.actionUpdate : common.actionInsert}</Badge>
                     </TableCell>
                     <TableCell>
-                      <StatusCell result={row.result} labels={labels} />
+                      <StatusCell result={row.result} common={common} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -245,21 +271,21 @@ export function BulkImportDialog<T extends { id?: string | null }>({
         <DialogFooter>
           {isDone ? (
             <Button variant="outline" onClick={handleClose}>
-              {labels.close}
+              {common.close}
             </Button>
           ) : (
             <>
               <Button variant="outline" onClick={handleClose} disabled={isRunning}>
-                {labels.cancel}
+                {common.cancel}
               </Button>
               <Button onClick={handleConfirm} disabled={isRunning || !hasRecords}>
                 {isRunning ? (
                   <>
                     <Loader2 className="mr-2 size-4 animate-spin" />
-                    {labels.confirm}
+                    {common.confirm}
                   </>
                 ) : (
-                  labels.confirm
+                  common.confirm
                 )}
               </Button>
             </>

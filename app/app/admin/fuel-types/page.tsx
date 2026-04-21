@@ -24,6 +24,7 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -71,6 +72,7 @@ export default function FuelTypesPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<FuelType | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -189,6 +191,25 @@ export default function FuelTypesPage() {
     fetchFuelTypes();
   }, [fetchFuelTypes]);
 
+  const handleUpsertFuelType = useCallback(async (record: FuelType): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/fuel-types/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/fuel-types', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchFuelTypes();
+  }, [fetchFuelTypes]);
+
   useEffect(() => {
     fetchFuelTypes();
   }, [fetchFuelTypes]);
@@ -264,6 +285,7 @@ export default function FuelTypesPage() {
               </>
             }
             exportEndpoint="/api/fuel-types/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -325,6 +347,19 @@ export default function FuelTypesPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<FuelType>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertFuelType}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

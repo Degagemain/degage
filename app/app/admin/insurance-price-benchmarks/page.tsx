@@ -17,6 +17,7 @@ import { AdminTablePage, DataTable, DataTableFacetedFilter, DataTablePagination,
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -70,6 +71,7 @@ export default function InsurancePriceBenchmarksPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<InsurancePriceBenchmark | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -172,8 +174,27 @@ export default function InsurancePriceBenchmarksPage() {
 
   const handleBulkDeleteItem = useCallback((id: string) => fetch(`/api/insurance-price-benchmarks/${id}`, { method: 'DELETE' }), []);
 
+  const handleUpsertInsurancePriceBenchmark = useCallback(async (record: InsurancePriceBenchmark): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/insurance-price-benchmarks/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/insurance-price-benchmarks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
   const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
+    fetchData();
+  }, [fetchData]);
+
+  const handleBulkImportComplete = useCallback(() => {
     fetchData();
   }, [fetchData]);
 
@@ -252,6 +273,7 @@ export default function InsurancePriceBenchmarksPage() {
               </>
             }
             exportEndpoint="/api/insurance-price-benchmarks/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -313,6 +335,19 @@ export default function InsurancePriceBenchmarksPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<InsurancePriceBenchmark>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => `${record.year}`}
+        upsertRecord={handleUpsertInsurancePriceBenchmark}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

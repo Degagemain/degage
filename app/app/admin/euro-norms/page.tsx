@@ -24,6 +24,7 @@ import {
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -70,6 +71,7 @@ export default function EuroNormsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<EuroNorm | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -185,6 +187,25 @@ export default function EuroNormsPage() {
     fetchEuroNorms();
   }, [fetchEuroNorms]);
 
+  const handleUpsertEuroNorm = useCallback(async (record: EuroNorm): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/euro-norms/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/euro-norms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchEuroNorms();
+  }, [fetchEuroNorms]);
+
   useEffect(() => {
     fetchEuroNorms();
   }, [fetchEuroNorms]);
@@ -260,6 +281,7 @@ export default function EuroNormsPage() {
               </>
             }
             exportEndpoint="/api/euro-norms/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -321,6 +343,19 @@ export default function EuroNormsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<EuroNorm>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertEuroNorm}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

@@ -266,6 +266,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des marques de voitures",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Marque de voiture"
       }
     },
     "fuelTypes": {
@@ -330,6 +335,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des types de carburant",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Type de carburant"
       }
     },
     "carTypes": {
@@ -400,6 +410,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des types de voitures",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Type de voiture"
       }
     },
     "euroNorms": {
@@ -467,6 +482,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des normes Euro",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Norme Euro"
       }
     },
     "carPriceEstimates": {
@@ -543,6 +563,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des estimations de prix",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Estimation de prix"
       }
     },
     "carInfos": {
@@ -608,6 +633,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des infos voiture",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Info voiture"
       }
     },
     "carTaxEuroNormAdjustments": {
@@ -664,6 +694,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des corrections de normes Euro",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Correction"
       }
     },
     "fiscalRegions": {
@@ -723,6 +758,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des régions fiscales",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Région fiscale"
       }
     },
     "provinces": {
@@ -776,6 +816,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des provinces",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Province"
       }
     },
     "hubs": {
@@ -850,6 +895,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des hubs",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Hub"
       }
     },
     "hubBenchmarks": {
@@ -911,6 +961,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des benchmarks de hubs",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Benchmark de hub"
       }
     },
     "carTaxBaseRates": {
@@ -994,6 +1049,11 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des benchmarks de primes d'assurance",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Benchmark"
       }
     },
     "towns": {
@@ -1315,6 +1375,11 @@
         "cancel": "Annuler",
         "success": "Documentation supprimée.",
         "error": "Échec de la suppression."
+      },
+      "bulkImport": {
+        "title": "Importer la documentation",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Documentation"
       }
     }
   },

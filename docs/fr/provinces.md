@@ -16,3 +16,8 @@ Liste de référence des provinces, chacune liée à une région fiscale. Utilis
 ## Export
 
 Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.
+
+## Import
+
+Utilisez **Plus → Importer** pour téléverser un fichier JSON obtenu précédemment via Exporter. Les enregistrements avec un id sont mis à jour ;
+ceux sans id sont ajoutés. Chaque ligne affiche son propre statut, et un échec n'arrête pas les autres lignes.

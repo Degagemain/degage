@@ -17,6 +17,7 @@ import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -57,6 +58,7 @@ export default function ProvincesPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [provinceToDelete, setProvinceToDelete] = useState<Province | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -154,6 +156,25 @@ export default function ProvincesPage() {
     fetchProvinces();
   }, [fetchProvinces]);
 
+  const handleUpsertProvince = useCallback(async (record: Province): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/provinces/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/provinces', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchProvinces();
+  }, [fetchProvinces]);
+
   useEffect(() => {
     fetchProvinces();
   }, [fetchProvinces]);
@@ -217,6 +238,7 @@ export default function ProvincesPage() {
               </BulkActionsButton>
             }
             exportEndpoint="/api/provinces/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -276,6 +298,19 @@ export default function ProvincesPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<Province>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => record.name}
+        upsertRecord={handleUpsertProvince}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

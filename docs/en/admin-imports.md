@@ -39,9 +39,16 @@ interface BulkImportDialogProps<T extends { id?: string | null }> {
   onComplete: () => void;
   concurrency?: number; // default 5
   parseFile?: (text: string) => T[]; // default: JSON.parse + Array.isArray
-  labels: BulkImportLabels;
+  labels: {
+    title: string;
+    description: string;
+    columnName: string;
+  };
 }
 ```
+
+Every other string (file picker, status cells, action badges, confirm/cancel/close) is read by the dialog itself from `admin.common.import.*`,
+so callers never need a `useTranslations('admin.common.import')` hook.
 
 Concurrency is implemented with `runWithConcurrency` in `app/app/lib/run-with-concurrency.ts` — a dependency-free worker pool that keeps at most
 `limit` promises in flight and surfaces each settlement individually.

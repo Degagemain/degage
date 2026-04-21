@@ -17,6 +17,7 @@ import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -57,6 +58,7 @@ export default function CarTaxEuroNormAdjustmentsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarTaxEuroNormAdjustment | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -156,6 +158,25 @@ export default function CarTaxEuroNormAdjustmentsPage() {
     fetchAdjustments();
   }, [fetchAdjustments]);
 
+  const handleUpsertAdjustment = useCallback(async (record: CarTaxEuroNormAdjustment): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/car-tax-euro-norm-adjustments/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/car-tax-euro-norm-adjustments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchAdjustments();
+  }, [fetchAdjustments]);
+
   useEffect(() => {
     fetchAdjustments();
   }, [fetchAdjustments]);
@@ -219,6 +240,7 @@ export default function CarTaxEuroNormAdjustmentsPage() {
               </BulkActionsButton>
             }
             exportEndpoint="/api/car-tax-euro-norm-adjustments/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -280,6 +302,19 @@ export default function CarTaxEuroNormAdjustmentsPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<CarTaxEuroNormAdjustment>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => `${record.fiscalRegion?.name ?? ''} — ${record.euroNormGroup}`}
+        upsertRecord={handleUpsertAdjustment}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>

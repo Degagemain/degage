@@ -21,6 +21,7 @@ import {
   DataTableToolbar,
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -79,6 +80,7 @@ export default function DocumentationAdminPage() {
     externalId: false,
   });
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -145,6 +147,25 @@ export default function DocumentationAdminPage() {
       }));
     }
   }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, pageIndex, pageSize, sorting]);
+
+  const handleUpsertDocumentation = useCallback(async (record: Documentation): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/documentation/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/documentation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    void fetchDocs();
+  }, [fetchDocs]);
 
   const handleEmbeddingSync = useCallback(async () => {
     setIsSyncingEmbeddings(true);
@@ -304,44 +325,60 @@ export default function DocumentationAdminPage() {
   );
 
   return (
-    <AdminTablePage
-      toolbar={
-        <DataTableToolbar
-          table={table}
-          searchValue={queryInput}
-          onSearchChange={setQueryInput}
-          searchPlaceholder={t('searchPlaceholder')}
-          filterSlot={filterSlot}
-          exportEndpoint="/api/documentation/export"
-          columnLabels={columnLabels}
-        />
-      }
-      tableArea={
-        state.isLoading ? (
-          <div className="divide-y">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <DataTable table={table} columns={columns} />
-        )
-      }
-      pagination={
-        <DataTablePagination
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          pageCount={Math.ceil(state.total / pageSize)}
-          totalItems={state.total}
-          selectedCount={0}
-          onPageChange={setPageIndex}
-          onPageSizeChange={setPageSize}
-        />
-      }
-    />
+    <>
+      <AdminTablePage
+        toolbar={
+          <DataTableToolbar
+            table={table}
+            searchValue={queryInput}
+            onSearchChange={setQueryInput}
+            searchPlaceholder={t('searchPlaceholder')}
+            filterSlot={filterSlot}
+            exportEndpoint="/api/documentation/export"
+            onImportClick={() => setBulkImportOpen(true)}
+            columnLabels={columnLabels}
+          />
+        }
+        tableArea={
+          state.isLoading ? (
+            <div className="divide-y">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <DataTable table={table} columns={columns} />
+          )
+        }
+        pagination={
+          <DataTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            pageCount={Math.ceil(state.total / pageSize)}
+            totalItems={state.total}
+            selectedCount={0}
+            onPageChange={setPageIndex}
+            onPageSizeChange={setPageSize}
+          />
+        }
+      />
+
+      <BulkImportDialog<Documentation>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={getTitle}
+        upsertRecord={handleUpsertDocumentation}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
+        }}
+      />
+    </>
   );
 }

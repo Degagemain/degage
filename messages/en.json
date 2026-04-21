@@ -266,6 +266,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car brands",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Car brand"
       }
     },
     "fuelTypes": {
@@ -330,6 +335,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import fuel types",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Fuel type"
       }
     },
     "carTypes": {
@@ -400,6 +410,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car types",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Car type"
       }
     },
     "euroNorms": {
@@ -467,6 +482,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import euro norms",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Euro norm"
       }
     },
     "carPriceEstimates": {
@@ -543,6 +563,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car price estimates",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Car price estimate"
       }
     },
     "carInfos": {
@@ -608,6 +633,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car infos",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Car info"
       }
     },
     "carTaxEuroNormAdjustments": {
@@ -664,6 +694,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car tax euro norm adjustments",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Adjustment"
       }
     },
     "fiscalRegions": {
@@ -723,6 +758,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import fiscal regions",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Fiscal region"
       }
     },
     "provinces": {
@@ -776,6 +816,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import provinces",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Province"
       }
     },
     "hubs": {
@@ -850,6 +895,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import hubs",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Hub"
       }
     },
     "hubBenchmarks": {
@@ -911,6 +961,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import hub benchmarks",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Hub benchmark"
       }
     },
     "carTaxBaseRates": {
@@ -994,6 +1049,11 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import insurance price benchmarks",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Benchmark"
       }
     },
     "towns": {
@@ -1315,6 +1375,11 @@
         "cancel": "Cancel",
         "success": "Documentation deleted.",
         "error": "Failed to delete documentation."
+      },
+      "bulkImport": {
+        "title": "Import documentation",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Documentation"
       }
     }
   },

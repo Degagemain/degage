@@ -17,6 +17,7 @@ import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
+import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -59,6 +60,7 @@ export default function CarInfosPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarInfo | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -162,6 +164,25 @@ export default function CarInfosPage() {
     fetchData();
   }, [fetchData]);
 
+  const handleUpsertCarInfo = useCallback(async (record: CarInfo): Promise<Response> => {
+    if (record.id) {
+      return fetch(`/api/car-infos/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    return fetch('/api/car-infos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...record, id: null }),
+    });
+  }, []);
+
+  const handleBulkImportComplete = useCallback(() => {
+    fetchData();
+  }, [fetchData]);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -225,6 +246,7 @@ export default function CarInfosPage() {
               </BulkActionsButton>
             }
             exportEndpoint="/api/car-infos/export"
+            onImportClick={() => setBulkImportOpen(true)}
             columnLabels={columnLabels}
           />
         }
@@ -287,6 +309,19 @@ export default function CarInfosPage() {
           statusSuccess: t('bulkDelete.statusSuccess'),
           statusError: t('bulkDelete.statusError'),
           statusConflict: t('bulkDelete.statusConflict'),
+        }}
+      />
+
+      <BulkImportDialog<CarInfo>
+        open={bulkImportOpen}
+        onOpenChange={setBulkImportOpen}
+        getRecordLabel={(record) => `${record.carType?.brand?.name ?? ''} ${record.carType?.name ?? ''} (${record.year})`}
+        upsertRecord={handleUpsertCarInfo}
+        onComplete={handleBulkImportComplete}
+        labels={{
+          title: t('bulkImport.title'),
+          description: t('bulkImport.description'),
+          columnName: t('bulkImport.columnName'),
         }}
       />
     </>
