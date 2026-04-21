@@ -132,7 +132,7 @@ Outbound Better-Auth verification/reset mails and the inbound support webhook. T
 Overage: ~$1 per extra 1,000 emails on Pro. Inbound receiving is included on paid tiers once the domain has MX pointed at Resend.
 
 Docs: [Resend pricing](https://resend.com/pricing) · [Sending email](https://resend.com/docs/send-with-nodejs) ·
-[Inbound email](https://resend.com/docs/dashboard/emails/inbound).
+[Inbound email](https://resend.com/docs/dashboard/receiving/introduction).
 
 ### Better Auth + GitHub OAuth
 
