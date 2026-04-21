@@ -1824,7 +1824,7 @@
     "conversationCreatedLabel": "Created {time}",
     "deleteConversation": "Delete conversation",
     "emptyConversationTitle": "Ask anything",
-    "emptyConversationDescription": "You can ask any question about Degage. Replies use your documentation when it helps.",
+    "emptyConversationDescription": "You can ask any question about Dégage. Replies use your documentation when it helps.",
     "inputPlaceholder": "Ask your question...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Send",

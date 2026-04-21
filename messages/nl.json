@@ -1824,7 +1824,7 @@
     "conversationCreatedLabel": "Aangemaakt {time}",
     "deleteConversation": "Gesprek verwijderen",
     "emptyConversationTitle": "Stel een vraag",
-    "emptyConversationDescription": "Je kunt elke vraag over Degage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
+    "emptyConversationDescription": "Je kunt elke vraag over Dégage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
     "inputPlaceholder": "Stel je vraag...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Versturen",

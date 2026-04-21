@@ -1824,7 +1824,7 @@
     "conversationCreatedLabel": "Créée le {time}",
     "deleteConversation": "Supprimer la conversation",
     "emptyConversationTitle": "Posez une question",
-    "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Degage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
+    "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Dégage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
     "inputPlaceholder": "Posez votre question...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Envoyer",

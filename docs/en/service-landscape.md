@@ -53,7 +53,7 @@ flowchart TB
 
 ### Vercel — Hobby
 
-Next.js 16 target host. Hobby is **not permitted for commercial use**, so the moment Degage ships publicly this moves to Pro.
+Next.js 16 target host. Hobby is **not permitted for commercial use**, so the moment Dégage ships publicly this moves to Pro.
 
 - Hobby includes: 100 GB bandwidth/mo, 100 GB-hr function duration, 1M edge requests, non-commercial only, no password-protected previews, no
   SSO.
@@ -204,7 +204,7 @@ Order-of-magnitude monthly run-rate — use as a sanity check, not a quote. Assu
 # Risk notes
 
 - **Vercel commercial clause.** Hobby cannot host a commercial product. Migration to Pro is a plan switch, not a redeploy — but budget
-  $20/user/mo as a hard floor once Degage opens to paying members.
+  $20/user/mo as a hard floor once Dégage opens to paying members.
 - **Neon autosuspend latency.** On the free tier a cold start adds ~500 ms to the first request after idle. Acceptable in dev, visible in prod —
   Launch keeps the compute warm within the included compute-hours.
 - **Gemini training opt-out.** Free-tier prompts may be logged by Google. Until a billing account is attached (or traffic is self-routed through
