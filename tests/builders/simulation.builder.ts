@@ -1,12 +1,15 @@
-import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
+import { Simulation, SimulationResultCode, SimulationRunInput, SimulationStepIcon } from '@/domain/simulation.model';
 
 export const simulation = (data: Partial<Simulation> = {}): Simulation => {
+  const TOWN = { id: '550e8400-e29b-41d4-a716-446655440099' as const, name: 'Test Town' as const };
+  const BRAND = { id: '550e8400-e29b-41d4-a716-446655440001' as const, name: 'Test Brand' as const };
+  const FUEL = { id: '550e8400-e29b-41d4-a716-446655440002' as const, name: 'Diesel' as const };
   return {
     id: data.id ?? '550e8400-e29b-41d4-a716-446655440000',
-    townId: data.townId ?? '550e8400-e29b-41d4-a716-446655440099',
-    brandId: data.brandId ?? '550e8400-e29b-41d4-a716-446655440001',
-    fuelTypeId: data.fuelTypeId ?? '550e8400-e29b-41d4-a716-446655440002',
-    carTypeId: data.carTypeId ?? null,
+    town: data.town ?? TOWN,
+    brand: data.brand ?? BRAND,
+    fuelType: data.fuelType ?? FUEL,
+    carType: data.carType !== undefined ? data.carType : null,
     carTypeOther: data.carTypeOther ?? null,
     mileage: data.mileage ?? 50_000,
     ownerKmPerYear: data.ownerKmPerYear ?? 10_000,

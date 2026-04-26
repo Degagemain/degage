@@ -30,7 +30,7 @@ export const dbCarInfoToDomain = (db: CarInfoDb): CarInfo => {
     cylinderCc: db.cylinderCc,
     co2Emission: db.co2Emission,
     ecoscore: db.ecoscore,
-    euroNormId: db.euroNormId,
+    euroNorm: db.euroNormId ? { id: db.euroNormId } : null,
     consumption: db.consumption,
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -53,7 +53,7 @@ export const dbCarInfoToDomainWithRelations = (db: CarInfoWithRelations): CarInf
         name: pickTranslationName(db.carType.fuelType.translations, locale),
       },
     },
-    euroNorm: db.euroNorm ? { id: db.euroNorm.id, name: db.euroNorm.code } : undefined,
+    euroNorm: db.euroNorm ? { id: db.euroNorm.id, name: db.euroNorm.code } : null,
   };
 };
 
@@ -64,7 +64,7 @@ export const carInfoToDbCreate = (ci: CarInfo): Prisma.CarInfoCreateInput => {
     cylinderCc: ci.cylinderCc,
     co2Emission: ci.co2Emission,
     ecoscore: ci.ecoscore,
-    euroNorm: ci.euroNormId ? { connect: { id: ci.euroNormId } } : undefined,
+    euroNorm: ci.euroNorm ? { connect: { id: ci.euroNorm.id } } : undefined,
     consumption: ci.consumption,
   };
 };
@@ -76,7 +76,7 @@ export const carInfoToDbUpdate = (ci: CarInfo): Prisma.CarInfoUpdateInput => {
     cylinderCc: ci.cylinderCc,
     co2Emission: ci.co2Emission,
     ecoscore: ci.ecoscore,
-    euroNorm: ci.euroNormId ? { connect: { id: ci.euroNormId } } : { disconnect: true },
+    euroNorm: ci.euroNorm ? { connect: { id: ci.euroNorm.id } } : { disconnect: true },
     consumption: ci.consumption,
   };
 };

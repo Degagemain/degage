@@ -9,10 +9,10 @@ function buildSimulationFromResult(
 ): Simulation {
   return {
     id: null,
-    townId: validated.town.id,
-    brandId: validated.brand.id,
-    fuelTypeId: validated.fuelType.id,
-    carTypeId: validated.carType?.id ?? null,
+    town: validated.town,
+    brand: validated.brand,
+    fuelType: validated.fuelType,
+    carType: validated.carType,
     carTypeOther: validated.carTypeOther,
     mileage: validated.mileage,
     ownerKmPerYear: validated.ownerKmPerYear,

@@ -41,7 +41,7 @@ const getInitialState = (row?: CarInfo): FormValues => ({
   cylinderCc: row != null ? String(row.cylinderCc) : '',
   co2Emission: row != null ? String(row.co2Emission) : '',
   ecoscore: row != null ? String(row.ecoscore) : '',
-  euroNormId: row?.euroNormId ?? EURO_NORM_NONE,
+  euroNormId: row?.euroNorm?.id ?? EURO_NORM_NONE,
   euroNormName: row?.euroNorm?.name ?? '',
   consumption: row != null ? String(row.consumption) : '',
 });
@@ -116,9 +116,8 @@ export function CarInfoForm({ initialCarInfo, formId = CAR_INFO_FORM_ID, isSubmi
       cylinderCc: Number(values.cylinderCc),
       co2Emission: Number(values.co2Emission),
       ecoscore: Number(values.ecoscore),
-      euroNormId,
       euroNorm:
-        euroNormId && values.euroNormName ? { id: euroNormId, name: values.euroNormName.trim() } : euroNormId ? { id: euroNormId } : undefined,
+        euroNormId && values.euroNormName ? { id: euroNormId, name: values.euroNormName.trim() } : euroNormId ? { id: euroNormId } : null,
       consumption: Number(values.consumption),
       createdAt: initialCarInfo?.createdAt ?? null,
       updatedAt: initialCarInfo?.updatedAt ?? null,

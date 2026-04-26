@@ -30,7 +30,7 @@ interface FormValues {
 }
 
 const getInitialState = (row?: HubBenchmark): FormValues => ({
-  hubId: row?.hubId ?? row?.hub?.id ?? '',
+  hubId: row?.hub?.id ?? '',
   hubName: row?.hub?.name ?? '',
   ownerKm: row != null ? String(row.ownerKm) : '0',
   sharedMinKm: row != null ? String(row.sharedMinKm) : '0',
@@ -95,14 +95,13 @@ export function HubBenchmarkForm({
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload: HubBenchmark = {
       id: initialHubBenchmark?.id ?? null,
-      hubId: values.hubId,
+      hub: { id: values.hubId, name: values.hubName.trim() || values.hubId },
       ownerKm: Number(values.ownerKm),
       sharedMinKm: Number(values.sharedMinKm),
       sharedMaxKm: Number(values.sharedMaxKm),
       sharedAvgKm: Number(values.sharedAvgKm),
       createdAt: initialHubBenchmark?.createdAt ?? null,
       updatedAt: initialHubBenchmark?.updatedAt ?? null,
-      hub: { id: values.hubId, name: values.hubName.trim() || values.hubId },
     };
     await onSubmit(payload);
   });

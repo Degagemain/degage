@@ -4,7 +4,7 @@ import { hubBenchmarkSchema } from '@/domain/hub-benchmark.model';
 describe('hubBenchmarkSchema', () => {
   const validData = {
     id: '550e8400-e29b-41d4-a716-446655440000',
-    hubId: '550e8400-e29b-41d4-a716-446655440099',
+    hub: { id: '550e8400-e29b-41d4-a716-446655440099', name: 'Hub' },
     ownerKm: 10_000,
     sharedMinKm: 2_000,
     sharedMaxKm: 5_000,
@@ -21,7 +21,7 @@ describe('hubBenchmarkSchema', () => {
   it('defaults sharedMinKm, sharedMaxKm, sharedAvgKm to 0', () => {
     const result = hubBenchmarkSchema.safeParse({
       id: null,
-      hubId: '550e8400-e29b-41d4-a716-446655440099',
+      hub: { id: '550e8400-e29b-41d4-a716-446655440099' },
       ownerKm: 5_000,
     });
     expect(result.success).toBe(true);
@@ -42,8 +42,8 @@ describe('hubBenchmarkSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('rejects missing hubId', () => {
-    const { hubId, ...noHub } = validData;
+  it('rejects missing hub', () => {
+    const { hub: _hub, ...noHub } = validData;
     const result = hubBenchmarkSchema.safeParse(noHub);
     expect(result.success).toBe(false);
   });

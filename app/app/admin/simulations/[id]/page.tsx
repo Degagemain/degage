@@ -194,13 +194,15 @@ export default function SimulationDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-0 divide-y">
-            <FieldRow label={tForm('town')} value={simulation.town?.name ?? simulation.townId} />
+            <FieldRow label={tForm('town')} value={simulation.town?.name ?? simulation.town.id} />
             <FieldRow label={tCol('resultCode')} value={tResult(simulation.resultCode)} />
-            <FieldRow label={tForm('brand')} value={simulation.brand?.name ?? simulation.brandId} />
-            <FieldRow label={tForm('fuelType')} value={simulation.fuelType?.name ?? simulation.fuelTypeId} />
+            <FieldRow label={tForm('brand')} value={simulation.brand?.name ?? simulation.brand.id} />
+            <FieldRow label={tForm('fuelType')} value={simulation.fuelType?.name ?? simulation.fuelType.id} />
             <FieldRow
               label={tForm('carType')}
-              value={simulation.carType?.name ?? simulation.carTypeId ?? (simulation.carTypeOther ? `Other: ${simulation.carTypeOther}` : null)}
+              value={
+                simulation.carType?.name ?? simulation.carType?.id ?? (simulation.carTypeOther ? `Other: ${simulation.carTypeOther}` : null)
+              }
             />
             <FieldRow label={tCol('carTypeOther')} value={simulation.carTypeOther} />
             <FieldRow label={tCol('mileage')} value={simulation.mileage.toLocaleString()} />

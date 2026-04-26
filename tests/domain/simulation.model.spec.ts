@@ -73,14 +73,18 @@ describe('simulationRunInputParseSchema', () => {
 });
 
 describe('simulationSchema', () => {
+  const simRelations = {
+    town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+    brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+    fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+    carType: null as { id: string; name?: string } | null,
+    carTypeOther: null,
+  };
+
   it('accepts valid simulation', () => {
     const result = simulationSchema.safeParse({
       id: '550e8400-e29b-41d4-a716-446655440000',
-      townId: '550e8400-e29b-41d4-a716-446655440099',
-      brandId: '550e8400-e29b-41d4-a716-446655440001',
-      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
-      carTypeId: null,
-      carTypeOther: null,
+      ...simRelations,
       mileage: 100_000,
       ownerKmPerYear: 20_000,
       seats: 5,
@@ -101,11 +105,7 @@ describe('simulationSchema', () => {
   it('accepts valid email when set', () => {
     const result = simulationSchema.safeParse({
       id: '550e8400-e29b-41d4-a716-446655440000',
-      townId: '550e8400-e29b-41d4-a716-446655440099',
-      brandId: '550e8400-e29b-41d4-a716-446655440001',
-      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
-      carTypeId: null,
-      carTypeOther: null,
+      ...simRelations,
       mileage: 0,
       ownerKmPerYear: 0,
       seats: 5,
@@ -126,11 +126,7 @@ describe('simulationSchema', () => {
   it('rejects invalid email', () => {
     const result = simulationSchema.safeParse({
       id: '550e8400-e29b-41d4-a716-446655440000',
-      townId: '550e8400-e29b-41d4-a716-446655440099',
-      brandId: '550e8400-e29b-41d4-a716-446655440001',
-      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
-      carTypeId: null,
-      carTypeOther: null,
+      ...simRelations,
       mileage: 0,
       ownerKmPerYear: 0,
       seats: 5,
@@ -148,11 +144,7 @@ describe('simulationSchema', () => {
   it('rejects mileage less than 0', () => {
     const result = simulationSchema.safeParse({
       id: null,
-      townId: '550e8400-e29b-41d4-a716-446655440099',
-      brandId: '550e8400-e29b-41d4-a716-446655440001',
-      fuelTypeId: '550e8400-e29b-41d4-a716-446655440002',
-      carTypeId: null,
-      carTypeOther: null,
+      ...simRelations,
       mileage: -1,
       ownerKmPerYear: 0,
       seats: 5,

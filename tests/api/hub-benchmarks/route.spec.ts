@@ -73,7 +73,7 @@ describe('POST /api/hub-benchmarks', () => {
 
   const validBody = {
     id: null,
-    hubId: '550e8400-e29b-41d4-a716-446655440099',
+    hub: { id: '550e8400-e29b-41d4-a716-446655440099' },
     ownerKm: 10_000,
     sharedMinKm: 2_000,
     sharedMaxKm: 5_000,

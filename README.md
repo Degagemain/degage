@@ -319,7 +319,6 @@ Configure Resend to receive support emails and forward them to this app webhook.
 
 The webhook responds immediately with `200`, then processes the email asynchronously (fetches content, links it to a conversation thread, generates a support answer, and sends a reply email).
 
-
 ## Cursor MCP
 
 Optional [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers for [Cursor](https://cursor.com/) live in **`.cursor/mcp.json`** at the repo root (project scope). That file is **gitignored** (see `.cursor/.gitignore`) so API keys and tokens are not committed.

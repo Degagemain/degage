@@ -35,10 +35,10 @@ function parseSteps(steps: unknown): SimulationStep[] {
 export const dbSimulationToDomain = (db: SimulationDb): Simulation => {
   return {
     id: db.id,
-    townId: db.townId,
-    brandId: db.brandId,
-    fuelTypeId: db.fuelTypeId,
-    carTypeId: db.carTypeId,
+    town: { id: db.townId },
+    brand: { id: db.brandId },
+    fuelType: { id: db.fuelTypeId },
+    carType: db.carTypeId != null ? { id: db.carTypeId } : null,
     carTypeOther: db.carTypeOther,
     mileage: db.km,
     ownerKmPerYear: db.ownerKmPerYear,
@@ -99,10 +99,10 @@ export const dbSimulationToDomainWithRelations = (db: SimulationWithRelations, l
 
 export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationCreateInput => {
   return {
-    town: { connect: { id: simulation.townId } },
-    brand: { connect: { id: simulation.brandId } },
-    fuelType: { connect: { id: simulation.fuelTypeId } },
-    carType: simulation.carTypeId != null ? { connect: { id: simulation.carTypeId } } : undefined,
+    town: { connect: { id: simulation.town.id } },
+    brand: { connect: { id: simulation.brand.id } },
+    fuelType: { connect: { id: simulation.fuelType.id } },
+    carType: simulation.carType != null ? { connect: { id: simulation.carType.id } } : undefined,
     carTypeOther: simulation.carTypeOther ?? undefined,
     km: simulation.mileage,
     ownerKmPerYear: simulation.ownerKmPerYear,
@@ -137,10 +137,10 @@ export const simulationToDbCreate = (simulation: Simulation): Prisma.SimulationC
 
 export const simulationToDbUpdate = (simulation: Simulation): Prisma.SimulationUpdateInput => {
   return {
-    town: { connect: { id: simulation.townId } },
-    brand: { connect: { id: simulation.brandId } },
-    fuelType: { connect: { id: simulation.fuelTypeId } },
-    carType: simulation.carTypeId != null ? { connect: { id: simulation.carTypeId } } : undefined,
+    town: { connect: { id: simulation.town.id } },
+    brand: { connect: { id: simulation.brand.id } },
+    fuelType: { connect: { id: simulation.fuelType.id } },
+    carType: simulation.carType != null ? { connect: { id: simulation.carType.id } } : undefined,
     carTypeOther: simulation.carTypeOther ?? undefined,
     km: simulation.mileage,
     ownerKmPerYear: simulation.ownerKmPerYear,

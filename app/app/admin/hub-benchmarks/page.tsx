@@ -365,7 +365,7 @@ export default function HubBenchmarksPage() {
       <BulkImportDialog<HubBenchmark>
         open={bulkImportOpen}
         onOpenChange={setBulkImportOpen}
-        getRecordLabel={(record) => record.hub?.name ?? record.hubId}
+        getRecordLabel={(record) => record.hub?.name ?? record.hub.id}
         upsertRecord={handleUpsertHubBenchmark}
         onComplete={handleBulkImportComplete}
         labels={{

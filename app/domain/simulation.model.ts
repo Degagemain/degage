@@ -100,14 +100,13 @@ export const simulationRunInputParseSchema = simulationRunInputSchema.refine(
 
 export type SimulationRunInput = z.infer<typeof simulationRunInputSchema>;
 
-// Simulation entity: flat IDs for storage, optional IdName for API display
 export const simulationSchema = z
   .object({
     id: z.uuid().nullable(),
-    townId: z.uuid(),
-    brandId: z.uuid(),
-    fuelTypeId: z.uuid(),
-    carTypeId: z.uuid().nullable(),
+    town: idNameSchema,
+    brand: idNameSchema,
+    fuelType: idNameSchema,
+    carType: idNameSchema.nullable(),
     carTypeOther: z.string().nullable(),
     mileage: z.number().int().min(0),
     ownerKmPerYear: z.number().int().min(0),
@@ -139,10 +138,6 @@ export const simulationSchema = z
     email: z.string().email().nullable().default(null),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
-    town: idNameSchema.optional(),
-    brand: idNameSchema.optional(),
-    fuelType: idNameSchema.optional(),
-    carType: idNameSchema.nullable().optional(),
   })
   .strict();
 

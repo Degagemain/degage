@@ -15,8 +15,7 @@ export const carInfoSchema = z
     cylinderCc: z.number().int(),
     co2Emission: z.number().int(),
     ecoscore: z.number().int().min(0).max(100),
-    euroNormId: z.uuid().nullable().default(null),
-    euroNorm: idNameSchema.optional(), // populated when loaded with relations (e.g. name = code)
+    euroNorm: idNameSchema.nullable().default(null),
     consumption: z.number(),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
