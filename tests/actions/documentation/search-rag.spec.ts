@@ -87,7 +87,7 @@ describe('searchDocumentationForRag', () => {
     expect(result.citations).toEqual([
       {
         title: 'First',
-        url: '/app/docs/repo%3Afirst',
+        url: '/app/admin/documentation/repo%3Afirst',
       },
     ]);
     expect(result.noResults).toBe(false);

@@ -32,7 +32,7 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.title')} />,
       cell: ({ row }) => (
         <Link
-          href={`/app/docs/${encodeURIComponent(row.original.externalId)}`}
+          href={`/app/admin/documentation/${encodeURIComponent(row.original.externalId)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-primary block max-w-[200px] truncate hover:underline"
@@ -117,7 +117,7 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuItem asChild>
-                <Link href={`/app/docs/${encodeURIComponent(doc.externalId)}`} target="_blank" rel="noopener noreferrer">
+                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}`} target="_blank" rel="noopener noreferrer">
                   <Eye />
                   {t('actions.view')}
                 </Link>

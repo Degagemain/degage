@@ -9,7 +9,7 @@ export const rewriteRepoMarkdownLinks = (markdown: string): string => {
     }
     const file = trimmed.replace(/^\.\//, '').split('/').pop() ?? trimmed;
     const basename = file.replace(/\.md$/i, '');
-    const href = `/app/docs/${encodeURIComponent(`repo:${basename}`)}`;
+    const href = `/app/admin/documentation/${encodeURIComponent(`repo:${basename}`)}`;
     return `](${href})`;
   });
 };

@@ -20,6 +20,7 @@ import {
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { isAdmin } from '@/domain/role.utils';
 import { apiDelete, apiPost } from '@/app/lib/api-client';
 import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
@@ -129,6 +130,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const t = useTranslations('chat');
   const format = useFormatter();
   const { data: session, isPending } = authClient.useSession();
+  const isViewerAdmin = Boolean(session?.user && isAdmin(session.user));
   const [input, setInput] = useState('');
   const [conversationList, setConversationList] = useState<ConversationListItem[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
@@ -478,7 +480,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                             {!hasTextPart && message.role === 'assistant' && (
                               <p className="text-muted-foreground text-sm italic">{t('assistantWorking')}</p>
                             )}
-                            {citations.length > 0 && <MessageSources citations={citations} messageId={message.id} />}
+                            {isViewerAdmin && citations.length > 0 && <MessageSources citations={citations} messageId={message.id} />}
                           </MessageContent>
                         </Message>
                       );
