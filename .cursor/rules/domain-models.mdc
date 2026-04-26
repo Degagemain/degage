@@ -63,7 +63,28 @@ There is a single **entity schema** per entity. When that entity references othe
 - **Do not** model relations as flat IDs only (`brandId: z.uuid()` with no `brand`). The entity schema should have the idName relation; storage fills it when loading (e.g. `dbXToDomainWithRelations` with request locale for translated names).
 - **Storage**: When loading entities for list/detail, include relations in the Prisma query and map them to idName in the mapper. Do not return entities with only relation IDs and no names.
 
-**Examples:** `CarType` has `brand: idNameSchema`, `fuelType: idNameSchema`. `Simulation` has `brand`/`fuelType`/`carType` as optional idName on the entity schema. `Town` has `province: idNameSchema`, `hub: idNameSchema`.
+**Examples:** `CarType` has `brand: idNameSchema`, `fuelType: idNameSchema`. `Simulation` has `town`/`brand`/`fuelType` as `idNameSchema` and `carType` as `idNameSchema.nullable()`. `Town` has `province: idNameSchema`, `hub: idNameSchema`.
+
+### Do not duplicate the same relation as both `*Id` and IdName
+
+Modeling `fuelTypeId: z.uuid()` and `fuelType: idNameSchema` on the same domain object duplicates the foreign key and can drift. **Use only the IdName field**; the id lives on `fuelType.id`. The database and Prisma layer still use `fuelTypeId` columns—mappers translate `domain.fuelType.id` ↔ `db.fuelTypeId` on read and write. For an optional relation, use `idNameSchema.nullable()` (or optional/nullable as appropriate), not a parallel `optionalId` field.
+
+Wrong:
+
+```typescript
+z.object({
+  fuelTypeId: z.uuid(),
+  fuelType: idNameSchema.optional(),
+});
+```
+
+Right:
+
+```typescript
+z.object({
+  fuelType: idNameSchema,
+});
+```
 
 ## Key Points
 

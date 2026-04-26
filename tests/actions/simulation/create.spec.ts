@@ -35,8 +35,8 @@ describe('createSimulation', () => {
 
     const result = await createSimulation(input);
 
-    expect(result.brandId).toBe(input.brand.id);
-    expect(result.fuelTypeId).toBe(input.fuelType.id);
+    expect(result.brand.id).toBe(input.brand.id);
+    expect(result.fuelType.id).toBe(input.fuelType.id);
     expect(result.mileage).toBe(input.mileage);
     expect(result.ownerKmPerYear).toBe(input.ownerKmPerYear);
     expect(result.resultCode).toBe('manualReview');
@@ -65,7 +65,7 @@ describe('createSimulation', () => {
 
     const result = await createSimulation(input, { skipPersistence: true });
 
-    expect(result.brandId).toBe(input.brand.id);
+    expect(result.brand.id).toBe(input.brand.id);
     expect(result.mileage).toBe(input.mileage);
     expect(result.ownerKmPerYear).toBe(input.ownerKmPerYear);
     expect(result.resultCode).toBe('manualReview');

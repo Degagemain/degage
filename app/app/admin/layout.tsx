@@ -302,7 +302,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                 <span className="text-sm font-semibold">{pageTitle}</span>
                 {docHelpExternalId && (
                   <Link
-                    href={`/app/docs/${encodeURIComponent(docHelpExternalId)}`}
+                    href={`/app/admin/documentation/${encodeURIComponent(docHelpExternalId)}`}
                     className="text-muted-foreground hover:text-foreground inline-flex shrink-0 rounded-md p-1 transition-colors"
                     title={t('documentation.helpLink')}
                     aria-label={t('documentation.helpLink')}

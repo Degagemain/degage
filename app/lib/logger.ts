@@ -26,6 +26,7 @@ function consolePayload(level: string, message: string, meta?: Record<string, un
 }
 
 function emitConsole(level: 'debug' | 'info' | 'warn' | 'error', message: string, meta?: Record<string, unknown>): void {
+  if (process.env.NODE_ENV === 'test') return;
   const rid = getRequestId() ?? '—';
   const payload = consolePayload(level, message, meta);
   const line = `[${rid}] [${level}] ${message}`;

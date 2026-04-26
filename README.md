@@ -17,37 +17,6 @@ Check the env file and to start the dev server run:
 pnpm dev
 ```
 
-## Cursor MCP
-
-Optional [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers for [Cursor](https://cursor.com/) live in **`.cursor/mcp.json`** at the repo root (project scope). That file is **gitignored** (see `.cursor/.gitignore`) so API keys and tokens are not committed.
-
-| Server      | Role                                 | Setup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ----------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Resend**  | Email send/manage via the agent      | Runs locally with `npx`; set `RESEND_API_KEY` in the server `env`. See [Resend MCP](https://resend.com/docs/mcp-server).                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| **PostHog** | Query analytics, flags, errors, etc. | MCP host must match your PostHog region: EU `https://mcp-eu.posthog.com/mcp`, US `https://mcp.posthog.com/mcp`. **Recommended:** create a personal API key with the **MCP Server** preset ([EU](https://eu.posthog.com/settings/user-api-keys?preset=mcp_server) / [US](https://app.posthog.com/settings/user-api-keys?preset=mcp_server)) and set `headers.Authorization` to `Bearer phx_...`. **Alternative:** omit `headers` and sign in when the agent first uses the server (OAuth). See [PostHog MCP for Cursor](https://posthog.com/docs/model-context-protocol/cursor). |
-
-Example **`.cursor/mcp.json`** (replace placeholder values; do not commit real secrets):
-
-```json
-{
-  "mcpServers": {
-    "resend": {
-      "command": "npx",
-      "args": ["-y", "resend-mcp"],
-      "env": {
-        "RESEND_API_KEY": "your_resend_api_key"
-      }
-    },
-    "posthog": {
-      "url": "https://mcp-eu.posthog.com/mcp",
-      "headers": {
-        "Authorization": "Bearer your_posthog_personal_api_key"
-      }
-    }
-  }
-}
-```
-
 # Technologies
 
 ## Next.js
@@ -349,6 +318,37 @@ Configure Resend to receive support emails and forward them to this app webhook.
 5. Keep `RESEND_API_KEY` configured so the app can fetch full received content (`text`, `html`, `headers`) and send replies.
 
 The webhook responds immediately with `200`, then processes the email asynchronously (fetches content, links it to a conversation thread, generates a support answer, and sends a reply email).
+
+## Cursor MCP
+
+Optional [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers for [Cursor](https://cursor.com/) live in **`.cursor/mcp.json`** at the repo root (project scope). That file is **gitignored** (see `.cursor/.gitignore`) so API keys and tokens are not committed.
+
+| Server      | Role                                 | Setup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Resend**  | Email send/manage via the agent      | Runs locally with `npx`; set `RESEND_API_KEY` in the server `env`. See [Resend MCP](https://resend.com/docs/mcp-server).                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **PostHog** | Query analytics, flags, errors, etc. | MCP host must match your PostHog region: EU `https://mcp-eu.posthog.com/mcp`, US `https://mcp.posthog.com/mcp`. **Recommended:** create a personal API key with the **MCP Server** preset ([EU](https://eu.posthog.com/settings/user-api-keys?preset=mcp_server) / [US](https://app.posthog.com/settings/user-api-keys?preset=mcp_server)) and set `headers.Authorization` to `Bearer phx_...`. **Alternative:** omit `headers` and sign in when the agent first uses the server (OAuth). See [PostHog MCP for Cursor](https://posthog.com/docs/model-context-protocol/cursor). |
+
+Example **`.cursor/mcp.json`** (replace placeholder values; do not commit real secrets):
+
+```json
+{
+  "mcpServers": {
+    "resend": {
+      "command": "npx",
+      "args": ["-y", "resend-mcp"],
+      "env": {
+        "RESEND_API_KEY": "your_resend_api_key"
+      }
+    },
+    "posthog": {
+      "url": "https://mcp-eu.posthog.com/mcp",
+      "headers": {
+        "Authorization": "Bearer your_posthog_personal_api_key"
+      }
+    }
+  }
+}
+```
 
 ## Known Issues
 

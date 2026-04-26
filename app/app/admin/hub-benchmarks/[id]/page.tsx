@@ -92,7 +92,7 @@ export default function EditHubBenchmarkPage() {
     toast.error(t('delete.error'));
   };
 
-  const deleteLabel = row != null ? `${row.hub?.name ?? row.hubId} · ${row.ownerKm} km` : '';
+  const deleteLabel = row != null ? `${row.hub?.name ?? row.hub.id} · ${row.ownerKm} km` : '';
 
   if (error) {
     return (

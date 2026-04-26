@@ -87,7 +87,7 @@ export async function carInfoEstimator(
   if (carTypeId) {
     const cached = await dbCarInfoFindByCarTypeAndYear(carTypeId, year);
     if (cached) {
-      const euroNorm = cached.euroNormId ? await dbEuroNormRead(cached.euroNormId) : null;
+      const euroNorm = cached.euroNorm?.id ? await dbEuroNormRead(cached.euroNorm.id) : null;
       const euroNormCode = euroNorm?.code ?? null;
       return toSimulationCarInfo(cached.cylinderCc, cached.co2Emission, cached.ecoscore, euroNormCode, cached.consumption);
     }
@@ -107,7 +107,8 @@ export async function carInfoEstimator(
   const result = await generateStructuredJson<GeminiCarInfoResponse>(prompt, responseSchema);
 
   if (carTypeId) {
-    const euroNormId = result.euroNormCode ? ((await dbEuroNormFindByCode(result.euroNormCode))?.id ?? null) : null;
+    const euroNormResolved = result.euroNormCode ? await dbEuroNormFindByCode(result.euroNormCode) : null;
+    const euroNorm = euroNormResolved?.id != null ? { id: euroNormResolved.id, name: euroNormResolved.code } : null;
     await dbCarInfoCreate({
       id: null,
       carType: { id: carTypeId },
@@ -115,7 +116,7 @@ export async function carInfoEstimator(
       cylinderCc: result.cylinderCc,
       co2Emission: result.co2Emission,
       ecoscore: result.ecoscore,
-      euroNormId,
+      euroNorm,
       consumption: result.consumption,
       createdAt: null,
       updatedAt: null,

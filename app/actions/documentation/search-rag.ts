@@ -103,7 +103,7 @@ export const searchDocumentationForRag = async (
       title: tr.title.trim(),
       content: tr.content.trim(),
       bestChunkSimilarity: meta.similarity,
-      citationUrl: `/app/docs/${encodeURIComponent(meta.externalId)}`,
+      citationUrl: `/app/admin/documentation/${encodeURIComponent(meta.externalId)}`,
     });
   }
 

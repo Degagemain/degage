@@ -21,7 +21,7 @@ describe('dbHubBenchmarkCreate', () => {
 
   it('creates a hub benchmark and returns domain model', async () => {
     const input = hubBenchmark({ id: null, createdAt: null, updatedAt: null });
-    const dbCreateData = { hubId: input.hubId, ownerKm: input.ownerKm };
+    const dbCreateData = { hubId: input.hub.id, ownerKm: input.ownerKm };
     const createdDb = { ...input, id: 'new-id', createdAt: new Date(), updatedAt: new Date() };
     const expectedDomain = hubBenchmark({ id: 'new-id' });
 
