@@ -26,7 +26,7 @@ import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Dialog, DialogContent, DialogTitle } from '@/app/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/app/components/ui/dialog';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 type ConversationListItem = {
@@ -326,6 +326,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         )}
       >
         <DialogTitle className="sr-only">{dialogAccessibilityTitle}</DialogTitle>
+        <DialogDescription className="sr-only">{t('openChatCardDescription')}</DialogDescription>
         {isPending ? (
           <div className="flex flex-1 items-center justify-center p-6">
             <Skeleton className="h-48 w-full" />

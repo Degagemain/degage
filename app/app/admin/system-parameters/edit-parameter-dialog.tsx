@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { SystemParameter, SystemParameterType } from '@/domain/system-parameter.model';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
@@ -85,10 +85,10 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
           <DialogTitle>{t('editTitle')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <p className="text-muted-foreground text-sm">
+          <DialogDescription>
             {parameter.name}
             {parameter.description ? ` — ${parameter.description}` : ''}
-          </p>
+          </DialogDescription>
 
           {parameter.type === SystemParameterType.NUMBER && (
             <div className="space-y-2">
