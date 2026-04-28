@@ -9,6 +9,12 @@
     "dark": "Donker",
     "automatic": "Automatisch"
   },
+  "notFound": {
+    "eyebrow": "Pagina niet gevonden",
+    "title": "We vinden die pagina niet",
+    "description": "Het adres kan fout zijn, of de pagina is verhuisd. Controleer de link of begin opnieuw op de startpagina.",
+    "homeCta": "Terug naar start →"
+  },
   "faq": {
     "title": "Veelgestelde vragen",
     "docFaqPanelHeading": "Documentatie",
@@ -1307,8 +1313,16 @@
       "helpLink": "Hulp bij deze pagina",
       "add": "Documentatie toevoegen",
       "edit": "Bewerken",
+      "detail": {
+        "backToList": "Terug",
+        "sectionMeta": "Details",
+        "sectionContent": "Inhoud"
+      },
       "searchPlaceholder": "Zoek documentatie...",
       "tryAgain": "Opnieuw proberen",
+      "moreMenu": {
+        "groups": "Groepen"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Sync…",
@@ -1318,19 +1332,23 @@
       },
       "filters": {
         "isFaq": "FAQ",
+        "isPublic": "Publiek artikel",
         "source": "Bron",
         "format": "Formaat",
         "formatMarkdown": "Markdown",
         "formatText": "Platte tekst",
         "sourceRepository": "Repository",
         "sourceNotion": "Notion",
-        "sourceManual": "Handmatig"
+        "sourceManual": "Handmatig",
+        "groups": "Groep"
       },
       "columns": {
         "externalId": "Externe ID",
         "source": "Bron",
         "isFaq": "FAQ",
+        "isPublic": "Publiek",
         "tags": "Tags",
+        "groups": "Groepen",
         "roles": "Rollen",
         "audienceRole": {
           "technical": "Technisch",
@@ -1350,6 +1368,7 @@
         "source": "Bron",
         "format": "Formaat",
         "isFaq": "FAQ-item",
+        "isPublic": "Publiek artikel",
         "audience": "Doelpubliek",
         "tags": "Tags",
         "locale": "Taal",
@@ -1359,13 +1378,20 @@
         "saveSuccess": "Opgeslagen.",
         "saveError": "Opslaan mislukt.",
         "cancel": "Annuleren",
-        "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden."
+        "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden.",
+        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt alleen FAQ, zichtbaarheid en groepen wijzigen — niet titel, tekst, tags of doelpubliek.",
+        "syncedContentReadOnly": "Inhoud is alleen-lezen. Wijzig de bron om de tekst aan te passen.",
+        "groupsEmpty": "Er zijn nog geen documentatiegroepen. Voeg ze toe via Documentatie → Groepen in het adminmenu.",
+        "multiSelectGroups": "Groepen kiezen…",
+        "multiSelectAudience": "Doelpubliek kiezen…",
+        "multiSelectTags": "Tags kiezen…"
       },
       "yes": "Ja",
       "no": "Nee",
       "actions": {
         "openMenu": "Menu openen",
         "view": "Bekijken",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
       },
       "delete": {
@@ -1380,6 +1406,61 @@
         "title": "Documentatie importeren",
         "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
         "columnName": "Documentatie"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groepen",
+      "columns": {
+        "order": "Volgorde",
+        "name": "Naam",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Groepen zoeken...",
+      "tryAgain": "Opnieuw proberen",
+      "form": {
+        "help": {
+          "order": "Lagere nummers verschijnen eerst in de groepslijst."
+        },
+        "placeholders": {
+          "translationName": "Naam ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Documentatiegroep verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Groep verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Deze groep is gekoppeld aan documentatie en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Geselecteerde verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Documentatiegroepen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Dit kan niet ongedaan worden gemaakt.",
+        "columnName": "Groep",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wacht",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan documentatie"
+      },
+      "bulkImport": {
+        "title": "Documentatiegroepen importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Groep"
       }
     }
   },
@@ -1812,6 +1893,31 @@
       "bevestiging": "Bevestiging"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Helpcentrum"
+    },
+    "title": "Help & FAQ",
+    "intro": "Vind antwoorden, blader door artikelen of open de supportchat als je meer hulp nodig hebt.",
+    "searchPlaceholder": "Zoek in artikelen en vragen…",
+    "searchLoading": "Zoeken…",
+    "searchNoResults": "Geen resultaten.",
+    "searchResultsLabel": "Resultaten",
+    "articlesHeading": "Artikelen",
+    "articlesShowMore": "Alle artikelen",
+    "faqHeading": "Veelgestelde vragen",
+    "groupShowMoreCta": "Alles in {name}",
+    "readArticle": "Lees",
+    "backToHelp": "Terug naar help",
+    "allArticlesTitle": "Alle artikelen",
+    "allFaqInGroupTitle": "Alle vragen",
+    "emptyArticles": "Nog geen artikelen.",
+    "emptyFaq": "Nog geen vragen in deze rubriek.",
+    "errorLoad": "Er ging iets mis. Probeer opnieuw.",
+    "loadMore": "Meer laden",
+    "articleMetaUpdated": "Bijgewerkt op {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Support Chat openen",
@@ -1838,7 +1944,10 @@
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
     "sourcesUsed": "{count, plural, one {# bron gebruikt} other {# bronnen gebruikt}}",
-    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
+    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat",
+    "audiencePublic": "Publiek",
+    "audienceUser": "Gebruiker",
+    "audienceAdmin": "Beheerder"
   },
   "docs": {
     "table": {

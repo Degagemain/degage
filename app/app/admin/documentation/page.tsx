@@ -1,13 +1,16 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, Loader2, RefreshCw, X } from 'lucide-react';
+import { BookOpen, Check, Database, FileText, Loader2, Plus, RefreshCw, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
+import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
+import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
@@ -23,6 +26,7 @@ import {
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -34,15 +38,19 @@ interface DocState {
   error: string | null;
 }
 
+type GroupOption = { id: string; label: string };
+
 const SORT_COLUMN_MAP: Record<string, string> = {
   externalId: 'externalId',
   source: 'source',
   isFaq: 'isFaq',
+  isPublic: 'isPublic',
   updatedAt: 'updatedAt',
 };
 
 export default function DocumentationAdminPage() {
   const t = useTranslations('admin.documentation');
+  const tCommon = useTranslations('admin.common');
   const uiLocale = useLocale();
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : defaultUILocale;
@@ -70,12 +78,16 @@ export default function DocumentationAdminPage() {
       defaultPageSize: DEFAULT_PAGE_SIZE,
       defaultSort: { id: 'updatedAt', desc: true },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
-      csvParamNames: ['isFaq', 'sources', 'formats'],
+      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups'],
     });
 
   const isFaqFilter = csv.isFaq;
+  const isPublicFilter = csv.isPublic;
   const sourceFilter = csv.sources;
   const formatFilter = csv.formats;
+  const groupFilter = csv.groups;
+
+  const [groupOptions, setGroupOptions] = useState<GroupOption[]>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
@@ -97,6 +109,13 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleIsPublicFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isPublic', values);
+    },
+    [setCsvParam],
+  );
+
   const handleSourceFilterChange = useCallback(
     (values: string[]) => {
       setCsvParam('sources', values);
@@ -111,15 +130,51 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleGroupFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('groups', values);
+    },
+    [setCsvParam],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const response = await fetch(`/api/documentation-groups?take=${String(MaxTake)}&sortBy=sortOrder&sortOrder=asc`);
+        if (!response.ok || cancelled) return;
+        const result: Page<DocumentationGroup> = await response.json();
+        if (cancelled) return;
+        setGroupOptions(
+          result.records
+            .filter((g) => g.id)
+            .map((g) => ({
+              id: g.id!,
+              label: g.name,
+            })),
+        );
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const buildApiParams = useCallback(() => {
     const params = new URLSearchParams();
     if (debouncedQuery) params.set('query', debouncedQuery);
     if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
+    if (isPublicFilter.length === 1) params.set('isPublic', isPublicFilter[0]!);
     for (const s of sourceFilter) {
       params.append('source', s);
     }
     for (const fmt of formatFilter) {
       params.append('format', fmt);
+    }
+    for (const gid of groupFilter) {
+      params.append('group', gid);
     }
     if (sorting.length > 0) {
       const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
@@ -129,7 +184,7 @@ export default function DocumentationAdminPage() {
       }
     }
     return params;
-  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, sorting]);
+  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, sorting]);
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -218,15 +273,25 @@ export default function DocumentationAdminPage() {
       title: t('columns.title'),
       source: t('columns.source'),
       isFaq: t('columns.isFaq'),
+      isPublic: t('columns.isPublic'),
       tags: t('columns.tags'),
       audienceRoles: t('columns.roles'),
       format: t('columns.format'),
+      groups: t('columns.groups'),
       updatedAt: t('columns.updated'),
     }),
     [t],
   );
 
   const isFaqOptions: FacetedFilterOption[] = useMemo(
+    () => [
+      { value: 'true', label: t('yes'), icon: Check },
+      { value: 'false', label: t('no'), icon: X },
+    ],
+    [t],
+  );
+
+  const isPublicOptions: FacetedFilterOption[] = useMemo(
     () => [
       { value: 'true', label: t('yes'), icon: Check },
       { value: 'false', label: t('no'), icon: X },
@@ -308,6 +373,12 @@ export default function DocumentationAdminPage() {
         onSelectedChange={handleIsFaqFilterChange}
       />
       <DataTableFacetedFilter
+        title={t('filters.isPublic')}
+        options={isPublicOptions}
+        selectedValues={isPublicFilter}
+        onSelectedChange={handleIsPublicFilterChange}
+      />
+      <DataTableFacetedFilter
         title={t('filters.source')}
         options={sourceOptions}
         selectedValues={sourceFilter}
@@ -318,6 +389,12 @@ export default function DocumentationAdminPage() {
         options={formatOptions}
         selectedValues={formatFilter}
         onSelectedChange={handleFormatFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.groups')}
+        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
+        selectedValues={groupFilter}
+        onSelectedChange={handleGroupFilterChange}
       />
     </>
   );
@@ -331,10 +408,23 @@ export default function DocumentationAdminPage() {
             searchValue={queryInput}
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/documentation/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={filterSlot}
             exportEndpoint="/api/documentation/export"
             buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
+            moreMenuExtra={
+              <DropdownMenuItem asChild>
+                <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
+              </DropdownMenuItem>
+            }
             columnLabels={columnLabels}
           />
         }

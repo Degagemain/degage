@@ -17,6 +17,7 @@ export type DocumentationChunkSearchResult = {
   content: string;
   locale: string;
   similarity: number;
+  isPublic: boolean;
 };
 
 type DocumentationChunkSearchRow = {
@@ -27,6 +28,7 @@ type DocumentationChunkSearchRow = {
   content: string;
   locale: string;
   similarity: number;
+  isPublic: boolean;
 };
 
 type SearchOptions = {
@@ -52,6 +54,7 @@ export const dbDocumentationChunkSearch = async (embedding: number[], options: S
         dc.id AS "chunkId",
         dc."documentationId",
         d."externalId",
+        d."isPublic" AS "isPublic",
         dt.title,
         dc.content,
         dc.locale AS "locale",
@@ -79,5 +82,6 @@ export const dbDocumentationChunkSearch = async (embedding: number[], options: S
     content: row.content,
     locale: row.locale,
     similarity: Number(row.similarity),
+    isPublic: Boolean(row.isPublic),
   }));
 };

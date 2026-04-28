@@ -39,6 +39,7 @@ describe('searchDocumentationForRag', () => {
         content: 'A',
         locale: 'nl',
         similarity: 0.91,
+        isPublic: true,
       },
       {
         chunkId: 'c2',
@@ -48,6 +49,7 @@ describe('searchDocumentationForRag', () => {
         content: 'B',
         locale: 'nl',
         similarity: 0.88,
+        isPublic: true,
       },
     ]);
     vi.mocked(dbDocumentationTranslationsForRagPairs).mockResolvedValueOnce(
@@ -83,11 +85,14 @@ describe('searchDocumentationForRag', () => {
       title: 'First',
       content: 'Full article text for the page.',
       bestChunkSimilarity: 0.91,
+      isPublic: true,
     });
     expect(result.citations).toEqual([
       {
         title: 'First',
         url: '/app/admin/documentation/repo%3Afirst',
+        externalId: 'repo:first',
+        isPublic: true,
       },
     ]);
     expect(result.noResults).toBe(false);
@@ -121,6 +126,7 @@ describe('searchDocumentationForRag', () => {
         content: 'x',
         locale: 'en',
         similarity: 0.5,
+        isPublic: false,
       },
       {
         chunkId: 'c2',
@@ -130,6 +136,7 @@ describe('searchDocumentationForRag', () => {
         content: 'y',
         locale: 'en',
         similarity: 0.99,
+        isPublic: true,
       },
     ]);
     vi.mocked(dbDocumentationTranslationsForRagPairs).mockResolvedValueOnce(

@@ -22,6 +22,15 @@ export const filterToQuery = (filter: DocumentationFilter): Prisma.Documentation
         }
       : undefined;
 
+  const groupIdsFilter =
+    filter.groupIds && filter.groupIds.length > 0
+      ? {
+          some: {
+            id: filter.groupIds.length === 1 ? filter.groupIds[0]! : { in: filter.groupIds },
+          },
+        }
+      : undefined;
+
   const parts: Prisma.DocumentationWhereInput[] = [];
   if (filter.audiences && filter.audiences.length > 0) {
     parts.push({
@@ -31,6 +40,7 @@ export const filterToQuery = (filter: DocumentationFilter): Prisma.Documentation
 
   const core: Prisma.DocumentationWhereInput = {};
   if (filter.isFaq !== null) core.isFaq = filter.isFaq;
+  if (filter.isPublic !== null) core.isPublic = filter.isPublic;
   if (filter.sources && filter.sources.length > 0) {
     core.source = filter.sources.length === 1 ? filter.sources[0] : { in: filter.sources };
   }
@@ -38,6 +48,7 @@ export const filterToQuery = (filter: DocumentationFilter): Prisma.Documentation
     core.format = filter.formats.length === 1 ? filter.formats[0] : { in: filter.formats };
   }
   if (tagsFilter) core.tags = tagsFilter;
+  if (groupIdsFilter) core.groups = groupIdsFilter;
   if (translationSearch) core.translations = translationSearch;
   if (Object.keys(core).length > 0) {
     parts.push(core);
@@ -58,13 +69,13 @@ export const dbDocumentationSearch = async (filter: DocumentationFilter): Promis
   const total = await prisma.documentation.count({ where: whereClause });
   const rows = await prisma.documentation.findMany({
     where: whereClause,
-    include: { translations: true },
+    include: { translations: true, groups: { include: { translations: true } } },
     skip: filter.skip,
     take: filter.take,
     orderBy: filter.sortBy ? { [filter.sortBy]: filter.sortOrder } : undefined,
   });
   return {
-    records: rows.map(dbDocumentationToDomain),
+    records: rows.map((row) => dbDocumentationToDomain(row)),
     total,
   };
 };

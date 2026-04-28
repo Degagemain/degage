@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap');
+
+.root {
+  --pub-brand: #1a3d2b;
+  --pub-brand-mid: #285c40;
+  /* Align shadcn primary with help-center brand (e.g. default Buttons). */
+  --primary: var(--pub-brand);
+  --primary-foreground: #ffffff;
+  --pub-bg: #f6f3ee;
+  --pub-s8: 8px;
+  --pub-s16: 16px;
+  --pub-s24: 24px;
+  --pub-s32: 32px;
+  --pub-s48: 48px;
+  --pub-r8: 8px;
+  --pub-max-w: 880px;
+  --pub-serif: 'Fraunces', Georgia, serif;
+  --pub-sans: 'DM Sans', system-ui, sans-serif;
+
+  font-family: var(--pub-sans);
+  background: var(--pub-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.header {
+  background: var(--pub-brand);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.headerInner {
+  max-width: var(--pub-max-w);
+  margin: 0 auto;
+  padding: 0 var(--pub-s24);
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: var(--pub-s24);
+}
+
+.headerEnd {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  gap: var(--pub-s8);
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--pub-r8);
+  background: rgba(255, 255, 255, 0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pub-serif);
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.logoTitle {
+  font-family: var(--pub-serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1;
+}
+
+.logoSub {
+  font-family: var(--pub-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 0;
+}
+
+.headerLangTrigger {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.headerLangTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.pageWide {
+  max-width: var(--pub-max-w);
+  margin: 0 auto;
+  padding: var(--pub-s48) var(--pub-s24) 120px;
+}

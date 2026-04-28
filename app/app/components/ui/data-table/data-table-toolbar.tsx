@@ -31,6 +31,8 @@ interface DataTableToolbarProps<TData> {
   buildExportParams?: () => URLSearchParams;
   /** When provided, adds an "Import" item in the More menu that calls this callback. */
   onImportClick?: () => void;
+  /** Extra rows inside the “More” dropdown (e.g. links). Only shown when `exportEndpoint` is set. */
+  moreMenuExtra?: React.ReactNode;
   /** Optional map of column id -> display label for the column picker */
   columnLabels?: Record<string, string>;
   /** Slot for action buttons (shown after view options) */
@@ -50,6 +52,7 @@ export function DataTableToolbar<TData>({
   exportFormatParamName = 'exportFormat',
   buildExportParams,
   onImportClick,
+  moreMenuExtra,
   columnLabels,
   actionSlot,
   showSearch = true,
@@ -105,6 +108,7 @@ export function DataTableToolbar<TData>({
             <DropdownMenuContent align="start">
               <DropdownMenuItem onClick={() => setExportDialogOpen(true)}>{tExport('openExport')}</DropdownMenuItem>
               {onImportClick ? <DropdownMenuItem onClick={onImportClick}>{tImport('openImport')}</DropdownMenuItem> : null}
+              {moreMenuExtra}
             </DropdownMenuContent>
           </DropdownMenu>
           <AdminExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} buildExportUrl={buildExportUrl} />

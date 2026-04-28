@@ -31,9 +31,17 @@ describe('getDocumentationByExternalIdForViewer', () => {
     expect(r).toEqual({ ok: false, reason: 'forbidden' });
   });
 
+  it('returns forbidden when doc is not public and viewer is not admin', async () => {
+    vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(
+      documentation({ audienceRoles: ['public'], externalId: 'repo:private', isPublic: false }),
+    );
+    const r = await getDocumentationByExternalIdForViewer('repo:private', 'en', false);
+    expect(r).toEqual({ ok: false, reason: 'forbidden' });
+  });
+
   it('returns ok for public-only doc when viewer is not admin', async () => {
     vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(
-      documentation({ audienceRoles: ['public', 'user'], externalId: 'repo:faq' }),
+      documentation({ audienceRoles: ['public', 'user'], externalId: 'repo:faq', isPublic: true }),
     );
     const r = await getDocumentationByExternalIdForViewer('repo:faq', 'en', false);
     expect(r.ok).toBe(true);
@@ -47,5 +55,13 @@ describe('getDocumentationByExternalIdForViewer', () => {
     vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(documentation({ audienceRoles: ['admin'], externalId: 'repo:internal' }));
     const r = await getDocumentationByExternalIdForViewer('repo:internal', 'en', true);
     expect(r.ok).toBe(true);
+  });
+
+  it('returns forbidden for non-public doc when publicCatalogOnly even for admin', async () => {
+    vi.mocked(dbDocumentationGetByExternalId).mockResolvedValueOnce(
+      documentation({ audienceRoles: ['public'], externalId: 'repo:draft', isPublic: false }),
+    );
+    const r = await getDocumentationByExternalIdForViewer('repo:draft', 'en', true, { publicCatalogOnly: true });
+    expect(r).toEqual({ ok: false, reason: 'forbidden' });
   });
 });

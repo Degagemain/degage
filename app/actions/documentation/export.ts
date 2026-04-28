@@ -7,13 +7,15 @@ import { type CsvColumn, DashPlaceholder, buildCsvLinesFromColumns, encodeCsvDoc
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { searchDocumentation } from './search';
 
-const COLUMN_KEYS = ['externalId', 'title', 'source', 'isFaq', 'tags', 'audienceRoles', 'format', 'updatedAt'] as const;
+const COLUMN_KEYS = ['externalId', 'title', 'source', 'isFaq', 'isPublic', 'tags', 'groups', 'audienceRoles', 'format', 'updatedAt'] as const;
 type ColumnKey = (typeof COLUMN_KEYS)[number];
 
 const toLabelKey = (key: ColumnKey): string => {
   if (key === 'updatedAt') return 'columns.updated';
   if (key === 'audienceRoles') return 'columns.roles';
+  if (key === 'groups') return 'columns.groups';
   if (key === 'isFaq') return 'columns.isFaq';
+  if (key === 'isPublic') return 'columns.isPublic';
   return `columns.${key}`;
 };
 
@@ -41,6 +43,10 @@ const buildDocumentationColumns = async (uiLocale: string): Promise<CsvColumn<Do
       if (key === 'audienceRoles') {
         if (row.audienceRoles.length === 0) return DashPlaceholder;
         return row.audienceRoles.map((role: DocumentationAudienceRole) => t(`columns.audienceRole.${role}`)).join(', ');
+      }
+      if (key === 'groups') {
+        if (row.groups.length === 0) return DashPlaceholder;
+        return row.groups.map((g) => g.name ?? g.id).join(', ');
       }
       return formatExportValueByKey(key, (row as Record<string, unknown>)[key], uiLocale);
     },

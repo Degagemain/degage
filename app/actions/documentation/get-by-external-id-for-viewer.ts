@@ -16,14 +16,23 @@ export type GetDocumentationByExternalIdResult =
   | { ok: true; doc: DocumentationViewerPayload }
   | { ok: false; reason: 'not_found' | 'forbidden' };
 
+export type GetDocumentationByExternalIdOptions = {
+  /** When true, non-public docs are forbidden even for admins (e.g. help center /faq). */
+  publicCatalogOnly?: boolean;
+};
+
 export const getDocumentationByExternalIdForViewer = async (
   externalId: string,
   locale: ContentLocale,
   isViewerAdmin: boolean,
+  options?: GetDocumentationByExternalIdOptions,
 ): Promise<GetDocumentationByExternalIdResult> => {
   const doc = await dbDocumentationGetByExternalId(externalId);
   if (!doc) {
     return { ok: false, reason: 'not_found' };
+  }
+  if (!doc.isPublic && (!isViewerAdmin || options?.publicCatalogOnly)) {
+    return { ok: false, reason: 'forbidden' };
   }
   if (!canViewDocumentation(doc.audienceRoles, isViewerAdmin)) {
     return { ok: false, reason: 'forbidden' };

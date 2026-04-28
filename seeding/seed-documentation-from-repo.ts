@@ -17,6 +17,7 @@ type LocaleFile = {
   audienceRoles: DocumentationAudienceRole[];
   tags: DocumentationTag[];
   isFaq: boolean;
+  isPublic: boolean;
 };
 
 const extractFirstHeading = (markdown: string): string | null => {
@@ -90,6 +91,7 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
         audienceRoles: parseAudienceFromFrontMatter(data),
         tags: parseTagsFromFrontMatter(data),
         isFaq: parseBool(data.isFaq),
+        isPublic: parseBool(data.isPublic),
       });
     }
   }
@@ -119,12 +121,14 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
     }));
 
     const isFaq = sorted.some((l) => l.isFaq);
+    const isPublic = sorted.some((l) => l.isPublic);
     const audienceRoles = [...new Set(sorted.flatMap((l) => l.audienceRoles))] as DocumentationAudienceRole[];
     const tags = [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[];
 
     await dbDocumentationUpsertRepository({
       externalId,
       isFaq,
+      isPublic,
       format: 'markdown',
       audienceRoles,
       tags,

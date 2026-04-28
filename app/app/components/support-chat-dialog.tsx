@@ -20,13 +20,16 @@ import {
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { type DocumentationAudienceRole, documentationAudienceRoleValues } from '@/domain/documentation.model';
+import { Role } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { apiDelete, apiPost } from '@/app/lib/api-client';
 import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Dialog, DialogContent, DialogTitle } from '@/app/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/app/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 type ConversationListItem = {
@@ -131,6 +134,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const format = useFormatter();
   const { data: session, isPending } = authClient.useSession();
   const isViewerAdmin = Boolean(session?.user && isAdmin(session.user));
+  const [previewAudience, setPreviewAudience] = useState<DocumentationAudienceRole>(Role.ADMIN);
   const [input, setInput] = useState('');
   const [conversationList, setConversationList] = useState<ConversationListItem[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
@@ -139,11 +143,21 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [lastLoadedConversationId, setLastLoadedConversationId] = useState<string | null>(null);
   const activeConversationIdRef = useRef<string | null>(null);
+  const previewAudienceRef = useRef<DocumentationAudienceRole>(Role.ADMIN);
+  const isViewerAdminRef = useRef(false);
   const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     activeConversationIdRef.current = activeConversationId;
   }, [activeConversationId]);
+
+  useEffect(() => {
+    previewAudienceRef.current = previewAudience;
+  }, [previewAudience]);
+
+  useEffect(() => {
+    isViewerAdminRef.current = isViewerAdmin;
+  }, [isViewerAdmin]);
 
   useEffect(() => {
     if (!open || isPending || isHistoryOpen || isLoadingMessages) {
@@ -196,6 +210,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         body: {
           id,
           conversationId: activeConversationIdRef.current ?? undefined,
+          ...(isViewerAdminRef.current ? { previewAudience: previewAudienceRef.current } : {}),
           messages,
         },
       }),
@@ -326,6 +341,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         )}
       >
         <DialogTitle className="sr-only">{dialogAccessibilityTitle}</DialogTitle>
+        <DialogDescription className="sr-only">{t('openChatCardDescription')}</DialogDescription>
         {isPending ? (
           <div className="flex flex-1 items-center justify-center p-6">
             <Skeleton className="h-48 w-full" />
@@ -480,7 +496,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                             {!hasTextPart && message.role === 'assistant' && (
                               <p className="text-muted-foreground text-sm italic">{t('assistantWorking')}</p>
                             )}
-                            {isViewerAdmin && citations.length > 0 && <MessageSources citations={citations} messageId={message.id} />}
+                            {citations.length > 0 ? <MessageSources citations={citations} messageId={message.id} /> : null}
                           </MessageContent>
                         </Message>
                       );
@@ -491,26 +507,47 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
               )}
 
               {(!isHistoryOpen || !session?.user) && (
-                <PromptInput className="mt-auto" onSubmit={handlePromptSubmit}>
-                  <PromptInputBody>
-                    <PromptInputTextarea
-                      ref={promptTextareaRef}
-                      maxLength={chatUserMessageMaxLength}
-                      onChange={(event) => setInput(event.target.value.slice(0, chatUserMessageMaxLength))}
-                      placeholder={t('inputPlaceholder')}
-                      value={input}
-                    />
-                  </PromptInputBody>
-                  <PromptInputFooter className="pb-1.5">
-                    <span className="text-muted-foreground shrink-0 text-xs tabular-nums" aria-live="polite">
-                      {t('inputCharacterCount', { current: input.length, max: chatUserMessageMaxLength })}
-                    </span>
-                    <div className="flex min-w-0 flex-1 items-center justify-end gap-1">
-                      <PromptInputTools />
-                      <PromptInputSubmit disabled={status === 'ready' ? !input.trim() : false} onStop={stop} status={status} />
+                <div className="mt-auto flex w-full flex-col gap-1.5">
+                  {isViewerAdmin && session?.user ? (
+                    <div className="flex flex-wrap items-center gap-2 px-0.5">
+                      <Select value={previewAudience} onValueChange={(value) => setPreviewAudience(value as DocumentationAudienceRole)}>
+                        <SelectTrigger
+                          size="sm"
+                          className="border-muted-foreground/40 h-7 w-auto min-w-0 gap-1 rounded-full px-2.5 text-xs font-medium shadow-none"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {documentationAudienceRoleValues.map((role) => (
+                            <SelectItem key={role} value={role} className="text-xs">
+                              {role === 'public' ? t('audiencePublic') : role === Role.USER ? t('audienceUser') : t('audienceAdmin')}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </PromptInputFooter>
-                </PromptInput>
+                  ) : null}
+                  <PromptInput onSubmit={handlePromptSubmit}>
+                    <PromptInputBody>
+                      <PromptInputTextarea
+                        ref={promptTextareaRef}
+                        maxLength={chatUserMessageMaxLength}
+                        onChange={(event) => setInput(event.target.value.slice(0, chatUserMessageMaxLength))}
+                        placeholder={t('inputPlaceholder')}
+                        value={input}
+                      />
+                    </PromptInputBody>
+                    <PromptInputFooter className="pb-1.5">
+                      <span className="text-muted-foreground shrink-0 text-xs tabular-nums" aria-live="polite">
+                        {t('inputCharacterCount', { current: input.length, max: chatUserMessageMaxLength })}
+                      </span>
+                      <div className="flex min-w-0 flex-1 items-center justify-end gap-1">
+                        <PromptInputTools />
+                        <PromptInputSubmit disabled={status === 'ready' ? !input.trim() : false} onStop={stop} status={status} />
+                      </div>
+                    </PromptInputFooter>
+                  </PromptInput>
+                </div>
               )}
             </CardContent>
           </Card>

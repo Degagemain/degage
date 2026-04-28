@@ -8,9 +8,11 @@ export const documentation = (data: Partial<Documentation> = {}): Documentation 
     source: data.source ?? 'manual',
     externalId: data.externalId ?? `manual:${randomUUID()}`,
     isFaq: data.isFaq ?? false,
+    isPublic: data.isPublic ?? false,
     format: data.format ?? 'markdown',
     audienceRoles: data.audienceRoles ?? ['admin'],
     tags: data.tags ?? [],
+    groups: data.groups ?? [],
     translations: data.translations ?? [
       { locale: 'en', title: 'Test EN', content: 'Body EN' },
       { locale: 'nl', title: 'Test NL', content: 'Body NL' },

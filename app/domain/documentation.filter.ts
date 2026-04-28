@@ -13,6 +13,7 @@ export enum DocumentationSortColumns {
   EXTERNAL_ID = 'externalId',
   SOURCE = 'source',
   IS_FAQ = 'isFaq',
+  IS_PUBLIC = 'isPublic',
 }
 
 const optionalRepeatedParam = <T extends z.ZodTypeAny>(item: T) =>
@@ -30,9 +31,11 @@ export const documentationFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
     isFaq: z.boolean().nullable().default(null),
+    isPublic: z.boolean().nullable().default(null),
     sources: optionalRepeatedParam(documentationSourceSchema),
     tags: optionalRepeatedParam(documentationTagSchema),
     formats: optionalRepeatedParam(documentationFormatSchema),
+    groupIds: optionalRepeatedParam(z.uuid()),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z.nativeEnum(DocumentationSortColumns).default(DocumentationSortColumns.UPDATED_AT),
@@ -45,7 +48,7 @@ export type DocumentationFilter = z.infer<typeof documentationFilterSchema>;
 
 type RawDocumentationFilterParams = Record<string, string | string[] | boolean>;
 
-const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' | 'formats' | 'audiences', value: string) => {
+const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' | 'formats' | 'audiences' | 'groupIds', value: string) => {
   const existing = out[key];
   if (Array.isArray(existing)) {
     existing.push(value);
@@ -59,6 +62,15 @@ const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' 
 export const documentationFilterFromSearchParams = (params: URLSearchParams): RawDocumentationFilterParams => {
   const out: RawDocumentationFilterParams = {};
   for (const [key, value] of params.entries()) {
+    if (key === 'groups') {
+      for (const part of value
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)) {
+        appendMulti(out, 'groupIds', part);
+      }
+      continue;
+    }
     if (key === 'tags') {
       appendMulti(out, 'tags', value);
       continue;
@@ -75,11 +87,22 @@ export const documentationFilterFromSearchParams = (params: URLSearchParams): Ra
       appendMulti(out, 'audiences', value);
       continue;
     }
+    if (key === 'group') {
+      appendMulti(out, 'groupIds', value);
+      continue;
+    }
     if (key === 'isFaq') {
       const t = value.trim();
       if (t === 'true') out.isFaq = true;
       else if (t === 'false') out.isFaq = false;
       else if (t !== '') out.isFaq = value;
+      continue;
+    }
+    if (key === 'isPublic') {
+      const t = value.trim();
+      if (t === 'true') out.isPublic = true;
+      else if (t === 'false') out.isPublic = false;
+      else if (t !== '') out.isPublic = value;
       continue;
     }
     out[key] = value;

@@ -5,7 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { CornerDownLeft } from 'lucide-react';
 
-import { CAR_SETTINGS_ITEMS, GEO_SETTINGS_ITEMS, MAIN_ITEMS, SIDEBAR_SETTINGS_ICONS, SIMULATION_ITEMS } from '@/app/admin/nav-config';
+import {
+  CAR_SETTINGS_ITEMS,
+  DOCUMENTATION_SUB_ITEMS,
+  GEO_SETTINGS_ITEMS,
+  MAIN_ITEMS,
+  SIDEBAR_SETTINGS_ICONS,
+  SIMULATION_ITEMS,
+} from '@/app/admin/nav-config';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/app/components/ui/command';
 
 export function AdminCommandPalette() {
@@ -50,10 +57,12 @@ export function AdminCommandPalette() {
         <CommandEmpty>{t('command.empty')}</CommandEmpty>
 
         <CommandGroup heading={undefined}>
-          {MAIN_ITEMS.map((item) => {
+          {[...MAIN_ITEMS, ...DOCUMENTATION_SUB_ITEMS].map((item) => {
             const title = t(`${item.translationKey}.title`);
+            const searchValue =
+              item.translationKey === 'documentationGroups' ? `${title} ${t('documentation.title')} documentation groups` : title;
             return (
-              <CommandItem key={item.href} value={title} onSelect={() => run(item.href)}>
+              <CommandItem key={item.href} value={searchValue} onSelect={() => run(item.href)}>
                 <item.icon />
                 {title}
               </CommandItem>

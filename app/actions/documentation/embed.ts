@@ -55,9 +55,11 @@ const listAllDocumentationForEmbedding = async (): Promise<Documentation[]> => {
   const baseFilter = {
     query: null,
     isFaq: null,
+    isPublic: null,
     sources: undefined,
     tags: undefined,
     formats: undefined,
+    groupIds: undefined,
     skip: 0,
     sortBy: DocumentationSortColumns.UPDATED_AT,
     sortOrder: SortOrder.DESC,

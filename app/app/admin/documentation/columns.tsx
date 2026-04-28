@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Check, Eye, MoreHorizontal } from 'lucide-react';
+import { Check, Eye, MoreHorizontal, Pencil } from 'lucide-react';
 
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Badge } from '@/app/components/ui/badge';
@@ -33,8 +33,6 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       cell: ({ row }) => (
         <Link
           href={`/app/admin/documentation/${encodeURIComponent(row.original.externalId)}`}
-          target="_blank"
-          rel="noopener noreferrer"
           className="hover:text-primary block max-w-[200px] truncate hover:underline"
         >
           {getTitle(row.original)}
@@ -53,6 +51,16 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
         row.original.isFaq ? <Check className="text-primary size-4" aria-label={t('yes')} /> : <span className="text-muted-foreground">—</span>,
     },
     {
+      accessorKey: 'isPublic',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isPublic')} onSort={onSort} />,
+      cell: ({ row }) =>
+        row.original.isPublic ? (
+          <Check className="text-primary size-4" aria-label={t('yes')} />
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    },
+    {
       accessorKey: 'tags',
       header: t('columns.tags'),
       cell: ({ row }) => (
@@ -65,6 +73,26 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
           {row.original.tags.length > 3 ? <span className="text-muted-foreground text-xs">+{row.original.tags.length - 3}</span> : null}
         </div>
       ),
+      enableSorting: false,
+    },
+    {
+      id: 'groups',
+      header: t('columns.groups'),
+      cell: ({ row }) => {
+        const groups = row.original.groups;
+        if (groups.length === 0) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return (
+          <div className="flex max-w-[200px] flex-wrap gap-1">
+            {groups.map((g) => (
+              <Badge key={g.id} variant="outline" className="text-[10px] font-normal">
+                {g.name ?? g.id}
+              </Badge>
+            ))}
+          </div>
+        );
+      },
       enableSorting: false,
     },
     {
@@ -117,9 +145,15 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuItem asChild>
-                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}`} target="_blank" rel="noopener noreferrer">
+                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}`}>
                   <Eye />
                   {t('actions.view')}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}/edit`}>
+                  <Pencil />
+                  {t('actions.edit')}
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

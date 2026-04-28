@@ -1,4 +1,5 @@
 import type { DocumentationAudienceRole } from '@/domain/documentation.model';
+import type { DocumentationSupportCitation } from '@/domain/documentation.support-citations';
 import { getRequestContentLocale } from '@/context/request-context';
 import { getSupportReplyToEmail } from '@/actions/utils';
 import { type ContentLocale } from '@/i18n/locales';
@@ -9,11 +10,6 @@ import { dbDocumentationTranslationsForRagPairs } from '@/storage/documentation/
 const DEFAULT_CHUNK_SEARCH_LIMIT = 30;
 const DEFAULT_MAX_FULL_DOCUMENTS = 5;
 
-export type RagDocumentationCitation = {
-  title: string;
-  url: string;
-};
-
 export type RagDocumentationFullDocument = {
   documentationId: string;
   externalId: string;
@@ -22,6 +18,7 @@ export type RagDocumentationFullDocument = {
   content: string;
   bestChunkSimilarity: number;
   citationUrl: string;
+  isPublic: boolean;
 };
 
 type SearchRagOptions = {
@@ -37,6 +34,7 @@ type DocBestChunkMeta = {
   similarity: number;
   locale: string;
   externalId: string;
+  isPublic: boolean;
 };
 
 export const searchDocumentationForRag = async (
@@ -44,7 +42,7 @@ export const searchDocumentationForRag = async (
   options: SearchRagOptions,
 ): Promise<{
   fullDocuments: RagDocumentationFullDocument[];
-  citations: RagDocumentationCitation[];
+  citations: DocumentationSupportCitation[];
   noResults: boolean;
   noResultsGuidance: string | null;
 }> => {
@@ -78,6 +76,7 @@ export const searchDocumentationForRag = async (
         similarity: row.similarity,
         locale: row.locale,
         externalId: row.externalId,
+        isPublic: row.isPublic,
       });
     }
   }
@@ -104,12 +103,15 @@ export const searchDocumentationForRag = async (
       content: tr.content.trim(),
       bestChunkSimilarity: meta.similarity,
       citationUrl: `/app/admin/documentation/${encodeURIComponent(meta.externalId)}`,
+      isPublic: meta.isPublic,
     });
   }
 
-  const citations: RagDocumentationCitation[] = fullDocuments.map((doc) => ({
+  const citations: DocumentationSupportCitation[] = fullDocuments.map((doc) => ({
     title: doc.title,
     url: doc.citationUrl,
+    externalId: doc.externalId,
+    isPublic: doc.isPublic,
   }));
 
   const noResults = fullDocuments.length === 0;

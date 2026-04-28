@@ -6,7 +6,7 @@ export const dbDocumentationCreate = async (doc: Documentation): Promise<Documen
   const prisma = getPrismaClient();
   const created = await prisma.documentation.create({
     data: documentationToDbCreate(doc),
-    include: { translations: true },
+    include: { translations: true, groups: { include: { translations: true } } },
   });
   return dbDocumentationToDomain(created);
 };

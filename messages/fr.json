@@ -9,6 +9,12 @@
     "dark": "Sombre",
     "automatic": "Automatique"
   },
+  "notFound": {
+    "eyebrow": "Page introuvable",
+    "title": "Nous ne trouvons pas cette page",
+    "description": "L’adresse est peut-être incorrecte, ou la page a été déplacée. Vérifiez le lien ou reprenez depuis l’accueil.",
+    "homeCta": "Retour à l’accueil →"
+  },
   "faq": {
     "title": "Questions fréquentes",
     "docFaqPanelHeading": "Documentation",
@@ -1307,8 +1313,16 @@
       "helpLink": "Aide pour cette page",
       "add": "Ajouter une documentation",
       "edit": "Modifier",
+      "detail": {
+        "backToList": "Retour",
+        "sectionMeta": "Détails",
+        "sectionContent": "Contenu"
+      },
       "searchPlaceholder": "Rechercher dans la documentation...",
       "tryAgain": "Réessayer",
+      "moreMenu": {
+        "groups": "Groupes"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Sync…",
@@ -1318,19 +1332,23 @@
       },
       "filters": {
         "isFaq": "FAQ",
+        "isPublic": "Article public",
         "source": "Source",
         "format": "Format",
         "formatMarkdown": "Markdown",
         "formatText": "Texte brut",
         "sourceRepository": "Dépôt",
         "sourceNotion": "Notion",
-        "sourceManual": "Manuel"
+        "sourceManual": "Manuel",
+        "groups": "Groupe"
       },
       "columns": {
         "externalId": "ID externe",
         "source": "Source",
         "isFaq": "FAQ",
+        "isPublic": "Public",
         "tags": "Tags",
+        "groups": "Groupes",
         "roles": "Rôles",
         "audienceRole": {
           "technical": "Technique",
@@ -1350,6 +1368,7 @@
         "source": "Source",
         "format": "Format",
         "isFaq": "Entrée FAQ",
+        "isPublic": "Article public",
         "audience": "Rôles cibles",
         "tags": "Tags",
         "locale": "Langue",
@@ -1359,13 +1378,20 @@
         "saveSuccess": "Enregistré.",
         "saveError": "Échec de l’enregistrement.",
         "cancel": "Annuler",
-        "sourceLocked": "La source ne peut pas être modifiée après création."
+        "sourceLocked": "La source ne peut pas être modifiée après création.",
+        "syncedSourceNotice": "Cette page est synchronisée depuis une source externe. Vous pouvez modifier la FAQ, la visibilité publique et les groupes uniquement — pas le titre, le corps, les tags ou le public.",
+        "syncedContentReadOnly": "Le contenu est en lecture seule. Modifiez la source pour changer le texte.",
+        "groupsEmpty": "Aucun groupe de documentation pour l’instant. Ajoutez-en depuis Documentation → Groupes dans le menu admin.",
+        "multiSelectGroups": "Sélectionner des groupes…",
+        "multiSelectAudience": "Sélectionner les rôles du public…",
+        "multiSelectTags": "Sélectionner des tags…"
       },
       "yes": "Oui",
       "no": "Non",
       "actions": {
         "openMenu": "Ouvrir le menu",
         "view": "Voir",
+        "edit": "Modifier",
         "delete": "Supprimer"
       },
       "delete": {
@@ -1380,6 +1406,61 @@
         "title": "Importer la documentation",
         "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
         "columnName": "Documentation"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groupes",
+      "columns": {
+        "order": "Ordre",
+        "name": "Nom",
+        "updated": "Mis à jour"
+      },
+      "searchPlaceholder": "Rechercher des groupes...",
+      "tryAgain": "Réessayer",
+      "form": {
+        "help": {
+          "order": "Les nombres plus petits apparaissent en premier dans la liste des groupes."
+        },
+        "placeholders": {
+          "translationName": "Nom ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le groupe de documentation",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Groupe supprimé.",
+        "error": "Échec de la suppression du groupe.",
+        "conflict": "Ce groupe est lié à de la documentation et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des groupes de documentation",
+        "description": "Les {count} enregistrements suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Groupe",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Lié à de la documentation"
+      },
+      "bulkImport": {
+        "title": "Importer des groupes de documentation",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Groupe"
       }
     }
   },
@@ -1812,6 +1893,31 @@
       "bevestiging": "Confirmation"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Centre d'aide"
+    },
+    "title": "Aide & FAQ",
+    "intro": "Trouvez des réponses, parcourez les articles ou ouvrez le chat support si besoin.",
+    "searchPlaceholder": "Rechercher dans l'aide et les questions…",
+    "searchLoading": "Recherche…",
+    "searchNoResults": "Aucun résultat.",
+    "searchResultsLabel": "Résultats",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Voir tous les articles",
+    "faqHeading": "Questions fréquentes",
+    "groupShowMoreCta": "Tout voir dans {name}",
+    "readArticle": "Lire",
+    "backToHelp": "Retour à l'aide",
+    "allArticlesTitle": "Tous les articles",
+    "allFaqInGroupTitle": "Toutes les questions",
+    "emptyArticles": "Pas encore d'articles.",
+    "emptyFaq": "Pas encore de questions dans cette rubrique.",
+    "errorLoad": "Une erreur s'est produite. Réessayez.",
+    "loadMore": "Charger plus",
+    "articleMetaUpdated": "Mis à jour le {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Ouvrir Support Chat",
@@ -1838,7 +1944,10 @@
     "docsSearchError": "La recherche dans la documentation a échoué.",
     "signIn": "Se connecter",
     "sourcesUsed": "{count, plural, one {# source utilisée} other {# sources utilisées}}",
-    "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat"
+    "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat",
+    "audiencePublic": "Public",
+    "audienceUser": "Utilisateur",
+    "audienceAdmin": "Admin"
   },
   "docs": {
     "table": {

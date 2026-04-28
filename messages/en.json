@@ -9,6 +9,12 @@
     "dark": "Dark",
     "automatic": "Automatic"
   },
+  "notFound": {
+    "eyebrow": "Page not found",
+    "title": "We can’t find that page",
+    "description": "The address may be wrong, or the page may have been moved. Check the link or start again from home.",
+    "homeCta": "Back to home →"
+  },
   "faq": {
     "title": "Frequently asked questions",
     "docFaqPanelHeading": "Documentation",
@@ -1307,8 +1313,16 @@
       "helpLink": "Help for this page",
       "add": "Add documentation",
       "edit": "Edit",
+      "detail": {
+        "backToList": "Back",
+        "sectionMeta": "Details",
+        "sectionContent": "Content"
+      },
       "searchPlaceholder": "Search documentation...",
       "tryAgain": "Try again",
+      "moreMenu": {
+        "groups": "Groups"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Syncing…",
@@ -1318,19 +1332,23 @@
       },
       "filters": {
         "isFaq": "FAQ",
+        "isPublic": "Public article",
         "source": "Source",
         "format": "Format",
         "formatMarkdown": "Markdown",
         "formatText": "Plain text",
         "sourceRepository": "Repository",
         "sourceNotion": "Notion",
-        "sourceManual": "Manual"
+        "sourceManual": "Manual",
+        "groups": "Group"
       },
       "columns": {
         "externalId": "External ID",
         "source": "Source",
         "isFaq": "FAQ",
+        "isPublic": "Public",
         "tags": "Tags",
+        "groups": "Groups",
         "roles": "Roles",
         "audienceRole": {
           "technical": "Technical",
@@ -1350,6 +1368,7 @@
         "source": "Source",
         "format": "Format",
         "isFaq": "FAQ entry",
+        "isPublic": "Public article",
         "audience": "Audience roles",
         "tags": "Tags",
         "locale": "Locale",
@@ -1359,13 +1378,20 @@
         "saveSuccess": "Saved successfully.",
         "saveError": "Could not save.",
         "cancel": "Cancel",
-        "sourceLocked": "Source is fixed after creation."
+        "sourceLocked": "Source is fixed after creation.",
+        "syncedSourceNotice": "This page is synced from an external source. You can change FAQ, public visibility, and groups only — not title, body, tags, or audience.",
+        "syncedContentReadOnly": "Content is read-only here. Update the source to change the text.",
+        "groupsEmpty": "No documentation groups exist yet. You can add them from Documentation → Groups in the admin menu.",
+        "multiSelectGroups": "Select groups…",
+        "multiSelectAudience": "Select audience roles…",
+        "multiSelectTags": "Select tags…"
       },
       "yes": "Yes",
       "no": "No",
       "actions": {
         "openMenu": "Open menu",
         "view": "View",
+        "edit": "Edit",
         "delete": "Delete"
       },
       "delete": {
@@ -1380,6 +1406,61 @@
         "title": "Import documentation",
         "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
         "columnName": "Documentation"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groups",
+      "columns": {
+        "order": "Order",
+        "name": "Name",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search groups...",
+      "tryAgain": "Try again",
+      "form": {
+        "help": {
+          "order": "Lower numbers appear first when listing groups."
+        },
+        "placeholders": {
+          "translationName": "Name ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete documentation group",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Group deleted successfully.",
+        "error": "Failed to delete group.",
+        "conflict": "This group is linked to documentation and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete documentation groups",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Group",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to documentation"
+      },
+      "bulkImport": {
+        "title": "Import documentation groups",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Group"
       }
     }
   },
@@ -1812,6 +1893,31 @@
       "bevestiging": "Confirmation"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Help center"
+    },
+    "title": "Help & FAQ",
+    "intro": "Find answers, browse articles, or open the support chat if you need more help.",
+    "searchPlaceholder": "Search help articles and questions…",
+    "searchLoading": "Searching…",
+    "searchNoResults": "No results found.",
+    "searchResultsLabel": "Results",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Show all articles",
+    "faqHeading": "Frequently asked questions",
+    "groupShowMoreCta": "Show all in {name}",
+    "readArticle": "Read",
+    "backToHelp": "Back to help",
+    "allArticlesTitle": "All articles",
+    "allFaqInGroupTitle": "All questions",
+    "emptyArticles": "No articles yet.",
+    "emptyFaq": "No questions in this section yet.",
+    "errorLoad": "Something went wrong. Try again.",
+    "loadMore": "Load more",
+    "articleMetaUpdated": "Updated {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Open Support Chat",
@@ -1838,7 +1944,10 @@
     "docsSearchError": "Documentation lookup failed.",
     "signIn": "Sign in",
     "sourcesUsed": "{count, plural, one {# source used} other {# sources used}}",
-    "faqFallbackOpenChat": "Still need help? Open Support Chat"
+    "faqFallbackOpenChat": "Still need help? Open Support Chat",
+    "audiencePublic": "Public",
+    "audienceUser": "User",
+    "audienceAdmin": "Admin"
   },
   "docs": {
     "table": {

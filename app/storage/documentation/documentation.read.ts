@@ -6,7 +6,7 @@ export const dbDocumentationRead = async (id: string): Promise<Documentation | n
   const prisma = getPrismaClient();
   const row = await prisma.documentation.findUnique({
     where: { id },
-    include: { translations: true },
+    include: { translations: true, groups: { include: { translations: true } } },
   });
   return row ? dbDocumentationToDomain(row) : null;
 };

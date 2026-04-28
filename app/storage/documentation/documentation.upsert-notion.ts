@@ -7,6 +7,7 @@ import { DocumentationSource } from '@/storage/client/client';
 export type NotionDocUpsertInput = {
   notionPageId: string;
   isFaq: boolean;
+  isPublic: boolean;
   format: DocumentationFormat;
   audienceRoles: DocumentationAudienceRole[];
   tags: DocumentationTag[];
@@ -24,6 +25,7 @@ export const dbDocumentationUpsertNotion = async (input: NotionDocUpsertInput): 
       source: DocumentationSource.notion,
       externalId,
       isFaq: input.isFaq,
+      isPublic: input.isPublic,
       format: input.format,
       audienceRoles: input.audienceRoles,
       tags: input.tags,
@@ -39,6 +41,7 @@ export const dbDocumentationUpsertNotion = async (input: NotionDocUpsertInput): 
     },
     update: {
       isFaq: input.isFaq,
+      isPublic: input.isPublic,
       format: input.format,
       audienceRoles: input.audienceRoles,
       tags: input.tags,
