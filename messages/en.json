@@ -9,6 +9,12 @@
     "dark": "Dark",
     "automatic": "Automatic"
   },
+  "notFound": {
+    "eyebrow": "Page not found",
+    "title": "We can’t find that page",
+    "description": "The address may be wrong, or the page may have been moved. Check the link or start again from home.",
+    "homeCta": "Back to home →"
+  },
   "faq": {
     "title": "Frequently asked questions",
     "docFaqPanelHeading": "Documentation",

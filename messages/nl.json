@@ -9,6 +9,12 @@
     "dark": "Donker",
     "automatic": "Automatisch"
   },
+  "notFound": {
+    "eyebrow": "Pagina niet gevonden",
+    "title": "We vinden die pagina niet",
+    "description": "Het adres kan fout zijn, of de pagina is verhuisd. Controleer de link of begin opnieuw op de startpagina.",
+    "homeCta": "Terug naar start →"
+  },
   "faq": {
     "title": "Veelgestelde vragen",
     "docFaqPanelHeading": "Documentatie",

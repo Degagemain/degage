@@ -9,6 +9,12 @@
     "dark": "Sombre",
     "automatic": "Automatique"
   },
+  "notFound": {
+    "eyebrow": "Page introuvable",
+    "title": "Nous ne trouvons pas cette page",
+    "description": "L’adresse est peut-être incorrecte, ou la page a été déplacée. Vérifiez le lien ou reprenez depuis l’accueil.",
+    "homeCta": "Retour à l’accueil →"
+  },
   "faq": {
     "title": "Questions fréquentes",
     "docFaqPanelHeading": "Documentation",
