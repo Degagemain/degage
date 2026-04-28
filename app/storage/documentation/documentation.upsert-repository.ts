@@ -7,6 +7,7 @@ import { DocumentationSource } from '@/storage/client/client';
 export type RepositoryDocUpsertInput = {
   externalId: string;
   isFaq: boolean;
+  isPublic: boolean;
   format: DocumentationFormat;
   audienceRoles: DocumentationAudienceRole[];
   tags: DocumentationTag[];
@@ -21,6 +22,7 @@ export const dbDocumentationUpsertRepository = async (input: RepositoryDocUpsert
       source: DocumentationSource.repository,
       externalId: input.externalId,
       isFaq: input.isFaq,
+      isPublic: input.isPublic,
       format: input.format,
       audienceRoles: input.audienceRoles,
       tags: input.tags,
@@ -36,6 +38,7 @@ export const dbDocumentationUpsertRepository = async (input: RepositoryDocUpsert
     },
     update: {
       isFaq: input.isFaq,
+      isPublic: input.isPublic,
       format: input.format,
       audienceRoles: input.audienceRoles,
       tags: input.tags,

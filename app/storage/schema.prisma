@@ -443,6 +443,7 @@ model Documentation {
     source        DocumentationSource
     externalId    String                      @unique
     isFaq         Boolean                     @default(false)
+    isPublic      Boolean                     @default(false)
     format        DocumentationFormat
     audienceRoles DocumentationAudienceRole[]
     tags          DocumentationTag[]

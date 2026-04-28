@@ -38,6 +38,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   externalId: 'externalId',
   source: 'source',
   isFaq: 'isFaq',
+  isPublic: 'isPublic',
   updatedAt: 'updatedAt',
 };
 
@@ -70,10 +71,11 @@ export default function DocumentationAdminPage() {
       defaultPageSize: DEFAULT_PAGE_SIZE,
       defaultSort: { id: 'updatedAt', desc: true },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
-      csvParamNames: ['isFaq', 'sources', 'formats'],
+      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats'],
     });
 
   const isFaqFilter = csv.isFaq;
+  const isPublicFilter = csv.isPublic;
   const sourceFilter = csv.sources;
   const formatFilter = csv.formats;
 
@@ -97,6 +99,13 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleIsPublicFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('isPublic', values);
+    },
+    [setCsvParam],
+  );
+
   const handleSourceFilterChange = useCallback(
     (values: string[]) => {
       setCsvParam('sources', values);
@@ -115,6 +124,7 @@ export default function DocumentationAdminPage() {
     const params = new URLSearchParams();
     if (debouncedQuery) params.set('query', debouncedQuery);
     if (isFaqFilter.length === 1) params.set('isFaq', isFaqFilter[0]!);
+    if (isPublicFilter.length === 1) params.set('isPublic', isPublicFilter[0]!);
     for (const s of sourceFilter) {
       params.append('source', s);
     }
@@ -129,7 +139,7 @@ export default function DocumentationAdminPage() {
       }
     }
     return params;
-  }, [debouncedQuery, isFaqFilter, sourceFilter, formatFilter, sorting]);
+  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, sorting]);
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -218,6 +228,7 @@ export default function DocumentationAdminPage() {
       title: t('columns.title'),
       source: t('columns.source'),
       isFaq: t('columns.isFaq'),
+      isPublic: t('columns.isPublic'),
       tags: t('columns.tags'),
       audienceRoles: t('columns.roles'),
       format: t('columns.format'),
@@ -227,6 +238,14 @@ export default function DocumentationAdminPage() {
   );
 
   const isFaqOptions: FacetedFilterOption[] = useMemo(
+    () => [
+      { value: 'true', label: t('yes'), icon: Check },
+      { value: 'false', label: t('no'), icon: X },
+    ],
+    [t],
+  );
+
+  const isPublicOptions: FacetedFilterOption[] = useMemo(
     () => [
       { value: 'true', label: t('yes'), icon: Check },
       { value: 'false', label: t('no'), icon: X },
@@ -306,6 +325,12 @@ export default function DocumentationAdminPage() {
         options={isFaqOptions}
         selectedValues={isFaqFilter}
         onSelectedChange={handleIsFaqFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.isPublic')}
+        options={isPublicOptions}
+        selectedValues={isPublicFilter}
+        onSelectedChange={handleIsPublicFilterChange}
       />
       <DataTableFacetedFilter
         title={t('filters.source')}

@@ -53,6 +53,16 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
         row.original.isFaq ? <Check className="text-primary size-4" aria-label={t('yes')} /> : <span className="text-muted-foreground">—</span>,
     },
     {
+      accessorKey: 'isPublic',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isPublic')} onSort={onSort} />,
+      cell: ({ row }) =>
+        row.original.isPublic ? (
+          <Check className="text-primary size-4" aria-label={t('yes')} />
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    },
+    {
       accessorKey: 'tags',
       header: t('columns.tags'),
       cell: ({ row }) => (

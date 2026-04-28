@@ -117,6 +117,13 @@ export const syncNotionPageToDocumentation = async (pageId: string): Promise<voi
     isFaq = Boolean(faqVal.checkbox);
   }
 
+  let isPublic = false;
+  const publicProp = getEnv('NOTION_DOC_IS_PUBLIC_PROPERTY');
+  const publicVal = publicProp ? pageWithProps.properties[publicProp] : undefined;
+  if (publicVal && typeof publicVal === 'object' && 'type' in publicVal && publicVal.type === 'checkbox' && 'checkbox' in publicVal) {
+    isPublic = Boolean(publicVal.checkbox);
+  }
+
   let audienceRoles = parseAudienceRoles(undefined);
   const audProp = getEnv('NOTION_DOC_AUDIENCE_PROPERTY');
   if (audProp) {
@@ -149,6 +156,7 @@ export const syncNotionPageToDocumentation = async (pageId: string): Promise<voi
   await dbDocumentationUpsertNotion({
     notionPageId: pageId,
     isFaq,
+    isPublic,
     format,
     audienceRoles,
     tags,

@@ -55,6 +55,7 @@ const listAllDocumentationForEmbedding = async (): Promise<Documentation[]> => {
   const baseFilter = {
     query: null,
     isFaq: null,
+    isPublic: null,
     sources: undefined,
     tags: undefined,
     formats: undefined,

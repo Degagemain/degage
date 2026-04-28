@@ -7,13 +7,14 @@ import { type CsvColumn, DashPlaceholder, buildCsvLinesFromColumns, encodeCsvDoc
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { searchDocumentation } from './search';
 
-const COLUMN_KEYS = ['externalId', 'title', 'source', 'isFaq', 'tags', 'audienceRoles', 'format', 'updatedAt'] as const;
+const COLUMN_KEYS = ['externalId', 'title', 'source', 'isFaq', 'isPublic', 'tags', 'audienceRoles', 'format', 'updatedAt'] as const;
 type ColumnKey = (typeof COLUMN_KEYS)[number];
 
 const toLabelKey = (key: ColumnKey): string => {
   if (key === 'updatedAt') return 'columns.updated';
   if (key === 'audienceRoles') return 'columns.roles';
   if (key === 'isFaq') return 'columns.isFaq';
+  if (key === 'isPublic') return 'columns.isPublic';
   return `columns.${key}`;
 };
 

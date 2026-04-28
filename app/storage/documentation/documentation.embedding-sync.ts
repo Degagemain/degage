@@ -22,6 +22,7 @@ const documentationFromLocaleRow = (
     source: string;
     externalId: string;
     isFaq: boolean;
+    isPublic: boolean;
     format: string;
     audienceRoles: string[];
     tags: string[];
@@ -34,6 +35,7 @@ const documentationFromLocaleRow = (
   source: doc.source as DocumentationSource,
   externalId: doc.externalId,
   isFaq: doc.isFaq,
+  isPublic: doc.isPublic,
   format: doc.format as DocumentationFormat,
   audienceRoles: doc.audienceRoles as DocumentationAudienceRole[],
   tags: doc.tags as DocumentationTag[],

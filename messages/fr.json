@@ -1324,6 +1324,7 @@
       },
       "filters": {
         "isFaq": "FAQ",
+        "isPublic": "Article public",
         "source": "Source",
         "format": "Format",
         "formatMarkdown": "Markdown",
@@ -1336,6 +1337,7 @@
         "externalId": "ID externe",
         "source": "Source",
         "isFaq": "FAQ",
+        "isPublic": "Public",
         "tags": "Tags",
         "roles": "Rôles",
         "audienceRole": {
@@ -1356,6 +1358,7 @@
         "source": "Source",
         "format": "Format",
         "isFaq": "Entrée FAQ",
+        "isPublic": "Article public",
         "audience": "Rôles cibles",
         "tags": "Tags",
         "locale": "Langue",

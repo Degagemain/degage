@@ -40,6 +40,7 @@ export const documentationSchema = z
     source: documentationSourceSchema,
     externalId: z.string().max(500),
     isFaq: z.boolean().default(false),
+    isPublic: z.boolean().default(false),
     format: documentationFormatSchema,
     audienceRoles: documentationAudienceRolesInputSchema,
     tags: z.array(documentationTagSchema).default([]),

@@ -1324,6 +1324,7 @@
       },
       "filters": {
         "isFaq": "FAQ",
+        "isPublic": "Publiek artikel",
         "source": "Bron",
         "format": "Formaat",
         "formatMarkdown": "Markdown",
@@ -1336,6 +1337,7 @@
         "externalId": "Externe ID",
         "source": "Bron",
         "isFaq": "FAQ",
+        "isPublic": "Publiek",
         "tags": "Tags",
         "roles": "Rollen",
         "audienceRole": {
@@ -1356,6 +1358,7 @@
         "source": "Bron",
         "format": "Formaat",
         "isFaq": "FAQ-item",
+        "isPublic": "Publiek artikel",
         "audience": "Doelpubliek",
         "tags": "Tags",
         "locale": "Taal",

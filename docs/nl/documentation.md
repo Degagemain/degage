@@ -18,6 +18,7 @@ overgeslagen en mislukt.
 | Bron        | Beheer: repository (uit `docs/`), Notion (via webhook) of handmatig (API).                                                                                                                       |
 | Formaat     | `markdown` of platte `text`.                                                                                                                                                                     |
 | FAQ         | Indien aan, kan het item in FAQ-lijsten met tagfilters verschijnen.                                                                                                                              |
+| Publiek     | Indien aan, is het item een publiek artikel (bedoeld voor een toekomstige publieke FAQ-pagina; combineerbaar met doelpubliek en FAQ).                                                            |
 | Doelpubliek | Wie de pagina ziet: technical, admin, user, public (technical/admin alleen voor beheerders). In de documentatielijst verschijnt elke toegewezen rol als een apart label in de kolom Rollen.      |
 | Tags        | O.a. `simulation_step_1`; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (resultaatstap); `simulation_step_3`; `simulation_step_4` om FAQ’s te filteren. |
 | Titel       | Per taal (EN, NL, FR).                                                                                                                                                                           |

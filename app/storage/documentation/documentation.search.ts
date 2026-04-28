@@ -31,6 +31,7 @@ export const filterToQuery = (filter: DocumentationFilter): Prisma.Documentation
 
   const core: Prisma.DocumentationWhereInput = {};
   if (filter.isFaq !== null) core.isFaq = filter.isFaq;
+  if (filter.isPublic !== null) core.isPublic = filter.isPublic;
   if (filter.sources && filter.sources.length > 0) {
     core.source = filter.sources.length === 1 ? filter.sources[0] : { in: filter.sources };
   }

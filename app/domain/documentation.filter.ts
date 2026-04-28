@@ -13,6 +13,7 @@ export enum DocumentationSortColumns {
   EXTERNAL_ID = 'externalId',
   SOURCE = 'source',
   IS_FAQ = 'isFaq',
+  IS_PUBLIC = 'isPublic',
 }
 
 const optionalRepeatedParam = <T extends z.ZodTypeAny>(item: T) =>
@@ -30,6 +31,7 @@ export const documentationFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
     isFaq: z.boolean().nullable().default(null),
+    isPublic: z.boolean().nullable().default(null),
     sources: optionalRepeatedParam(documentationSourceSchema),
     tags: optionalRepeatedParam(documentationTagSchema),
     formats: optionalRepeatedParam(documentationFormatSchema),
@@ -80,6 +82,13 @@ export const documentationFilterFromSearchParams = (params: URLSearchParams): Ra
       if (t === 'true') out.isFaq = true;
       else if (t === 'false') out.isFaq = false;
       else if (t !== '') out.isFaq = value;
+      continue;
+    }
+    if (key === 'isPublic') {
+      const t = value.trim();
+      if (t === 'true') out.isPublic = true;
+      else if (t === 'false') out.isPublic = false;
+      else if (t !== '') out.isPublic = value;
       continue;
     }
     out[key] = value;

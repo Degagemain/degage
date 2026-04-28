@@ -27,6 +27,17 @@ describe('documentation search filterToQuery (audience / roles)', () => {
     });
   });
 
+  it('filters by isPublic', () => {
+    const where = filterToQuery(documentationFilterSchema.parse({ isPublic: true }));
+    expect(where).toEqual({ isPublic: true });
+  });
+
+  it('combines isPublic with isFaq on the same clause', () => {
+    const filter = documentationFilterSchema.parse({ isPublic: true, isFaq: true });
+    const where = filterToQuery(filter);
+    expect(where).toEqual({ isFaq: true, isPublic: true });
+  });
+
   it('filters by single source', () => {
     const filter = documentationFilterSchema.parse({ sources: ['repository'] });
     const where = filterToQuery(filter);
