@@ -12,6 +12,7 @@ export const documentation = (data: Partial<Documentation> = {}): Documentation 
     format: data.format ?? 'markdown',
     audienceRoles: data.audienceRoles ?? ['admin'],
     tags: data.tags ?? [],
+    groups: data.groups ?? [],
     translations: data.translations ?? [
       { locale: 'en', title: 'Test EN', content: 'Body EN' },
       { locale: 'nl', title: 'Test NL', content: 'Body NL' },

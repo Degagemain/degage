@@ -59,6 +59,7 @@ const listAllDocumentationForEmbedding = async (): Promise<Documentation[]> => {
     sources: undefined,
     tags: undefined,
     formats: undefined,
+    groupIds: undefined,
     skip: 0,
     sortBy: DocumentationSortColumns.UPDATED_AT,
     sortOrder: SortOrder.DESC,

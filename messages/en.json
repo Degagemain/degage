@@ -1315,6 +1315,9 @@
       "edit": "Edit",
       "searchPlaceholder": "Search documentation...",
       "tryAgain": "Try again",
+      "moreMenu": {
+        "groups": "Groups"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Syncing…",
@@ -1331,7 +1334,8 @@
         "formatText": "Plain text",
         "sourceRepository": "Repository",
         "sourceNotion": "Notion",
-        "sourceManual": "Manual"
+        "sourceManual": "Manual",
+        "groups": "Group"
       },
       "columns": {
         "externalId": "External ID",
@@ -1339,6 +1343,7 @@
         "isFaq": "FAQ",
         "isPublic": "Public",
         "tags": "Tags",
+        "groups": "Groups",
         "roles": "Roles",
         "audienceRole": {
           "technical": "Technical",
@@ -1389,6 +1394,61 @@
         "title": "Import documentation",
         "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
         "columnName": "Documentation"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groups",
+      "columns": {
+        "order": "Order",
+        "name": "Name",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search groups...",
+      "tryAgain": "Try again",
+      "form": {
+        "help": {
+          "order": "Lower numbers appear first when listing groups."
+        },
+        "placeholders": {
+          "translationName": "Name ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "delete": {
+        "title": "Delete documentation group",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Group deleted successfully.",
+        "error": "Failed to delete group.",
+        "conflict": "This group is linked to documentation and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete documentation groups",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Group",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to documentation"
+      },
+      "bulkImport": {
+        "title": "Import documentation groups",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Group"
       }
     }
   },

@@ -39,6 +39,7 @@ const documentationFromLocaleRow = (
   format: doc.format as DocumentationFormat,
   audienceRoles: doc.audienceRoles as DocumentationAudienceRole[],
   tags: doc.tags as DocumentationTag[],
+  groups: [],
   translations: [
     {
       locale: translation.locale,

@@ -449,8 +449,28 @@ model Documentation {
     tags          DocumentationTag[]
     translations  DocumentationTranslation[]
     chunks        DocumentationChunk[]
+    groups        DocumentationGroup[]
     createdAt     DateTime                    @default(now())
     updatedAt     DateTime                    @updatedAt
+}
+
+model DocumentationGroup {
+    id             String                          @id @default(uuid())
+    sortOrder      Int                             @default(0)
+    translations   DocumentationGroupTranslation[]
+    documentations Documentation[]
+    createdAt      DateTime                        @default(now())
+    updatedAt      DateTime                        @updatedAt
+}
+
+model DocumentationGroupTranslation {
+    id                   String             @id @default(uuid())
+    documentationGroupId String
+    documentationGroup   DocumentationGroup @relation(fields: [documentationGroupId], references: [id], onDelete: Cascade)
+    locale               String
+    name                 String
+
+    @@unique([documentationGroupId, locale])
 }
 
 model DocumentationTranslation {

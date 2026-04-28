@@ -78,6 +78,26 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       enableSorting: false,
     },
     {
+      id: 'groups',
+      header: t('columns.groups'),
+      cell: ({ row }) => {
+        const groups = row.original.groups;
+        if (groups.length === 0) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return (
+          <div className="flex max-w-[200px] flex-wrap gap-1">
+            {groups.map((g) => (
+              <Badge key={g.id} variant="outline" className="text-[10px] font-normal">
+                {g.name ?? g.id}
+              </Badge>
+            ))}
+          </div>
+        );
+      },
+      enableSorting: false,
+    },
+    {
       accessorKey: 'audienceRoles',
       header: t('columns.roles'),
       cell: ({ row }) => {

@@ -21,6 +21,7 @@ overgeslagen en mislukt.
 | Publiek     | Indien aan, is het item een publiek artikel (bedoeld voor een toekomstige publieke FAQ-pagina; combineerbaar met doelpubliek en FAQ).                                                            |
 | Doelpubliek | Wie de pagina ziet: technical, admin, user, public (technical/admin alleen voor beheerders). In de documentatielijst verschijnt elke toegewezen rol als een apart label in de kolom Rollen.      |
 | Tags        | O.a. `simulation_step_1`; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (resultaatstap); `simulation_step_3`; `simulation_step_4` om FAQ’s te filteren. |
+| Groepen     | Optionele labels om artikelen te ordenen in lijsten en filters (beheerd onder Documentatiegroepen). De getoonde naam volgt je gekozen admin-taal.                                                |
 | Titel       | Per taal (EN, NL, FR).                                                                                                                                                                           |
 | Inhoud      | Per taal; bij markdown-formaat wordt Markdown ondersteund.                                                                                                                                       |
 | Embeddings  | Beheeractie om AI-zoekembeddings opnieuw te genereren op basis van de huidige content en de aantallen bijgewerkt/overgeslagen/mislukt te controleren.                                            |

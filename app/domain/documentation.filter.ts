@@ -35,6 +35,7 @@ export const documentationFilterSchema = z
     sources: optionalRepeatedParam(documentationSourceSchema),
     tags: optionalRepeatedParam(documentationTagSchema),
     formats: optionalRepeatedParam(documentationFormatSchema),
+    groupIds: optionalRepeatedParam(z.uuid()),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z.nativeEnum(DocumentationSortColumns).default(DocumentationSortColumns.UPDATED_AT),
@@ -47,7 +48,7 @@ export type DocumentationFilter = z.infer<typeof documentationFilterSchema>;
 
 type RawDocumentationFilterParams = Record<string, string | string[] | boolean>;
 
-const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' | 'formats' | 'audiences', value: string) => {
+const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' | 'formats' | 'audiences' | 'groupIds', value: string) => {
   const existing = out[key];
   if (Array.isArray(existing)) {
     existing.push(value);
@@ -61,6 +62,15 @@ const appendMulti = (out: RawDocumentationFilterParams, key: 'tags' | 'sources' 
 export const documentationFilterFromSearchParams = (params: URLSearchParams): RawDocumentationFilterParams => {
   const out: RawDocumentationFilterParams = {};
   for (const [key, value] of params.entries()) {
+    if (key === 'groups') {
+      for (const part of value
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)) {
+        appendMulti(out, 'groupIds', part);
+      }
+      continue;
+    }
     if (key === 'tags') {
       appendMulti(out, 'tags', value);
       continue;
@@ -75,6 +85,10 @@ export const documentationFilterFromSearchParams = (params: URLSearchParams): Ra
     }
     if (key === 'audience') {
       appendMulti(out, 'audiences', value);
+      continue;
+    }
+    if (key === 'group') {
+      appendMulti(out, 'groupIds', value);
       continue;
     }
     if (key === 'isFaq') {

@@ -6,7 +6,7 @@ export const dbDocumentationGetByExternalId = async (externalId: string): Promis
   const prisma = getPrismaClient();
   const row = await prisma.documentation.findUnique({
     where: { externalId },
-    include: { translations: true },
+    include: { translations: true, groups: { include: { translations: true } } },
   });
   return row ? dbDocumentationToDomain(row) : null;
 };

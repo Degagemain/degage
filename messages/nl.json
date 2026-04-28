@@ -1315,6 +1315,9 @@
       "edit": "Bewerken",
       "searchPlaceholder": "Zoek documentatie...",
       "tryAgain": "Opnieuw proberen",
+      "moreMenu": {
+        "groups": "Groepen"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Sync…",
@@ -1331,7 +1334,8 @@
         "formatText": "Platte tekst",
         "sourceRepository": "Repository",
         "sourceNotion": "Notion",
-        "sourceManual": "Handmatig"
+        "sourceManual": "Handmatig",
+        "groups": "Groep"
       },
       "columns": {
         "externalId": "Externe ID",
@@ -1339,6 +1343,7 @@
         "isFaq": "FAQ",
         "isPublic": "Publiek",
         "tags": "Tags",
+        "groups": "Groepen",
         "roles": "Rollen",
         "audienceRole": {
           "technical": "Technisch",
@@ -1389,6 +1394,61 @@
         "title": "Documentatie importeren",
         "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
         "columnName": "Documentatie"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groepen",
+      "columns": {
+        "order": "Volgorde",
+        "name": "Naam",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Groepen zoeken...",
+      "tryAgain": "Opnieuw proberen",
+      "form": {
+        "help": {
+          "order": "Lagere nummers verschijnen eerst in de groepslijst."
+        },
+        "placeholders": {
+          "translationName": "Naam ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "delete": {
+        "title": "Documentatiegroep verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Groep verwijderd.",
+        "error": "Verwijderen mislukt.",
+        "conflict": "Deze groep is gekoppeld aan documentatie en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Geselecteerde verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Documentatiegroepen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Dit kan niet ongedaan worden gemaakt.",
+        "columnName": "Groep",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wacht",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan documentatie"
+      },
+      "bulkImport": {
+        "title": "Documentatiegroepen importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Groep"
       }
     }
   },

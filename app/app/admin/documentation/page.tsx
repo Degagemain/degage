@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
@@ -7,6 +8,7 @@ import { BookOpen, Check, Database, FileText, Loader2, RefreshCw, X } from 'luci
 import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
+import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
@@ -23,6 +25,7 @@ import {
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -33,6 +36,8 @@ interface DocState {
   isLoading: boolean;
   error: string | null;
 }
+
+type GroupOption = { id: string; label: string };
 
 const SORT_COLUMN_MAP: Record<string, string> = {
   externalId: 'externalId',
@@ -71,13 +76,16 @@ export default function DocumentationAdminPage() {
       defaultPageSize: DEFAULT_PAGE_SIZE,
       defaultSort: { id: 'updatedAt', desc: true },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
-      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats'],
+      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups'],
     });
 
   const isFaqFilter = csv.isFaq;
   const isPublicFilter = csv.isPublic;
   const sourceFilter = csv.sources;
   const formatFilter = csv.formats;
+  const groupFilter = csv.groups;
+
+  const [groupOptions, setGroupOptions] = useState<GroupOption[]>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
@@ -120,6 +128,38 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleGroupFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('groups', values);
+    },
+    [setCsvParam],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const response = await fetch('/api/documentation-groups?take=200&sortBy=sortOrder&sortOrder=asc');
+        if (!response.ok || cancelled) return;
+        const result: Page<DocumentationGroup> = await response.json();
+        if (cancelled) return;
+        setGroupOptions(
+          result.records
+            .filter((g) => g.id)
+            .map((g) => ({
+              id: g.id!,
+              label: g.name,
+            })),
+        );
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const buildApiParams = useCallback(() => {
     const params = new URLSearchParams();
     if (debouncedQuery) params.set('query', debouncedQuery);
@@ -131,6 +171,9 @@ export default function DocumentationAdminPage() {
     for (const fmt of formatFilter) {
       params.append('format', fmt);
     }
+    for (const gid of groupFilter) {
+      params.append('group', gid);
+    }
     if (sorting.length > 0) {
       const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
       if (sortColumn) {
@@ -139,7 +182,7 @@ export default function DocumentationAdminPage() {
       }
     }
     return params;
-  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, sorting]);
+  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, sorting]);
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -232,6 +275,7 @@ export default function DocumentationAdminPage() {
       tags: t('columns.tags'),
       audienceRoles: t('columns.roles'),
       format: t('columns.format'),
+      groups: t('columns.groups'),
       updatedAt: t('columns.updated'),
     }),
     [t],
@@ -344,6 +388,12 @@ export default function DocumentationAdminPage() {
         selectedValues={formatFilter}
         onSelectedChange={handleFormatFilterChange}
       />
+      <DataTableFacetedFilter
+        title={t('filters.groups')}
+        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
+        selectedValues={groupFilter}
+        onSelectedChange={handleGroupFilterChange}
+      />
     </>
   );
 
@@ -360,6 +410,11 @@ export default function DocumentationAdminPage() {
             exportEndpoint="/api/documentation/export"
             buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
+            moreMenuExtra={
+              <DropdownMenuItem asChild>
+                <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
+              </DropdownMenuItem>
+            }
             columnLabels={columnLabels}
           />
         }

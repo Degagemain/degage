@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, LineChart, MapPin, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Layers, LineChart, MapPin, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
   translationKey: 'simulations' | 'users' | 'documentation';
@@ -10,6 +10,13 @@ export const MAIN_ITEMS: {
   { translationKey: 'users', href: '/app/admin/users', icon: Users },
   { translationKey: 'documentation', href: '/app/admin/documentation', icon: BookOpen },
 ];
+
+/** Linked from the documentation admin “More” menu; listed in quick search (⌘K), not the sidebar. */
+export const DOCUMENTATION_SUB_ITEMS: {
+  translationKey: 'documentationGroups';
+  href: string;
+  icon: LucideIcon;
+}[] = [{ translationKey: 'documentationGroups', href: '/app/admin/documentation-groups', icon: Layers }];
 
 export const CAR_SETTINGS_ITEMS: {
   translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms';
@@ -61,6 +68,7 @@ export type GeoSettingsTranslationKey = (typeof GEO_SETTINGS_ITEMS)[number]['tra
 /** All admin pages with titleKey for i18n. Used by sidebar (page title) and command palette. */
 export const ALL_PAGE_ITEMS = [
   ...MAIN_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
+  ...DOCUMENTATION_SUB_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...CAR_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...SIMULATION_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...GEO_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),

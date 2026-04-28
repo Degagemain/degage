@@ -61,4 +61,31 @@ describe('documentation search filterToQuery (audience / roles)', () => {
     const where = filterToQuery(filter);
     expect(where).toEqual({ format: { in: ['markdown', 'text'] } });
   });
+
+  it('filters by documentation group id', () => {
+    const gid = '550e8400-e29b-41d4-a716-446655440001';
+    const where = filterToQuery(documentationFilterSchema.parse({ groupIds: [gid] }));
+    expect(where).toEqual({
+      groups: { some: { id: gid } },
+    });
+  });
+
+  it('filters by multiple group ids with IN', () => {
+    const a = '550e8400-e29b-41d4-a716-446655440001';
+    const b = '550e8400-e29b-41d4-a716-446655440002';
+    const where = filterToQuery(documentationFilterSchema.parse({ groupIds: [a, b] }));
+    expect(where).toEqual({
+      groups: { some: { id: { in: [a, b] } } },
+    });
+  });
+
+  it('combines groupIds with isFaq on the same clause', () => {
+    const gid = '550e8400-e29b-41d4-a716-446655440001';
+    const filter = documentationFilterSchema.parse({ isFaq: true, groupIds: [gid] });
+    const where = filterToQuery(filter);
+    expect(where).toEqual({
+      isFaq: true,
+      groups: { some: { id: gid } },
+    });
+  });
 });

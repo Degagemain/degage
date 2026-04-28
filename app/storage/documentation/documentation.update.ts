@@ -10,7 +10,7 @@ export const dbDocumentationUpdate = async (doc: Documentation): Promise<Documen
   const updated = await prisma.documentation.update({
     where: { id: doc.id },
     data: documentationToDbUpdate(doc),
-    include: { translations: true },
+    include: { translations: true, groups: { include: { translations: true } } },
   });
   return dbDocumentationToDomain(updated);
 };

@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { idNameSchema } from './id-name.model';
 import { roleValues } from './role.model';
 
 export const documentationSourceValues = ['repository', 'notion', 'manual'] as const;
@@ -44,6 +45,7 @@ export const documentationSchema = z
     format: documentationFormatSchema,
     audienceRoles: documentationAudienceRolesInputSchema,
     tags: z.array(documentationTagSchema).default([]),
+    groups: z.array(idNameSchema).default([]),
     translations: z.array(documentationTranslationSchema).min(1),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),

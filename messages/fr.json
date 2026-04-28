@@ -1315,6 +1315,9 @@
       "edit": "Modifier",
       "searchPlaceholder": "Rechercher dans la documentation...",
       "tryAgain": "Réessayer",
+      "moreMenu": {
+        "groups": "Groupes"
+      },
       "embeddings": {
         "sync": "Sync",
         "syncing": "Sync…",
@@ -1331,7 +1334,8 @@
         "formatText": "Texte brut",
         "sourceRepository": "Dépôt",
         "sourceNotion": "Notion",
-        "sourceManual": "Manuel"
+        "sourceManual": "Manuel",
+        "groups": "Groupe"
       },
       "columns": {
         "externalId": "ID externe",
@@ -1339,6 +1343,7 @@
         "isFaq": "FAQ",
         "isPublic": "Public",
         "tags": "Tags",
+        "groups": "Groupes",
         "roles": "Rôles",
         "audienceRole": {
           "technical": "Technique",
@@ -1389,6 +1394,61 @@
         "title": "Importer la documentation",
         "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
         "columnName": "Documentation"
+      }
+    },
+    "documentationGroups": {
+      "title": "Groupes",
+      "columns": {
+        "order": "Ordre",
+        "name": "Nom",
+        "updated": "Mis à jour"
+      },
+      "searchPlaceholder": "Rechercher des groupes...",
+      "tryAgain": "Réessayer",
+      "form": {
+        "help": {
+          "order": "Les nombres plus petits apparaissent en premier dans la liste des groupes."
+        },
+        "placeholders": {
+          "translationName": "Nom ({locale})"
+        }
+      },
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer le groupe de documentation",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Groupe supprimé.",
+        "error": "Échec de la suppression du groupe.",
+        "conflict": "Ce groupe est lié à de la documentation et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des groupes de documentation",
+        "description": "Les {count} enregistrements suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Groupe",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Lié à de la documentation"
+      },
+      "bulkImport": {
+        "title": "Importer des groupes de documentation",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Groupe"
       }
     }
   },
