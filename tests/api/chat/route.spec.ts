@@ -92,4 +92,88 @@ describe('POST /api/chat', () => {
       true,
     );
   });
+
+  it('passes audienceOverride to generateSupportReplyStream when admin sends previewAudience', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: 'admin-1', role: 'admin', locale: 'en' },
+    } as any);
+    vi.mocked(readChatConversation).mockResolvedValueOnce(null);
+    vi.mocked(createChatConversation).mockResolvedValueOnce({
+      id: '6eccebe4-069a-4292-8d89-1f40392b935d',
+      userId: 'admin-1',
+      medium: 'frontend',
+      emailThreadId: null,
+      title: '',
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async () => ({
+      result: {
+        toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+      } as any,
+      getLatestCitations: () => [],
+    }));
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          {
+            id: 'u1',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Hello' }],
+          },
+        ],
+        previewAudience: 'user',
+      }),
+    });
+
+    const response = await POST(request as any);
+    expect(response.status).toBe(200);
+    expect(vi.mocked(generateSupportReplyStream).mock.calls[0]?.[1]).toMatchObject({ audienceOverride: 'user' });
+  });
+
+  it('does not apply previewAudience for non-admin users', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: 'user-1', role: 'user', locale: 'en' },
+    } as any);
+    vi.mocked(readChatConversation).mockResolvedValueOnce(null);
+    vi.mocked(createChatConversation).mockResolvedValueOnce({
+      id: '6eccebe4-069a-4292-8d89-1f40392b935d',
+      userId: 'user-1',
+      medium: 'frontend',
+      emailThreadId: null,
+      title: '',
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async () => ({
+      result: {
+        toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+      } as any,
+      getLatestCitations: () => [],
+    }));
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          {
+            id: 'u1',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Hello' }],
+          },
+        ],
+        previewAudience: 'admin',
+      }),
+    });
+
+    const response = await POST(request as any);
+    expect(response.status).toBe(200);
+    expect(vi.mocked(generateSupportReplyStream).mock.calls[0]?.[1]?.audienceOverride).toBeUndefined();
+  });
 });

@@ -1944,7 +1944,10 @@
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
     "sourcesUsed": "{count, plural, one {# bron gebruikt} other {# bronnen gebruikt}}",
-    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat"
+    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat",
+    "audiencePublic": "Publiek",
+    "audienceUser": "Gebruiker",
+    "audienceAdmin": "Beheerder"
   },
   "docs": {
     "table": {

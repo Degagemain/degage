@@ -10,6 +10,7 @@ import { forbiddenResponse, notFoundResponse, safeParseRequestJson } from '@/api
 import { withPublic } from '@/api/with-context';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { type DocumentationAudienceRole, documentationAudienceRoleSchema } from '@/domain/documentation.model';
 
 export const maxDuration = 30;
 
@@ -60,6 +61,22 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
   }
 
   const conversationId = conversationIdResult?.success ? conversationIdResult.data : null;
+
+  let previewAudience: DocumentationAudienceRole | undefined = undefined;
+  const previewAudienceRaw = raw.previewAudience;
+  if (previewAudienceRaw !== undefined && previewAudienceRaw !== null) {
+    const parsed = documentationAudienceRoleSchema.safeParse(previewAudienceRaw);
+    if (!parsed.success) {
+      return Response.json(
+        {
+          code: 'validation_error',
+          errors: [{ message: 'previewAudience must be admin, user, or public when provided' }],
+        },
+        { status: 400 },
+      );
+    }
+    previewAudience = parsed.data;
+  }
 
   let resolvedConversationId: string | null = null;
   let existingConversationMessages: Array<{
@@ -130,8 +147,10 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
 
   const userLocaleRaw = (user as { locale?: unknown } | undefined)?.locale;
   const userLocale = typeof userLocaleRaw === 'string' ? userLocaleRaw.trim() : '';
+  const audienceOverride = isAuthenticated && user && isAdmin(user) ? previewAudience : undefined;
   const { result, getLatestCitations } = await generateSupportReplyStream(messages, {
     viewer: user ?? null,
+    audienceOverride,
     includeCitations: true,
     outputFormat: 'markdown',
     replyStyle: 'chat',

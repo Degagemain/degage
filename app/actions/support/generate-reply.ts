@@ -2,9 +2,11 @@ import { google } from '@ai-sdk/google';
 import { type UIMessage, convertToModelMessages, generateText, stepCountIs, streamText } from 'ai';
 import { z } from 'zod';
 import { searchDocumentationForRag } from '@/actions/documentation/search-rag';
+import type { DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Role, type UserWithRole } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation } from '@/domain/chat.model';
+import { type DocumentationSupportCitation, toChatCitationsForSupportViewer } from '@/domain/documentation.support-citations';
 import { type ContentLocale } from '@/i18n/locales';
 import { isPostHogEnabled } from '@/integrations/posthog';
 import { getSupportReplyToEmail } from '@/actions/utils';
@@ -15,7 +17,8 @@ const buildSupportSystemPrompt = (): string => {
     'You are a polite and supportive support assistant for the Dégage platform only.',
     'Help with how Dégage works, setup, workflows, troubleshooting, and anything grounded in product documentation.',
     'Always answer in the same language as the user message.',
-    'If the request is clearly unrelated to Dégage car sharing, unrelated coding, trivia, or tasks with no link to this system—politely decline.',
+    'If the request is clearly unrelated to Dégage car sharing, unrelated coding, trivia, or tasks with no link to ' +
+      'this system—politely decline.',
     'Briefly say you only help with Dégage and offer relevant help instead.',
     'Do not role-play unrelated personas, run arbitrary errands, or claim you will act outside this chat.',
     'If the user insists on talking to a human, a real person, or live support, politely explain that this chat is automated.',
@@ -84,14 +87,22 @@ const buildSystemPrompt = (input: {
   return parts.join(' ');
 };
 
-const getViewerAudienceRole = (viewer: UserWithRole | null | undefined, forcePublic: boolean): Role | 'public' => {
+const getViewerAudienceRole = (
+  viewer: UserWithRole | null | undefined,
+  forcePublic: boolean,
+  audienceOverride?: DocumentationAudienceRole | null,
+): DocumentationAudienceRole => {
   if (forcePublic || !viewer) return 'public';
+  if (audienceOverride && isAdmin(viewer)) {
+    return audienceOverride;
+  }
   return isAdmin(viewer) ? Role.ADMIN : Role.USER;
 };
 
 type CommonSupportOptions = {
   viewer?: UserWithRole | null;
   forcePublic?: boolean;
+  audienceOverride?: DocumentationAudienceRole | null;
   includeCitations?: boolean;
   outputFormat?: 'markdown' | 'plain';
   replyStyle?: 'chat' | 'formal_email';
@@ -106,7 +117,7 @@ export const generateSupportReplyStream = async (
   } = {},
 ) => {
   const includeCitations = options.includeCitations ?? true;
-  let latestCitations: ChatCitation[] = [];
+  let latestRagCitations: DocumentationSupportCitation[] = [];
 
   const result = streamText({
     model: google('gemini-2.5-flash'),
@@ -132,12 +143,12 @@ export const generateSupportReplyStream = async (
           query: z.string().min(3),
         }),
         execute: async ({ query }) => {
-          const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false);
+          const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false, options.audienceOverride);
           const search = await searchDocumentationForRag(query, {
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          latestCitations = includeCitations ? search.citations : [];
+          latestRagCitations = includeCitations ? search.citations : [];
           return search;
         },
       },
@@ -146,14 +157,14 @@ export const generateSupportReplyStream = async (
       if (!options.onFinish) return;
       await options.onFinish({
         text,
-        citations: includeCitations ? latestCitations : [],
+        citations: includeCitations ? toChatCitationsForSupportViewer(latestRagCitations, options.viewer) : [],
       });
     },
   });
 
   return {
     result,
-    getLatestCitations: () => latestCitations,
+    getLatestCitations: () => (includeCitations ? toChatCitationsForSupportViewer(latestRagCitations, options.viewer) : []),
   };
 };
 
@@ -166,7 +177,7 @@ export const generateSupportReplyText = async (
 }> => {
   const includeCitations = options.includeCitations ?? true;
   const outputFormat = options.outputFormat ?? 'plain';
-  let latestCitations: ChatCitation[] = [];
+  let latestRagCitations: DocumentationSupportCitation[] = [];
 
   const response = await generateText({
     model: google('gemini-2.5-flash'),
@@ -195,12 +206,12 @@ export const generateSupportReplyText = async (
           query: z.string().min(3),
         }),
         execute: async ({ query }) => {
-          const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false);
+          const viewerAudienceRole = getViewerAudienceRole(options.viewer, options.forcePublic ?? false, options.audienceOverride);
           const search = await searchDocumentationForRag(query, {
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          latestCitations = includeCitations ? search.citations : [];
+          latestRagCitations = includeCitations ? search.citations : [];
           return search;
         },
       },
@@ -208,5 +219,8 @@ export const generateSupportReplyText = async (
   });
 
   const text = outputFormat === 'plain' ? toPlainText(response.text) : response.text.trim();
-  return { text, citations: includeCitations ? latestCitations : [] };
+  return {
+    text,
+    citations: includeCitations ? toChatCitationsForSupportViewer(latestRagCitations, options.viewer) : [],
+  };
 };

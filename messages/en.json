@@ -1944,7 +1944,10 @@
     "docsSearchError": "Documentation lookup failed.",
     "signIn": "Sign in",
     "sourcesUsed": "{count, plural, one {# source used} other {# sources used}}",
-    "faqFallbackOpenChat": "Still need help? Open Support Chat"
+    "faqFallbackOpenChat": "Still need help? Open Support Chat",
+    "audiencePublic": "Public",
+    "audienceUser": "User",
+    "audienceAdmin": "Admin"
   },
   "docs": {
     "table": {

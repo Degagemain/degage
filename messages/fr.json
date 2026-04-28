@@ -1944,7 +1944,10 @@
     "docsSearchError": "La recherche dans la documentation a échoué.",
     "signIn": "Se connecter",
     "sourcesUsed": "{count, plural, one {# source utilisée} other {# sources utilisées}}",
-    "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat"
+    "faqFallbackOpenChat": "Besoin d'aide ? Ouvrez Support Chat",
+    "audiencePublic": "Public",
+    "audienceUser": "Utilisateur",
+    "audienceAdmin": "Admin"
   },
   "docs": {
     "table": {
