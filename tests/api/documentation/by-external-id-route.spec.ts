@@ -66,4 +66,25 @@ describe('GET /api/documentation/by-external-id/[externalId]', () => {
     const json = await res.json();
     expect(json.code).toBe('forbidden');
   });
+
+  it('passes publicCatalogOnly when publicCatalog=true', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: { role: 'admin', banned: false } } as any);
+    vi.mocked(getDocumentationByExternalIdForViewer).mockResolvedValueOnce({
+      ok: true,
+      doc: {
+        externalId: 'repo:test',
+        source: 'repository',
+        format: 'markdown',
+        title: 'T',
+        content: 'C',
+        locale: 'en',
+      },
+    });
+
+    const res = await GET(new Request('http://localhost/api/documentation/by-external-id/repo%3Atest?publicCatalog=true') as any, {
+      params: Promise.resolve({ externalId: 'repo%3Atest' }),
+    });
+    expect(res.status).toBe(200);
+    expect(getDocumentationByExternalIdForViewer).toHaveBeenCalledWith('repo:test', 'en', true, { publicCatalogOnly: true });
+  });
 });

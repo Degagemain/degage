@@ -1893,6 +1893,31 @@
       "bevestiging": "Bevestiging"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Helpcentrum"
+    },
+    "title": "Help & FAQ",
+    "intro": "Vind antwoorden, blader door artikelen of open de supportchat als je meer hulp nodig hebt.",
+    "searchPlaceholder": "Zoek in artikelen en vragen…",
+    "searchLoading": "Zoeken…",
+    "searchNoResults": "Geen resultaten.",
+    "searchResultsLabel": "Resultaten",
+    "articlesHeading": "Artikelen",
+    "articlesShowMore": "Alle artikelen",
+    "faqHeading": "Veelgestelde vragen",
+    "groupShowMoreCta": "Alles in {name}",
+    "readArticle": "Lees",
+    "backToHelp": "Terug naar help",
+    "allArticlesTitle": "Alle artikelen",
+    "allFaqInGroupTitle": "Alle vragen",
+    "emptyArticles": "Nog geen artikelen.",
+    "emptyFaq": "Nog geen vragen in deze rubriek.",
+    "errorLoad": "Er ging iets mis. Probeer opnieuw.",
+    "loadMore": "Meer laden",
+    "articleMetaUpdated": "Bijgewerkt op {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Support Chat openen",

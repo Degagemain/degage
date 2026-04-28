@@ -1893,6 +1893,31 @@
       "bevestiging": "Confirmation"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Centre d'aide"
+    },
+    "title": "Aide & FAQ",
+    "intro": "Trouvez des réponses, parcourez les articles ou ouvrez le chat support si besoin.",
+    "searchPlaceholder": "Rechercher dans l'aide et les questions…",
+    "searchLoading": "Recherche…",
+    "searchNoResults": "Aucun résultat.",
+    "searchResultsLabel": "Résultats",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Voir tous les articles",
+    "faqHeading": "Questions fréquentes",
+    "groupShowMoreCta": "Tout voir dans {name}",
+    "readArticle": "Lire",
+    "backToHelp": "Retour à l'aide",
+    "allArticlesTitle": "Tous les articles",
+    "allFaqInGroupTitle": "Toutes les questions",
+    "emptyArticles": "Pas encore d'articles.",
+    "emptyFaq": "Pas encore de questions dans cette rubrique.",
+    "errorLoad": "Une erreur s'est produite. Réessayez.",
+    "loadMore": "Charger plus",
+    "articleMetaUpdated": "Mis à jour le {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Ouvrir Support Chat",

@@ -1893,6 +1893,31 @@
       "bevestiging": "Confirmation"
     }
   },
+  "faq": {
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Help center"
+    },
+    "title": "Help & FAQ",
+    "intro": "Find answers, browse articles, or open the support chat if you need more help.",
+    "searchPlaceholder": "Search help articles and questions…",
+    "searchLoading": "Searching…",
+    "searchNoResults": "No results found.",
+    "searchResultsLabel": "Results",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Show all articles",
+    "faqHeading": "Frequently asked questions",
+    "groupShowMoreCta": "Show all in {name}",
+    "readArticle": "Read",
+    "backToHelp": "Back to help",
+    "allArticlesTitle": "All articles",
+    "allFaqInGroupTitle": "All questions",
+    "emptyArticles": "No articles yet.",
+    "emptyFaq": "No questions in this section yet.",
+    "errorLoad": "Something went wrong. Try again.",
+    "loadMore": "Load more",
+    "articleMetaUpdated": "Updated {date}"
+  },
   "chat": {
     "nav": "Support Chat",
     "openChat": "Open Support Chat",
