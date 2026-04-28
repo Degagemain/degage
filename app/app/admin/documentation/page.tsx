@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, Loader2, RefreshCw, X } from 'lucide-react';
+import { BookOpen, Check, Database, FileText, Loader2, Plus, RefreshCw, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
 import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
+import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
@@ -49,6 +50,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function DocumentationAdminPage() {
   const t = useTranslations('admin.documentation');
+  const tCommon = useTranslations('admin.common');
   const uiLocale = useLocale();
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : defaultUILocale;
@@ -139,7 +141,7 @@ export default function DocumentationAdminPage() {
     let cancelled = false;
     void (async () => {
       try {
-        const response = await fetch('/api/documentation-groups?take=200&sortBy=sortOrder&sortOrder=asc');
+        const response = await fetch(`/api/documentation-groups?take=${String(MaxTake)}&sortBy=sortOrder&sortOrder=asc`);
         if (!response.ok || cancelled) return;
         const result: Page<DocumentationGroup> = await response.json();
         if (cancelled) return;
@@ -406,6 +408,14 @@ export default function DocumentationAdminPage() {
             searchValue={queryInput}
             onSearchChange={setQueryInput}
             searchPlaceholder={t('searchPlaceholder')}
+            leadingSlot={
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/app/admin/documentation/new">
+                  <Plus className="mr-1.5 size-4" />
+                  {tCommon('actions.new')}
+                </Link>
+              </Button>
+            }
             filterSlot={filterSlot}
             exportEndpoint="/api/documentation/export"
             buildExportParams={buildApiParams}

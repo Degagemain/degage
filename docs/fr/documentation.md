@@ -6,8 +6,11 @@ roles:
 
 # Documentation
 
-Point central pour les textes d’aide issus du dépôt, de Notion ou des enregistrements manuels (via l’API). La zone admin liste les entrées ; les
-écrans de création et d’édition sont masqués pour l’instant.
+Point central pour les textes d’aide issus du dépôt, de Notion ou des pages manuelles créées dans la zone admin ou via l’API. La liste affiche
+toutes les entrées : ouvrez un titre ou **Voir** pour lire, et **Modifier** depuis la page détail ou le menu de ligne. **Nouveau** ouvre un
+formulaire pour créer une documentation manuelle (titre et contenu par langue, format, public, tags, groupes). Pour les contenus dépôt ou
+Notion, l’édition ne permet que la FAQ, la visibilité publique et les groupes — le titre et le texte restent synchronisés avec la source
+externe.
 
 Utilisez le bouton **Sync** pour relancer les embeddings de recherche après des mises à jour importantes de la documentation. La synchronisation
 affiche les compteurs total/mis à jour/ignorés/en échec.
@@ -30,7 +33,8 @@ affiche les compteurs total/mis à jour/ignorés/en échec.
 
 Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée en CSV ou JSON.
 
-## Import
+## Import (en masse)
 
-Utilisez **Plus → Importer** pour téléverser un fichier JSON obtenu précédemment via Exporter. Les enregistrements avec un id sont mis à jour ;
-ceux sans id sont ajoutés. Chaque ligne affiche son propre statut, et un échec n'arrête pas les autres lignes.
+Optionnel : **Plus → Importer** fusionne beaucoup d’enregistrements à partir d’un fichier au même format JSON qu’**Exporter**. Les lignes avec
+un id mettent à jour l’enregistrement existant ; les lignes sans id sont ajoutées. Chaque ligne a son propre statut ; un échec n’empêche pas les
+autres.

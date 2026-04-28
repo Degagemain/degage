@@ -6,8 +6,10 @@ roles:
 
 # Documentation
 
-Central place for help content from the repository, Notion, or manual records (created via the API). The admin zone lists entries; create and
-edit UIs are not shown for now.
+Central place for help content from the repository, Notion, or manual entries you add in the admin zone or via the API. The list shows all
+entries: open a title or **View** to read, and use **Edit** on the detail page or in the row menu. **New** opens a form to create manual
+documentation (title and content per language, format, audience, tags, and groups). For repository- and Notion-backed pages, the edit form only
+lets you change FAQ visibility, public visibility, and groups—the headline and body stay synced from the external source.
 
 Use the **Sync** button to refresh search embeddings after major documentation updates. Sync reports totals for updated, skipped, and failed
 records.
@@ -30,7 +32,7 @@ records.
 
 Use **More → Export** to download the current filtered/sorted list as CSV or JSON.
 
-## Import
+## Import (bulk)
 
-Use **More → Import** to upload a JSON file previously obtained via Export. Records with an id are updated; records without an id are inserted.
-Each row shows its own status, and one failure does not stop the others.
+Optional: **More → Import** merges many records from one file in the same JSON shape as **Export**. Rows that include an id update existing
+records; rows without an id are added. Each row reports its own outcome; one failure does not stop the rest.

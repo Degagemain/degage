@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Check, Eye, MoreHorizontal } from 'lucide-react';
+import { Check, Eye, MoreHorizontal, Pencil } from 'lucide-react';
 
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Badge } from '@/app/components/ui/badge';
@@ -33,8 +33,6 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       cell: ({ row }) => (
         <Link
           href={`/app/admin/documentation/${encodeURIComponent(row.original.externalId)}`}
-          target="_blank"
-          rel="noopener noreferrer"
           className="hover:text-primary block max-w-[200px] truncate hover:underline"
         >
           {getTitle(row.original)}
@@ -147,9 +145,15 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuItem asChild>
-                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}`} target="_blank" rel="noopener noreferrer">
+                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}`}>
                   <Eye />
                   {t('actions.view')}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/app/admin/documentation/${encodeURIComponent(doc.externalId)}/edit`}>
+                  <Pencil />
+                  {t('actions.edit')}
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -60,9 +60,7 @@ export function AdminCommandPalette() {
           {[...MAIN_ITEMS, ...DOCUMENTATION_SUB_ITEMS].map((item) => {
             const title = t(`${item.translationKey}.title`);
             const searchValue =
-              item.translationKey === 'documentationGroups'
-                ? `${title} ${t('documentation.title')} documentation groups`
-                : title;
+              item.translationKey === 'documentationGroups' ? `${title} ${t('documentation.title')} documentation groups` : title;
             return (
               <CommandItem key={item.href} value={searchValue} onSelect={() => run(item.href)}>
                 <item.icon />

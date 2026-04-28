@@ -1313,6 +1313,11 @@
       "helpLink": "Help for this page",
       "add": "Add documentation",
       "edit": "Edit",
+      "detail": {
+        "backToList": "Back",
+        "sectionMeta": "Details",
+        "sectionContent": "Content"
+      },
       "searchPlaceholder": "Search documentation...",
       "tryAgain": "Try again",
       "moreMenu": {
@@ -1373,13 +1378,20 @@
         "saveSuccess": "Saved successfully.",
         "saveError": "Could not save.",
         "cancel": "Cancel",
-        "sourceLocked": "Source is fixed after creation."
+        "sourceLocked": "Source is fixed after creation.",
+        "syncedSourceNotice": "This page is synced from an external source. You can change FAQ, public visibility, and groups only — not title, body, tags, or audience.",
+        "syncedContentReadOnly": "Content is read-only here. Update the source to change the text.",
+        "groupsEmpty": "No documentation groups exist yet. You can add them from Documentation → Groups in the admin menu.",
+        "multiSelectGroups": "Select groups…",
+        "multiSelectAudience": "Select audience roles…",
+        "multiSelectTags": "Select tags…"
       },
       "yes": "Yes",
       "no": "No",
       "actions": {
         "openMenu": "Open menu",
         "view": "View",
+        "edit": "Edit",
         "delete": "Delete"
       },
       "delete": {

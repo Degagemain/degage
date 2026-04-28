@@ -1313,6 +1313,11 @@
       "helpLink": "Hulp bij deze pagina",
       "add": "Documentatie toevoegen",
       "edit": "Bewerken",
+      "detail": {
+        "backToList": "Terug",
+        "sectionMeta": "Details",
+        "sectionContent": "Inhoud"
+      },
       "searchPlaceholder": "Zoek documentatie...",
       "tryAgain": "Opnieuw proberen",
       "moreMenu": {
@@ -1373,13 +1378,20 @@
         "saveSuccess": "Opgeslagen.",
         "saveError": "Opslaan mislukt.",
         "cancel": "Annuleren",
-        "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden."
+        "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden.",
+        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt alleen FAQ, zichtbaarheid en groepen wijzigen — niet titel, tekst, tags of doelpubliek.",
+        "syncedContentReadOnly": "Inhoud is alleen-lezen. Wijzig de bron om de tekst aan te passen.",
+        "groupsEmpty": "Er zijn nog geen documentatiegroepen. Voeg ze toe via Documentatie → Groepen in het adminmenu.",
+        "multiSelectGroups": "Groepen kiezen…",
+        "multiSelectAudience": "Doelpubliek kiezen…",
+        "multiSelectTags": "Tags kiezen…"
       },
       "yes": "Ja",
       "no": "Nee",
       "actions": {
         "openMenu": "Menu openen",
         "view": "Bekijken",
+        "edit": "Bewerken",
         "delete": "Verwijderen"
       },
       "delete": {

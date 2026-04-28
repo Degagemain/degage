@@ -6,8 +6,10 @@ roles:
 
 # Documentatie
 
-Centrale plek voor hulpteksten uit de codebase, Notion of handmatige records (via de API). In de beheerzone ziet u een overzicht; aanmaken en
-bewerken in het scherm zijn voorlopig uitgeschakeld.
+Centrale plek voor hulpteksten uit de codebase, Notion of handmatige items die u in de beheerzone of via de API toevoegt. De lijst toont alle
+items: open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. **Nieuw** opent een formulier om
+handmatige documentatie te maken (titel en inhoud per taal, formaat, doelpubliek, tags, groepen). Voor repository- of Notion-bronnen kunt u in
+het bewerkingsscherm alleen FAQ, zichtbaarheid en groepen wijzigen — titel en inhoud blijven met de bron gesynchroniseerd.
 
 Gebruik de knop **Sync** om zoek-embeddings opnieuw op te bouwen na grotere documentatie-updates. De sync toont totalen voor bijgewerkt,
 overgeslagen en mislukt.
@@ -30,7 +32,7 @@ overgeslagen en mislukt.
 
 Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst te downloaden als CSV of JSON.
 
-## Import
+## Import (bulk)
 
-Gebruik **Meer → Importeren** om een JSON-bestand te uploaden dat eerder via Exporteren is gedownload. Records met een id worden bijgewerkt;
-records zonder id worden toegevoegd. Elke rij toont zijn eigen status, en één fout stopt de andere rijen niet.
+Optioneel: **Meer → Importeren** voegt veel records in één keer samen uit een bestand in dezelfde JSON-structuur als **Exporteren**. Rijen met
+een id werken bestaande records bij; rijen zonder id worden toegevoegd. Elke rij toont het resultaat; één mislukking stopt de rest niet.
