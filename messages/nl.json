@@ -1356,6 +1356,30 @@
         "success": "Documentatie verwijderd.",
         "error": "Verwijderen mislukt."
       },
+      "bulkActions": {
+        "label": "Selectie",
+        "update": "Bulk bijwerken"
+      },
+      "bulkUpdate": {
+        "title": "Documentatie in bulk bijwerken",
+        "description": "De volgende {count} record(s) worden bijgewerkt. Niet-ingestelde velden blijven ongewijzigd.",
+        "isFaqLabel": "FAQ",
+        "isPublicLabel": "Publiek",
+        "tagsLabel": "Tags",
+        "rolesLabel": "Rollen",
+        "groupsLabel": "Groepen",
+        "unsetOption": "Niet ingesteld",
+        "replaceOption": "Geselecteerde waarden vervangen",
+        "columnName": "Documentatie",
+        "columnStatus": "Status",
+        "confirm": "Alles bijwerken",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wacht",
+        "statusUpdating": "Bijwerken…",
+        "statusSuccess": "Bijgewerkt",
+        "statusError": "Mislukt"
+      },
       "bulkImport": {
         "title": "Documentatie importeren",
         "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",

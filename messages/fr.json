@@ -1356,6 +1356,30 @@
         "success": "Documentation supprimée.",
         "error": "Échec de la suppression."
       },
+      "bulkActions": {
+        "label": "Sélection",
+        "update": "Mise à jour groupée"
+      },
+      "bulkUpdate": {
+        "title": "Mettre à jour la documentation en groupe",
+        "description": "Les {count} enregistrement(s) suivants seront mis à jour. Les champs non définis restent inchangés.",
+        "isFaqLabel": "FAQ",
+        "isPublicLabel": "Public",
+        "tagsLabel": "Tags",
+        "rolesLabel": "Rôles",
+        "groupsLabel": "Groupes",
+        "unsetOption": "Non défini",
+        "replaceOption": "Remplacer les valeurs sélectionnées",
+        "columnName": "Documentation",
+        "columnStatus": "Statut",
+        "confirm": "Tout mettre à jour",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusUpdating": "Mise à jour…",
+        "statusSuccess": "Mis à jour",
+        "statusError": "Échec"
+      },
       "bulkImport": {
         "title": "Importer la documentation",
         "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",

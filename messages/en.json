@@ -1356,6 +1356,30 @@
         "success": "Documentation deleted.",
         "error": "Failed to delete documentation."
       },
+      "bulkActions": {
+        "label": "Selection",
+        "update": "Bulk update"
+      },
+      "bulkUpdate": {
+        "title": "Bulk update documentation",
+        "description": "The following {count} record(s) will be updated. Unset fields stay unchanged.",
+        "isFaqLabel": "FAQ",
+        "isPublicLabel": "Public",
+        "tagsLabel": "Tags",
+        "rolesLabel": "Roles",
+        "groupsLabel": "Groups",
+        "unsetOption": "Unset",
+        "replaceOption": "Replace selected values",
+        "columnName": "Documentation",
+        "columnStatus": "Status",
+        "confirm": "Update all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusUpdating": "Updating…",
+        "statusSuccess": "Updated",
+        "statusError": "Failed"
+      },
       "bulkImport": {
         "title": "Import documentation",
         "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
