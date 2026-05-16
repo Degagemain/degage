@@ -1061,6 +1061,7 @@
       },
       "bulkActions": {
         "label": "Sélection",
+        "moveHub": "Déplacer le hub",
         "delete": "Supprimer la sélection"
       },
       "bulkDelete": {
@@ -1076,6 +1077,21 @@
         "statusSuccess": "Supprimé",
         "statusError": "Échoué",
         "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkMoveHub": {
+        "title": "Déplacer le hub",
+        "description": "Sélectionnez un hub à assigner aux {count} ville(s) sélectionnée(s).",
+        "hubLabel": "Hub",
+        "hubPlaceholder": "Sélectionner un hub…",
+        "columnName": "Ville",
+        "columnStatus": "Statut",
+        "confirm": "Tout déplacer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusMoving": "Déplacement…",
+        "statusSuccess": "Déplacé",
+        "statusError": "Échoué"
       },
       "bulkImport": {
         "title": "Importer des villes",
