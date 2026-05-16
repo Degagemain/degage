@@ -142,22 +142,46 @@ The simulation reads operational/reference tables from the admin data set.
 
 ## Simulations list screen
 
-The list shows simulation runs: town, result, and entered car data. Open a row to view full result details and step messages.
+The list shows simulation runs with entered car data and calculated results. Open a row to view full result details and step messages.
 
-| Property            | Description                                             |
-| ------------------- | ------------------------------------------------------- |
-| Town                | Town selected for the run (if any).                     |
-| Result code         | Overall result (e.g. Not OK, Manual review).            |
-| Brand               | Car brand entered.                                      |
-| Fuel type           | Fuel type entered.                                      |
-| Car type            | Car type or “Other” description.                        |
-| Mileage             | Mileage in km.                                          |
-| Seats               | Number of seats.                                        |
-| First registered at | First registration date.                                |
-| Car type other      | Custom type description when “Other” was chosen.        |
-| Duration            | How long the engine run took, in whole seconds.         |
-| Result email        | Address used to e-mail the simulation outcome (if set). |
+Columns marked *(hidden by default)* are available via the column picker but not shown on first load.
 
+| Property              | Description                                                                   |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Description           | One-line summary combining town, brand, fuel type, and car type.              |
+| Result code           | Overall result (e.g. Not OK, Manual review). Links to the detail page.        |
+| Mileage               | Mileage entered in km.                                                        |
+| Seats                 | Number of seats.                                                              |
+| First registered at   | First registration date.                                                      |
+| Est. car value        | Estimated market value of the vehicle used in the calculation.                |
+| Depreciation cost/km  | Depreciation contribution per km as calculated by the engine.                 |
+| Insurance cost/year   | Estimated yearly insurance cost.                                              |
+| Created               | Date and time the simulation was saved.                                       |
+| Town                  | Town selected for the run. *(hidden by default)*                              |
+| Brand                 | Car brand entered. *(hidden by default)*                                      |
+| Fuel type             | Fuel type entered. *(hidden by default)*                                      |
+| Car type              | Car type or "Other" description. *(hidden by default)*                        |
+| Owner km/year         | Expected yearly km driven by the owner. *(hidden by default)*                 |
+| Purchase price        | Purchase price entered for new cars. *(hidden by default)*                    |
+| New car               | Whether the car was marked as new. *(hidden by default)*                      |
+| Van                   | Whether the car was marked as a van. *(hidden by default)*                    |
+| Tax cost/year         | Estimated yearly road tax. *(hidden by default)*                              |
+| Inspection cost/year  | Estimated yearly inspection cost. *(hidden by default)*                       |
+| Maintenance cost/year | Estimated yearly maintenance cost. *(hidden by default)*                      |
+| Km rate               | Final rounded km-cost used for the result. *(hidden by default)*              |
+| Min shared km         | Minimum shared km scenario from hub settings. *(hidden by default)*           |
+| Avg shared km         | Average shared km scenario from hub settings. *(hidden by default)*           |
+| Max shared km         | Maximum shared km scenario from hub settings. *(hidden by default)*           |
+| Euro norm             | Euro emission norm of the vehicle. *(hidden by default)*                      |
+| Ecoscore              | Environmental score of the vehicle. *(hidden by default)*                     |
+| Consumption           | Estimated fuel consumption. *(hidden by default)*                             |
+| Cylinder cc           | Engine cylinder capacity in cc. *(hidden by default)*                         |
+| CO2 (g/km)            | CO2 emission in g/km. *(hidden by default)*                                   |
+| Rejection reason      | Reason text when the result is Not OK. *(hidden by default)*                  |
+| Car type (other)      | Custom type description when "Other" was chosen. *(hidden by default)*        |
+| Duration              | How long the engine run took, in whole seconds. *(hidden by default)*         |
+| Result email          | Address used to e-mail the simulation outcome (if set). *(hidden by default)* |
+| Updated               | Date and time the simulation was last updated. *(hidden by default)*          |
 On the simulation **detail** screen you can enter or change this address. The e-mail to the recipient uses your **current interface language**.
 For simulations that finished successfully (not **Not OK**, and without an engine error), saving a **new or changed** address sends the result
 to that address and notifies support with a summary and an admin link.

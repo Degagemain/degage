@@ -16,16 +16,29 @@
     "homeCta": "Retour à l’accueil →"
   },
   "faq": {
-    "title": "Questions fréquentes",
-    "docFaqPanelHeading": "Documentation",
-    "intro": "Retrouvez les réponses aux questions les plus courantes sur la simulation et la flotte.",
-    "q1": "À quoi sert la simulation ?",
-    "a1": "La simulation vérifie si votre véhicule remplit les conditions pour rejoindre la flotte. Vous saisissez vos informations et obtenez une indication immédiate : admis, non admis ou examen manuel requis.",
-    "q2": "Mon résultat est \"incertain\". Que faire ?",
-    "a2": "En cas de résultat incertain, un examen manuel est nécessaire. Vous pouvez soumettre une demande via le bouton \"Demander un examen manuel\". Notre équipe étudie votre dossier et vous recontacte.",
-    "q3": "Une autre question ?",
-    "a3": "Contactez-nous via les coordonnées indiquées sur le site. Nous nous ferons un plaisir de vous aider.",
-    "backToSimulation": "Retour à la simulation"
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Centre d'aide"
+    },
+    "title": "Aide & FAQ",
+    "intro": "Trouvez des réponses, parcourez les articles ou ouvrez le chat support si besoin.",
+    "searchPlaceholder": "Rechercher dans l'aide et les questions…",
+    "searchLoading": "Recherche…",
+    "searchNoResults": "Aucun résultat.",
+    "searchResultsLabel": "Résultats",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Voir tous les articles",
+    "faqHeading": "Questions fréquentes",
+    "groupShowMoreCta": "Tout voir dans {name}",
+    "readArticle": "Lire",
+    "backToHelp": "Retour à l'aide",
+    "allArticlesTitle": "Tous les articles",
+    "allFaqInGroupTitle": "Toutes les questions",
+    "emptyArticles": "Pas encore d'articles.",
+    "emptyFaq": "Pas encore de questions dans cette rubrique.",
+    "errorLoad": "Une erreur s'est produite. Réessayez.",
+    "loadMore": "Charger plus",
+    "articleMetaUpdated": "Mis à jour le {date}"
   },
   "dataTable": {
     "noResults": "Aucun résultat trouvé.",
@@ -1143,15 +1156,36 @@
         "resultCode": "Résultat"
       },
       "columns": {
+        "description": "Description",
         "resultCode": "Résultat",
         "town": "Commune",
         "brand": "Marque",
         "fuelType": "Type de carburant",
         "carType": "Type de véhicule",
-        "km": "Kilométrage (km)",
         "mileage": "Kilométrage (km)",
+        "km": "Kilométrage (km)",
+        "ownerKmPerYear": "Km/an propriétaire",
         "seats": "Places assises",
         "firstRegisteredAt": "Première immatriculation",
+        "purchasePrice": "Prix d'achat",
+        "isNewCar": "Voiture neuve",
+        "isVan": "Utilitaire",
+        "resultEstimatedCarValue": "Valeur estimée",
+        "resultDepreciationCostKm": "Amortissement/km",
+        "resultInsuranceCostPerYear": "Assurance/an",
+        "resultTaxCostPerYear": "Taxe/an",
+        "resultInspectionCostPerYear": "Contrôle technique/an",
+        "resultMaintenanceCostPerYear": "Entretien/an",
+        "resultRoundedKmCost": "Tarif au km",
+        "resultMinSharedKm": "Km partagés min",
+        "resultAvgSharedKm": "Km partagés moy.",
+        "resultMaxSharedKm": "Km partagés max",
+        "resultEuroNorm": "Norme Euro",
+        "resultEcoScore": "Ecoscore",
+        "resultConsumption": "Consommation",
+        "resultCc": "Cylindrée cc",
+        "resultCo2": "CO2 (g/km)",
+        "rejectionReason": "Motif de rejet",
         "carTypeOther": "Type de véhicule (autre)",
         "duration": "Durée (s)",
         "email": "E-mail du résultat",
@@ -1235,7 +1269,9 @@
         "consumption": "Consommation",
         "yes": "Oui",
         "no": "Non"
-      }
+      },
+      "yes": "Oui",
+      "no": "Non"
     },
     "users": {
       "title": "Utilisateurs",
@@ -1846,31 +1882,6 @@
       "kosten": "Vos coûts",
       "bevestiging": "Confirmation"
     }
-  },
-  "faq": {
-    "header": {
-      "logoTitle": "Dégage!",
-      "logoSub": "Centre d'aide"
-    },
-    "title": "Aide & FAQ",
-    "intro": "Trouvez des réponses, parcourez les articles ou ouvrez le chat support si besoin.",
-    "searchPlaceholder": "Rechercher dans l'aide et les questions…",
-    "searchLoading": "Recherche…",
-    "searchNoResults": "Aucun résultat.",
-    "searchResultsLabel": "Résultats",
-    "articlesHeading": "Articles",
-    "articlesShowMore": "Voir tous les articles",
-    "faqHeading": "Questions fréquentes",
-    "groupShowMoreCta": "Tout voir dans {name}",
-    "readArticle": "Lire",
-    "backToHelp": "Retour à l'aide",
-    "allArticlesTitle": "Tous les articles",
-    "allFaqInGroupTitle": "Toutes les questions",
-    "emptyArticles": "Pas encore d'articles.",
-    "emptyFaq": "Pas encore de questions dans cette rubrique.",
-    "errorLoad": "Une erreur s'est produite. Réessayez.",
-    "loadMore": "Charger plus",
-    "articleMetaUpdated": "Mis à jour le {date}"
   },
   "chat": {
     "nav": "Support Chat",
