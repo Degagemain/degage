@@ -143,46 +143,48 @@ La simulation lit des tables operationnelles et de reference de l'administration
 
 ## Liste des simulations
 
-La liste affiche les exécutions avec les données du véhicule saisies et les résultats calculés. Ouvrir une ligne pour voir le résultat détaillé et les messages d'étapes.
+La liste affiche les exécutions avec les données du véhicule saisies et les résultats calculés. Ouvrir une ligne pour voir le résultat détaillé
+et les messages d'étapes.
 
-Les colonnes marquées *(masquées par défaut)* sont disponibles via le sélecteur de colonnes mais ne sont pas affichées au chargement.
+Les colonnes marquées _(masquées par défaut)_ sont disponibles via le sélecteur de colonnes mais ne sont pas affichées au chargement.
 
-| Propriété              | Description                                                                                  |
-| ---------------------- | -------------------------------------------------------------------------------------------- |
-| Description            | Résumé en une ligne : commune, marque, type de carburant et type de véhicule.                |
-| Code résultat          | Résultat final (ex. Pas OK, Révision manuelle). Lien vers la page de détail.                 |
-| Kilométrage            | Kilométrage saisi en km.                                                                     |
-| Places assises         | Nombre de places assises.                                                                    |
-| Première immat.        | Date de première immatriculation.                                                            |
-| Valeur estimée         | Valeur marchande estimée du véhicule utilisée dans le calcul.                                |
-| Amortissement/km       | Part d'amortissement par km calculée par le moteur.                                          |
-| Assurance/an           | Coût d'assurance annuel estimé.                                                              |
-| Créé le                | Date et heure d'enregistrement de la simulation.                                             |
-| Commune                | Commune sélectionnée pour l'exécution. *(masquée par défaut)*                                |
-| Marque                 | Marque du véhicule saisie. *(masquée par défaut)*                                            |
-| Type de carburant      | Type de carburant saisi. *(masquée par défaut)*                                              |
-| Type de véhicule       | Type de véhicule ou description "Autre". *(masquée par défaut)*                              |
-| Km/an propriétaire     | Kilométrage annuel attendu du propriétaire. *(masquée par défaut)*                           |
-| Prix d'achat           | Prix d'achat pour les véhicules neufs. *(masquée par défaut)*                                |
-| Voiture neuve          | Indique si le véhicule a été marqué comme neuf. *(masquée par défaut)*                       |
-| Utilitaire             | Indique si le véhicule a été marqué comme utilitaire. *(masquée par défaut)*                 |
-| Taxe/an                | Taxe de circulation annuelle estimée. *(masquée par défaut)*                                 |
-| Contrôle technique/an  | Coût annuel estimé du contrôle technique. *(masquée par défaut)*                             |
-| Entretien/an           | Coût annuel estimé de l'entretien. *(masquée par défaut)*                                    |
-| Tarif au km            | Tarif km arrondi final utilisé pour le résultat. *(masquée par défaut)*                      |
-| Km partagés min        | Scénario de km partagés minimum (paramètres hub). *(masquée par défaut)*                     |
-| Km partagés moy.       | Scénario de km partagés moyen (paramètres hub). *(masquée par défaut)*                       |
-| Km partagés max        | Scénario de km partagés maximum (paramètres hub). *(masquée par défaut)*                     |
-| Norme Euro             | Norme d'émission Euro du véhicule. *(masquée par défaut)*                                    |
-| Ecoscore               | Score environnemental du véhicule. *(masquée par défaut)*                                    |
-| Consommation           | Consommation de carburant estimée. *(masquée par défaut)*                                    |
-| Cylindrée cc           | Cylindrée du moteur en cc. *(masquée par défaut)*                                            |
-| CO2 (g/km)             | Émission de CO2 en g/km. *(masquée par défaut)*                                              |
-| Motif de rejet         | Texte explicatif quand le résultat est Pas OK. *(masquée par défaut)*                        |
-| Type de véhicule (aut.)| Description personnalisée quand "Autre" a été choisi. *(masquée par défaut)*                 |
-| Durée (s)              | Durée de l'exécution du moteur en secondes entières. *(masquée par défaut)*                  |
-| E-mail du résultat     | Adresse utilisée pour envoyer le résultat par e-mail (si définie). *(masquée par défaut)*    |
-| Modifié le             | Date et heure de la dernière mise à jour. *(masquée par défaut)*                             |
+| Propriété               | Description                                                                               |
+| ----------------------- | ----------------------------------------------------------------------------------------- |
+| Description             | Résumé en une ligne : commune, marque, type de carburant et type de véhicule.             |
+| Code résultat           | Résultat final (ex. Pas OK, Révision manuelle). Lien vers la page de détail.              |
+| Kilométrage             | Kilométrage saisi en km.                                                                  |
+| Places assises          | Nombre de places assises.                                                                 |
+| Première immat.         | Date de première immatriculation.                                                         |
+| Valeur estimée          | Valeur marchande estimée du véhicule utilisée dans le calcul.                             |
+| Amortissement/km        | Part d'amortissement par km calculée par le moteur.                                       |
+| Assurance/an            | Coût d'assurance annuel estimé.                                                           |
+| Créé le                 | Date et heure d'enregistrement de la simulation.                                          |
+| Commune                 | Commune sélectionnée pour l'exécution. _(masquée par défaut)_                             |
+| Marque                  | Marque du véhicule saisie. _(masquée par défaut)_                                         |
+| Type de carburant       | Type de carburant saisi. _(masquée par défaut)_                                           |
+| Type de véhicule        | Type de véhicule ou description "Autre". _(masquée par défaut)_                           |
+| Km/an propriétaire      | Kilométrage annuel attendu du propriétaire. _(masquée par défaut)_                        |
+| Prix d'achat            | Prix d'achat pour les véhicules neufs. _(masquée par défaut)_                             |
+| Voiture neuve           | Indique si le véhicule a été marqué comme neuf. _(masquée par défaut)_                    |
+| Utilitaire              | Indique si le véhicule a été marqué comme utilitaire. _(masquée par défaut)_              |
+| Taxe/an                 | Taxe de circulation annuelle estimée. _(masquée par défaut)_                              |
+| Contrôle technique/an   | Coût annuel estimé du contrôle technique. _(masquée par défaut)_                          |
+| Entretien/an            | Coût annuel estimé de l'entretien. _(masquée par défaut)_                                 |
+| Tarif au km             | Tarif km arrondi final utilisé pour le résultat. _(masquée par défaut)_                   |
+| Km partagés min         | Scénario de km partagés minimum (paramètres hub). _(masquée par défaut)_                  |
+| Km partagés moy.        | Scénario de km partagés moyen (paramètres hub). _(masquée par défaut)_                    |
+| Km partagés max         | Scénario de km partagés maximum (paramètres hub). _(masquée par défaut)_                  |
+| Norme Euro              | Norme d'émission Euro du véhicule. _(masquée par défaut)_                                 |
+| Ecoscore                | Score environnemental du véhicule. _(masquée par défaut)_                                 |
+| Consommation            | Consommation de carburant estimée. _(masquée par défaut)_                                 |
+| Cylindrée cc            | Cylindrée du moteur en cc. _(masquée par défaut)_                                         |
+| CO2 (g/km)              | Émission de CO2 en g/km. _(masquée par défaut)_                                           |
+| Motif de rejet          | Texte explicatif quand le résultat est Pas OK. _(masquée par défaut)_                     |
+| Type de véhicule (aut.) | Description personnalisée quand "Autre" a été choisi. _(masquée par défaut)_              |
+| Durée (s)               | Durée de l'exécution du moteur en secondes entières. _(masquée par défaut)_               |
+| E-mail du résultat      | Adresse utilisée pour envoyer le résultat par e-mail (si définie). _(masquée par défaut)_ |
+| Modifié le              | Date et heure de la dernière mise à jour. _(masquée par défaut)_                          |
+
 ## Conseils pour les admins
 
 - Garder les tables de reference completes et a jour avant les batchs de simulation.

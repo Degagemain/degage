@@ -145,44 +145,45 @@ De simulatie leest operationele en referentietabellen uit de admin data.
 
 De lijst toont simulatieruns met ingevoerde autodata en berekende resultaten. Open een rij voor het volledige resultaat en de stapmeldingen.
 
-Kolommen gemarkeerd met *(standaard verborgen)* zijn beschikbaar via de kolomkiezer maar worden niet standaard weergegeven.
+Kolommen gemarkeerd met _(standaard verborgen)_ zijn beschikbaar via de kolomkiezer maar worden niet standaard weergegeven.
 
-| Eigenschap            | Beschrijving                                                                         |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| Beschrijving          | Korte samenvatting van gemeente, merk, brandstoftype en autotype.                    |
-| Resultaat             | Eindresultaat (bijv. Niet OK, Handmatige beoordeling). Link naar de detailpagina.    |
-| Kilometerstand        | Ingevoerde kilometerstand in km.                                                     |
-| Zitplaatsen           | Aantal zitplaatsen.                                                                  |
-| Eerste inschrijving   | Datum van eerste inschrijving.                                                       |
-| Geschatte waarde      | Geschatte marktwaarde van het voertuig gebruikt in de berekening.                    |
-| Afschrijving/km       | Afschrijvingsbijdrage per km zoals berekend door de engine.                          |
-| Verzekering/jaar      | Geschatte jaarlijkse verzekeringskost.                                               |
-| Aangemaakt            | Datum en tijdstip waarop de simulatie werd opgeslagen.                               |
-| Gemeente              | Voor de run geselecteerde gemeente. *(standaard verborgen)*                          |
-| Merk                  | Ingevoerd automerk. *(standaard verborgen)*                                          |
-| Brandstoftype         | Ingevoerd brandstoftype. *(standaard verborgen)*                                     |
-| Autotype              | Autotype of "Overig"-beschrijving. *(standaard verborgen)*                           |
-| Eigenaar km/jaar      | Verwachte jaarlijkse km van de eigenaar. *(standaard verborgen)*                     |
-| Aankoopprijs          | Aankoopprijs voor nieuwe wagens. *(standaard verborgen)*                             |
-| Nieuwe wagen          | Of de wagen als nieuw is aangemerkt. *(standaard verborgen)*                         |
-| Bestelwagen           | Of de wagen als bestelwagen is aangemerkt. *(standaard verborgen)*                   |
-| Verkeersbelasting/jaar| Geschatte jaarlijkse verkeersbelasting. *(standaard verborgen)*                      |
-| Keuring/jaar          | Geschatte jaarlijkse keuringskosten. *(standaard verborgen)*                         |
-| Onderhoud/jaar        | Geschatte jaarlijkse onderhoudskosten. *(standaard verborgen)*                       |
-| Km-tarief             | Uiteindelijk afgerond km-tarief gebruikt voor het resultaat. *(standaard verborgen)* |
-| Min gedeelde km       | Minimaal gedeelde km-scenario vanuit hub-instellingen. *(standaard verborgen)*       |
-| Gem. gedeelde km      | Gemiddeld gedeelde km-scenario vanuit hub-instellingen. *(standaard verborgen)*      |
-| Max gedeelde km       | Maximaal gedeelde km-scenario vanuit hub-instellingen. *(standaard verborgen)*       |
-| Euro norm             | Euro-emissienorm van het voertuig. *(standaard verborgen)*                           |
-| Ecoscore              | Milieuscore van het voertuig. *(standaard verborgen)*                                |
-| Verbruik              | Geschat brandstofverbruik. *(standaard verborgen)*                                   |
-| Cilinder cc           | Motorcilinderinhoud in cc. *(standaard verborgen)*                                   |
-| CO2 (g/km)            | CO2-uitstoot in g/km. *(standaard verborgen)*                                        |
-| Afwijzingsreden       | Redenomschrijving bij resultaat Niet OK. *(standaard verborgen)*                     |
-| Autotype (overig)     | Aangepaste typeomschrijving bij keuze "Overig". *(standaard verborgen)*              |
-| Duur (s)              | Hoe lang de engine-run duurde, in hele seconden. *(standaard verborgen)*             |
-| Resultaat e-mail      | Adres voor het e-mailen van het simulatieresultaat (indien ingesteld). *(standaard verborgen)* |
-| Bijgewerkt            | Datum en tijdstip van de laatste wijziging. *(standaard verborgen)*                  |
+| Eigenschap             | Beschrijving                                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| Beschrijving           | Korte samenvatting van gemeente, merk, brandstoftype en autotype.                              |
+| Resultaat              | Eindresultaat (bijv. Niet OK, Handmatige beoordeling). Link naar de detailpagina.              |
+| Kilometerstand         | Ingevoerde kilometerstand in km.                                                               |
+| Zitplaatsen            | Aantal zitplaatsen.                                                                            |
+| Eerste inschrijving    | Datum van eerste inschrijving.                                                                 |
+| Geschatte waarde       | Geschatte marktwaarde van het voertuig gebruikt in de berekening.                              |
+| Afschrijving/km        | Afschrijvingsbijdrage per km zoals berekend door de engine.                                    |
+| Verzekering/jaar       | Geschatte jaarlijkse verzekeringskost.                                                         |
+| Aangemaakt             | Datum en tijdstip waarop de simulatie werd opgeslagen.                                         |
+| Gemeente               | Voor de run geselecteerde gemeente. _(standaard verborgen)_                                    |
+| Merk                   | Ingevoerd automerk. _(standaard verborgen)_                                                    |
+| Brandstoftype          | Ingevoerd brandstoftype. _(standaard verborgen)_                                               |
+| Autotype               | Autotype of "Overig"-beschrijving. _(standaard verborgen)_                                     |
+| Eigenaar km/jaar       | Verwachte jaarlijkse km van de eigenaar. _(standaard verborgen)_                               |
+| Aankoopprijs           | Aankoopprijs voor nieuwe wagens. _(standaard verborgen)_                                       |
+| Nieuwe wagen           | Of de wagen als nieuw is aangemerkt. _(standaard verborgen)_                                   |
+| Bestelwagen            | Of de wagen als bestelwagen is aangemerkt. _(standaard verborgen)_                             |
+| Verkeersbelasting/jaar | Geschatte jaarlijkse verkeersbelasting. _(standaard verborgen)_                                |
+| Keuring/jaar           | Geschatte jaarlijkse keuringskosten. _(standaard verborgen)_                                   |
+| Onderhoud/jaar         | Geschatte jaarlijkse onderhoudskosten. _(standaard verborgen)_                                 |
+| Km-tarief              | Uiteindelijk afgerond km-tarief gebruikt voor het resultaat. _(standaard verborgen)_           |
+| Min gedeelde km        | Minimaal gedeelde km-scenario vanuit hub-instellingen. _(standaard verborgen)_                 |
+| Gem. gedeelde km       | Gemiddeld gedeelde km-scenario vanuit hub-instellingen. _(standaard verborgen)_                |
+| Max gedeelde km        | Maximaal gedeelde km-scenario vanuit hub-instellingen. _(standaard verborgen)_                 |
+| Euro norm              | Euro-emissienorm van het voertuig. _(standaard verborgen)_                                     |
+| Ecoscore               | Milieuscore van het voertuig. _(standaard verborgen)_                                          |
+| Verbruik               | Geschat brandstofverbruik. _(standaard verborgen)_                                             |
+| Cilinder cc            | Motorcilinderinhoud in cc. _(standaard verborgen)_                                             |
+| CO2 (g/km)             | CO2-uitstoot in g/km. _(standaard verborgen)_                                                  |
+| Afwijzingsreden        | Redenomschrijving bij resultaat Niet OK. _(standaard verborgen)_                               |
+| Autotype (overig)      | Aangepaste typeomschrijving bij keuze "Overig". _(standaard verborgen)_                        |
+| Duur (s)               | Hoe lang de engine-run duurde, in hele seconden. _(standaard verborgen)_                       |
+| Resultaat e-mail       | Adres voor het e-mailen van het simulatieresultaat (indien ingesteld). _(standaard verborgen)_ |
+| Bijgewerkt             | Datum en tijdstip van de laatste wijziging. _(standaard verborgen)_                            |
+
 ## Richtlijnen voor admins
 
 - Houd referentietabellen volledig en actueel voor grote simulatiebatches.
