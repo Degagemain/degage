@@ -100,8 +100,16 @@ export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, label
 
       try {
         const updatedTown: Town = {
-          ...item.town,
+          id: item.town.id,
+          zip: item.town.zip,
+          name: item.town.name,
+          municipality: item.town.municipality,
+          province: item.town.province,
           hub: { id: selectedHub.id, name: selectedHub.name },
+          highDemand: item.town.highDemand,
+          hasActiveMembers: item.town.hasActiveMembers,
+          createdAt: item.town.createdAt,
+          updatedAt: item.town.updatedAt,
         };
         const response = await apiPut(`/api/towns/${item.id}`, updatedTown);
 
