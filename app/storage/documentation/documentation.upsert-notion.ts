@@ -1,60 +1,63 @@
-import type { DocumentationAudienceRole } from '@/domain/documentation.model';
-import type { DocumentationFormat } from '@/domain/documentation.model';
-import type { DocumentationTag } from '@/domain/documentation.model';
+import type { ContentLocale } from '@/i18n/locales';
 import { getPrismaClient } from '@/storage/utils';
 import { DocumentationSource } from '@/storage/client/client';
 
 export type NotionDocUpsertInput = {
-  notionPageId: string;
-  isFaq: boolean;
-  isPublic: boolean;
-  format: DocumentationFormat;
-  audienceRoles: DocumentationAudienceRole[];
-  tags: DocumentationTag[];
-  translations: { locale: string; title: string; content: string }[];
+  parentKey: string;
+  translation: { locale: ContentLocale; title: string; content: string };
 };
 
-export const notionExternalId = (pageId: string): string => `notion:${pageId}`;
+export const notionExternalId = (parentKey: string): string => {
+  const normalized = parentKey.trim();
+  return normalized.startsWith('notion:') ? normalized : `notion:${normalized}`;
+};
 
 export const dbDocumentationUpsertNotion = async (input: NotionDocUpsertInput): Promise<void> => {
   const prisma = getPrismaClient();
-  const externalId = notionExternalId(input.notionPageId);
-  await prisma.documentation.upsert({
+  const externalId = notionExternalId(input.parentKey);
+  const existing = await prisma.documentation.findUnique({
     where: { externalId },
-    create: {
-      source: DocumentationSource.notion,
-      externalId,
-      isFaq: input.isFaq,
-      isPublic: input.isPublic,
-      format: input.format,
-      audienceRoles: input.audienceRoles,
-      tags: input.tags,
-      translations: {
-        createMany: {
-          data: input.translations.map((t) => ({
-            locale: t.locale,
-            title: t.title,
-            content: t.content,
-          })),
+    select: { id: true },
+  });
+
+  if (!existing) {
+    await prisma.documentation.create({
+      data: {
+        source: DocumentationSource.notion,
+        externalId,
+        isFaq: false,
+        isPublic: false,
+        format: 'markdown',
+        audienceRoles: [],
+        tags: [],
+        translations: {
+          create: {
+            locale: input.translation.locale,
+            title: input.translation.title,
+            content: input.translation.content,
+          },
         },
+      },
+    });
+    return;
+  }
+
+  await prisma.documentationTranslation.upsert({
+    where: {
+      documentationId_locale: {
+        documentationId: existing.id,
+        locale: input.translation.locale,
       },
     },
+    create: {
+      documentationId: existing.id,
+      locale: input.translation.locale,
+      title: input.translation.title,
+      content: input.translation.content,
+    },
     update: {
-      isFaq: input.isFaq,
-      isPublic: input.isPublic,
-      format: input.format,
-      audienceRoles: input.audienceRoles,
-      tags: input.tags,
-      translations: {
-        deleteMany: {},
-        createMany: {
-          data: input.translations.map((t) => ({
-            locale: t.locale,
-            title: t.title,
-            content: t.content,
-          })),
-        },
-      },
+      title: input.translation.title,
+      content: input.translation.content,
     },
   });
 };

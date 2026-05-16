@@ -1,33 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  getNotionMultiSelectNames,
-  getNotionPageProperty,
-  getNotionPropertyPlainText,
-  parseLocaleNotionPropertyMap,
-} from '@/actions/notion/notion-page-properties';
-
-describe('parseLocaleNotionPropertyMap', () => {
-  it('returns empty object for undefined or blank', () => {
-    expect(parseLocaleNotionPropertyMap(undefined)).toEqual({});
-    expect(parseLocaleNotionPropertyMap('')).toEqual({});
-    expect(parseLocaleNotionPropertyMap('  ')).toEqual({});
-  });
-
-  it('parses locale=property pairs', () => {
-    expect(parseLocaleNotionPropertyMap('en=Title EN,nl=Titel NL,fr=Titre FR')).toEqual({
-      en: 'Title EN',
-      nl: 'Titel NL',
-      fr: 'Titre FR',
-    });
-  });
-
-  it('ignores invalid locales and malformed segments', () => {
-    expect(parseLocaleNotionPropertyMap('en=Body EN,xx=Bad,de=Also bad,nl=')).toEqual({
-      en: 'Body EN',
-    });
-  });
-});
+import { getNotionMultiSelectNames, getNotionPageProperty, getNotionPropertyPlainText } from '@/actions/notion/notion-page-properties';
 
 describe('getNotionPropertyPlainText', () => {
   it('reads rich_text by exact name', () => {
@@ -64,6 +37,23 @@ describe('getNotionPropertyPlainText', () => {
       },
     };
     expect(getNotionPropertyPlainText(page, 'Name')).toBe('Doc');
+  });
+
+  it('reads select and status option names', () => {
+    const page = {
+      properties: {
+        Language: {
+          type: 'select',
+          select: { name: 'nl' },
+        },
+        Parent: {
+          type: 'status',
+          status: { name: 'getting-started' },
+        },
+      },
+    };
+    expect(getNotionPropertyPlainText(page, 'Language')).toBe('nl');
+    expect(getNotionPropertyPlainText(page, 'Parent')).toBe('getting-started');
   });
 
   it('returns empty string when missing', () => {
