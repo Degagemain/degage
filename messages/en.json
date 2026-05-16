@@ -1115,17 +1115,20 @@
         "updated": "Updated"
       },
       "categories": {
-        "simulation": "Simulation"
+        "simulation": "Simulation",
+        "assistant": "Assistant"
       },
       "types": {
         "number": "Number",
         "number_range": "Number range",
-        "euronorm": "Euro norm"
+        "euronorm": "Euro norm",
+        "string": "Text"
       },
       "editTitle": "Edit value",
       "valueNumber": "Value",
       "valueNumberMin": "Min",
       "valueNumberMax": "Max",
+      "valueString": "Text",
       "save": "Save",
       "cancel": "Cancel",
       "searchPlaceholder": "Search parameters...",

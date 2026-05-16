@@ -10,26 +10,12 @@ import { type DocumentationSupportCitation, toChatCitationsForSupportViewer } fr
 import { type ContentLocale } from '@/i18n/locales';
 import { isPostHogEnabled } from '@/integrations/posthog';
 import { getSupportReplyToEmail } from '@/actions/utils';
-
-const buildSupportSystemPrompt = (): string => {
-  const contactEmail = getSupportReplyToEmail();
-  return [
-    'You are a polite and supportive support assistant for the Dégage platform only.',
-    'Help with how Dégage works, setup, workflows, troubleshooting, and anything grounded in product documentation.',
-    'Always answer in the same language as the user message.',
-    'If the request is clearly unrelated to Dégage car sharing, unrelated coding, trivia, or tasks with no link to ' +
-      'this system—politely decline.',
-    'Briefly say you only help with Dégage and offer relevant help instead.',
-    'Do not role-play unrelated personas, run arbitrary errands, or claim you will act outside this chat.',
-    'If the user insists on talking to a human, a real person, or live support, politely explain that this chat is automated.',
-    `Direct them to contact ${contactEmail} for human assistance.`,
-    'Use the searchDocumentation tool to look up factual product or process details.',
-    'Tool results include fullDocuments with complete article text for the best-matching pages.',
-    'Ground answers in that full text, not only short excerpts.',
-    'Do not invent citations or fake source markers.',
-    'If searchDocumentation returns noResults=true, still answer helpfully: note no match, ask a clarifying question, suggest rephrasing.',
-  ].join(' ');
-};
+import { getSystemParameterByCode } from '@/actions/system-parameter/read';
+import {
+  type SupportAssistantPromptChannel,
+  getDefaultSupportAssistantBasePrompt,
+  supportAssistantPromptSystemParameterCodes,
+} from '@/domain/support-assistant-prompt.model';
 
 const SEARCH_DOCUMENTATION_TOOL_DESCRIPTION =
   'Search internal documentation. Returns fullDocuments (complete articles for top matches) ' +
@@ -50,13 +36,19 @@ const toPlainText = (value: string): string => {
     .trim();
 };
 
-const buildSystemPrompt = (input: {
+const getConfiguredBasePrompt = async (channel: SupportAssistantPromptChannel): Promise<string> => {
+  const parameter = await getSystemParameterByCode(supportAssistantPromptSystemParameterCodes[channel]);
+  const configuredPrompt = parameter?.valueString?.trim();
+  return configuredPrompt || getDefaultSupportAssistantBasePrompt(channel, getSupportReplyToEmail());
+};
+
+const buildSystemPrompt = async (input: {
+  channel: SupportAssistantPromptChannel;
   userLocale?: string | null;
   includeCitations: boolean;
   outputFormat: 'markdown' | 'plain';
-  replyStyle: 'chat' | 'formal_email';
-}): string => {
-  const parts = [buildSupportSystemPrompt()];
+}): Promise<string> => {
+  const parts = [await getConfiguredBasePrompt(input.channel)];
 
   if (input.includeCitations) {
     parts.push('Never put [1], [2], or similar numeric citation markers in your answer; the UI lists sources with links after your message.');
@@ -66,18 +58,6 @@ const buildSystemPrompt = (input: {
 
   if (input.outputFormat === 'plain') {
     parts.push('Return plain text only. Do not use markdown formatting, markdown headings, bullet lists, code fences, or markdown tables.');
-  }
-
-  if (input.replyStyle === 'formal_email') {
-    const contactEmail = getSupportReplyToEmail();
-    parts.push(
-      'Write as a formal email reply in plain prose with a professional tone, concise paragraphs, and no markdown.',
-      'Include a brief formal greeting at the start and a brief formal closing at the end in the same language as the user.',
-      [
-        'Clearly state that this is an automated support bot reply and that for further help',
-        `they can contact ${contactEmail}, in the same language as the user.`,
-      ].join(' '),
-    );
   }
 
   if (input.userLocale && input.userLocale.trim()) {
@@ -121,10 +101,10 @@ export const generateSupportReplyStream = async (
 
   const result = streamText({
     model: google('gemini-2.5-flash'),
-    system: buildSystemPrompt({
+    system: await buildSystemPrompt({
+      channel: options.replyStyle === 'formal_email' ? 'email' : 'chat',
       includeCitations,
       outputFormat: options.outputFormat ?? 'markdown',
-      replyStyle: options.replyStyle ?? 'chat',
       userLocale: options.userLocale,
     }),
     messages: await convertToModelMessages(messages),
@@ -181,10 +161,10 @@ export const generateSupportReplyText = async (
 
   const response = await generateText({
     model: google('gemini-2.5-flash'),
-    system: buildSystemPrompt({
+    system: await buildSystemPrompt({
+      channel: options.replyStyle === 'formal_email' ? 'email' : 'chat',
       includeCitations,
       outputFormat,
-      replyStyle: options.replyStyle ?? 'chat',
       userLocale: options.userLocale,
     }),
     messages: messages.map((message) => ({

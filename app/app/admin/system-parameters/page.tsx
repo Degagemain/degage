@@ -146,7 +146,13 @@ export default function SystemParametersPage() {
 
   const columns = useMemo(() => createColumns({ onSort: handleSort, onEdit: handleEdit, t }), [handleSort, handleEdit, t]);
 
-  const categoryFilterOptions: FacetedFilterOption[] = useMemo(() => [{ value: 'simulation', label: t('categories.simulation') }], [t]);
+  const categoryFilterOptions: FacetedFilterOption[] = useMemo(
+    () => [
+      { value: 'simulation', label: t('categories.simulation') },
+      { value: 'assistant', label: t('categories.assistant') },
+    ],
+    [t],
+  );
 
   const columnLabels = useMemo(
     () => ({

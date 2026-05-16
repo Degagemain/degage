@@ -2,12 +2,14 @@ import * as z from 'zod';
 
 export enum SystemParameterCategory {
   SIMULATION = 'simulation',
+  ASSISTANT = 'assistant',
 }
 
 export enum SystemParameterType {
   NUMBER = 'number',
   NUMBER_RANGE = 'number_range',
   EURONORM = 'euronorm',
+  STRING = 'string',
 }
 
 export const systemParameterTranslationSchema = z.object({
@@ -31,6 +33,7 @@ export const systemParameterSchema = z
     valueNumberMin: z.number().nullable().default(null),
     valueNumberMax: z.number().nullable().default(null),
     valueEuronormId: z.string().uuid().nullable().default(null),
+    valueString: z.string().nullable().default(null),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
   })
@@ -45,6 +48,7 @@ export const systemParameterValueUpdateSchema = z
     valueNumberMin: z.number().nullable().optional(),
     valueNumberMax: z.number().nullable().optional(),
     valueEuronormId: z.string().uuid().nullable().optional(),
+    valueString: z.string().nullable().optional(),
   })
   .strict();
 

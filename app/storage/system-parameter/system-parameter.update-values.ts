@@ -11,6 +11,7 @@ export const dbSystemParameterUpdateValues = async (id: string, update: SystemPa
   if (update.valueNumberMin !== undefined) data.valueNumberMin = update.valueNumberMin;
   if (update.valueNumberMax !== undefined) data.valueNumberMax = update.valueNumberMax;
   if (update.valueEuronormId !== undefined) data.valueEuronormId = update.valueEuronormId;
+  if (update.valueString !== undefined) data.valueString = update.valueString;
 
   const updated = await prisma.systemParameter.update({
     where: { id },
