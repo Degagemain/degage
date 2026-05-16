@@ -20,9 +20,11 @@ donc varier selon la zone.
 3. **Valeur et depreciation** — **Sim depreciation km** (ou **Sim depreciation km electric**) influence directement la baisse de valeur par km.
 4. **Couts fixes dans le taux km** — **Sim inspection cost per year** et **Sim maintenance cost per year** entrent dans le cout annuel fixe,
    puis dans le taux au km final.
-5. **Points qualite** — Le vehicule doit obtenir au moins 2 points bonus via **Sim min ecoscore for bonus**, **Sim max km for bonus** et **Sim
+5. **Scenarios de km partages** — **Km partagés min/an**, **Km partagés moy./an** et **Km partagés max/an** sont stockes sur les simulations et
+   alimentent les scenarios de partage faible, regulier et eleve.
+6. **Points qualite** — Le vehicule doit obtenir au moins 2 points bonus via **Sim min ecoscore for bonus**, **Sim max km for bonus** et **Sim
    max age for bonus**.
-6. **Categorie finale** — Selon le score qualite, le cout au km arrondi (EUR/km), les places et le contexte du hub, le resultat devient
+7. **Categorie finale** — Selon le score qualite, le cout au km arrondi (EUR/km), les places et le contexte du hub, le resultat devient
    **Category A**, **Category B**, **Higher rate** ou **Not OK**. Pour **Category A** avec moins de 7 places, le cout au km arrondi doit etre au
    plus **Cat. A max EUR/km (moins de 7 places)**. Pour **Category B** avec 7 places ou plus, au plus **Cat. B max EUR/km (7 places ou plus)**.
    Sur le **hub par defaut** seulement, **Category A** peut encore s'appliquer si le cout de depreciation par km est au plus **Cat. A dépréc.
@@ -37,6 +39,9 @@ donc varier selon la zone.
 | Défaut                                 | Indique si c'est le hub par defaut. Ce hub applique des regles supplementaires de repli lors de l'attribution de categorie.                                                 |
 | Sim max age                            | **Admission.** Âge max. du véhicule en années (à partir de la première immatriculation). Les véhicules plus âgés sont refusés (Not OK).                                     |
 | Sim max km                             | **Admission.** Kilométrage max. en km. Un kilométrage supérieur est refusé (Not OK).                                                                                        |
+| Km partagés min/an                     | **Scenario partage.** Kilometres partages utilises pour le scenario faible.                                                                                                 |
+| Km partagés moy./an                    | **Scenario partage.** Kilometres partages utilises pour le scenario regulier et l'estimation moyenne backend.                                                               |
+| Km partagés max/an                     | **Scenario partage.** Kilometres partages utilises pour le scenario eleve.                                                                                                  |
 | Sim max price (manual review)          | **Plafond prix.** Renseigne (euros) : les regles donneraient **Category A/B** ou **Higher rate** mais la valeur est trop haute → **Manual review** ; vide = pas de plafond. |
 | Cat. A max EUR/km (moins de 7 places)  | **Category A.** Cout au km arrondi maximal (EUR/km) pour le premier palier d'acceptation si le vehicule a moins de 7 places.                                                |
 | Cat. B max EUR/km (7 places ou plus)   | **Category B.** Cout au km arrondi maximal (EUR/km) si le vehicule a 7 places ou plus.                                                                                      |

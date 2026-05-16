@@ -106,9 +106,9 @@ model Simulation {
     resultTaxCostPerYear         Float?
     resultInspectionCostPerYear  Float?
     resultMaintenanceCostPerYear Float?
-    resultBenchmarkMinKm         Int?
-    resultBenchmarkAvgKm         Int?
-    resultBenchmarkMaxKm         Int?
+    resultMinSharedKm            Int?
+    resultAvgSharedKm            Int?
+    resultMaxSharedKm            Int?
     resultRoundedKmCost          Float?
     resultDepreciationCostKm     Float?
     resultEstimatedCarValue      Float?
@@ -215,29 +215,17 @@ model Hub {
     simDepreciationKmElectric             Int            @default(320000)
     simInspectionCostPerYear              Decimal        @default(43)
     simMaintenanceCostPerYear             Decimal        @default(950)
+    minSharedKm                           Int            @default(3000)
+    avgSharedKm                           Int            @default(5000)
+    maxSharedKm                           Int            @default(7000)
     simMaxPrice                           Int?           @default(35000)
     simAcceptedPriceCategoryA             Decimal        @default(0.38)
     simAcceptedPriceCategoryB             Decimal        @default(0.46)
     simAcceptedDepreciationCostKm         Decimal        @default(0.32)
     simAcceptedElectricDepreciationCostKm Decimal        @default(0.33)
     towns                                 Town[]
-    benchmarks                            HubBenchmark[]
     createdAt                             DateTime       @default(now())
     updatedAt                             DateTime       @updatedAt
-}
-
-model HubBenchmark {
-    id          String   @id @default(uuid())
-    hubId       String
-    hub         Hub      @relation(fields: [hubId], references: [id], onDelete: Cascade)
-    ownerKm     Int
-    sharedMinKm Int      @default(0)
-    sharedMaxKm Int      @default(0)
-    sharedAvgKm Int      @default(0)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-
-    @@unique([hubId, ownerKm])
 }
 
 model InsurancePriceBenchmark {

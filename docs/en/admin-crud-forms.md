@@ -27,7 +27,6 @@ entities that will get matching **new** and **`[id]`** pages.
 | `car-tax-euro-norm-adjustments`            | `/api/car-tax-euro-norm-adjustments` | `…/{id}`                   | No                          | Done                         |
 | `car-price-estimates`                      | `/api/car-price-estimates`           | `…/{id}`                   | No                          | Done                         |
 | `car-infos`                                | `/api/car-infos`                     | `/api/car-infos/{id}`      | No                          | Done                         |
-| `hub-benchmarks`                           | `/api/hub-benchmarks`                | `…/{id}`                   | No                          | Done                         |
 | `insurance-price-benchmarks`               | `/api/insurance-price-benchmarks`    | `…/{id}`                   | No                          | Done                         |
 | `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`  | Per-locale content (custom) | Separate flow                |
 | `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)       | N/A                         | Has `new` + read-only `[id]` |

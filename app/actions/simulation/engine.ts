@@ -30,7 +30,6 @@ import { dbHubRead } from '@/storage/hub/hub.read';
 import { dbFuelTypeRead } from '@/storage/fuel-type/fuel-type.read';
 import { dbTownRead } from '@/storage/town/town.read';
 import { dbProvinceRead } from '@/storage/province/province.read';
-import { dbHubBenchmarkFindClosest } from '@/storage/hub-benchmark/hub-benchmark.read';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import type { Hub } from '@/domain/hub.model';
 import { captureEvent } from '@/integrations/posthog';
@@ -201,14 +200,10 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   result.resultInspectionCostPerYear = hub.simInspectionCostPerYear;
   result.resultMaintenanceCostPerYear = hub.simMaintenanceCostPerYear;
 
-  const closestBenchmark = await dbHubBenchmarkFindClosest(hub.id!, input.ownerKmPerYear);
-  if (!closestBenchmark) {
-    throw new Error('No closest benchmark found');
-  }
-  result.resultBenchmarkMinKm = closestBenchmark.sharedMinKm;
-  result.resultBenchmarkAvgKm = closestBenchmark.sharedAvgKm;
-  result.resultBenchmarkMaxKm = closestBenchmark.sharedMaxKm;
-  const estimatedTotalYearlyMileage = input.ownerKmPerYear + (input.ownerKmPerYear / closestBenchmark.ownerKm) * closestBenchmark.sharedAvgKm;
+  result.resultMinSharedKm = hub.minSharedKm;
+  result.resultAvgSharedKm = hub.avgSharedKm;
+  result.resultMaxSharedKm = hub.maxSharedKm;
+  const estimatedTotalYearlyMileage = input.ownerKmPerYear + hub.avgSharedKm;
 
   addInfoMessage(
     result,

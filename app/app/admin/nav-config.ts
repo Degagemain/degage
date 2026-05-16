@@ -34,7 +34,6 @@ export const SIMULATION_ITEMS: {
     | 'carInfos'
     | 'insurancePriceBenchmarks'
     | 'systemParameters'
-    | 'hubBenchmarks'
     | 'carTaxBaseRates'
     | 'carTaxFlatRates'
     | 'carTaxEuroNormAdjustments';
@@ -44,7 +43,6 @@ export const SIMULATION_ITEMS: {
   { translationKey: 'carInfos', href: '/app/admin/car-infos' },
   { translationKey: 'insurancePriceBenchmarks', href: '/app/admin/insurance-price-benchmarks' },
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
-  { translationKey: 'hubBenchmarks', href: '/app/admin/hub-benchmarks' },
   { translationKey: 'carTaxBaseRates', href: '/app/admin/car-tax-base-rates' },
   { translationKey: 'carTaxFlatRates', href: '/app/admin/car-tax-flat-rates' },
   { translationKey: 'carTaxEuroNormAdjustments', href: '/app/admin/car-tax-euro-norm-adjustments' },

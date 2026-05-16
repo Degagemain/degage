@@ -19,9 +19,11 @@ For each simulation run, the hub of the selected town is applied. This means adm
 3. **Value and depreciation** — **Sim depreciation km** (or **Sim depreciation km electric**) controls how fast value declines per km.
 4. **Fixed costs in km rate** — **Sim inspection cost per year** and **Sim maintenance cost per year** are included in fixed yearly cost and
    therefore in the final km rate.
-5. **Quality points** — The vehicle must reach at least 2 bonus points via **Sim min ecoscore for bonus**, **Sim max km for bonus**, and **Sim
+5. **Shared km scenarios** — **Min shared km/year**, **Avg shared km/year**, and **Max shared km/year** are returned on simulations and power
+   the low, regular, and high sharing scenarios.
+6. **Quality points** — The vehicle must reach at least 2 bonus points via **Sim min ecoscore for bonus**, **Sim max km for bonus**, and **Sim
    max age for bonus**.
-6. **Category outcome** — Based on quality score, rounded km cost (€/km), seats, and hub context, result becomes **Category A**, **Category B**,
+7. **Category outcome** — Based on quality score, rounded km cost (€/km), seats, and hub context, result becomes **Category A**, **Category B**,
    **Higher rate**, or **Not OK**. For **Category A** with fewer than 7 seats, the rounded km cost must be at or below **Cat. A max €/km (under
    7 seats)**. For **Category B** with 7 or more seats, it must be at or below **Cat. B max €/km (7+ seats)**. On the **default** hub only,
    **Category A** can still be assigned if depreciation cost per km is at or below **Cat. A deprec. €/km (default hub)**. For **electric**
@@ -35,6 +37,9 @@ For each simulation run, the hub of the selected town is applied. This means adm
 | Default                           | Indicates whether this is the default hub. The default hub has extra fallback logic in category assignment.                                                                  |
 | Sim max age                       | **Admission.** Maximum car age in years (from first registration). Cars older than this are rejected (Not OK).                                                               |
 | Sim max km                        | **Admission.** Maximum mileage in km. Cars with higher mileage are rejected (Not OK).                                                                                        |
+| Min shared km/year                | **Shared scenario.** Shared kilometers used for the low sharing scenario.                                                                                                    |
+| Avg shared km/year                | **Shared scenario.** Shared kilometers used for the regular sharing scenario and backend average-cost estimate.                                                              |
+| Max shared km/year                | **Shared scenario.** Shared kilometers used for the high sharing scenario.                                                                                                   |
 | Sim max price (manual review)     | **Price cap.** If set (euros), when rules would accept (**Category A**, **B**, or **Higher rate**) but value is above this, result is **Manual review**; empty means no cap. |
 | Cat. A max €/km (under 7 seats)   | **Category A.** Maximum allowed rounded cost per km (€/km) for the first acceptance tier when the car has fewer than 7 seats.                                                |
 | Cat. B max €/km (7+ seats)        | **Category B.** Maximum allowed rounded cost per km (€/km) when the car has 7 or more seats.                                                                                 |

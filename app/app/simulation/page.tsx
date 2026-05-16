@@ -132,9 +132,9 @@ export default function SimulationPage() {
     resultInspectionCostPerYear?: number | null;
     resultMaintenanceCostPerYear?: number | null;
     ownerKmPerYear?: number;
-    resultBenchmarkMinKm?: number | null;
-    resultBenchmarkAvgKm?: number | null;
-    resultBenchmarkMaxKm?: number | null;
+    resultMinSharedKm?: number | null;
+    resultAvgSharedKm?: number | null;
+    resultMaxSharedKm?: number | null;
     resultEstimatedCarValue?: number | null;
     resultRoundedKmCost?: number | null;
     resultDepreciationCostKm?: number | null;
@@ -381,9 +381,9 @@ export default function SimulationPage() {
           resultInspectionCostPerYear: data.resultInspectionCostPerYear ?? null,
           resultMaintenanceCostPerYear: data.resultMaintenanceCostPerYear ?? null,
           ownerKmPerYear: data.ownerKmPerYear,
-          resultBenchmarkMinKm: data.resultBenchmarkMinKm ?? null,
-          resultBenchmarkAvgKm: data.resultBenchmarkAvgKm ?? null,
-          resultBenchmarkMaxKm: data.resultBenchmarkMaxKm ?? null,
+          resultMinSharedKm: data.resultMinSharedKm ?? null,
+          resultAvgSharedKm: data.resultAvgSharedKm ?? null,
+          resultMaxSharedKm: data.resultMaxSharedKm ?? null,
           resultEstimatedCarValue: data.resultEstimatedCarValue ?? null,
           resultRoundedKmCost: data.resultRoundedKmCost ?? null,
           resultDepreciationCostKm: data.resultDepreciationCostKm ?? null,
@@ -1277,15 +1277,18 @@ export default function SimulationPage() {
           const totalCost = annualInsurance + annualTax + annualInspection + annualMaintenance;
           const hasCosts = totalCost > 0;
           const ownerKm = simulationResult?.ownerKmPerYear ?? 0;
-          const benchMin = simulationResult?.resultBenchmarkMinKm ?? 0;
-          const benchAvg = simulationResult?.resultBenchmarkAvgKm ?? 0;
-          const benchMax = simulationResult?.resultBenchmarkMaxKm ?? 0;
-          const sharedKm = [benchMin, benchAvg, benchMax][costScenarioIndex] ?? 0;
+          const sharedKmOptions = [
+            simulationResult?.resultMinSharedKm ?? 0,
+            simulationResult?.resultAvgSharedKm ?? 0,
+            simulationResult?.resultMaxSharedKm ?? 0,
+          ];
+          const sharedKm = sharedKmOptions[costScenarioIndex] ?? 0;
           const totalKm = ownerKm + sharedKm;
-          const fractionRepaid = totalKm > 0 ? sharedKm / totalKm : 0;
-          const amountRepaid = totalCost * fractionRepaid;
+          const ownerCostFraction = totalKm > 0 ? ownerKm / totalKm : 1;
+          const fixedCostRepaid = totalCost * (1 - ownerCostFraction);
           const depPerKm = simulationResult?.resultDepreciationCostKm ?? 0;
           const depAnnualEuro = Math.round(depPerKm * sharedKm);
+          const amountRepaid = fixedCostRepaid + depAnnualEuro;
           const scenarioTotalPerYear = totalCost + depAnnualEuro;
           const neighbourCostSharePercent =
             scenarioTotalPerYear > 0 ? Math.min(100, Math.round((amountRepaid / scenarioTotalPerYear) * 100)) : 0;
