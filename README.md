@@ -13,7 +13,9 @@ pnpm db:seed
 pnpm db:seed-dev-account
 ```
 
-Check the env file and to start the dev server run:
+The `.env.example` file contains a default `DATABASE_URL` that points to the local Docker PostgreSQL instance. After copying, verify that `DATABASE_URL` is set in your `.env` — the build will not work without it.
+
+To start the dev server run:
 
 ```bash
 pnpm dev
