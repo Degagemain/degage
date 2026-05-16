@@ -9,6 +9,8 @@ cp .env.example .env
 pnpm i
 pnpm db:start
 pnpm db:migrate
+pnpm db:seed
+pnpm db:seed-dev-account
 ```
 
 Check the env file and to start the dev server run:
@@ -16,6 +18,8 @@ Check the env file and to start the dev server run:
 ```bash
 pnpm dev
 ```
+
+The dev account (`DEV_ACCOUNT_EMAIL` in `.env`, default `dev@degage.be`) is created with password `password` and has admin privileges. Email verification is skipped for this account.
 
 # Technologies
 

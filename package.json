@@ -20,6 +20,7 @@
     "db:reset": "docker compose down --volumes --remove-orphans && pnpm db:start && pnpm db:migrate && pnpm db:seed",
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
     "db:seed": "dotenv -e .env -- prisma db seed",
+    "db:seed-dev-account": "dotenv -e .env -- pnpx tsx seeding/seed-dev-account.ts",
     "docs": "node scripts/validate-docs.mjs",
     "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
   },
