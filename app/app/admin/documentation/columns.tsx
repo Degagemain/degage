@@ -8,6 +8,7 @@ import { Check, Eye, MoreHorizontal, Pencil } from 'lucide-react';
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
+import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 
@@ -21,6 +22,21 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
   const { t, getTitle, onSort } = ctx;
 
   return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       accessorKey: 'externalId',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.externalId')} onSort={onSort} />,

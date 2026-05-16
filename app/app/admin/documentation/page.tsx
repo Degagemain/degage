@@ -3,13 +3,18 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, Loader2, Plus, RefreshCw, X } from 'lucide-react';
+import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
 import type { DocumentationGroup } from '@/domain/documentation-group.model';
-import { documentationFormatValues, documentationSourceValues } from '@/domain/documentation.model';
+import {
+  documentationAudienceRoleValues,
+  documentationFormatValues,
+  documentationSourceValues,
+  documentationTagValues,
+} from '@/domain/documentation.model';
 import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
@@ -25,8 +30,10 @@ import {
   DataTableToolbar,
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
+import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
+import { BulkUpdateDocumentationDialog, type BulkUpdateDocumentationItem } from './components/bulk-update-documentation-dialog';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -92,8 +99,10 @@ export default function DocumentationAdminPage() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
   });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
+  const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -220,6 +229,20 @@ export default function DocumentationAdminPage() {
     void fetchDocs();
   }, [fetchDocs]);
 
+  const selectedDocumentation: BulkUpdateDocumentationItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter((doc): doc is Documentation => Boolean(doc?.id))
+        .map((documentation) => ({ id: documentation.id!, label: getTitle(documentation), documentation })),
+    [getTitle, rowSelection, state.data],
+  );
+
+  const handleBulkUpdateComplete = useCallback(() => {
+    setRowSelection({});
+    void fetchDocs();
+  }, [fetchDocs]);
+
   const handleEmbeddingSync = useCallback(async () => {
     setIsSyncingEmbeddings(true);
     try {
@@ -321,6 +344,17 @@ export default function DocumentationAdminPage() {
     }));
   }, [t]);
 
+  const roleOptions = useMemo(
+    () =>
+      documentationAudienceRoleValues.map((role) => ({
+        value: role,
+        label: t(`columns.audienceRole.${role}`),
+      })),
+    [t],
+  );
+
+  const tagOptions = useMemo(() => documentationTagValues.map((tag) => ({ value: tag, label: tag })), []);
+
   const table = useReactTable({
     data: state.data,
     columns,
@@ -328,10 +362,11 @@ export default function DocumentationAdminPage() {
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: () => {},
     onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
     manualPagination: true,
     manualSorting: true,
     pageCount: Math.ceil(state.total / pageSize),
-    state: { sorting, columnVisibility },
+    state: { sorting, columnVisibility, rowSelection },
   });
 
   if (state.error) {
@@ -349,6 +384,12 @@ export default function DocumentationAdminPage() {
 
   const filterSlot = (
     <>
+      <BulkActionsButton count={selectedDocumentation.length} label={t('bulkActions.label')}>
+        <DropdownMenuItem onClick={() => setBulkUpdateOpen(true)}>
+          <Pencil />
+          {t('bulkActions.update')}
+        </DropdownMenuItem>
+      </BulkActionsButton>
       <Button
         type="button"
         variant="outline"
@@ -449,7 +490,7 @@ export default function DocumentationAdminPage() {
             pageSize={pageSize}
             pageCount={Math.ceil(state.total / pageSize)}
             totalItems={state.total}
-            selectedCount={0}
+            selectedCount={Object.keys(rowSelection).length}
             onPageChange={setPageIndex}
             onPageSizeChange={setPageSize}
           />
@@ -466,6 +507,41 @@ export default function DocumentationAdminPage() {
           title: t('bulkImport.title'),
           description: t('bulkImport.description'),
           columnName: t('bulkImport.columnName'),
+        }}
+      />
+
+      <BulkUpdateDocumentationDialog
+        open={bulkUpdateOpen}
+        onOpenChange={setBulkUpdateOpen}
+        items={selectedDocumentation}
+        groupOptions={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
+        roleOptions={roleOptions}
+        tagOptions={tagOptions}
+        onComplete={handleBulkUpdateComplete}
+        labels={{
+          title: t('bulkUpdate.title'),
+          description: t('bulkUpdate.description', { count: selectedDocumentation.length }),
+          isFaqLabel: t('bulkUpdate.isFaqLabel'),
+          isPublicLabel: t('bulkUpdate.isPublicLabel'),
+          tagsLabel: t('bulkUpdate.tagsLabel'),
+          rolesLabel: t('bulkUpdate.rolesLabel'),
+          groupsLabel: t('bulkUpdate.groupsLabel'),
+          unsetOption: t('bulkUpdate.unsetOption'),
+          yesOption: t('yes'),
+          noOption: t('no'),
+          replaceOption: t('bulkUpdate.replaceOption'),
+          tagsPlaceholder: t('form.multiSelectTags'),
+          rolesPlaceholder: t('form.multiSelectAudience'),
+          groupsPlaceholder: t('form.multiSelectGroups'),
+          columnName: t('bulkUpdate.columnName'),
+          columnStatus: t('bulkUpdate.columnStatus'),
+          confirm: t('bulkUpdate.confirm'),
+          cancel: t('bulkUpdate.cancel'),
+          close: t('bulkUpdate.close'),
+          statusPending: t('bulkUpdate.statusPending'),
+          statusUpdating: t('bulkUpdate.statusUpdating'),
+          statusSuccess: t('bulkUpdate.statusSuccess'),
+          statusError: t('bulkUpdate.statusError'),
         }}
       />
     </>
