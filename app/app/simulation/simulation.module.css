@@ -1283,6 +1283,18 @@
   border: 1.5px solid var(--sim-border);
 }
 
+.backBtnTop {
+  margin-bottom: var(--sim-s16);
+  font-size: 13px;
+  padding: 6px 14px;
+}
+
+.privacyLink {
+  color: var(--sim-brand);
+  text-decoration: underline;
+  font-size: inherit;
+}
+
 .tileGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
