@@ -143,30 +143,47 @@ La simulation lit des tables operationnelles et de reference de l'administration
 
 ## Liste des simulations
 
-La liste affiche les executions : commune, resultat et donnees vehicule saisies. Ouvrir une ligne pour voir le resultat detaille et les messages
-d'etapes.
+La liste affiche les exécutions avec les données du véhicule saisies et les résultats calculés. Ouvrir une ligne pour voir le résultat détaillé
+et les messages d'étapes.
 
-| Propriété                | Description                                                           |
-| ------------------------ | --------------------------------------------------------------------- |
-| Commune                  | Commune sélectionnée pour l'exécution (le cas échéant).               |
-| Code résultat            | Résultat global (ex. Not OK, Manual review).                          |
-| Marque                   | Marque saisie.                                                        |
-| Type de carburant        | Type de carburant saisi.                                              |
-| Type de véhicule         | Type ou description « Autre ».                                        |
-| Kilométrage              | Kilométrage en km.                                                    |
-| Places                   | Nombre de places.                                                     |
-| Première immatriculation | Date de première immatriculation.                                     |
-| Type autre               | Description personnalisée lorsque « Autre » est choisi.               |
-| Durée                    | Temps d'exécution du moteur, en secondes entières.                    |
-| E-mail du résultat       | Adresse utilisée pour envoyer le résultat par e-mail (si renseignée). |
+Les colonnes marquées _(masquées par défaut)_ sont disponibles via le sélecteur de colonnes mais ne sont pas affichées au chargement.
 
-Sur l’écran **détail** d’une simulation, vous pouvez saisir ou modifier cette adresse. L’e-mail au destinataire utilise la **langue actuelle de
-l’interface**. Pour les simulations terminées avec succès (pas **Non OK**, et sans erreur moteur), l’enregistrement d’une adresse **nouvelle ou
-modifiée** envoie le résultat à cette adresse et prévient le support avec un résumé et un lien vers l’administration.
-
-Vous pouvez télécharger les lignes correspondant aux filtres et au tri actuels via **Plus**, puis **Exporter**. Choisissez un fichier adapté aux
-tableurs ou un fichier de données structurées. Les intitulés de colonnes correspondent à la liste (y compris les colonnes masquées). Seuls les
-administrateurs peuvent exporter.
+| Propriété               | Description                                                                               |
+| ----------------------- | ----------------------------------------------------------------------------------------- |
+| Description             | Résumé en une ligne : commune, marque, type de carburant et type de véhicule.             |
+| Code résultat           | Résultat final (ex. Pas OK, Révision manuelle). Lien vers la page de détail.              |
+| Kilométrage             | Kilométrage saisi en km.                                                                  |
+| Places assises          | Nombre de places assises.                                                                 |
+| Première immat.         | Date de première immatriculation.                                                         |
+| Valeur estimée          | Valeur marchande estimée du véhicule utilisée dans le calcul.                             |
+| Amortissement/km        | Part d'amortissement par km calculée par le moteur.                                       |
+| Assurance/an            | Coût d'assurance annuel estimé.                                                           |
+| Créé le                 | Date et heure d'enregistrement de la simulation.                                          |
+| Commune                 | Commune sélectionnée pour l'exécution. _(masquée par défaut)_                             |
+| Marque                  | Marque du véhicule saisie. _(masquée par défaut)_                                         |
+| Type de carburant       | Type de carburant saisi. _(masquée par défaut)_                                           |
+| Type de véhicule        | Type de véhicule ou description "Autre". _(masquée par défaut)_                           |
+| Km/an propriétaire      | Kilométrage annuel attendu du propriétaire. _(masquée par défaut)_                        |
+| Prix d'achat            | Prix d'achat pour les véhicules neufs. _(masquée par défaut)_                             |
+| Voiture neuve           | Indique si le véhicule a été marqué comme neuf. _(masquée par défaut)_                    |
+| Utilitaire              | Indique si le véhicule a été marqué comme utilitaire. _(masquée par défaut)_              |
+| Taxe/an                 | Taxe de circulation annuelle estimée. _(masquée par défaut)_                              |
+| Contrôle technique/an   | Coût annuel estimé du contrôle technique. _(masquée par défaut)_                          |
+| Entretien/an            | Coût annuel estimé de l'entretien. _(masquée par défaut)_                                 |
+| Tarif au km             | Tarif km arrondi final utilisé pour le résultat. _(masquée par défaut)_                   |
+| Km partagés min         | Scénario de km partagés minimum (paramètres hub). _(masquée par défaut)_                  |
+| Km partagés moy.        | Scénario de km partagés moyen (paramètres hub). _(masquée par défaut)_                    |
+| Km partagés max         | Scénario de km partagés maximum (paramètres hub). _(masquée par défaut)_                  |
+| Norme Euro              | Norme d'émission Euro du véhicule. _(masquée par défaut)_                                 |
+| Ecoscore                | Score environnemental du véhicule. _(masquée par défaut)_                                 |
+| Consommation            | Consommation de carburant estimée. _(masquée par défaut)_                                 |
+| Cylindrée cc            | Cylindrée du moteur en cc. _(masquée par défaut)_                                         |
+| CO2 (g/km)              | Émission de CO2 en g/km. _(masquée par défaut)_                                           |
+| Motif de rejet          | Texte explicatif quand le résultat est Pas OK. _(masquée par défaut)_                     |
+| Type de véhicule (aut.) | Description personnalisée quand "Autre" a été choisi. _(masquée par défaut)_              |
+| Durée (s)               | Durée de l'exécution du moteur en secondes entières. _(masquée par défaut)_               |
+| E-mail du résultat      | Adresse utilisée pour envoyer le résultat par e-mail (si définie). _(masquée par défaut)_ |
+| Modifié le              | Date et heure de la dernière mise à jour. _(masquée par défaut)_                          |
 
 ## Conseils pour les admins
 

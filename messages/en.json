@@ -16,16 +16,29 @@
     "homeCta": "Back to home →"
   },
   "faq": {
-    "title": "Frequently asked questions",
-    "docFaqPanelHeading": "Documentation",
-    "intro": "Find answers to the most common questions about the simulation and the fleet.",
-    "q1": "What does the simulation do?",
-    "a1": "The simulation checks whether your vehicle meets the conditions to join the fleet. You enter your details and get an immediate indication: approved, not approved, or manual review required.",
-    "q2": "My result is \"unclear\". What now?",
-    "a2": "When the result is unclear, a manual review is needed. You can submit a request via the \"Ask manual review\" button. Our team will review your case and get in touch.",
-    "q3": "Have another question?",
-    "a3": "Contact us via the details on the website. We are happy to help.",
-    "backToSimulation": "Back to simulation"
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Help center"
+    },
+    "title": "Help & FAQ",
+    "intro": "Find answers, browse articles, or open the support chat if you need more help.",
+    "searchPlaceholder": "Search help articles and questions…",
+    "searchLoading": "Searching…",
+    "searchNoResults": "No results found.",
+    "searchResultsLabel": "Results",
+    "articlesHeading": "Articles",
+    "articlesShowMore": "Show all articles",
+    "faqHeading": "Frequently asked questions",
+    "groupShowMoreCta": "Show all in {name}",
+    "readArticle": "Read",
+    "backToHelp": "Back to help",
+    "allArticlesTitle": "All articles",
+    "allFaqInGroupTitle": "All questions",
+    "emptyArticles": "No articles yet.",
+    "emptyFaq": "No questions in this section yet.",
+    "errorLoad": "Something went wrong. Try again.",
+    "loadMore": "Load more",
+    "articleMetaUpdated": "Updated {date}"
   },
   "dataTable": {
     "noResults": "No results found.",
@@ -1146,15 +1159,36 @@
         "resultCode": "Result"
       },
       "columns": {
+        "description": "Description",
         "resultCode": "Result",
         "town": "Town",
         "brand": "Brand",
         "fuelType": "Fuel type",
         "carType": "Car type",
-        "km": "Mileage (km)",
         "mileage": "Mileage (km)",
+        "km": "Mileage (km)",
+        "ownerKmPerYear": "Owner km/year",
         "seats": "Seats",
         "firstRegisteredAt": "First registered",
+        "purchasePrice": "Purchase price",
+        "isNewCar": "New car",
+        "isVan": "Van",
+        "resultEstimatedCarValue": "Est. car value",
+        "resultDepreciationCostKm": "Depreciation cost/km",
+        "resultInsuranceCostPerYear": "Insurance cost/year",
+        "resultTaxCostPerYear": "Tax cost/year",
+        "resultInspectionCostPerYear": "Inspection cost/year",
+        "resultMaintenanceCostPerYear": "Maintenance cost/year",
+        "resultRoundedKmCost": "Km rate",
+        "resultMinSharedKm": "Min shared km",
+        "resultAvgSharedKm": "Avg shared km",
+        "resultMaxSharedKm": "Max shared km",
+        "resultEuroNorm": "Euro norm",
+        "resultEcoScore": "Ecoscore",
+        "resultConsumption": "Consumption",
+        "resultCc": "Cylinder cc",
+        "resultCo2": "CO2 (g/km)",
+        "rejectionReason": "Rejection reason",
         "carTypeOther": "Car type (other)",
         "duration": "Duration (s)",
         "email": "Result email",
@@ -1238,7 +1272,9 @@
         "consumption": "Consumption",
         "yes": "Yes",
         "no": "No"
-      }
+      },
+      "yes": "Yes",
+      "no": "No"
     },
     "users": {
       "title": "Users",
@@ -1873,31 +1909,6 @@
       "kosten": "Your costs",
       "bevestiging": "Confirmation"
     }
-  },
-  "faq": {
-    "header": {
-      "logoTitle": "Dégage!",
-      "logoSub": "Help center"
-    },
-    "title": "Help & FAQ",
-    "intro": "Find answers, browse articles, or open the support chat if you need more help.",
-    "searchPlaceholder": "Search help articles and questions…",
-    "searchLoading": "Searching…",
-    "searchNoResults": "No results found.",
-    "searchResultsLabel": "Results",
-    "articlesHeading": "Articles",
-    "articlesShowMore": "Show all articles",
-    "faqHeading": "Frequently asked questions",
-    "groupShowMoreCta": "Show all in {name}",
-    "readArticle": "Read",
-    "backToHelp": "Back to help",
-    "allArticlesTitle": "All articles",
-    "allFaqInGroupTitle": "All questions",
-    "emptyArticles": "No articles yet.",
-    "emptyFaq": "No questions in this section yet.",
-    "errorLoad": "Something went wrong. Try again.",
-    "loadMore": "Load more",
-    "articleMetaUpdated": "Updated {date}"
   },
   "chat": {
     "nav": "Support Chat",

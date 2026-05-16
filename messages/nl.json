@@ -16,16 +16,29 @@
     "homeCta": "Terug naar start →"
   },
   "faq": {
-    "title": "Veelgestelde vragen",
-    "docFaqPanelHeading": "Documentatie",
-    "intro": "Hier vind je antwoorden op de meest gestelde vragen over de simulatie en het wagenpark.",
-    "q1": "Wat doet de simulatie?",
-    "a1": "De simulatie controleert of je voertuig voldoet aan de voorwaarden om tot het wagenpark toe te treden. Je vult je gegevens in en krijgt direct een indicatie: toegelaten, niet toegelaten of handmatige beoordeling nodig.",
-    "q2": "Mijn resultaat is \"onduidelijk\". Wat nu?",
-    "a2": "Bij een onduidelijk resultaat is een handmatige beoordeling nodig. Je kunt via de knop \"Handmatige beoordeling aanvragen\" een verzoek indienen. Ons team bekijkt je dossier en neemt contact met je op.",
-    "q3": "Nog een andere vraag?",
-    "a3": "Neem contact met ons op via de contactgegevens op de website. We helpen je graag verder.",
-    "backToSimulation": "Terug naar simulatie"
+    "header": {
+      "logoTitle": "Dégage!",
+      "logoSub": "Helpcentrum"
+    },
+    "title": "Help & FAQ",
+    "intro": "Vind antwoorden, blader door artikelen of open de supportchat als je meer hulp nodig hebt.",
+    "searchPlaceholder": "Zoek in artikelen en vragen…",
+    "searchLoading": "Zoeken…",
+    "searchNoResults": "Geen resultaten.",
+    "searchResultsLabel": "Resultaten",
+    "articlesHeading": "Artikelen",
+    "articlesShowMore": "Alle artikelen",
+    "faqHeading": "Veelgestelde vragen",
+    "groupShowMoreCta": "Alles in {name}",
+    "readArticle": "Lees",
+    "backToHelp": "Terug naar help",
+    "allArticlesTitle": "Alle artikelen",
+    "allFaqInGroupTitle": "Alle vragen",
+    "emptyArticles": "Nog geen artikelen.",
+    "emptyFaq": "Nog geen vragen in deze rubriek.",
+    "errorLoad": "Er ging iets mis. Probeer opnieuw.",
+    "loadMore": "Meer laden",
+    "articleMetaUpdated": "Bijgewerkt op {date}"
   },
   "dataTable": {
     "noResults": "Geen resultaten gevonden.",
@@ -1146,15 +1159,36 @@
         "resultCode": "Resultaat"
       },
       "columns": {
+        "description": "Beschrijving",
         "resultCode": "Resultaat",
         "town": "Gemeente",
         "brand": "Merk",
         "fuelType": "Brandstoftype",
         "carType": "Autotype",
-        "km": "Kilometerstand (km)",
         "mileage": "Kilometerstand (km)",
+        "km": "Kilometerstand (km)",
+        "ownerKmPerYear": "Eigenaar km/jaar",
         "seats": "Zitplaatsen",
         "firstRegisteredAt": "Eerste inschrijving",
+        "purchasePrice": "Aankoopprijs",
+        "isNewCar": "Nieuwe wagen",
+        "isVan": "Bestelwagen",
+        "resultEstimatedCarValue": "Geschatte waarde",
+        "resultDepreciationCostKm": "Afschrijving/km",
+        "resultInsuranceCostPerYear": "Verzekering/jaar",
+        "resultTaxCostPerYear": "Verkeersbelasting/jaar",
+        "resultInspectionCostPerYear": "Keuring/jaar",
+        "resultMaintenanceCostPerYear": "Onderhoud/jaar",
+        "resultRoundedKmCost": "Km-tarief",
+        "resultMinSharedKm": "Min gedeelde km",
+        "resultAvgSharedKm": "Gem. gedeelde km",
+        "resultMaxSharedKm": "Max gedeelde km",
+        "resultEuroNorm": "Euro norm",
+        "resultEcoScore": "Ecoscore",
+        "resultConsumption": "Verbruik",
+        "resultCc": "Cilinder cc",
+        "resultCo2": "CO2 (g/km)",
+        "rejectionReason": "Afwijzingsreden",
         "carTypeOther": "Autotype (overig)",
         "duration": "Duur (s)",
         "email": "Resultaat e-mail",
@@ -1238,7 +1272,9 @@
         "consumption": "Verbruik",
         "yes": "Ja",
         "no": "Nee"
-      }
+      },
+      "yes": "Ja",
+      "no": "Nee"
     },
     "users": {
       "title": "Gebruikers",
@@ -1873,31 +1909,6 @@
       "kosten": "Jouw kosten",
       "bevestiging": "Bevestiging"
     }
-  },
-  "faq": {
-    "header": {
-      "logoTitle": "Dégage!",
-      "logoSub": "Helpcentrum"
-    },
-    "title": "Help & FAQ",
-    "intro": "Vind antwoorden, blader door artikelen of open de supportchat als je meer hulp nodig hebt.",
-    "searchPlaceholder": "Zoek in artikelen en vragen…",
-    "searchLoading": "Zoeken…",
-    "searchNoResults": "Geen resultaten.",
-    "searchResultsLabel": "Resultaten",
-    "articlesHeading": "Artikelen",
-    "articlesShowMore": "Alle artikelen",
-    "faqHeading": "Veelgestelde vragen",
-    "groupShowMoreCta": "Alles in {name}",
-    "readArticle": "Lees",
-    "backToHelp": "Terug naar help",
-    "allArticlesTitle": "Alle artikelen",
-    "allFaqInGroupTitle": "Alle vragen",
-    "emptyArticles": "Nog geen artikelen.",
-    "emptyFaq": "Nog geen vragen in deze rubriek.",
-    "errorLoad": "Er ging iets mis. Probeer opnieuw.",
-    "loadMore": "Meer laden",
-    "articleMetaUpdated": "Bijgewerkt op {date}"
   },
   "chat": {
     "nav": "Support Chat",

@@ -16,6 +16,16 @@ interface ColumnOptions {
   t: (key: string) => string;
 }
 
+function formatCurrency(value: number | null | undefined): string {
+  if (value == null) return '—';
+  return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(value);
+}
+
+function formatCurrencyPerKm(value: number | null | undefined): string {
+  if (value == null) return '—';
+  return `${new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(value)}/km`;
+}
+
 export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] => {
   const { t, onSort } = options;
   return [
@@ -33,6 +43,30 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       ),
       enableSorting: false,
       enableHiding: false,
+    },
+    {
+      id: 'description',
+      accessorFn: (row) => {
+        const parts = [
+          row.town?.name,
+          row.brand?.name,
+          row.fuelType?.name,
+          row.carType?.name ?? (row.carTypeOther ? row.carTypeOther : undefined),
+        ].filter(Boolean);
+        return parts.join(' · ') || '—';
+      },
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.description')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const parts = [
+          row.original.town?.name,
+          row.original.brand?.name,
+          row.original.fuelType?.name,
+          row.original.carType?.name ?? (row.original.carTypeOther ? row.original.carTypeOther : undefined),
+        ].filter(Boolean);
+        return <span className="text-sm">{parts.join(' · ') || '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
     },
     {
       accessorKey: 'town',
@@ -98,6 +132,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
+      accessorKey: 'ownerKmPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.ownerKmPerYear')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.ownerKmPerYear;
+        return <span className="font-mono text-sm">{v != null ? v.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'seats',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.seats')} onSort={onSort} />,
       cell: ({ row }) => <span className="text-sm">{row.getValue('seats')}</span>,
@@ -112,6 +156,160 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
         return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleDateString() : '—'}</span>;
       },
       enableHiding: true,
+    },
+    {
+      accessorKey: 'purchasePrice',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.purchasePrice')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.purchasePrice)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'isNewCar',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isNewCar')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.original.isNewCar ? t('yes') : t('no')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'isVan',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isVan')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.original.isVan ? t('yes') : t('no')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultEstimatedCarValue',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultEstimatedCarValue')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.resultEstimatedCarValue)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultDepreciationCostKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultDepreciationCostKm')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrencyPerKm(row.original.resultDepreciationCostKm)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultInsuranceCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultInsuranceCostPerYear')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.resultInsuranceCostPerYear)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultTaxCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultTaxCostPerYear')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.resultTaxCostPerYear)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultInspectionCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultInspectionCostPerYear')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.resultInspectionCostPerYear)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultMaintenanceCostPerYear',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultMaintenanceCostPerYear')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.resultMaintenanceCostPerYear)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultRoundedKmCost',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultRoundedKmCost')} onSort={onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrencyPerKm(row.original.resultRoundedKmCost)}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultMinSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultMinSharedKm')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultMinSharedKm;
+        return <span className="font-mono text-sm">{v != null ? v.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultAvgSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultAvgSharedKm')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultAvgSharedKm;
+        return <span className="font-mono text-sm">{v != null ? v.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultMaxSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultMaxSharedKm')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultMaxSharedKm;
+        return <span className="font-mono text-sm">{v != null ? v.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultEuroNorm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultEuroNorm')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.resultEuroNorm ?? '—'}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultEcoScore',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultEcoScore')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultEcoScore;
+        return <span className="font-mono text-sm">{v != null ? v : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultConsumption',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultConsumption')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultConsumption;
+        return <span className="font-mono text-sm">{v != null ? v.toFixed(2) : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultCc',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultCc')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultCc;
+        return <span className="font-mono text-sm">{v != null ? v.toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'resultCo2',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.resultCo2')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const v = row.original.resultCo2;
+        return <span className="font-mono text-sm">{v != null ? v : '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'rejectionReason',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.rejectionReason')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.rejectionReason ?? '—'}</span>,
+      enableHiding: true,
+      enableSorting: false,
     },
     {
       accessorKey: 'carTypeOther',
@@ -145,6 +343,15 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={onSort} />,
       cell: ({ row }) => {
         const date = row.getValue('createdAt') as Date | string | null;
+        return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleString() : '—'}</span>;
+      },
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'updatedAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={onSort} />,
+      cell: ({ row }) => {
+        const date = row.original.updatedAt;
         return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleString() : '—'}</span>;
       },
       enableHiding: true,
