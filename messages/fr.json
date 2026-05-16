@@ -847,6 +847,9 @@
         "simDepreciationKmElectric": "Km dépréciation (électrique)",
         "simInspectionCostPerYear": "Coût contrôle/an",
         "simMaintenanceCostPerYear": "Coût entretien/an",
+        "minSharedKm": "Km partagés min/an",
+        "avgSharedKm": "Km partagés moy./an",
+        "maxSharedKm": "Km partagés max/an",
         "simMaxPrice": "Prix max véhicule (revue manuelle)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (moins de 7 places)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7 places ou plus)",
@@ -906,72 +909,6 @@
         "title": "Importer des hubs",
         "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
         "columnName": "Hub"
-      }
-    },
-    "hubBenchmarks": {
-      "title": "Benchmarks de hub",
-      "filters": {
-        "hub": "Hub",
-        "hubPlaceholder": "Rechercher des hubs..."
-      },
-      "columns": {
-        "hub": "Hub",
-        "ownerKm": "Km propriétaire",
-        "sharedAvgKm": "Km partagés moy.",
-        "sharedMinKm": "Km partagés min",
-        "sharedMaxKm": "Km partagés max",
-        "created": "Créé le",
-        "updated": "Modifié le"
-      },
-      "tryAgain": "Réessayer",
-      "actions": {
-        "openMenu": "Ouvrir le menu",
-        "edit": "Modifier",
-        "delete": "Supprimer"
-      },
-      "form": {
-        "placeholders": {
-          "hub": "Sélectionner un hub…"
-        },
-        "help": {
-          "hub": "Hub concerné. Non modifiable après création.",
-          "ownerKm": "Kilomètres annuels du propriétaire. Non modifiable après création.",
-          "sharedMinKm": "Minimum des kilomètres partagés dans l’échantillon.",
-          "sharedMaxKm": "Maximum des kilomètres partagés dans l’échantillon.",
-          "sharedAvgKm": "Moyenne des kilomètres partagés."
-        }
-      },
-      "delete": {
-        "title": "Supprimer le benchmark hub",
-        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
-        "confirm": "Supprimer",
-        "cancel": "Annuler",
-        "success": "Benchmark hub supprimé(e) avec succès.",
-        "error": "Échec de la suppression.",
-        "conflict": "Cet enregistrement est lié à d'autres et ne peut pas être supprimé."
-      },
-      "bulkActions": {
-        "label": "Sélection",
-        "delete": "Supprimer la sélection"
-      },
-      "bulkDelete": {
-        "title": "Supprimer des benchmarks hub",
-        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
-        "columnName": "Benchmark hub",
-        "columnStatus": "Statut",
-        "confirm": "Tout supprimer",
-        "cancel": "Annuler",
-        "close": "Fermer",
-        "statusPending": "En attente",
-        "statusDeleting": "Suppression…",
-        "statusSuccess": "Supprimé",
-        "statusError": "Échoué",
-        "statusConflict": "Lié à d'autres enregistrements"
-      },
-      "bulkImport": {
-        "title": "Importer des benchmarks de hubs",
-        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
-        "columnName": "Benchmark de hub"
       }
     },
     "carTaxBaseRates": {

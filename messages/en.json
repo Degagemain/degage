@@ -847,6 +847,9 @@
         "simDepreciationKmElectric": "Depreciation km (electric)",
         "simInspectionCostPerYear": "Inspection cost/year",
         "simMaintenanceCostPerYear": "Maintenance cost/year",
+        "minSharedKm": "Min shared km/year",
+        "avgSharedKm": "Avg shared km/year",
+        "maxSharedKm": "Max shared km/year",
         "simMaxPrice": "Max car price (manual review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (under 7 seats)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ seats)",
@@ -906,72 +909,6 @@
         "title": "Import hubs",
         "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
         "columnName": "Hub"
-      }
-    },
-    "hubBenchmarks": {
-      "title": "Hub Benchmarks",
-      "filters": {
-        "hub": "Hub",
-        "hubPlaceholder": "Search hubs..."
-      },
-      "columns": {
-        "hub": "Hub",
-        "ownerKm": "Owner km",
-        "sharedAvgKm": "Shared avg km",
-        "sharedMinKm": "Shared min km",
-        "sharedMaxKm": "Shared max km",
-        "created": "Created",
-        "updated": "Updated"
-      },
-      "tryAgain": "Try again",
-      "actions": {
-        "openMenu": "Open menu",
-        "edit": "Edit",
-        "delete": "Delete"
-      },
-      "form": {
-        "placeholders": {
-          "hub": "Select hub…"
-        },
-        "help": {
-          "hub": "Hub this benchmark belongs to. Cannot change after creation.",
-          "ownerKm": "Owner annual kilometers. Cannot change after creation.",
-          "sharedMinKm": "Minimum shared kilometers in the sample.",
-          "sharedMaxKm": "Maximum shared kilometers in the sample.",
-          "sharedAvgKm": "Average shared kilometers."
-        }
-      },
-      "delete": {
-        "title": "Delete hub benchmark",
-        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
-        "confirm": "Delete",
-        "cancel": "Cancel",
-        "success": "Hub benchmark deleted successfully.",
-        "error": "Failed to delete hub benchmark.",
-        "conflict": "This hub benchmark is linked to other records and cannot be deleted."
-      },
-      "bulkActions": {
-        "label": "Selection",
-        "delete": "Delete selected"
-      },
-      "bulkDelete": {
-        "title": "Delete hub benchmarks",
-        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
-        "columnName": "Hub benchmark",
-        "columnStatus": "Status",
-        "confirm": "Delete all",
-        "cancel": "Cancel",
-        "close": "Close",
-        "statusPending": "Pending",
-        "statusDeleting": "Deleting…",
-        "statusSuccess": "Deleted",
-        "statusError": "Failed",
-        "statusConflict": "Linked to other records"
-      },
-      "bulkImport": {
-        "title": "Import hub benchmarks",
-        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
-        "columnName": "Hub benchmark"
       }
     },
     "carTaxBaseRates": {

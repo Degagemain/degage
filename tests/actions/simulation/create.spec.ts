@@ -16,6 +16,9 @@ vi.mock('@/actions/simulation/engine', () => ({
       { status: 'info', message: 'simulation.step.car_info_estimated' },
     ],
     carInfo: { cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' },
+    resultMinSharedKm: 3_000,
+    resultAvgSharedKm: 5_000,
+    resultMaxSharedKm: 7_000,
   }),
 }));
 
@@ -42,6 +45,7 @@ describe('createSimulation', () => {
     expect(result.resultCode).toBe('manualReview');
     expect(result.steps).toHaveLength(4);
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
+    expect(result.resultAvgSharedKm).toBe(5_000);
     expect(result.duration).toBe(0);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
   });

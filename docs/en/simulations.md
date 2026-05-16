@@ -76,7 +76,7 @@ The simulation then calculates:
 
 - Inspection cost per year
 - Maintenance cost per year
-- Shared mobility benchmark km (min/avg/max) based on owner km
+- Hub shared km scenarios (min/avg/max)
 - Estimated total yearly mileage
 - Fixed yearly cost
 - Fuel cost per km
@@ -124,22 +124,21 @@ result. Details and configuration are in [Hubs](hubs.md).
 
 The simulation reads operational/reference tables from the admin data set.
 
-| Table/topic used              | Why it is used in simulation                                | Related admin documentation                                       |
-| ----------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
-| Towns                         | Starting point for location context and demand flag.        | [Towns](towns.md)                                                 |
-| Hubs                          | Provides most thresholds and yearly fixed-cost parameters.  | [Hubs](hubs.md)                                                   |
-| Hub benchmarks                | Finds closest benchmark to estimate shared/total yearly km. | [Hub benchmarks](hub-benchmarks.md)                               |
-| Provinces                     | Resolves province from town.                                | [Provinces](provinces.md)                                         |
-| Fiscal regions                | Determines tax region rules.                                | [Fiscal regions](fiscal-regions.md)                               |
-| Fuel types                    | Provides fuel type logic and fuel price per unit.           | [Fuel types](fuel-types.md)                                       |
-| Car types                     | May provide eco score used in quality scoring.              | [Car types](car-types.md)                                         |
-| Car infos                     | Source for estimated technical car profile values.          | [Car infos](car-infos.md)                                         |
-| Car price estimates           | Source for market value range estimation.                   | [Car price estimates](car-price-estimates.md)                     |
-| Euro norms                    | Needed for non-electric tax adjustment grouping.            | [Euro norms](euro-norms.md)                                       |
-| Car tax base rates            | Base annual tax rates by region/date/cc.                    | [Car tax base rates](car-tax-base-rates.md)                       |
-| Car tax flat rates            | Flat tax rates (notably for electric vehicles).             | [Car tax flat rates](car-tax-flat-rates.md)                       |
-| Car tax euro norm adjustments | Tax multiplier adjustments by euro norm group.              | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
-| Insurance price benchmarks    | Base + variable insurance pricing benchmarks.               | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
+| Table/topic used              | Why it is used in simulation                                                     | Related admin documentation                                       |
+| ----------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Towns                         | Starting point for location context and demand flag.                             | [Towns](towns.md)                                                 |
+| Hubs                          | Provides most thresholds, yearly fixed-cost parameters, and shared-km scenarios. | [Hubs](hubs.md)                                                   |
+| Provinces                     | Resolves province from town.                                                     | [Provinces](provinces.md)                                         |
+| Fiscal regions                | Determines tax region rules.                                                     | [Fiscal regions](fiscal-regions.md)                               |
+| Fuel types                    | Provides fuel type logic and fuel price per unit.                                | [Fuel types](fuel-types.md)                                       |
+| Car types                     | May provide eco score used in quality scoring.                                   | [Car types](car-types.md)                                         |
+| Car infos                     | Source for estimated technical car profile values.                               | [Car infos](car-infos.md)                                         |
+| Car price estimates           | Source for market value range estimation.                                        | [Car price estimates](car-price-estimates.md)                     |
+| Euro norms                    | Needed for non-electric tax adjustment grouping.                                 | [Euro norms](euro-norms.md)                                       |
+| Car tax base rates            | Base annual tax rates by region/date/cc.                                         | [Car tax base rates](car-tax-base-rates.md)                       |
+| Car tax flat rates            | Flat tax rates (notably for electric vehicles).                                  | [Car tax flat rates](car-tax-flat-rates.md)                       |
+| Car tax euro norm adjustments | Tax multiplier adjustments by euro norm group.                                   | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
+| Insurance price benchmarks    | Base + variable insurance pricing benchmarks.                                    | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
 
 ## Simulations list screen
 
@@ -171,5 +170,5 @@ export.
 
 - Keep reference tables complete and up to date before running large simulation batches.
 - If many runs return **Manual review**, check whether the hub **maximum car price** explains them (high-value cases show an explanatory step);
-  otherwise verify missing/invalid benchmark data and other reference data first.
+  otherwise verify missing or invalid reference data first.
 - Revisit hub thresholds regularly because they strongly influence acceptance and category outcomes.

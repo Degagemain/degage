@@ -76,7 +76,7 @@ Daarna berekent de simulatie:
 
 - Keuringskost per jaar
 - Onderhoudskost per jaar
-- Referentie-kilometers (min/gem/max) op basis van eigen km
+- Hub-scenario's voor gedeelde km (min/gem/max)
 - Geschatte totale jaarkilometers
 - Vaste jaarkost
 - Brandstofkost per km
@@ -125,22 +125,21 @@ zijn, dan wijzigt de prijslimiet **niets**. Zie [Hubs](hubs.md) voor uitleg en c
 
 De simulatie leest operationele en referentietabellen uit de admin data.
 
-| Gebruikte tabel/onderwerp     | Waarom gebruikt in de simulatie                        | Gerelateerde admindocumentatie                                    |
-| ----------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------- |
-| Gemeenten                     | Startpunt voor locatiecontext en vraagvlag.            | [Towns](towns.md)                                                 |
-| Hubs                          | Levert de meeste drempels en vaste jaarkostparameters. | [Hubs](hubs.md)                                                   |
-| Hub-benchmarks                | Vindt dichtste benchmark voor gedeelde/totale jaarkm.  | [Hub benchmarks](hub-benchmarks.md)                               |
-| Provincies                    | Bepaalt provincie vanuit gemeente.                     | [Provinces](provinces.md)                                         |
-| Fiscale regio's               | Bepaalt belastingregels per regio.                     | [Fiscal regions](fiscal-regions.md)                               |
-| Brandstoftypes                | Levert type-logica en brandstofprijs per eenheid.      | [Fuel types](fuel-types.md)                                       |
-| Autotypes                     | Kan ecoscore leveren voor kwaliteitsscore.             | [Car types](car-types.md)                                         |
-| Car infos                     | Bron voor geschatte technische voertuigwaarden.        | [Car infos](car-infos.md)                                         |
-| Car price estimates           | Bron voor marktwaardeschatting.                        | [Car price estimates](car-price-estimates.md)                     |
-| Euronormen                    | Nodig voor niet-elektrische belastingcorrectie.        | [Euro norms](euro-norms.md)                                       |
-| Car tax base rates            | Basistarieven verkeersbelasting per regio/datum/cc.    | [Car tax base rates](car-tax-base-rates.md)                       |
-| Car tax flat rates            | Vaste belastingtarieven (vooral elektrisch).           | [Car tax flat rates](car-tax-flat-rates.md)                       |
-| Car tax euro norm adjustments | Belastingcorrectie per euronormgroep.                  | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
-| Insurance price benchmarks    | Benchmarks voor basis + variabele verzekeringsprijs.   | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
+| Gebruikte tabel/onderwerp     | Waarom gebruikt in de simulatie                                                | Gerelateerde admindocumentatie                                    |
+| ----------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Gemeenten                     | Startpunt voor locatiecontext en vraagvlag.                                    | [Towns](towns.md)                                                 |
+| Hubs                          | Levert de meeste drempels, vaste jaarkostparameters en gedeelde-km-scenario's. | [Hubs](hubs.md)                                                   |
+| Provincies                    | Bepaalt provincie vanuit gemeente.                                             | [Provinces](provinces.md)                                         |
+| Fiscale regio's               | Bepaalt belastingregels per regio.                                             | [Fiscal regions](fiscal-regions.md)                               |
+| Brandstoftypes                | Levert type-logica en brandstofprijs per eenheid.                              | [Fuel types](fuel-types.md)                                       |
+| Autotypes                     | Kan ecoscore leveren voor kwaliteitsscore.                                     | [Car types](car-types.md)                                         |
+| Car infos                     | Bron voor geschatte technische voertuigwaarden.                                | [Car infos](car-infos.md)                                         |
+| Car price estimates           | Bron voor marktwaardeschatting.                                                | [Car price estimates](car-price-estimates.md)                     |
+| Euronormen                    | Nodig voor niet-elektrische belastingcorrectie.                                | [Euro norms](euro-norms.md)                                       |
+| Car tax base rates            | Basistarieven verkeersbelasting per regio/datum/cc.                            | [Car tax base rates](car-tax-base-rates.md)                       |
+| Car tax flat rates            | Vaste belastingtarieven (vooral elektrisch).                                   | [Car tax flat rates](car-tax-flat-rates.md)                       |
+| Car tax euro norm adjustments | Belastingcorrectie per euronormgroep.                                          | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
+| Insurance price benchmarks    | Benchmarks voor basis + variabele verzekeringsprijs.                           | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
 
 ## Overzichtsscherm simulatieruns
 
@@ -172,5 +171,5 @@ verborgen hebt). Alleen beheerders kunnen exporteren.
 
 - Houd referentietabellen volledig en actueel voor grote simulatiebatches.
 - Als veel runs **Handmatige beoordeling** geven, controleer of de hub **maximale autoprijs** daarvoor verantwoord is (hoge waarde: er is een
-  verklarende stap); zo niet, controleer ontbrekende benchmark- en overige referentiegegevens.
+  verklarende stap); zo niet, controleer ontbrekende of ongeldige referentiegegevens.
 - Herbekijk hubdrempels regelmatig: ze hebben sterke invloed op acceptatie en categorieresultaten.

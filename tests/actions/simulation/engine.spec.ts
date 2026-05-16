@@ -35,6 +35,9 @@ vi.mock('@/storage/hub/hub.read', () => ({
     simDepreciationKmElectric: 300_000,
     simInspectionCostPerYear: 43,
     simMaintenanceCostPerYear: 950,
+    minSharedKm: 3_000,
+    avgSharedKm: 5_000,
+    maxSharedKm: 7_000,
     simMaxPrice: null,
     simAcceptedPriceCategoryA: 0.38,
     simAcceptedPriceCategoryB: 0.46,
@@ -64,10 +67,6 @@ vi.mock('@/storage/euro-norm/euro-norm.read', () => ({
   dbEuroNormFindByCode: vi.fn().mockResolvedValue({ id: 'euro-norm-1', group: 6 }),
 }));
 
-vi.mock('@/storage/hub-benchmark/hub-benchmark.read', () => ({
-  dbHubBenchmarkFindClosest: vi.fn().mockResolvedValue({ ownerKm: 15_000, sharedAvgKm: 5_000 }),
-}));
-
 vi.mock('@/storage/car-type/car-type.read', () => ({
   dbCarTypeRead: vi.fn().mockResolvedValue({ id: 'car-type-1', ecoscore: 72 }),
 }));
@@ -75,7 +74,7 @@ vi.mock('@/storage/car-type/car-type.read', () => ({
 vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
   calculateCarInsurance: vi.fn().mockImplementation(async (result: { steps: { push: (step: unknown) => void } }) => {
     result.steps.push({ status: 'info', message: 'simulation.step.car_insurance_estimated' });
-    return { rate: 500 };
+    return 500;
   }),
 }));
 
@@ -173,6 +172,9 @@ describe('runSimulationEngine', () => {
         simDepreciationKmElectric: 300_000,
         simInspectionCostPerYear: 43,
         simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
         simMaxPrice: 10_000,
         simAcceptedPriceCategoryA: 0.38,
         simAcceptedPriceCategoryB: 0.46,
@@ -209,6 +211,9 @@ describe('runSimulationEngine', () => {
     expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
     expect(typeof result.duration).toBe('number');
     expect(result.duration).toBeGreaterThanOrEqual(0);
+    expect(result.resultMinSharedKm).toBe(3_000);
+    expect(result.resultAvgSharedKm).toBe(5_000);
+    expect(result.resultMaxSharedKm).toBe(7_000);
     expect(carValueEstimator).toHaveBeenCalledTimes(1);
     expect(carValueEstimator).toHaveBeenCalledWith(
       input.brand.id,
@@ -248,6 +253,9 @@ describe('runSimulationEngine', () => {
         simDepreciationKmElectric: 300_000,
         simInspectionCostPerYear: 43,
         simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
         simMaxPrice: null,
         simAcceptedPriceCategoryA: 0.38,
         simAcceptedPriceCategoryB: 0.46,
@@ -284,6 +292,9 @@ describe('runSimulationEngine', () => {
         simDepreciationKmElectric: 300_000,
         simInspectionCostPerYear: 43,
         simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
         simMaxPrice: null,
         simAcceptedPriceCategoryA: 0.01,
         simAcceptedPriceCategoryB: 0.01,

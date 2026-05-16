@@ -847,6 +847,9 @@
         "simDepreciationKmElectric": "Afschrijving km (elektrisch)",
         "simInspectionCostPerYear": "Keuringkosten/jaar",
         "simMaintenanceCostPerYear": "Onderhoudskosten/jaar",
+        "minSharedKm": "Min gedeelde km/jaar",
+        "avgSharedKm": "Gem. gedeelde km/jaar",
+        "maxSharedKm": "Max gedeelde km/jaar",
         "simMaxPrice": "Max autoprijs (handmatige review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (minder dan 7 zitpl.)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ zitpl.)",
@@ -906,72 +909,6 @@
         "title": "Hubs importeren",
         "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
         "columnName": "Hub"
-      }
-    },
-    "hubBenchmarks": {
-      "title": "Hub benchmarks",
-      "filters": {
-        "hub": "Hub",
-        "hubPlaceholder": "Zoek hubs..."
-      },
-      "columns": {
-        "hub": "Hub",
-        "ownerKm": "Eigenaar km",
-        "sharedAvgKm": "Gedeeld gem. km",
-        "sharedMinKm": "Gedeeld min km",
-        "sharedMaxKm": "Gedeeld max km",
-        "created": "Aangemaakt",
-        "updated": "Bijgewerkt"
-      },
-      "tryAgain": "Opnieuw proberen",
-      "actions": {
-        "openMenu": "Menu openen",
-        "edit": "Bewerken",
-        "delete": "Verwijderen"
-      },
-      "form": {
-        "placeholders": {
-          "hub": "Selecteer hub…"
-        },
-        "help": {
-          "hub": "Hub waartoe deze benchmark hoort. Niet wijzigbaar na aanmaak.",
-          "ownerKm": "Jaarkilometers eigenaar. Niet wijzigbaar na aanmaak.",
-          "sharedMinKm": "Minimum gedeelde kilometers in de steekproef.",
-          "sharedMaxKm": "Maximum gedeelde kilometers in de steekproef.",
-          "sharedAvgKm": "Gemiddelde gedeelde kilometers."
-        }
-      },
-      "delete": {
-        "title": "Hub-benchmark verwijderen",
-        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-        "confirm": "Verwijderen",
-        "cancel": "Annuleren",
-        "success": "Hub-benchmark succesvol verwijderd.",
-        "error": "Verwijderen mislukt.",
-        "conflict": "Dit record is gekoppeld aan andere records en kan niet worden verwijderd."
-      },
-      "bulkActions": {
-        "label": "Selectie",
-        "delete": "Selectie verwijderen"
-      },
-      "bulkDelete": {
-        "title": "Hub-benchmarks verwijderen",
-        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
-        "columnName": "Hub-benchmark",
-        "columnStatus": "Status",
-        "confirm": "Alles verwijderen",
-        "cancel": "Annuleren",
-        "close": "Sluiten",
-        "statusPending": "Wordt verwijderd",
-        "statusDeleting": "Verwijderen…",
-        "statusSuccess": "Verwijderd",
-        "statusError": "Mislukt",
-        "statusConflict": "Gekoppeld aan andere records"
-      },
-      "bulkImport": {
-        "title": "Hub-benchmarks importeren",
-        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
-        "columnName": "Hub-benchmark"
       }
     },
     "carTaxBaseRates": {

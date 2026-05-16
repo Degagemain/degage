@@ -76,7 +76,7 @@ La simulation calcule ensuite :
 
 - Cout de controle technique par an
 - Cout d'entretien par an
-- Benchmarks km partages (min/moy/max) selon km proprietaire
+- Scenarios hub de km partages (min/moy/max)
 - Kilometrage annuel total estime
 - Cout annuel fixe
 - Cout carburant par km
@@ -125,22 +125,21 @@ prix **ne modifie pas** l'issue. Voir [Hubs](hubs.md) pour le detail et la confi
 
 La simulation lit des tables operationnelles et de reference de l'administration.
 
-| Table/theme utilise           | Pourquoi utilise dans la simulation                                       | Documentation admin liee                                          |
-| ----------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Communes                      | Point de depart pour le contexte geographique et le flag de demande.      | [Towns](towns.md)                                                 |
-| Hubs                          | Fournit la plupart des seuils et parametres de cout annuel fixe.          | [Hubs](hubs.md)                                                   |
-| Hub benchmarks                | Trouve le benchmark le plus proche pour estimer km partages/total annuel. | [Hub benchmarks](hub-benchmarks.md)                               |
-| Provinces                     | Determine la province a partir de la commune.                             | [Provinces](provinces.md)                                         |
-| Regions fiscales              | Determine les regles de taxe par region.                                  | [Fiscal regions](fiscal-regions.md)                               |
-| Types de carburant            | Fournit la logique de carburant et le prix unitaire.                      | [Fuel types](fuel-types.md)                                       |
-| Types de vehicule             | Peut fournir l'ecoscore utilise pour le score qualite.                    | [Car types](car-types.md)                                         |
-| Car infos                     | Source des valeurs techniques estimees du vehicule.                       | [Car infos](car-infos.md)                                         |
-| Car price estimates           | Source de l'estimation de valeur de marche.                               | [Car price estimates](car-price-estimates.md)                     |
-| Normes euro                   | Necessaires pour l'ajustement de taxe non electrique.                     | [Euro norms](euro-norms.md)                                       |
-| Car tax base rates            | Tarifs de base de taxe annuelle par region/date/cc.                       | [Car tax base rates](car-tax-base-rates.md)                       |
-| Car tax flat rates            | Tarifs forfaitaires de taxe (notamment electrique).                       | [Car tax flat rates](car-tax-flat-rates.md)                       |
-| Car tax euro norm adjustments | Ajustements de taxe par groupe de norme euro.                             | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
-| Insurance price benchmarks    | Benchmarks assurance : base + part variable.                              | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
+| Table/theme utilise           | Pourquoi utilise dans la simulation                                             | Documentation admin liee                                          |
+| ----------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Communes                      | Point de depart pour le contexte geographique et le flag de demande.            | [Towns](towns.md)                                                 |
+| Hubs                          | Fournit la plupart des seuils, couts annuels fixes et scenarios de km partages. | [Hubs](hubs.md)                                                   |
+| Provinces                     | Determine la province a partir de la commune.                                   | [Provinces](provinces.md)                                         |
+| Regions fiscales              | Determine les regles de taxe par region.                                        | [Fiscal regions](fiscal-regions.md)                               |
+| Types de carburant            | Fournit la logique de carburant et le prix unitaire.                            | [Fuel types](fuel-types.md)                                       |
+| Types de vehicule             | Peut fournir l'ecoscore utilise pour le score qualite.                          | [Car types](car-types.md)                                         |
+| Car infos                     | Source des valeurs techniques estimees du vehicule.                             | [Car infos](car-infos.md)                                         |
+| Car price estimates           | Source de l'estimation de valeur de marche.                                     | [Car price estimates](car-price-estimates.md)                     |
+| Normes euro                   | Necessaires pour l'ajustement de taxe non electrique.                           | [Euro norms](euro-norms.md)                                       |
+| Car tax base rates            | Tarifs de base de taxe annuelle par region/date/cc.                             | [Car tax base rates](car-tax-base-rates.md)                       |
+| Car tax flat rates            | Tarifs forfaitaires de taxe (notamment electrique).                             | [Car tax flat rates](car-tax-flat-rates.md)                       |
+| Car tax euro norm adjustments | Ajustements de taxe par groupe de norme euro.                                   | [Car tax euro norm adjustments](car-tax-euro-norm-adjustments.md) |
+| Insurance price benchmarks    | Benchmarks assurance : base + part variable.                                    | [Insurance price benchmarks](insurance-price-benchmarks.md)       |
 
 ## Liste des simulations
 
@@ -173,5 +172,5 @@ administrateurs peuvent exporter.
 
 - Garder les tables de reference completes et a jour avant les batchs de simulation.
 - Si beaucoup de runs renvoient **Manual review**, verifier si le **prix max vehicule** du hub en est la cause (cas valeur elevee : une etape
-  l'explique) ; sinon verifier d'abord les benchmarks et autres references manquants ou invalides.
+  l'explique) ; sinon verifier les references manquantes ou invalides.
 - Revoir regulierement les seuils des hubs : ils influencent fortement l'acceptation et la categorie finale.

@@ -20,9 +20,11 @@ regio.
 3. **Waardeschatting en afschrijving** — **Afschrijving km** (of **Afschrijving km (elektrisch)**) bepaalt hoe snel de wagenwaarde per km daalt.
 4. **Vaste kosten in km-prijs** — **Keuringkosten/jaar** en **Onderhoudskosten/jaar** zitten mee in de vaste jaarkost en dus in het berekende
    km-tarief.
-5. **Kwaliteitspunten** — Het voertuig moet minstens 2 bonuspunten halen via **Min ecoscore (bonus)**, **Max km (bonus)** en **Max leeftijd
+5. **Scenario's gedeelde km** — **Min gedeelde km/jaar**, **Gem. gedeelde km/jaar** en **Max gedeelde km/jaar** worden op simulaties bewaard en
+   sturen de scenario's weinig, regelmatig en vaak delen.
+6. **Kwaliteitspunten** — Het voertuig moet minstens 2 bonuspunten halen via **Min ecoscore (bonus)**, **Max km (bonus)** en **Max leeftijd
    (bonus)**.
-6. **Categorie-uitkomst** — Op basis van kwaliteitspunten, afgerond km-tarief (€/km), zitplaatsen en hubcontext volgt **Categorie A**,
+7. **Categorie-uitkomst** — Op basis van kwaliteitspunten, afgerond km-tarief (€/km), zitplaatsen en hubcontext volgt **Categorie A**,
    **Categorie B**, **Hoger tarief** of **Niet OK**. Voor **Categorie A** met minder dan 7 zitplaatsen moet het afgeronde km-tarief ten hoogste
    **Cat. A max €/km (minder dan 7 zitpl.)** zijn. Voor **Categorie B** met 7 of meer zitplaatsen ten hoogste **Cat. B max €/km (7+ zitpl.)**.
    Alleen op de **standaardhub** kan **Categorie A** nog volgen als de afschrijvingskost per km ten hoogste **Cat. A afschr. €/km (standaard
@@ -37,6 +39,9 @@ regio.
 | Standaard                             | Geeft aan of dit de standaardhub is. Voor de standaardhub gelden bijkomende beslisregels in de categorietoekenning.                                                             |
 | Max leeftijd                          | **Toelating.** Maximale autoleeftijd in jaren (vanaf eerste inschrijving). Oudere auto's worden geweigerd (Niet OK).                                                            |
 | Max km                                | **Toelating.** Maximale kilometerstand in km. Hogere kilometerstand wordt geweigerd (Niet OK).                                                                                  |
+| Min gedeelde km/jaar                  | **Deelscenario.** Gedeelde kilometers voor het scenario weinig delen.                                                                                                           |
+| Gem. gedeelde km/jaar                 | **Deelscenario.** Gedeelde kilometers voor het scenario regelmatig delen en de gemiddelde backend-kostinschatting.                                                              |
+| Max gedeelde km/jaar                  | **Deelscenario.** Gedeelde kilometers voor het scenario vaak delen.                                                                                                             |
 | Max autoprijs (handmatige review)     | **Prijslimiet.** Ingevuld (euro): zou de regels **Categorie A/B** of **Hoger tarief** geven maar de waarde is te hoog → **Handmatige review**; leeg = geen limiet.              |
 | Cat. A max €/km (minder dan 7 zitpl.) | **Categorie A.** Maximaal toegelaten afgerond kost per km (€/km) voor de eerste acceptatietier bij minder dan 7 zitplaatsen.                                                    |
 | Cat. B max €/km (7+ zitpl.)           | **Categorie B.** Maximaal toegelaten afgerond kost per km (€/km) bij 7 of meer zitplaatsen.                                                                                     |

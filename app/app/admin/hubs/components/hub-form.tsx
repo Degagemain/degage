@@ -34,6 +34,9 @@ type HubFormValues = {
   simDepreciationKmElectric: string;
   simInspectionCostPerYear: string;
   simMaintenanceCostPerYear: string;
+  minSharedKm: string;
+  avgSharedKm: string;
+  maxSharedKm: string;
   simMaxPrice: string;
   simAcceptedPriceCategoryA: string;
   simAcceptedPriceCategoryB: string;
@@ -56,6 +59,9 @@ const hubToFormValues = (hub?: Hub): HubFormValues => ({
   simDepreciationKmElectric: hub != null ? String(hub.simDepreciationKmElectric) : '320000',
   simInspectionCostPerYear: hub != null ? String(hub.simInspectionCostPerYear) : '43',
   simMaintenanceCostPerYear: hub != null ? String(hub.simMaintenanceCostPerYear) : '950',
+  minSharedKm: hub != null ? String(hub.minSharedKm) : '3000',
+  avgSharedKm: hub != null ? String(hub.avgSharedKm) : '5000',
+  maxSharedKm: hub != null ? String(hub.maxSharedKm) : '7000',
   simMaxPrice: hub?.simMaxPrice != null ? String(hub.simMaxPrice) : '',
   simAcceptedPriceCategoryA: hub != null ? String(hub.simAcceptedPriceCategoryA) : '0.38',
   simAcceptedPriceCategoryB: hub != null ? String(hub.simAcceptedPriceCategoryB) : '0.46',
@@ -91,6 +97,9 @@ const createHubFormSchema = (tCommon: (key: string) => string) =>
     simDepreciationKmElectric: nonNegInt(tCommon('validation.nonNegativeInteger')),
     simInspectionCostPerYear: nonNegNum(tCommon('validation.nonNegativeNumber')),
     simMaintenanceCostPerYear: nonNegNum(tCommon('validation.nonNegativeNumber')),
+    minSharedKm: nonNegInt(tCommon('validation.nonNegativeInteger')),
+    avgSharedKm: nonNegInt(tCommon('validation.nonNegativeInteger')),
+    maxSharedKm: nonNegInt(tCommon('validation.nonNegativeInteger')),
     simMaxPrice: z
       .string()
       .trim()
@@ -136,6 +145,9 @@ export function HubForm({ initialHub, formId = HUB_FORM_ID, isSubmitting = false
       simDepreciationKmElectric: Number(values.simDepreciationKmElectric),
       simInspectionCostPerYear: Number(values.simInspectionCostPerYear),
       simMaintenanceCostPerYear: Number(values.simMaintenanceCostPerYear),
+      minSharedKm: Number(values.minSharedKm),
+      avgSharedKm: Number(values.avgSharedKm),
+      maxSharedKm: Number(values.maxSharedKm),
       simMaxPrice: simMaxPriceTrim ? Number(simMaxPriceTrim) : null,
       simAcceptedPriceCategoryA: Number(values.simAcceptedPriceCategoryA),
       simAcceptedPriceCategoryB: Number(values.simAcceptedPriceCategoryB),
@@ -209,6 +221,9 @@ export function HubForm({ initialHub, formId = HUB_FORM_ID, isSubmitting = false
         {num('simDepreciationKmElectric', 'simDepreciationKmElectric', 1)}
         {num('simInspectionCostPerYear', 'simInspectionCostPerYear', 0.01)}
         {num('simMaintenanceCostPerYear', 'simMaintenanceCostPerYear', 0.01)}
+        {num('minSharedKm', 'minSharedKm', 1)}
+        {num('avgSharedKm', 'avgSharedKm', 1)}
+        {num('maxSharedKm', 'maxSharedKm', 1)}
         <Controller
           name="simMaxPrice"
           control={form.control}

@@ -86,9 +86,9 @@ function buildSupportSummaryNl(s: Simulation, recipientEmail: string): string {
     `CO2: ${s.resultCo2 == null ? '—' : `${s.resultCo2} g/km`}`,
     `EcoScore: ${s.resultEcoScore == null ? '—' : String(s.resultEcoScore)}`,
     `EuroNorm: ${s.resultEuroNorm ?? '—'}`,
-    `Benchmark km (min/avg/max): ${formatOptionalKm(s.resultBenchmarkMinKm)} / ${formatOptionalKm(
-      s.resultBenchmarkAvgKm,
-    )} / ${formatOptionalKm(s.resultBenchmarkMaxKm)}`,
+    `Gedeelde km (min/gem/max): ${formatOptionalKm(s.resultMinSharedKm)} / ${formatOptionalKm(s.resultAvgSharedKm)} / ${formatOptionalKm(
+      s.resultMaxSharedKm,
+    )}`,
   ];
   const value = s.isNewCar ? s.purchasePrice : s.resultEstimatedCarValue;
   lines.push(`Geschatte / koopprijs: ${formatOptionalEuro(value ?? null)}`);

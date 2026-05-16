@@ -87,6 +87,36 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'minSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.minSharedKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('minSharedKm') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'avgSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.avgSharedKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('avgSharedKm') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'maxSharedKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.maxSharedKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('maxSharedKm') as number;
+        return <span className="font-mono text-sm">{val.toLocaleString()}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'simMinEuroNormGroupDiesel',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMinEuroNormGroupDiesel')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-sm">{row.getValue('simMinEuroNormGroupDiesel')}</span>,
