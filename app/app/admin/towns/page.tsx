@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Plus, Trash2, X } from 'lucide-react';
+import { Check, MapPin, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Town } from '@/domain/town.model';
@@ -27,6 +27,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { BulkMoveHubDialog, type BulkMoveHubItem } from '@/app/components/bulk-move-hub-dialog';
 import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
@@ -126,6 +127,7 @@ export default function TownsPage() {
   const [townToDelete, setTownToDelete] = useState<Town | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
+  const [bulkMoveHubOpen, setBulkMoveHubOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -277,9 +279,23 @@ export default function TownsPage() {
     [rowSelection, state.data],
   );
 
+  const selectedTownsFull: BulkMoveHubItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter(Boolean)
+        .map((town) => ({ id: town.id!, label: `${town.zip} — ${town.name}`, town })),
+    [rowSelection, state.data],
+  );
+
   const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/towns/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
+    setRowSelection({});
+    fetchTowns();
+  }, [fetchTowns]);
+
+  const handleBulkMoveHubComplete = useCallback(() => {
     setRowSelection({});
     fetchTowns();
   }, [fetchTowns]);
@@ -385,6 +401,10 @@ export default function TownsPage() {
             filterSlot={
               <>
                 <BulkActionsButton count={selectedTowns.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem onClick={() => setBulkMoveHubOpen(true)}>
+                    <MapPin />
+                    {t('bulkActions.moveHub')}
+                  </DropdownMenuItem>
                   <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
                     <Trash2 />
                     {t('bulkActions.delete')}
@@ -471,6 +491,28 @@ export default function TownsPage() {
           title: t('bulkImport.title'),
           description: t('bulkImport.description'),
           columnName: t('bulkImport.columnName'),
+        }}
+      />
+
+      <BulkMoveHubDialog
+        open={bulkMoveHubOpen}
+        onOpenChange={setBulkMoveHubOpen}
+        items={selectedTownsFull}
+        onComplete={handleBulkMoveHubComplete}
+        labels={{
+          title: t('bulkMoveHub.title'),
+          description: t('bulkMoveHub.description', { count: selectedTownsFull.length }),
+          hubLabel: t('bulkMoveHub.hubLabel'),
+          hubPlaceholder: t('bulkMoveHub.hubPlaceholder'),
+          columnName: t('bulkMoveHub.columnName'),
+          columnStatus: t('bulkMoveHub.columnStatus'),
+          confirm: t('bulkMoveHub.confirm'),
+          cancel: t('bulkMoveHub.cancel'),
+          close: t('bulkMoveHub.close'),
+          statusPending: t('bulkMoveHub.statusPending'),
+          statusMoving: t('bulkMoveHub.statusMoving'),
+          statusSuccess: t('bulkMoveHub.statusSuccess'),
+          statusError: t('bulkMoveHub.statusError'),
         }}
       />
     </>

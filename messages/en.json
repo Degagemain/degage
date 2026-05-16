@@ -1060,6 +1060,7 @@
       },
       "bulkActions": {
         "label": "Selection",
+        "moveHub": "Move hub",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -1075,6 +1076,21 @@
         "statusSuccess": "Deleted",
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
+      },
+      "bulkMoveHub": {
+        "title": "Move hub",
+        "description": "Select a hub to assign to the {count} selected town(s).",
+        "hubLabel": "Hub",
+        "hubPlaceholder": "Select hub…",
+        "columnName": "Town",
+        "columnStatus": "Status",
+        "confirm": "Move all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusMoving": "Moving…",
+        "statusSuccess": "Moved",
+        "statusError": "Failed"
       },
       "bulkImport": {
         "title": "Import towns",
