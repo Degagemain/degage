@@ -13,6 +13,7 @@ export const systemParameter = (data: Partial<SystemParameter> = {}): SystemPara
     valueNumberMin: data.valueNumberMin ?? null,
     valueNumberMax: data.valueNumberMax ?? null,
     valueEuronormId: data.valueEuronormId ?? null,
+    valueString: data.valueString ?? null,
     createdAt: data.createdAt ?? new Date(),
     updatedAt: data.updatedAt ?? new Date(),
   };

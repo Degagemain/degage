@@ -1115,17 +1115,20 @@
         "updated": "Bijgewerkt"
       },
       "categories": {
-        "simulation": "Simulatie"
+        "simulation": "Simulatie",
+        "assistant": "Assistent"
       },
       "types": {
         "number": "Getal",
         "number_range": "Getalbereik",
-        "euronorm": "Euronorm"
+        "euronorm": "Euronorm",
+        "string": "Tekst"
       },
       "editTitle": "Waarde bewerken",
       "valueNumber": "Waarde",
       "valueNumberMin": "Min",
       "valueNumberMax": "Max",
+      "valueString": "Tekst",
       "save": "Opslaan",
       "cancel": "Annuleren",
       "searchPlaceholder": "Zoek parameters...",

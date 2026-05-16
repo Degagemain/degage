@@ -1115,17 +1115,20 @@
         "updated": "Modifié"
       },
       "categories": {
-        "simulation": "Simulation"
+        "simulation": "Simulation",
+        "assistant": "Assistant"
       },
       "types": {
         "number": "Nombre",
         "number_range": "Plage de nombres",
-        "euronorm": "Norme Euro"
+        "euronorm": "Norme Euro",
+        "string": "Texte"
       },
       "editTitle": "Modifier la valeur",
       "valueNumber": "Valeur",
       "valueNumberMin": "Min",
       "valueNumberMax": "Max",
+      "valueString": "Texte",
       "save": "Enregistrer",
       "cancel": "Annuler",
       "searchPlaceholder": "Rechercher des paramètres...",

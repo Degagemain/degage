@@ -11,6 +11,7 @@ import { seedHubs } from './seed-hubs';
 import { seedInsurancePriceBenchmarks } from './seed-insurance-price-benchmarks';
 import { seedTowns } from './seed-towns';
 import { seedDocumentationFromRepo } from './seed-documentation-from-repo';
+import { seedSupportAssistantPrompts } from './seed-support-assistant-prompts';
 import { getPrismaClient } from '@/storage/utils';
 
 const prisma = getPrismaClient();
@@ -29,6 +30,7 @@ async function seed() {
   await seedTowns(prisma);
   await seedCarTypes(prisma);
   await seedDocumentationFromRepo(prisma);
+  await seedSupportAssistantPrompts(prisma);
 }
 
 seed()

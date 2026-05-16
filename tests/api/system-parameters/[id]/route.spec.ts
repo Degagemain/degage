@@ -87,4 +87,29 @@ describe('PATCH /api/system-parameters/[id]', () => {
     const body = await response.json();
     expect(body.valueNumber).toBe(20);
   });
+
+  it('accepts string value updates', async () => {
+    const updated = systemParameter({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      valueString: 'Updated assistant prompt',
+    });
+    const session = {
+      user: { id: '1', role: 'admin', name: 'A', email: 'a@x.com' },
+      session: {} as any,
+    };
+    vi.mocked(auth.api.getSession).mockResolvedValue(session);
+    vi.mocked(updateSystemParameterValues).mockResolvedValueOnce(updated);
+    const request = new Request('http://localhost/api/system-parameters/550e8400-e29b-41d4-a716-446655440000', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ valueString: 'Updated assistant prompt' }),
+    });
+    const context = { params: Promise.resolve({ id: '550e8400-e29b-41d4-a716-446655440000' }) };
+    const response = await PATCH(request as any, context);
+    expect(response.status).toBe(200);
+    expect(updateSystemParameterValues).toHaveBeenCalledWith(
+      '550e8400-e29b-41d4-a716-446655440000',
+      expect.objectContaining({ valueString: 'Updated assistant prompt' }),
+    );
+  });
 });

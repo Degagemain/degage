@@ -293,12 +293,14 @@ model Town {
 
 enum SystemParameterCategory {
     simulation
+    assistant
 }
 
 enum SystemParameterType {
     number
     number_range
     euronorm
+    string
 }
 
 model SystemParameter {
@@ -311,6 +313,7 @@ model SystemParameter {
     valueNumberMax  Float?
     valueEuronormId String?
     valueEuronorm   EuroNorm?                    @relation(fields: [valueEuronormId], references: [id])
+    valueString      String?
     translations    SystemParameterTranslation[]
     createdAt       DateTime                     @default(now())
     updatedAt       DateTime                     @updatedAt

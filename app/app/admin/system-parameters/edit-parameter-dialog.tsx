@@ -7,6 +7,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Textarea } from '@/app/components/ui/textarea';
 
 interface EditParameterDialogProps {
   parameter: SystemParameter | null;
@@ -27,6 +28,7 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
   const [valueNumberMin, setValueNumberMin] = useState<string>('');
   const [valueNumberMax, setValueNumberMax] = useState<string>('');
   const [valueEuronormId, setValueEuronormId] = useState<string>('');
+  const [valueString, setValueString] = useState<string>('');
   const [euroNorms, setEuroNorms] = useState<EuroNormOption[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +39,7 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
     setValueNumberMin(parameter.valueNumberMin != null ? String(parameter.valueNumberMin) : '');
     setValueNumberMax(parameter.valueNumberMax != null ? String(parameter.valueNumberMax) : '');
     setValueEuronormId(parameter.valueEuronormId ?? '');
+    setValueString(parameter.valueString ?? '');
   }, [parameter]);
 
   useEffect(() => {
@@ -65,6 +68,9 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
           break;
         case SystemParameterType.EURONORM:
           payload.valueEuronormId = valueEuronormId === '' ? null : valueEuronormId;
+          break;
+        case SystemParameterType.STRING:
+          payload.valueString = valueString;
           break;
       }
       await onSave(parameter.id, payload);
@@ -138,6 +144,13 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+          )}
+
+          {parameter.type === SystemParameterType.STRING && (
+            <div className="space-y-2">
+              <Label htmlFor="valueString">{t('valueString')}</Label>
+              <Textarea id="valueString" value={valueString} onChange={(e) => setValueString(e.target.value)} className="min-h-64" />
             </div>
           )}
 

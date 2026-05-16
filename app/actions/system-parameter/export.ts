@@ -17,6 +17,8 @@ const formatParameterValue = (parameter: SystemParameter): string => {
       return DashPlaceholder;
     case SystemParameterType.EURONORM:
       return parameter.valueEuronormId ?? DashPlaceholder;
+    case SystemParameterType.STRING:
+      return parameter.valueString?.trim() ? parameter.valueString : DashPlaceholder;
     default:
       return DashPlaceholder;
   }

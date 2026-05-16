@@ -28,6 +28,7 @@ export const dbSystemParameterToDomain = (param: SystemParameterWithTranslations
     valueNumberMin: param.valueNumberMin,
     valueNumberMax: param.valueNumberMax,
     valueEuronormId: param.valueEuronormId,
+    valueString: param.valueString,
     createdAt: param.createdAt,
     updatedAt: param.updatedAt,
   };
@@ -42,6 +43,7 @@ export const systemParameterToDbCreate = (param: SystemParameter): Prisma.System
     valueNumberMin: param.valueNumberMin ?? undefined,
     valueNumberMax: param.valueNumberMax ?? undefined,
     valueEuronormId: param.valueEuronormId ?? undefined,
+    valueString: param.valueString ?? undefined,
     translations: {
       createMany: {
         data: param.translations.map((t) => ({

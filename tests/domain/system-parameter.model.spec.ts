@@ -21,6 +21,7 @@ describe('systemParameterSchema', () => {
       valueNumberMin: null,
       valueNumberMax: null,
       valueEuronormId: null,
+      valueString: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -51,6 +52,13 @@ describe('systemParameterValueUpdateSchema', () => {
   it('accepts null valueNumber', () => {
     const result = systemParameterValueUpdateSchema.safeParse({
       valueNumber: null,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts string value updates', () => {
+    const result = systemParameterValueUpdateSchema.safeParse({
+      valueString: 'Configurable assistant prompt',
     });
     expect(result.success).toBe(true);
   });

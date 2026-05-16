@@ -17,6 +17,12 @@ function formatDate(value: Date | string | null): string {
   return new Date(value).toLocaleDateString();
 }
 
+function formatTextValue(value: string | null): string {
+  const normalized = value?.replace(/\s+/g, ' ').trim();
+  if (!normalized) return '—';
+  return normalized.length > 120 ? `${normalized.slice(0, 117)}...` : normalized;
+}
+
 function formatValue(param: SystemParameter): string {
   switch (param.type) {
     case SystemParameterType.NUMBER:
@@ -28,6 +34,8 @@ function formatValue(param: SystemParameter): string {
       return '—';
     case SystemParameterType.EURONORM:
       return param.valueEuronormId ?? '—';
+    case SystemParameterType.STRING:
+      return formatTextValue(param.valueString);
     default:
       return '—';
   }
