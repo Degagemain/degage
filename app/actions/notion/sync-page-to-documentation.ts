@@ -1,24 +1,48 @@
 import { Client } from '@notionhq/client';
-import type { DocumentationAudienceRole } from '@/domain/documentation.model';
-import type { DocumentationFormat } from '@/domain/documentation.model';
-import type { DocumentationTag } from '@/domain/documentation.model';
-import { documentationAudienceRoleSchema, documentationFormatSchema, documentationTagSchema } from '@/domain/documentation.model';
-import { type ContentLocale, contentLocales } from '@/i18n/locales';
+import { type ContentLocale, isContentLocale } from '@/i18n/locales';
 import { dbDocumentationUpsertNotion } from '@/storage/documentation/documentation.upsert-notion';
 import { dbDocumentationDeleteByExternalId } from '@/storage/documentation/documentation.delete-by-external-id';
 import { notionExternalId } from '@/storage/documentation/documentation.upsert-notion';
-import {
-  type NotionPageWithProps,
-  getNotionMultiSelectNames,
-  getNotionPageProperty,
-  getNotionPropertyPlainText,
-  isNotionRichText,
-  parseLocaleNotionPropertyMap,
-} from '@/actions/notion/notion-page-properties';
+import { type NotionPageWithProps, getNotionPropertyPlainText } from '@/actions/notion/notion-page-properties';
 
 const getEnv = (key: string): string | undefined => process.env[key];
 
 const richTextToPlain = (items: { plain_text: string }[]): string => items.map((i) => i.plain_text).join('');
+const DEFAULT_NOTION_DOC_LANGUAGE_PROPERTY = 'Language';
+const DEFAULT_NOTION_DOC_PARENT_KEY_PROPERTY = 'Parent';
+
+type NotionRichTextItem = {
+  plain_text?: string;
+  href?: string | null;
+  annotations?: {
+    bold?: boolean;
+    italic?: boolean;
+    strikethrough?: boolean;
+    code?: boolean;
+  };
+  text?: {
+    content?: string;
+    link?: { url?: string } | null;
+  };
+};
+
+type NotionBlock = {
+  id?: string;
+  type?: string;
+  has_children?: boolean;
+} & Record<string, unknown>;
+
+type NotionBlocksClient = {
+  blocks: {
+    children: {
+      list: (args: { block_id: string; start_cursor?: string; page_size?: number }) => Promise<{
+        results: unknown[];
+        has_more?: boolean;
+        next_cursor?: string | null;
+      }>;
+    };
+  };
+};
 
 const findTitleFromProperties = (page: NotionPageWithProps): string => {
   for (const [, prop] of Object.entries(page.properties)) {
@@ -30,63 +54,136 @@ const findTitleFromProperties = (page: NotionPageWithProps): string => {
   return 'Untitled';
 };
 
-const findRichTextProperty = (page: NotionPageWithProps, names: string[]): string => {
-  const lowerNames = names.map((n) => n.toLowerCase());
-  for (const [key, prop] of Object.entries(page.properties)) {
-    if (!lowerNames.includes(key.toLowerCase())) continue;
-    if (isNotionRichText(prop)) {
-      return richTextToPlain(prop.rich_text);
+const getBlockPayload = (block: NotionBlock): Record<string, unknown> | null => {
+  if (!block.type) return null;
+  const payload = block[block.type];
+  return payload && typeof payload === 'object' ? (payload as Record<string, unknown>) : null;
+};
+
+const getBlockRichText = (block: NotionBlock): NotionRichTextItem[] => {
+  const richText = getBlockPayload(block)?.rich_text;
+  return Array.isArray(richText) ? (richText as NotionRichTextItem[]) : [];
+};
+
+const richTextToMarkdown = (items: NotionRichTextItem[]): string => {
+  return items
+    .map((item) => {
+      let text = item.plain_text ?? item.text?.content ?? '';
+      if (!text) return '';
+
+      const annotations = item.annotations;
+      if (annotations?.code) text = `\`${text.replaceAll('`', '\\`')}\``;
+      if (annotations?.bold) text = `**${text}**`;
+      if (annotations?.italic) text = `_${text}_`;
+      if (annotations?.strikethrough) text = `~~${text}~~`;
+
+      const url = item.href ?? item.text?.link?.url;
+      if (!url) return text;
+
+      const label = text.trim();
+      if (!label) return text;
+
+      const leading = text.match(/^\s*/)?.[0] ?? '';
+      const trailing = text.match(/\s*$/)?.[0] ?? '';
+      return `${leading}[${label}](${url})${trailing}`;
+    })
+    .join('');
+};
+
+const blockToMarkdown = (block: NotionBlock): string => {
+  const text = richTextToMarkdown(getBlockRichText(block)).trim();
+
+  switch (block.type) {
+    case 'paragraph':
+      return text;
+    case 'heading_1':
+      return text ? `# ${text}` : '';
+    case 'heading_2':
+      return text ? `## ${text}` : '';
+    case 'heading_3':
+      return text ? `### ${text}` : '';
+    case 'bulleted_list_item':
+      return text ? `- ${text}` : '';
+    case 'numbered_list_item':
+      return text ? `1. ${text}` : '';
+    case 'to_do': {
+      const checked = getBlockPayload(block)?.checked === true ? 'x' : ' ';
+      return text ? `- [${checked}] ${text}` : '';
+    }
+    case 'quote':
+    case 'callout':
+      return text ? `> ${text}` : '';
+    case 'code': {
+      const payload = getBlockPayload(block);
+      const language = typeof payload?.language === 'string' ? payload.language : '';
+      const code = richTextToPlain(getBlockRichText(block).map((item) => ({ plain_text: item.plain_text ?? item.text?.content ?? '' })));
+      return `\`\`\`${language}\n${code}\n\`\`\``;
+    }
+    case 'divider':
+      return '---';
+    default:
+      return '';
+  }
+};
+
+const indentMarkdown = (markdown: string): string =>
+  markdown
+    .split('\n')
+    .map((line) => (line.trim() ? `  ${line}` : line))
+    .join('\n');
+
+export const notionBlocksToMarkdown = async (notion: NotionBlocksClient, blockId: string, depth = 0): Promise<string> => {
+  const blocks: NotionBlock[] = [];
+  let startCursor: string | undefined;
+
+  do {
+    const response = await notion.blocks.children.list({ block_id: blockId, start_cursor: startCursor, page_size: 100 });
+    blocks.push(...(response.results.filter((block) => block && typeof block === 'object') as NotionBlock[]));
+    startCursor = response.has_more && response.next_cursor ? response.next_cursor : undefined;
+  } while (startCursor);
+
+  const markdownBlocks: string[] = [];
+  for (const block of blocks) {
+    const markdown = blockToMarkdown(block);
+    if (markdown) {
+      markdownBlocks.push(depth > 0 ? indentMarkdown(markdown) : markdown);
+    }
+    if (block.has_children && block.id) {
+      const childMarkdown = await notionBlocksToMarkdown(notion, block.id, depth + 1);
+      if (childMarkdown) {
+        markdownBlocks.push(childMarkdown);
+      }
     }
   }
-  return '';
+
+  return markdownBlocks.join('\n\n').trimEnd();
 };
 
-const DEFAULT_NOTION_DOC_BODY_PROPERTY_NAMES = ['Content', 'Body'] as const;
+export const resolveNotionTranslationInput = (
+  page: NotionPageWithProps,
+  content: string,
+): { parentKey: string; translation: { locale: ContentLocale; title: string; content: string } } => {
+  const languageProp = getEnv('NOTION_DOC_LANGUAGE_PROPERTY')?.trim() || DEFAULT_NOTION_DOC_LANGUAGE_PROPERTY;
+  const parentKeyProp = getEnv('NOTION_DOC_PARENT_KEY_PROPERTY')?.trim() || DEFAULT_NOTION_DOC_PARENT_KEY_PROPERTY;
 
-const parseAudienceRoles = (raw: string | undefined): DocumentationAudienceRole[] => {
-  const defaults: DocumentationAudienceRole[] = ['user', 'public'];
-  if (!raw?.trim()) return defaults;
-  const out: DocumentationAudienceRole[] = [];
-  for (const part of raw.split(',').map((s) => s.trim())) {
-    const p = documentationAudienceRoleSchema.safeParse(part);
-    if (p.success) out.push(p.data);
+  const locale = getNotionPropertyPlainText(page, languageProp).toLowerCase();
+  if (!isContentLocale(locale)) {
+    throw new Error(`Notion documentation page must define a supported language in "${languageProp}"`);
   }
-  return out.length > 0 ? out : defaults;
-};
 
-const parseTags = (raw: string | undefined): DocumentationTag[] => {
-  if (!raw?.trim()) return [];
-  const out: DocumentationTag[] = [];
-  for (const part of raw.split(',').map((s) => s.trim())) {
-    const p = documentationTagSchema.safeParse(part);
-    if (p.success) out.push(p.data);
+  const parentKey = getNotionPropertyPlainText(page, parentKeyProp);
+  if (!parentKey) {
+    throw new Error(`Notion documentation page must define a parent key in "${parentKeyProp}"`);
   }
-  return out;
-};
 
-const parseFormat = (raw: string | undefined): DocumentationFormat => {
-  const p = documentationFormatSchema.safeParse(raw?.trim() || 'markdown');
-  return p.success ? p.data : 'markdown';
-};
-
-const resolveTranslations = (
-  pageWithProps: NotionPageWithProps,
-  defaultTitle: string,
-  defaultContent: string,
-  titlePropByLocale: Partial<Record<ContentLocale, string>>,
-  contentPropByLocale: Partial<Record<ContentLocale, string>>,
-): { locale: string; title: string; content: string }[] => {
-  return contentLocales.map((locale) => {
-    const titleProp = titlePropByLocale[locale];
-    const localizedTitle = titleProp ? getNotionPropertyPlainText(pageWithProps, titleProp) : '';
-    const title = (localizedTitle || defaultTitle || 'Untitled').trim() || 'Untitled';
-
-    const contentProp = contentPropByLocale[locale];
-    const localizedContent = contentProp ? getNotionPropertyPlainText(pageWithProps, contentProp) : '';
-    const content = localizedContent || defaultContent;
-
-    return { locale, title, content };
-  });
+  return {
+    parentKey,
+    translation: {
+      locale,
+      title: findTitleFromProperties(page),
+      content,
+    },
+  };
 };
 
 export const syncNotionPageToDocumentation = async (pageId: string): Promise<void> => {
@@ -102,65 +199,12 @@ export const syncNotionPageToDocumentation = async (pageId: string): Promise<voi
   }
   const pageWithProps = page as NotionPageWithProps;
 
-  const defaultContent = findRichTextProperty(pageWithProps, [...DEFAULT_NOTION_DOC_BODY_PROPERTY_NAMES]);
-  const defaultTitle = findTitleFromProperties(pageWithProps);
-
-  const titlePropByLocale = parseLocaleNotionPropertyMap(getEnv('NOTION_DOC_LOCALE_TITLE_PROPERTIES'));
-  const contentPropByLocale = parseLocaleNotionPropertyMap(getEnv('NOTION_DOC_LOCALE_CONTENT_PROPERTIES'));
-
-  const translations = resolveTranslations(pageWithProps, defaultTitle, defaultContent, titlePropByLocale, contentPropByLocale);
-
-  let isFaq = false;
-  const faqProp = getEnv('NOTION_DOC_IS_FAQ_PROPERTY');
-  const faqVal = faqProp ? pageWithProps.properties[faqProp] : undefined;
-  if (faqVal && typeof faqVal === 'object' && 'type' in faqVal && faqVal.type === 'checkbox' && 'checkbox' in faqVal) {
-    isFaq = Boolean(faqVal.checkbox);
-  }
-
-  let isPublic = false;
-  const publicProp = getEnv('NOTION_DOC_IS_PUBLIC_PROPERTY');
-  const publicVal = publicProp ? pageWithProps.properties[publicProp] : undefined;
-  if (publicVal && typeof publicVal === 'object' && 'type' in publicVal && publicVal.type === 'checkbox' && 'checkbox' in publicVal) {
-    isPublic = Boolean(publicVal.checkbox);
-  }
-
-  let audienceRoles = parseAudienceRoles(undefined);
-  const audProp = getEnv('NOTION_DOC_AUDIENCE_PROPERTY');
-  if (audProp) {
-    const audVal = getNotionPageProperty(pageWithProps, audProp);
-    const names = getNotionMultiSelectNames(audVal);
-    if (names.length > 0) {
-      audienceRoles = parseAudienceRoles(names.join(','));
-    }
-  }
-
-  let tags: DocumentationTag[] = [];
-  const tagsProp = getEnv('NOTION_DOC_TAGS_PROPERTY');
-  if (tagsProp) {
-    const tagsVal = getNotionPageProperty(pageWithProps, tagsProp);
-    tags = parseTags(getNotionMultiSelectNames(tagsVal).join(','));
-  }
-
-  let format: DocumentationFormat = 'markdown';
-  const fmtProp = getEnv('NOTION_DOC_FORMAT_PROPERTY');
-  const fmtVal = fmtProp ? pageWithProps.properties[fmtProp] : undefined;
-  if (fmtVal && typeof fmtVal === 'object' && 'type' in fmtVal) {
-    const sel = 'select' in fmtVal ? fmtVal.select : null;
-    if (fmtVal.type === 'select' && sel && typeof sel === 'object' && sel !== null && 'name' in sel) {
-      format = parseFormat(String((sel as { name: string }).name));
-    } else if (isNotionRichText(fmtVal)) {
-      format = parseFormat(richTextToPlain(fmtVal.rich_text));
-    }
-  }
+  const content = await notionBlocksToMarkdown(notion, pageId);
+  const input = resolveNotionTranslationInput(pageWithProps, content);
 
   await dbDocumentationUpsertNotion({
-    notionPageId: pageId,
-    isFaq,
-    isPublic,
-    format,
-    audienceRoles,
-    tags,
-    translations,
+    parentKey: input.parentKey,
+    translation: input.translation,
   });
 };
 
