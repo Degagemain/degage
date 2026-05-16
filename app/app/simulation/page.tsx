@@ -676,8 +676,6 @@ export default function SimulationPage() {
                 <strong>{t('situatie.koopgidsTipLead')}</strong> {t('situatie.koopgidsTipBody')}
               </p>
             </div>
-
-            <p className={styles.koopgidsFooter}>{t('situatie.koopgidsFooter')}</p>
           </section>
         </div>
       )}
@@ -685,9 +683,22 @@ export default function SimulationPage() {
       {screen === STEP_CAR_INFO && (
         <div className={styles.pageTwoCol}>
           <div>
+            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary} ${styles.backBtnTop}`}>
+              {t('back')}
+            </button>
             <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: NUMBERED_STEP_TOTAL })}</p>
             <h1 className={styles.title}>{t('wageninfo.title')}</h1>
-            <p className={`${styles.body} ${styles.bodyAfterTitle}`}>{t('wageninfo.body')}</p>
+            <p className={`${styles.body} ${styles.bodyAfterTitle}`}>
+              {t('wageninfo.body')}
+              {process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL && (
+                <>
+                  {' '}
+                  <a href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
+                    {t('wageninfo.privacyPolicyLink')}
+                  </a>
+                </>
+              )}
+            </p>
 
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
@@ -796,7 +807,7 @@ export default function SimulationPage() {
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>{t('wageninfo.seatsLabel')}</label>
                 <select value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.select}>
-                  {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
+                  {Array.from({ length: 8 }, (_, i) => i + 2).map((n) => (
                     <option key={n} value={String(n)}>
                       {n}
                     </option>
@@ -1322,19 +1333,19 @@ export default function SimulationPage() {
                 {[
                   {
                     i: 0,
-                    icon: '🌙',
+                    icon: '🔴',
                     labelKey: 'kosten.scenarioWeinig' as const,
                     subKey: 'kosten.scenarioWeinigSub' as const,
                     highlight: false,
                   },
                   {
                     i: 1,
-                    icon: '📅',
+                    icon: '🟡',
                     labelKey: 'kosten.scenarioRegelmatig' as const,
                     subKey: 'kosten.scenarioRegelmatigSub' as const,
                     highlight: true,
                   },
-                  { i: 2, icon: '⭐', labelKey: 'kosten.scenarioVaak' as const, subKey: 'kosten.scenarioVaakSub' as const, highlight: false },
+                  { i: 2, icon: '🟢', labelKey: 'kosten.scenarioVaak' as const, subKey: 'kosten.scenarioVaakSub' as const, highlight: false },
                 ].map((s) => (
                   <button
                     key={s.i}
