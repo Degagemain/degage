@@ -865,6 +865,7 @@
       "actions": {
         "openMenu": "Open menu",
         "edit": "Edit",
+        "copy": "Copy",
         "delete": "Delete"
       },
       "form": {

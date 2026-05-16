@@ -6,7 +6,7 @@ import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
-import { Check, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { Check, Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Hub } from '@/domain/hub.model';
 
 interface ColumnOptions {
@@ -274,6 +274,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
                   <Link href={`/app/admin/hubs/${hub.id}`}>
                     <Pencil />
                     {t('actions.edit')}
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              {hub.id && (
+                <DropdownMenuItem asChild>
+                  <Link href={`/app/admin/hubs/new?copyFrom=${hub.id}`}>
+                    <Copy />
+                    {t('actions.copy')}
                   </Link>
                 </DropdownMenuItem>
               )}
