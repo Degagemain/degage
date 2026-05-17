@@ -1397,7 +1397,23 @@
       },
       "bulkActions": {
         "label": "Selection",
-        "update": "Bulk update"
+        "update": "Bulk update",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete documentation",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "onlyManualNotice": "Only manual-source documentation can be deleted. {excluded} item(s) from external sources were excluded.",
+        "columnName": "Documentation",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Conflict"
       },
       "bulkUpdate": {
         "title": "Bulk update documentation",

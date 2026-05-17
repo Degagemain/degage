@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, X } from 'lucide-react';
+import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import type { Documentation } from '@/domain/documentation.model';
@@ -19,7 +19,7 @@ import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
-import { apiPost, apiPut } from '@/app/lib/api-client';
+import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { Button } from '@/app/components/ui/button';
 import {
@@ -31,6 +31,7 @@ import {
   type FacetedFilterOption,
 } from '@/app/components/ui/data-table';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
+import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { BulkUpdateDocumentationDialog, type BulkUpdateDocumentationItem } from './components/bulk-update-documentation-dialog';
@@ -103,6 +104,7 @@ export default function DocumentationAdminPage() {
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
   const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -239,6 +241,27 @@ export default function DocumentationAdminPage() {
   );
 
   const handleBulkUpdateComplete = useCallback(() => {
+    setRowSelection({});
+    void fetchDocs();
+  }, [fetchDocs]);
+
+  const manualSelectedItems: BulkDeleteItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter((doc): doc is Documentation => Boolean(doc?.id) && doc?.source === 'manual')
+        .map((doc) => ({ id: doc.id!, label: getTitle(doc) })),
+    [getTitle, rowSelection, state.data],
+  );
+
+  const excludedFromDeleteCount = useMemo(
+    () => selectedDocumentation.length - manualSelectedItems.length,
+    [selectedDocumentation, manualSelectedItems],
+  );
+
+  const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/documentation/${id}`), []);
+
+  const handleBulkDeleteComplete = useCallback(() => {
     setRowSelection({});
     void fetchDocs();
   }, [fetchDocs]);
@@ -388,6 +411,10 @@ export default function DocumentationAdminPage() {
         <DropdownMenuItem onClick={() => setBulkUpdateOpen(true)}>
           <Pencil />
           {t('bulkActions.update')}
+        </DropdownMenuItem>
+        <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)} disabled={manualSelectedItems.length === 0}>
+          <Trash2 />
+          {t('bulkActions.delete')}
         </DropdownMenuItem>
       </BulkActionsButton>
       <Button
@@ -542,6 +569,31 @@ export default function DocumentationAdminPage() {
           statusUpdating: t('bulkUpdate.statusUpdating'),
           statusSuccess: t('bulkUpdate.statusSuccess'),
           statusError: t('bulkUpdate.statusError'),
+        }}
+      />
+
+      <BulkDeleteDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        items={manualSelectedItems}
+        deleteItem={handleBulkDeleteItem}
+        onComplete={handleBulkDeleteComplete}
+        labels={{
+          title: t('bulkDelete.title'),
+          description:
+            excludedFromDeleteCount > 0
+              ? `${t('bulkDelete.description', { count: manualSelectedItems.length })} ${t('bulkDelete.onlyManualNotice', { excluded: excludedFromDeleteCount })}`
+              : t('bulkDelete.description', { count: manualSelectedItems.length }),
+          columnName: t('bulkDelete.columnName'),
+          columnStatus: t('bulkDelete.columnStatus'),
+          confirm: t('bulkDelete.confirm'),
+          cancel: t('bulkDelete.cancel'),
+          close: t('bulkDelete.close'),
+          statusPending: t('bulkDelete.statusPending'),
+          statusDeleting: t('bulkDelete.statusDeleting'),
+          statusSuccess: t('bulkDelete.statusSuccess'),
+          statusError: t('bulkDelete.statusError'),
+          statusConflict: t('bulkDelete.statusConflict'),
         }}
       />
     </>

@@ -25,9 +25,10 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
-import { GET } from '@/api/documentation/[id]/route';
+import { DELETE, GET } from '@/api/documentation/[id]/route';
 import { auth } from '@/auth';
 import { readDocumentation } from '@/actions/documentation/read';
+import { deleteDocumentation } from '@/actions/documentation/delete';
 import { documentation } from '../../builders/documentation.builder';
 
 const docId = '550e8400-e29b-41d4-a716-446655440000';
@@ -65,5 +66,36 @@ describe('GET /api/documentation/[id] (admin role)', () => {
     const json = await res.json();
     expect(json.id).toBe(docId);
     expect(readDocumentation).toHaveBeenCalledWith(docId);
+  });
+});
+
+describe('DELETE /api/documentation/[id] (admin role)', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const mockAdmin = { id: 'a', name: 'A', email: 'a@x.com', role: 'admin', banned: false };
+  const mockUser = { id: 'u', name: 'U', email: 'u@x.com', role: 'user', banned: false };
+
+  it('returns 401 when unauthenticated', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
+    const res = await DELETE({} as any, { params: Promise.resolve({ id: docId }) });
+    expect(res.status).toBe(401);
+    expect(deleteDocumentation).not.toHaveBeenCalled();
+  });
+
+  it('returns 403 when authenticated but not admin', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
+    const res = await DELETE({} as any, { params: Promise.resolve({ id: docId }) });
+    expect(res.status).toBe(403);
+    expect(deleteDocumentation).not.toHaveBeenCalled();
+  });
+
+  it('returns 204 when admin deletes successfully', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdmin } as any);
+    vi.mocked(deleteDocumentation).mockResolvedValueOnce(undefined);
+    const res = await DELETE({} as any, { params: Promise.resolve({ id: docId }) });
+    expect(res.status).toBe(204);
+    expect(deleteDocumentation).toHaveBeenCalledWith(docId);
   });
 });
