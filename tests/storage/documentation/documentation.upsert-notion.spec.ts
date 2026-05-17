@@ -49,7 +49,7 @@ describe('dbDocumentationUpsertNotion', () => {
         isFaq: false,
         isPublic: false,
         format: 'markdown',
-        audienceRoles: [],
+        audienceRoles: ['admin'],
         tags: [],
         translations: {
           create: {

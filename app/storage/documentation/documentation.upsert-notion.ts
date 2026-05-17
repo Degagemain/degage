@@ -1,4 +1,5 @@
 import type { ContentLocale } from '@/i18n/locales';
+import { Role } from '@/domain/role.model';
 import { getPrismaClient } from '@/storage/utils';
 import { DocumentationSource } from '@/storage/client/client';
 
@@ -28,7 +29,7 @@ export const dbDocumentationUpsertNotion = async (input: NotionDocUpsertInput): 
         isFaq: false,
         isPublic: false,
         format: 'markdown',
-        audienceRoles: [],
+        audienceRoles: [Role.ADMIN],
         tags: [],
         translations: {
           create: {
