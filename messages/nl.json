@@ -1397,7 +1397,23 @@
       },
       "bulkActions": {
         "label": "Selectie",
-        "update": "Bulk bijwerken"
+        "update": "Bulk bijwerken",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Documentatie verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Dit kan niet ongedaan worden gemaakt.",
+        "onlyManualNotice": "Alleen documentatie met bron 'handmatig' kan verwijderd worden. {excluded} item(s) van externe bronnen werden uitgesloten.",
+        "columnName": "Documentatie",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wacht",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Conflict"
       },
       "bulkUpdate": {
         "title": "Documentatie in bulk bijwerken",

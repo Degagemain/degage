@@ -1397,7 +1397,23 @@
       },
       "bulkActions": {
         "label": "Sélection",
-        "update": "Mise à jour groupée"
+        "update": "Mise à jour groupée",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer la documentation",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "onlyManualNotice": "Seule la documentation de source manuelle peut être supprimée. {excluded} élément(s) de sources externes ont été exclus.",
+        "columnName": "Documentation",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Conflit"
       },
       "bulkUpdate": {
         "title": "Mettre à jour la documentation en groupe",
