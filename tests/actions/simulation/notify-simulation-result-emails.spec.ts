@@ -20,10 +20,11 @@ vi.mock('@/context/request-context', () => ({
   getRequestLocale: () => getRequestLocaleMock(),
 }));
 
-import { notifySimulationResultEmails } from '@/actions/simulation/notify-simulation-result-emails';
+import { buildFleetCategoryMessage, notifySimulationResultEmails } from '@/actions/simulation/notify-simulation-result-emails';
 import type { Simulation } from '@/domain/simulation.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import { TemplatesEnum, sendTemplatedEmail } from '@/integrations/resend';
+import nl from '../../../messages/nl.json';
 import { simulation } from '../../builders/simulation.builder';
 
 const simId = '550e8400-e29b-41d4-a716-446655440000';
@@ -48,7 +49,13 @@ describe('notifySimulationResultEmails', () => {
     expect(sendTemplatedEmail).toHaveBeenCalledTimes(2);
     expect(sendTemplatedEmail).toHaveBeenNthCalledWith(
       1,
-      expect.objectContaining({ template: TemplatesEnum.SimulationResultsEmail, locale: 'en' }),
+      expect.objectContaining({
+        template: TemplatesEnum.SimulationResultsEmail,
+        locale: 'en',
+        variables: expect.objectContaining({
+          FLEET_CATEGORY_MESSAGE: buildFleetCategoryMessage('en', SimulationResultCode.CATEGORY_A),
+        }),
+      }),
     );
     expect(sendTemplatedEmail).toHaveBeenNthCalledWith(2, expect.objectContaining({ template: TemplatesEnum.SimulationResultsSupportEmail }));
   });
@@ -73,6 +80,10 @@ describe('notifySimulationResultEmails', () => {
       2,
       expect.objectContaining({ template: TemplatesEnum.SimulationManualReviewSupportEmail }),
     );
+  });
+
+  it('builds fleet message from translations', () => {
+    expect(buildFleetCategoryMessage('nl', SimulationResultCode.CATEGORY_A)).toBe(nl.simulation.resultEmail.fleetCategory.categoryA);
   });
 
   it('no-ops without simulation id', async () => {
