@@ -1104,7 +1104,19 @@ export default function SimulationPage() {
                           )
                         : t('result.statTariefgroepValue')}
                     </div>
-                    <div className={styles.resultStatSub}>{t('result.statTariefgroepSub')}</div>
+                    <div className={styles.resultStatSub}>
+                      {t(
+                        `result.statTariefgroepSub${
+                          simulationResult?.resultCode === SimulationResultCode.CATEGORY_A
+                            ? 'CategoryA'
+                            : simulationResult?.resultCode === SimulationResultCode.CATEGORY_B
+                              ? 'CategoryB'
+                              : simulationResult?.resultCode === SimulationResultCode.HIGHER_RATE
+                                ? 'HigherRate'
+                                : 'Value'
+                        }` as 'result.statTariefgroepSubCategoryA',
+                      )}
+                    </div>
                   </div>
                   <div className={styles.resultStatBox}>
                     <div className={styles.resultStatLabel}>{t('result.statWaarde')}</div>
@@ -1250,7 +1262,16 @@ export default function SimulationPage() {
             </>
           )}
 
-          <p className={styles.footnote}>{t('result.disclaimer')}</p>
+          <div className={styles.buttonRow}>
+            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
+              {t('back')}
+            </button>
+            {displaySuccess && (
+              <button type="button" onClick={goNext} className={`${styles.btn} ${styles.btnPrimary}`}>
+                {t('result.nextCta')}
+              </button>
+            )}
+          </div>
 
           <div className={styles.marginBottom24}>
             <FaqByTags
@@ -1266,16 +1287,7 @@ export default function SimulationPage() {
             />
           </div>
 
-          <div className={styles.buttonRow}>
-            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
-              {t('back')}
-            </button>
-            {displaySuccess && (
-              <button type="button" onClick={goNext} className={`${styles.btn} ${styles.btnPrimary}`}>
-                {t('result.nextCta')}
-              </button>
-            )}
-          </div>
+          <p className={styles.footnote}>{t('result.disclaimer')}</p>
         </div>
       )}
 
@@ -1458,11 +1470,6 @@ export default function SimulationPage() {
               )}
 
               {!hasCosts && <p className={styles.kostenPlaceholderText}>{t('kosten.placeholder')}</p>}
-
-              <div className={styles.kostenQuarterVariance} role="note">
-                <div className={styles.kostenQuarterVarianceTitle}>{t('kosten.quarterVarianceTitle')}</div>
-                <p className={styles.kostenQuarterVarianceBody}>{t('kosten.quarterVarianceBody')}</p>
-              </div>
 
               <div className={styles.buttonRow}>
                 <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>

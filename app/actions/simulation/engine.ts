@@ -308,7 +308,8 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
 
   if (hub.isDefault) {
     if (depreciationCostKm <= hub.simAcceptedDepreciationCostKm) {
-      return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
+      const fallbackCategory = input.seats >= 7 ? SimulationResultCode.CATEGORY_B : SimulationResultCode.CATEGORY_A;
+      return await resolveAcceptanceOrMaxPriceReview(result, hub, fallbackCategory);
     }
   }
 
