@@ -32,7 +32,7 @@ Chaque execution renvoie un resultat et une liste detaillee d'etapes/messages po
 La simulation utilise notamment :
 
 - Marque, type de carburant, type de vehicule (ou "autre")
-- Neuf/occasion, premiere immatriculation, kilometrage, nombre de places, indicateur van
+- Neuf/occasion, premiere immatriculation, kilometrage (compteur a l'achat pour un vehicule neuf), nombre de places, indicateur van
 - Prix d'achat (vehicule neuf)
 - Commune et km proprietaire prevus par an
 
@@ -40,7 +40,8 @@ La simulation utilise notamment :
 
 ### 1) Controles initiaux
 
-- Pour les vehicules d'occasion, le moteur verifie kilometrage maximal et age maximal.
+- Toutes les executions verifient le kilometrage maximal (odometre, y compris pour un achat recent).
+- Les vehicules d'occasion sont aussi verifies sur l'age maximal.
 - Les seuils viennent de la configuration du hub selectionne.
 - Si un controle echoue, la simulation s'arrete avec **Not OK**.
 

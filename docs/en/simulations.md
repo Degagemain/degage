@@ -32,7 +32,7 @@ Each run produces a result plus a detailed list of steps/messages so admins can 
 The run uses car and context data such as:
 
 - Brand, fuel type, car type (or "other" type)
-- New/used flag, first registration date, mileage, seats, van flag
+- New/used flag, first registration date, mileage (odometer at purchase for new cars), seats, van flag
 - Purchase price (for new cars)
 - Town and expected owner km per year
 
@@ -40,7 +40,8 @@ The run uses car and context data such as:
 
 ### 1) Initial checks
 
-- For used cars, the engine checks max mileage and max age.
+- All runs check max mileage (odometer reading, including for newly purchased cars).
+- Used cars also check max age.
 - Limits come from the selected hub configuration.
 - If one check fails, the simulation stops with **Not OK**.
 

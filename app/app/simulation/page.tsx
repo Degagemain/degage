@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { FaqByTags, type FaqPanelClassNames } from '@/app/components/documentation/faq-by-tags';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import type { DocumentationTag } from '@/domain/documentation.model';
-import { calculateOwnerKmPerYear } from '@/domain/utils';
 import { apiPost } from '@/app/lib/api-client';
 import { LanguageSwitcher } from '@/app/components/language-switcher';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
@@ -117,7 +116,6 @@ export default function SimulationPage() {
   const [mileage, setMileage] = useState('');
   const [firstRegisteredAt, setFirstRegisteredAt] = useState('');
   const [ownerKmPerYear, setOwnerKmPerYear] = useState('');
-  const [ownerKmManuallyEdited, setOwnerKmManuallyEdited] = useState(false);
   const [purchaseAmountInclVat, setPurchaseAmountInclVat] = useState('');
 
   const [fuelTypes, setFuelTypes] = useState<{ id: string; name: string }[]>([]);
@@ -217,27 +215,10 @@ export default function SimulationPage() {
     return Number.isNaN(d.getTime()) ? undefined : d;
   }
 
-  const computedOwnerKmPerYear = useMemo(() => {
-    const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
-    const date = firstRegistrationDateToDate(firstRegisteredAt);
-    if (!Number.isInteger(mileageNum) || mileageNum < 0 || !date) return null;
-    return calculateOwnerKmPerYear(mileageNum, date);
-  }, [mileage, firstRegisteredAt]);
-
-  useEffect(() => {
-    if (ownerKmManuallyEdited) return;
-    setOwnerKmPerYear(computedOwnerKmPerYear != null ? String(computedOwnerKmPerYear) : '');
-  }, [computedOwnerKmPerYear, ownerKmManuallyEdited]);
-
-  const effectiveOwnerKmPerYear = useMemo(() => {
-    if (ownerKmPerYear.trim()) {
-      const n = parseInt(ownerKmPerYear.trim(), 10);
-      return Number.isInteger(n) && n >= 0 ? n : null;
-    }
-    return computedOwnerKmPerYear;
-  }, [ownerKmPerYear, computedOwnerKmPerYear]);
-
-  const ownerKmEditable = carChoice === 'newCar' || ownerKmManuallyEdited;
+  const parsedOwnerKmPerYear = useMemo(() => {
+    const n = ownerKmPerYear.trim() ? parseInt(ownerKmPerYear.trim(), 10) : NaN;
+    return Number.isInteger(n) && n > 0 ? n : null;
+  }, [ownerKmPerYear]);
 
   const carTypeQueryParams = useMemo(
     () => (brandId && fuelTypeId ? { brandId, fuelTypeId, isActive: 'true' } : undefined),
@@ -292,8 +273,7 @@ export default function SimulationPage() {
       setMileage('52900');
       setSeats('5');
       setCarTypeOther('');
-      setOwnerKmPerYear('');
-      setOwnerKmManuallyEdited(false);
+      setOwnerKmPerYear('15000');
       setPurchaseAmountInclVat('');
     } finally {
       setFillExampleLoading(false);
@@ -307,13 +287,16 @@ export default function SimulationPage() {
     if (!Number.isInteger(seatsNum) || seatsNum < 1) return false;
     if (carChoice === 'newCar') {
       const amount = purchaseAmountInclVat.trim() ? parseFloat(purchaseAmountInclVat.replace(/,/g, '.')) : NaN;
-      return Number.isFinite(amount) && amount > 0;
+      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
+      if (!Number.isFinite(amount) || amount <= 0) return false;
+      if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
+      return parsedOwnerKmPerYear !== null;
     }
     const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
     const date = firstRegistrationDateToDate(firstRegisteredAt);
     if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
     if (!date || date > new Date()) return false;
-    return effectiveOwnerKmPerYear !== null && effectiveOwnerKmPerYear >= 0;
+    return parsedOwnerKmPerYear !== null;
   }, [
     carChoice,
     townId,
@@ -324,7 +307,7 @@ export default function SimulationPage() {
     seats,
     mileage,
     firstRegisteredAt,
-    effectiveOwnerKmPerYear,
+    parsedOwnerKmPerYear,
     purchaseAmountInclVat,
   ]);
 
@@ -336,8 +319,8 @@ export default function SimulationPage() {
     const firstRegisteredAtValue = isNewCar
       ? new Date().toISOString().slice(0, 10)
       : firstRegisteredAt.trim() || new Date().toISOString().slice(0, 10);
-    const mileageNum = isNewCar ? 0 : parseInt(mileage.trim(), 10) || 0;
-    const ownerKmNum = effectiveOwnerKmPerYear ?? 0;
+    const mileageNum = parseInt(mileage.trim(), 10) || 0;
+    const ownerKmNum = parsedOwnerKmPerYear ?? 0;
 
     const body = {
       town: { id: townId, name: townLabel },
@@ -412,7 +395,7 @@ export default function SimulationPage() {
     isVan,
     mileage,
     firstRegisteredAt,
-    effectiveOwnerKmPerYear,
+    parsedOwnerKmPerYear,
     purchaseAmountInclVat,
   ]);
 
@@ -831,17 +814,30 @@ export default function SimulationPage() {
             </div>
 
             {carChoice === 'newCar' && (
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{tWizard('mileage.purchaseAmountInclVat')}</label>
-                <input
-                  type="number"
-                  min={1}
-                  step={1}
-                  value={purchaseAmountInclVat}
-                  onChange={(e) => setPurchaseAmountInclVat(e.target.value)}
-                  placeholder={tWizard('mileage.purchaseAmountPlaceholder')}
-                  className={styles.input}
-                />
+              <div className={styles.formGridTwoCol}>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel}>{tWizard('mileage.purchaseAmountInclVat')}</label>
+                  <input
+                    type="number"
+                    min={1}
+                    step={1}
+                    value={purchaseAmountInclVat}
+                    onChange={(e) => setPurchaseAmountInclVat(e.target.value)}
+                    placeholder={tWizard('mileage.purchaseAmountPlaceholder')}
+                    className={styles.input}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={mileage}
+                    onChange={(e) => setMileage(e.target.value)}
+                    placeholder={t('wageninfo.mileagePlaceholder')}
+                    className={styles.input}
+                  />
+                </div>
               </div>
             )}
 
@@ -887,32 +883,16 @@ export default function SimulationPage() {
 
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.ownerKmLabel')}</label>
-              <div className={styles.ownerKmRow}>
-                <input
-                  type="number"
-                  min={0}
-                  value={ownerKmPerYear}
-                  onChange={(e) => setOwnerKmPerYear(e.target.value)}
-                  placeholder={t('wageninfo.ownerKmPlaceholder')}
-                  className={`${styles.input} ${ownerKmEditable ? '' : styles.inputReadOnly}`}
-                  readOnly={!ownerKmEditable}
-                  aria-readonly={!ownerKmEditable}
-                />
-                {carChoice === 'existing' && !ownerKmManuallyEdited ? (
-                  <button type="button" onClick={() => setOwnerKmManuallyEdited(true)} className={styles.ownerKmEditBtn}>
-                    {t('wageninfo.ownerKmEdit')}
-                  </button>
-                ) : null}
-              </div>
-              <p className={styles.fieldHint}>
-                {ownerKmManuallyEdited
-                  ? t('wageninfo.ownerKmEditedHint')
-                  : carChoice === 'newCar'
-                    ? tWizard('mileage.ownerKmNewCarHint')
-                    : computedOwnerKmPerYear != null
-                      ? tWizard('mileage.ownerKmPerYearHint')
-                      : tWizard('mileage.ownerKmPerYearEmpty')}
-              </p>
+              <input
+                type="number"
+                min={1}
+                required
+                value={ownerKmPerYear}
+                onChange={(e) => setOwnerKmPerYear(e.target.value)}
+                placeholder={t('wageninfo.ownerKmPlaceholder')}
+                className={styles.input}
+              />
+              <p className={styles.fieldHint}>{t('wageninfo.ownerKmHint')}</p>
             </div>
 
             <div className={`${styles.buttonRow} ${styles.marginTop24}`}>

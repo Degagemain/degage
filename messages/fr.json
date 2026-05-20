@@ -1750,11 +1750,9 @@
       "firstRegistrationLabel": "Première immatriculation",
       "firstRegistrationHint": "Vous trouvez cette date sur le certificat d'immatriculation du véhicule.",
       "firstRegistrationHelpAria": "Aide : où trouver la date de première immatriculation",
-      "kmPerYearAuto": "calculé automatiquement",
       "ownerKmLabel": "Km par an",
       "ownerKmPlaceholder": "ex. 15000",
-      "ownerKmEdit": "Ajuster",
-      "ownerKmEditedHint": "Vous avez modifié manuellement les km/an. Le calcul automatique ne mettra plus à jour cette valeur.",
+      "ownerKmHint": "Combien de kilomètres par an vous prévoyez de parcourir avec cette voiture. À titre indicatif : usage occasionnel environ 5 000–8 000 ; trajets quotidiens environ 12 000–20 000 ; usage intensif 25 000 ou plus.",
       "submit": "Simuler ma voiture →"
     },
     "loading": {

@@ -32,7 +32,7 @@ Elke run geeft een resultaat plus een lijst met stappen/boodschappen, zodat admi
 De simulatie gebruikt onder andere:
 
 - Merk, brandstoftype, autotype (of "overig")
-- Nieuw/tweedehands, eerste inschrijving, kilometerstand, aantal zitplaatsen, bestelwagen
+- Nieuw/tweedehands, eerste inschrijving, kilometerstand (stand bij aankoop voor nieuwe wagens), aantal zitplaatsen, bestelwagen
 - Aankoopprijs (voor nieuwe auto's)
 - Gemeente en verwachte eigen km per jaar
 
@@ -40,7 +40,8 @@ De simulatie gebruikt onder andere:
 
 ### 1) Initiële controles
 
-- Voor tweedehands voertuigen controleert de engine maximale kilometerstand en maximale leeftijd.
+- Elke run controleert de maximale kilometerstand (odometer, ook voor nieuw aangekochte wagens).
+- Tweedehands voertuigen worden ook gecontroleerd op maximale leeftijd.
 - De limieten komen uit de configuratie van de gekozen hub.
 - Als een controle faalt, stopt de simulatie met **Niet OK**.
 

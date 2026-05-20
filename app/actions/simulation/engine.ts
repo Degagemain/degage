@@ -125,13 +125,13 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   const depreciationKm = isElectricFuelType(fuelType) ? hub.simDepreciationKmElectric : hub.simDepreciationKm;
   const kmToDepreciation = Math.max(0, depreciationKm - input.mileage);
 
-  if (!input.isNewCar) {
-    if (!(await passesMileageRule(result, input.mileage, maxKm))) {
-      result.resultCode = SimulationResultCode.NOT_OK;
-      result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: maxKm });
-      return result;
-    }
+  if (!(await passesMileageRule(result, input.mileage, maxKm))) {
+    result.resultCode = SimulationResultCode.NOT_OK;
+    result.rejectionReason = await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage: maxKm });
+    return result;
+  }
 
+  if (!input.isNewCar) {
     if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
       result.resultCode = SimulationResultCode.NOT_OK;
       result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
@@ -157,7 +157,6 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     addInfoMessage(result, await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATED, priceParams));
   } else {
     result.resultEstimatedCarValue = input.purchasePrice;
-    input.mileage = 0;
   }
 
   setCurrentStep(result, SimulationPhase.CAR_INFO);

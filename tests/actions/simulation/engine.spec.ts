@@ -148,6 +148,37 @@ describe('runSimulationEngine', () => {
     expect(carValueEstimator).not.toHaveBeenCalled();
   });
 
+  it('rejects new car when mileage over limit', async () => {
+    const input = simulationRunInput({
+      isNewCar: true,
+      purchasePrice: 25_000,
+      mileage: 300_000,
+      firstRegisteredAt: new Date(),
+    });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('notOk');
+    expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
+    expect(carValueEstimator).not.toHaveBeenCalled();
+  });
+
+  it('uses mileage for new car depreciation km runway', async () => {
+    const lowMileageInput = simulationRunInput({
+      isNewCar: true,
+      purchasePrice: 25_000,
+      mileage: 0,
+      ownerKmPerYear: 10_000,
+      firstRegisteredAt: new Date(),
+    });
+    const highMileageInput = simulationRunInput({
+      ...lowMileageInput,
+      mileage: 100_000,
+    });
+    const lowResult = await runSimulationEngine(lowMileageInput);
+    const highResult = await runSimulationEngine(highMileageInput);
+    expect(highResult.resultDepreciationCostKm).toBeGreaterThan(lowResult.resultDepreciationCostKm ?? 0);
+    expect(carValueEstimator).not.toHaveBeenCalled();
+  });
+
   it('rejects when car too old and returns steps with not_ok on second step', async () => {
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
