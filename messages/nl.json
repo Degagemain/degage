@@ -1750,11 +1750,9 @@
       "firstRegistrationLabel": "Eerste inschrijving",
       "firstRegistrationHint": "Je kan dit terugvinden op het inschrijvingbewijs van de auto.",
       "firstRegistrationHelpAria": "Uitleg: waar vind je de datum van eerste inschrijving?",
-      "kmPerYearAuto": "automatisch berekend",
       "ownerKmLabel": "Km per jaar",
       "ownerKmPlaceholder": "bv. 15000",
-      "ownerKmEdit": "Aanpassen",
-      "ownerKmEditedHint": "Je hebt het geschatte km per jaar handmatig aangepast. De automatische berekening wordt niet meer bijgewerkt.",
+      "ownerKmHint": "Hoeveel kilometer je per jaar met deze wagen rijdt. Ter indicatie: af en toe gebruik circa 5.000–8.000; woon-werk circa 12.000–20.000; intensief gebruik 25.000 of meer.",
       "submit": "Simuleer mijn wagen →"
     },
     "loading": {

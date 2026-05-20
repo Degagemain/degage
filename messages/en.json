@@ -1750,11 +1750,9 @@
       "firstRegistrationLabel": "First registration",
       "firstRegistrationHint": "You can find this on the vehicle registration certificate.",
       "firstRegistrationHelpAria": "Help: where to find the first registration date",
-      "kmPerYearAuto": "calculated automatically",
       "ownerKmLabel": "Km per year",
       "ownerKmPlaceholder": "e.g. 15000",
-      "ownerKmEdit": "Adjust",
-      "ownerKmEditedHint": "You have manually set the estimated km per year. The automatic calculation will no longer update this value.",
+      "ownerKmHint": "How many kilometres you expect to drive per year with this car. As a guide: occasional use about 5,000–8,000; daily commute about 12,000–20,000; heavy use 25,000 or more.",
       "submit": "Simulate my car →"
     },
     "loading": {
