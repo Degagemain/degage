@@ -79,6 +79,8 @@ vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
 }));
 
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
+import { InvalidCarPriceEstimateError } from '@/actions/car-price-estimate/invalid-car-price-estimate.error';
+import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { hubSchema } from '@/domain/hub.model';
@@ -255,6 +257,27 @@ describe('runSimulationEngine', () => {
       200_000,
       null,
     );
+  });
+
+  it('returns manualReview with price_estimation_failed when estimator returns invalid prices', async () => {
+    vi.mocked(carValueEstimator).mockRejectedValueOnce(new InvalidCarPriceEstimateError('non-positive price (0)'));
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.rejectionReason).toBe('simulation.step.price_estimation_failed');
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.price_estimation_failed');
+    expect(carInfoEstimator).not.toHaveBeenCalled();
+  });
+
+  it('returns manualReview when mileage depreciation drives estimated value to zero', async () => {
+    vi.mocked(carValueEstimator).mockResolvedValueOnce({ price: 10_000, min: 0, max: 15_000 });
+    const input = simulationRunInput({ mileage: 200_000, firstRegisteredAt: new Date('2020-01-01') });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.rejectionReason).toBe('simulation.step.price_estimation_failed');
+    expect(carInfoEstimator).not.toHaveBeenCalled();
   });
 
   it('on unexpected error adds generic error step with current phase and returns manualReview', async () => {

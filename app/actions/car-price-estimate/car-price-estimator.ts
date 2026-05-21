@@ -8,7 +8,9 @@ import { dbCarPriceEstimateFindByCarTypeAndYear } from '@/storage/car-price-esti
 import { dbCarPriceEstimateCreate } from '@/storage/car-price-estimate/car-price-estimate.create';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { dbCarBrandRead } from '@/storage/car-brand/car-brand.read';
+import { InvalidCarPriceEstimateError } from '@/actions/car-price-estimate/invalid-car-price-estimate.error';
 import { generateGroundedJson } from '@/integrations/gemini';
+import { logger } from '@/lib/logger';
 
 interface GeminiPriceEstimate {
   price: number;
@@ -21,9 +23,12 @@ interface GeminiPriceEstimate {
 const responseSchema: Schema = {
   type: Type.OBJECT,
   properties: {
-    price: { type: Type.NUMBER, description: 'Estimated average market price in EUR' },
-    rangeMin: { type: Type.NUMBER, description: 'Lower bound of the price range in EUR' },
-    rangeMax: { type: Type.NUMBER, description: 'Upper bound of the price range in EUR' },
+    price: { type: Type.NUMBER, description: 'Estimated average market price in EUR at low mileage' },
+    rangeMin: {
+      type: Type.NUMBER,
+      description: 'Expected market value in EUR when the car has reached the depreciation km threshold (not zero)',
+    },
+    rangeMax: { type: Type.NUMBER, description: 'Upper bound of the market price range in EUR' },
     remarks: { type: Type.STRING, nullable: true, description: 'Any notable observations about pricing, market trends, or caveats' },
     articleRefs: {
       type: Type.ARRAY,
@@ -57,6 +62,29 @@ function buildPrompt(
   ].join(' ');
 }
 
+function toPriceRange(result: GeminiPriceEstimate): PriceRange {
+  return { price: result.price, min: result.rangeMin, max: result.rangeMax };
+}
+
+export function assertValidPriceEstimate(result: GeminiPriceEstimate): void {
+  const { price, rangeMin, rangeMax } = result;
+  if (!Number.isFinite(price) || price <= 0) {
+    throw new InvalidCarPriceEstimateError(`non-positive price (${price})`);
+  }
+  if (!Number.isFinite(rangeMin) || rangeMin <= 0) {
+    throw new InvalidCarPriceEstimateError(`non-positive rangeMin (${rangeMin})`);
+  }
+  if (!Number.isFinite(rangeMax) || rangeMax <= 0) {
+    throw new InvalidCarPriceEstimateError(`non-positive rangeMax (${rangeMax})`);
+  }
+  if (rangeMin > price) {
+    throw new InvalidCarPriceEstimateError(`rangeMin (${rangeMin}) exceeds price (${price})`);
+  }
+  if (rangeMax < price) {
+    throw new InvalidCarPriceEstimateError(`rangeMax (${rangeMax}) is below price (${price})`);
+  }
+}
+
 /**
  * Estimates the current value range of a car (in EUR).
  * Checks for a cached CarPriceEstimate first; if none exists, queries Gemini
@@ -78,7 +106,15 @@ export async function carValueEstimator(
   if (carTypeId) {
     const cached = await dbCarPriceEstimateFindByCarTypeAndYear(carTypeId, year, estimateYear);
     if (cached) {
-      return { price: cached.price, min: cached.rangeMin, max: cached.rangeMax };
+      const cachedEstimate: GeminiPriceEstimate = {
+        price: cached.price,
+        rangeMin: cached.rangeMin,
+        rangeMax: cached.rangeMax,
+        remarks: null,
+        articleRefs: [],
+      };
+      assertValidPriceEstimate(cachedEstimate);
+      return toPriceRange(cachedEstimate);
     }
   }
 
@@ -88,6 +124,23 @@ export async function carValueEstimator(
 
   const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year, depreciationKm, backtestYear);
   const result = await generateGroundedJson<GeminiPriceEstimate>(prompt, responseSchema);
+
+  try {
+    assertValidPriceEstimate(result);
+  } catch (err) {
+    logger.warn('carValueEstimator: invalid Gemini price estimate', {
+      brandId,
+      carTypeId,
+      year,
+      estimateYear,
+      prompt,
+      price: result.price,
+      rangeMin: result.rangeMin,
+      rangeMax: result.rangeMax,
+      error: err instanceof Error ? err.message : String(err),
+    });
+    throw err;
+  }
 
   if (carTypeId && result.price > 0) {
     const estimate: CarPriceEstimate = {
@@ -107,5 +160,5 @@ export async function carValueEstimator(
     await dbCarPriceEstimateCreate(estimate);
   }
 
-  return { price: result.price, min: result.rangeMin, max: result.rangeMax };
+  return toPriceRange(result);
 }
