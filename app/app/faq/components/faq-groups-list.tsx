@@ -56,7 +56,7 @@ export function FaqGroupsList() {
   }
 
   if (state.groups.length === 0) {
-    return <p className="text-muted-foreground mt-16 text-sm">{t('emptyFaq')}</p>;
+    return null;
   }
 
   return (

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -8,6 +7,8 @@ import { useTranslations } from 'next-intl';
 import { DocumentationMarkdown } from '@/app/components/documentation/documentation-markdown';
 import { PublicBrandPageWide } from '@/app/components/public-brand-shell';
 import { Skeleton } from '@/app/components/ui/skeleton';
+
+import { FaqBackToHelpLink } from '../../components/faq-back-to-help-link';
 
 type ViewerPayload = {
   externalId: string;
@@ -70,7 +71,7 @@ export default function FaqArticleDetailPage() {
   if (state.loading) {
     return (
       <PublicBrandPageWide>
-        <Skeleton className="mb-6 h-6 w-32" />
+        <Skeleton className="mb-6 h-8 w-40 rounded-lg" />
         <Skeleton className="mb-4 h-10 w-full max-w-lg" />
         <Skeleton className="h-40 w-full rounded-xl" />
       </PublicBrandPageWide>
@@ -80,9 +81,7 @@ export default function FaqArticleDetailPage() {
   if (state.error || !state.doc) {
     return (
       <PublicBrandPageWide>
-        <Link href="/app/faq" className="text-muted-foreground mb-6 inline-block text-sm hover:text-[#181510]">
-          {t('backToHelp')}
-        </Link>
+        <FaqBackToHelpLink />
         <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>
       </PublicBrandPageWide>
     );
@@ -92,9 +91,7 @@ export default function FaqArticleDetailPage() {
 
   return (
     <PublicBrandPageWide>
-      <Link href="/app/faq" className="text-muted-foreground mb-6 inline-block text-sm hover:text-[#181510]">
-        {t('backToHelp')}
-      </Link>
+      <FaqBackToHelpLink />
       <article>
         <h1 className="mb-6 text-[28px] font-extrabold tracking-tight text-[#181510]">{doc.title}</h1>
         <div className="documentation-body">

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -9,10 +8,11 @@ import type { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { PublicBrandPageWide } from '@/app/components/public-brand-shell';
 import { Button } from '@/app/components/ui/button';
-import { Card, CardContent } from '@/app/components/ui/card';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
-import { excerptFromMarkdown, pickDocumentationTranslation } from '../faq-utils';
+import { FaqArticleCard } from '../components/faq-article-card';
+import { FaqBackToHelpLink } from '../components/faq-back-to-help-link';
+import { pickDocumentationTranslation } from '../faq-utils';
 
 const PAGE_SIZE = 24;
 
@@ -64,9 +64,7 @@ export default function FaqAllArticlesPage() {
 
   return (
     <PublicBrandPageWide>
-      <Link href="/app/faq" className="text-muted-foreground mb-6 inline-block text-sm hover:text-[#181510]">
-        {t('backToHelp')}
-      </Link>
+      <FaqBackToHelpLink />
       <h1 className="mb-8 text-[28px] font-extrabold tracking-tight text-[#181510]">{t('allArticlesTitle')}</h1>
 
       {error && <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>}
@@ -79,20 +77,7 @@ export default function FaqAllArticlesPage() {
           if (!tr) {
             return null;
           }
-          return (
-            <Card key={doc.id ?? doc.externalId} className="gap-0 overflow-hidden rounded-xl border-[#DDD6CB] bg-white py-0 shadow-none">
-              <CardContent className="px-5 py-4">
-                <h2 className="mb-2 text-base font-semibold text-[#181510]">{tr.title}</h2>
-                <p className="text-muted-foreground mb-3 line-clamp-3 text-sm">{excerptFromMarkdown(tr.content)}</p>
-                <Link
-                  href={`/app/faq/articles/${encodeURIComponent(doc.externalId)}`}
-                  className="text-sm font-medium text-[#1A3D2B] underline-offset-4 hover:underline"
-                >
-                  {t('readArticle')} →
-                </Link>
-              </CardContent>
-            </Card>
-          );
+          return <FaqArticleCard key={doc.id ?? doc.externalId} doc={doc} title={tr.title} content={tr.content} titleAs="h2" />;
         })}
       </div>
 
