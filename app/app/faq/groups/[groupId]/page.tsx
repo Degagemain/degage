@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
@@ -14,6 +13,7 @@ import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 import { FaqAccordionItem } from '../../components/faq-accordion-item';
+import { FaqBackToHelpLink } from '../../components/faq-back-to-help-link';
 import { pickDocumentationTranslation } from '../../faq-utils';
 
 const PAGE_SIZE = 24;
@@ -108,9 +108,7 @@ export default function FaqGroupPage() {
 
   return (
     <PublicBrandPageWide>
-      <Link href="/app/faq" className="text-muted-foreground mb-6 inline-block text-sm hover:text-[#181510]">
-        {t('backToHelp')}
-      </Link>
+      <FaqBackToHelpLink />
       <h1 className="mb-8 text-[28px] font-extrabold tracking-tight text-[#181510]">{title}</h1>
 
       {error && <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>}

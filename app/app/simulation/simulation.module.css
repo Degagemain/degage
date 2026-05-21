@@ -2472,6 +2472,8 @@
   display: flex;
   gap: var(--sim-s16);
   flex-wrap: wrap;
+  margin-top: var(--sim-s24);
+  margin-bottom: var(--sim-s24);
 }
 
 @media (max-width: 768px) {

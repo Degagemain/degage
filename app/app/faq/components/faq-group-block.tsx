@@ -9,8 +9,9 @@ import { type UILocale, defaultContentLocale, getContentLocale, uiLocales } from
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 import { FaqAccordionItem } from './faq-accordion-item';
-import { FaqPromoCta } from './faq-promo-cta';
+import { FaqSectionHeader } from './faq-section-header';
 import { pickDocumentationTranslation } from '../faq-utils';
+import styles from '../faq.module.css';
 
 type Props = {
   groupId: string;
@@ -61,11 +62,11 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
   if (state.loading) {
     return (
       <div className="mt-8">
-        <Skeleton className="mb-4 h-7 w-2/3 max-w-md" />
-        <Skeleton className="h-24 w-full rounded-xl" />
-        <div className="mt-8 flex justify-end">
-          <Skeleton className="h-11 w-64 rounded-md" />
+        <div className={styles.sectionHeader}>
+          <Skeleton className="h-7 w-2/3 max-w-md" />
+          <Skeleton className="h-5 w-32" />
         </div>
+        <Skeleton className="h-24 w-full rounded-xl" />
       </div>
     );
   }
@@ -80,9 +81,12 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
 
   return (
     <section className="mt-10" aria-labelledby={`faq-group-${groupId}`}>
-      <h2 id={`faq-group-${groupId}`} className="mb-4 text-lg font-bold tracking-tight text-[#181510]">
-        {groupName}
-      </h2>
+      <FaqSectionHeader
+        titleId={`faq-group-${groupId}`}
+        title={groupName}
+        moreHref={`/app/faq/groups/${groupId}`}
+        moreLabel={t('groupShowMoreCta', { name: groupName })}
+      />
       <div className="overflow-hidden rounded-xl border border-[#DDD6CB] bg-white">
         {state.items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
@@ -92,7 +96,6 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
           return <FaqAccordionItem key={doc.id ?? doc.externalId} title={tr.title} markdown={tr.content} />;
         })}
       </div>
-      <FaqPromoCta href={`/app/faq/groups/${groupId}`}>{t('groupShowMoreCta', { name: groupName })}</FaqPromoCta>
     </section>
   );
 }

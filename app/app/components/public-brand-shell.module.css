@@ -7,6 +7,7 @@
   --primary: var(--pub-brand);
   --primary-foreground: #ffffff;
   --pub-bg: #f6f3ee;
+  --pub-skeleton: #ddd6cb;
   --pub-s8: 8px;
   --pub-s16: 16px;
   --pub-s24: 24px;
@@ -99,4 +100,8 @@
   max-width: var(--pub-max-w);
   margin: 0 auto;
   padding: var(--pub-s48) var(--pub-s24) 120px;
+}
+
+.root [data-slot='skeleton'] {
+  background-color: var(--pub-skeleton);
 }

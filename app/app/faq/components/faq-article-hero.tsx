@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { useTranslations } from 'next-intl';
@@ -8,11 +7,12 @@ import { useTranslations } from 'next-intl';
 import type { Documentation } from '@/domain/documentation.model';
 import type { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, getContentLocale, uiLocales } from '@/i18n/locales';
-import { Card, CardContent } from '@/app/components/ui/card';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
-import { FaqPromoCta } from './faq-promo-cta';
-import { excerptFromMarkdown, pickDocumentationTranslation } from '../faq-utils';
+import { FaqArticleCard } from './faq-article-card';
+import { FaqSectionHeader } from './faq-section-header';
+import { pickDocumentationTranslation } from '../faq-utils';
+import styles from '../faq.module.css';
 
 export function FaqArticleHero() {
   const t = useTranslations('faq');
@@ -65,8 +65,9 @@ export function FaqArticleHero() {
             <Skeleton key={i} className="h-28 rounded-xl" />
           ))}
         </div>
-        <div className="mt-8 flex justify-end">
-          <Skeleton className="h-11 w-56 rounded-md" />
+        <div className={styles.sectionHeader}>
+          <Skeleton className="h-7 w-40" />
+          <Skeleton className="h-5 w-28" />
         </div>
       </section>
     );
@@ -82,33 +83,16 @@ export function FaqArticleHero() {
 
   return (
     <section className="mt-10">
-      <h2 className="mb-4 text-lg font-bold tracking-tight text-[#181510]">{t('articlesHeading')}</h2>
+      <FaqSectionHeader title={t('articlesHeading')} moreHref="/app/faq/articles" moreLabel={t('articlesShowMore')} />
       <div className="grid gap-4 sm:grid-cols-2">
         {state.items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
           if (!tr) {
             return null;
           }
-          return (
-            <Card
-              key={doc.id ?? doc.externalId}
-              className="gap-0 overflow-hidden rounded-xl border-[#DDD6CB] bg-white py-0 shadow-none transition-shadow hover:shadow-sm"
-            >
-              <CardContent className="px-5 py-4">
-                <h3 className="mb-2 text-base font-semibold text-[#181510]">{tr.title}</h3>
-                <p className="text-muted-foreground mb-3 line-clamp-3 text-sm">{excerptFromMarkdown(tr.content)}</p>
-                <Link
-                  href={`/app/faq/articles/${encodeURIComponent(doc.externalId)}`}
-                  className="text-sm font-medium text-[#1A3D2B] underline-offset-4 hover:underline"
-                >
-                  {t('readArticle')} →
-                </Link>
-              </CardContent>
-            </Card>
-          );
+          return <FaqArticleCard key={doc.id ?? doc.externalId} doc={doc} title={tr.title} content={tr.content} />;
         })}
       </div>
-      <FaqPromoCta href="/app/faq/articles">{t('articlesShowMore')}</FaqPromoCta>
     </section>
   );
 }

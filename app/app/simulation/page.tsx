@@ -612,7 +612,7 @@ export default function SimulationPage() {
               <p className={styles.amberBannerText}>{t('situatie.kooptBanner')}</p>
             </div>
           )}
-          <div className={`${styles.buttonRow} ${styles.marginTop24}`}>
+          <div className={styles.buttonRow}>
             <button type="button" onClick={goNext} disabled={!carChoice} className={`${styles.btn} ${styles.btnPrimary}`}>
               {t('situatie.startCta')}
             </button>
@@ -895,7 +895,7 @@ export default function SimulationPage() {
               <p className={styles.fieldHint}>{t('wageninfo.ownerKmHint')}</p>
             </div>
 
-            <div className={`${styles.buttonRow} ${styles.marginTop24}`}>
+            <div className={styles.buttonRow}>
               <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
                 {t('back')}
               </button>
