@@ -11,6 +11,7 @@ import {
 } from '@/domain/simulation.model';
 import { getMessage } from '@/i18n/get-message';
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
+import { InvalidCarPriceEstimateError } from '@/actions/car-price-estimate/invalid-car-price-estimate.error';
 import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { calculateCarInsurance } from '@/actions/simulation/car-insurance-calculator';
 import { calculateCarTax } from '@/actions/simulation/car-tax-calculator';
@@ -139,20 +140,39 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }
 
     setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
-    const priceRange = await carValueEstimator(
-      input.brand.id,
-      fuelType,
-      input.carType?.id ?? null,
-      input.carTypeOther,
-      input.firstRegisteredAt,
-      depreciationKm,
-      input.backtestYear,
-    );
+    let priceRange;
+    try {
+      priceRange = await carValueEstimator(
+        input.brand.id,
+        fuelType,
+        input.carType?.id ?? null,
+        input.carTypeOther,
+        input.firstRegisteredAt,
+        depreciationKm,
+        input.backtestYear,
+      );
+    } catch (err) {
+      if (err instanceof InvalidCarPriceEstimateError) {
+        const message = await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATION_FAILED);
+        addErrorMessage(result, message);
+        result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+        result.rejectionReason = message;
+        return result;
+      }
+      throw err;
+    }
     result.estimate = priceRange;
     const percentageDepreciated = Math.min(input.mileage, depreciationKm) / depreciationKm;
     const estimatedCarValue = priceRange.min + (priceRange.price - priceRange.min) * (1 - percentageDepreciated);
 
     result.resultEstimatedCarValue = Math.round(estimatedCarValue);
+    if (result.resultEstimatedCarValue <= 0) {
+      const message = await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATION_FAILED);
+      addErrorMessage(result, message);
+      result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+      result.rejectionReason = message;
+      return result;
+    }
     const priceParams = { price: formatPriceInThousands(estimatedCarValue) };
     addInfoMessage(result, await getSimulationMessage(SimulationStepCode.PRICE_ESTIMATED, priceParams));
   } else {
