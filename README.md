@@ -96,6 +96,45 @@ Notes:
 - Neon Adapter is used on production and Pg Adapter for local development
 - To check: [connection pooling](https://vercel.com/guides/connection-pooling-with-functions) still relevant with Neon driver?
 
+### Backup and restore
+
+Plain SQL dumps via Docker (`postgres:16`). **Docker must be installed and running.**
+
+**Backup** — writes `backups/backup-YYYYMMDD-HHMMSS.sql` and prints the file path on stdout:
+
+```bash
+pnpm db:backup -- '<DATABASE_URL>'
+```
+
+Capture the path (use `--silent` so pnpm does not add extra stdout lines):
+
+```bash
+backup=$(pnpm --silent db:backup -- '<DATABASE_URL>')
+```
+
+For the local Docker Postgres from your machine, use `host.docker.internal` instead of `localhost` in the URL:
+
+```bash
+pnpm db:backup -- 'postgresql://postgres:postgres@host.docker.internal:5432/app'
+```
+
+**Restore** — creates a **new** database and applies a `.sql` dump. Pass a **master** connection URL (e.g. the default `postgres` database), the new database name, and the backup file. The script aborts if a database with that name already exists.
+
+```bash
+pnpm db:restore -- '<MASTER_DATABASE_URL>' '<NEW_DB_NAME>' '<BACKUP_FILE>'
+```
+
+Example:
+
+```bash
+pnpm db:restore -- \
+  'postgresql://postgres:postgres@host.docker.internal:5432/postgres' \
+  app_restored \
+  backups/backup-20260525-192014.sql
+```
+
+On success, the script prints the connection URL for the new database on stdout. `NEW_DB_NAME` must be lowercase letters, digits, and underscores (starting with a letter).
+
 ## Security
 
 ### Authentication
