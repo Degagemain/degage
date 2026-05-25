@@ -21,6 +21,8 @@
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
     "db:seed": "dotenv -e .env -- prisma db seed",
     "db:seed-dev-account": "dotenv -e .env -- pnpx tsx seeding/seed-dev-account.ts",
+    "db:backup": "bash scripts/db-backup.sh",
+    "db:restore": "bash scripts/db-restore.sh",
     "docs": "node scripts/validate-docs.mjs",
     "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
   },
