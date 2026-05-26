@@ -21,9 +21,9 @@ It does this by combining:
 - Eligibility checks (mileage and age limits)
 - Financial estimates (value, tax, insurance, maintenance, inspection, fuel, depreciation)
 - Quality scoring (eco score, mileage, age, and demand context)
-- Final category rules (A, B, higher rate, or rejection)
-- Optional hub **maximum car price**: when set, a run that would have been accepted as Category A, B, or higher rate can become **Manual
-  review** instead (see below)
+- Final category rules (A, B, or rejection)
+- Optional hub **maximum car price**: when set, a run that would have been accepted as Category A or B can become **Manual review** instead (see
+  below)
 
 Each run produces a result plus a detailed list of steps/messages so admins can understand why the decision was made.
 
@@ -101,25 +101,23 @@ If final points are still below minimum, result is **Not OK**.
 If quality criteria pass, the engine applies category rules:
 
 - **Category A**: lower km-cost profile (with extra fallback rules in some cases)
-- **Category B**: larger-seating threshold rule
-- **Higher rate**: van rule
+- **Category B**: larger-seating threshold rule, and the fallback for vans
 - **Not OK**: if pricing criteria are not met
 
 **High-value manual review (hub setting):** The hub can define a **maximum car price** for automatic acceptance. If that limit is set and the
 **estimated car value** (used cars) or **purchase price** (new cars) is **above** it, the simulation still runs the full calculation. Only when
-the outcome **would** have been **Category A**, **Category B**, or **Higher rate** does the engine replace that with **Manual review**. A step
-message explains which category or rate would have applied. If the outcome would have been **Not OK**, the price cap does **not** change the
-result. Details and configuration are in [Hubs](hubs.md).
+the outcome **would** have been **Category A** or **Category B** does the engine replace that with **Manual review**. A step message explains
+which category would have applied. If the outcome would have been **Not OK**, the price cap does **not** change the result. Details and
+configuration are in [Hubs](hubs.md).
 
 ## Result codes
 
-| Code              | Meaning                                                                                                                                                                                                                                                                           |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Category A**    | Vehicle qualifies for standard lower km-rate profile.                                                                                                                                                                                                                             |
-| **Category B**    | Vehicle qualifies for alternative category rule (typically larger seating profile).                                                                                                                                                                                               |
-| **Higher rate**   | Vehicle is accepted with higher rate logic (van case).                                                                                                                                                                                                                            |
-| **Not OK**        | Vehicle fails eligibility, quality, or pricing criteria.                                                                                                                                                                                                                          |
-| **Manual review** | Either: (1) **High car value** — hub max price is exceeded and rules would have accepted the car (Category A, B, or higher rate); check the steps for the intended category. (2) **Technical fallback** — the run could not finish (missing reference data, runtime error, etc.). |
+| Code              | Meaning                                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Category A**    | Vehicle qualifies for standard lower km-rate profile.                                                                                                                                                                                                               |
+| **Category B**    | Vehicle qualifies for the alternative category rule (larger-seating profile, or van).                                                                                                                                                                               |
+| **Not OK**        | Vehicle fails eligibility, quality, or pricing criteria.                                                                                                                                                                                                            |
+| **Manual review** | Either: (1) **High car value** — hub max price is exceeded and rules would have accepted the car (Category A or B); check the steps for the intended category. (2) **Technical fallback** — the run could not finish (missing reference data, runtime error, etc.). |
 
 ## Tables used by simulation
 

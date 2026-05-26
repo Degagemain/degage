@@ -7,7 +7,6 @@ export enum SimulationResultCode {
   NOT_OK = 'notOk',
   CATEGORY_A = 'categoryA',
   CATEGORY_B = 'categoryB',
-  HIGHER_RATE = 'higherRate',
   MANUAL_REVIEW = 'manualReview',
 }
 

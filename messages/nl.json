@@ -1199,8 +1199,7 @@
         "notOk": "Niet OK",
         "manualReview": "Handmatige beoordeling",
         "categoryA": "Categorie A",
-        "categoryB": "Categorie B",
-        "higherRate": "Hogere tarief"
+        "categoryB": "Categorie B"
       },
       "searchPlaceholder": "Zoek simulaties...",
       "tryAgain": "Opnieuw proberen",
@@ -1541,14 +1540,12 @@
       "notOk": "Niet OK",
       "categoryA": "Categorie A",
       "categoryB": "Categorie B",
-      "higherRate": "Hogere tarief",
       "manualReview": "Handmatige beoordeling"
     },
     "resultEmail": {
       "fleetCategory": {
         "categoryA": "Je auto past in de Dégage-vloot, in categorie A. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen.",
-        "categoryB": "Je auto past in de Dégage-vloot, in categorie B. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen.",
-        "higherRate": "Je auto past in de Dégage-vloot, met hoger tarief. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen."
+        "categoryB": "Je auto past in de Dégage-vloot, in categorie B. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen."
       }
     },
     "form": {
@@ -1793,11 +1790,9 @@
       "statTariefgroepValue": "Standaard",
       "statTariefgroepCategoryA": "Standaard",
       "statTariefgroepCategoryB": "Standaard",
-      "statTariefgroepHigherRate": "Verhoogd tarief",
       "statTariefgroepSubValue": "Cat A — meeste personenwagens",
       "statTariefgroepSubCategoryA": "Cat A — meeste personenwagens",
-      "statTariefgroepSubCategoryB": "Cat B — 7+ zitplaatsen",
-      "statTariefgroepSubHigherRate": "Bestelwagen — verhoogd tarief",
+      "statTariefgroepSubCategoryB": "Cat B — 7+ zitplaatsen of bestelwagen",
       "statWaarde": "Geschatte waarde",
       "statWaardeValue": "€ 14.200",
       "statWaardeSub": "vastgelegd bij instap",

@@ -192,7 +192,7 @@ describe('runSimulationEngine', () => {
     expect(carValueEstimator).not.toHaveBeenCalled();
   });
 
-  it('returns manualReview when value exceeds simMaxPrice but rules would accept (higher rate)', async () => {
+  it('returns manualReview when value exceeds simMaxPrice but rules would accept (van → category B)', async () => {
     vi.mocked(dbHubRead).mockResolvedValueOnce(
       hubSchema.parse({
         id: '550e8400-e29b-41d4-a716-4466554400aa',
@@ -236,7 +236,7 @@ describe('runSimulationEngine', () => {
   it('calls carValueEstimator and returns steps when rules pass', async () => {
     const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });
     const result = await runSimulationEngine(input);
-    expect(['manualReview', 'categoryA', 'categoryB', 'higherRate']).toContain(result.resultCode);
+    expect(['manualReview', 'categoryA', 'categoryB']).toContain(result.resultCode);
     expect(result.steps.length).toBeGreaterThanOrEqual(7);
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
     expect(result.steps[1].status).toBe(SimulationStepIcon.OK);
@@ -257,6 +257,44 @@ describe('runSimulationEngine', () => {
       200_000,
       null,
     );
+  });
+
+  it('returns categoryB for vans when category A/B seat rules do not apply', async () => {
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400ad',
+        name: 'hub-van',
+        isDefault: false,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.01,
+        simAcceptedPriceCategoryB: 0.01,
+        simAcceptedDepreciationCostKm: 0.01,
+        simAcceptedElectricDepreciationCostKm: 0.01,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+    const input = simulationRunInput({
+      mileage: 50_000,
+      firstRegisteredAt: new Date('2020-01-01'),
+      isVan: true,
+      seats: 5,
+    });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('categoryB');
   });
 
   it('returns manualReview with price_estimation_failed when estimator returns invalid prices', async () => {

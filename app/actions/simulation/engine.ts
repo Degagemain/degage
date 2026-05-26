@@ -36,7 +36,7 @@ import type { Hub } from '@/domain/hub.model';
 import { captureEvent } from '@/integrations/posthog';
 import { logger } from '@/lib/logger';
 
-type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B | SimulationResultCode.HIGHER_RATE;
+type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B;
 
 function elapsedWholeSeconds(sinceMs: number): number {
   return Math.max(0, Math.round((Date.now() - sinceMs) / 1000));
@@ -322,7 +322,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_B);
   }
   if (input.isVan) {
-    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.HIGHER_RATE);
+    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_B);
   }
 
   if (hub.isDefault) {

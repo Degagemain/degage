@@ -1199,8 +1199,7 @@
         "notOk": "Non OK",
         "manualReview": "Révision manuelle",
         "categoryA": "Catégorie A",
-        "categoryB": "Catégorie B",
-        "higherRate": "Taux plus élevé"
+        "categoryB": "Catégorie B"
       },
       "searchPlaceholder": "Rechercher des simulations...",
       "tryAgain": "Réessayer",
@@ -1541,14 +1540,12 @@
       "notOk": "Non OK",
       "categoryA": "Catégorie A",
       "categoryB": "Catégorie B",
-      "higherRate": "Taux plus élevé",
       "manualReview": "Révision manuelle"
     },
     "resultEmail": {
       "fleetCategory": {
         "categoryA": "Votre voiture entre dans la flotte Dégage, en catégorie A. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants.",
-        "categoryB": "Votre voiture entre dans la flotte Dégage, en catégorie B. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants.",
-        "higherRate": "Votre voiture entre dans la flotte Dégage, avec un tarif plus élevé. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants."
+        "categoryB": "Votre voiture entre dans la flotte Dégage, en catégorie B. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants."
       }
     },
     "form": {
@@ -1793,11 +1790,9 @@
       "statTariefgroepValue": "Standard",
       "statTariefgroepCategoryA": "Standard",
       "statTariefgroepCategoryB": "Standard",
-      "statTariefgroepHigherRate": "Tarif majoré",
       "statTariefgroepSubValue": "Cat A — la plupart des voitures",
       "statTariefgroepSubCategoryA": "Cat A — la plupart des voitures",
-      "statTariefgroepSubCategoryB": "Cat B — 7+ places",
-      "statTariefgroepSubHigherRate": "Utilitaire — tarif majoré",
+      "statTariefgroepSubCategoryB": "Cat B — 7+ places ou utilitaire",
       "statWaarde": "Valeur estimée",
       "statWaardeValue": "14 200 €",
       "statWaardeSub": "fixée à l'entrée",

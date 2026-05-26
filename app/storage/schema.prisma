@@ -73,7 +73,6 @@ enum SimulationResultCode {
     notOk
     categoryA
     categoryB
-    higherRate
     manualReview
 }
 
