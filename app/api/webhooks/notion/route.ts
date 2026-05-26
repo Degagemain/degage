@@ -62,8 +62,7 @@ export const POST = withPublic(async (request) => {
       await syncNotionPageToDocumentation(pageId);
     }
   } catch (e) {
-    logger.exception(e, { webhook: 'notion' });
-    return NextResponse.json({ code: 'sync_failed', errors: [{ message: 'Failed to sync documentation' }] }, { status: 500 });
+    logger.exception(e, { webhook: 'notion', pageId });
   }
 
   return new NextResponse(null, { status: 200 });
