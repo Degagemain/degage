@@ -179,9 +179,7 @@ export default function SimulationPage() {
 
   const isSuccessResult =
     simulationResult &&
-    (simulationResult.resultCode === SimulationResultCode.CATEGORY_A ||
-      simulationResult.resultCode === SimulationResultCode.CATEGORY_B ||
-      simulationResult.resultCode === SimulationResultCode.HIGHER_RATE);
+    (simulationResult.resultCode === SimulationResultCode.CATEGORY_A || simulationResult.resultCode === SimulationResultCode.CATEGORY_B);
   const isNotOkResult = simulationResult && simulationResult.resultCode === SimulationResultCode.NOT_OK;
   const isUnclearResult = simulationResult && simulationResult.resultCode === SimulationResultCode.MANUAL_REVIEW;
 
@@ -1077,9 +1075,7 @@ export default function SimulationPage() {
                                 ? 'CategoryA'
                                 : simulationResult.resultCode === SimulationResultCode.CATEGORY_B
                                   ? 'CategoryB'
-                                  : simulationResult.resultCode === SimulationResultCode.HIGHER_RATE
-                                    ? 'HigherRate'
-                                    : 'Value'
+                                  : 'Value'
                             }` as 'result.statTariefgroepCategoryA',
                           )
                         : t('result.statTariefgroepValue')}
@@ -1091,9 +1087,7 @@ export default function SimulationPage() {
                             ? 'CategoryA'
                             : simulationResult?.resultCode === SimulationResultCode.CATEGORY_B
                               ? 'CategoryB'
-                              : simulationResult?.resultCode === SimulationResultCode.HIGHER_RATE
-                                ? 'HigherRate'
-                                : 'Value'
+                              : 'Value'
                         }` as 'result.statTariefgroepSubCategoryA',
                       )}
                     </div>

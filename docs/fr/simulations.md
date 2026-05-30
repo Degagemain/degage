@@ -21,9 +21,9 @@ Elle combine :
 - Des controles d'eligibilite (limites de kilometrage et d'age)
 - Des estimations financieres (valeur, taxe, assurance, entretien, controle technique, carburant, depreciation)
 - Un score qualite (ecoscore, kilometrage, age et contexte de demande)
-- Des regles de categorie finale (A, B, tarif plus eleve, ou refus)
-- Un plafond optionnel de **prix max vehicule** sur le hub : lorsqu'il est defini, une execution qui se serait terminee en categorie A, B ou
-  tarif plus eleve peut devenir **Manual review** (voir ci-dessous)
+- Des regles de categorie finale (A, B, ou refus)
+- Un plafond optionnel de **prix max vehicule** sur le hub : lorsqu'il est defini, une execution qui se serait terminee en categorie A ou B peut
+  devenir **Manual review** (voir ci-dessous)
 
 Chaque execution renvoie un resultat et une liste detaillee d'etapes/messages pour expliquer la decision.
 
@@ -102,25 +102,23 @@ Si le score final reste sous le minimum, le resultat devient **Not OK**.
 Si les criteres qualite sont valides, le moteur applique les regles de categorie :
 
 - **Category A** : profil cout au km plus bas (avec regles de repli dans certains cas)
-- **Category B** : regle alternative pour vehicules avec plus de places
-- **Higher rate** : regle pour vans
+- **Category B** : regle alternative pour vehicules avec plus de places, et repli pour les vans
 - **Not OK** : si les criteres de prix ne sont pas atteints
 
 **Manual review pour valeur elevee (parametrage hub) :** Le hub peut definir un **prix maximum** pour l'acceptation automatique. Si ce plafond
 est renseigne et que la **valeur estimee** (occasion) ou le **prix d'achat** (neuf) le **depasse**, le moteur effectue quand meme tout le
-calcul. Ce n'est que si le resultat **aurait ete** **Category A**, **Category B** ou **Higher rate** que le moteur le remplace par **Manual
-review**. Un message d'etape indique quelle categorie ou quel tarif aurait ete attribue. Si le resultat **aurait ete** **Not OK**, le plafond de
-prix **ne modifie pas** l'issue. Voir [Hubs](hubs.md) pour le detail et la configuration.
+calcul. Ce n'est que si le resultat **aurait ete** **Category A** ou **Category B** que le moteur le remplace par **Manual review**. Un message
+d'etape indique quelle categorie aurait ete attribuee. Si le resultat **aurait ete** **Not OK**, le plafond de prix **ne modifie pas** l'issue.
+Voir [Hubs](hubs.md) pour le detail et la configuration.
 
 ## Codes de resultat
 
-| Code              | Signification                                                                                                                                                                                                                                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Category A**    | Le vehicule correspond au profil standard de cout km plus bas.                                                                                                                                                                                                                                                                             |
-| **Category B**    | Le vehicule correspond a une regle de categorie alternative (souvent plus de places).                                                                                                                                                                                                                                                      |
-| **Higher rate**   | Le vehicule est accepte selon la logique de tarif plus eleve (cas van).                                                                                                                                                                                                                                                                    |
-| **Not OK**        | Le vehicule echoue sur eligibilite, qualite ou criteres de prix.                                                                                                                                                                                                                                                                           |
-| **Manual review** | Soit : (1) **Valeur vehicule elevee** — le plafond prix du hub est depasse et les regles auraient accepte le vehicule (**Category A**, **Category B** ou **Higher rate**) ; voir les etapes pour la categorie prevue. Soit : (2) **Repli technique** — l'execution n'a pas pu aller au bout (references manquantes, erreur runtime, etc.). |
+| Code              | Signification                                                                                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Category A**    | Le vehicule correspond au profil standard de cout km plus bas.                                                                                                                                                                                                                                                            |
+| **Category B**    | Le vehicule correspond a la regle de categorie alternative (plus de places, ou van).                                                                                                                                                                                                                                      |
+| **Not OK**        | Le vehicule echoue sur eligibilite, qualite ou criteres de prix.                                                                                                                                                                                                                                                          |
+| **Manual review** | Soit : (1) **Valeur vehicule elevee** — le plafond prix du hub est depasse et les regles auraient accepte le vehicule (**Category A** ou **Category B**) ; voir les etapes pour la categorie prevue. Soit : (2) **Repli technique** — l'execution n'a pas pu aller au bout (references manquantes, erreur runtime, etc.). |
 
 ## Tables utilisees par la simulation
 

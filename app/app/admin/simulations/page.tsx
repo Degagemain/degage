@@ -189,7 +189,6 @@ export default function SimulationsPage() {
       { value: 'manualReview', label: t('resultCodes.manualReview') },
       { value: 'categoryA', label: t('resultCodes.categoryA') },
       { value: 'categoryB', label: t('resultCodes.categoryB') },
-      { value: 'higherRate', label: t('resultCodes.higherRate') },
     ],
     [t],
   );
