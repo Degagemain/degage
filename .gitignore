@@ -21,3 +21,10 @@ next-env.d.ts
 
 # Notes and todo files
 /todo
+
+# playwright e2e
+/e2e/.container-state.json
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
