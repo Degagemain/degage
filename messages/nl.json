@@ -1542,12 +1542,6 @@
       "categoryB": "Categorie B",
       "manualReview": "Handmatige beoordeling"
     },
-    "resultEmail": {
-      "fleetCategory": {
-        "categoryA": "Je auto past in de Dégage-vloot, in categorie A. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen.",
-        "categoryB": "Je auto past in de Dégage-vloot, in categorie B. Hier vind je meer uitleg rond de categorieën en de bijpassende kilometerprijzen."
-      }
-    },
     "form": {
       "backToDashboard": "← Terug naar dashboard",
       "title": "Simulatie starten",

@@ -1542,12 +1542,6 @@
       "categoryB": "Catégorie B",
       "manualReview": "Révision manuelle"
     },
-    "resultEmail": {
-      "fleetCategory": {
-        "categoryA": "Votre voiture entre dans la flotte Dégage, en catégorie A. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants.",
-        "categoryB": "Votre voiture entre dans la flotte Dégage, en catégorie B. Vous trouverez plus d'informations sur les catégories et les tarifs kilométriques correspondants."
-      }
-    },
     "form": {
       "backToDashboard": "← Retour au tableau de bord",
       "title": "Lancer une simulation",

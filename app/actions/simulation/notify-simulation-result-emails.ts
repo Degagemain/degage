@@ -19,11 +19,6 @@ function nlResultLabel(code: SimulationResultCode): string {
   return simulationResultLabel('nl', code);
 }
 
-export function buildFleetCategoryMessage(locale: UILocale, resultCode: SimulationResultCode): string {
-  const entry = messagesByLocale[locale].simulation.resultEmail.fleetCategory as Record<string, string>;
-  return entry[resultCode] ?? '';
-}
-
 function localizedYesNo(locale: UILocale, value: boolean): string {
   if (locale === 'nl') return value ? 'Ja' : 'Nee';
   if (locale === 'fr') return value ? 'Oui' : 'Non';
@@ -126,7 +121,6 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
     MILEAGE_KM: formatOptionalKm(simulation.mileage),
     CAR_VALUE: formatOptionalEuro(simulation.isNewCar ? simulation.purchasePrice : simulation.resultEstimatedCarValue),
     DEPRECIATION_RATE: formatOptionalEuro(simulation.resultDepreciationCostKm),
-    FLEET_CATEGORY_MESSAGE: buildFleetCategoryMessage(locale, simulation.resultCode),
   };
 
   const isManualReview = simulation.resultCode === SimulationResultCode.MANUAL_REVIEW;
