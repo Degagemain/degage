@@ -1544,13 +1544,6 @@
       "higherRate": "Higher rate",
       "manualReview": "Manual review"
     },
-    "resultEmail": {
-      "fleetCategory": {
-        "categoryA": "Your car fits in the Dégage fleet, in category A. You can find more information about the categories and matching per-km rates.",
-        "categoryB": "Your car fits in the Dégage fleet, in category B. You can find more information about the categories and matching per-km rates.",
-        "higherRate": "Your car fits in the Dégage fleet, at a higher rate. You can find more information about the categories and matching per-km rates."
-      }
-    },
     "form": {
       "backToDashboard": "← Back to dashboard",
       "title": "Run simulation",
