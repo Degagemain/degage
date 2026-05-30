@@ -81,6 +81,34 @@ pnpm test:coverage
 
 ```
 
+### E2E Tests
+
+End-to-end tests use [Playwright](https://playwright.dev/) with a PostgreSQL instance from [Testcontainers](https://node.testcontainers.org/) (`pgvector/pgvector:pg16`, same as local Docker).
+
+**Prerequisites:** Docker running, dependencies installed (`pnpm i`). E2E uses [`e2e/.env.e2e`](e2e/.env.e2e) (committed, separate from gitignored `.env` for dev).
+
+```bash
+pnpm e2e
+# Interactive UI
+pnpm e2e:ui
+```
+
+**How it works:**
+
+1. Global setup starts Postgres, creates `e2e_template` (migrations + reference seed + e2e users), and builds the app.
+2. Each test clones a fresh database from `e2e_template`, starts Next on a worker port (`next start`), then drops the database.
+3. Authenticated admin tests sign in via the Better Auth API (no UI login); seeded accounts come from `e2e/.env.e2e` (`E2E_ADMIN_EMAIL`, `E2E_USER_EMAIL`, `E2E_PASSWORD`).
+4. During `pnpm e2e`, `DATABASE_URL` is taken from Testcontainers, not from `e2e/.env.e2e`.
+5. On CI (`CI=true`), global setup writes a temporary `.env` from `e2e/.env.e2e` plus the container `DATABASE_URL` before `next build` (same idea as the build workflow’s dummy `.env`), then removes it after the run.
+
+Seed e2e users into **local Docker Postgres** manually (uses `e2e/.env.e2e` only, not `.env`):
+
+```bash
+pnpm db:seed-e2e
+```
+
+CI runs e2e in [`.github/workflows/e2e.yml`](.github/workflows/e2e.yml).
+
 ## Database
 
 ### ORM
@@ -263,6 +291,8 @@ This log explains why packages were installed.
 | prisma ORM setup                           | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
 | Unit testing setup                         | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
 | Unit test coverage                         | @vitest/coverage-v8                                                                                    |
+| E2E browser tests                          | @playwright/test                                                                                       |
+| E2E Postgres (Testcontainers)              | testcontainers, @testcontainers/postgresql, pg, @types/pg                                              |
 | Tailwind setup                             | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
 | ShadCn setup                               | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
 | Button Component                           | @radix-ui/react-slot                                                                                   |

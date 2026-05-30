@@ -1,0 +1,49 @@
+name: E2E
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract NodeJS and pnpm versions
+        id: versions
+        run: |
+          pnpm_version=$(grep -E '"packageManager"' package.json | sed -E 's/.*"packageManager"\s*:\s*"[^@]+@([^\"]+)".*/\1/')
+          echo "pnpm_version=${pnpm_version}" >> "$GITHUB_OUTPUT"
+          echo "node_version=$(grep -E '"node"' package.json | sed -E 's/.*"node"\s*:\s*"[^0-9]*([0-9.]+)".*/\1/')" >> "$GITHUB_OUTPUT"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: ${{ steps.versions.outputs.pnpm_version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.versions.outputs.node_version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: pnpm e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

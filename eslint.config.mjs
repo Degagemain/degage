@@ -7,7 +7,16 @@ const eslintConfig = [
   ...nextTypescript,
   prettierFlat,
   {
-    ignores: ['.next/**', 'node_modules/**', 'next-env.d.ts', 'app/storage/client/**'],
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'next-env.d.ts',
+      'app/storage/client/**',
+      'test-results/**',
+      'playwright-report/**',
+      'blob-report/**',
+      'playwright/.cache/**',
+    ],
   },
   {
     rules: {
@@ -36,6 +45,13 @@ const eslintConfig = [
     files: ['**/*.spec.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    files: ['e2e/**/*.ts'],
+    rules: {
+      // Playwright fixtures call `use()` — not React hooks
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
   {
