@@ -9,6 +9,7 @@ import { seedCarTaxEuroNormAdjustments } from './seed-car-tax-euro-norm-adjustme
 import { seedCarTaxFlatRates } from './seed-car-tax-flat-rates';
 import { seedHubs } from './seed-hubs';
 import { seedInsurancePriceBenchmarks } from './seed-insurance-price-benchmarks';
+import { migrateTowns2 } from './migrate-towns-2';
 import { seedTowns } from './seed-towns';
 import { seedDocumentationFromRepo } from './seed-documentation-from-repo';
 import { seedDocumentationFromCsv } from './seed-documentation-from-csv';
@@ -29,6 +30,7 @@ async function seed() {
   await seedHubs(prisma);
   await seedInsurancePriceBenchmarks(prisma);
   await seedTowns(prisma);
+  await migrateTowns2(prisma);
   await seedCarTypes(prisma);
   await seedDocumentationFromRepo(prisma);
   await seedDocumentationFromCsv(prisma);
