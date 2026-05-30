@@ -1199,8 +1199,7 @@
         "notOk": "Niet OK",
         "manualReview": "Handmatige beoordeling",
         "categoryA": "Categorie A",
-        "categoryB": "Categorie B",
-        "higherRate": "Hogere tarief"
+        "categoryB": "Categorie B"
       },
       "searchPlaceholder": "Zoek simulaties...",
       "tryAgain": "Opnieuw proberen",
@@ -1541,7 +1540,6 @@
       "notOk": "Niet OK",
       "categoryA": "Categorie A",
       "categoryB": "Categorie B",
-      "higherRate": "Hogere tarief",
       "manualReview": "Handmatige beoordeling"
     },
     "form": {
@@ -1786,11 +1784,9 @@
       "statTariefgroepValue": "Standaard",
       "statTariefgroepCategoryA": "Standaard",
       "statTariefgroepCategoryB": "Standaard",
-      "statTariefgroepHigherRate": "Verhoogd tarief",
       "statTariefgroepSubValue": "Cat A — meeste personenwagens",
       "statTariefgroepSubCategoryA": "Cat A — meeste personenwagens",
-      "statTariefgroepSubCategoryB": "Cat B — 7+ zitplaatsen",
-      "statTariefgroepSubHigherRate": "Bestelwagen — verhoogd tarief",
+      "statTariefgroepSubCategoryB": "Cat B — 7+ zitplaatsen of bestelwagen",
       "statWaarde": "Geschatte waarde",
       "statWaardeValue": "€ 14.200",
       "statWaardeSub": "vastgelegd bij instap",

@@ -15,8 +15,8 @@ regio.
 
 1. **Toelating** — Het voertuig moet slagen voor **Max leeftijd** en **Max km**. Bij falen is het resultaat meteen **Niet OK**.
 2. **Autoprijslimiet** — Als **Max autoprijs (handmatige review)** is ingevuld en de geschatte waarde (of aankoopprijs) **hoger** is dan dat
-   bedrag in euro, wordt een run die anders **Categorie A**, **Categorie B** of **Hoger tarief** zou geven omgezet naar **Handmatige review**
-   (met een stap die het bedoelde resultaat vermeldt). **Niet OK** blijft ongewijzigd. Leeg = geen limiet.
+   bedrag in euro, wordt een run die anders **Categorie A** of **Categorie B** zou geven omgezet naar **Handmatige review** (met een stap die
+   het bedoelde resultaat vermeldt). **Niet OK** blijft ongewijzigd. Leeg = geen limiet.
 3. **Waardeschatting en afschrijving** — **Afschrijving km** (of **Afschrijving km (elektrisch)**) bepaalt hoe snel de wagenwaarde per km daalt.
 4. **Vaste kosten in km-prijs** — **Keuringkosten/jaar** en **Onderhoudskosten/jaar** zitten mee in de vaste jaarkost en dus in het berekende
    km-tarief.
@@ -25,11 +25,11 @@ regio.
 6. **Kwaliteitspunten** — Het voertuig moet minstens 2 bonuspunten halen via **Min ecoscore (bonus)**, **Max km (bonus)** en **Max leeftijd
    (bonus)**.
 7. **Categorie-uitkomst** — Op basis van kwaliteitspunten, afgerond km-tarief (€/km), zitplaatsen en hubcontext volgt **Categorie A**,
-   **Categorie B**, **Hoger tarief** of **Niet OK**. Voor **Categorie A** met minder dan 7 zitplaatsen moet het afgeronde km-tarief ten hoogste
-   **Cat. A max €/km (minder dan 7 zitpl.)** zijn. Voor **Categorie B** met 7 of meer zitplaatsen ten hoogste **Cat. B max €/km (7+ zitpl.)**.
-   Alleen op de **standaardhub** kan **Categorie A** nog volgen als de afschrijvingskost per km ten hoogste **Cat. A afschr. €/km (standaard
-   hub)** is. Voor **elektrische** voertuigen kan **Categorie A** gelden als de afschrijvingskost per km ten hoogste **Cat. A afschr. €/km
-   (elektrisch)** is.
+   **Categorie B** of **Niet OK**. Voor **Categorie A** met minder dan 7 zitplaatsen moet het afgeronde km-tarief ten hoogste **Cat. A max €/km
+   (minder dan 7 zitpl.)** zijn. Voor **Categorie B** met 7 of meer zitplaatsen ten hoogste **Cat. B max €/km (7+ zitpl.)**. **Bestelwagens**
+   vallen terug op **Categorie B**. Alleen op de **standaardhub** kan **Categorie A** nog volgen als de afschrijvingskost per km ten hoogste
+   **Cat. A afschr. €/km (standaard hub)** is. Voor **elektrische** voertuigen kan **Categorie A** gelden als de afschrijvingskost per km ten
+   hoogste **Cat. A afschr. €/km (elektrisch)** is.
 
 ## Eigenschappen
 
@@ -42,7 +42,7 @@ regio.
 | Min gedeelde km/jaar                  | **Deelscenario.** Gedeelde kilometers voor het scenario weinig delen.                                                                                                           |
 | Gem. gedeelde km/jaar                 | **Deelscenario.** Gedeelde kilometers voor het scenario regelmatig delen en de gemiddelde backend-kostinschatting.                                                              |
 | Max gedeelde km/jaar                  | **Deelscenario.** Gedeelde kilometers voor het scenario vaak delen.                                                                                                             |
-| Max autoprijs (handmatige review)     | **Prijslimiet.** Ingevuld (euro): zou de regels **Categorie A/B** of **Hoger tarief** geven maar de waarde is te hoog → **Handmatige review**; leeg = geen limiet.              |
+| Max autoprijs (handmatige review)     | **Prijslimiet.** Ingevuld (euro): zou de regels **Categorie A** of **B** geven maar de waarde is te hoog → **Handmatige review**; leeg = geen limiet.                           |
 | Cat. A max €/km (minder dan 7 zitpl.) | **Categorie A.** Maximaal toegelaten afgerond kost per km (€/km) voor de eerste acceptatietier bij minder dan 7 zitplaatsen.                                                    |
 | Cat. B max €/km (7+ zitpl.)           | **Categorie B.** Maximaal toegelaten afgerond kost per km (€/km) bij 7 of meer zitplaatsen.                                                                                     |
 | Cat. A afschr. €/km (standaard hub)   | **Alleen standaardhub.** Maximaal toegelaten afschrijvingskost per km (€/km) voor een extra **Categorie A**-fallback als eerdere tiers niet grepen.                             |

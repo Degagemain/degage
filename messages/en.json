@@ -1199,8 +1199,7 @@
         "notOk": "Not OK",
         "manualReview": "Manual review",
         "categoryA": "Category A",
-        "categoryB": "Category B",
-        "higherRate": "Higher rate"
+        "categoryB": "Category B"
       },
       "searchPlaceholder": "Search simulations...",
       "tryAgain": "Try again",
@@ -1541,7 +1540,6 @@
       "notOk": "Not OK",
       "categoryA": "Category A",
       "categoryB": "Category B",
-      "higherRate": "Higher rate",
       "manualReview": "Manual review"
     },
     "form": {
@@ -1786,11 +1784,9 @@
       "statTariefgroepValue": "Standard",
       "statTariefgroepCategoryA": "Standard",
       "statTariefgroepCategoryB": "Standard",
-      "statTariefgroepHigherRate": "Higher rate",
       "statTariefgroepSubValue": "Cat A — most passenger cars",
       "statTariefgroepSubCategoryA": "Cat A — most passenger cars",
-      "statTariefgroepSubCategoryB": "Cat B — 7+ seats",
-      "statTariefgroepSubHigherRate": "Van — higher rate",
+      "statTariefgroepSubCategoryB": "Cat B — 7+ seats or van",
       "statWaarde": "Estimated value",
       "statWaardeValue": "€14,200",
       "statWaardeSub": "locked in at entry",

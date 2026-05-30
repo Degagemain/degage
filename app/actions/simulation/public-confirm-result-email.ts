@@ -4,7 +4,7 @@ import { updateSimulation } from '@/actions/simulation/update';
 import { SimulationResultCode } from '@/domain/simulation.model';
 
 function isSuccessResultForPublicEmail(code: SimulationResultCode): boolean {
-  return code === SimulationResultCode.CATEGORY_A || code === SimulationResultCode.CATEGORY_B || code === SimulationResultCode.HIGHER_RATE;
+  return code === SimulationResultCode.CATEGORY_A || code === SimulationResultCode.CATEGORY_B;
 }
 
 const publicConfirmResultEmailBodySchema = z

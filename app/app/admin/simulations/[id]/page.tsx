@@ -173,9 +173,7 @@ export default function SimulationDetailPage() {
   const createdAt = simulation.createdAt instanceof Date ? simulation.createdAt : simulation.createdAt ? new Date(simulation.createdAt) : null;
   const updatedAt = simulation.updatedAt instanceof Date ? simulation.updatedAt : simulation.updatedAt ? new Date(simulation.updatedAt) : null;
   const showResultEmailBlock =
-    simulation.resultCode === SimulationResultCode.CATEGORY_A ||
-    simulation.resultCode === SimulationResultCode.CATEGORY_B ||
-    simulation.resultCode === SimulationResultCode.HIGHER_RATE;
+    simulation.resultCode === SimulationResultCode.CATEGORY_A || simulation.resultCode === SimulationResultCode.CATEGORY_B;
 
   return (
     <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
