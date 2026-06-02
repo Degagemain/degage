@@ -153,7 +153,16 @@
     "updatedSuccessfully": "Mis à jour avec succès",
     "invalidEmailOrPassword": "E-mail ou mot de passe invalide",
     "userNotFound": "Utilisateur non trouvé",
-    "userAlreadyExists": "L'utilisateur existe déjà"
+    "userAlreadyExists": "L'utilisateur existe déjà",
+    "invalidToken": "Ce lien est invalide ou a expiré.",
+    "emailInvalid": "Saisissez une adresse e-mail valide",
+    "nameRequired": "Le nom est obligatoire",
+    "requestFailed": "Une erreur s'est produite. Veuillez réessayer.",
+    "featureNotConfigured": "Cette méthode de connexion n'est pas encore disponible.",
+    "emailOtp": "Se connecter avec un code",
+    "emailOtpLink": "Se connecter avec un code",
+    "onboardingNoticeTitle": "Vous vous connectez à l'onboarding propriétaire",
+    "onboardingNoticeBody": "Cette application sert à inscrire votre voiture chez Dégage—pas pour réserver des voitures partagées ni gérer votre compte membre. Utilisez <degapp>Degapp</degapp> pour cela."
   },
   "admin": {
     "menu": "Admin",

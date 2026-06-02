@@ -1,7 +1,4 @@
-/**
- * Query param read by @daveyplate/better-auth-ui for post–sign-in navigation.
- * @see node_modules/@daveyplate/better-auth-ui/dist/index.js (getSearchParam("redirectTo"))
- */
+/** Query param for post–sign-in navigation on `/app/auth/*` pages. */
 export const SIGN_IN_REDIRECT_QUERY_PARAM = 'redirectTo';
 
 const DEFAULT_RETURN_PATH = '/app';

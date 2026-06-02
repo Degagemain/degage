@@ -13,11 +13,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const isSimulationPage = pathname === '/app/simulation';
   const isFaqSection = pathname?.startsWith('/app/faq');
   const isLandingPage = pathname === '/app';
+  const isAuthArea = pathname?.startsWith('/app/auth');
+  const isAccountArea = pathname?.startsWith('/app/account');
 
   return (
     <Providers>
       <SupportChatProvider>
-        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && <Header />}
+        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && !isAuthArea && !isAccountArea && <Header />}
         {children}
       </SupportChatProvider>
       <Toaster />

@@ -153,7 +153,16 @@
     "updatedSuccessfully": "Succesvol bijgewerkt",
     "invalidEmailOrPassword": "Ongeldig e-mailadres of wachtwoord",
     "userNotFound": "Gebruiker niet gevonden",
-    "userAlreadyExists": "Gebruiker bestaat al"
+    "userAlreadyExists": "Gebruiker bestaat al",
+    "invalidToken": "Deze link is ongeldig of verlopen.",
+    "emailInvalid": "Voer een geldig e-mailadres in",
+    "nameRequired": "Naam is verplicht",
+    "requestFailed": "Er ging iets mis. Probeer het opnieuw.",
+    "featureNotConfigured": "Deze aanmeldmethode is nog niet beschikbaar.",
+    "emailOtp": "Inloggen met een code",
+    "emailOtpLink": "Inloggen met een code",
+    "onboardingNoticeTitle": "Je logt in op de onboarding voor eigenaars",
+    "onboardingNoticeBody": "Deze app is om je wagen in te schrijven bij Dégage—niet om gedeelde wagens te reserveren of je ledenaccount te beheren. Gebruik daarvoor <degapp>Degapp</degapp>."
   },
   "admin": {
     "menu": "Admin",

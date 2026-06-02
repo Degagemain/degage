@@ -32,7 +32,7 @@ describe('buildPostSignInReturnPath', () => {
 });
 
 describe('buildSignInUrlWithReturnPath', () => {
-  it('embeds redirect param for better-auth-ui', () => {
+  it('embeds redirect param for auth sign-in', () => {
     const url = buildSignInUrlWithReturnPath('/app/admin/users');
     expect(url).toContain(`/app/auth/sign-in?${SIGN_IN_REDIRECT_QUERY_PARAM}=`);
     expect(url).toContain(encodeURIComponent('/app/admin/users'));

@@ -153,7 +153,16 @@
     "updatedSuccessfully": "Updated successfully",
     "invalidEmailOrPassword": "Invalid email or password",
     "userNotFound": "User not found",
-    "userAlreadyExists": "User already exists"
+    "userAlreadyExists": "User already exists",
+    "invalidToken": "This link is invalid or has expired.",
+    "emailInvalid": "Enter a valid email address",
+    "nameRequired": "Name is required",
+    "requestFailed": "Something went wrong. Please try again.",
+    "featureNotConfigured": "This sign-in method is not available yet.",
+    "emailOtp": "Sign in with a code",
+    "emailOtpLink": "Sign in with a code",
+    "onboardingNoticeTitle": "You are signing in to owner onboarding",
+    "onboardingNoticeBody": "This app is for enrolling your car with Dégage—not for booking shared cars or your member account. Use <degapp>Degapp</degapp> for that instead."
   },
   "admin": {
     "menu": "Admin",
