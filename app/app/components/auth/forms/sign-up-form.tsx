@@ -12,11 +12,11 @@ import { AuthOnboardingNotice } from '@/app/components/auth/auth-onboarding-noti
 import { AuthFooterLinks } from '@/app/components/auth/auth-footer-links';
 import { AuthPasswordInput } from '@/app/components/auth/auth-password-input';
 import { AuthPrimaryButton } from '@/app/components/auth/auth-primary-button';
-import { GithubSignInButton } from '@/app/components/auth/github-sign-in-button';
+import { SocialSignInButtons } from '@/app/components/auth/social-sign-in-buttons';
 import { authPath, authViewPaths } from '@/app/components/auth/auth-view-paths';
 import { usePostAuthRedirect } from '@/app/components/auth/hooks/use-post-auth-redirect';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
-import { isGithubAuthEnabled } from '@/app/components/auth/lib/auth-features';
+import { isSocialAuthEnabled } from '@/app/components/auth/lib/auth-features';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { authClient } from '@/app/lib/auth';
@@ -30,7 +30,7 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
   const t = useTranslations('auth');
   const router = useRouter();
   const { completeSignIn, isPending } = usePostAuthRedirect(redirectTo);
-  const showGithub = isGithubAuthEnabled();
+  const showSocial = isSocialAuthEnabled();
 
   const schema = z.object({
     name: z.string().min(1, t('nameRequired')),
@@ -110,14 +110,14 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
 
           <AuthPrimaryButton loading={loading}>{t('signUpAction')}</AuthPrimaryButton>
 
-          {showGithub ? (
+          {showSocial ? (
             <>
               <div className="flex items-center gap-2">
                 <span className="bg-border h-px flex-1" />
                 <span className="text-muted-foreground text-sm">{t('orContinueWith')}</span>
                 <span className="bg-border h-px flex-1" />
               </div>
-              <GithubSignInButton callbackURL={callbackURL} disabled={loading} />
+              <SocialSignInButtons callbackURL={callbackURL} disabled={loading} />
             </>
           ) : null}
 

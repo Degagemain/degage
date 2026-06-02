@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
-import { getSocialProviders, isGithubAuthEnabled } from '@/app/components/auth/lib/auth-features';
+import { getSocialProviders } from '@/app/components/auth/lib/auth-features';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { authClient } from '@/app/lib/auth';
@@ -17,9 +17,23 @@ type LinkedAccount = {
   accountId: string;
 };
 
+type SocialProviderId = 'github' | 'google';
+
+const SOCIAL_PROVIDER_LABELS: Record<
+  SocialProviderId,
+  { name: string; descriptionKey: 'signInWithGithubDescription' | 'signInWithGoogleDescription' }
+> = {
+  github: { name: 'GitHub', descriptionKey: 'signInWithGithubDescription' },
+  google: { name: 'Google', descriptionKey: 'signInWithGoogleDescription' },
+};
+
+function isSocialProviderId(provider: string): provider is SocialProviderId {
+  return provider in SOCIAL_PROVIDER_LABELS;
+}
+
 export function ConnectedProvidersCard() {
   const t = useTranslations('auth');
-  const providers = getSocialProviders();
+  const providers = getSocialProviders().filter(isSocialProviderId);
   const [accounts, setAccounts] = useState<LinkedAccount[] | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
@@ -34,14 +48,12 @@ export function ConnectedProvidersCard() {
 
   if (!providers.length) return null;
 
-  const githubEnabled = isGithubAuthEnabled();
-
-  const handleLink = async (provider: string) => {
+  const handleLink = async (provider: SocialProviderId) => {
     setLoadingId(provider);
     try {
       const callbackURL = `${window.location.origin}/app/auth/callback?redirectTo=${encodeURIComponent('/app/account/settings')}`;
       await authClient.linkSocial({
-        provider: provider as 'github',
+        provider,
         callbackURL,
         fetchOptions: { throw: true },
       });
@@ -77,24 +89,27 @@ export function ConnectedProvidersCard() {
         {accounts === null ? (
           <div className="bg-muted h-12 animate-pulse rounded-lg" />
         ) : (
-          <>
-            {githubEnabled ? (
+          providers.map((providerId) => {
+            const config = SOCIAL_PROVIDER_LABELS[providerId];
+            const linkedAccount = accounts.find((a) => a.providerId === providerId);
+
+            return (
               <ProviderRow
-                name="GitHub"
-                description={t('signInWithGithubDescription')}
-                linked={accounts.some((a) => a.providerId === 'github')}
-                loading={loadingId === 'github'}
-                onLink={() => handleLink('github')}
+                key={providerId}
+                name={config.name}
+                description={t(config.descriptionKey)}
+                linked={!!linkedAccount}
+                loading={loadingId === providerId}
+                onLink={() => handleLink(providerId)}
                 onUnlink={() => {
-                  const acc = accounts.find((a) => a.providerId === 'github');
-                  if (acc) void handleUnlink(acc);
+                  if (linkedAccount) void handleUnlink(linkedAccount);
                 }}
                 connectLabel={t('connectAccount')}
                 disconnectLabel={t('disconnectAccount')}
                 connectedLabel={t('accountConnected')}
               />
-            ) : null}
-          </>
+            );
+          })
         )}
       </CardContent>
     </Card>
