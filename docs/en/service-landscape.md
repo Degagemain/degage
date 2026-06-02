@@ -152,14 +152,14 @@ Docs: [Better Auth docs](https://www.better-auth.com/docs) · [Authentication](.
 Four separate products billed independently on one account: product analytics, session replay, error tracking, and LLM analytics. The LLM pipe
 is wired via OpenTelemetry and the Vercel AI SDK's telemetry hooks, so every support reply emits an `$ai_generation` event with tokens and cost.
 
-| Product                     |          Free / mo | Overage pricing                              | Notes                                                                  |
-| --------------------------- | -----------------: | -------------------------------------------- | ---------------------------------------------------------------------- |
-| Product analytics (events)  |          1,000,000 | ~$0.00005 / event (sliding down with volume) | Autocapture can explode this count — check event volume before launch. |
-| Session replay              |   5,000 recordings | ~$0.005 / recording                          | Disable on admin/internal routes to avoid paying for own use.          |
-| Feature flags / experiments | 1,000,000 requests | Per-request, tiered                          | Server-side flag evaluation reduces count.                             |
-| Error tracking              | 100,000 exceptions | ~$0.0004 / exception (tiered)                | Source-map upload only on Vercel builds with PostHog API key set.      |
-| LLM analytics               |   Billed per trace | ~$5 / 1,000 traces                           | Each AI SDK call = 1 trace; batching prompts reduces this.             |
-| Data warehouse / surveys    |   Small free pools | Per-row / per-response                       | Not currently in use here.                                             |
+| Product                     |          Free / mo | Overage pricing                              | Notes                                                                          |
+| --------------------------- | -----------------: | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| Product analytics (events)  |          1,000,000 | ~$0.00005 / event (sliding down with volume) | Autocapture can explode this count — check event volume before launch.         |
+| Session replay              |   5,000 recordings | ~$0.005 / recording                          | Masked inputs; internal team traffic is tracked (segment by `role` if needed). |
+| Feature flags / experiments | 1,000,000 requests | Per-request, tiered                          | Server-side flag evaluation reduces count.                                     |
+| Error tracking              | 100,000 exceptions | ~$0.0004 / exception (tiered)                | Source-map upload only on Vercel builds with PostHog API key set.              |
+| LLM analytics               |   Billed per trace | ~$5 / 1,000 traces                           | Each AI SDK call = 1 trace; batching prompts reduces this.                     |
+| Data warehouse / surveys    |   Small free pools | Per-row / per-response                       | Not currently in use here.                                                     |
 
 Practical cost model: until the product hits ~1M autocaptured events/month, PostHog stays free except for LLM traces, which start charging from
 the first paid trace. If support chat ramps, LLM analytics usually becomes the first line item — often before events do.

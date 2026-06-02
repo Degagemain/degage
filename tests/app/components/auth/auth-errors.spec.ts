@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
+import { getAuthErrorCode, getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
 
 const t = (key: string) =>
   (
@@ -18,5 +18,15 @@ describe('getAuthErrorMessage', () => {
 
   it('falls back to requestFailed when unknown', () => {
     expect(getAuthErrorMessage({}, t)).toBe('Request failed');
+  });
+});
+
+describe('getAuthErrorCode', () => {
+  it('returns Better Auth error code when present', () => {
+    expect(getAuthErrorCode({ error: { code: 'INVALID_EMAIL_OR_PASSWORD' } })).toBe('INVALID_EMAIL_OR_PASSWORD');
+  });
+
+  it('returns unknown when no error details', () => {
+    expect(getAuthErrorCode({})).toBe('unknown');
   });
 });

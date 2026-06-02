@@ -12,6 +12,7 @@ import { AuthFooterLinks } from '@/app/components/auth/auth-footer-links';
 import { AuthPrimaryButton } from '@/app/components/auth/auth-primary-button';
 import { authPath, authViewPaths } from '@/app/components/auth/auth-view-paths';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
+import { trackAuthForgotPasswordSubmitted } from '@/app/lib/posthog-events';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { authClient } from '@/app/lib/auth';
@@ -44,6 +45,7 @@ export function ForgotPasswordForm({ search }: ForgotPasswordFormProps) {
         fetchOptions: { throw: true },
       });
       toast.success(t('forgotPasswordEmail'));
+      trackAuthForgotPasswordSubmitted();
       router.push(authPath(authViewPaths.SIGN_IN, search));
     } catch (error) {
       toast.error(getAuthErrorMessage(error, t));

@@ -14,7 +14,7 @@ export function AuthCallback() {
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    void completeSignIn();
+    void completeSignIn({ flow: 'sign_in', method: 'google' });
   }, [completeSignIn]);
 
   return (

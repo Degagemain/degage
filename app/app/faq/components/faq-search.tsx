@@ -11,6 +11,7 @@ import { Input } from '@/app/components/ui/input';
 import { cn } from '@/app/lib/utils';
 
 import { pickDocumentationTranslation } from '../faq-utils';
+import { trackFaqArticleOpened, trackFaqSearchExecuted } from '@/app/lib/posthog-events';
 
 export function FaqSearch({ className }: { className?: string }) {
   const t = useTranslations('faq');
@@ -48,6 +49,7 @@ export function FaqSearch({ className }: { className?: string }) {
       .then((data: Page<Documentation>) => {
         if (!cancelled) {
           setRecords(data.records);
+          trackFaqSearchExecuted(debounced.length, data.records.length);
         }
       })
       .catch(() => {
@@ -100,7 +102,10 @@ export function FaqSearch({ className }: { className?: string }) {
                 key={doc.id ?? doc.externalId}
                 href={`/app/faq/articles/${encodeURIComponent(doc.externalId)}`}
                 className="hover:bg-muted/50 block px-4 py-2.5 text-sm"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  trackFaqArticleOpened(doc.externalId, 'search');
+                  setOpen(false);
+                }}
                 role="option"
               >
                 {tr.title}

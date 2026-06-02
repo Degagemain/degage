@@ -32,5 +32,5 @@ export default function HomePage() {
     );
   }
 
-  return <LandingPage onOpenChat={openChat} />;
+  return <LandingPage onOpenChat={() => openChat('landing')} />;
 }

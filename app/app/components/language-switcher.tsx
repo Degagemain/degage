@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { apiPatch } from '@/app/lib/api-client';
+import { trackLocaleChanged } from '@/app/lib/posthog-events';
 import { cn } from '@/app/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Button } from './ui/button';
@@ -17,11 +18,13 @@ export function LanguageSwitcher({ triggerClassName, showLabel = false }: { trig
   const t = useTranslations('language');
 
   const switchLocale = async (newLocale: string) => {
+    if (newLocale === locale) return;
     const response = await apiPatch('/api/user/locale', { locale: newLocale });
     if (!response.ok) {
       toast.error(t('updateFailed'));
       return;
     }
+    trackLocaleChanged(locale, newLocale, 'header');
     toast.success(localeDisplayNames[newLocale as keyof typeof localeDisplayNames]);
     router.refresh();
   };

@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/app/components/ui/card';
 import { cn } from '@/app/lib/utils';
 
 import { excerptFromMarkdown } from '../faq-utils';
+import { trackFaqArticleOpened } from '@/app/lib/posthog-events';
 import styles from '../faq.module.css';
 
 type Props = {
@@ -15,14 +16,15 @@ type Props = {
   title: string;
   content: string;
   titleAs?: 'h2' | 'h3';
+  source?: 'hub' | 'group';
 };
 
-export function FaqArticleCard({ doc, title, content, titleAs: TitleTag = 'h3' }: Props) {
+export function FaqArticleCard({ doc, title, content, titleAs: TitleTag = 'h3', source = 'hub' }: Props) {
   const t = useTranslations('faq');
   const href = `/app/faq/articles/${encodeURIComponent(doc.externalId)}`;
 
   return (
-    <Link href={href} className={styles.articleCardLink}>
+    <Link href={href} className={styles.articleCardLink} onClick={() => trackFaqArticleOpened(doc.externalId, source)}>
       <Card className={cn(styles.articleCard, 'border-border bg-card gap-0 overflow-hidden rounded-xl py-0 shadow-none')}>
         <CardContent className="p-5">
           <TitleTag className="text-foreground mb-2 text-base font-semibold">{title}</TitleTag>

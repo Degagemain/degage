@@ -38,3 +38,27 @@ export function getAuthErrorMessage(error: unknown, t: AuthErrorTranslator): str
 
   return t('requestFailed');
 }
+
+export function getAuthErrorCode(error: unknown): string {
+  const err = error as { error?: { code?: string }; message?: string };
+  if (err?.error?.code) return err.error.code;
+
+  const message = err?.error?.message ?? err?.message;
+  if (!message) return 'unknown';
+
+  const lower = message.toLowerCase();
+  if (lower.includes('invalid') && (lower.includes('password') || lower.includes('email'))) {
+    return 'invalid_credentials';
+  }
+  if (lower.includes('already exists') || lower.includes('user already')) {
+    return 'user_already_exists';
+  }
+  if (lower.includes('not found')) {
+    return 'user_not_found';
+  }
+  if (lower.includes('verify') && lower.includes('email')) {
+    return 'email_not_verified';
+  }
+
+  return 'unknown';
+}

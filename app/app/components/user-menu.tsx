@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { localeDisplayNames, uiLocales } from '@/i18n/locales';
 import { apiPatch } from '@/app/lib/api-client';
 import { authClient } from '@/app/lib/auth';
+import { trackLocaleChanged } from '@/app/lib/posthog-events';
 import { useIsAdmin } from '@/app/lib/role';
 import { cn } from '@/app/lib/utils';
 import { Avatar, AvatarImage } from './ui/avatar';
@@ -47,11 +48,13 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
   };
 
   const switchLocale = async (newLocale: string) => {
+    if (newLocale === locale) return;
     const response = await apiPatch('/api/user/locale', { locale: newLocale });
     if (!response.ok) {
       toast.error(t('updateFailed'));
       return;
     }
+    trackLocaleChanged(locale, newLocale, 'menu');
     toast.success(localeDisplayNames[newLocale as keyof typeof localeDisplayNames]);
     router.refresh();
   };

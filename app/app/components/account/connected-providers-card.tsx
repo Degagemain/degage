@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
 import { getSocialProviders } from '@/app/components/auth/lib/auth-features';
+import { trackAccountProviderLinked } from '@/app/lib/posthog-events';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { authClient } from '@/app/lib/auth';
@@ -51,6 +52,7 @@ export function ConnectedProvidersCard() {
   const handleLink = async (provider: SocialProviderId) => {
     setLoadingId(provider);
     try {
+      trackAccountProviderLinked(provider, 'link');
       const callbackURL = `${window.location.origin}/app/auth/callback?redirectTo=${encodeURIComponent('/app/account/settings')}`;
       await authClient.linkSocial({
         provider,
@@ -71,6 +73,7 @@ export function ConnectedProvidersCard() {
         accountId: account.accountId,
         fetchOptions: { throw: true },
       });
+      trackAccountProviderLinked(account.providerId, 'unlink');
       await loadAccounts();
     } catch (error) {
       toast.error(getAuthErrorMessage(error, t));

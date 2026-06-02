@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { PublicPage } from '@/app/components/public/public-shell';
 import { Button } from '@/app/components/ui/button';
 import { useIsAdmin } from '@/app/lib/role';
+import { trackDashboardCardClicked } from '@/app/lib/posthog-events';
 
 type DashboardPageProps = {
   name: string;
@@ -37,7 +38,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
           <h2 className="mt-4 text-lg font-bold text-stone-900 dark:text-stone-50">{t('cards.simulation.title')}</h2>
           <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('cards.simulation.description')}</p>
           <Button className="mt-6 h-11 rounded-lg bg-[var(--public-brand)] px-6 text-white hover:bg-[var(--public-brand-hover)]" asChild>
-            <Link href="/app/simulation">{t('cards.simulation.cta')}</Link>
+            <Link href="/app/simulation" onClick={() => trackDashboardCardClicked('simulation')}>
+              {t('cards.simulation.cta')}
+            </Link>
           </Button>
         </article>
 
@@ -52,7 +55,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
             className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50 dark:border-stone-600 dark:text-stone-200 dark:hover:bg-stone-800"
             asChild
           >
-            <Link href="/app/faq">{t('cards.faq.cta')}</Link>
+            <Link href="/app/faq" onClick={() => trackDashboardCardClicked('faq')}>
+              {t('cards.faq.cta')}
+            </Link>
           </Button>
         </article>
 
@@ -68,7 +73,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
               className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50 dark:border-stone-600 dark:text-stone-200 dark:hover:bg-stone-800"
               asChild
             >
-              <Link href="/app/admin">{t('cards.admin.cta')}</Link>
+              <Link href="/app/admin" onClick={() => trackDashboardCardClicked('admin')}>
+                {t('cards.admin.cta')}
+              </Link>
             </Button>
           </article>
         ) : null}

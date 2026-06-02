@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { apiPatch } from '@/app/lib/api-client';
+import { trackLocaleChanged } from '@/app/lib/posthog-events';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { type UILocale, localeDisplayNames, uiLocales } from '@/i18n/locales';
@@ -14,11 +15,13 @@ export function UpdateLocaleCard() {
   const t = useTranslations('settings');
 
   const handleLocaleChange = async (newLocale: string) => {
+    if (newLocale === locale) return;
     const response = await apiPatch('/api/user/locale', { locale: newLocale });
     if (!response.ok) {
       toast.error(t('languageUpdateFailed'));
       return;
     }
+    trackLocaleChanged(locale, newLocale, 'settings');
     toast.success(localeDisplayNames[newLocale as UILocale]);
     router.refresh();
   };

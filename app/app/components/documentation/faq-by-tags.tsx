@@ -216,7 +216,7 @@ export function FaqByTags({ tags, className, heading, headingClassName, variant 
     }
     return (
       <div className={className}>
-        <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+        <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => openChat('simulation')}>
           <MessagesSquare className="size-4 shrink-0" aria-hidden />
           {tChat('supportChat')}
         </Button>
@@ -264,7 +264,7 @@ export function FaqByTags({ tags, className, heading, headingClassName, variant 
           })}
           {showChatFallback ? (
             <div className="border-border border-t px-6 py-4">
-              <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+              <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => openChat('simulation')}>
                 <MessagesSquare className="size-4 shrink-0" aria-hidden />
                 {tChat('supportChat')}
               </Button>
@@ -329,7 +329,7 @@ function FaqByTagsCards({
       <div className={className}>
         {headingEl}
         <div className={headingEl ? 'mt-3' : undefined}>
-          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => openChat('simulation')}>
             <MessagesSquare className="size-4 shrink-0" aria-hidden />
             {tChat('supportChat')}
           </Button>
@@ -370,7 +370,7 @@ function FaqByTagsCards({
       </div>
       {showChatFallback ? (
         <div className="mt-3">
-          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={openChat}>
+          <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => openChat('simulation')}>
             <MessagesSquare className="size-4 shrink-0" aria-hidden />
             {tChat('supportChat')}
           </Button>

@@ -1,5 +1,15 @@
 'use client';
-import { capture } from '@/app/lib/posthog';
+import { capture, setPostHogPersonProperties } from '@/app/lib/posthog';
+import {
+  getSimulationEntryFromReferrer,
+  trackSimulationCarInfoSubmitted,
+  trackSimulationCompleted,
+  trackSimulationConfirmationEmailSent,
+  trackSimulationCostScenarioViewed,
+  trackSimulationManualReviewRequested,
+  trackSimulationRestarted,
+  trackSimulationStarted,
+} from '@/app/lib/posthog-events';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -308,6 +318,11 @@ export default function SimulationPage() {
           resultRoundedKmCost: data.resultRoundedKmCost ?? null,
           resultDepreciationCostKm: data.resultDepreciationCostKm ?? null,
         });
+        trackSimulationCompleted(data.resultCode as string, carChoice);
+        setPostHogPersonProperties({
+          has_completed_simulation: true,
+          last_simulation_result_code: data.resultCode as string,
+        });
         setCreatedSimulationId(typeof data.id === 'string' ? data.id : null);
         setScreen(STEP_RESULT);
       })
@@ -375,11 +390,18 @@ export default function SimulationPage() {
     capture(`step_${screen}`, {
       result_code: simulationResult?.resultCode ?? null,
     });
+    if (screen === STEP_SITUATION) {
+      trackSimulationStarted(getSimulationEntryFromReferrer());
+    }
+    if (screen === STEP_CAR_INFO) {
+      trackSimulationCarInfoSubmitted(brandId, fuelTypeId);
+    }
     setScreen((s) => Math.min(s + 1, STEP_CONFIRMATION));
   };
   const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATION));
 
   const restartSimulationFromNotOk = () => {
+    trackSimulationRestarted(screen);
     setSimulationResult(null);
     setCarChoice(null);
     setCreatedSimulationId(null);
@@ -399,6 +421,7 @@ export default function SimulationPage() {
         email,
       });
       if (res.status === 204) {
+        trackSimulationManualReviewRequested();
         setManualReviewStatus('success');
         return;
       }
@@ -415,6 +438,7 @@ export default function SimulationPage() {
     try {
       const res = await apiPost('/api/simulations/confirm-result-email', { id: createdSimulationId, email });
       if (res.status === 204) {
+        trackSimulationConfirmationEmailSent(confirmationMemberPath);
         setConfirmationStatus('success');
         return;
       }
@@ -1194,7 +1218,10 @@ export default function SimulationPage() {
                   <button
                     key={s.i}
                     type="button"
-                    onClick={() => setCostScenarioIndex(s.i)}
+                    onClick={() => {
+                      setCostScenarioIndex(s.i);
+                      trackSimulationCostScenarioViewed(s.i);
+                    }}
                     className={costScenarioIndex === s.i ? `${styles.scenarioBtn} ${styles.scenarioBtnActive}` : styles.scenarioBtn}
                   >
                     <div className={cn(styles.scenarioBtnCheck, costScenarioIndex === s.i && styles.scenarioBtnCheckActive)} aria-hidden>

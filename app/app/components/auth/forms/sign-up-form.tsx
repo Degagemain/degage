@@ -16,6 +16,7 @@ import { SocialSignInButtons } from '@/app/components/auth/social-sign-in-button
 import { authPath, authViewPaths } from '@/app/components/auth/auth-view-paths';
 import { usePostAuthRedirect } from '@/app/components/auth/hooks/use-post-auth-redirect';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
+import { trackAuthSignUpCompleted } from '@/app/lib/posthog-events';
 import { isSocialAuthEnabled } from '@/app/components/auth/lib/auth-features';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
@@ -57,10 +58,11 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
       });
 
       if (data && typeof data === 'object' && 'token' in data && data.token) {
-        await completeSignIn();
+        await completeSignIn({ flow: 'sign_up', method: 'email' });
         return;
       }
 
+      trackAuthSignUpCompleted('email');
       toast.success(t('signUpEmail'));
       router.push(authPath(authViewPaths.SIGN_IN, search));
     } catch (error) {

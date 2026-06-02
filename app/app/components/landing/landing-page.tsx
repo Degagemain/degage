@@ -36,6 +36,7 @@ import styles from '@/app/components/public/public-theme.module.css';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 import { Button } from '@/app/components/ui/button';
 import { cn } from '@/app/lib/utils';
+import { trackLandingCtaClicked } from '@/app/lib/posthog-events';
 
 const KNOCKOUT_KEYS = ['koopgidsKnockout1', 'koopgidsKnockout2', 'koopgidsKnockout3', 'koopgidsKnockout4'] as const;
 
@@ -145,7 +146,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
               <Reveal delayMs={220}>
                 <div className={cn(landingSectionBlockGap, 'flex flex-col items-center gap-2')}>
                   <Button asChild size="lg" className={brandButtonClassName}>
-                    <Link href="/app/simulation">
+                    <Link href="/app/simulation" onClick={() => trackLandingCtaClicked('hero')}>
                       {t('hero.cta')}
                       <ArrowRight className="size-4 transition-transform duration-300" aria-hidden />
                     </Link>
@@ -274,7 +275,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
 
               <div className={cn(landingSectionBlockGap, 'flex justify-center')}>
                 <Button asChild size="lg" className={brandButtonClassName}>
-                  <Link href="/app/simulation">{t('eligibility.cta')}</Link>
+                  <Link href="/app/simulation" onClick={() => trackLandingCtaClicked('eligibility')}>
+                    {t('eligibility.cta')}
+                  </Link>
                 </Button>
               </div>
             </Reveal>
@@ -391,7 +394,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                 variant="secondary"
                 className={cn(landingSectionBlockGap, 'h-12 rounded-full px-8 text-base text-[var(--public-brand)]')}
               >
-                <Link href="/app/simulation">{t('finalCta.cta')}</Link>
+                <Link href="/app/simulation" onClick={() => trackLandingCtaClicked('footer')}>
+                  {t('finalCta.cta')}
+                </Link>
               </Button>
             </div>
           </section>

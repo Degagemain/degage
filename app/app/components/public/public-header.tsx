@@ -3,9 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { authClient } from '@/app/lib/auth';
+import { getLoginDialogSurfaceFromPathname, trackLoginDialogOpened } from '@/app/lib/posthog-events';
 import { LanguageSwitcher } from '@/app/components/language-switcher';
 import { UserMenu } from '@/app/components/user-menu';
 import { Button } from '@/app/components/ui/button';
@@ -21,6 +23,7 @@ const SCROLL_THRESHOLD_PX = 8;
 export function PublicHeader() {
   const t = useTranslations('landing');
   const tAuth = useTranslations('auth');
+  const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
   const [mounted, setMounted] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -71,7 +74,10 @@ export function PublicHeader() {
                 type="button"
                 size="sm"
                 className="rounded-full bg-[var(--public-brand)] px-4 text-white hover:bg-[var(--public-brand-hover)]"
-                onClick={() => setLoginOpen(true)}
+                onClick={() => {
+                  trackLoginDialogOpened(getLoginDialogSurfaceFromPathname(pathname));
+                  setLoginOpen(true);
+                }}
               >
                 {tAuth('signIn')}
               </Button>

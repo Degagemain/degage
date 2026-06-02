@@ -5,6 +5,7 @@ import { CarFront, ClipboardList, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { buildSignInUrlWithReturnPath } from '@/app/lib/sign-in-return-path';
+import { trackLoginDialogOptionClicked } from '@/app/lib/posthog-events';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { cn } from '@/app/lib/utils';
 
@@ -39,7 +40,16 @@ export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps
         </DialogHeader>
 
         <div className="flex flex-col gap-3 p-6">
-          <a href={DEGAPP_URL} target="_blank" rel="noopener noreferrer" className={optionClassName} onClick={() => onOpenChange(false)}>
+          <a
+            href={DEGAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={optionClassName}
+            onClick={() => {
+              trackLoginDialogOptionClicked('degapp');
+              onOpenChange(false);
+            }}
+          >
             <span className="inline-flex rounded-lg bg-[var(--public-icon-bg)] p-2.5 text-[var(--public-accent-strong)]">
               <CarFront className="size-5" aria-hidden />
             </span>
@@ -56,7 +66,14 @@ export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps
             />
           </a>
 
-          <Link href={onboardingSignInUrl} className={optionClassName} onClick={() => onOpenChange(false)}>
+          <Link
+            href={onboardingSignInUrl}
+            className={optionClassName}
+            onClick={() => {
+              trackLoginDialogOptionClicked('onboarding');
+              onOpenChange(false);
+            }}
+          >
             <span className="inline-flex rounded-lg bg-[var(--public-option-icon-bg)] p-2.5 text-[var(--public-option-icon-fg)]">
               <ClipboardList className="size-5" aria-hidden />
             </span>

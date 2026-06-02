@@ -6,5 +6,8 @@ if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POS
     defaults: '2026-01-30',
     capture_exceptions: true,
     debug: process.env.NODE_ENV === 'development',
+    session_recording: {
+      maskAllInputs: true,
+    },
   });
 }

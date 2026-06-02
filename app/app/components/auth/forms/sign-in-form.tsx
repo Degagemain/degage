@@ -16,7 +16,8 @@ import { AuthPrimaryButton } from '@/app/components/auth/auth-primary-button';
 import { SocialSignInButtons } from '@/app/components/auth/social-sign-in-buttons';
 import { authPath, authViewPaths } from '@/app/components/auth/auth-view-paths';
 import { usePostAuthRedirect } from '@/app/components/auth/hooks/use-post-auth-redirect';
-import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
+import { getAuthErrorCode, getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
+import { trackAuthSignInFailed } from '@/app/lib/posthog-events';
 import { isSocialAuthEnabled } from '@/app/components/auth/lib/auth-features';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
@@ -51,9 +52,10 @@ export function SignInForm({ redirectTo, search }: SignInFormProps) {
         password: values.password,
         fetchOptions: { throw: true },
       });
-      await completeSignIn();
+      await completeSignIn({ flow: 'sign_in', method: 'email' });
     } catch (error) {
       form.resetField('password');
+      trackAuthSignInFailed('email', getAuthErrorCode(error));
       toast.error(getAuthErrorMessage(error, t));
     }
   };

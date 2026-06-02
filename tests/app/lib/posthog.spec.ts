@@ -5,11 +5,12 @@ vi.mock('posthog-js', () => ({
     capture: vi.fn(),
     identify: vi.fn(),
     reset: vi.fn(),
+    setPersonProperties: vi.fn(),
   },
 }));
 
 import posthog from 'posthog-js';
-import { capture, identifyPostHogUser, resetPostHog } from '@/app/lib/posthog';
+import { capture, identifyPostHogUser, resetPostHog, setPostHogPersonProperties } from '@/app/lib/posthog';
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -37,11 +38,12 @@ describe('capture', () => {
 describe('identifyPostHogUser', () => {
   it('calls posthog.identify with user properties when enabled', () => {
     enablePostHog();
-    identifyPostHogUser('user-123', 'a@b.com', 'admin', 'Alice');
+    identifyPostHogUser('user-123', 'a@b.com', 'admin', 'Alice', { locale: 'nl' });
     expect(posthog.identify).toHaveBeenCalledWith('user-123', {
       email: 'a@b.com',
       role: 'admin',
       name: 'Alice',
+      locale: 'nl',
     });
   });
 
@@ -71,5 +73,13 @@ describe('resetPostHog', () => {
   it('does nothing when env vars are missing', () => {
     resetPostHog();
     expect(posthog.reset).not.toHaveBeenCalled();
+  });
+});
+
+describe('setPostHogPersonProperties', () => {
+  it('calls posthog.setPersonProperties when enabled', () => {
+    enablePostHog();
+    setPostHogPersonProperties({ locale: 'nl', auth_method: 'google' });
+    expect(posthog.setPersonProperties).toHaveBeenCalledWith({ locale: 'nl', auth_method: 'google' });
   });
 });

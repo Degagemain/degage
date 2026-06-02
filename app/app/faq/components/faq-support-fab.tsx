@@ -15,7 +15,7 @@ export function FaqSupportFab({ className }: { className?: string }) {
     <div className={cn('fixed right-4 bottom-4 z-40', className)}>
       <Button
         type="button"
-        onClick={openChat}
+        onClick={() => openChat('faq_fab')}
         className="h-12 gap-2 rounded-full bg-[var(--public-brand)] px-4 text-white shadow-lg hover:bg-[var(--public-brand-hover)]"
       >
         <MessagesSquare className="size-5 shrink-0" aria-hidden />

@@ -5,6 +5,7 @@ import { Globe, TriangleAlertIcon } from 'lucide-react';
 
 import { DEFAULT_LOCALE } from '@/domain/locale.model';
 import { type UILocale, localeDisplayNames } from '@/i18n/locales';
+import { trackNonDefaultLocaleWarningViewed } from '@/app/lib/posthog-events';
 import { cn } from '@/app/lib/utils';
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card';
@@ -31,7 +32,10 @@ export function LanguageSwitcherIcon({ className }: LanguageSwitcherIconProps) {
           className={cn('inline-flex shrink-0 text-amber-600 hover:text-amber-700 dark:text-amber-500', className)}
           aria-label={notice}
           onPointerDown={(event) => event.stopPropagation()}
-          onClick={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation();
+            trackNonDefaultLocaleWarningViewed(locale);
+          }}
         >
           <TriangleAlertIcon className="h-5 w-5" aria-hidden />
         </span>
