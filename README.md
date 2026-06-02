@@ -167,7 +167,7 @@ On success, the script prints the connection URL for the new database on stdout.
 
 ### Authentication
 
-Better-auth is used for authentication. It supports email/password authentication and GitHub OAuth. Auth screens (`/app/auth/*`) and account settings (`/app/account/settings`) are implemented in-app with Tailwind and the public design shell—see `docs/en/authentication.md`.
+Better-auth is used for authentication. It supports email/password authentication, GitHub OAuth, and Google OAuth. Auth screens (`/app/auth/*`) and account settings (`/app/account/settings`) are implemented in-app with Tailwind and the public design shell—see `docs/en/authentication.md`.
 
 #### Configuration
 
@@ -175,7 +175,7 @@ The auth server is configured in `app/auth.ts`:
 
 - **Database**: Uses Prisma adapter with PostgreSQL
 - **Email/Password**: Enabled by default
-- **Social Providers**: GitHub OAuth (requires `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`)
+- **Social Providers**: GitHub OAuth (requires `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`); Google OAuth (requires `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`)
 
 #### API Routes
 
@@ -212,6 +212,8 @@ Copy `.env.example` to `.env` and fill in your values. The app loads `.env` loca
 | DATABASE_URL_UNPOOLED             | Direct database url, without connection pooling.                                                                                                                                                                                     |
 | GITHUB_CLIENT_ID                  | GitHub OAuth client ID (required for GitHub auth).                                                                                                                                                                                   |
 | GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).                                                                                                                                                                               |
+| GOOGLE_CLIENT_ID                  | Google OAuth client ID (required for Google auth).                                                                                                                                                                                   |
+| GOOGLE_CLIENT_SECRET              | Google OAuth client secret (required for Google auth).                                                                                                                                                                               |
 | GOOGLE_GENERATIVE_AI_API_KEY      | API key for Gemini chat responses and documentation embeddings.                                                                                                                                                                      |
 | ADMIN_EMAIL_DOMAINS               | Comma-separated email domains allowed for admin users.                                                                                                                                                                               |
 | RESEND_API_KEY                    | API key for transactional emails sent by auth flows.                                                                                                                                                                                 |

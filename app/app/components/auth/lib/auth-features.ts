@@ -14,6 +14,14 @@ export function getSocialProviders(): string[] {
   return process.env.NEXT_PUBLIC_BETTER_AUTH_SOCIAL_PROVIDERS?.split(',').filter(Boolean) ?? [];
 }
 
+export function isSocialAuthEnabled() {
+  return getSocialProviders().length > 0;
+}
+
 export function isGithubAuthEnabled() {
   return getSocialProviders().includes('github');
+}
+
+export function isGoogleAuthEnabled() {
+  return getSocialProviders().includes('google');
 }

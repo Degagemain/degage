@@ -16,7 +16,11 @@ Authentication uses [better-auth](https://www.better-auth.com/) on the server. S
 | `ADMIN_EMAIL_DOMAINS`                      | Comma-separated list of email domains. Users whose **verified** email domain is in this list are automatically assigned the `admin` role (on sign-up if the email is already verified, e.g. OAuth, or when they verify their email). Example: `example.com,company.org`. |
 | `RESEND_API_KEY`                           | API key for [Resend](https://resend.com) used to send verification and password-reset emails. If unset, those emails are not sent (e.g. local dev).                                                                                                                      |
 | `RESEND_FROM`                              | Sender address for transactional emails. Default: `Neurotic <onboarding@resend.dev>`. Use your verified domain in production, e.g. `App <noreply@yourdomain.com>`.                                                                                                       |
-| `NEXT_PUBLIC_BETTER_AUTH_SOCIAL_PROVIDERS` | Comma-separated OAuth providers shown on auth screens (e.g. `github`).                                                                                                                                                                                                   |
+| `NEXT_PUBLIC_BETTER_AUTH_SOCIAL_PROVIDERS` | Comma-separated OAuth providers shown on auth screens (e.g. `github,google`).                                                                                                                                                                                            |
+| `GITHUB_CLIENT_ID`                         | GitHub OAuth app client ID. Required to enable GitHub sign-in.                                                                                                                                                                                                           |
+| `GITHUB_CLIENT_SECRET`                     | GitHub OAuth app client secret. Required to enable GitHub sign-in.                                                                                                                                                                                                       |
+| `GOOGLE_CLIENT_ID`                         | Google OAuth client ID. Required to enable Google sign-in.                                                                                                                                                                                                               |
+| `GOOGLE_CLIENT_SECRET`                     | Google OAuth client secret. Required to enable Google sign-in.                                                                                                                                                                                                           |
 | `NEXT_PUBLIC_AUTH_MAGIC_LINK`              | When `true`, shows magic-link route and sign-in link (requires Better Auth magic-link plugin + Resend templates — Phase 2).                                                                                                                                              |
 | `NEXT_PUBLIC_AUTH_EMAIL_OTP`               | When `true`, shows email-OTP route and sign-in link (requires Better Auth email-OTP plugin + Resend templates — Phase 2).                                                                                                                                                |
 
@@ -70,12 +74,13 @@ Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
 
 - Email/password
 - GitHub OAuth (when `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` are set)
+- Google OAuth (when `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` are set)
 
 ## Routes
 
 ### Auth (`/app/auth/...`)
 
-- `/app/auth/sign-in` — Login (email/password, GitHub; optional links to magic-link / email-OTP when env flags are set)
+- `/app/auth/sign-in` — Login (email/password, Google, GitHub; optional links to magic-link / email-OTP when env flags are set)
 - `/app/auth/sign-up` — Registration
 - `/app/auth/forgot-password` — Password reset request
 - `/app/auth/reset-password` — Password reset form (`?token=`)

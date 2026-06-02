@@ -53,6 +53,13 @@ export const auth = betterAuth({
             clientSecret: process.env.GITHUB_CLIENT_SECRET!,
           }
         : undefined,
+    google:
+      process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+        ? {
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+          }
+        : undefined,
   },
   plugins: [admin()],
   databaseHooks: {
