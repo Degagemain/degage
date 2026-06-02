@@ -1,7 +1,8 @@
 {
   "language": {
     "label": "Language",
-    "updateFailed": "Failed to update language"
+    "updateFailed": "Failed to update language",
+    "nonDefaultLocaleNotice": "This page is available in {language}, but the Dégage services and community are mostly in Dutch."
   },
   "theme": {
     "label": "Theme",
@@ -125,6 +126,16 @@
     "avatar": "Avatar",
     "avatarDescription": "Click on the avatar to upload a custom one from your files.",
     "settings": "Settings",
+    "accountTabProfile": "Profile",
+    "accountTabPassword": "Password",
+    "accountTabSignIn": "Sign-in methods",
+    "signInMethods": "Sign-in methods",
+    "signInMethodsDescription": "Connect GitHub or other accounts so you can sign in with them.",
+    "signInWithGithubDescription": "Sign in with your GitHub account.",
+    "connectAccount": "Connect",
+    "disconnectAccount": "Disconnect",
+    "accountConnected": "Connected to your account",
+    "noPasswordSignIn": "You sign in without a password. If you registered with email, use the forgot-password flow to set one.",
     "security": "Security",
     "sessions": "Sessions",
     "sessionsDescription": "Manage your active sessions and revoke access.",
@@ -2037,6 +2048,27 @@
     "footer": {
       "faq": "Help & FAQ",
       "contact": "deeljeauto@degage.be"
+    }
+  },
+  "dashboard": {
+    "title": "Welcome back, {name}",
+    "intro": "Here's what you can do with your account.",
+    "cards": {
+      "simulation": {
+        "title": "New simulation",
+        "description": "Check whether a car can join the sharing system with your situation and vehicle details.",
+        "cta": "Start simulation →"
+      },
+      "faq": {
+        "title": "Help & FAQ",
+        "description": "Browse articles and answers about Dégage and the admission process.",
+        "cta": "Open help →"
+      },
+      "admin": {
+        "title": "Admin",
+        "description": "Manage users and reference data.",
+        "cta": "Go to admin →"
+      }
     }
   },
   "chat": {

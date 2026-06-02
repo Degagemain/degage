@@ -61,7 +61,7 @@ export function FaqGroupsList() {
 
   return (
     <div className="mt-16">
-      <h2 className="mb-2 text-lg font-bold text-[#181510]">{t('faqHeading')}</h2>
+      <h2 className="text-foreground mb-2 text-lg font-bold">{t('faqHeading')}</h2>
       {state.groups
         .filter((g): g is DocumentationGroup & { id: string } => Boolean(g.id))
         .map((g) => (

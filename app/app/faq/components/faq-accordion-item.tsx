@@ -13,13 +13,13 @@ type Props = {
 
 export function FaqAccordionItem({ title, markdown }: Props) {
   return (
-    <Collapsible className="group/faq-item border-t border-[#DDD6CB] first:border-t-0" defaultOpen={false}>
+    <Collapsible className="group/faq-item border-border border-t first:border-t-0" defaultOpen={false}>
       <CollapsibleTrigger
         className={cn(
           'hover:bg-muted/25 flex w-full items-start justify-between gap-2 border-0 bg-transparent px-5 py-4',
-          'text-left text-sm font-medium text-[#181510] transition-colors',
-          'outline-none focus-visible:ring-2 focus-visible:ring-[#1A3D2B] focus-visible:ring-offset-2',
-          'data-[state=open]:bg-[#EAF3EC]/80',
+          'text-foreground text-left text-sm font-medium transition-colors',
+          'outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-accent-deep)] focus-visible:ring-offset-2',
+          'data-[state=open]:bg-[var(--public-surface)]/80',
         )}
       >
         <span className="min-w-0 flex-1 leading-snug">{title}</span>

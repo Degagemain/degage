@@ -1,7 +1,8 @@
 {
   "language": {
     "label": "Langue",
-    "updateFailed": "Impossible de mettre à jour la langue"
+    "updateFailed": "Impossible de mettre à jour la langue",
+    "nonDefaultLocaleNotice": "Cette page est disponible en {language}, mais les services et la communauté Dégage sont principalement en néerlandais."
   },
   "theme": {
     "label": "Thème",
@@ -125,6 +126,16 @@
     "avatar": "Avatar",
     "avatarDescription": "Cliquez sur l'avatar pour télécharger une image personnalisée.",
     "settings": "Paramètres",
+    "accountTabProfile": "Profil",
+    "accountTabPassword": "Mot de passe",
+    "accountTabSignIn": "Méthodes de connexion",
+    "signInMethods": "Méthodes de connexion",
+    "signInMethodsDescription": "Connectez GitHub ou d'autres comptes pour vous connecter avec eux.",
+    "signInWithGithubDescription": "Connectez-vous avec votre compte GitHub.",
+    "connectAccount": "Connecter",
+    "disconnectAccount": "Déconnecter",
+    "accountConnected": "Connecté à votre compte",
+    "noPasswordSignIn": "Vous vous connectez sans mot de passe. Si vous vous êtes inscrit par e-mail, utilisez mot de passe oublié pour en définir un.",
     "security": "Sécurité",
     "sessions": "Sessions",
     "sessionsDescription": "Gérez vos sessions actives et révoquez l'accès.",
@@ -2037,6 +2048,27 @@
     "footer": {
       "faq": "Aide & FAQ",
       "contact": "deeljeauto@degage.be"
+    }
+  },
+  "dashboard": {
+    "title": "Bon retour, {name}",
+    "intro": "Voici ce que vous pouvez faire avec votre compte.",
+    "cards": {
+      "simulation": {
+        "title": "Nouvelle simulation",
+        "description": "Vérifiez si une voiture peut rejoindre le système de partage avec votre situation et les détails du véhicule.",
+        "cta": "Lancer la simulation →"
+      },
+      "faq": {
+        "title": "Aide & FAQ",
+        "description": "Parcourez les articles et réponses sur Dégage et le processus d’admission.",
+        "cta": "Ouvrir l’aide →"
+      },
+      "admin": {
+        "title": "Administration",
+        "description": "Gérez les utilisateurs et les données de référence.",
+        "cta": "Vers l’administration →"
+      }
     }
   },
   "chat": {

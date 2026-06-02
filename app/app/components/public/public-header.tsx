@@ -12,6 +12,7 @@ import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { cn } from '@/app/lib/utils';
 
+import { PublicLightTheme } from './public-light-theme';
 import { PublicLoginDialog } from './public-login-dialog';
 import styles from './public-theme.module.css';
 
@@ -45,13 +46,12 @@ export function PublicHeader() {
 
   return (
     <>
+      <PublicLightTheme />
       <header
         className={cn(
           styles.publicTheme,
           'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300',
-          scrolled
-            ? 'border-b border-stone-200/80 bg-[#fafaf9]/90 backdrop-blur-md supports-[backdrop-filter]:bg-[#fafaf9]/75'
-            : 'border-b border-transparent bg-transparent',
+          scrolled ? styles.headerScrolled : 'border-b border-transparent bg-transparent',
         )}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5 lg:px-8">
@@ -60,10 +60,10 @@ export function PublicHeader() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <LanguageSwitcher triggerClassName="text-stone-600 hover:bg-stone-100/80 hover:text-stone-900" showLabel />
+            <LanguageSwitcher triggerClassName={styles.langTrigger} showLabel />
 
             {showLoadingUi ? (
-              <Skeleton className="h-9 w-20 rounded-full" />
+              <Skeleton className="h-9 w-32 rounded-full" />
             ) : showAuthenticatedUi && session ? (
               <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} size="sm" />
             ) : showGuestUi ? (

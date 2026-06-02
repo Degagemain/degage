@@ -12,10 +12,10 @@ type AuthCardProps = {
 
 export function AuthCard({ title, description, children, className }: AuthCardProps) {
   return (
-    <Card className={cn('w-full max-w-sm border-stone-200 bg-white shadow-sm', className)}>
+    <Card className={cn('border-border bg-card w-full max-w-sm shadow-sm', className)}>
       <CardHeader className="gap-1">
-        <CardTitle className="text-xl font-semibold text-stone-900">{title}</CardTitle>
-        {description ? <CardDescription className="text-sm text-stone-600">{description}</CardDescription> : null}
+        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+        {description ? <CardDescription className="text-sm">{description}</CardDescription> : null}
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>

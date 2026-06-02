@@ -68,19 +68,20 @@ export function ConnectedProvidersCard() {
   };
 
   return (
-    <Card className="border-stone-200 bg-white">
+    <Card className="border-border bg-card">
       <CardHeader>
-        <CardTitle>{t('providers')}</CardTitle>
-        <CardDescription>{t('providersDescription')}</CardDescription>
+        <CardTitle>{t('signInMethods')}</CardTitle>
+        <CardDescription>{t('signInMethodsDescription')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {accounts === null ? (
-          <div className="h-12 animate-pulse rounded-lg bg-stone-100" />
+          <div className="bg-muted h-12 animate-pulse rounded-lg" />
         ) : (
           <>
             {githubEnabled ? (
               <ProviderRow
                 name="GitHub"
+                description={t('signInWithGithubDescription')}
                 linked={accounts.some((a) => a.providerId === 'github')}
                 loading={loadingId === 'github'}
                 onLink={() => handleLink('github')}
@@ -88,8 +89,9 @@ export function ConnectedProvidersCard() {
                   const acc = accounts.find((a) => a.providerId === 'github');
                   if (acc) void handleUnlink(acc);
                 }}
-                linkLabel={t('link')}
-                unlinkLabel={t('unlink')}
+                connectLabel={t('connectAccount')}
+                disconnectLabel={t('disconnectAccount')}
+                connectedLabel={t('accountConnected')}
               />
             ) : null}
           </>
@@ -101,26 +103,40 @@ export function ConnectedProvidersCard() {
 
 function ProviderRow({
   name,
+  description,
   linked,
   loading,
   onLink,
   onUnlink,
-  linkLabel,
-  unlinkLabel,
+  connectLabel,
+  disconnectLabel,
+  connectedLabel,
 }: {
   name: string;
+  description: string;
   linked: boolean;
   loading: boolean;
   onLink: () => void;
   onUnlink: () => void;
-  linkLabel: string;
-  unlinkLabel: string;
+  connectLabel: string;
+  disconnectLabel: string;
+  connectedLabel: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-stone-200 px-4 py-3">
-      <span className="font-medium text-stone-900">{name}</span>
-      <Button type="button" variant="outline" size="sm" disabled={loading} onClick={linked ? onUnlink : onLink} className="rounded-full">
-        {loading ? <Loader2 className="size-4 animate-spin" /> : linked ? unlinkLabel : linkLabel}
+    <div className="border-border flex items-center justify-between gap-4 rounded-lg border px-4 py-3">
+      <div className="min-w-0 space-y-0.5">
+        <p className="font-medium">{name}</p>
+        <p className="text-muted-foreground text-sm">{linked ? connectedLabel : description}</p>
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={loading}
+        onClick={linked ? onUnlink : onLink}
+        className="shrink-0 rounded-full"
+      >
+        {loading ? <Loader2 className="size-4 animate-spin" /> : linked ? disconnectLabel : connectLabel}
       </Button>
     </div>
   );

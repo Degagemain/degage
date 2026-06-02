@@ -15,7 +15,7 @@ export function AuthFooterLinks({ variant, search }: AuthFooterLinksProps) {
 
   if (variant === 'sign-in') {
     return (
-      <p className="text-center text-sm text-stone-600">
+      <p className="text-muted-foreground text-center text-sm">
         {t('dontHaveAnAccount')}{' '}
         <Link href={authPath(authViewPaths.SIGN_UP, search)} className="font-medium text-[var(--public-brand)] hover:underline">
           {t('signUp')}
@@ -26,7 +26,7 @@ export function AuthFooterLinks({ variant, search }: AuthFooterLinksProps) {
 
   if (variant === 'sign-up') {
     return (
-      <p className="text-center text-sm text-stone-600">
+      <p className="text-muted-foreground text-center text-sm">
         {t('alreadyHaveAnAccount')}{' '}
         <Link href={authPath(authViewPaths.SIGN_IN, search)} className="font-medium text-[var(--public-brand)] hover:underline">
           {t('signIn')}
@@ -36,7 +36,7 @@ export function AuthFooterLinks({ variant, search }: AuthFooterLinksProps) {
   }
 
   return (
-    <p className="text-center text-sm text-stone-600">
+    <p className="text-muted-foreground text-center text-sm">
       <Link href={authPath(authViewPaths.SIGN_IN, search)} className="font-medium text-[var(--public-brand)] hover:underline">
         {t('goBack')}
       </Link>

@@ -322,3 +322,73 @@
     grid-template-columns: 1fr;
   }
 }
+
+:global(.dark) .pageTitle,
+:global(.dark) .cardTitle,
+:global(.dark) .groupHeader,
+:global(.dark) .accordionTrigger,
+:global(.dark) .searchInput,
+:global(.dark) .searchLink {
+  color: #fafaf9;
+}
+
+:global(.dark) .intro,
+:global(.dark) .cardExcerpt,
+:global(.dark) .accordionContent,
+:global(.dark) .backButton,
+:global(.dark) .statusText {
+  color: #a8a29e;
+}
+
+:global(.dark) .sectionMoreLink,
+:global(.dark) .inlineLink,
+:global(.dark) .articleCardRead {
+  color: #81c784;
+}
+
+:global(.dark) .searchInput,
+:global(.dark) .searchResults,
+:global(.dark) .card,
+:global(.dark) .accordion,
+:global(.dark) .accordionTrigger {
+  border-color: #44403c;
+  background: #1c1917;
+}
+
+:global(.dark) .searchInput:focus {
+  border-color: #81c784;
+}
+
+:global(.dark) .searchLink:hover,
+:global(.dark) .accordionTrigger[data-state='open'],
+:global(.dark) .articleCardLink:hover .articleCard,
+:global(.dark) .articleCardLink:focus-visible .articleCard {
+  background: #1a2e1a;
+}
+
+:global(.dark) .articleCardLink:hover .articleCard,
+:global(.dark) .articleCardLink:focus-visible .articleCard {
+  border-color: #2d4a2d;
+}
+
+:global(.dark) .accordionItem {
+  border-top-color: #292524;
+}
+
+:global(.dark) .accordionChevron,
+:global(.dark) .searchResultLabel,
+:global(.dark) .searchResultState {
+  color: #78716c;
+}
+
+:global(.dark) .backButton:hover {
+  border-color: #2d4a2d;
+  background: #292524;
+  color: #fafaf9;
+}
+
+:global(.dark) .helpBand {
+  border-color: #78350f;
+  background: #422006;
+  color: #fcd34d;
+}

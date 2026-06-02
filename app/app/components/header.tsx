@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { authClient } from '@/app/lib/auth';
 import { Skeleton } from './ui/skeleton';
 import { LanguageSwitcher } from './language-switcher';
-import { ThemeToggle } from './theme-toggle';
 import { UserMenu } from './user-menu';
 
 export function Header() {
@@ -31,15 +30,10 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          {showGuestUi && (
-            <>
-              <LanguageSwitcher />
-              <ThemeToggle />
-            </>
-          )}
+          {showGuestUi && <LanguageSwitcher />}
 
           {showLoadingUi ? (
-            <Skeleton className="h-9 w-9 rounded-full" />
+            <Skeleton className="h-9 w-32 rounded-full" />
           ) : showAuthenticatedUi && session ? (
             <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} />
           ) : null}

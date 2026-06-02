@@ -104,7 +104,7 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
               disabled={loading}
               {...form.register('password')}
             />
-            <p className="text-xs text-stone-500">{t('changePasswordInstructions')}</p>
+            <p className="text-muted-foreground text-xs">{t('changePasswordInstructions')}</p>
             {form.formState.errors.password ? <p className="text-sm text-red-600">{form.formState.errors.password.message}</p> : null}
           </div>
 
@@ -113,9 +113,9 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
           {showGithub ? (
             <>
               <div className="flex items-center gap-2">
-                <span className="h-px flex-1 bg-stone-200" />
-                <span className="text-sm text-stone-500">{t('orContinueWith')}</span>
-                <span className="h-px flex-1 bg-stone-200" />
+                <span className="bg-border h-px flex-1" />
+                <span className="text-muted-foreground text-sm">{t('orContinueWith')}</span>
+                <span className="bg-border h-px flex-1" />
               </div>
               <GithubSignInButton callbackURL={callbackURL} disabled={loading} />
             </>

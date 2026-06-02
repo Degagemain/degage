@@ -12,7 +12,7 @@ type Props = {
 export function FaqSectionHeader({ title, titleId, moreHref, moreLabel }: Props) {
   return (
     <div className={styles.sectionHeader}>
-      <h2 id={titleId} className="text-lg font-bold tracking-tight text-[#181510]">
+      <h2 id={titleId} className="text-foreground text-lg font-bold tracking-tight">
         {title}
       </h2>
       <Link href={moreHref} className={styles.sectionMoreLink}>

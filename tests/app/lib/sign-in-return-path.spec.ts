@@ -13,11 +13,11 @@ describe('sanitizePostSignInReturnPath', () => {
   });
 
   it('rejects protocol-relative URLs', () => {
-    expect(sanitizePostSignInReturnPath('//evil.com')).toBe('/app');
+    expect(sanitizePostSignInReturnPath('//evil.com')).toBe('/app/dashboard');
   });
 
   it('rejects paths outside /app', () => {
-    expect(sanitizePostSignInReturnPath('/other')).toBe('/app');
+    expect(sanitizePostSignInReturnPath('/other')).toBe('/app/dashboard');
   });
 });
 
@@ -27,7 +27,7 @@ describe('buildPostSignInReturnPath', () => {
   });
 
   it('sanitizes the combined path', () => {
-    expect(buildPostSignInReturnPath('/evil', '')).toBe('/app');
+    expect(buildPostSignInReturnPath('/evil', '')).toBe('/app/dashboard');
   });
 });
 

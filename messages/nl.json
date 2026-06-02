@@ -1,7 +1,8 @@
 {
   "language": {
     "label": "Taal",
-    "updateFailed": "Taal bijwerken mislukt"
+    "updateFailed": "Taal bijwerken mislukt",
+    "nonDefaultLocaleNotice": "Deze pagina is beschikbaar in {language}, maar de Dégage-diensten en -community zijn voornamelijk in het Nederlands."
   },
   "theme": {
     "label": "Thema",
@@ -125,6 +126,16 @@
     "avatar": "Avatar",
     "avatarDescription": "Klik op de avatar om een aangepaste afbeelding te uploaden.",
     "settings": "Instellingen",
+    "accountTabProfile": "Profiel",
+    "accountTabPassword": "Wachtwoord",
+    "accountTabSignIn": "Inlogmethoden",
+    "signInMethods": "Inlogmethoden",
+    "signInMethodsDescription": "Koppel GitHub of andere accounts zodat je ermee kunt inloggen.",
+    "signInWithGithubDescription": "Log in met je GitHub-account.",
+    "connectAccount": "Koppelen",
+    "disconnectAccount": "Ontkoppelen",
+    "accountConnected": "Gekoppeld aan je account",
+    "noPasswordSignIn": "Je logt in zonder wachtwoord. Als je je met e-mail hebt geregistreerd, gebruik dan wachtwoord vergeten om er een in te stellen.",
     "security": "Beveiliging",
     "sessions": "Sessies",
     "sessionsDescription": "Beheer je actieve sessies en trek toegang in.",
@@ -2037,6 +2048,27 @@
     "footer": {
       "faq": "Help & FAQ",
       "contact": "deeljeauto@degage.be"
+    }
+  },
+  "dashboard": {
+    "title": "Welkom terug, {name}",
+    "intro": "Dit kun je doen met je account.",
+    "cards": {
+      "simulation": {
+        "title": "Nieuwe simulatie",
+        "description": "Controleer of een auto kan instappen in het deelsysteem met jouw situatie en autogegevens.",
+        "cta": "Simulatie starten →"
+      },
+      "faq": {
+        "title": "Help & FAQ",
+        "description": "Lees artikels en antwoorden over Dégage en het toelatingsproces.",
+        "cta": "Help openen →"
+      },
+      "admin": {
+        "title": "Beheer",
+        "description": "Beheer gebruikers en referentiedata voor Dégage medewerkers.",
+        "cta": "Naar beheer →"
+      }
     }
   },
   "chat": {

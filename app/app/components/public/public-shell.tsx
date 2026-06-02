@@ -13,7 +13,7 @@ type PublicShellProps = {
 
 export function PublicShell({ children, className }: PublicShellProps) {
   return (
-    <div className={cn(styles.publicTheme, 'min-h-screen bg-[#fafaf9] text-[#1c1917]', className)}>
+    <div className={cn(styles.publicTheme, styles.pageSurface, 'min-h-screen', className)}>
       <PublicHeader />
       <main className={publicMainPadTop}>{children}</main>
     </div>

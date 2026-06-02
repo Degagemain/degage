@@ -3,7 +3,7 @@ import { AccountSettingsPage } from '@/app/components/account/account-settings-p
 
 export default function AccountSettingsRoute() {
   return (
-    <PublicPage narrow>
+    <PublicPage>
       <AccountSettingsPage />
     </PublicPage>
   );

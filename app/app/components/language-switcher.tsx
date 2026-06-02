@@ -2,13 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiPatch } from '@/app/lib/api-client';
 import { cn } from '@/app/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { localeDisplayNames, uiLocales } from '@/i18n/locales';
+
+import { LanguageSwitcherIcon } from './locale-non-default-warning';
 
 export function LanguageSwitcher({ triggerClassName, showLabel = false }: { triggerClassName?: string; showLabel?: boolean }) {
   const locale = useLocale();
@@ -29,7 +30,7 @@ export function LanguageSwitcher({ triggerClassName, showLabel = false }: { trig
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size={showLabel ? 'sm' : 'icon'} title={t('label')} className={cn(triggerClassName, showLabel && 'gap-2')}>
-          <Globe className="h-5 w-5 shrink-0" />
+          <LanguageSwitcherIcon />
           {showLabel && <span className="max-w-[8rem] truncate">{localeDisplayNames[locale as keyof typeof localeDisplayNames]}</span>}
         </Button>
       </DropdownMenuTrigger>

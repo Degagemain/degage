@@ -50,7 +50,7 @@ export function GithubSignInButton({ callbackURL, disabled }: GithubSignInButton
       variant="outline"
       disabled={disabled || loading}
       onClick={handleClick}
-      className={cn('h-10 w-full rounded-full border-stone-200 bg-white text-stone-900 hover:bg-stone-50')}
+      className={cn('border-border bg-card text-foreground hover:bg-muted h-10 w-full rounded-full')}
     >
       {loading ? (
         <Loader2 className="size-4 animate-spin" aria-hidden />

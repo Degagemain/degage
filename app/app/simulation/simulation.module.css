@@ -38,6 +38,24 @@
   overflow-x: hidden;
 }
 
+:global(.dark) .root {
+  --sim-brand-light: #1a2e1a;
+  --sim-brand-border: #2d4a2d;
+  --sim-bg: #0c0a09;
+  --sim-surface: #1c1917;
+  --sim-sand: #292524;
+  --sim-border: #44403c;
+  --sim-ink: #fafaf9;
+  --sim-mid: #a8a29e;
+  --sim-light: #78716c;
+  --sim-blue-bg: #172554;
+  --sim-blue-border: #1e3a5f;
+  --sim-amber-bg: #422006;
+  --sim-amber-border: #78350f;
+  --sim-green-bg: #14532d;
+  --sim-red-bg: #450a0a;
+}
+
 .koopgidsSection {
   border-top: 1px solid var(--sim-border);
   padding-top: var(--sim-s32);

@@ -75,7 +75,7 @@ export function FaqSearch({ className }: { className?: string }) {
         }}
         onFocus={() => setOpen(true)}
         placeholder={t('searchPlaceholder')}
-        className="h-12 rounded-lg border-[#DDD6CB] bg-white text-base"
+        className="border-border bg-card h-12 rounded-lg text-base"
         aria-autocomplete="list"
         aria-expanded={open && debounced.length >= 2}
         autoComplete="off"

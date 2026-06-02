@@ -15,11 +15,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const isLandingPage = pathname === '/app';
   const isAuthArea = pathname?.startsWith('/app/auth');
   const isAccountArea = pathname?.startsWith('/app/account');
+  const isDashboardArea = pathname?.startsWith('/app/dashboard');
 
   return (
     <Providers>
       <SupportChatProvider>
-        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && !isAuthArea && !isAccountArea && <Header />}
+        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && !isAuthArea && !isAccountArea && !isDashboardArea && (
+          <Header />
+        )}
         {children}
       </SupportChatProvider>
       <Toaster />

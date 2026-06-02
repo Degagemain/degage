@@ -50,19 +50,26 @@ export function ChangePasswordCard() {
 
   if (hasCredential === null) {
     return (
-      <Card className="border-stone-200 bg-white">
+      <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle>{t('changePassword')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-24 animate-pulse rounded-lg bg-stone-100" />
+          <div className="bg-muted h-24 animate-pulse rounded-lg" />
         </CardContent>
       </Card>
     );
   }
 
   if (!hasCredential) {
-    return null;
+    return (
+      <Card className="border-border bg-card">
+        <CardHeader>
+          <CardTitle>{t('changePassword')}</CardTitle>
+          <CardDescription>{t('noPasswordSignIn')}</CardDescription>
+        </CardHeader>
+      </Card>
+    );
   }
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -81,7 +88,7 @@ export function ChangePasswordCard() {
   };
 
   return (
-    <Card className="border-stone-200 bg-white">
+    <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('changePassword')}</CardTitle>
         <CardDescription>{t('changePasswordDescription')}</CardDescription>
@@ -95,7 +102,7 @@ export function ChangePasswordCard() {
           <div className="space-y-2">
             <Label htmlFor="new-password-account">{t('newPassword')}</Label>
             <AuthPasswordInput id="new-password-account" autoComplete="new-password" disabled={loading} {...form.register('newPassword')} />
-            <p className="text-xs text-stone-500">{t('changePasswordInstructions')}</p>
+            <p className="text-muted-foreground text-xs">{t('changePasswordInstructions')}</p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirm-password-account">{t('confirmPassword')}</Label>

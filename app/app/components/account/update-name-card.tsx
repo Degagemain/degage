@@ -41,7 +41,7 @@ export function UpdateNameCard() {
   };
 
   return (
-    <Card className="border-stone-200 bg-white">
+    <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('name')}</CardTitle>
         <CardDescription>{t('nameDescription')}</CardDescription>

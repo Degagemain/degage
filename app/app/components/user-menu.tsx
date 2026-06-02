@@ -11,7 +11,8 @@ import { localeDisplayNames, uiLocales } from '@/i18n/locales';
 import { apiPatch } from '@/app/lib/api-client';
 import { authClient } from '@/app/lib/auth';
 import { useIsAdmin } from '@/app/lib/role';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { cn } from '@/app/lib/utils';
+import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -55,25 +56,24 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
     router.refresh();
   };
 
-  const initials =
-    displayName
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2) || '?';
-
-  const buttonSize = size === 'sm' ? 'h-8 w-8' : 'h-9 w-9';
+  const buttonSize = size === 'sm' ? 'h-8' : 'h-9';
   const avatarSize = size === 'sm' ? 'sm' : 'default';
+  const triggerLabel = name?.trim() || email?.trim() || '?';
+  const profileImage = image?.trim() || null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className={`relative ${buttonSize} rounded-full`}>
-          <Avatar size={avatarSize}>
-            {image && <AvatarImage src={image} alt={displayName} />}
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
+        <Button
+          variant="ghost"
+          className={cn('relative max-w-[min(100%,12rem)] rounded-full', buttonSize, profileImage ? 'gap-2 px-2' : 'px-3')}
+        >
+          {profileImage ? (
+            <Avatar size={avatarSize}>
+              <AvatarImage src={profileImage} alt={triggerLabel} />
+            </Avatar>
+          ) : null}
+          <span className="truncate text-sm font-medium">{triggerLabel}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -101,26 +101,30 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
             {localeDisplayNames[code]}
           </DropdownMenuItem>
         ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">{tTheme('label')}</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => setTheme('light')} className={(theme ?? 'system') === 'light' ? 'bg-accent' : ''}>
-          <span className="flex w-full items-center justify-between">
-            {tTheme('light')}
-            <Sun className="h-4 w-4" />
-          </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')} className={(theme ?? 'system') === 'dark' ? 'bg-accent' : ''}>
-          <span className="flex w-full items-center justify-between">
-            {tTheme('dark')}
-            <Moon className="h-4 w-4" />
-          </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')} className={(theme ?? 'system') === 'system' ? 'bg-accent' : ''}>
-          <span className="flex w-full items-center justify-between">
-            {tTheme('automatic')}
-            <Monitor className="h-4 w-4" />
-          </span>
-        </DropdownMenuItem>
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">{tTheme('label')}</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setTheme('light')} className={(theme ?? 'system') === 'light' ? 'bg-accent' : ''}>
+              <span className="flex w-full items-center justify-between">
+                {tTheme('light')}
+                <Sun className="h-4 w-4" />
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')} className={(theme ?? 'system') === 'dark' ? 'bg-accent' : ''}>
+              <span className="flex w-full items-center justify-between">
+                {tTheme('dark')}
+                <Moon className="h-4 w-4" />
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('system')} className={(theme ?? 'system') === 'system' ? 'bg-accent' : ''}>
+              <span className="flex w-full items-center justify-between">
+                {tTheme('automatic')}
+                <Monitor className="h-4 w-4" />
+              </span>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/app/account/settings">
