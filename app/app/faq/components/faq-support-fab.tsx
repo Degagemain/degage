@@ -13,7 +13,11 @@ export function FaqSupportFab({ className }: { className?: string }) {
 
   return (
     <div className={cn('fixed right-4 bottom-4 z-40', className)}>
-      <Button type="button" onClick={openChat} className="h-12 gap-2 rounded-lg bg-[#1A3D2B] px-4 text-white shadow-lg hover:bg-[#285C40]">
+      <Button
+        type="button"
+        onClick={openChat}
+        className="h-12 gap-2 rounded-full bg-[var(--public-brand)] px-4 text-white shadow-lg hover:bg-[var(--public-brand-hover)]"
+      >
         <MessagesSquare className="size-5 shrink-0" aria-hidden />
         {t('openChat')}
       </Button>

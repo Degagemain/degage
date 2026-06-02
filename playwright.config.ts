@@ -16,7 +16,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium-public',
-      testMatch: /simulation\.public\.spec\.ts/,
+      testMatch: [/e2e\/tests\/public\/.*\.spec\.ts/, /simulation\.public\.spec\.ts/],
       use: { ...devices['Desktop Chrome'] },
     },
     {

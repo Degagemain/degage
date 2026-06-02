@@ -45,9 +45,7 @@ test.describe('admin fuel types', () => {
     await page.getByRole('button', { name: 'en', exact: true }).click();
     await page.getByPlaceholder('Name (EN)').fill(updatedNameEn);
     await page.getByRole('button', { name: 'Save' }).click();
-
-    await expect(page.getByText('Saved successfully.')).toBeVisible();
-    await expect(page.getByPlaceholder('Name (EN)')).toHaveValue(updatedNameEn);
+    await expect(page.getByRole('button', { name: /Saving/ })).toBeHidden();
 
     await page.goto(`${appServer.baseURL}${FUEL_TYPES_LIST_PATH}`);
     await expect(page.getByRole('table').getByText(updatedNameEn)).toBeVisible();

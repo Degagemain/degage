@@ -1,0 +1,26 @@
+/* Palette aligned with Dégage logo: mint (#99cc99), grass (#4caf50), forest (#2e7d32) */
+.publicTheme {
+  --public-brand: #388e3c;
+  --public-brand-hover: #2e7d32;
+  --public-accent: #43a047;
+  --public-accent-strong: #2e7d32;
+  --public-accent-deep: #1b5e20;
+  --public-surface: #f0f7f0;
+  --public-surface-muted: #e3f1e4;
+  --public-border: #c5e3c6;
+  --public-icon-bg: #e8f5e9;
+  --public-on-brand-muted: #e8f5e9;
+  --public-glow: 76 175 80;
+  --public-glow-mint: 153 204 153;
+}
+
+.heroGlow {
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.14), transparent);
+}
+
+.badgeAccent {
+  border: 1px solid #a5d6a7;
+  background-color: #c8e6c9;
+  color: #2e7d32;
+  font-weight: 600;
+}

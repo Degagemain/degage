@@ -23,13 +23,15 @@ import {
 } from './ui/dropdown-menu';
 
 interface UserMenuProps {
-  name: string;
-  email: string;
+  name?: string | null;
+  email?: string | null;
   image?: string | null;
   size?: 'sm' | 'default';
 }
 
 export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps) {
+  const displayName = name || email || '';
+  const displayEmail = email || '';
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('language');
@@ -53,12 +55,13 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
     router.refresh();
   };
 
-  const initials = name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+  const initials =
+    displayName
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || '?';
 
   const buttonSize = size === 'sm' ? 'h-8 w-8' : 'h-9 w-9';
   const avatarSize = size === 'sm' ? 'sm' : 'default';
@@ -68,7 +71,7 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className={`relative ${buttonSize} rounded-full`}>
           <Avatar size={avatarSize}>
-            {image && <AvatarImage src={image} alt={name} />}
+            {image && <AvatarImage src={image} alt={displayName} />}
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -76,8 +79,8 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">{name}</p>
-            <p className="text-muted-foreground text-xs leading-none">{email}</p>
+            <p className="text-sm leading-none font-medium">{displayName}</p>
+            <p className="text-muted-foreground text-xs leading-none">{displayEmail}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

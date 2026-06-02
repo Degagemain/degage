@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { DocumentationMarkdown } from '@/app/components/documentation/documentation-markdown';
-import { PublicBrandPageWide } from '@/app/components/public-brand-shell';
+import { PublicPage } from '@/app/components/public/public-shell';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 import { FaqBackToHelpLink } from '../../components/faq-back-to-help-link';
@@ -70,27 +70,27 @@ export default function FaqArticleDetailPage() {
 
   if (state.loading) {
     return (
-      <PublicBrandPageWide>
+      <PublicPage>
         <Skeleton className="mb-6 h-8 w-40 rounded-lg" />
         <Skeleton className="mb-4 h-10 w-full max-w-lg" />
         <Skeleton className="h-40 w-full rounded-xl" />
-      </PublicBrandPageWide>
+      </PublicPage>
     );
   }
 
   if (state.error || !state.doc) {
     return (
-      <PublicBrandPageWide>
+      <PublicPage>
         <FaqBackToHelpLink />
         <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>
-      </PublicBrandPageWide>
+      </PublicPage>
     );
   }
 
   const doc = state.doc;
 
   return (
-    <PublicBrandPageWide>
+    <PublicPage>
       <FaqBackToHelpLink />
       <article>
         <h1 className="mb-6 text-[28px] font-extrabold tracking-tight text-[#181510]">{doc.title}</h1>
@@ -102,6 +102,6 @@ export default function FaqArticleDetailPage() {
           )}
         </div>
       </article>
-    </PublicBrandPageWide>
+    </PublicPage>
   );
 }

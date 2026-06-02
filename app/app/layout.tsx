@@ -12,11 +12,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const isAdminArea = pathname?.startsWith('/app/admin');
   const isSimulationPage = pathname === '/app/simulation';
   const isFaqSection = pathname?.startsWith('/app/faq');
+  const isLandingPage = pathname === '/app';
 
   return (
     <Providers>
       <SupportChatProvider>
-        {!isAdminArea && !isSimulationPage && !isFaqSection && <Header />}
+        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && <Header />}
         {children}
       </SupportChatProvider>
       <Toaster />

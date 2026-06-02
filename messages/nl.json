@@ -1704,7 +1704,7 @@
       "koopgidsKnockout2": "Minder dan 200.000 km",
       "koopgidsKnockout3": "Diesel? Dan euroklasse 5 of hoger",
       "koopgidsKnockout4": "Geen bedrijfswagens of (deels) ingebracht als beroepskosten",
-      "koopgidsIdealTitle": "Ideaal profiel — minstens 2 van 3 nodig",
+      "koopgidsIdealTitle": "Ideaal profiel: minstens 2 van 3 nodig",
       "koopgidsIdeal1": "Ecoscore ≥ 65 (berekenen wij automatisch)",
       "koopgidsIdeal2": "Kilometerstand < 140.000",
       "koopgidsIdeal3": "Jonger dan 7 jaar",
@@ -1716,8 +1716,6 @@
       "title": "Vertel ons over je wagen",
       "body": "Deze informatie hebben we nodig om een simulatie voor je wagen te maken.",
       "privacyPolicyLink": "Privacy Policy",
-      "secondBarTitle": "Wageninformatie",
-      "fillExample": "Vul voorbeeld in (9030, Renault Trafic)",
       "gemeenteLabel": "Gemeente",
       "gemeenteHint": "De vraag naar deelauto's verschilt van buurt tot buurt.",
       "gemeentePlaceholder": "Postcode of gemeente",
@@ -1769,14 +1767,6 @@
       "checkedValueSub": "We hebben de marktwaarde van je wagen geschat."
     },
     "result": {
-      "secondBarTitle": "Resultaat",
-      "secondBarSuccess": "Komt in aanmerking",
-      "secondBarNotOk": "Niet in aanmerking",
-      "secondBarUnclear": "Onduidelijk",
-      "previewSuccess": "Toon scherm 'Komt in aanmerking'",
-      "previewNotOk": "Toon scherm 'Niet in aanmerking'",
-      "previewUnclear": "Toon scherm 'Onduidelijk'",
-      "previewReal": "Toon echt resultaat",
       "badgeEligible": "Komt in aanmerking",
       "goneMessage": "En weg! 🎉",
       "successTitle": "Goed nieuws — jouw wagen komt in aanmerking",
@@ -1919,6 +1909,125 @@
       "resultaat": "Resultaat",
       "kosten": "Jouw kosten",
       "bevestiging": "Bevestiging"
+    }
+  },
+  "landing": {
+    "brand": "Dégage!",
+    "header": {
+      "loginDialog": {
+        "title": "Inloggen",
+        "degapp": {
+          "title": "Degapp",
+          "badge": "Meest gekozen",
+          "description": "Reserveer gedeelde wagens, beheer je reservaties en gebruik je ledenaccount als ontlener of eigenaar."
+        },
+        "onboarding": {
+          "title": "Onboarding nieuwe eigenaar",
+          "description": "Ga verder met de inschrijving van je wagen bij Dégage. Volg je aanvraag en upload documenten."
+        }
+      }
+    },
+    "hero": {
+      "badge": "Community supported mobility",
+      "title": "Deel je auto, deel de kosten",
+      "subtitle": "Al meer dan 580 tevreden eigenaars delen hun auto. Geniet mee van al onze Dégage voordelen.",
+      "intro": "Staat je auto vaak stil, maar de auto wegdoen is voor jou een stap te ver? Wil je een (elektrische) auto kopen maar je wil de hoge kosten niet alleen dragen? Auto delen via Dégage is misschien wel iets voor jou.",
+      "cta": "Controleer of je wagen in aanmerking komt",
+      "ctaHint": "Gratis en vrijblijvend. Duurt enkele minuten."
+    },
+    "benefits": {
+      "cheaper": {
+        "title": "Rij goedkoper",
+        "desc": "Spreid vaste kosten over meer kilometers en krijg geld terug wanneer anderen met je auto rijden."
+      },
+      "flexible": {
+        "title": "Je auto wanneer je wil",
+        "desc": "Jij behoudt controle over je agenda. Reserveer je eigen ritten en stel de spelregels voor je wagen."
+      },
+      "environment": {
+        "title": "Goed voor het milieu",
+        "desc": "Minder auto's op de weg betekent minder uitstoot en slimmer gebruik van wat we al hebben."
+      },
+      "community": {
+        "title": "Sociale en leefbare buurt",
+        "desc": "Delen brengt mensen in je buurt dichter bij elkaar, voor mobiliteit met een menselijk gezicht."
+      }
+    },
+    "eligibility": {
+      "eyebrow": "Autodelen",
+      "title": "Komt je auto in aanmerking om te delen?",
+      "body": "Aan de hand van een autofiche kijken we of je auto past binnen onze gedeelde vloot. Doorloop de gratis simulatie om het te weten en ontdek wat je kunt terugverdienen.",
+      "cta": "Start de simulatie →"
+    },
+    "costSharing": {
+      "title": "Deel de kosten (en rij goedkoper)",
+      "body": "Aankoop, verzekering, belasting, onderhoud, autokeuring… Een auto is duur, zeker als die vaak stilstaat. Voor elke kilometer die iemand anders met je auto rijdt, krijg je geld terug. Zo spaar je jaarlijks al snel honderden tot een paar duizend euro uit.",
+      "exampleLabel": "Voorbeeld jaarlijkse terugverdienste",
+      "exampleAmount": "€ 2.184",
+      "exampleDesc": "Wanneer anderen 14.000 km met je auto rijden en jij zelf 6.000 km, worden vaste kosten en afschrijving over meer kilometers gespreid, en krijg je geld terug."
+    },
+    "advantages": {
+      "title": "Dégage: je auto delen zonder zorgen",
+      "imageAlt": "Dégage autodelen, zorgeloos delen",
+      "billing": "Centrale en correcte afrekening",
+      "insurance": "Omnium verzekerd",
+      "platform": "Eenvoudig platform",
+      "damage": "Schaderegeling",
+      "breakdown": "Pechhulp",
+      "access": "Toegang tot andere auto's",
+      "parking": "Parkeervoordelen"
+    },
+    "about": {
+      "eyebrow": "Over ons",
+      "title": "Wat is Dégage?",
+      "lead": "Dégage biedt \"community supported mobility\" aan.",
+      "paragraph1": "Alle deelauto's en deelfietsen zijn van particulieren, zoals jij, en worden onder elkaar gedeeld.",
+      "paragraph2": "Dégage is een snelgroeiende community van meer dan 550 eigenaars en 7000 leden. Dégage streeft geen winst na, wel betaalbare, betrouwbare en toegankelijke mobiliteit.",
+      "paragraph3": "Door auto's en fietsen onderling te delen wil Dégage mensen terug met elkaar in contact brengen. Dit doen we al meer dan 25 jaar, onafhankelijk en zelfvoorzienend. En daar zijn we fier op!",
+      "stats": {
+        "owners": { "value": "550+", "label": "eigenaars" },
+        "members": { "value": "7.000", "label": "leden" },
+        "years": { "value": "25+", "label": "jaar ervaring" }
+      },
+      "imageAlt": "Dégage gemeenschap, autodelen in de buurt"
+    },
+    "faq": {
+      "title": "Veelgestelde vragen",
+      "imageAlt": "Dégage deelauto's in de buurt",
+      "schedule": {
+        "q": "Kan ik delen wanneer ik wil?",
+        "a": "Ja! Je reserveert je eigen ritten volgens je eigen agenda. Via ons reservatiesysteem kan je filters instellen, bv. niet langer dan 2 weken op voorhand te reserveren."
+      },
+      "insurance": {
+        "q": "Is mijn auto goed verzekerd?",
+        "a": "Ja! Dégage heeft een voordelige groepsverzekering aangepast aan autodelen. Ben jij niet in fout, dan betaal je natuurlijk niks."
+      },
+      "effort": {
+        "q": "Is mijn auto delen veel werk?",
+        "a": "Neen. Elke eigenaar vindt zijn eigen systeem om reservaties te beheren. Dégage neemt alle facturatie op zich. Om de drie maanden krijg je je kosten terugbetaald."
+      }
+    },
+    "videos": {
+      "items": {
+        "financial": {
+          "title": "Deel je auto via Dégage: financiële vrijheid voor leuke momenten met mijn zoon"
+        },
+        "personal": {
+          "title": "Deel je auto via Dégage: persoonlijk contact en gemoedsrust"
+        },
+        "freedom": {
+          "title": "Deel je auto via Dégage: vrijheid en milieubewustzijn in één"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Klaar om het te ontdekken?",
+      "body": "Doorloop de gratis simulatie in enkele minuten en ontdek of jouw wagen bij Dégage past.",
+      "cta": "Start de simulatie →"
+    },
+    "footer": {
+      "faq": "Help & FAQ",
+      "contact": "deeljeauto@degage.be"
     }
   },
   "chat": {

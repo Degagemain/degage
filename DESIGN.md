@@ -18,46 +18,116 @@ The product should feel like a helpful neighbor, not an insurance form. If the o
 
 ---
 
-## Design tokens
+## Public pages (shared chrome)
 
-### Color palette
+All unauthenticated marketing and self-service surfaces share one shell:
 
-**Brand (primary)**
+| Piece            | Location                                            | Notes                                                     |
+| ---------------- | --------------------------------------------------- | --------------------------------------------------------- |
+| Theme tokens     | `app/app/components/public/public-theme.module.css` | CSS variables on `.publicTheme`                           |
+| Layout utilities | `app/app/components/public/public-layout.ts`        | Container widths, section spacing                         |
+| Header           | `app/app/components/public/public-header.tsx`       | Fixed, logo image, language switcher, sign-in / user menu |
+| Shell            | `app/app/components/public/public-shell.tsx`        | Wraps header + main; use on FAQ, simulation, etc.         |
+| Login dialog     | `app/app/components/public/public-login-dialog.tsx` | Guest sign-in entry points                                |
 
-| Token         | Hex       | Use                                                           |
-| ------------- | --------- | ------------------------------------------------------------- |
-| `brand`       | `#1A3D2B` | Headers, primary buttons, active states, dark hero background |
-| `brandMid`    | `#285C40` | Eyebrows, tags, hover                                         |
-| `brandLight`  | `#EAF3EC` | Selected backgrounds, active cards                            |
-| `brandBorder` | `#B4D4BC` | Borders on `brandLight` backgrounds                           |
+**Used on:** landing (`/app`), FAQ (`/app/faq/*`), public simulation (`/app/simulation`).
+
+### Page canvas
+
+| Property             | Value                                       |
+| -------------------- | ------------------------------------------- |
+| Background           | `#fafaf9` (Tailwind `stone-50`)             |
+| Body text            | `#1c1917` (`stone-900`)                     |
+| Secondary text       | `stone-600` / `stone-500`                   |
+| Max content width    | `max-w-6xl` (header + default page content) |
+| Narrow wizard column | `max-w-[880px]` via `publicContainerNarrow` |
+
+### Header
+
+- **Fixed** to the top; content scrolls underneath.
+- **At rest:** transparent background, no border.
+- **Scrolled (>8px):** `stone-50` at 90% opacity, backdrop blur, bottom border `stone-200/80`.
+- **Logo:** `/landing/logo.png`, links to `/app`, height `h-7` / `sm:h-8`.
+- **Actions (right):** language switcher; guests get a **rounded-full** primary “Sign in” button; signed-in users get `UserMenu`.
+- **Main offset:** `pt-14 sm:pt-16` on `<main>` (`publicMainPadTop`) so content clears the header.
+
+### Brand palette (logo-aligned greens)
+
+Primary brand colors follow the Dégage logo (mint / grass / forest):
+
+| Token                    | Hex       | Use                                 |
+| ------------------------ | --------- | ----------------------------------- |
+| `--public-brand`         | `#388e3c` | Primary buttons, links, key accents |
+| `--public-brand-hover`   | `#2e7d32` | Button hover                        |
+| `--public-accent`        | `#43a047` | Eyebrows, icons, highlights         |
+| `--public-accent-strong` | `#2e7d32` | Strong accents                      |
+| `--public-accent-deep`   | `#1b5e20` | Stats, deep headings on light bg    |
+| `--public-surface`       | `#f0f7f0` | Tinted panels, selected tiles       |
+| `--public-surface-muted` | `#e3f1e4` | Softer green backgrounds            |
+| `--public-border`        | `#c5e3c6` | Borders on green-tinted surfaces    |
+| `--public-icon-bg`       | `#e8f5e9` | Icon wells                          |
+
+**Glow (optional, marketing hero):** radial gradients using `--public-glow` / `--public-glow-mint` (RGB tuples for `rgb(var(--public-glow) / α)`).
+
+**Primary CTA pattern:** `rounded-full`, `bg-[var(--public-brand)]`, white text, subtle hover lift (`-translate-y-0.5`) on marketing buttons.
+
+### Header vs page titles
+
+The **header** shows only the logo and actions—no page title, tagline, or “D!” wordmark block. Page titles belong in the **content** area (`h1` per step on simulation, FAQ hub title, article/group names on sub-pages).
+
+### Spacing on public pages
+
+Reuse `public-layout.ts`:
+
+```
+publicContainer · publicSectionPad · publicHeroPad · publicPagePad
+8px grid: 8 · 16 · 24 · 32 · 48 (section padding often 80–96px vertical)
+```
+
+---
+
+## Design tokens (flows & forms)
+
+Wizard and form-heavy screens (simulation steps) reuse the public shell but keep **semantic** tokens for outcomes and fields. Simulation maps `--sim-brand*` to `--public-*` where possible.
+
+### Color palette — wizard surfaces
+
+**Brand (inherits public greens on simulation)**
+
+| Token                   | Use                                          |
+| ----------------------- | -------------------------------------------- |
+| `brand` / `--sim-brand` | Primary buttons, active states, success hero |
+| `brandMid`              | Eyebrows, tags, hover                        |
+| `brandLight`            | Selected backgrounds, active cards           |
+| `brandBorder`           | Borders on `brandLight` backgrounds          |
 
 **Surfaces**
 
-| Token     | Hex       | Use                                                    |
-| --------- | --------- | ------------------------------------------------------ |
-| `bg`      | `#F6F3EE` | Page background (warm cream, not pure white)           |
-| `surface` | `#FFFFFF` | Cards, inputs, modals                                  |
-| `sand`    | `#EDE7DC` | Subtle separators, inactive elements, collapsed states |
-| `border`  | `#DDD6CB` | Card edges, dividers, unselected borders               |
+| Token     | Hex       | Use                                              |
+| --------- | --------- | ------------------------------------------------ |
+| `bg`      | `#fafaf9` | Page background (aligned with public `stone-50`) |
+| `surface` | `#FFFFFF` | Cards, inputs, modals                            |
+| `sand`    | `#EDE7DC` | Subtle separators, inactive elements             |
+| `border`  | `#DDD6CB` | Card edges, dividers                             |
 
 **Text**
 
-| Token   | Hex       | Use                                      |
-| ------- | --------- | ---------------------------------------- |
-| `ink`   | `#181510` | Titles, primary text                     |
-| `mid`   | `#5A5248` | Body, secondary labels                   |
-| `light` | `#9C9489` | Hints, captions, placeholders, footnotes |
+| Token   | Hex       | Use                            |
+| ------- | --------- | ------------------------------ |
+| `ink`   | `#181510` | Section headings, primary text |
+| `mid`   | `#5A5248` | Body, secondary labels         |
+| `light` | `#9C9489` | Hints, captions, placeholders  |
 
 **Semantic accents**
 
-| Meaning               | Color     | Background | Border    | Application                                         |
-| --------------------- | --------- | ---------- | --------- | --------------------------------------------------- |
-| Informational         | `#1D548A` | `#EAF1FA`  | `#B5CDE5` | Policy or neutral context blocks                    |
-| Warning / conditional | `#C4860A` | `#FDF3E0`  | `#DECA80` | Edge cases, quarterly variance, conditional banners |
-| Success               | `#2A7A48` | `#E8F5EE`  | —         | Confirmations, sent states                          |
-| Error / no-go         | `#B83232` | `#FAEAEA`  | —         | Rejection screens                                   |
+| Meaning               | Color     | Background | Border    | Application                     |
+| --------------------- | --------- | ---------- | --------- | ------------------------------- |
+| Informational         | `#1D548A` | `#EAF1FA`  | `#B5CDE5` | Policy / neutral blocks         |
+| Warning / conditional | `#C4860A` | `#FDF3E0`  | `#DECA80` | Edge cases, conditional banners |
+| Success               | `#2A7A48` | `#E8F5EE`  | —         | Confirmations, sent states      |
+| Error / no-go         | `#B83232` | `#FAEAEA`  | —         | Rejection screens               |
 
-**Rule:** Amber is always for conditional / contextual blocks (content not shown to everyone). Red only for definitive rejection. Green only for confirmed positive outcomes.
+**Rule:** Amber = conditional / contextual. Red = definitive rejection. Green = confirmed positive outcomes.
 
 ### Spacing — 8px grid
 
@@ -66,8 +136,6 @@ All spacing is a multiple of 8. No exceptions.
 ```
 8 · 16 · 24 · 32 · 48
 ```
-
-Anything outside this system (7px, 13px, 18px, 22px) is a red flag.
 
 ### Border radius — three sizes
 
@@ -79,28 +147,29 @@ Anything outside this system (7px, 13px, 18px, 22px) is a red flag.
 
 ### Layout widths
 
-| Width | Use                                                                    |
-| ----- | ---------------------------------------------------------------------- |
-| 700px | Single-column flows (e.g. situation, assessment, result, confirmation) |
-| 880px | Two-column flows (e.g. vehicle details, costs, scenarios) + header     |
+| Width       | Use                                                          |
+| ----------- | ------------------------------------------------------------ |
+| `max-w-6xl` | Public marketing, FAQ hub, header alignment                  |
+| 700px       | Single-column wizard steps (situation, result, confirmation) |
+| 880px       | Two-column wizard (vehicle details + sidebar)                |
 
-**Responsive:** Below 768px, everything stacks to a single column. Two-column layouts stack. The sidebar becomes a collapse panel below the form.
+**Responsive:** Below 768px, stack columns; sidebar FAQ moves below the form.
 
 ### Typography
 
-| Name      | Size | Weight | Font     | Use                                 |
-| --------- | ---- | ------ | -------- | ----------------------------------- |
-| `title`   | 28px | 800    | Fraunces | Page titles                         |
-| `heading` | 18px | 700    | Fraunces | Section headings, reason labels     |
-| `body`    | 15px | 400    | DM Sans  | Body copy, inputs, button text      |
-| `caption` | 12px | 600    | DM Sans  | Labels, sidebar text, FAQ questions |
-| `micro`   | 11px | 600    | DM Sans  | Tags, badges, footnotes, eyebrows   |
+| Name      | Size | Weight | Font     | Use                                           |
+| --------- | ---- | ------ | -------- | --------------------------------------------- |
+| `title`   | 28px | 800    | Fraunces | Section titles inside flows (not page chrome) |
+| `heading` | 18px | 700    | Fraunces | Section headings, reason labels               |
+| `body`    | 15px | 400    | DM Sans  | Body copy, inputs, button text                |
+| `caption` | 12px | 600    | DM Sans  | Labels, sidebar text, FAQ questions           |
+| `micro`   | 11px | 600    | DM Sans  | Tags, badges, footnotes, eyebrows             |
 
-**Tracking:** `letter-spacing: 0.06em` on uppercase labels (eyebrows, section headers in cards). One value, no variation.
+**Tracking:** `letter-spacing: 0.06em` on uppercase labels (eyebrows, card section headers).
 
-**Pairing:** Fraunces (serif) for titles and headings → warmth and a cooperative feel. DM Sans for everything functional → readable, neutral, professional.
+**Pairing:** Fraunces for headings (warmth). DM Sans for functional UI. Marketing landing may use system `font-semibold` at larger sizes for hero display type.
 
-**Exception:** Large numbers in result contexts (coverage %, counts, trip totals, net amounts) may sit outside the type scale. These are deliberate visual anchors.
+**Exception:** Large numbers in result contexts (coverage %, trip totals) may sit outside the scale as visual anchors.
 
 ---
 
@@ -108,61 +177,53 @@ Anything outside this system (7px, 13px, 18px, 22px) is a red flag.
 
 ### Selection tile (`SelectionTile`)
 
-Reused across flows: e.g. two tiles for situation choice, three scenario buttons, confirmation step with a membership or binary choice.
-
-- Border: 2px, `border` by default → `brand` when selected
-- Background: `surface` by default → `brandLight` when selected
-- Radio indicator: top-right circle (24px), empty by default → filled brand with ✓ when selected
-- Always visible in default state (clear affordance)
+- Border: 2px, `border` → `brand` when selected
+- Background: `surface` → `brandLight` when selected
+- Radio indicator: top-right circle (24px), empty → filled brand with ✓ when selected
 
 ### Field (`Field`)
 
-- Label: `caption`, 600, uppercase, `0.06em` tracking, `mid` color
-- Hint: `caption`, `light` color, only when truly needed (not on self-explanatory fields)
-- Input: `body`, `surface` background, 1.5px `border`, `r8` radius, 10px 16px padding
-- Focus: border becomes `brand`
+- Label: `caption`, uppercase, `0.06em` tracking, `mid`
+- Hint: `caption`, `light`, only when needed
+- Input: `body`, `surface`, 1.5px `border`, `r8`, padding 10px 16px
+- Focus: border `brand`
 
 ### Inline confirmation (`ComputedBadge`)
 
-Appears after the user provides input. Two variants:
-
-- **Pill badge:** locality or status indicator (green or amber background, 8px dot, text)
-- **Inline text:** e.g. km/year (“→ ≈ 12,000 km/year — calculated automatically”)
+- Pill badge or inline calculated text (e.g. km/year)
 
 ### FAQ (`FaqCollapsed`)
 
-- Starts collapsed — only the FAQ title visible with a count badge
+- Collapsed by default; count badge on header
 - Count badge: `brand` background, white number, `r20` pill
-- Each question: expandable, `brandLight` background when open
+- Open question: `brandLight` background
 - Placement: sidebar (two-column) or bottom (single-column)
 
 ### Hero block (per outcome)
 
-| Outcome   | Background                  | Accent                        | Icon                     |
-| --------- | --------------------------- | ----------------------------- | ------------------------ |
-| Go        | `brand` (dark, full-width)  | Stat tiles with glassmorphism | Car animation (optional) |
-| No-go     | `redBg` (light, centered)   | `red` circle                  | ✕                        |
-| Edge case | `amberBg` (light, centered) | `amber` circle                | 🔍                       |
+| Outcome   | Background               | Accent           | Icon                     |
+| --------- | ------------------------ | ---------------- | ------------------------ |
+| Go        | `brand` dark full-width  | Glass stat tiles | Car animation (optional) |
+| No-go     | `redBg` light centered   | `red` circle     | ✕                        |
+| Edge case | `amberBg` light centered | `amber` circle   | 🔍                       |
 
 ### Primary button (`Btn`)
 
-- `brand` background, white text, `r8`, 12px 24px padding
-- Disabled: `sand` background, `light` text, `not-allowed` cursor
-- Secondary: no fill, `mid` text, 1.5px `border` outline
+- `brand` background, white text, `r8`, padding 12px 24px
+- Disabled: `sand` / `light` text
+- Secondary: outline `border`, `mid` text
+- **Public header sign-in:** `rounded-full` (exception to `r8` for chrome CTAs)
 
 **Rule:** One primary button per screen. “Back” is always secondary.
 
 ### Conditional banner
 
-- Amber background (`amberBg`), amber border, `r12`
-- Text `#6A5000` (dark amber)
-- Only when a condition applies (e.g. purchase path, quarterly variance)
+- Amber background/border, `r12`, dark amber text
+- Only when a condition applies
 
 ### Step list (`StepList`)
 
-- Numbered circles (32px), first step `brand` background, rest `sand`
-- Dividers as `sand` borders between steps
-- CTA only on the first (active) step
+- Numbered circles (32px); active step `brand`, others `sand`
 
 ---
 
@@ -170,78 +231,68 @@ Appears after the user provides input. Two variants:
 
 ### 1. Progressive disclosure
 
-The default state shows only what the user needs right now. Details are one click away. FAQ starts collapsed. Cost breakdown starts collapsed. Extended policy info lives in an expandable row.
+Default state shows only what’s needed now. FAQ and cost breakdown start collapsed.
 
 ### 2. At most two supporting blocks per screen
 
-Beside the main story, at most two supporting blocks (community stat, disclaimer, quarterly note, etc.). If more seems necessary: collapse, tooltip, or move to another step.
+Beside the main story, at most two supporting blocks—or collapse / move to another step.
 
 ### 3. One primary action per screen
 
-One primary button (brand). “Back” is always secondary. No competing CTAs.
+One primary button. “Back” is secondary.
 
 ### 4. Sidebar pattern
 
-Screens with inputs: right sidebar (280px, sticky) with live summary or overview on top, collapsed FAQ below.
+Input screens: right sidebar (280px, sticky)—summary on top, collapsed FAQ below.
 
 ### 5. Visual distinction over decoration
 
-Emojis, icons, and visuals only when they communicate a real difference (scenarios, outcomes). Not for ornament. If an icon adds no information, omit it.
+Icons and emoji only when they communicate a real difference.
 
 ### 6. Signature moments — intentional and rare
 
-Deliberate moments of delight, exceptions to strict minimalism:
-
-- **Car animation** (positive result): car drives off on approval (optional)
-- **People bar** (scenarios): figures animate in/out on scenario change
-- **Contextual loading** (assessment): stepped checklist with live feedback
-- **Celebration** (confirmation): 🎉 in a central circle
-
-Status: nice-to-have for v1, not mandatory. Weigh implementation cost per case.
+Car animation, people bar, contextual loading, confirmation celebration—nice-to-have, weigh cost per case.
 
 ---
 
 ## Content principles
 
-| Element               | Guideline                                                   |
-| --------------------- | ----------------------------------------------------------- |
-| Page title            | 6–8 words, Fraunces                                         |
-| Intro body            | Max 1–2 sentences. Each sentence adds something new.        |
-| Field label           | 2–4 words, uppercase                                        |
-| Field hint            | Only if needed. Max one sentence. Not under obvious fields. |
-| Button copy           | 2–5 words + direction arrow (→ or ←)                        |
-| FAQ question          | User voice (“Why…?”, “How does…?”)                          |
-| FAQ answer            | Max 3 sentences                                             |
-| Disclaimer / footnote | Italic, `micro`, `light`                                    |
+| Element      | Guideline                                       |
+| ------------ | ----------------------------------------------- |
+| Page title   | In page content (`h1`), not in the fixed header |
+| Intro body   | Max 1–2 sentences on hub / step openers         |
+| Field label  | 2–4 words, uppercase                            |
+| Field hint   | Only if needed; max one sentence                |
+| Button copy  | 2–5 words + arrow (→ / ←) where useful          |
+| FAQ question | User voice (“Why…?”, “How does…?”)              |
+| FAQ answer   | Max 3 sentences                                 |
+| Disclaimer   | Italic, `micro`, `light`                        |
 
-**Tone:** Personal but not cutesy. Functional — every sentence should add information. Prefer “your car” over “the vehicle.” Avoid exclamation marks in routine UI copy.
+**Tone:** Personal but not cutesy. Prefer “your car” over “the vehicle.” Avoid exclamation marks in routine UI.
 
 ---
 
 ## Per-screen checklist
 
-When building or reviewing any new screen:
-
 ```
-□ Titles and body on the type scale (28/18/15/12/11)?
-□ Spacing on the 8px grid (8/16/24/32/48)?
-□ Border radius from the system (8/12/20)?
+□ Uses PublicShell on new public routes (FAQ, simulation, marketing)?
+□ Header + main offset; no second top bar unless dev-only?
+□ Page titles in content, not in the fixed header?
+□ Titles and body on the type scale where Fraunces/DM Sans apply?
+□ Spacing on the 8px grid?
+□ Radius from 8 / 12 / 20?
 □ At most 2 supporting blocks beside the main story?
-□ FAQ present (collapsed) where it helps?
-□ Visuals serve distinction, not decoration?
+□ FAQ collapsed where it helps?
 □ One primary button?
-□ Two-column: summary on top, FAQ below in sidebar?
-□ Intro body max 2 sentences?
-□ No hints under self-explanatory fields?
-□ Accent colors correct? (amber=conditional, red=final no, green=confirmed)
-□ Responsive: layout stacks cleanly below 768px?
+□ Accent colors correct (amber / red / green)?
+□ Stacks cleanly below 768px?
 ```
 
 ---
 
 ## What this spec does not cover
 
-- **No Figma specs.** This is a functional–visual reference, not a pixel-perfect handoff.
-- **No code architecture.** How components are implemented (React, vanilla, framework) is up to engineering.
-- **No final copy.** Exact strings per screen belong in the flow spec, not here.
-- **No motion specs.** Timing and easing for signature moments are decided per implementation.
+- **No Figma specs.** Functional–visual reference only.
+- **No code architecture** beyond pointing at `app/app/components/public/`.
+- **No final copy.** Strings live in `messages/*.json`.
+- **No motion specs.** Timing per implementation.
