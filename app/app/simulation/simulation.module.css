@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap');
 
 .root {
-  --sim-brand: #1a3d2b;
-  --sim-brand-mid: #285c40;
-  --sim-brand-light: #eaf3ec;
-  --sim-brand-border: #b4d4bc;
-  --sim-bg: #f6f3ee;
+  --sim-brand: var(--public-brand, #388e3c);
+  --sim-brand-mid: var(--public-accent-strong, #2e7d32);
+  --sim-brand-light: var(--public-surface, #f0f7f0);
+  --sim-brand-border: var(--public-border, #c5e3c6);
+  --sim-bg: #fafaf9;
   --sim-surface: #ffffff;
   --sim-sand: #ede7dc;
   --sim-border: #ddd6cb;
@@ -35,70 +35,7 @@
   --sim-max-w: 880px;
 
   font-family: var(--sim-sans);
-  background: var(--sim-bg);
-  min-height: 100vh;
   overflow-x: hidden;
-}
-
-.header {
-  background: var(--sim-brand);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.headerInner {
-  max-width: var(--sim-max-w);
-  margin: 0 auto;
-  padding: 0 var(--sim-s24);
-  display: flex;
-  align-items: center;
-  height: 56px;
-  gap: var(--sim-s24);
-}
-
-.headerEnd {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-
-.logoBox {
-  display: flex;
-  align-items: center;
-  gap: var(--sim-s8);
-  flex-shrink: 0;
-}
-
-.logoIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--sim-r8);
-  background: rgba(255, 255, 255, 0.13);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--sim-serif);
-  font-weight: 800;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: -0.5px;
-}
-
-.logoTitle {
-  font-family: var(--sim-serif);
-  font-weight: 700;
-  font-size: 16px;
-  color: #fff;
-  line-height: 1;
-}
-
-.logoSub {
-  font-family: var(--sim-sans);
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.55);
-  margin-top: 0;
 }
 
 .koopgidsSection {
@@ -254,100 +191,6 @@
   flex-shrink: 0;
 }
 
-.resultSecondBar {
-  background: var(--sim-brand-light);
-  border-bottom: 1px solid var(--sim-brand-border);
-  position: sticky;
-  top: 56px;
-  z-index: 40;
-}
-
-.resultSecondBarInner {
-  max-width: var(--sim-max-w);
-  margin: 0 auto;
-  padding: 0 var(--sim-s24);
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sim-s16);
-}
-
-.resultSecondBarTitle {
-  font-family: var(--sim-serif);
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--sim-brand);
-}
-
-.resultSecondBarActions {
-  display: flex;
-  align-items: center;
-  gap: var(--sim-s16);
-  flex-wrap: wrap;
-}
-
-.resultSecondBarOutcome {
-  font-family: var(--sim-sans);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--sim-brand-mid);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.resultPreviewBtns {
-  display: flex;
-  align-items: center;
-  gap: var(--sim-s8);
-  flex-wrap: wrap;
-}
-
-.resultPreviewBtn,
-.resultPreviewBtnActive {
-  font-family: var(--sim-sans);
-  font-size: 11px;
-  font-weight: 600;
-  padding: var(--sim-s8) var(--sim-s16);
-  border-radius: var(--sim-r8);
-  border: 1px solid var(--sim-brand-border);
-  background: var(--sim-surface);
-  color: var(--sim-brand-mid);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.resultPreviewBtn:hover {
-  background: var(--sim-brand-light);
-  color: var(--sim-brand);
-}
-
-.resultPreviewBtnActive {
-  background: var(--sim-brand);
-  color: #fff;
-  border-color: var(--sim-brand);
-}
-
-.secondBarButton {
-  font-family: var(--sim-sans);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--sim-brand);
-  background: var(--sim-surface);
-  border: 1px solid var(--sim-brand-border);
-  border-radius: var(--sim-r8);
-  padding: var(--sim-s8) var(--sim-s16);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.secondBarButton:hover:not(:disabled) {
-  background: var(--sim-brand-light);
-}
-.secondBarButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 .stepDotPast {
   background: var(--sim-brand-mid);
   color: rgba(255, 255, 255, 0.8);
@@ -395,19 +238,19 @@
 .page {
   max-width: 700px;
   margin: 0 auto;
-  padding: var(--sim-s48) var(--sim-s24) 120px;
+  padding: var(--sim-s24) var(--sim-s24) 120px;
 }
 
 .pageWide {
   max-width: var(--sim-max-w);
   margin: 0 auto;
-  padding: var(--sim-s48) var(--sim-s24) 120px;
+  padding: var(--sim-s24) var(--sim-s24) 120px;
 }
 
 .pageTwoCol {
   max-width: var(--sim-max-w);
   margin: 0 auto;
-  padding: var(--sim-s48) var(--sim-s24) 120px;
+  padding: var(--sim-s24) var(--sim-s24) 120px;
   display: grid;
   grid-template-columns: 1fr 280px;
   gap: var(--sim-s32);
@@ -2517,25 +2360,6 @@
     flex-shrink: 0;
   }
 
-  .resultSecondBarInner {
-    padding: var(--sim-s8) var(--sim-s16);
-    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
-    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
-    min-height: 44px;
-    height: auto;
-    flex-wrap: wrap;
-    gap: var(--sim-s8);
-  }
-
-  .resultSecondBarTitle {
-    font-size: 14px;
-  }
-
-  .secondBarButton {
-    width: 100%;
-    min-height: 44px;
-  }
-
   .page,
   .pageWide {
     padding: var(--sim-s24) var(--sim-s16) 80px;
@@ -2681,11 +2505,6 @@
   .pageWide,
   .pageTwoCol {
     padding: var(--sim-s16) var(--sim-s16) 60px;
-    padding-left: max(var(--sim-s16), env(safe-area-inset-left));
-    padding-right: max(var(--sim-s16), env(safe-area-inset-right));
-  }
-
-  .resultSecondBarInner {
     padding-left: max(var(--sim-s16), env(safe-area-inset-left));
     padding-right: max(var(--sim-s16), env(safe-area-inset-right));
   }

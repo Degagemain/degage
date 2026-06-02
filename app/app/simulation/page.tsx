@@ -8,7 +8,6 @@ import { FaqByTags, type FaqPanelClassNames } from '@/app/components/documentati
 import { SimulationResultCode } from '@/domain/simulation.model';
 import type { DocumentationTag } from '@/domain/documentation.model';
 import { apiPost } from '@/app/lib/api-client';
-import { LanguageSwitcher } from '@/app/components/language-switcher';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { cn } from '@/app/lib/utils';
 import { SearchDropdown } from './components/search-dropdown';
@@ -82,8 +81,6 @@ const CONFIRMATION_PATH_OPTIONS: { id: ConfirmationMemberPath; labelKey: string 
   { id: 'nieuw', labelKey: 'pathNieuw' },
 ];
 
-const DEV_UI_ENABLED = process.env.NEXT_PUBLIC_DEV_UI === 'true';
-
 /** Visual max duration for the public loading bar (seconds); the result screen shows as soon as the API responds. */
 const SIMULATION_LOADING_BAR_SECONDS = 60;
 
@@ -120,8 +117,6 @@ export default function SimulationPage() {
 
   const [fuelTypes, setFuelTypes] = useState<{ id: string; name: string }[]>([]);
   const [fuelTypesLoading, setFuelTypesLoading] = useState(true);
-  const [fillExampleLoading, setFillExampleLoading] = useState(false);
-
   const [simulationResult, setSimulationResult] = useState<{
     resultCode: SimulationResultCode;
     message?: string;
@@ -140,7 +135,6 @@ export default function SimulationPage() {
   const [simulationError, setSimulationError] = useState<string | null>(null);
   const [loadingAttempt, setLoadingAttempt] = useState(0);
   const [resultHeroAutoState, setResultHeroAutoState] = useState<'parked' | 'driving' | 'gone'>('parked');
-  const [resultDisplayOverride, setResultDisplayOverride] = useState<null | 'success' | 'notOk' | 'unclear'>(null);
   const [costScenarioIndex, setCostScenarioIndex] = useState(1);
   const [costDetailOpen, setCostDetailOpen] = useState(false);
   const [costScenarioPeopleDisplayed, setCostScenarioPeopleDisplayed] = useState(14);
@@ -183,9 +177,9 @@ export default function SimulationPage() {
   const isNotOkResult = simulationResult && simulationResult.resultCode === SimulationResultCode.NOT_OK;
   const isUnclearResult = simulationResult && simulationResult.resultCode === SimulationResultCode.MANUAL_REVIEW;
 
-  const displaySuccess = resultDisplayOverride === 'success' || (!resultDisplayOverride && !!isSuccessResult);
-  const displayNotOk = resultDisplayOverride === 'notOk' || (!resultDisplayOverride && !!isNotOkResult);
-  const displayUnclear = resultDisplayOverride === 'unclear' || (!resultDisplayOverride && !!isUnclearResult);
+  const displaySuccess = !!isSuccessResult;
+  const displayNotOk = !!isNotOkResult;
+  const displayUnclear = !!isUnclearResult;
 
   useEffect(() => {
     let cancelled = false;
@@ -222,61 +216,6 @@ export default function SimulationPage() {
     () => (brandId && fuelTypeId ? { brandId, fuelTypeId, isActive: 'true' } : undefined),
     [brandId, fuelTypeId],
   );
-
-  async function fillCarInfoExample() {
-    setFillExampleLoading(true);
-    setCarChoice('existing');
-    try {
-      const [townsRes, brandsRes] = await Promise.all([
-        fetch('/api/towns?query=9030&take=10'),
-        fetch('/api/car-brands?query=Renault&isActive=true&take=10'),
-      ]);
-      if (!townsRes.ok || !brandsRes.ok) return;
-      const townsData = await townsRes.json();
-      const brandsData = await brandsRes.json();
-      const towns = townsData.records ?? [];
-      const brands = brandsData.records ?? [];
-      const town =
-        towns.find((r: { zip?: string; displayLabel?: string }) => r.zip === '9030' || (r.displayLabel ?? '').startsWith('9030')) ?? towns[0];
-      const brand = brands.find((r: { name?: string }) => (r.name ?? '').toLowerCase().includes('renault')) ?? brands[0];
-      if (!town || !brand) return;
-      const displayLabel = town.displayLabel ?? `${town.zip ?? ''} ${town.name ?? ''}`.trim();
-      setTownId(town.id);
-      setTownLabel(displayLabel);
-      setBrandId(brand.id);
-      setBrandLabel(brand.name ?? 'Renault');
-      let fuelList = fuelTypes.length ? fuelTypes : [];
-      if (fuelList.length === 0) {
-        const fuelRes = await fetch('/api/fuel-types?isActive=true');
-        if (!fuelRes.ok) return;
-        const fuelData = await fuelRes.json();
-        fuelList = (fuelData.records ?? []).map((r: { id: string; name: string }) => ({ id: r.id, name: r.name }));
-      }
-      const fuel = fuelList.find((f) => (f.name ?? '').toLowerCase().includes('diesel')) ?? fuelList[0];
-      if (!fuel) return;
-      setFuelTypeId(fuel.id);
-      setFuelTypeName(fuel.name);
-      const typesRes = await fetch(
-        `/api/car-types?brandId=${encodeURIComponent(brand.id)}&fuelTypeId=${encodeURIComponent(fuel.id)}&query=TRAFIC&isActive=true&take=20`,
-      );
-      if (!typesRes.ok) return;
-      const typesData = await typesRes.json();
-      const types = typesData.records ?? [];
-      const trafic = types.find((r: { name?: string }) => (r.name ?? '').toUpperCase().includes('TRAFIC')) ?? types[0];
-      if (trafic) {
-        setCarTypeId(trafic.id);
-        setCarTypeName(trafic.name ?? 'TRAFIC');
-      }
-      setFirstRegisteredAt('2019-01-01');
-      setMileage('52900');
-      setSeats('5');
-      setCarTypeOther('');
-      setOwnerKmPerYear('15000');
-      setPurchaseAmountInclVat('');
-    } finally {
-      setFillExampleLoading(false);
-    }
-  }
 
   const isCarInfoValid = useMemo(() => {
     if (!townId || !brandId || !fuelTypeId || !carTypeId) return false;
@@ -433,9 +372,6 @@ export default function SimulationPage() {
   }, [screen, costScenarioIndex]);
 
   const goNext = () => {
-    if (screen === STEP_RESULT) {
-      setResultDisplayOverride(null);
-    }
     capture(`step_${screen}`, {
       result_code: simulationResult?.resultCode ?? null,
     });
@@ -444,7 +380,6 @@ export default function SimulationPage() {
   const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATION));
 
   const restartSimulationFromNotOk = () => {
-    setResultDisplayOverride(null);
     setSimulationResult(null);
     setCarChoice(null);
     setCreatedSimulationId(null);
@@ -491,83 +426,6 @@ export default function SimulationPage() {
 
   return (
     <div className={styles.root}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.logoBox}>
-            <div className={styles.logoIcon}>D!</div>
-            <div>
-              <div className={styles.logoTitle}>{t('header.logoTitle')}</div>
-              <div className={styles.logoSub}>{t('header.logoSub')}</div>
-            </div>
-          </div>
-          <div className={styles.headerEnd}>
-            <LanguageSwitcher triggerClassName={styles.headerLangTrigger} showLabel />
-          </div>
-        </div>
-      </header>
-
-      {DEV_UI_ENABLED && screen === STEP_RESULT && simulationResult && (
-        <div className={styles.resultSecondBar}>
-          <div className={styles.resultSecondBarInner}>
-            <span className={styles.resultSecondBarTitle}>{t('result.secondBarTitle')}</span>
-            <div className={styles.resultSecondBarActions}>
-              <span className={styles.resultSecondBarOutcome}>
-                {displaySuccess && t('result.secondBarSuccess')}
-                {displayNotOk && t('result.secondBarNotOk')}
-                {displayUnclear && t('result.secondBarUnclear')}
-              </span>
-              <div className={styles.resultPreviewBtns}>
-                <button
-                  type="button"
-                  onClick={() => setResultDisplayOverride(resultDisplayOverride === 'success' ? null : 'success')}
-                  className={resultDisplayOverride === 'success' ? styles.resultPreviewBtnActive : styles.resultPreviewBtn}
-                  title={t('result.previewSuccess')}
-                >
-                  {t('result.secondBarSuccess')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setResultDisplayOverride(resultDisplayOverride === 'notOk' ? null : 'notOk')}
-                  className={resultDisplayOverride === 'notOk' ? styles.resultPreviewBtnActive : styles.resultPreviewBtn}
-                  title={t('result.previewNotOk')}
-                >
-                  {t('result.secondBarNotOk')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setResultDisplayOverride(resultDisplayOverride === 'unclear' ? null : 'unclear')}
-                  className={resultDisplayOverride === 'unclear' ? styles.resultPreviewBtnActive : styles.resultPreviewBtn}
-                  title={t('result.previewUnclear')}
-                >
-                  {t('result.secondBarUnclear')}
-                </button>
-                {resultDisplayOverride !== null && (
-                  <button
-                    type="button"
-                    onClick={() => setResultDisplayOverride(null)}
-                    className={styles.resultPreviewBtn}
-                    title={t('result.previewReal')}
-                  >
-                    {t('result.previewReal')}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {DEV_UI_ENABLED && screen === STEP_CAR_INFO && (
-        <div className={styles.resultSecondBar}>
-          <div className={styles.resultSecondBarInner}>
-            <span className={styles.resultSecondBarTitle}>{t('wageninfo.secondBarTitle')}</span>
-            <button type="button" onClick={fillCarInfoExample} disabled={fillExampleLoading} className={styles.secondBarButton}>
-              {fillExampleLoading ? '…' : t('wageninfo.fillExample')}
-            </button>
-          </div>
-        </div>
-      )}
-
       {screen === STEP_SITUATION && (
         <div className={styles.page}>
           <h1 className={styles.title}>{t('situatie.title')}</h1>

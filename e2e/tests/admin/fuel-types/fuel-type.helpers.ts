@@ -46,7 +46,7 @@ export const createFuelTypeViaUi = async (page: Page, baseURL: string, data: Fue
   await fillFuelTypeForm(page, data);
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page).toHaveURL(new RegExp(`${FUEL_TYPES_LIST_PATH.replace(/\//g, '\\/')}$`));
-  await expect(page.getByText('Saved successfully.')).toBeVisible();
+  await expect(page.getByText('Saved successfully.').first()).toBeVisible();
 };
 
 export const openFuelTypeEditFromList = async (page: Page, displayName: string) => {

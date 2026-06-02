@@ -1704,7 +1704,7 @@
       "koopgidsKnockout2": "Moins de 200 000 km",
       "koopgidsKnockout3": "Diesel ? Alors Euro 5 ou plus",
       "koopgidsKnockout4": "Pas de voitures de société et pas (partiellement) portées en frais professionnels",
-      "koopgidsIdealTitle": "Profil idéal — au moins 2 sur 3 requis",
+      "koopgidsIdealTitle": "Profil idéal : au moins 2 sur 3 requis",
       "koopgidsIdeal1": "Écoscore ≥ 65 (nous le calculons automatiquement)",
       "koopgidsIdeal2": "Kilométrage < 140 000",
       "koopgidsIdeal3": "Moins de 7 ans",
@@ -1716,8 +1716,6 @@
       "title": "Parlez-nous de votre voiture",
       "body": "Nous avons besoin de ces informations pour créer une simulation pour votre voiture.",
       "privacyPolicyLink": "Politique de confidentialité",
-      "secondBarTitle": "Infos voiture",
-      "fillExample": "Remplir exemple (9030, Renault Trafic)",
       "gemeenteLabel": "Commune",
       "gemeenteHint": "La demande de voitures partagées varie d'un quartier à l'autre.",
       "gemeentePlaceholder": "Code postal ou commune",
@@ -1769,14 +1767,6 @@
       "checkedValueSub": "Nous avons estimé la valeur marchande de votre voiture."
     },
     "result": {
-      "secondBarTitle": "Résultat",
-      "secondBarSuccess": "Éligible",
-      "secondBarNotOk": "Non éligible",
-      "secondBarUnclear": "À vérifier",
-      "previewSuccess": "Afficher l'écran « Éligible »",
-      "previewNotOk": "Afficher l'écran « Non éligible »",
-      "previewUnclear": "Afficher l'écran « À vérifier »",
-      "previewReal": "Afficher le vrai résultat",
       "badgeEligible": "Éligible",
       "goneMessage": "En route ! 🎉",
       "successTitle": "Bonne nouvelle — votre voiture est éligible",
@@ -1919,6 +1909,125 @@
       "resultaat": "Résultat",
       "kosten": "Vos coûts",
       "bevestiging": "Confirmation"
+    }
+  },
+  "landing": {
+    "brand": "Dégage!",
+    "header": {
+      "loginDialog": {
+        "title": "Connexion",
+        "degapp": {
+          "title": "Degapp",
+          "badge": "Le plus courant",
+          "description": "Réservez des voitures partagées, gérez vos réservations et utilisez votre compte membre en tant qu'emprunteur ou propriétaire."
+        },
+        "onboarding": {
+          "title": "Inscription nouveau propriétaire",
+          "description": "Poursuivez l'inscription de votre voiture chez Dégage. Suivez votre demande et téléchargez vos documents."
+        }
+      }
+    },
+    "hero": {
+      "badge": "Mobilité soutenue par la communauté",
+      "title": "Partagez votre voiture, partagez les coûts",
+      "subtitle": "Plus de 580 propriétaires satisfaits partagent déjà leur voiture. Profitez de tous les avantages Dégage.",
+      "intro": "Votre voiture est souvent à l'arrêt, mais vous ne voulez pas vous en séparer ? Vous envisagez une voiture électrique mais ne voulez pas porter seul les coûts ? Le partage via Dégage pourrait être fait pour vous.",
+      "cta": "Vérifiez si votre voiture est éligible",
+      "ctaHint": "Vérification gratuite. Quelques minutes suffisent."
+    },
+    "benefits": {
+      "cheaper": {
+        "title": "Rouler moins cher",
+        "desc": "Répartissez les coûts fixes sur plus de kilomètres et récupérez de l'argent quand d'autres utilisent votre voiture."
+      },
+      "flexible": {
+        "title": "Votre voiture quand vous en avez besoin",
+        "desc": "Vous gardez le contrôle de votre agenda. Réservez vos propres trajets et fixez les règles pour votre voiture."
+      },
+      "environment": {
+        "title": "Bon pour la planète",
+        "desc": "Moins de voitures sur la route, moins d'émissions et une utilisation plus intelligente de ce que nous avons déjà."
+      },
+      "community": {
+        "title": "Quartier social et agréable",
+        "desc": "Le partage rapproche les habitants du quartier, pour une mobilité avec une dimension humaine."
+      }
+    },
+    "eligibility": {
+      "eyebrow": "Autopartage",
+      "title": "Votre voiture est-elle éligible ?",
+      "body": "Nous vérifions si votre voiture correspond à notre flotte partagée. Lancez la simulation gratuite pour le savoir et découvrez ce que vous pourriez récupérer.",
+      "cta": "Lancer la simulation →"
+    },
+    "costSharing": {
+      "title": "Partagez les coûts (et roulez moins cher)",
+      "body": "Achat, assurance, taxe, entretien, contrôle technique… Une voiture coûte cher, surtout quand elle reste immobile. Pour chaque kilomètre parcouru par quelqu'un d'autre, vous récupérez de l'argent. De nombreux propriétaires économisent des centaines à milliers d'euros par an.",
+      "exampleLabel": "Exemple de retour annuel",
+      "exampleAmount": "2 184 €",
+      "exampleDesc": "Quand d'autres parcourent 14 000 km avec votre voiture et que vous en faites 6 000, les coûts fixes et l'amortissement sont répartis, et vous êtes remboursé."
+    },
+    "advantages": {
+      "title": "Dégage : partagez votre voiture sans souci",
+      "imageAlt": "Dégage autopartage, partage sans souci",
+      "billing": "Facturation centrale et équitable",
+      "insurance": "Assurance tous risques de groupe",
+      "platform": "Plateforme de réservation simple",
+      "damage": "Gestion sociale des dommages",
+      "breakdown": "Assistance dépannage",
+      "access": "Accès à d'autres voitures partagées",
+      "parking": "Avantages de stationnement"
+    },
+    "about": {
+      "eyebrow": "À propos",
+      "title": "Qu'est-ce que Dégage ?",
+      "lead": "Dégage propose une « community supported mobility ».",
+      "paragraph1": "Toutes les voitures et vélos partagés appartiennent à des particuliers, comme vous, et sont partagés au sein de la communauté.",
+      "paragraph2": "Dégage est une communauté en pleine croissance de plus de 550 propriétaires et 7 000 membres. Sans but lucratif, nous visons une mobilité abordable, fiable et accessible.",
+      "paragraph3": "En partageant voitures et vélos entre membres, Dégage recrée du lien entre les habitants. Nous le faisons depuis plus de 25 ans, de manière indépendante et autonome. Et nous en sommes fiers.",
+      "stats": {
+        "owners": { "value": "550+", "label": "propriétaires" },
+        "members": { "value": "7 000", "label": "membres" },
+        "years": { "value": "25+", "label": "ans d'expérience" }
+      },
+      "imageAlt": "Communauté Dégage, autopartage de quartier"
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "imageAlt": "Voitures partagées Dégage dans le quartier",
+      "schedule": {
+        "q": "Puis-je partager quand je veux ?",
+        "a": "Oui. Vous réservez vos propres trajets selon votre agenda. Définissez des filtres, par exemple la durée maximale de réservation."
+      },
+      "insurance": {
+        "q": "Ma voiture est-elle bien assurée ?",
+        "a": "Oui. Dégage dispose d'une assurance groupe adaptée au partage. Si vous n'êtes pas responsable, vous ne payez rien."
+      },
+      "effort": {
+        "q": "Le partage demande-t-il beaucoup de travail ?",
+        "a": "Non. Vous choisissez comment remettre les clés. Dégage gère toute la facturation. Tous les trois mois, vous recevez votre part."
+      }
+    },
+    "videos": {
+      "items": {
+        "financial": {
+          "title": "Partagez votre voiture via Dégage : liberté financière pour de beaux moments avec mon fils"
+        },
+        "personal": {
+          "title": "Partagez votre voiture via Dégage : contact personnel et tranquillité d'esprit"
+        },
+        "freedom": {
+          "title": "Partagez votre voiture via Dégage : liberté et conscience environnementale réunies"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Prêt à le découvrir ?",
+      "body": "Lancez la simulation gratuite en quelques minutes et découvrez si votre voiture convient à Dégage.",
+      "cta": "Lancer la simulation →"
+    },
+    "footer": {
+      "faq": "Aide & FAQ",
+      "contact": "deeljeauto@degage.be"
     }
   },
   "chat": {

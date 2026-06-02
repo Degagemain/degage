@@ -8,7 +8,7 @@ import type { Documentation } from '@/domain/documentation.model';
 import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import type { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, getContentLocale, uiLocales } from '@/i18n/locales';
-import { PublicBrandPageWide } from '@/app/components/public-brand-shell';
+import { PublicPage } from '@/app/components/public/public-shell';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
@@ -107,7 +107,7 @@ export default function FaqGroupPage() {
   const title = groupName ?? t('allFaqInGroupTitle');
 
   return (
-    <PublicBrandPageWide>
+    <PublicPage>
       <FaqBackToHelpLink />
       <h1 className="mb-8 text-[28px] font-extrabold tracking-tight text-[#181510]">{title}</h1>
 
@@ -139,6 +139,6 @@ export default function FaqGroupPage() {
           </Button>
         </div>
       )}
-    </PublicBrandPageWide>
+    </PublicPage>
   );
 }

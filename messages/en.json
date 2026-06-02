@@ -1704,7 +1704,7 @@
       "koopgidsKnockout2": "Fewer than 200,000 km",
       "koopgidsKnockout3": "Diesel? Then Euro 5 or higher",
       "koopgidsKnockout4": "No company cars and not (partly) claimed as business expenses",
-      "koopgidsIdealTitle": "Ideal profile — at least 2 of 3 needed",
+      "koopgidsIdealTitle": "Ideal profile: at least 2 of 3 needed",
       "koopgidsIdeal1": "Ecoscore ≥ 65 (we calculate this automatically)",
       "koopgidsIdeal2": "Mileage under 140,000",
       "koopgidsIdeal3": "Younger than 7 years",
@@ -1716,8 +1716,6 @@
       "title": "Tell us about your car",
       "body": "We need this information to create a simulation for your car.",
       "privacyPolicyLink": "Privacy Policy",
-      "secondBarTitle": "Car details",
-      "fillExample": "Fill example (9030, Renault Trafic)",
       "gemeenteLabel": "Town",
       "gemeenteHint": "Demand for shared cars varies from neighbourhood to neighbourhood.",
       "gemeentePlaceholder": "Postcode or town",
@@ -1769,14 +1767,6 @@
       "checkedValueSub": "We estimated the market value of your car."
     },
     "result": {
-      "secondBarTitle": "Result",
-      "secondBarSuccess": "Eligible",
-      "secondBarNotOk": "Not eligible",
-      "secondBarUnclear": "Unclear",
-      "previewSuccess": "Show 'Eligible' screen",
-      "previewNotOk": "Show 'Not eligible' screen",
-      "previewUnclear": "Show 'Unclear' screen",
-      "previewReal": "Show real result",
       "badgeEligible": "Eligible",
       "goneMessage": "And off! 🎉",
       "successTitle": "Good news — your car is eligible",
@@ -1919,6 +1909,125 @@
       "resultaat": "Result",
       "kosten": "Your costs",
       "bevestiging": "Confirmation"
+    }
+  },
+  "landing": {
+    "brand": "Dégage!",
+    "header": {
+      "loginDialog": {
+        "title": "Sign in",
+        "degapp": {
+          "title": "Degapp",
+          "badge": "Most people",
+          "description": "Book shared cars, manage reservations, and use your member account as a borrower or owner."
+        },
+        "onboarding": {
+          "title": "New owner onboarding",
+          "description": "Continue enrolling your car with Dégage. Follow your application and upload documents."
+        }
+      }
+    },
+    "hero": {
+      "badge": "Community supported mobility",
+      "title": "Share your car, share the costs",
+      "subtitle": "More than 580 happy owners already share their car. Enjoy all the benefits of Dégage.",
+      "intro": "Is your car often parked but giving it up feels like a step too far? Want to buy an electric car but don't want to carry the costs alone? Car sharing through Dégage could be right for you.",
+      "cta": "Check if your car qualifies",
+      "ctaHint": "Free eligibility check. Takes a few minutes."
+    },
+    "benefits": {
+      "cheaper": {
+        "title": "Drive cheaper",
+        "desc": "Spread fixed costs over more kilometres and earn money back when others use your car."
+      },
+      "flexible": {
+        "title": "Your car when you need it",
+        "desc": "You keep control of your schedule. Reserve your own trips and set the rules for your car."
+      },
+      "environment": {
+        "title": "Good for the planet",
+        "desc": "Fewer cars on the road means less emissions and smarter use of what we already have."
+      },
+      "community": {
+        "title": "Social, livable neighborhood",
+        "desc": "Sharing brings people in your area closer together, for mobility with a human touch."
+      }
+    },
+    "eligibility": {
+      "eyebrow": "Car sharing",
+      "title": "Does your car qualify?",
+      "body": "We check whether your car fits our shared fleet. Run the free simulation to find out and see what you could earn back.",
+      "cta": "Start the simulation →"
+    },
+    "costSharing": {
+      "title": "Share the costs (and drive cheaper)",
+      "body": "Purchase, insurance, tax, maintenance, inspection… A car is expensive, especially when it sits idle. For every kilometre someone else drives with your car, you get money back. Many owners save hundreds to thousands of euros per year.",
+      "exampleLabel": "Example annual return",
+      "exampleAmount": "€2,184",
+      "exampleDesc": "When others drive 14,000 km with your car while you drive 6,000 km yourself, fixed costs and depreciation are spread over more kilometres, and you get paid back."
+    },
+    "advantages": {
+      "title": "Dégage: share your car without worries",
+      "imageAlt": "Dégage car sharing, worry-free sharing",
+      "billing": "Central, fair billing",
+      "insurance": "Comprehensive group insurance",
+      "platform": "Easy reservation platform",
+      "damage": "Social damage handling",
+      "breakdown": "Breakdown assistance",
+      "access": "Access to other shared cars",
+      "parking": "Parking benefits"
+    },
+    "about": {
+      "eyebrow": "About us",
+      "title": "What is Dégage?",
+      "lead": "Dégage offers \"community supported mobility\".",
+      "paragraph1": "All shared cars and bikes belong to individuals, like you, and are shared within the community.",
+      "paragraph2": "Dégage is a fast-growing community of more than 550 owners and 7,000 members. We pursue no profit, but affordable, reliable and accessible mobility.",
+      "paragraph3": "By sharing cars and bikes with each other, Dégage brings people back in touch with one another. We have been doing this for more than 25 years, independent and self-sufficient. And we are proud of that.",
+      "stats": {
+        "owners": { "value": "550+", "label": "owners" },
+        "members": { "value": "7,000", "label": "members" },
+        "years": { "value": "25+", "label": "years of experience" }
+      },
+      "imageAlt": "Dégage community, neighbours sharing cars"
+    },
+    "faq": {
+      "title": "Common questions",
+      "imageAlt": "Dégage shared cars in the neighbourhood",
+      "schedule": {
+        "q": "Can I share when I want?",
+        "a": "Yes. You reserve your own trips according to your schedule. Set filters such as maximum booking length or how far in advance others can book."
+      },
+      "insurance": {
+        "q": "Is my car well insured?",
+        "a": "Yes. Dégage has a group insurance policy tailored to car sharing. If you are not at fault in an incident, you pay nothing."
+      },
+      "effort": {
+        "q": "Is sharing a lot of work?",
+        "a": "No. You choose how to hand over keys. Dégage handles all billing. Every three months you receive your share back."
+      }
+    },
+    "videos": {
+      "items": {
+        "financial": {
+          "title": "Share your car via Dégage: financial freedom for special moments with my son"
+        },
+        "personal": {
+          "title": "Share your car via Dégage: personal contact and peace of mind"
+        },
+        "freedom": {
+          "title": "Share your car via Dégage: freedom and environmental awareness combined"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to find out?",
+      "body": "Run the free simulation in a few minutes and discover whether your car fits Dégage.",
+      "cta": "Start the simulation →"
+    },
+    "footer": {
+      "faq": "Help & FAQ",
+      "contact": "deeljeauto@degage.be"
     }
   },
   "chat": {
