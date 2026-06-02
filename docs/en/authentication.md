@@ -6,16 +6,19 @@ roles:
 
 # Authentication
 
-Authentication is implemented using [better-auth](https://www.better-auth.com/) with pre-built UI components from
-[@daveyplate/better-auth-ui](https://github.com/daveyplate/better-auth-ui).
+Authentication uses [better-auth](https://www.better-auth.com/) on the server. Sign-in, sign-up, password reset, and account settings UI live in
+`app/app/components/auth/` and `app/app/components/account/`, wrapped in the public shell (`PublicShell`).
 
 ## Environment Variables
 
-| Variable              | Description                                                                                                                                                                                                                                                              |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ADMIN_EMAIL_DOMAINS` | Comma-separated list of email domains. Users whose **verified** email domain is in this list are automatically assigned the `admin` role (on sign-up if the email is already verified, e.g. OAuth, or when they verify their email). Example: `example.com,company.org`. |
-| `RESEND_API_KEY`      | API key for [Resend](https://resend.com) used to send verification and password-reset emails. If unset, those emails are not sent (e.g. local dev).                                                                                                                      |
-| `RESEND_FROM`         | Sender address for transactional emails. Default: `Neurotic <onboarding@resend.dev>`. Use your verified domain in production, e.g. `App <noreply@yourdomain.com>`.                                                                                                       |
+| Variable                                   | Description                                                                                                                                                                                                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ADMIN_EMAIL_DOMAINS`                      | Comma-separated list of email domains. Users whose **verified** email domain is in this list are automatically assigned the `admin` role (on sign-up if the email is already verified, e.g. OAuth, or when they verify their email). Example: `example.com,company.org`. |
+| `RESEND_API_KEY`                           | API key for [Resend](https://resend.com) used to send verification and password-reset emails. If unset, those emails are not sent (e.g. local dev).                                                                                                                      |
+| `RESEND_FROM`                              | Sender address for transactional emails. Default: `Neurotic <onboarding@resend.dev>`. Use your verified domain in production, e.g. `App <noreply@yourdomain.com>`.                                                                                                       |
+| `NEXT_PUBLIC_BETTER_AUTH_SOCIAL_PROVIDERS` | Comma-separated OAuth providers shown on auth screens (e.g. `github`).                                                                                                                                                                                                   |
+| `NEXT_PUBLIC_AUTH_MAGIC_LINK`              | When `true`, shows magic-link route and sign-in link (requires Better Auth magic-link plugin + Resend templates — Phase 2).                                                                                                                                              |
+| `NEXT_PUBLIC_AUTH_EMAIL_OTP`               | When `true`, shows email-OTP route and sign-in link (requires Better Auth email-OTP plugin + Resend templates — Phase 2).                                                                                                                                                |
 
 ## Email verification and password reset
 
@@ -66,21 +69,25 @@ Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
 ## Supported Providers
 
 - Email/password
-- GitHub OAuth
+- GitHub OAuth (when `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` are set)
 
 ## Routes
 
 ### Auth (`/app/auth/...`)
 
-- `/app/auth/sign-in` — Login
+- `/app/auth/sign-in` — Login (email/password, GitHub; optional links to magic-link / email-OTP when env flags are set)
 - `/app/auth/sign-up` — Registration
 - `/app/auth/forgot-password` — Password reset request
-- `/app/auth/reset-password` — Password reset form
+- `/app/auth/reset-password` — Password reset form (`?token=`)
+- `/app/auth/callback` — OAuth return helper
+- `/app/auth/magic-link` — Phase 2 stub (enabled via `NEXT_PUBLIC_AUTH_MAGIC_LINK`)
+- `/app/auth/email-otp` — Phase 2 stub (enabled via `NEXT_PUBLIC_AUTH_EMAIL_OTP`)
+
+Post-login navigation uses the `redirectTo` query param (see `buildSignInUrlWithReturnPath` in `app/app/lib/sign-in-return-path.ts`).
 
 ### Account (`/app/account/...`)
 
-- `/app/account/settings` — Account settings
-- `/app/account/profile` — Profile management
+- `/app/account/settings` — Display name, password, connected providers, language
 
 ## Usage
 

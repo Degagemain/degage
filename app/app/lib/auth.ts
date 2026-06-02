@@ -1,5 +1,5 @@
 /***
- * The client side auth client. This is used mostly by the auth-provider, wrapping the entire app in authentication.
+ * Client-side Better Auth client for session hooks and sign-in/sign-up flows.
  */
 import { createAuthClient } from 'better-auth/react';
 import { adminClient } from 'better-auth/client/plugins';

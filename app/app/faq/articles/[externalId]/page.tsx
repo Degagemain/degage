@@ -93,7 +93,7 @@ export default function FaqArticleDetailPage() {
     <PublicPage>
       <FaqBackToHelpLink />
       <article>
-        <h1 className="mb-6 text-[28px] font-extrabold tracking-tight text-[#181510]">{doc.title}</h1>
+        <h1 className="text-foreground mb-6 text-[28px] font-extrabold tracking-tight">{doc.title}</h1>
         <div className="documentation-body">
           {doc.format === 'markdown' ? (
             <DocumentationMarkdown markdown={doc.content} />

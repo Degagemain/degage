@@ -136,10 +136,10 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                         'items-center justify-center rounded-lg text-xs font-semibold'
                       }
                     >
-                      N
+                      D
                     </div>
                     <div className="flex flex-col gap-0.5 leading-none">
-                      <span className="font-semibold">Neurotic</span>
+                      <span className="font-semibold">Dégage</span>
                       <span className="text-muted-foreground text-xs">{t('menu')}</span>
                     </div>
                   </Link>

@@ -13,11 +13,11 @@ describe('sanitizePostSignInReturnPath', () => {
   });
 
   it('rejects protocol-relative URLs', () => {
-    expect(sanitizePostSignInReturnPath('//evil.com')).toBe('/app');
+    expect(sanitizePostSignInReturnPath('//evil.com')).toBe('/app/dashboard');
   });
 
   it('rejects paths outside /app', () => {
-    expect(sanitizePostSignInReturnPath('/other')).toBe('/app');
+    expect(sanitizePostSignInReturnPath('/other')).toBe('/app/dashboard');
   });
 });
 
@@ -27,12 +27,12 @@ describe('buildPostSignInReturnPath', () => {
   });
 
   it('sanitizes the combined path', () => {
-    expect(buildPostSignInReturnPath('/evil', '')).toBe('/app');
+    expect(buildPostSignInReturnPath('/evil', '')).toBe('/app/dashboard');
   });
 });
 
 describe('buildSignInUrlWithReturnPath', () => {
-  it('embeds redirect param for better-auth-ui', () => {
+  it('embeds redirect param for auth sign-in', () => {
     const url = buildSignInUrlWithReturnPath('/app/admin/users');
     expect(url).toContain(`/app/auth/sign-in?${SIGN_IN_REDIRECT_QUERY_PARAM}=`);
     expect(url).toContain(encodeURIComponent('/app/admin/users'));

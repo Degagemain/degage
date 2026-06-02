@@ -119,7 +119,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
     <div className={styles.publicTheme}>
       <LandingHeader />
 
-      <div className="relative min-h-screen overflow-x-hidden bg-[#fafaf9] text-[#1c1917]">
+      <div className={cn('relative min-h-screen overflow-x-hidden', styles.pageSurface)}>
         <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 h-[520px]', styles.heroGlow)} />
         <div
           aria-hidden
@@ -137,10 +137,10 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                 <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">{t('hero.title')}</h1>
               </Reveal>
               <Reveal delayMs={90}>
-                <p className={cn(landingTitleToBody, 'text-lg leading-relaxed text-stone-600 sm:text-xl')}>{t('hero.subtitle')}</p>
+                <p className={cn(landingTitleToBody, 'text-lg leading-relaxed sm:text-xl', styles.textMuted)}>{t('hero.subtitle')}</p>
               </Reveal>
               <Reveal delayMs={160}>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-stone-500">{t('hero.intro')}</p>
+                <p className={cn('mx-auto mt-4 max-w-2xl text-base leading-relaxed', styles.textSubtle)}>{t('hero.intro')}</p>
               </Reveal>
               <Reveal delayMs={220}>
                 <div className={cn(landingSectionBlockGap, 'flex flex-col items-center gap-2')}>
@@ -150,7 +150,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                       <ArrowRight className="size-4 transition-transform duration-300" aria-hidden />
                     </Link>
                   </Button>
-                  <p className="text-sm text-stone-500">{t('hero.ctaHint')}</p>
+                  <p className={cn('text-sm', styles.textSubtle)}>{t('hero.ctaHint')}</p>
                 </div>
               </Reveal>
             </div>
@@ -162,12 +162,17 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                 const Icon = BENEFIT_ICONS[index];
                 return (
                   <Reveal key={key} delayMs={index * 80}>
-                    <article className="rounded-2xl border border-stone-200/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                    <article
+                      className={cn(
+                        styles.benefitCard,
+                        'rounded-2xl p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md',
+                      )}
+                    >
                       <div className="mb-4 inline-flex rounded-xl bg-[var(--public-icon-bg)] p-2.5 text-[var(--public-accent)]">
                         <Icon className="size-5" aria-hidden />
                       </div>
                       <h2 className="text-base font-semibold">{t(`benefits.${key}.title`)}</h2>
-                      <p className="mt-2 text-sm leading-relaxed text-stone-600">{t(`benefits.${key}.desc`)}</p>
+                      <p className={cn('mt-2 text-sm leading-relaxed', styles.textMuted)}>{t(`benefits.${key}.desc`)}</p>
                     </article>
                   </Reveal>
                 );
@@ -175,19 +180,19 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             </div>
           </section>
 
-          <section className={cn('border-t border-stone-200/80 bg-white', landingSectionPad)}>
+          <section className={cn(styles.sectionElevated, landingSectionPad)}>
             <Reveal className={landingContainer}>
               <div className={cn('grid items-center lg:grid-cols-[1.15fr_0.85fr]', landingGridGap)}>
                 <div>
-                  <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 px-3 py-1 text-sm font-medium text-stone-700">
+                  <div className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium', styles.pillBadge)}>
                     <Globe2 className="size-4" aria-hidden />
                     {t('about.eyebrow')}
                   </div>
                   <h2 className={cn(landingEyebrowToTitle, 'text-3xl font-semibold tracking-tight sm:text-4xl')}>{t('about.title')}</h2>
-                  <p className={cn(landingTitleToBody, 'text-lg leading-relaxed text-stone-700 italic')}>{t('about.lead')}</p>
-                  <p className="mt-4 text-base leading-relaxed text-stone-600">{t('about.paragraph1')}</p>
-                  <p className="mt-4 text-base leading-relaxed text-stone-600">{t('about.paragraph2')}</p>
-                  <p className="mt-4 text-base leading-relaxed text-stone-600">{t('about.paragraph3')}</p>
+                  <p className={cn(landingTitleToBody, 'text-lg leading-relaxed italic', styles.textBody)}>{t('about.lead')}</p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph1')}</p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph2')}</p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph3')}</p>
 
                   <dl className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
                     {ABOUT_STATS.map((key) => (
@@ -198,13 +203,18 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                         <dt className="text-2xl font-semibold tracking-tight text-[var(--public-accent-deep)]">
                           {t(`about.stats.${key}.value`)}
                         </dt>
-                        <dd className="mt-1 text-sm text-stone-600">{t(`about.stats.${key}.label`)}</dd>
+                        <dd className={cn('mt-1 text-sm', styles.textMuted)}>{t(`about.stats.${key}.label`)}</dd>
                       </div>
                     ))}
                   </dl>
                 </div>
 
-                <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-3xl border border-stone-200 bg-stone-100 shadow-lg lg:max-w-none">
+                <div
+                  className={cn(
+                    'relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-3xl shadow-lg lg:max-w-none',
+                    styles.imageFrame,
+                  )}
+                >
                   <Image
                     src="/landing/community.jpg"
                     alt={t('about.imageAlt')}
@@ -218,22 +228,22 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             </Reveal>
           </section>
 
-          <section className={cn('border-y border-stone-200/80 bg-stone-50', landingSectionPad)}>
+          <section className={cn(styles.sectionMutedY, landingSectionPad)}>
             <Reveal className={landingContainer}>
               <div className="mx-auto max-w-2xl text-center">
                 <p className="text-sm font-semibold tracking-wide text-[var(--public-accent)] uppercase">{t('eligibility.eyebrow')}</p>
                 <h2 className={cn(landingEyebrowToTitle, 'text-3xl font-semibold tracking-tight sm:text-4xl')}>{t('eligibility.title')}</h2>
-                <p className={cn(landingTitleToBody, 'text-base leading-relaxed text-stone-600')}>{t('eligibility.body')}</p>
+                <p className={cn(landingTitleToBody, 'text-base leading-relaxed', styles.textMuted)}>{t('eligibility.body')}</p>
               </div>
 
               <div className={cn(landingSectionBlockGap, 'grid gap-5 sm:gap-6 lg:grid-cols-2')}>
-                <div className="rounded-2xl border border-red-100 bg-red-50/40 p-6 sm:p-8">
-                  <h3 className="text-lg font-semibold text-red-900">{tSim('koopgidsKnockoutTitle')}</h3>
+                <div className="rounded-2xl border border-red-100 bg-red-50/40 p-6 sm:p-8 dark:border-red-900/50 dark:bg-red-950/30">
+                  <h3 className="text-lg font-semibold text-red-900 dark:text-red-200">{tSim('koopgidsKnockoutTitle')}</h3>
                   <ul className="mt-5 space-y-3">
                     {KNOCKOUT_KEYS.map((key) => (
-                      <li key={key} className="flex gap-3 text-sm leading-relaxed text-stone-700 sm:text-base">
+                      <li key={key} className={cn('flex gap-3 text-sm leading-relaxed sm:text-base', styles.textBody)}>
                         <span
-                          className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700"
+                          className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
                           aria-hidden
                         >
                           !
@@ -248,7 +258,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                   <h3 className="text-lg font-semibold text-[var(--public-accent-deep)]">{tSim('koopgidsIdealTitle')}</h3>
                   <ul className="mt-5 space-y-3">
                     {IDEAL_KEYS.map((key) => (
-                      <li key={key} className="flex gap-3 text-sm leading-relaxed text-stone-700 sm:text-base">
+                      <li key={key} className={cn('flex gap-3 text-sm leading-relaxed sm:text-base', styles.textBody)}>
                         <span
                           className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--public-surface-muted)] text-xs font-bold text-[var(--public-accent)]"
                           aria-hidden
@@ -270,10 +280,15 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             </Reveal>
           </section>
 
-          <section className={cn('border-t border-stone-200/80 bg-white', landingSectionPad)}>
+          <section className={cn(styles.sectionElevated, landingSectionPad)}>
             <Reveal className={landingContainer}>
               <div className={cn('grid items-center lg:grid-cols-[0.85fr_1.15fr]', landingGridGap)}>
-                <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-3xl border border-stone-200 bg-stone-100 shadow-lg lg:max-w-none">
+                <div
+                  className={cn(
+                    'relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-3xl shadow-lg lg:max-w-none',
+                    styles.imageFrame,
+                  )}
+                >
                   <Image
                     src="/landing/advantages.jpg"
                     alt={t('advantages.imageAlt')}
@@ -291,7 +306,10 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                       return (
                         <li
                           key={key}
-                          className="flex items-start gap-3 rounded-xl border border-stone-100 bg-stone-50/50 px-4 py-3.5 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm sm:text-base"
+                          className={cn(
+                            styles.advantageItem,
+                            'flex items-start gap-3 rounded-xl px-4 py-3.5 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm sm:text-base',
+                          )}
                         >
                           <Icon className="mt-0.5 size-4 shrink-0 text-[var(--public-accent)]" aria-hidden />
                           <span>{t(`advantages.${key}`)}</span>
@@ -304,17 +322,17 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             </Reveal>
           </section>
 
-          <section className={cn('border-t border-stone-200/80', landingSectionPad)}>
+          <section className={cn(styles.sectionBorderTop, landingSectionPad)}>
             <div className={cn(landingContainer, 'grid items-start lg:grid-cols-[1.1fr_0.9fr]', landingGridGap)}>
               <Reveal>
                 <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t('faq.title')}</h2>
                 <Accordion type="single" collapsible defaultValue={faqs[0]} className="mt-6">
                   {faqs.map((key) => (
-                    <AccordionItem key={key} value={key} className="border-stone-200">
-                      <AccordionTrigger className="py-3 text-base font-medium text-stone-900 hover:no-underline">
+                    <AccordionItem key={key} value={key} className="border-[var(--public-image-border)]">
+                      <AccordionTrigger className={cn('py-3 text-base font-medium hover:no-underline', styles.textHeading)}>
                         {t(`faq.${key}.q`)}
                       </AccordionTrigger>
-                      <AccordionContent className="text-sm leading-relaxed text-stone-600">{t(`faq.${key}.a`)}</AccordionContent>
+                      <AccordionContent className={cn('text-sm leading-relaxed', styles.textMuted)}>{t(`faq.${key}.a`)}</AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -325,19 +343,24 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
 
               <Reveal
                 delayMs={120}
-                className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl border border-stone-200 bg-stone-100 shadow-md lg:sticky lg:top-24"
+                className={cn('relative aspect-[3/2] w-full overflow-hidden rounded-2xl shadow-md lg:sticky lg:top-24', styles.imageFrame)}
               >
                 <Image src="/landing/hero.jpg" alt={t('faq.imageAlt')} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 480px" />
               </Reveal>
             </div>
           </section>
 
-          <section className={cn('border-t border-stone-200/80 bg-stone-50', landingSectionPad)}>
+          <section className={cn(styles.sectionMuted, landingSectionPad)}>
             <div className={landingContainer}>
               <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {VIDEOS.map(({ key, id }, index) => (
                   <Reveal key={key} delayMs={index * 100}>
-                    <article className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                    <article
+                      className={cn(
+                        styles.videoCard,
+                        'overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md',
+                      )}
+                    >
                       <div className="aspect-video bg-stone-900">
                         <iframe
                           src={`https://www.youtube.com/embed/${id}`}
@@ -348,7 +371,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                           loading="lazy"
                         />
                       </div>
-                      <p className="px-4 py-3 text-sm leading-snug font-medium text-stone-700">{t(`videos.items.${key}.title`)}</p>
+                      <p className={cn('px-4 py-3 text-sm leading-snug font-medium', styles.textBody)}>{t(`videos.items.${key}.title`)}</p>
                     </article>
                   </Reveal>
                 ))}
@@ -374,14 +397,14 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
           </section>
         </main>
 
-        <footer className={cn('border-t border-stone-200/80 bg-white', landingFooterPad)}>
-          <div className={cn(landingContainer, 'flex flex-col items-center justify-between gap-4 text-sm text-stone-500 sm:flex-row')}>
-            <p className="font-semibold text-stone-800">{t('brand')}</p>
+        <footer className={cn(styles.sectionElevated, landingFooterPad)}>
+          <div className={cn(landingContainer, 'flex flex-col items-center justify-between gap-4 text-sm sm:flex-row', styles.textFooter)}>
+            <p className={cn('font-semibold', styles.textFooterStrong)}>{t('brand')}</p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-              <Link href="/app/faq" className={cn('hover:text-stone-800')}>
+              <Link href="/app/faq" className={cn('hover:text-[var(--public-text-footer-strong)]')}>
                 {t('footer.faq')}
               </Link>
-              <button type="button" className="hover:text-stone-800" onClick={onOpenChat}>
+              <button type="button" className="hover:text-[var(--public-text-footer-strong)]" onClick={onOpenChat}>
                 {tChat('supportChat')}
               </button>
             </div>

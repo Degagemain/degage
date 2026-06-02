@@ -23,9 +23,9 @@ export function FaqArticleCard({ doc, title, content, titleAs: TitleTag = 'h3' }
 
   return (
     <Link href={href} className={styles.articleCardLink}>
-      <Card className={cn(styles.articleCard, 'gap-0 overflow-hidden rounded-xl border-[#DDD6CB] bg-white py-0 shadow-none')}>
+      <Card className={cn(styles.articleCard, 'border-border bg-card gap-0 overflow-hidden rounded-xl py-0 shadow-none')}>
         <CardContent className="p-5">
-          <TitleTag className="mb-2 text-base font-semibold text-[#181510]">{title}</TitleTag>
+          <TitleTag className="text-foreground mb-2 text-base font-semibold">{title}</TitleTag>
           <p className="text-muted-foreground mb-4 line-clamp-3 text-sm">{excerptFromMarkdown(content)}</p>
           <span className={styles.articleCardRead}>{t('readArticle')} →</span>
         </CardContent>

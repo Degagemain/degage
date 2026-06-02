@@ -12,10 +12,84 @@
   --public-on-brand-muted: #e8f5e9;
   --public-glow: 76 175 80;
   --public-glow-mint: 153 204 153;
+
+  --public-page-bg: #fafaf9;
+  --public-page-fg: #1c1917;
+  --public-header-border: rgb(231 229 228 / 0.8);
+  --public-header-bg: rgb(250 250 249 / 0.9);
+  --public-header-bg-blur: rgb(250 250 249 / 0.75);
+  --public-section-border: rgb(231 229 228 / 0.8);
+  --public-elevated-bg: #ffffff;
+  --public-muted-section-bg: #fafaf9;
+  --public-card-border: rgb(231 229 228 / 0.8);
+  --public-card-bg: #ffffff;
+  --public-text-muted: #57534e;
+  --public-text-subtle: #78716c;
+  --public-text-heading: #1c1917;
+  --public-text-body: #44403c;
+  --public-text-footer: #78716c;
+  --public-text-footer-strong: #292524;
+  --public-image-border: #e7e5e4;
+  --public-image-bg: #f5f5f4;
+  --public-pill-bg: #f5f5f4;
+  --public-pill-fg: #44403c;
+  --public-advantage-border: #f5f5f4;
+  --public-advantage-bg: rgb(250 250 249 / 0.5);
+  --public-dialog-bg: #fafaf9;
+  --public-dialog-border: #e7e5e4;
+  --public-option-bg: #ffffff;
+  --public-option-icon-bg: #f5f5f4;
+  --public-option-icon-fg: #44403c;
+  --public-lang-fg: #57534e;
+  --public-lang-hover-bg: rgb(245 245 244 / 0.8);
+  --public-lang-hover-fg: #1c1917;
+}
+
+:global(.dark) .publicTheme {
+  --public-surface: #1a2e1a;
+  --public-surface-muted: #142414;
+  --public-border: #2d4a2d;
+  --public-icon-bg: #1a2e1a;
+  --public-on-brand-muted: #d4e8d4;
+
+  --public-page-bg: #0c0a09;
+  --public-page-fg: #fafaf9;
+  --public-header-border: rgb(68 64 60 / 0.8);
+  --public-header-bg: rgb(12 10 9 / 0.9);
+  --public-header-bg-blur: rgb(12 10 9 / 0.75);
+  --public-section-border: rgb(68 64 60 / 0.8);
+  --public-elevated-bg: #1c1917;
+  --public-muted-section-bg: #141211;
+  --public-card-border: rgb(68 64 60 / 0.8);
+  --public-card-bg: #1c1917;
+  --public-text-muted: #a8a29e;
+  --public-text-subtle: #78716c;
+  --public-text-heading: #fafaf9;
+  --public-text-body: #d6d3d1;
+  --public-text-footer: #78716c;
+  --public-text-footer-strong: #e7e5e4;
+  --public-image-border: #44403c;
+  --public-image-bg: #292524;
+  --public-pill-bg: #292524;
+  --public-pill-fg: #d6d3d1;
+  --public-advantage-border: #292524;
+  --public-advantage-bg: rgb(28 25 23 / 0.5);
+  --public-dialog-bg: #1c1917;
+  --public-dialog-border: #44403c;
+  --public-option-bg: #1c1917;
+  --public-option-icon-bg: #292524;
+  --public-option-icon-fg: #d6d3d1;
+  --public-lang-fg: #a8a29e;
+  --public-lang-hover-bg: rgb(41 37 36 / 0.8);
+  --public-lang-hover-fg: #fafaf9;
 }
 
 .heroGlow {
   background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.14), transparent);
+}
+
+:global(.dark) .heroGlow {
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.08), transparent);
 }
 
 .badgeAccent {
@@ -23,4 +97,105 @@
   background-color: #c8e6c9;
   color: #2e7d32;
   font-weight: 600;
+}
+
+:global(.dark) .badgeAccent {
+  border-color: #2d4a2d;
+  background-color: #1a2e1a;
+  color: #81c784;
+}
+
+.pageSurface {
+  background-color: var(--public-page-bg);
+  color: var(--public-page-fg);
+}
+
+.headerScrolled {
+  border-bottom: 1px solid var(--public-header-border);
+  background-color: var(--public-header-bg);
+  backdrop-filter: blur(12px);
+}
+
+@supports (backdrop-filter: blur(0)) {
+  .headerScrolled {
+    background-color: var(--public-header-bg-blur);
+  }
+}
+
+.sectionBorderTop {
+  border-top: 1px solid var(--public-section-border);
+}
+
+.sectionElevated {
+  border-top: 1px solid var(--public-section-border);
+  background-color: var(--public-elevated-bg);
+}
+
+.sectionMuted {
+  border-top: 1px solid var(--public-section-border);
+  background-color: var(--public-muted-section-bg);
+}
+
+.sectionMutedY {
+  border-top: 1px solid var(--public-section-border);
+  border-bottom: 1px solid var(--public-section-border);
+  background-color: var(--public-muted-section-bg);
+}
+
+.benefitCard {
+  border: 1px solid var(--public-card-border);
+  background-color: var(--public-card-bg);
+}
+
+.textMuted {
+  color: var(--public-text-muted);
+}
+
+.textSubtle {
+  color: var(--public-text-subtle);
+}
+
+.textHeading {
+  color: var(--public-text-heading);
+}
+
+.textBody {
+  color: var(--public-text-body);
+}
+
+.textFooter {
+  color: var(--public-text-footer);
+}
+
+.textFooterStrong {
+  color: var(--public-text-footer-strong);
+}
+
+.imageFrame {
+  border: 1px solid var(--public-image-border);
+  background-color: var(--public-image-bg);
+}
+
+.pillBadge {
+  background-color: var(--public-pill-bg);
+  color: var(--public-pill-fg);
+}
+
+.advantageItem {
+  border: 1px solid var(--public-advantage-border);
+  background-color: var(--public-advantage-bg);
+}
+
+.videoCard {
+  border: 1px solid var(--public-image-border);
+  background-color: var(--public-card-bg);
+}
+
+.langTrigger {
+  color: var(--public-lang-fg);
+}
+
+.langTrigger:hover {
+  background-color: var(--public-lang-hover-bg);
+  color: var(--public-lang-hover-fg);
 }

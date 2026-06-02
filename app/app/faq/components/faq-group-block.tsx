@@ -87,7 +87,7 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
         moreHref={`/app/faq/groups/${groupId}`}
         moreLabel={t('groupShowMoreCta', { name: groupName })}
       />
-      <div className="overflow-hidden rounded-xl border border-[#DDD6CB] bg-white">
+      <div className="border-border bg-card overflow-hidden rounded-xl border">
         {state.items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
           if (!tr) {

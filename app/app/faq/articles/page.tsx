@@ -65,7 +65,7 @@ export default function FaqAllArticlesPage() {
   return (
     <PublicPage>
       <FaqBackToHelpLink />
-      <h1 className="mb-8 text-[28px] font-extrabold tracking-tight text-[#181510]">{t('allArticlesTitle')}</h1>
+      <h1 className="text-foreground mb-8 text-[28px] font-extrabold tracking-tight">{t('allArticlesTitle')}</h1>
 
       {error && <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>}
 
@@ -90,7 +90,7 @@ export default function FaqAllArticlesPage() {
 
       {hasMore && !loading && items.length > 0 && (
         <div className="mt-10 flex justify-center">
-          <Button type="button" variant="outline" className="border-[#DDD6CB]" onClick={() => void load(skip, true)}>
+          <Button type="button" variant="outline" onClick={() => void load(skip, true)}>
             {t('loadMore')}
           </Button>
         </div>

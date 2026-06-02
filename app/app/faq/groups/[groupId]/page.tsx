@@ -109,13 +109,13 @@ export default function FaqGroupPage() {
   return (
     <PublicPage>
       <FaqBackToHelpLink />
-      <h1 className="mb-8 text-[28px] font-extrabold tracking-tight text-[#181510]">{title}</h1>
+      <h1 className="text-foreground mb-8 text-[28px] font-extrabold tracking-tight">{title}</h1>
 
       {error && <p className="text-muted-foreground text-sm">{t('errorLoad')}</p>}
 
       {!error && !loading && items.length === 0 && <p className="text-muted-foreground text-sm">{t('emptyFaq')}</p>}
 
-      <div className="overflow-hidden rounded-xl border border-[#DDD6CB] bg-white">
+      <div className="border-border bg-card overflow-hidden rounded-xl border">
         {items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
           if (!tr) {
@@ -134,7 +134,7 @@ export default function FaqGroupPage() {
 
       {hasMore && !loading && items.length > 0 && (
         <div className="mt-10 flex justify-center">
-          <Button type="button" variant="outline" className="border-[#DDD6CB]" onClick={() => void load(skip, true)}>
+          <Button type="button" variant="outline" onClick={() => void load(skip, true)}>
             {t('loadMore')}
           </Button>
         </div>
