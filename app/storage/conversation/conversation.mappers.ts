@@ -1,9 +1,12 @@
-import type { ChatCitation, ChatConversation, ChatConversationUpdateInput, ChatMessage } from '@/domain/chat.model';
+import type { ChatCitation, ChatConversation, ChatConversationListItem, ChatConversationUpdateInput, ChatMessage } from '@/domain/chat.model';
 import type { Prisma } from '@/storage/client/client';
 
 type DbChatMessage = Prisma.ChatMessageGetPayload<Record<string, never>>;
 type DbChatConversation = Prisma.ChatConversationGetPayload<{
   include: { messages: true };
+}>;
+type DbChatConversationListItem = Prisma.ChatConversationGetPayload<{
+  include: { user: true };
 }>;
 
 const parseCitations = (value: unknown): ChatCitation[] => {
@@ -46,6 +49,22 @@ export const dbChatConversationToDomain = (conversation: DbChatConversation): Ch
     emailThreadId: conversation.emailThreadId,
     title: conversation.title,
     messages: conversation.messages.map(dbChatMessageToDomain),
+    createdAt: conversation.createdAt,
+    updatedAt: conversation.updatedAt,
+  };
+};
+
+export const dbChatConversationListItemToDomain = (conversation: DbChatConversationListItem): ChatConversationListItem => {
+  return {
+    id: conversation.id,
+    user: conversation.user
+      ? {
+          id: conversation.user.id,
+          name: conversation.user.name,
+          email: conversation.user.email,
+        }
+      : null,
+    title: conversation.title,
     createdAt: conversation.createdAt,
     updatedAt: conversation.updatedAt,
   };

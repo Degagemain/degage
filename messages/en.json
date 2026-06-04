@@ -1321,6 +1321,37 @@
       "searchPlaceholder": "Search users...",
       "tryAgain": "Try again"
     },
+    "chatConversations": {
+      "title": "Chat threads",
+      "columns": {
+        "title": "Title",
+        "user": "User",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "filters": {
+        "user": "User",
+        "userPlaceholder": "Search users..."
+      },
+      "searchPlaceholder": "Search chat threads...",
+      "emptyTitle": "Untitled chat",
+      "anonymousUser": "Anonymous",
+      "tryAgain": "Try again",
+      "detail": {
+        "backToList": "Back to chat threads",
+        "description": "Stored support chat thread for debugging and support quality review.",
+        "historyTitle": "Chat history",
+        "historyDescription": "{count} message(s)",
+        "noMessages": "No messages stored.",
+        "userMessage": "User",
+        "assistantMessage": "Assistant",
+        "toolCalls": "Tool calls · {count} article(s) used",
+        "medium": "Medium",
+        "emailThreadId": "Email thread ID",
+        "notFound": "Chat thread not found",
+        "loadError": "Failed to load chat thread"
+      }
+    },
     "documentation": {
       "title": "Documentation",
       "helpLink": "Help for this page",

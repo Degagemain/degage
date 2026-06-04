@@ -1321,6 +1321,37 @@
       "searchPlaceholder": "Rechercher des utilisateurs...",
       "tryAgain": "Réessayer"
     },
+    "chatConversations": {
+      "title": "Fils de chat",
+      "columns": {
+        "title": "Titre",
+        "user": "Utilisateur",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "filters": {
+        "user": "Utilisateur",
+        "userPlaceholder": "Rechercher des utilisateurs..."
+      },
+      "searchPlaceholder": "Rechercher des fils de chat...",
+      "emptyTitle": "Chat sans titre",
+      "anonymousUser": "Anonyme",
+      "tryAgain": "Réessayer",
+      "detail": {
+        "backToList": "Retour aux fils de chat",
+        "description": "Conversation de support enregistrée pour le débogage et l'amélioration de la qualité.",
+        "historyTitle": "Historique du chat",
+        "historyDescription": "{count} message(s)",
+        "noMessages": "Aucun message enregistré.",
+        "userMessage": "Utilisateur",
+        "assistantMessage": "Assistant",
+        "toolCalls": "Tool calls · {count} article(s) utilisé(s)",
+        "medium": "Canal",
+        "emailThreadId": "ID du fil e-mail",
+        "notFound": "Fil de chat introuvable",
+        "loadError": "Échec du chargement du fil de chat"
+      }
+    },
     "documentation": {
       "title": "Documentation",
       "helpLink": "Aide pour cette page",

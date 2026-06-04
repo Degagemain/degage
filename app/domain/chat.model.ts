@@ -47,6 +47,25 @@ export const chatConversationSchema = z
 
 export type ChatConversation = z.infer<typeof chatConversationSchema>;
 
+export const chatConversationListItemSchema = z
+  .object({
+    id: z.uuid(),
+    user: z
+      .object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+        email: z.string().email(),
+      })
+      .strict()
+      .nullable(),
+    title: z.string(),
+    createdAt: z.coerce.date().nullable().default(null),
+    updatedAt: z.coerce.date().nullable().default(null),
+  })
+  .strict();
+
+export type ChatConversationListItem = z.infer<typeof chatConversationListItemSchema>;
+
 export const chatConversationCreateInputSchema = z
   .object({
     userId: chatConversationSchema.shape.userId.optional(),

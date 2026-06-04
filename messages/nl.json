@@ -1321,6 +1321,37 @@
       "searchPlaceholder": "Zoek gebruikers...",
       "tryAgain": "Opnieuw proberen"
     },
+    "chatConversations": {
+      "title": "Chatgesprekken",
+      "columns": {
+        "title": "Titel",
+        "user": "Gebruiker",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "filters": {
+        "user": "Gebruiker",
+        "userPlaceholder": "Zoek gebruikers..."
+      },
+      "searchPlaceholder": "Zoek chatgesprekken...",
+      "emptyTitle": "Chat zonder titel",
+      "anonymousUser": "Anoniem",
+      "tryAgain": "Opnieuw proberen",
+      "detail": {
+        "backToList": "Terug naar chatgesprekken",
+        "description": "Bewaard supportgesprek voor debugging en kwaliteitsverbetering.",
+        "historyTitle": "Chatgeschiedenis",
+        "historyDescription": "{count} bericht(en)",
+        "noMessages": "Geen berichten bewaard.",
+        "userMessage": "Gebruiker",
+        "assistantMessage": "Assistent",
+        "toolCalls": "Tool calls · {count} artikel(en) gebruikt",
+        "medium": "Kanaal",
+        "emailThreadId": "E-mailthread-ID",
+        "notFound": "Chatgesprek niet gevonden",
+        "loadError": "Chatgesprek laden mislukt"
+      }
+    },
     "documentation": {
       "title": "Documentatie",
       "helpLink": "Hulp bij deze pagina",
