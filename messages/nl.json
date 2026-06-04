@@ -249,6 +249,36 @@
         "close": "Sluiten"
       }
     },
+    "translationOverrides": {
+      "title": "Vertaaloverrides",
+      "description": "Pas interface-teksten aan in de database terwijl de originele message-bestanden zichtbaar blijven.",
+      "searchPlaceholder": "Zoek originele waarden en overrides...",
+      "resultCount": "{count} van {total} teksten · {overrides} overrides",
+      "downloadPatch": "Patch downloaden",
+      "clearAll": "Overrides wissen",
+      "clearConfirm": "Alle vertaaloverrides uit de database wissen?",
+      "clearSuccess": "Vertaaloverrides gewist.",
+      "clearError": "Overrides wissen mislukt.",
+      "loadError": "Vertalingen laden mislukt.",
+      "saveSuccess": "Override opgeslagen.",
+      "saveError": "Override opslaan mislukt.",
+      "deleteSuccess": "Override verwijderd.",
+      "deleteError": "Override verwijderen mislukt.",
+      "tryAgain": "Opnieuw proberen",
+      "empty": "Geen teksten gevonden voor je zoekopdracht.",
+      "rootGroup": "Algemeen",
+      "original": "Origineel",
+      "override": "Override",
+      "missingOriginal": "Geen originele waarde voor deze taal.",
+      "overridePlaceholder": "Maak een override...",
+      "overridden": "Override",
+      "variables": "Toegestaan: {variables}",
+      "draftVariables": "Gebruikt: {variables}",
+      "invalidVariables": "Verwijder onbekende variabelen: {variables}",
+      "createOverride": "Override maken",
+      "saveOverride": "Opslaan",
+      "removeOverride": "Verwijderen"
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {

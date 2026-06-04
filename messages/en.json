@@ -249,6 +249,36 @@
         "close": "Close"
       }
     },
+    "translationOverrides": {
+      "title": "Translation overrides",
+      "description": "Tune interface strings in the database while keeping the original message files visible.",
+      "searchPlaceholder": "Search original and override values...",
+      "resultCount": "{count} of {total} strings · {overrides} overrides",
+      "downloadPatch": "Download patch",
+      "clearAll": "Clear overrides",
+      "clearConfirm": "Clear all translation overrides from the database?",
+      "clearSuccess": "Translation overrides cleared.",
+      "clearError": "Failed to clear overrides.",
+      "loadError": "Failed to load translations.",
+      "saveSuccess": "Override saved.",
+      "saveError": "Failed to save override.",
+      "deleteSuccess": "Override removed.",
+      "deleteError": "Failed to remove override.",
+      "tryAgain": "Try again",
+      "empty": "No strings match your search.",
+      "rootGroup": "General",
+      "original": "Original",
+      "override": "Override",
+      "missingOriginal": "No original value for this language.",
+      "overridePlaceholder": "Create an override...",
+      "overridden": "Overridden",
+      "variables": "Allowed: {variables}",
+      "draftVariables": "Uses: {variables}",
+      "invalidVariables": "Remove unknown variables: {variables}",
+      "createOverride": "Create override",
+      "saveOverride": "Save",
+      "removeOverride": "Remove"
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {

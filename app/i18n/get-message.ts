@@ -1,12 +1,12 @@
 import { getRequestContentLocale } from '@/context/request-context';
 import type { ContentLocale } from './locales';
+import { getMergedMessagesForLocale } from './message-loader';
 
 /**
  * Load messages for a locale (server-side). Used to resolve simulation step messages from JSON.
  */
 export async function getMessagesForLocale(locale: ContentLocale): Promise<Record<string, unknown>> {
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-  return messages as Record<string, unknown>;
+  return getMergedMessagesForLocale(locale);
 }
 
 /**

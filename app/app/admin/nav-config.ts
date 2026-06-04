@@ -1,14 +1,15 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, Layers, LineChart, MapPin, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Languages, Layers, LineChart, MapPin, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
-  translationKey: 'simulations' | 'users' | 'documentation';
+  translationKey: 'simulations' | 'users' | 'documentation' | 'translationOverrides';
   href: string;
   icon: LucideIcon;
 }[] = [
   { translationKey: 'simulations', href: '/app/admin/simulations', icon: Calculator },
   { translationKey: 'users', href: '/app/admin/users', icon: Users },
   { translationKey: 'documentation', href: '/app/admin/documentation', icon: BookOpen },
+  { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides', icon: Languages },
 ];
 
 /** Linked from the documentation admin “More” menu; listed in quick search (⌘K), not the sidebar. */
