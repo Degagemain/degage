@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -10,9 +9,7 @@ import { format } from 'date-fns';
 import type { ChatConversation, ChatMessage } from '@/domain/chat.model';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
-import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Skeleton } from '@/app/components/ui/skeleton';
 
 function formatDateTime(value: Date | string | null | undefined) {
@@ -28,7 +25,7 @@ function CitationTools({ message, t }: { message: ChatMessage; t: (key: string, 
   }
 
   return (
-    <Accordion type="single" collapsible className="bg-muted/40 mt-3 rounded-md border px-3">
+    <Accordion type="single" collapsible className="bg-background/70 mt-3 rounded-xl border px-3">
       <AccordionItem value="citations" className="border-b-0">
         <AccordionTrigger className="py-2 text-xs hover:no-underline">
           <span className="text-muted-foreground">{t('detail.toolCalls', { count: message.citations.length })}</span>
@@ -54,27 +51,25 @@ function ChatBubble({ message, t }: { message: ChatMessage; t: (key: string, val
   const isUser = message.role === 'user';
 
   return (
-    <Message from={message.role} className={isUser ? 'max-w-[80%]' : 'max-w-[86%]'}>
-      <div className={isUser ? 'text-right' : 'text-left'}>
-        <Badge variant={isUser ? 'secondary' : 'outline'} className="mb-1 font-normal">
-          {isUser ? t('detail.userMessage') : t('detail.assistantMessage')}
-        </Badge>
-      </div>
-      <MessageContent className={isUser ? undefined : 'bg-background rounded-lg border px-4 py-3 shadow-xs'}>
+    <Message from={message.role} className={isUser ? 'max-w-[78%]' : 'max-w-[84%]'}>
+      <MessageContent
+        className={
+          isUser
+            ? [
+                'group-[.is-user]:bg-primary',
+                'group-[.is-user]:text-primary-foreground',
+                'group-[.is-user]:rounded-2xl',
+                'group-[.is-user]:px-4',
+                'group-[.is-user]:py-3',
+              ].join(' ')
+            : 'bg-background rounded-2xl border px-4 py-3 shadow-xs'
+        }
+      >
         <MessageResponse>{message.content || '—'}</MessageResponse>
         <CitationTools message={message} t={t} />
       </MessageContent>
       <span className={`text-muted-foreground text-xs ${isUser ? 'text-right' : 'text-left'}`}>{formatDateTime(message.createdAt)}</span>
     </Message>
-  );
-}
-
-function FieldRow({ label, value }: { label: string; value: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-1 py-2 text-sm">
-      <span className="text-muted-foreground font-medium">{label}</span>
-      <span>{value ?? '—'}</span>
-    </div>
   );
 }
 
@@ -113,26 +108,24 @@ export default function ChatConversationDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
-        <Skeleton className="h-8 w-48" />
-        <Card>
-          <CardHeader>
-            <Skeleton className="h-6 w-56" />
-            <Skeleton className="h-4 w-full" />
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-3 py-4 md:px-4">
+        <Skeleton className="h-8 w-44" />
+        <div className="bg-card rounded-2xl border p-5 shadow-xs">
+          <Skeleton className="mb-2 h-7 w-64" />
+          <Skeleton className="mb-6 h-4 w-40" />
+          <div className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-20 w-full" />
+              <Skeleton key={i} className={`h-20 ${i % 2 === 0 ? 'mr-auto w-3/4' : 'ml-auto w-2/3'}`} />
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error || !conversation) {
     return (
-      <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-3 py-4 md:px-4">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/app/admin/chat-conversations">{t('detail.backToList')}</Link>
         </Button>
@@ -147,48 +140,36 @@ export default function ChatConversationDetailPage() {
   }
 
   const title = conversation.title.trim() || t('emptyTitle');
+  const participant = conversation.userId ?? t('anonymousUser');
 
   return (
-    <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
-      <div>
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-3 py-4 md:px-4">
+      <div className="flex items-center justify-between gap-3">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/app/admin/chat-conversations">{t('detail.backToList')}</Link>
         </Button>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{t('detail.description')}</CardDescription>
-          </CardHeader>
-          <CardContent className="divide-y">
-            <FieldRow label={t('columns.user')} value={conversation.userId ?? t('anonymousUser')} />
-            <FieldRow label={t('detail.medium')} value={conversation.medium} />
-            <FieldRow label={t('detail.emailThreadId')} value={conversation.emailThreadId} />
-            <FieldRow label={t('columns.created')} value={formatDateTime(conversation.createdAt)} />
-            <FieldRow label={t('columns.updated')} value={formatDateTime(conversation.updatedAt)} />
-          </CardContent>
-        </Card>
+      <section className="bg-card overflow-hidden rounded-2xl border shadow-xs">
+        <header className="border-b px-5 py-4">
+          <h1 className="truncate text-xl font-semibold">{title}</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {participant} / {formatDateTime(conversation.createdAt)}
+          </p>
+        </header>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('detail.historyTitle')}</CardTitle>
-            <CardDescription>{t('detail.historyDescription', { count: conversation.messages.length })}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {conversation.messages.length === 0 ? (
-              <p className="text-muted-foreground text-sm">{t('detail.noMessages')}</p>
-            ) : (
-              <div className="flex flex-col gap-5">
-                {conversation.messages.map((message) => (
-                  <ChatBubble key={message.id ?? `${message.role}-${message.createdAt}`} message={message} t={t} />
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+        <div className="bg-muted/20 px-4 py-5 md:px-6">
+          {conversation.messages.length === 0 ? (
+            <p className="text-muted-foreground text-sm">{t('detail.noMessages')}</p>
+          ) : (
+            <div className="flex flex-col gap-5">
+              {conversation.messages.map((message) => (
+                <ChatBubble key={message.id ?? `${message.role}-${message.createdAt}`} message={message} t={t} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

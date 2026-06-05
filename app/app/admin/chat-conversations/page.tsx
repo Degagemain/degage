@@ -54,7 +54,6 @@ export default function ChatConversationsPage() {
   const userIds = csv.userIds;
   const [userOptions, setUserOptions] = useState<SearchableOption[]>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    createdAt: false,
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
