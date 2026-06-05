@@ -2316,6 +2316,11 @@
   overflow-y: auto;
 }
 
+.searchDropdownSentinel {
+  height: 8px;
+  flex-shrink: 0;
+}
+
 .searchDropdownStatus {
   padding: var(--sim-s16) var(--sim-s24);
   font-family: var(--sim-sans);
