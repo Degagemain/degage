@@ -1095,7 +1095,7 @@
       },
       "bulkActions": {
         "label": "Selectie",
-        "moveHub": "Hub verplaatsen",
+        "update": "Bulk bijwerken",
         "delete": "Selectie verwijderen"
       },
       "bulkDelete": {
@@ -1112,19 +1112,25 @@
         "statusError": "Mislukt",
         "statusConflict": "Gekoppeld aan andere records"
       },
-      "bulkMoveHub": {
-        "title": "Hub verplaatsen",
-        "description": "Selecteer een hub om toe te wijzen aan de {count} geselecteerde gemeente(n).",
+      "bulkUpdate": {
+        "title": "Gemeenten bulk bijwerken",
+        "description": "De volgende {count} record(s) worden bijgewerkt. Niet-ingestelde velden blijven ongewijzigd.",
         "hubLabel": "Hub",
         "hubPlaceholder": "Selecteer hub…",
+        "highDemandLabel": "Hoge vraag",
+        "hasActiveMembersLabel": "Actieve leden",
+        "unsetOption": "Niet ingesteld",
+        "replaceOption": "Hub instellen",
+        "yesOption": "Ja",
+        "noOption": "Nee",
         "columnName": "Gemeente",
         "columnStatus": "Status",
-        "confirm": "Alles verplaatsen",
+        "confirm": "Alles bijwerken",
         "cancel": "Annuleren",
         "close": "Sluiten",
         "statusPending": "Wacht",
-        "statusMoving": "Verplaatsen…",
-        "statusSuccess": "Verplaatst",
+        "statusUpdating": "Bijwerken…",
+        "statusSuccess": "Bijgewerkt",
         "statusError": "Mislukt"
       },
       "bulkImport": {
