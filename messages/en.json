@@ -1134,7 +1134,7 @@
       },
       "bulkActions": {
         "label": "Selection",
-        "moveHub": "Move hub",
+        "update": "Bulk update",
         "delete": "Delete selected"
       },
       "bulkDelete": {
@@ -1151,19 +1151,25 @@
         "statusError": "Failed",
         "statusConflict": "Linked to other records"
       },
-      "bulkMoveHub": {
-        "title": "Move hub",
-        "description": "Select a hub to assign to the {count} selected town(s).",
+      "bulkUpdate": {
+        "title": "Bulk update towns",
+        "description": "The following {count} record(s) will be updated. Unset fields stay unchanged.",
         "hubLabel": "Hub",
         "hubPlaceholder": "Select hub…",
+        "highDemandLabel": "High demand",
+        "hasActiveMembersLabel": "Active members",
+        "unsetOption": "Unset",
+        "replaceOption": "Set hub",
+        "yesOption": "Yes",
+        "noOption": "No",
         "columnName": "Town",
         "columnStatus": "Status",
-        "confirm": "Move all",
+        "confirm": "Update all",
         "cancel": "Cancel",
         "close": "Close",
         "statusPending": "Pending",
-        "statusMoving": "Moving…",
-        "statusSuccess": "Moved",
+        "statusUpdating": "Updating…",
+        "statusSuccess": "Updated",
         "statusError": "Failed"
       },
       "bulkImport": {

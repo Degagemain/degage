@@ -3,51 +3,61 @@
 import { useCallback, useRef, useState } from 'react';
 import { CircleCheck, CircleX, Loader2, Minus } from 'lucide-react';
 
-import { Town } from '@/domain/town.model';
+import { Town, townSchema } from '@/domain/town.model';
 import { apiPut } from '@/app/lib/api-client';
 import { Button } from '@/app/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
+import { Field, FieldContent, FieldLabel } from '@/app/components/ui/field';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/components/ui/table';
 import { type SearchableOption, SearchableSelect } from '@/app/components/ui/searchable-select';
 
-export interface BulkMoveHubItem {
+export interface BulkUpdateTownItem {
   id: string;
   label: string;
   town: Town;
 }
 
-type ItemStatus = 'pending' | 'moving' | 'success' | 'error';
+type ItemStatus = 'pending' | 'updating' | 'success' | 'error';
+type BooleanUpdate = 'unset' | 'true' | 'false';
+type HubUpdate = 'unset' | 'replace';
 
 interface ItemResult {
   status: ItemStatus;
   error?: string;
 }
 
-export interface BulkMoveHubLabels {
+export interface BulkUpdateTownLabels {
   title: string;
   description: string;
   hubLabel: string;
   hubPlaceholder: string;
+  highDemandLabel: string;
+  hasActiveMembersLabel: string;
+  unsetOption: string;
+  replaceOption: string;
+  yesOption: string;
+  noOption: string;
   columnName: string;
   columnStatus: string;
   confirm: string;
   cancel: string;
   close: string;
   statusPending: string;
-  statusMoving: string;
+  statusUpdating: string;
   statusSuccess: string;
   statusError: string;
 }
 
-interface BulkMoveHubDialogProps {
+interface BulkUpdateTownDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  items: BulkMoveHubItem[];
+  items: BulkUpdateTownItem[];
   onComplete: () => void;
-  labels: BulkMoveHubLabels;
+  labels: BulkUpdateTownLabels;
 }
 
-function StatusCell({ result, labels }: { result: ItemResult; labels: BulkMoveHubLabels }) {
+function StatusCell({ result, labels }: { result: ItemResult; labels: BulkUpdateTownLabels }) {
   switch (result.status) {
     case 'pending':
       return (
@@ -56,11 +66,11 @@ function StatusCell({ result, labels }: { result: ItemResult; labels: BulkMoveHu
           {labels.statusPending}
         </span>
       );
-    case 'moving':
+    case 'updating':
       return (
         <span className="text-muted-foreground flex items-center gap-1.5 text-sm">
           <Loader2 className="size-4 animate-spin" />
-          {labels.statusMoving}
+          {labels.statusUpdating}
         </span>
       );
     case 'success':
@@ -80,15 +90,53 @@ function StatusCell({ result, labels }: { result: ItemResult; labels: BulkMoveHu
   }
 }
 
-export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, labels }: BulkMoveHubDialogProps) {
+function BooleanUpdateField({
+  label,
+  value,
+  onChange,
+  labels,
+  disabled,
+}: {
+  label: string;
+  value: BooleanUpdate;
+  onChange: (value: BooleanUpdate) => void;
+  labels: BulkUpdateTownLabels;
+  disabled: boolean;
+}) {
+  return (
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
+      <FieldContent>
+        <Select value={value} onValueChange={(next) => onChange(next as BooleanUpdate)} disabled={disabled}>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="unset">{labels.unsetOption}</SelectItem>
+            <SelectItem value="true">{labels.yesOption}</SelectItem>
+            <SelectItem value="false">{labels.noOption}</SelectItem>
+          </SelectContent>
+        </Select>
+      </FieldContent>
+    </Field>
+  );
+}
+
+export function BulkUpdateTownDialog({ open, onOpenChange, items, onComplete, labels }: BulkUpdateTownDialogProps) {
+  const [hubMode, setHubMode] = useState<HubUpdate>('unset');
   const [selectedHub, setSelectedHub] = useState<SearchableOption | null>(null);
+  const [highDemand, setHighDemand] = useState<BooleanUpdate>('unset');
+  const [hasActiveMembers, setHasActiveMembers] = useState<BooleanUpdate>('unset');
   const [results, setResults] = useState<Record<string, ItemResult>>({});
   const [isRunning, setIsRunning] = useState(false);
-  const isDone = !isRunning && Object.keys(results).length > 0;
   const abortRef = useRef(false);
 
+  const isDone = !isRunning && Object.keys(results).length > 0;
+  const hasSelectedUpdates = hubMode !== 'unset' || highDemand !== 'unset' || hasActiveMembers !== 'unset';
+  const canConfirm = hasSelectedUpdates && (hubMode !== 'replace' || selectedHub !== null);
+
   const handleConfirm = useCallback(async () => {
-    if (!selectedHub) return;
+    if (!canConfirm) return;
 
     setIsRunning(true);
     abortRef.current = false;
@@ -96,21 +144,21 @@ export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, label
     for (const item of items) {
       if (abortRef.current) break;
 
-      setResults((prev) => ({ ...prev, [item.id]: { status: 'moving' } }));
+      setResults((prev) => ({ ...prev, [item.id]: { status: 'updating' } }));
 
       try {
-        const updatedTown: Town = {
+        const updatedTown = townSchema.parse({
           id: item.town.id,
           zip: item.town.zip,
           name: item.town.name,
           municipality: item.town.municipality,
           province: item.town.province,
-          hub: { id: selectedHub.id, name: selectedHub.name },
-          highDemand: item.town.highDemand,
-          hasActiveMembers: item.town.hasActiveMembers,
+          hub: hubMode === 'unset' || !selectedHub ? item.town.hub : { id: selectedHub.id, name: selectedHub.name },
+          highDemand: highDemand === 'unset' ? item.town.highDemand : highDemand === 'true',
+          hasActiveMembers: hasActiveMembers === 'unset' ? item.town.hasActiveMembers : hasActiveMembers === 'true',
           createdAt: item.town.createdAt,
           updatedAt: item.town.updatedAt,
-        };
+        });
         const response = await apiPut(`/api/towns/${item.id}`, updatedTown);
 
         if (response.ok) {
@@ -124,17 +172,20 @@ export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, label
     }
 
     setIsRunning(false);
-  }, [items, selectedHub, labels.statusError]);
+  }, [canConfirm, hasActiveMembers, highDemand, hubMode, items, labels.statusError, selectedHub]);
 
   const handleClose = useCallback(() => {
     abortRef.current = true;
     const hadResults = Object.keys(results).length > 0;
-    setResults({});
+    setHubMode('unset');
     setSelectedHub(null);
+    setHighDemand('unset');
+    setHasActiveMembers('unset');
+    setResults({});
     setIsRunning(false);
     onOpenChange(false);
     if (hadResults) onComplete();
-  }, [results, onOpenChange, onComplete]);
+  }, [onComplete, onOpenChange, results]);
 
   return (
     <Dialog
@@ -149,15 +200,47 @@ export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, label
           <DialogDescription>{labels.description}</DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">{labels.hubLabel}</span>
-            <SearchableSelect
-              value={selectedHub?.id ?? ''}
-              selectedLabel={selectedHub?.name}
-              onValueChange={(id, option) => setSelectedHub(option)}
-              apiPath="hubs"
-              placeholder={labels.hubPlaceholder}
+        <div className="flex flex-col gap-4">
+          <div className="space-y-2">
+            <Field>
+              <FieldLabel>{labels.hubLabel}</FieldLabel>
+              <FieldContent>
+                <Select value={hubMode} onValueChange={(next) => setHubMode(next as HubUpdate)} disabled={isRunning || isDone}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="unset">{labels.unsetOption}</SelectItem>
+                    <SelectItem value="replace">{labels.replaceOption}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+            {hubMode === 'replace' ? (
+              <SearchableSelect
+                value={selectedHub?.id ?? ''}
+                selectedLabel={selectedHub?.name}
+                onValueChange={(_id, option) => setSelectedHub(option)}
+                apiPath="hubs"
+                placeholder={labels.hubPlaceholder}
+                disabled={isRunning || isDone}
+              />
+            ) : null}
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <BooleanUpdateField
+              label={labels.highDemandLabel}
+              value={highDemand}
+              onChange={setHighDemand}
+              labels={labels}
+              disabled={isRunning || isDone}
+            />
+            <BooleanUpdateField
+              label={labels.hasActiveMembersLabel}
+              value={hasActiveMembers}
+              onChange={setHasActiveMembers}
+              labels={labels}
               disabled={isRunning || isDone}
             />
           </div>
@@ -194,7 +277,7 @@ export function BulkMoveHubDialog({ open, onOpenChange, items, onComplete, label
               <Button variant="outline" onClick={handleClose} disabled={isRunning}>
                 {labels.cancel}
               </Button>
-              <Button onClick={handleConfirm} disabled={isRunning || !selectedHub}>
+              <Button onClick={handleConfirm} disabled={isRunning || !canConfirm || items.length === 0}>
                 {isRunning ? (
                   <>
                     <Loader2 className="mr-2 size-4 animate-spin" />

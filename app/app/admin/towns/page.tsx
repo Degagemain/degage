@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, MapPin, Plus, Trash2, X } from 'lucide-react';
+import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Town } from '@/domain/town.model';
@@ -27,7 +27,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
-import { BulkMoveHubDialog, type BulkMoveHubItem } from '@/app/components/bulk-move-hub-dialog';
+import { BulkUpdateTownDialog, type BulkUpdateTownItem } from '@/app/components/bulk-update-town-dialog';
 import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
@@ -127,7 +127,7 @@ export default function TownsPage() {
   const [townToDelete, setTownToDelete] = useState<Town | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
-  const [bulkMoveHubOpen, setBulkMoveHubOpen] = useState(false);
+  const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -279,7 +279,7 @@ export default function TownsPage() {
     [rowSelection, state.data],
   );
 
-  const selectedTownsFull: BulkMoveHubItem[] = useMemo(
+  const selectedTownsFull: BulkUpdateTownItem[] = useMemo(
     () =>
       Object.keys(rowSelection)
         .map((index) => state.data[parseInt(index)])
@@ -295,7 +295,7 @@ export default function TownsPage() {
     fetchTowns();
   }, [fetchTowns]);
 
-  const handleBulkMoveHubComplete = useCallback(() => {
+  const handleBulkUpdateComplete = useCallback(() => {
     setRowSelection({});
     fetchTowns();
   }, [fetchTowns]);
@@ -401,9 +401,9 @@ export default function TownsPage() {
             filterSlot={
               <>
                 <BulkActionsButton count={selectedTowns.length} label={t('bulkActions.label')}>
-                  <DropdownMenuItem onClick={() => setBulkMoveHubOpen(true)}>
-                    <MapPin />
-                    {t('bulkActions.moveHub')}
+                  <DropdownMenuItem onClick={() => setBulkUpdateOpen(true)}>
+                    <Pencil />
+                    {t('bulkActions.update')}
                   </DropdownMenuItem>
                   <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
                     <Trash2 />
@@ -494,25 +494,31 @@ export default function TownsPage() {
         }}
       />
 
-      <BulkMoveHubDialog
-        open={bulkMoveHubOpen}
-        onOpenChange={setBulkMoveHubOpen}
+      <BulkUpdateTownDialog
+        open={bulkUpdateOpen}
+        onOpenChange={setBulkUpdateOpen}
         items={selectedTownsFull}
-        onComplete={handleBulkMoveHubComplete}
+        onComplete={handleBulkUpdateComplete}
         labels={{
-          title: t('bulkMoveHub.title'),
-          description: t('bulkMoveHub.description', { count: selectedTownsFull.length }),
-          hubLabel: t('bulkMoveHub.hubLabel'),
-          hubPlaceholder: t('bulkMoveHub.hubPlaceholder'),
-          columnName: t('bulkMoveHub.columnName'),
-          columnStatus: t('bulkMoveHub.columnStatus'),
-          confirm: t('bulkMoveHub.confirm'),
-          cancel: t('bulkMoveHub.cancel'),
-          close: t('bulkMoveHub.close'),
-          statusPending: t('bulkMoveHub.statusPending'),
-          statusMoving: t('bulkMoveHub.statusMoving'),
-          statusSuccess: t('bulkMoveHub.statusSuccess'),
-          statusError: t('bulkMoveHub.statusError'),
+          title: t('bulkUpdate.title'),
+          description: t('bulkUpdate.description', { count: selectedTownsFull.length }),
+          hubLabel: t('bulkUpdate.hubLabel'),
+          hubPlaceholder: t('bulkUpdate.hubPlaceholder'),
+          highDemandLabel: t('bulkUpdate.highDemandLabel'),
+          hasActiveMembersLabel: t('bulkUpdate.hasActiveMembersLabel'),
+          unsetOption: t('bulkUpdate.unsetOption'),
+          replaceOption: t('bulkUpdate.replaceOption'),
+          yesOption: t('bulkUpdate.yesOption'),
+          noOption: t('bulkUpdate.noOption'),
+          columnName: t('bulkUpdate.columnName'),
+          columnStatus: t('bulkUpdate.columnStatus'),
+          confirm: t('bulkUpdate.confirm'),
+          cancel: t('bulkUpdate.cancel'),
+          close: t('bulkUpdate.close'),
+          statusPending: t('bulkUpdate.statusPending'),
+          statusUpdating: t('bulkUpdate.statusUpdating'),
+          statusSuccess: t('bulkUpdate.statusSuccess'),
+          statusError: t('bulkUpdate.statusError'),
         }}
       />
     </>
