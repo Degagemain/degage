@@ -37,8 +37,8 @@ const toUiMessagesFromStoredConversation = (
   }));
 };
 
-// Chat supports both anonymous visitors (public support widget) and authenticated users;
-// authenticated conversations are persisted, anonymous ones stream without persistence.
+// Chat supports both anonymous visitors (public support widget) and authenticated users.
+// Anonymous frontend conversations are persisted after the first message using a guest token.
 export const POST = withPublic(async (request: NextRequest, _context, session) => {
   const user = session?.user;
   const isAuthenticated = Boolean(user?.id);
@@ -48,6 +48,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
 
   const raw = (data ?? {}) as Record<string, unknown>;
   const conversationIdRaw = typeof raw.conversationId === 'string' ? raw.conversationId : null;
+  const guestTokenRaw = typeof raw.guestToken === 'string' ? raw.guestToken.trim() : '';
 
   const conversationIdResult = conversationIdRaw ? z.uuid().safeParse(conversationIdRaw) : null;
   if (conversationIdRaw && (!conversationIdResult || !conversationIdResult.success)) {
@@ -79,6 +80,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
   }
 
   let resolvedConversationId: string | null = null;
+  let resolvedGuestToken: string | null = null;
   let existingConversationMessages: Array<{
     id: string | null;
     externalId: string | null;
@@ -107,11 +109,24 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
         { status: 500 },
       );
     }
+  } else if (conversationId) {
+    if (!guestTokenRaw) {
+      return forbiddenResponse('Access denied');
+    }
+
+    const existingConversation = await readChatConversation(conversationId, null, { guestToken: guestTokenRaw });
+    if (!existingConversation) {
+      return notFoundResponse('Conversation not found');
+    }
+
+    resolvedConversationId = existingConversation.id;
+    resolvedGuestToken = existingConversation.guestToken;
+    existingConversationMessages = existingConversation.messages;
   }
 
   const directMessages = Array.isArray(raw.messages) ? (raw.messages as UIMessage[]) : [];
   const singleMessage = raw.message && typeof raw.message === 'object' ? (raw.message as UIMessage) : null;
-  const baseMessages = isAuthenticated ? toUiMessagesFromStoredConversation(existingConversationMessages) : [];
+  const baseMessages = resolvedConversationId ? toUiMessagesFromStoredConversation(existingConversationMessages) : [];
   const messages = directMessages.length > 0 ? directMessages : singleMessage ? [...baseMessages, singleMessage] : baseMessages;
 
   const lastUserMessage = [...messages].reverse().find((message) => message.role === 'user');
@@ -131,6 +146,20 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
           { status: 400 },
         );
       }
+
+      if (!resolvedConversationId) {
+        const guestToken = crypto.randomUUID();
+        const conversation = await createChatConversation({
+          userId: null,
+          guestToken,
+          title: text.slice(0, 80),
+          medium: 'frontend',
+        });
+        resolvedConversationId = conversation.id;
+        resolvedGuestToken = guestToken;
+        existingConversationMessages = [];
+      }
+
       if (resolvedConversationId) {
         await createMessage({
           conversationId: resolvedConversationId,
@@ -139,7 +168,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
           content: text,
         });
       }
-      if (resolvedConversationId && isAuthenticated && existingConversationMessages.length === 0) {
+      if (resolvedConversationId && existingConversationMessages.length === 0) {
         await updateChatConversation(resolvedConversationId, { title: text.slice(0, 80) });
       }
     }
@@ -156,7 +185,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
     replyStyle: 'chat',
     userLocale,
     onFinish: async ({ text, citations }) => {
-      if (!resolvedConversationId || !isAuthenticated) return;
+      if (!resolvedConversationId) return;
       const assistantText = text.trim();
       if (!assistantText) return;
       await createMessage({
@@ -173,7 +202,12 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
     messageMetadata: ({ part }) => {
       if (part.type === 'finish') {
         latestCitations = getLatestCitations();
-        return resolvedConversationId ? { conversationId: resolvedConversationId, citations: latestCitations } : { citations: latestCitations };
+        if (!resolvedConversationId) {
+          return { citations: latestCitations };
+        }
+        return resolvedGuestToken
+          ? { conversationId: resolvedConversationId, guestToken: resolvedGuestToken, citations: latestCitations }
+          : { conversationId: resolvedConversationId, citations: latestCitations };
       }
       return undefined;
     },

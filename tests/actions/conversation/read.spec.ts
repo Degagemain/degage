@@ -12,6 +12,7 @@ const conversation = (overrides: Partial<Awaited<ReturnType<typeof readChatConve
   userId: 'viewer-1',
   medium: 'frontend',
   emailThreadId: null,
+  guestToken: null,
   title: 'test',
   messages: [],
   createdAt: new Date(),
@@ -58,5 +59,17 @@ describe('readChatConversation', () => {
     vi.mocked(dbChatConversationRead).mockResolvedValueOnce(conversation({ userId: 'viewer-1' }) as any);
     const result = await readChatConversation('id', { id: 'viewer-1', role: 'user' });
     expect(result?.id).toBe('0c5bd3fa-876e-4b4f-a72f-3366a716874c');
+  });
+
+  it('allows guest token access to anonymous frontend conversations', async () => {
+    vi.mocked(dbChatConversationRead).mockResolvedValueOnce(conversation({ userId: null, guestToken: 'guest-token-1' }) as any);
+    const result = await readChatConversation('id', null, { guestToken: 'guest-token-1' });
+    expect(result?.id).toBe('0c5bd3fa-876e-4b4f-a72f-3366a716874c');
+  });
+
+  it('denies guest token access when token does not match', async () => {
+    vi.mocked(dbChatConversationRead).mockResolvedValueOnce(conversation({ userId: null, guestToken: 'guest-token-1' }) as any);
+    const result = await readChatConversation('id', null, { guestToken: 'wrong-token' });
+    expect(result).toBeNull();
   });
 });

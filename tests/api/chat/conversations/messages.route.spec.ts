@@ -69,6 +69,7 @@ describe('POST /api/chat/conversations/[id]/messages', () => {
       userId: 'user-1',
       medium: 'frontend',
       emailThreadId: null,
+      guestToken: null,
       title: '',
       messages: [],
       createdAt: new Date(),

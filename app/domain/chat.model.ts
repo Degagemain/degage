@@ -38,6 +38,7 @@ export const chatConversationSchema = z
     userId: z.string().min(1).nullable().default(null),
     medium: chatConversationMediumSchema.default('frontend'),
     emailThreadId: z.string().min(1).nullable().default(null),
+    guestToken: z.string().min(1).nullable().default(null),
     title: z.string().default(''),
     messages: z.array(chatMessageSchema).default([]),
     createdAt: z.coerce.date().nullable().default(null),
@@ -52,6 +53,7 @@ export const chatConversationCreateInputSchema = z
     userId: chatConversationSchema.shape.userId.optional(),
     medium: chatConversationSchema.shape.medium.optional(),
     emailThreadId: chatConversationSchema.shape.emailThreadId.optional(),
+    guestToken: chatConversationSchema.shape.guestToken.optional(),
     title: chatConversationSchema.shape.title.optional(),
   })
   .strict();

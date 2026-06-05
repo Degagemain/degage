@@ -55,6 +55,7 @@ describe('POST /api/chat', () => {
       userId: 'user-1',
       medium: 'frontend',
       emailThreadId: null,
+      guestToken: null,
       title: '',
       messages: [],
       createdAt: new Date(),
@@ -103,6 +104,7 @@ describe('POST /api/chat', () => {
       userId: 'admin-1',
       medium: 'frontend',
       emailThreadId: null,
+      guestToken: null,
       title: '',
       messages: [],
       createdAt: new Date(),
@@ -135,6 +137,120 @@ describe('POST /api/chat', () => {
     expect(vi.mocked(generateSupportReplyStream).mock.calls[0]?.[1]).toMatchObject({ audienceOverride: 'user' });
   });
 
+  it('persists anonymous conversations after the first message', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue(null);
+    vi.mocked(createChatConversation).mockResolvedValueOnce({
+      id: '6eccebe4-069a-4292-8d89-1f40392b935d',
+      userId: null,
+      medium: 'frontend',
+      emailThreadId: null,
+      guestToken: 'guest-token-1',
+      title: 'Hello',
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async (_messages: any, options: any) => {
+      await options.onFinish?.({ text: 'anonymous answer', citations: [] });
+      return {
+        result: {
+          toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+        } as any,
+        getLatestCitations: () => [],
+      };
+    });
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          {
+            id: 'u1',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Hello' }],
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request as any);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(response.status).toBe(200);
+    expect(createChatConversation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: null,
+        guestToken: expect.any(String),
+        medium: 'frontend',
+      }),
+    );
+    expect(createMessage).toHaveBeenCalled();
+    expect(vi.mocked(createMessage).mock.calls.some(([input]) => input.role === 'assistant' && input.content === 'anonymous answer')).toBe(
+      true,
+    );
+  });
+
+  it('resumes anonymous conversations when conversationId and guestToken are provided', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue(null);
+    vi.mocked(readChatConversation).mockReset();
+    vi.mocked(readChatConversation).mockResolvedValue({
+      id: '6eccebe4-069a-4292-8d89-1f40392b935d',
+      userId: null,
+      medium: 'frontend',
+      emailThreadId: null,
+      guestToken: 'guest-token-1',
+      title: 'Hello',
+      messages: [
+        {
+          id: 'm1',
+          conversationId: '6eccebe4-069a-4292-8d89-1f40392b935d',
+          externalId: 'u1',
+          externalMessageId: null,
+          role: 'user',
+          content: 'Hello',
+          citations: [],
+          createdAt: new Date(),
+        },
+      ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async () => ({
+      result: {
+        toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+      } as any,
+      getLatestCitations: () => [],
+    }));
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        conversationId: '6eccebe4-069a-4292-8d89-1f40392b935d',
+        guestToken: 'guest-token-1',
+        messages: [
+          {
+            id: 'u1',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Hello' }],
+          },
+          {
+            id: 'u2',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Follow up' }],
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request as any);
+    expect(response.status).toBe(200);
+    expect(createChatConversation).not.toHaveBeenCalled();
+    expect(readChatConversation).toHaveBeenCalledWith('6eccebe4-069a-4292-8d89-1f40392b935d', null, {
+      guestToken: 'guest-token-1',
+    });
+  });
+
   it('does not apply previewAudience for non-admin users', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({
       user: { id: 'user-1', role: 'user', locale: 'en' },
@@ -145,6 +261,7 @@ describe('POST /api/chat', () => {
       userId: 'user-1',
       medium: 'frontend',
       emailThreadId: null,
+      guestToken: null,
       title: '',
       messages: [],
       createdAt: new Date(),
