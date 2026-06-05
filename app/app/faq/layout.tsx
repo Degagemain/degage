@@ -6,7 +6,7 @@ import { FaqSupportFab } from './components/faq-support-fab';
 
 export default function FaqLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PublicShell>
+    <PublicShell heroGlow>
       {children}
       <FaqSupportFab />
     </PublicShell>
