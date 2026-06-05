@@ -183,6 +183,7 @@
       "administration": "Administratie",
       "panel": "Beheerpaneel",
       "settings": "Instellingen",
+      "coreSettings": "Kern",
       "carSettings": "Auto",
       "simulation": "Simulaties",
       "geoSettings": "Geo"
@@ -248,6 +249,44 @@
         "cancel": "Annuleren",
         "close": "Sluiten"
       }
+    },
+    "translationOverrides": {
+      "title": "Vertaaloverrides",
+      "description": "Pas interface-teksten aan in de database terwijl de originele message-bestanden zichtbaar blijven.",
+      "listDescription": "Zoek op tekstwaarde en open daarna een sleutel om overrides te bewerken.",
+      "searchPlaceholder": "Zoek waarden...",
+      "resultCount": "{count} van {total} teksten · {overrides} overrides",
+      "downloadPatch": "Patch downloaden",
+      "clearAll": "Overrides wissen",
+      "clearConfirm": "Alle vertaaloverrides uit de database wissen?",
+      "clearSuccess": "Vertaaloverrides gewist.",
+      "clearError": "Overrides wissen mislukt.",
+      "loadError": "Vertalingen laden mislukt.",
+      "saveSuccess": "Override opgeslagen.",
+      "saveError": "Override opslaan mislukt.",
+      "deleteSuccess": "Override verwijderd.",
+      "deleteError": "Override verwijderen mislukt.",
+      "tryAgain": "Opnieuw proberen",
+      "empty": "Geen teksten gevonden voor je zoekopdracht.",
+      "notFound": "Vertaalsleutel niet gevonden.",
+      "backToList": "Terug naar vertalingen",
+      "detailEyebrow": "Vertaalsleutel",
+      "detailHelp": "Gebruik de taaltabs om overrides te bewerken. Maak een opgeslagen waarde leeg en sla opnieuw op om die override te verwijderen.",
+      "columns": {
+        "key": "Sleutel",
+        "value": "Waarde",
+        "status": "Status"
+      },
+      "original": "Origineel",
+      "override": "Override",
+      "missingOriginal": "Geen originele waarde voor deze taal.",
+      "overridePlaceholderForLocale": "Override ({locale})",
+      "overridden": "Override",
+      "invalidVariables": "Verwijder onbekende variabelen: {variables}",
+      "currentLanguageOverride": "Override getoond voor je huidige taal",
+      "saving": "Opslaan…",
+      "saveOverride": "Opslaan",
+      "removeOverride": "Verwijderen"
     },
     "carBrands": {
       "title": "Automerken",

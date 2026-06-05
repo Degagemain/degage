@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, Layers, LineChart, MapPin, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Layers, LineChart, MapPin, Settings, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
   translationKey: 'simulations' | 'users' | 'documentation';
@@ -28,12 +28,19 @@ export const CAR_SETTINGS_ITEMS: {
   { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
 ];
 
+export const CORE_SETTINGS_ITEMS: {
+  translationKey: 'systemParameters' | 'translationOverrides';
+  href: string;
+}[] = [
+  { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
+  { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides' },
+];
+
 export const SIMULATION_ITEMS: {
   translationKey:
     | 'carPriceEstimates'
     | 'carInfos'
     | 'insurancePriceBenchmarks'
-    | 'systemParameters'
     | 'carTaxBaseRates'
     | 'carTaxFlatRates'
     | 'carTaxEuroNormAdjustments';
@@ -42,7 +49,6 @@ export const SIMULATION_ITEMS: {
   { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
   { translationKey: 'carInfos', href: '/app/admin/car-infos' },
   { translationKey: 'insurancePriceBenchmarks', href: '/app/admin/insurance-price-benchmarks' },
-  { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'carTaxBaseRates', href: '/app/admin/car-tax-base-rates' },
   { translationKey: 'carTaxFlatRates', href: '/app/admin/car-tax-flat-rates' },
   { translationKey: 'carTaxEuroNormAdjustments', href: '/app/admin/car-tax-euro-norm-adjustments' },
@@ -60,6 +66,7 @@ export const GEO_SETTINGS_ITEMS: {
 
 export type MainItemTranslationKey = (typeof MAIN_ITEMS)[number]['translationKey'];
 export type CarSettingsTranslationKey = (typeof CAR_SETTINGS_ITEMS)[number]['translationKey'];
+export type CoreSettingsTranslationKey = (typeof CORE_SETTINGS_ITEMS)[number]['translationKey'];
 export type SimulationSettingsTranslationKey = (typeof SIMULATION_ITEMS)[number]['translationKey'];
 export type GeoSettingsTranslationKey = (typeof GEO_SETTINGS_ITEMS)[number]['translationKey'];
 
@@ -67,16 +74,19 @@ export type GeoSettingsTranslationKey = (typeof GEO_SETTINGS_ITEMS)[number]['tra
 export const ALL_PAGE_ITEMS = [
   ...MAIN_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...DOCUMENTATION_SUB_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
+  ...CORE_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...CAR_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...SIMULATION_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...GEO_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
 ];
 
+export const CORE_SETTINGS_GROUP_KEY = 'core' as const;
 export const CAR_SETTINGS_GROUP_KEY = 'car' as const;
 export const SIMULATION_SETTINGS_GROUP_KEY = 'simulation' as const;
 export const GEO_SETTINGS_GROUP_KEY = 'geo' as const;
 
 export const SIDEBAR_SETTINGS_ICONS = {
+  core: Settings,
   car: Settings2,
   simulation: LineChart,
   geo: MapPin,

@@ -492,6 +492,18 @@ model DocumentationChunk {
     @@index([locale])
 }
 
+model TranslationOverride {
+    id        String   @id @default(uuid())
+    key       String
+    locale    String
+    value     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([key, locale])
+    @@index([locale])
+}
+
 model ChatConversation {
     id            String                 @id @default(uuid())
     userId        String?

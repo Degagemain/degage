@@ -183,6 +183,7 @@
       "administration": "Administration",
       "panel": "Admin Panel",
       "settings": "Settings",
+      "coreSettings": "Core",
       "carSettings": "Car",
       "simulation": "Simulation",
       "geoSettings": "Geo"
@@ -248,6 +249,44 @@
         "cancel": "Cancel",
         "close": "Close"
       }
+    },
+    "translationOverrides": {
+      "title": "Translation overrides",
+      "description": "Tune interface strings in the database while keeping the original message files visible.",
+      "listDescription": "Search by text value, then open a key to edit its overrides.",
+      "searchPlaceholder": "Search values...",
+      "resultCount": "{count} of {total} strings · {overrides} overrides",
+      "downloadPatch": "Download patch",
+      "clearAll": "Clear overrides",
+      "clearConfirm": "Clear all translation overrides from the database?",
+      "clearSuccess": "Translation overrides cleared.",
+      "clearError": "Failed to clear overrides.",
+      "loadError": "Failed to load translations.",
+      "saveSuccess": "Override saved.",
+      "saveError": "Failed to save override.",
+      "deleteSuccess": "Override removed.",
+      "deleteError": "Failed to remove override.",
+      "tryAgain": "Try again",
+      "empty": "No strings match your search.",
+      "notFound": "Translation key not found.",
+      "backToList": "Back to translations",
+      "detailEyebrow": "Translation key",
+      "detailHelp": "Use the language tabs to edit overrides. Clear a saved value and save again to remove that override.",
+      "columns": {
+        "key": "Key",
+        "value": "Value",
+        "status": "Status"
+      },
+      "original": "Original",
+      "override": "Override",
+      "missingOriginal": "No original value for this language.",
+      "overridePlaceholderForLocale": "Override ({locale})",
+      "overridden": "Overridden",
+      "invalidVariables": "Remove unknown variables: {variables}",
+      "currentLanguageOverride": "Override shown for your current language",
+      "saving": "Saving…",
+      "saveOverride": "Save",
+      "removeOverride": "Remove"
     },
     "carBrands": {
       "title": "Car Brands",

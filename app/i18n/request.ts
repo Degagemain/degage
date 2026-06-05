@@ -1,6 +1,7 @@
 import { getRequestConfig } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import { type UILocale, defaultUILocale, uiLocales } from './locales';
+import { getMergedMessagesForLocale } from './message-loader';
 
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();
@@ -12,7 +13,7 @@ export default getRequestConfig(async () => {
     locale = cookieLocale as UILocale;
   }
 
-  const messages = (await import(`../../messages/${locale}.json`)).default;
+  const messages = await getMergedMessagesForLocale(locale);
 
   return {
     locale,

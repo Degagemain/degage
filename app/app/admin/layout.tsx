@@ -9,6 +9,7 @@ import { ChevronDown, ChevronsUpDown, CircleHelp, MessagesSquare } from 'lucide-
 import {
   ALL_PAGE_ITEMS,
   CAR_SETTINGS_ITEMS,
+  CORE_SETTINGS_ITEMS,
   GEO_SETTINGS_ITEMS,
   MAIN_ITEMS,
   SIDEBAR_SETTINGS_ICONS,
@@ -173,6 +174,35 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               <SidebarGroupLabel>{t('sidebar.settings')}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                  <Collapsible defaultOpen={false} className="group/collapsible">
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton tooltip={t('sidebar.coreSettings')}>
+                          <SIDEBAR_SETTINGS_ICONS.core />
+                          <span>{t('sidebar.coreSettings')}</span>
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {CORE_SETTINGS_ITEMS.map((item) => {
+                            const title = t(`${item.translationKey}.title`);
+                            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                            return (
+                              <SidebarMenuSubItem key={item.href}>
+                                <SidebarMenuSubButton asChild isActive={isActive}>
+                                  <Link href={item.href}>
+                                    <span>{title}</span>
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            );
+                          })}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+
                   <Collapsible defaultOpen={false} className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>

@@ -183,6 +183,7 @@
       "administration": "Administration",
       "panel": "Panneau d'administration",
       "settings": "Paramètres",
+      "coreSettings": "Core",
       "carSettings": "Voiture",
       "simulation": "Simulation",
       "geoSettings": "Geo"
@@ -248,6 +249,44 @@
         "cancel": "Annuler",
         "close": "Fermer"
       }
+    },
+    "translationOverrides": {
+      "title": "Surcharges de traduction",
+      "description": "Adaptez les textes de l'interface dans la base de données tout en gardant les fichiers de messages originaux visibles.",
+      "listDescription": "Recherchez par valeur de texte, puis ouvrez une clé pour modifier ses surcharges.",
+      "searchPlaceholder": "Rechercher des valeurs...",
+      "resultCount": "{count} sur {total} textes · {overrides} surcharges",
+      "downloadPatch": "Télécharger le patch",
+      "clearAll": "Effacer les surcharges",
+      "clearConfirm": "Effacer toutes les surcharges de traduction de la base de données ?",
+      "clearSuccess": "Surcharges de traduction effacées.",
+      "clearError": "Échec de l'effacement des surcharges.",
+      "loadError": "Échec du chargement des traductions.",
+      "saveSuccess": "Surcharge enregistrée.",
+      "saveError": "Échec de l'enregistrement de la surcharge.",
+      "deleteSuccess": "Surcharge supprimée.",
+      "deleteError": "Échec de la suppression de la surcharge.",
+      "tryAgain": "Réessayer",
+      "empty": "Aucun texte ne correspond à votre recherche.",
+      "notFound": "Clé de traduction introuvable.",
+      "backToList": "Retour aux traductions",
+      "detailEyebrow": "Clé de traduction",
+      "detailHelp": "Utilisez les onglets de langue pour modifier les surcharges. Effacez une valeur enregistrée puis sauvegardez pour supprimer cette surcharge.",
+      "columns": {
+        "key": "Clé",
+        "value": "Valeur",
+        "status": "Statut"
+      },
+      "original": "Original",
+      "override": "Surcharge",
+      "missingOriginal": "Aucune valeur originale pour cette langue.",
+      "overridePlaceholderForLocale": "Surcharge ({locale})",
+      "overridden": "Surchargé",
+      "invalidVariables": "Supprimez les variables inconnues : {variables}",
+      "currentLanguageOverride": "Surcharge affichée pour votre langue actuelle",
+      "saving": "Enregistrement…",
+      "saveOverride": "Enregistrer",
+      "removeOverride": "Supprimer"
     },
     "carBrands": {
       "title": "Marques",
