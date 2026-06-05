@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { formatTranslationKeyPath, getEffectiveTranslationValue } from '@/app/admin/translation-overrides/translation-overrides-utils';
+import {
+  formatTranslationKeyPath,
+  getEffectiveTranslationValue,
+  getHighlightedTextParts,
+} from '@/app/admin/translation-overrides/translation-overrides-utils';
 
 describe('translation override admin utils', () => {
   it('formats nested translation keys as a readable path', () => {
@@ -21,5 +25,24 @@ describe('translation override admin utils', () => {
         'en',
       ),
     ).toBe('Interface language');
+  });
+
+  it('splits highlighted search matches case-insensitively', () => {
+    expect(getHighlightedTextParts('Interface language label', 'LANG')).toEqual([
+      { text: 'Interface ', isMatch: false },
+      { text: 'lang', isMatch: true },
+      { text: 'uage label', isMatch: false },
+    ]);
+  });
+
+  it('highlights repeated search matches', () => {
+    expect(getHighlightedTextParts('test Test tester', 'test')).toEqual([
+      { text: 'test', isMatch: true },
+      { text: ' ', isMatch: false },
+      { text: 'Test', isMatch: true },
+      { text: ' ', isMatch: false },
+      { text: 'test', isMatch: true },
+      { text: 'er', isMatch: false },
+    ]);
   });
 });

@@ -13,7 +13,12 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { Badge } from '@/app/components/ui/badge';
-import { formatTranslationKeyPath, getEffectiveTranslationValue, getTranslationSearchValues } from './translation-overrides-utils';
+import {
+  formatTranslationKeyPath,
+  getEffectiveTranslationValue,
+  getHighlightedTextParts,
+  getTranslationSearchValues,
+} from './translation-overrides-utils';
 
 interface TranslationOverridesState {
   catalog: TranslationCatalog | null;
@@ -22,6 +27,20 @@ interface TranslationOverridesState {
 }
 
 const getCurrentLocale = (locale: string): UILocale => (uiLocales.includes(locale as UILocale) ? (locale as UILocale) : defaultUILocale);
+
+const HighlightedValue = ({ value, query }: { value: string; query: string }) => (
+  <>
+    {getHighlightedTextParts(value, query).map((part, index) =>
+      part.isMatch ? (
+        <mark key={`${part.text}-${index}`} className="bg-yellow-200 px-0.5 text-inherit dark:bg-yellow-800/70">
+          {part.text}
+        </mark>
+      ) : (
+        <span key={`${part.text}-${index}`}>{part.text}</span>
+      ),
+    )}
+  </>
+);
 
 export default function TranslationOverridesPage() {
   const t = useTranslations('admin.translationOverrides');
@@ -142,6 +161,7 @@ export default function TranslationOverridesPage() {
           {filteredEntries.map((entry) => {
             const currentValue = entry.values[currentLocale];
             const hasOverride = state.catalog!.locales.some((locale) => entry.values[locale].override != null);
+            const effectiveValue = getEffectiveTranslationValue(entry, currentLocale);
             return (
               <tr key={entry.key} className="hover:bg-muted/40 border-b transition-colors last:border-b-0">
                 <td className="px-4 py-3 align-top">
@@ -154,7 +174,9 @@ export default function TranslationOverridesPage() {
                   <div className="text-muted-foreground mt-1 font-mono text-xs">{entry.key}</div>
                 </td>
                 <td className="px-4 py-3 align-top">
-                  <div className="line-clamp-3 whitespace-pre-wrap">{getEffectiveTranslationValue(entry, currentLocale)}</div>
+                  <div className="line-clamp-3 whitespace-pre-wrap">
+                    <HighlightedValue value={effectiveValue} query={query} />
+                  </div>
                   {currentValue.override != null && <div className="text-muted-foreground mt-1 text-xs">{t('currentLanguageOverride')}</div>}
                 </td>
                 <td className="px-4 py-3 text-right align-top">{hasOverride ? <Badge variant="outline">{t('overridden')}</Badge> : null}</td>
