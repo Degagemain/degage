@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { ArrowLeft, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -13,8 +13,9 @@ import { ContentLocale, contentLocales, defaultContentLocale, uiLocales } from '
 import { validateOverrideVariables } from '@/i18n/message-utils';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { FieldGroup } from '@/app/components/ui/field';
-import { AdminTranslatedStringField } from '@/app/components/form/admin-translated-string-field';
+import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/app/components/ui/field';
+import { Textarea } from '@/app/components/ui/textarea';
+import { AdminLocaleTabsControl } from '@/app/components/form/admin-locale-tabs-control';
 import { emptyContentLocaleRecord } from '@/app/components/form/empty-content-locale-record';
 import { type TranslationCatalogEntry, formatTranslationKeyPath } from '../translation-overrides-utils';
 
@@ -171,10 +172,10 @@ export default function TranslationOverrideDetailPage() {
 
       <div className="min-h-0 flex-1 overflow-auto">
         {state.isLoading ? (
-          <div className="space-y-6 px-3 py-4 md:px-4">
-            <Skeleton className="h-16 w-full max-w-2xl" />
-            <Skeleton className="h-20 w-full max-w-2xl" />
-            <Skeleton className="h-20 w-full max-w-2xl" />
+          <div className="space-y-6 px-4 py-6 md:px-6 md:py-8">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
           </div>
         ) : !entry ? (
           <div className="flex h-40 items-center justify-center px-4 text-center">
@@ -182,7 +183,7 @@ export default function TranslationOverrideDetailPage() {
           </div>
         ) : (
           <form id={TRANSLATION_OVERRIDE_FORM_ID} onSubmit={saveOverrides} className="px-4 py-6 md:px-6 md:py-8">
-            <FieldGroup className="max-w-2xl gap-6">
+            <FieldGroup className="gap-6">
               <div>
                 <p className="text-muted-foreground text-sm">{t('detailEyebrow')}</p>
                 <h1 className="mt-1 text-xl font-semibold">{formatTranslationKeyPath(entry.segments)}</h1>
@@ -190,21 +191,45 @@ export default function TranslationOverrideDetailPage() {
               </div>
 
               <div>
-                <div className="text-muted-foreground mb-1 text-sm font-medium">{t('original')}</div>
-                <div className="bg-muted/50 min-h-16 rounded-md p-3 text-sm whitespace-pre-wrap">{activeOriginal || t('missingOriginal')}</div>
+                <div className="mb-1 text-sm font-medium">{t('original')}</div>
+                <p className="text-muted-foreground max-w-4xl text-sm whitespace-pre-wrap">{activeOriginal || t('missingOriginal')}</p>
               </div>
 
-              <AdminTranslatedStringField<TranslationOverrideFormValues>
-                control={form.control}
-                activeLocale={activeLocale}
-                onActiveLocaleChange={setActiveLocale}
-                label={t('override')}
-                getPlaceholder={(locale) => t('overridePlaceholderForLocale', { locale: locale.toUpperCase() })}
-                disabled={isSubmitting}
-                errors={translationErrors}
-              />
-
-              <p className="text-muted-foreground text-sm">{t('detailHelp')}</p>
+              <Field data-invalid={Boolean(translationErrors[activeLocale])}>
+                <FieldContent>
+                  <div className="flex items-center justify-between gap-3">
+                    <FieldLabel className="mb-0">{t('override')}</FieldLabel>
+                    <AdminLocaleTabsControl
+                      locales={contentLocales}
+                      activeLocale={activeLocale}
+                      onLocaleChange={setActiveLocale}
+                      errorLocales={contentLocales.filter((locale) => Boolean(translationErrors[locale]))}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                  <Controller
+                    name="translations"
+                    control={form.control}
+                    render={({ field }) => (
+                      <Textarea
+                        value={field.value?.[activeLocale] ?? ''}
+                        onChange={(event) =>
+                          field.onChange({
+                            ...(field.value ?? emptyContentLocaleRecord()),
+                            [activeLocale]: event.target.value,
+                          })
+                        }
+                        placeholder={t('overridePlaceholderForLocale', { locale: activeLocale.toUpperCase() })}
+                        aria-invalid={Boolean(translationErrors[activeLocale])}
+                        disabled={isSubmitting}
+                        rows={4}
+                      />
+                    )}
+                  />
+                  <FieldError>{translationErrors[activeLocale]?.message}</FieldError>
+                  <FieldDescription>{t('detailHelp')}</FieldDescription>
+                </FieldContent>
+              </Field>
             </FieldGroup>
           </form>
         )}
