@@ -253,7 +253,7 @@
       "title": "Surcharges de traduction",
       "description": "Adaptez les textes de l'interface dans la base de données tout en gardant les fichiers de messages originaux visibles.",
       "listDescription": "Recherchez par valeur de texte, puis ouvrez une clé pour modifier ses surcharges.",
-      "searchPlaceholder": "Rechercher dans les valeurs originales et les surcharges...",
+      "searchPlaceholder": "Rechercher des valeurs...",
       "resultCount": "{count} sur {total} textes · {overrides} surcharges",
       "downloadPatch": "Télécharger le patch",
       "clearAll": "Effacer les surcharges",
@@ -283,6 +283,7 @@
       "overridden": "Surchargé",
       "invalidVariables": "Supprimez les variables inconnues : {variables}",
       "currentLanguageOverride": "Surcharge affichée pour votre langue actuelle",
+      "saving": "Enregistrement…",
       "saveOverride": "Enregistrer",
       "removeOverride": "Supprimer"
     },

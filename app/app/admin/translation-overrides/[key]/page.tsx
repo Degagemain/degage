@@ -18,6 +18,8 @@ import { AdminTranslatedStringField } from '@/app/components/form/admin-translat
 import { emptyContentLocaleRecord } from '@/app/components/form/empty-content-locale-record';
 import { type TranslationCatalogEntry, formatTranslationKeyPath } from '../translation-overrides-utils';
 
+const TRANSLATION_OVERRIDE_FORM_ID = 'translation-override-editor-form';
+
 interface DetailState {
   catalog: TranslationCatalog | null;
   isLoading: boolean;
@@ -145,62 +147,66 @@ export default function TranslationOverrideDetailPage() {
   }
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto p-4">
-      <div className="mx-auto flex max-w-3xl flex-col gap-4">
-        <Button variant="ghost" size="sm" asChild className="w-fit">
-          <Link href="/app/admin/translation-overrides">
-            <ArrowLeft className="size-4" />
-            {t('backToList')}
-          </Link>
-        </Button>
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="border-b px-3 md:px-4">
+        <div className="flex h-14 items-center justify-start gap-2">
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/app/admin/translation-overrides">
+              <ArrowLeft className="size-3.5" />
+              {t('backToList')}
+            </Link>
+          </Button>
+          <Button
+            type="submit"
+            form={TRANSLATION_OVERRIDE_FORM_ID}
+            disabled={state.isLoading || isSubmitting || !entry || hasErrors}
+            variant="outline"
+            size="sm"
+          >
+            <Save className="size-3.5" />
+            {isSubmitting ? t('saving') : t('saveOverride')}
+          </Button>
+        </div>
+      </div>
 
+      <div className="min-h-0 flex-1 overflow-auto">
         {state.isLoading ? (
-          <div className="space-y-3">
-            <Skeleton className="h-24 rounded-lg" />
-            <Skeleton className="h-64 rounded-lg" />
+          <div className="space-y-6 px-3 py-4 md:px-4">
+            <Skeleton className="h-16 w-full max-w-2xl" />
+            <Skeleton className="h-20 w-full max-w-2xl" />
+            <Skeleton className="h-20 w-full max-w-2xl" />
           </div>
         ) : !entry ? (
-          <div className="bg-card rounded-lg border p-10 text-center">
+          <div className="flex h-40 items-center justify-center px-4 text-center">
             <p className="text-muted-foreground">{t('notFound')}</p>
           </div>
         ) : (
-          <>
-            <div className="bg-card rounded-lg border p-5 shadow-xs">
-              <p className="text-muted-foreground text-sm">{t('detailEyebrow')}</p>
-              <h1 className="mt-1 text-xl font-semibold">{formatTranslationKeyPath(entry.segments)}</h1>
-              <p className="text-muted-foreground mt-2 font-mono text-xs">{entry.key}</p>
-            </div>
+          <form id={TRANSLATION_OVERRIDE_FORM_ID} onSubmit={saveOverrides} className="px-4 py-6 md:px-6 md:py-8">
+            <FieldGroup className="max-w-2xl gap-6">
+              <div>
+                <p className="text-muted-foreground text-sm">{t('detailEyebrow')}</p>
+                <h1 className="mt-1 text-xl font-semibold">{formatTranslationKeyPath(entry.segments)}</h1>
+                <p className="text-muted-foreground mt-2 font-mono text-xs">{entry.key}</p>
+              </div>
 
-            <form onSubmit={saveOverrides} className="bg-card rounded-lg border p-5 shadow-xs">
-              <FieldGroup className="gap-6">
-                <div>
-                  <div className="text-muted-foreground mb-1 text-sm font-medium">{t('original')}</div>
-                  <div className="bg-muted/50 min-h-16 rounded-md p-3 text-sm whitespace-pre-wrap">
-                    {activeOriginal || t('missingOriginal')}
-                  </div>
-                </div>
+              <div>
+                <div className="text-muted-foreground mb-1 text-sm font-medium">{t('original')}</div>
+                <div className="bg-muted/50 min-h-16 rounded-md p-3 text-sm whitespace-pre-wrap">{activeOriginal || t('missingOriginal')}</div>
+              </div>
 
-                <AdminTranslatedStringField<TranslationOverrideFormValues>
-                  control={form.control}
-                  activeLocale={activeLocale}
-                  onActiveLocaleChange={setActiveLocale}
-                  label={t('override')}
-                  getPlaceholder={(locale) => t('overridePlaceholderForLocale', { locale: locale.toUpperCase() })}
-                  disabled={isSubmitting}
-                  errors={translationErrors}
-                />
+              <AdminTranslatedStringField<TranslationOverrideFormValues>
+                control={form.control}
+                activeLocale={activeLocale}
+                onActiveLocaleChange={setActiveLocale}
+                label={t('override')}
+                getPlaceholder={(locale) => t('overridePlaceholderForLocale', { locale: locale.toUpperCase() })}
+                disabled={isSubmitting}
+                errors={translationErrors}
+              />
 
-                <p className="text-muted-foreground text-sm">{t('detailHelp')}</p>
-
-                <div className="flex justify-end">
-                  <Button type="submit" disabled={isSubmitting || hasErrors}>
-                    <Save className="size-4" />
-                    {t('saveOverride')}
-                  </Button>
-                </div>
-              </FieldGroup>
-            </form>
-          </>
+              <p className="text-muted-foreground text-sm">{t('detailHelp')}</p>
+            </FieldGroup>
+          </form>
         )}
       </div>
     </div>

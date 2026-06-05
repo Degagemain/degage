@@ -253,7 +253,7 @@
       "title": "Translation overrides",
       "description": "Tune interface strings in the database while keeping the original message files visible.",
       "listDescription": "Search by text value, then open a key to edit its overrides.",
-      "searchPlaceholder": "Search original and override values...",
+      "searchPlaceholder": "Search values...",
       "resultCount": "{count} of {total} strings · {overrides} overrides",
       "downloadPatch": "Download patch",
       "clearAll": "Clear overrides",
@@ -283,6 +283,7 @@
       "overridden": "Overridden",
       "invalidVariables": "Remove unknown variables: {variables}",
       "currentLanguageOverride": "Override shown for your current language",
+      "saving": "Saving…",
       "saveOverride": "Save",
       "removeOverride": "Remove"
     },

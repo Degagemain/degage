@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 import { TranslationCatalog } from '@/domain/translation-catalog.model';
 import { type UILocale, defaultUILocale, uiLocales } from '@/i18n/locales';
+import { AdminTablePage } from '@/app/components/ui/data-table';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -85,93 +86,94 @@ export default function TranslationOverridesPage() {
     );
   }
 
-  return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden p-4">
-      <div className="bg-card rounded-lg border p-4 shadow-xs">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-lg font-semibold">{t('title')}</h1>
-            <p className="text-muted-foreground mt-1 text-sm">{t('listDescription')}</p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" asChild>
-              <a href="/api/translation-overrides/patch" download>
-                <Download className="size-4" />
-                {t('downloadPatch')}
-              </a>
-            </Button>
-            <Button variant="outline" onClick={clearOverrides} disabled={overrideCount === 0}>
-              <RotateCcw className="size-4" />
-              {t('clearAll')}
-            </Button>
-          </div>
-        </div>
-        <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
-          <div className="relative flex-1">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('searchPlaceholder')} className="pl-9" />
-          </div>
-          <div className="text-muted-foreground text-sm">
-            {t('resultCount', { count: filteredEntries.length, total: state.catalog?.entries.length ?? 0, overrides: overrideCount })}
-          </div>
-        </div>
+  const toolbar = (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+      <div className="relative w-full sm:max-w-64">
+        <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+        <Input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('searchPlaceholder')}
+          className="h-9 pr-3 pl-9"
+        />
       </div>
-
-      <div className="bg-card min-h-0 flex-1 overflow-auto rounded-lg border shadow-xs">
-        {state.isLoading || !state.catalog ? (
-          <div className="space-y-2 p-4">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-12 rounded-md" />
-            ))}
-          </div>
-        ) : filteredEntries.length === 0 ? (
-          <div className="p-10 text-center">
-            <p className="text-muted-foreground">{t('empty')}</p>
-          </div>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-muted/60 sticky top-0 z-10">
-              <tr className="border-b">
-                <th className="text-muted-foreground w-[45%] px-4 py-3 text-left text-xs font-medium tracking-wide uppercase">
-                  {t('columns.key')}
-                </th>
-                <th className="text-muted-foreground px-4 py-3 text-left text-xs font-medium tracking-wide uppercase">{t('columns.value')}</th>
-                <th className="text-muted-foreground w-24 px-4 py-3 text-right text-xs font-medium tracking-wide uppercase">
-                  {t('columns.status')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEntries.map((entry) => {
-                const currentValue = entry.values[currentLocale];
-                const hasOverride = state.catalog!.locales.some((locale) => entry.values[locale].override != null);
-                return (
-                  <tr key={entry.key} className="hover:bg-muted/40 border-b transition-colors last:border-b-0">
-                    <td className="px-4 py-3 align-top">
-                      <Link
-                        href={`/app/admin/translation-overrides/${encodeURIComponent(entry.key)}`}
-                        className="text-primary font-medium hover:underline"
-                      >
-                        {formatTranslationKeyPath(entry.segments)}
-                      </Link>
-                      <div className="text-muted-foreground mt-1 font-mono text-xs">{entry.key}</div>
-                    </td>
-                    <td className="px-4 py-3 align-top">
-                      <div className="line-clamp-3 whitespace-pre-wrap">{getEffectiveTranslationValue(entry, currentLocale)}</div>
-                      {currentValue.override != null && (
-                        <div className="text-muted-foreground mt-1 text-xs">{t('currentLanguageOverride')}</div>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-right align-top">
-                      {hasOverride ? <Badge variant="outline">{t('overridden')}</Badge> : null}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <Button variant="outline" size="sm" asChild>
+        <a href="/api/translation-overrides/patch" download>
+          <Download className="size-3.5" />
+          {t('downloadPatch')}
+        </a>
+      </Button>
+      <Button variant="outline" size="sm" onClick={clearOverrides} disabled={overrideCount === 0}>
+        <RotateCcw className="size-3.5" />
+        {t('clearAll')}
+      </Button>
     </div>
+  );
+
+  const tableArea =
+    state.isLoading || !state.catalog ? (
+      <div className="divide-y">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className="grid grid-cols-[minmax(0,45%)_minmax(0,1fr)_6rem] gap-4 px-4 py-3">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-5 w-20 justify-self-end rounded-full" />
+          </div>
+        ))}
+      </div>
+    ) : filteredEntries.length === 0 ? (
+      <div className="flex h-40 items-center justify-center px-4 text-center">
+        <p className="text-muted-foreground">{t('empty')}</p>
+      </div>
+    ) : (
+      <table className="w-full text-sm">
+        <thead className="bg-background sticky top-0 z-10">
+          <tr className="border-b">
+            <th className="text-muted-foreground w-[45%] px-4 py-3 text-left text-xs font-medium tracking-wide uppercase">
+              {t('columns.key')}
+            </th>
+            <th className="text-muted-foreground px-4 py-3 text-left text-xs font-medium tracking-wide uppercase">{t('columns.value')}</th>
+            <th className="text-muted-foreground w-24 px-4 py-3 text-right text-xs font-medium tracking-wide uppercase">
+              {t('columns.status')}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEntries.map((entry) => {
+            const currentValue = entry.values[currentLocale];
+            const hasOverride = state.catalog!.locales.some((locale) => entry.values[locale].override != null);
+            return (
+              <tr key={entry.key} className="hover:bg-muted/40 border-b transition-colors last:border-b-0">
+                <td className="px-4 py-3 align-top">
+                  <Link
+                    href={`/app/admin/translation-overrides/${encodeURIComponent(entry.key)}`}
+                    className="text-primary font-medium hover:underline"
+                  >
+                    {formatTranslationKeyPath(entry.segments)}
+                  </Link>
+                  <div className="text-muted-foreground mt-1 font-mono text-xs">{entry.key}</div>
+                </td>
+                <td className="px-4 py-3 align-top">
+                  <div className="line-clamp-3 whitespace-pre-wrap">{getEffectiveTranslationValue(entry, currentLocale)}</div>
+                  {currentValue.override != null && <div className="text-muted-foreground mt-1 text-xs">{t('currentLanguageOverride')}</div>}
+                </td>
+                <td className="px-4 py-3 text-right align-top">{hasOverride ? <Badge variant="outline">{t('overridden')}</Badge> : null}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+
+  return (
+    <AdminTablePage
+      toolbar={toolbar}
+      tableArea={tableArea}
+      pagination={
+        <div className="text-muted-foreground text-sm">
+          {t('resultCount', { count: filteredEntries.length, total: state.catalog?.entries.length ?? 0, overrides: overrideCount })}
+        </div>
+      }
+    />
   );
 }

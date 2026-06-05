@@ -253,7 +253,7 @@
       "title": "Vertaaloverrides",
       "description": "Pas interface-teksten aan in de database terwijl de originele message-bestanden zichtbaar blijven.",
       "listDescription": "Zoek op tekstwaarde en open daarna een sleutel om overrides te bewerken.",
-      "searchPlaceholder": "Zoek originele waarden en overrides...",
+      "searchPlaceholder": "Zoek waarden...",
       "resultCount": "{count} van {total} teksten · {overrides} overrides",
       "downloadPatch": "Patch downloaden",
       "clearAll": "Overrides wissen",
@@ -283,6 +283,7 @@
       "overridden": "Override",
       "invalidVariables": "Verwijder onbekende variabelen: {variables}",
       "currentLanguageOverride": "Override getoond voor je huidige taal",
+      "saving": "Opslaan…",
       "saveOverride": "Opslaan",
       "removeOverride": "Verwijderen"
     },
