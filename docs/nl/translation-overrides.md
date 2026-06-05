@@ -7,7 +7,7 @@ roles:
 # Vertaaloverrides
 
 Gebruik vertaaloverrides om teksten in de interface rechtstreeks vanuit de adminzone aan te passen. Overrides zijn tijdelijke wijzigingen in de
-database en worden naast de originele tekst getoond.
+database.
 
 | Eigenschap | Beschrijving                                          |
 | ---------- | ----------------------------------------------------- |
@@ -17,3 +17,4 @@ database en worden naast de originele tekst getoond.
 | Taal       | Taal waarop de override van toepassing is.            |
 
 Zoeken gebeurt in tekstwaarden, niet in paden. Gebruik **Patch downloaden** wanneer de overrides klaar zijn voor verwerking door ontwikkelaars.
+De lijst toont de waarde voor je huidige taal. Open een sleutel om de originele tekst te bekijken en overrides via de taaltabs te bewerken.
