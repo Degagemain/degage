@@ -192,10 +192,10 @@ export default function TranslationOverrideDetailPage() {
 
               <div>
                 <div className="mb-1 text-sm font-medium">{t('original')}</div>
-                <p className="text-muted-foreground max-w-4xl text-sm whitespace-pre-wrap">{activeOriginal || t('missingOriginal')}</p>
+                <p className="text-muted-foreground max-w-2xl text-sm whitespace-pre-wrap">{activeOriginal || t('missingOriginal')}</p>
               </div>
 
-              <Field data-invalid={Boolean(translationErrors[activeLocale])}>
+              <Field data-invalid={Boolean(translationErrors[activeLocale])} className="max-w-2xl">
                 <FieldContent>
                   <div className="flex items-center justify-between gap-3">
                     <FieldLabel className="mb-0">{t('override')}</FieldLabel>

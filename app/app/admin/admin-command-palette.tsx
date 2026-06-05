@@ -7,6 +7,7 @@ import { CornerDownLeft } from 'lucide-react';
 
 import {
   CAR_SETTINGS_ITEMS,
+  CORE_SETTINGS_ITEMS,
   DOCUMENTATION_SUB_ITEMS,
   GEO_SETTINGS_ITEMS,
   MAIN_ITEMS,
@@ -64,6 +65,18 @@ export function AdminCommandPalette() {
             return (
               <CommandItem key={item.href} value={searchValue} onSelect={() => run(item.href)}>
                 <item.icon />
+                {title}
+              </CommandItem>
+            );
+          })}
+        </CommandGroup>
+
+        <CommandGroup heading={t('sidebar.coreSettings')}>
+          {CORE_SETTINGS_ITEMS.map((item) => {
+            const title = t(`${item.translationKey}.title`);
+            return (
+              <CommandItem key={item.href} value={title} onSelect={() => run(item.href)}>
+                <SIDEBAR_SETTINGS_ICONS.core />
                 {title}
               </CommandItem>
             );

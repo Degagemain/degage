@@ -183,6 +183,7 @@
       "administration": "Administratie",
       "panel": "Beheerpaneel",
       "settings": "Instellingen",
+      "coreSettings": "Kern",
       "carSettings": "Auto",
       "simulation": "Simulaties",
       "geoSettings": "Geo"

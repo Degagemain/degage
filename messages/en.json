@@ -183,6 +183,7 @@
       "administration": "Administration",
       "panel": "Admin Panel",
       "settings": "Settings",
+      "coreSettings": "Core",
       "carSettings": "Car",
       "simulation": "Simulation",
       "geoSettings": "Geo"
