@@ -21,6 +21,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
 import { LandingHeader } from '@/app/components/landing/landing-header';
+import { PublicHeroGlow } from '@/app/components/public/public-hero-glow';
 import {
   landingBenefitsPad,
   landingContainer,
@@ -120,15 +121,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
       <LandingHeader />
 
       <div className={cn('relative min-h-screen overflow-x-hidden', styles.pageSurface)}>
-        <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 h-[520px]', styles.heroGlow)} />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full bg-[rgb(var(--public-glow-mint)/0.35)] blur-3xl motion-safe:animate-pulse"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-[38rem] -left-20 h-72 w-72 rounded-full bg-[rgb(var(--public-glow)/0.22)] blur-3xl motion-safe:animate-pulse"
-        />
+        <PublicHeroGlow />
 
         <main>
           <section className={cn('relative', landingContainer, landingHeroPad)}>
