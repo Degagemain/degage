@@ -11,9 +11,8 @@ keeps the JSON message files as the source of truth and applies database overrid
 
 ## Database setup
 
-After pulling schema changes, generate the migration manually:
-
-`pnpm prisma migrate dev --name translation_overrides`
+The `TranslationOverride` table is created by the committed Prisma migration `20260605170400_translation_overrides`. Apply it through the normal
+deployment migration flow.
 
 ## Applying overrides to message files
 
