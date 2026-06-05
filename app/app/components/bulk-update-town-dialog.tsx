@@ -148,10 +148,16 @@ export function BulkUpdateTownDialog({ open, onOpenChange, items, onComplete, la
 
       try {
         const updatedTown = townSchema.parse({
-          ...item.town,
-          ...(hubMode === 'unset' || !selectedHub ? {} : { hub: { id: selectedHub.id, name: selectedHub.name } }),
-          ...(highDemand === 'unset' ? {} : { highDemand: highDemand === 'true' }),
-          ...(hasActiveMembers === 'unset' ? {} : { hasActiveMembers: hasActiveMembers === 'true' }),
+          id: item.town.id,
+          zip: item.town.zip,
+          name: item.town.name,
+          municipality: item.town.municipality,
+          province: item.town.province,
+          hub: hubMode === 'unset' || !selectedHub ? item.town.hub : { id: selectedHub.id, name: selectedHub.name },
+          highDemand: highDemand === 'unset' ? item.town.highDemand : highDemand === 'true',
+          hasActiveMembers: hasActiveMembers === 'unset' ? item.town.hasActiveMembers : hasActiveMembers === 'true',
+          createdAt: item.town.createdAt,
+          updatedAt: item.town.updatedAt,
         });
         const response = await apiPut(`/api/towns/${item.id}`, updatedTown);
 
