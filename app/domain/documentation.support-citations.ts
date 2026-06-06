@@ -14,17 +14,40 @@ export const documentationFaqArticlePath = (externalId: string): string => {
   return `/app/faq/articles/${encodeURIComponent(externalId)}`;
 };
 
+const adminDocumentationPathPattern = /^\/app\/admin\/documentation\/(.+)$/;
+
+export const normalizeSupportChatCitationForViewer = (citation: ChatCitation, viewer: UserWithRole | null | undefined): ChatCitation => {
+  if (viewer && isAdmin(viewer)) {
+    return citation;
+  }
+
+  const adminMatch = citation.url.match(adminDocumentationPathPattern);
+  if (adminMatch?.[1]) {
+    return {
+      title: citation.title,
+      url: documentationFaqArticlePath(decodeURIComponent(adminMatch[1])),
+    };
+  }
+
+  return citation;
+};
+
 export const toChatCitationsForSupportViewer = (
   citations: DocumentationSupportCitation[],
   viewer: UserWithRole | null | undefined,
 ): ChatCitation[] => {
-  if (viewer && isAdmin(viewer)) {
-    return citations.map((c) => ({ title: c.title, url: c.url }));
-  }
+  const viewerIsAdmin = Boolean(viewer && isAdmin(viewer));
+
   return citations
-    .filter((c) => c.isPublic)
-    .map((c) => ({
-      title: c.title,
-      url: documentationFaqArticlePath(c.externalId),
-    }));
+    .filter((c) => viewerIsAdmin || c.isPublic)
+    .map((c) => {
+      if (c.isPublic) {
+        return {
+          title: c.title,
+          url: documentationFaqArticlePath(c.externalId),
+        };
+      }
+
+      return { title: c.title, url: c.url };
+    });
 };

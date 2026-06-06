@@ -20,6 +20,7 @@ import {
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { normalizeSupportChatCitationForViewer } from '@/domain/documentation.support-citations';
 import { type DocumentationAudienceRole, documentationAudienceRoleValues } from '@/domain/documentation.model';
 import { Role } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
@@ -104,20 +105,28 @@ const toolSearchStatusToLine = (
   return null;
 };
 
-function MessageSources({ citations, messageId }: { citations: ChatCitation[]; messageId: string }) {
+function MessageSources({
+  citations,
+  messageId,
+  onSourceNavigate,
+}: {
+  citations: ChatCitation[];
+  messageId: string;
+  onSourceNavigate: () => void;
+}) {
   const t = useTranslations('chat');
   if (citations.length === 0) {
     return null;
   }
   return (
-    <Sources className="mt-2 w-full">
+    <Sources className="mt-2 w-full" defaultOpen>
       <SourcesTrigger count={citations.length}>
         <p className="font-medium">{t('sourcesUsed', { count: citations.length })}</p>
         <ChevronDownIcon className="h-4 w-4 shrink-0" />
       </SourcesTrigger>
       <SourcesContent>
         {citations.map((citation, index) => (
-          <Source key={`${messageId}-source-${index}`} href={citation.url} title={citation.title} />
+          <Source key={`${messageId}-source-${index}`} href={citation.url} onNavigate={onSourceNavigate} title={citation.title} />
         ))}
       </SourcesContent>
     </Sources>
@@ -313,6 +322,10 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
     return activeConversationLabel;
   }, [isPending, session?.user, isHistoryOpen, activeConversationLabel, t]);
 
+  const handleSourceNavigate = useCallback(() => {
+    onOpenChange(false);
+  }, [onOpenChange]);
+
   const handlePromptSubmit = useCallback(
     (message: PromptInputMessage) => {
       if (status !== 'ready') return;
@@ -449,8 +462,9 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                       />
                     ) : null}
                     {messages.map((message, messageIndex) => {
-                      const citations =
-                        (((message.metadata as { citations?: ChatCitation[] } | undefined)?.citations ?? []) as ChatCitation[]) || [];
+                      const citations = (
+                        (((message.metadata as { citations?: ChatCitation[] } | undefined)?.citations ?? []) as ChatCitation[]) || []
+                      ).map((citation) => normalizeSupportChatCitationForViewer(citation, session?.user ?? null));
                       const hasTextPart = message.parts.some((part) => part.type === 'text' && part.text.trim().length > 0);
                       const isLastMessage = messageIndex === messages.length - 1;
                       const reasoningFromModel = message.parts
@@ -496,7 +510,9 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                             {!hasTextPart && message.role === 'assistant' && (
                               <p className="text-muted-foreground text-sm italic">{t('assistantWorking')}</p>
                             )}
-                            {citations.length > 0 ? <MessageSources citations={citations} messageId={message.id} /> : null}
+                            {citations.length > 0 ? (
+                              <MessageSources citations={citations} messageId={message.id} onSourceNavigate={handleSourceNavigate} />
+                            ) : null}
                           </MessageContent>
                         </Message>
                       );

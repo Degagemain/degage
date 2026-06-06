@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { documentationFaqArticlePath, toChatCitationsForSupportViewer } from '@/domain/documentation.support-citations';
+import {
+  documentationFaqArticlePath,
+  normalizeSupportChatCitationForViewer,
+  toChatCitationsForSupportViewer,
+} from '@/domain/documentation.support-citations';
 import { Role } from '@/domain/role.model';
 
 describe('documentation.support-citations', () => {
@@ -8,7 +12,7 @@ describe('documentation.support-citations', () => {
     expect(documentationFaqArticlePath('repo:first')).toBe('/app/faq/articles/repo%3Afirst');
   });
 
-  it('keeps admin URLs for admin viewers', () => {
+  it('keeps admin URLs for admin-only docs when viewer is admin', () => {
     const out = toChatCitationsForSupportViewer(
       [
         {
@@ -21,6 +25,21 @@ describe('documentation.support-citations', () => {
       { id: '1', role: Role.ADMIN },
     );
     expect(out).toEqual([{ title: 'A', url: '/app/admin/documentation/x' }]);
+  });
+
+  it('uses FAQ paths for public docs even when viewer is admin', () => {
+    const out = toChatCitationsForSupportViewer(
+      [
+        {
+          title: 'Help',
+          url: '/app/admin/documentation/repo%3Apublic',
+          externalId: 'repo:public',
+          isPublic: true,
+        },
+      ],
+      { id: '1', role: Role.ADMIN },
+    );
+    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/repo%3Apublic' }]);
   });
 
   it('filters to public docs and uses FAQ paths for non-admins', () => {
@@ -57,5 +76,27 @@ describe('documentation.support-citations', () => {
       null,
     );
     expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/a' }]);
+  });
+
+  it('rewrites legacy admin citation URLs to FAQ paths for non-admin viewers', () => {
+    const out = normalizeSupportChatCitationForViewer(
+      {
+        title: 'Help',
+        url: '/app/admin/documentation/repo%3Apublic',
+      },
+      { id: '1', role: Role.USER },
+    );
+    expect(out).toEqual({ title: 'Help', url: '/app/faq/articles/repo%3Apublic' });
+  });
+
+  it('keeps admin citation URLs for admin viewers', () => {
+    const out = normalizeSupportChatCitationForViewer(
+      {
+        title: 'Help',
+        url: '/app/admin/documentation/repo%3Apublic',
+      },
+      { id: '1', role: Role.ADMIN },
+    );
+    expect(out).toEqual({ title: 'Help', url: '/app/admin/documentation/repo%3Apublic' });
   });
 });
