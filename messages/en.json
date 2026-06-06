@@ -1347,9 +1347,7 @@
       "tryAgain": "Try again",
       "filters": {
         "user": "User",
-        "userPlaceholder": "Search users…",
-        "ownerType": "Owner",
-        "anonymous": "Anonymous"
+        "userPlaceholder": "Search users…"
       },
       "columns": {
         "user": "User",

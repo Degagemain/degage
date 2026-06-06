@@ -7,8 +7,6 @@ export enum ChatConversationAdminSortColumns {
   CREATED_AT = 'createdAt',
 }
 
-export const CHAT_CONVERSATION_OWNER_TYPE_ANONYMOUS = 'anonymous' as const;
-
 const commaSeparatedArray = <T extends z.ZodTypeAny>(schema: T) =>
   z
     .union([schema.array(), z.string()])
@@ -28,8 +26,7 @@ const commaSeparatedArray = <T extends z.ZodTypeAny>(schema: T) =>
 
 export const chatConversationAdminFilterSchema = z
   .object({
-    userIds: commaSeparatedArray(z.uuid()),
-    ownerTypes: commaSeparatedArray(z.enum([CHAT_CONVERSATION_OWNER_TYPE_ANONYMOUS])),
+    userIds: commaSeparatedArray(z.string().min(1)),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z

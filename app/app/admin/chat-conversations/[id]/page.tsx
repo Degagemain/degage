@@ -7,7 +7,6 @@ import { useFormatter, useTranslations } from 'next-intl';
 import type { ChatConversationAdminDetail } from '@/domain/chat.model';
 import { DashPlaceholder } from '@/domain/utils';
 import { Button } from '@/app/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { ChatConversationMessages } from '../components/chat-conversation-messages';
 
@@ -47,49 +46,60 @@ export default function ChatConversationDetailPage() {
     fetchConversation();
   }, [fetchConversation]);
 
-  const title = conversation?.title.trim() || DashPlaceholder;
-  const userLabel = conversation?.user?.name?.trim() || tList('anonymousUser');
-  const updatedAt = conversation?.updatedAt
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-4 w-48" />
+        <div className="space-y-4 pt-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full max-w-3xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !conversation) {
+    return (
+      <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
+        <Button variant="ghost" size="sm" asChild>
+          <Link href="/app/admin/chat-conversations">{t('backToList')}</Link>
+        </Button>
+        <div className="flex flex-col items-center justify-center gap-3 py-12">
+          <p className="text-destructive font-medium">{error ?? t('notFound')}</p>
+          <Button variant="outline" size="sm" onClick={fetchConversation}>
+            {tList('tryAgain')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const title = conversation.title.trim() || DashPlaceholder;
+  const userLabel = conversation.user?.name?.trim() || tList('anonymousUser');
+  const updatedAt = conversation.updatedAt
     ? format.dateTime(new Date(conversation.updatedAt), { dateStyle: 'medium', timeStyle: 'short' })
     : DashPlaceholder;
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-center justify-between gap-4">
-        <Button variant="outline" size="sm" asChild>
+    <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
+      <div>
+        <Button variant="ghost" size="sm" asChild>
           <Link href="/app/admin/chat-conversations">{t('backToList')}</Link>
         </Button>
       </div>
 
-      {isLoading ? (
-        <div className="space-y-4">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-40 w-full" />
-        </div>
-      ) : error ? (
-        <div className="text-center">
-          <p className="text-destructive font-medium">{error}</p>
-          <button onClick={fetchConversation} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
-            {tList('tryAgain')}
-          </button>
-        </div>
-      ) : conversation ? (
-        <>
-          <div className="space-y-1">
-            <h1 className="text-2xl font-semibold">{title}</h1>
-            <p className="text-muted-foreground text-sm">{t('meta', { user: userLabel, updatedAt })}</p>
-          </div>
+      <div className="space-y-1">
+        <h1 className="text-lg font-semibold">{title}</h1>
+        <p className="text-muted-foreground text-sm">{t('meta', { user: userLabel, updatedAt })}</p>
+      </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('historyTitle')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ChatConversationMessages messages={conversation.messages} />
-            </CardContent>
-          </Card>
-        </>
-      ) : null}
+      <section className="pt-2">
+        <h2 className="mb-4 text-base font-semibold">{t('historyTitle')}</h2>
+        <ChatConversationMessages messages={conversation.messages} />
+      </section>
     </div>
   );
 }

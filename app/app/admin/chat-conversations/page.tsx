@@ -4,18 +4,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import type { ChatConversationListItem } from '@/domain/chat.model';
-import { CHAT_CONVERSATION_OWNER_TYPE_ANONYMOUS, ChatConversationAdminSortColumns } from '@/domain/chat-conversation-admin.filter';
+import { ChatConversationAdminSortColumns } from '@/domain/chat-conversation-admin.filter';
 import type { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import {
   AdminTablePage,
   DataTable,
-  DataTableFacetedFilter,
   DataTablePagination,
   DataTableSearchableMultiselect,
   DataTableToolbar,
-  type FacetedFilterOption,
   type SearchableOption,
 } from '@/app/components/ui/data-table';
 import { createColumns } from './columns';
@@ -47,11 +45,10 @@ export default function ChatConversationsPage() {
     defaultPageSize: DEFAULT_PAGE_SIZE,
     defaultSort: { id: 'updatedAt', desc: true },
     validSortIds: Object.keys(SORT_COLUMN_MAP),
-    csvParamNames: ['userIds', 'ownerTypes'],
+    csvParamNames: ['userIds'],
   });
 
   const userIds = csv.userIds;
-  const ownerTypes = csv.ownerTypes;
   const [userOptions, setUserOptions] = useState<SearchableOption[]>([]);
 
   const handleSort = useCallback(
@@ -69,19 +66,7 @@ export default function ChatConversationsPage() {
     [setCsvParam],
   );
 
-  const handleOwnerTypeChange = useCallback(
-    (values: string[]) => {
-      setCsvParam('ownerTypes', values);
-    },
-    [setCsvParam],
-  );
-
   const columns = useMemo(() => createColumns({ onSort: handleSort, t, anonymousLabel: t('anonymousUser') }), [handleSort, t]);
-
-  const ownerTypeOptions: FacetedFilterOption[] = useMemo(
-    () => [{ value: CHAT_CONVERSATION_OWNER_TYPE_ANONYMOUS, label: t('filters.anonymous') }],
-    [t],
-  );
 
   const fetchConversations = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -89,7 +74,6 @@ export default function ChatConversationsPage() {
     try {
       const params = new URLSearchParams();
       if (userIds.length > 0) params.set('userIds', userIds.join(','));
-      if (ownerTypes.length > 0) params.set('ownerTypes', ownerTypes.join(','));
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -122,7 +106,7 @@ export default function ChatConversationsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [userIds, ownerTypes, pageIndex, pageSize, sorting]);
+  }, [userIds, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
     fetchConversations();
@@ -164,22 +148,14 @@ export default function ChatConversationsPage() {
           onSearchChange={() => {}}
           showSearch={false}
           filterSlot={
-            <>
-              <DataTableSearchableMultiselect
-                title={t('filters.user')}
-                apiPath="users"
-                selectedValues={userIds}
-                selectedOptions={userOptions}
-                onSelectedChange={handleUserChange}
-                placeholder={t('filters.userPlaceholder')}
-              />
-              <DataTableFacetedFilter
-                title={t('filters.ownerType')}
-                options={ownerTypeOptions}
-                selectedValues={ownerTypes}
-                onSelectedChange={handleOwnerTypeChange}
-              />
-            </>
+            <DataTableSearchableMultiselect
+              title={t('filters.user')}
+              apiPath="users"
+              selectedValues={userIds}
+              selectedOptions={userOptions}
+              onSelectedChange={handleUserChange}
+              placeholder={t('filters.userPlaceholder')}
+            />
           }
         />
       }
