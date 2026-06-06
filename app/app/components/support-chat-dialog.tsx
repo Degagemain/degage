@@ -145,6 +145,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const [lastLoadedConversationId, setLastLoadedConversationId] = useState<string | null>(null);
   const activeConversationIdRef = useRef<string | null>(null);
   const guestTokenRef = useRef<string | null>(null);
+  const hadAuthenticatedSessionRef = useRef(Boolean(session?.user));
   const previewAudienceRef = useRef<DocumentationAudienceRole>(Role.ADMIN);
   const isViewerAdminRef = useRef(false);
   const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -266,9 +267,19 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   );
 
   useEffect(() => {
-    if (session?.user) {
+    const isAuthenticated = Boolean(session?.user);
+    const justAuthenticated = isAuthenticated && !hadAuthenticatedSessionRef.current;
+    hadAuthenticatedSessionRef.current = isAuthenticated;
+
+    if (isAuthenticated) {
       clearSupportChatGuestSession();
       guestTokenRef.current = null;
+      if (justAuthenticated) {
+        setActiveConversationId(null);
+        setLastLoadedConversationId(null);
+        setMessages([]);
+        setIsHistoryOpen(false);
+      }
       return;
     }
 
