@@ -42,16 +42,16 @@ export function ChatConversationMessages({ messages }: { messages: ChatMessage[]
         const timestamp = message.createdAt ? format.dateTime(new Date(message.createdAt), { dateStyle: 'medium', timeStyle: 'short' }) : null;
         const roleLabel = message.role === 'user' ? t('userLabel') : t('assistantLabel');
 
+        const isUser = message.role === 'user';
+
         return (
           <div key={message.id ?? message.externalId ?? message.content} className="flex max-w-3xl flex-col items-start gap-1">
             <span className="text-muted-foreground text-xs font-medium">{roleLabel}</span>
-            <div className={cn('text-sm', message.role === 'user' && 'bg-secondary w-fit max-w-full rounded-lg px-4 py-3')}>
+            <div className={cn('w-fit max-w-full rounded-lg px-4 py-3 text-sm', isUser ? 'bg-secondary' : 'border-border border')}>
               <MessageResponse>{message.content}</MessageResponse>
+              {!isUser ? <AssistantSources citations={message.citations} messageId={message.id ?? message.externalId ?? 'assistant'} /> : null}
             </div>
             {timestamp ? <span className="text-muted-foreground text-xs">{timestamp}</span> : null}
-            {message.role === 'assistant' ? (
-              <AssistantSources citations={message.citations} messageId={message.id ?? message.externalId ?? 'assistant'} />
-            ) : null}
           </div>
         );
       })}
