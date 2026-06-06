@@ -1341,6 +1341,33 @@
       "yes": "Oui",
       "no": "Non"
     },
+    "chatConversations": {
+      "title": "Chats d'assistance",
+      "anonymousUser": "Anonyme",
+      "tryAgain": "Réessayer",
+      "filters": {
+        "user": "Utilisateur",
+        "userPlaceholder": "Rechercher des utilisateurs…",
+        "ownerType": "Propriétaire",
+        "anonymous": "Anonyme"
+      },
+      "columns": {
+        "user": "Utilisateur",
+        "title": "Titre",
+        "updatedAt": "Dernière mise à jour"
+      },
+      "detailPage": {
+        "backToList": "Retour aux chats",
+        "notFound": "Conversation introuvable",
+        "loadError": "Échec du chargement de la conversation",
+        "meta": "{user} · Dernière mise à jour {updatedAt}",
+        "historyTitle": "Historique du chat",
+        "empty": "Aucun message dans cette conversation.",
+        "userLabel": "Utilisateur",
+        "assistantLabel": "Assistant",
+        "articlesUsed": "Recherche documentation · {count, plural, one {# article} other {# articles}}"
+      }
+    },
     "users": {
       "title": "Utilisateurs",
       "columns": {

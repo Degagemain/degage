@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { idNameSchema } from './id-name.model';
 
 export const chatUserMessageMaxLength = 4000;
 export const chatConversationMediumValues = ['frontend', 'email'] as const;
@@ -67,3 +68,23 @@ export const chatConversationUpdateInputSchema = z
   .strict();
 
 export type ChatConversationUpdateInput = z.infer<typeof chatConversationUpdateInputSchema>;
+
+export const chatConversationListItemSchema = z
+  .object({
+    id: z.uuid(),
+    title: z.string(),
+    user: idNameSchema.nullable(),
+    updatedAt: z.coerce.date().nullable(),
+  })
+  .strict();
+
+export type ChatConversationListItem = z.infer<typeof chatConversationListItemSchema>;
+
+export const chatConversationAdminDetailSchema = chatConversationSchema
+  .omit({ guestToken: true, userId: true })
+  .extend({
+    user: idNameSchema.nullable(),
+  })
+  .strict();
+
+export type ChatConversationAdminDetail = z.infer<typeof chatConversationAdminDetailSchema>;
