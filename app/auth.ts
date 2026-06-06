@@ -1,7 +1,10 @@
 import { betterAuth } from 'better-auth';
 import { createAuthMiddleware } from 'better-auth/api';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin } from 'better-auth/plugins';
+import { admin, jwt } from 'better-auth/plugins';
+import { oauthProvider } from '@better-auth/oauth-provider';
+import { isMcpEnabled, oauthProviderScopes } from '@/mcp/config';
+import { assertUserCanReceiveOAuthToken } from '@/mcp/auth-context';
 import { getPrismaClient } from './storage/utils';
 import { dbUserGetLocale } from './storage/user/user.read';
 import { TemplatesEnum, sendTemplatedEmail } from './integrations/resend';
@@ -61,7 +64,31 @@ export const auth = betterAuth({
           }
         : undefined,
   },
-  plugins: [admin()],
+  plugins: [
+    admin(),
+    ...(isMcpEnabled()
+      ? [
+          jwt(),
+          oauthProvider({
+            loginPage: '/app/auth/sign-in',
+            consentPage: '/app/auth/consent',
+            signup: { page: '/app/auth/sign-up' },
+            scopes: oauthProviderScopes,
+            validAudiences: [`${process.env.BETTER_AUTH_URL}/mcp`],
+            allowUnauthenticatedClientRegistration: true,
+            allowDynamicClientRegistration: true,
+            silenceWarnings: {
+              oauthAuthServerConfig: true,
+              openidConfig: true,
+            },
+            customAccessTokenClaims: ({ user }) => ({
+              role: user?.role ?? 'user',
+              email_verified: user?.emailVerified ?? false,
+            }),
+          }),
+        ]
+      : []),
+  ],
   databaseHooks: {
     user: {
       update: {
@@ -77,6 +104,14 @@ export const auth = betterAuth({
     },
   },
   hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (!isMcpEnabled()) return;
+      if (!ctx.path.startsWith('/oauth2/token')) return;
+      const session = ctx.context.session;
+      if (session?.user?.id) {
+        await assertUserCanReceiveOAuthToken(session.user.id);
+      }
+    }),
     after: createAuthMiddleware(async (ctx) => {
       // Set locale cookie after successful sign-in, sign-up, or OAuth callback
       if (ctx.path.startsWith('/sign-in') || ctx.path.startsWith('/sign-up') || ctx.path.startsWith('/callback')) {

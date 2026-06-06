@@ -12,6 +12,7 @@ import { MagicLinkStub } from '@/app/components/auth/forms/magic-link-stub';
 import { ResetPasswordForm } from '@/app/components/auth/forms/reset-password-form';
 import { SignInForm } from '@/app/components/auth/forms/sign-in-form';
 import { SignUpForm } from '@/app/components/auth/forms/sign-up-form';
+import { OAuthConsentForm } from '@/app/components/auth/forms/oauth-consent-form';
 import { useAuthRedirectTo } from '@/app/components/auth/hooks/use-auth-redirect-to';
 
 type AuthPathViewProps = {
@@ -40,6 +41,8 @@ function AuthPathContent({ path }: AuthPathViewProps) {
       return <MagicLinkStub />;
     case authViewPaths.EMAIL_OTP:
       return <EmailOtpStub />;
+    case authViewPaths.CONSENT:
+      return <OAuthConsentForm />;
     default:
       notFound();
   }

@@ -23,6 +23,7 @@ Authentication uses [better-auth](https://www.better-auth.com/) on the server. S
 | `GOOGLE_CLIENT_SECRET`                     | Google OAuth client secret. Required to enable Google sign-in.                                                                                                                                                                                                           |
 | `NEXT_PUBLIC_AUTH_MAGIC_LINK`              | When `true`, shows magic-link route and sign-in link (requires Better Auth magic-link plugin + Resend templates — Phase 2).                                                                                                                                              |
 | `NEXT_PUBLIC_AUTH_EMAIL_OTP`               | When `true`, shows email-OTP route and sign-in link (requires Better Auth email-OTP plugin + Resend templates — Phase 2).                                                                                                                                                |
+| `MCP_ENABLED`                              | When `true`, enables the OAuth 2.1 Provider plugin and `/mcp/*` documentation MCP endpoints. Default: `false`. See [MCP endpoints](mcp.md).                                                                                                                              |
 
 ## Email verification and password reset
 
@@ -69,6 +70,8 @@ Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
 ## Plugins
 
 - **Admin** — Role-based access control and user management ([docs](https://www.better-auth.com/docs/plugins/admin))
+- **OAuth 2.1 Provider** + **JWT** — Enabled when `MCP_ENABLED=true`; issues tokens for MCP clients
+  ([docs](https://www.better-auth.com/docs/plugins/oauth-provider), see [MCP endpoints](mcp.md))
 
 ## Supported Providers
 
@@ -87,6 +90,7 @@ Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
 - `/app/auth/callback` — OAuth return helper
 - `/app/auth/magic-link` — Phase 2 stub (enabled via `NEXT_PUBLIC_AUTH_MAGIC_LINK`)
 - `/app/auth/email-otp` — Phase 2 stub (enabled via `NEXT_PUBLIC_AUTH_EMAIL_OTP`)
+- `/app/auth/consent` — OAuth consent for MCP clients (when `MCP_ENABLED=true`)
 
 Post-login navigation uses the `redirectTo` query param (see `buildSignInUrlWithReturnPath` in `app/app/lib/sign-in-return-path.ts`).
 
