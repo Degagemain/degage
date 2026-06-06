@@ -5,6 +5,28 @@ import styles from '../simulation.module.css';
 
 const PAGE_SIZE = 30;
 
+function useIntersectionObserver(
+  ref: React.RefObject<HTMLElement | null>,
+  onReached: () => void,
+  options: { root: HTMLElement | null; enabled: boolean },
+) {
+  const onReachedRef = React.useRef(onReached);
+  onReachedRef.current = onReached;
+  React.useEffect(() => {
+    const el = ref.current;
+    const root = options.root;
+    if (!el || !root || !options.enabled) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) onReachedRef.current();
+      },
+      { root, rootMargin: '100px', threshold: 0 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, options.root, options.enabled]);
+}
+
 export interface SearchDropdownOption {
   id: string;
   name: string;
@@ -39,7 +61,9 @@ export function SearchDropdown({
   const [search, setSearch] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
   const [options, setOptions] = React.useState<SearchDropdownOption[]>([]);
+  const [total, setTotal] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
+  const [loadingMore, setLoadingMore] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -70,6 +94,7 @@ export function SearchDropdown({
       } else {
         setOptions(records);
       }
+      setTotal(data.total ?? 0);
     },
     [apiPath, debouncedSearch, queryParams, labelKey],
   );
@@ -79,6 +104,20 @@ export function SearchDropdown({
     setLoading(true);
     fetchPage(0, false).finally(() => setLoading(false));
   }, [open, debouncedSearch, fetchPage]);
+
+  const loadMore = React.useCallback(() => {
+    if (options.length >= total || loadingMore) return;
+    setLoadingMore(true);
+    fetchPage(options.length, true).finally(() => setLoadingMore(false));
+  }, [options.length, total, loadingMore, fetchPage]);
+
+  const [scrollRoot, setScrollRoot] = React.useState<HTMLElement | null>(null);
+  const sentinelRef = React.useRef<HTMLDivElement>(null);
+  const canLoadMore = options.length < total && !loading && !loadingMore;
+  useIntersectionObserver(sentinelRef, loadMore, {
+    root: scrollRoot,
+    enabled: open && canLoadMore && options.length > 0,
+  });
 
   React.useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -119,7 +158,7 @@ export function SearchDropdown({
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
           />
-          <div className={styles.searchDropdownScroll}>
+          <div ref={setScrollRoot} className={styles.searchDropdownScroll}>
             {loading ? (
               <div className={styles.searchDropdownStatus}>Laden…</div>
             ) : (
@@ -141,6 +180,8 @@ export function SearchDropdown({
                     {option.name}
                   </button>
                 ))}
+                {canLoadMore && <div ref={sentinelRef} className={styles.searchDropdownSentinel} aria-hidden />}
+                {loadingMore && <div className={styles.searchDropdownStatus}>Laden…</div>}
               </>
             )}
           </div>
