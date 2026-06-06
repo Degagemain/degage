@@ -37,8 +37,6 @@ export const documentationUpdateMcpInputSchema = {
     .array(documentationTranslationSchema)
     .min(1)
     .describe('All locale translations for the article. Send the full set — this replaces the record like PUT, not a partial patch.'),
-  createdAt: z.coerce.date().nullable().optional().describe('Read-only timestamp from GET; may be omitted on update.'),
-  updatedAt: z.coerce.date().nullable().optional().describe('Read-only timestamp from GET; may be omitted on update.'),
 };
 
 export const documentationSearchMcpInputSchema = {

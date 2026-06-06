@@ -16,6 +16,22 @@ describe('documentation MCP input schemas', () => {
     expect(parsed.success).toBe(false);
   });
 
+  it('accepts update input without read-only timestamps', () => {
+    const {
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      ...mcpInput
+    } = documentation({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+    });
+    const parsed = documentationUpdateBodySchema.safeParse(mcpInput);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.createdAt).toBeNull();
+      expect(parsed.data.updatedAt).toBeNull();
+    }
+  });
+
   it('parses search MCP input through documentationFilterSchema with defaults', () => {
     const parsed = documentationFilterSchema.safeParse({ query: 'battery', take: 10 });
     expect(parsed.success).toBe(true);
