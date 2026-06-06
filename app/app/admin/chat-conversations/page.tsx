@@ -195,7 +195,7 @@ export default function ChatConversationsPage() {
             ))}
           </div>
         ) : (
-          <DataTable table={table} />
+          <DataTable table={table} columns={columns} />
         )
       }
       pagination={
@@ -203,8 +203,8 @@ export default function ChatConversationsPage() {
           pageIndex={pageIndex}
           pageSize={pageSize}
           pageCount={pageCount}
-          total={state.total}
-          onPageIndexChange={setPageIndex}
+          totalItems={state.total}
+          onPageChange={setPageIndex}
           onPageSizeChange={setPageSize}
         />
       }

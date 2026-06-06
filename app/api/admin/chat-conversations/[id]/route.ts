@@ -1,9 +1,9 @@
 import { readChatConversationForAdmin } from '@/actions/conversation/admin-read';
-import { notFoundResponse } from '@/api/utils';
+import { type IdRouteParams, getIdFromRoute, notFoundResponse } from '@/api/utils';
 import { withAdmin } from '@/api/with-context';
 
 export const GET = withAdmin(async (_request, context) => {
-  const { id } = await context.params;
+  const id = await getIdFromRoute(context as IdRouteParams);
   const conversation = await readChatConversationForAdmin(id);
   if (!conversation) {
     return notFoundResponse();
