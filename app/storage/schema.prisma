@@ -1,539 +1,666 @@
+
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 generator client {
-    provider = "prisma-client"
-    output   = "client"
+  provider = "prisma-client"
+  output   = "client"
 
-    importFileExtension = "ts"
+  importFileExtension = "ts"
 }
 
 model FuelType {
-    id              String                @id @default(uuid())
-    code            String                @unique
-    isActive        Boolean               @default(true)
-    pricePer        Decimal               @default(0)
-    co2Contribution Int                   @default(0)
-    translations    FuelTypeTranslation[]
-    carTypes        CarType[]
-    simulations     Simulation[]
-    createdAt       DateTime              @default(now())
-    updatedAt       DateTime              @updatedAt
+  id              String                @id @default(uuid())
+  code            String                @unique
+  isActive        Boolean               @default(true)
+  pricePer        Decimal               @default(0)
+  co2Contribution Int                   @default(0)
+  translations    FuelTypeTranslation[]
+  carTypes        CarType[]
+  simulations     Simulation[]
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 }
 
 model FuelTypeTranslation {
-    id         String   @id @default(uuid())
-    fuelTypeId String
-    fuelType   FuelType @relation(fields: [fuelTypeId], references: [id], onDelete: Cascade)
-    locale     String
-    name       String
+  id         String   @id @default(uuid())
+  fuelTypeId String
+  fuelType   FuelType @relation(fields: [fuelTypeId], references: [id], onDelete: Cascade)
+  locale     String
+  name       String
 
-    @@unique([fuelTypeId, locale])
+  @@unique([fuelTypeId, locale])
 }
 
 model CarBrand {
-    id           String                @id @default(uuid())
-    code         String                @unique
-    isActive     Boolean               @default(true)
-    translations CarBrandTranslation[]
-    carTypes     CarType[]
-    simulations  Simulation[]
-    createdAt    DateTime              @default(now())
-    updatedAt    DateTime              @updatedAt
+  id           String                @id @default(uuid())
+  code         String                @unique
+  isActive     Boolean               @default(true)
+  translations CarBrandTranslation[]
+  carTypes     CarType[]
+  simulations  Simulation[]
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
 }
 
 model CarBrandTranslation {
-    id         String   @id @default(uuid())
-    carBrandId String
-    carBrand   CarBrand @relation(fields: [carBrandId], references: [id], onDelete: Cascade)
-    locale     String
-    name       String
+  id         String   @id @default(uuid())
+  carBrandId String
+  carBrand   CarBrand @relation(fields: [carBrandId], references: [id], onDelete: Cascade)
+  locale     String
+  name       String
 
-    @@unique([carBrandId, locale])
+  @@unique([carBrandId, locale])
 }
 
 model CarType {
-    id                String             @id @default(uuid())
-    brandId           String
-    brand             CarBrand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
-    fuelTypeId        String
-    fuelType          FuelType           @relation(fields: [fuelTypeId], references: [id])
-    name              String
-    ecoscore          Int
-    isActive          Boolean            @default(true)
-    simulations       Simulation[]
-    carPriceEstimates CarPriceEstimate[]
-    carInfos          CarInfo[]
-    createdAt         DateTime           @default(now())
-    updatedAt         DateTime           @updatedAt
+  id                String             @id @default(uuid())
+  brandId           String
+  brand             CarBrand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  fuelTypeId        String
+  fuelType          FuelType           @relation(fields: [fuelTypeId], references: [id])
+  name              String
+  ecoscore          Int
+  isActive          Boolean            @default(true)
+  simulations       Simulation[]
+  carPriceEstimates CarPriceEstimate[]
+  carInfos          CarInfo[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 }
 
 enum SimulationResultCode {
-    notOk
-    categoryA
-    categoryB
-    manualReview
+  notOk
+  categoryA
+  categoryB
+  manualReview
 }
 
 model Simulation {
-    id                           String               @id @default(uuid())
-    townId                       String
-    town                         Town                 @relation(fields: [townId], references: [id])
-    brandId                      String
-    brand                        CarBrand             @relation(fields: [brandId], references: [id])
-    fuelTypeId                   String
-    fuelType                     FuelType             @relation(fields: [fuelTypeId], references: [id])
-    carTypeId                    String?
-    carType                      CarType?             @relation(fields: [carTypeId], references: [id])
-    carTypeOther                 String?
-    km                           Int
-    ownerKmPerYear               Int
-    seats                        Int                  @default(0)
-    firstRegisteredAt            DateTime
-    isVan                        Boolean              @default(false)
-    isNewCar                     Boolean              @default(false)
-    purchasePrice                Decimal?
-    rejectionReason              String?
-    resultCode                   SimulationResultCode
-    resultEuroNorm               String?
-    resultEcoScore               Int?
-    resultConsumption            Float?
-    resultCc                     Int?
-    resultCo2                    Int?
-    resultInsuranceCostPerYear   Float?
-    resultTaxCostPerYear         Float?
-    resultInspectionCostPerYear  Float?
-    resultMaintenanceCostPerYear Float?
-    resultMinSharedKm            Int?
-    resultAvgSharedKm            Int?
-    resultMaxSharedKm            Int?
-    resultRoundedKmCost          Float?
-    resultDepreciationCostKm     Float?
-    resultEstimatedCarValue      Float?
-    error                        String?
-    duration                     Int                  @default(45)
-    steps                        Json                 @default("[]")
-    email                        String?
-    createdAt                    DateTime             @default(now())
-    updatedAt                    DateTime             @updatedAt
+  id                           String               @id @default(uuid())
+  townId                       String
+  town                         Town                 @relation(fields: [townId], references: [id])
+  brandId                      String
+  brand                        CarBrand             @relation(fields: [brandId], references: [id])
+  fuelTypeId                   String
+  fuelType                     FuelType             @relation(fields: [fuelTypeId], references: [id])
+  carTypeId                    String?
+  carType                      CarType?             @relation(fields: [carTypeId], references: [id])
+  carTypeOther                 String?
+  km                           Int
+  ownerKmPerYear               Int
+  seats                        Int                  @default(0)
+  firstRegisteredAt            DateTime
+  isVan                        Boolean              @default(false)
+  isNewCar                     Boolean              @default(false)
+  purchasePrice                Decimal?
+  rejectionReason              String?
+  resultCode                   SimulationResultCode
+  resultEuroNorm               String?
+  resultEcoScore               Int?
+  resultConsumption            Float?
+  resultCc                     Int?
+  resultCo2                    Int?
+  resultInsuranceCostPerYear   Float?
+  resultTaxCostPerYear         Float?
+  resultInspectionCostPerYear  Float?
+  resultMaintenanceCostPerYear Float?
+  resultMinSharedKm            Int?
+  resultAvgSharedKm            Int?
+  resultMaxSharedKm            Int?
+  resultRoundedKmCost          Float?
+  resultDepreciationCostKm     Float?
+  resultEstimatedCarValue      Float?
+  error                        String?
+  duration                     Int                  @default(45)
+  steps                        Json                 @default("[]")
+  email                        String?
+  createdAt                    DateTime             @default(now())
+  updatedAt                    DateTime             @updatedAt
 }
 
 model EuroNorm {
-    id                    String            @id @default(uuid())
-    code                  String            @unique
-    name                  String
-    group                 Int               @default(0)
-    isActive              Boolean           @default(true)
-    start                 DateTime
-    end                   DateTime?
-    createdAt             DateTime          @default(now())
-    updatedAt             DateTime          @updatedAt
-    systemParameterValues SystemParameter[]
-    carInfos              CarInfo[]
+  id                    String            @id @default(uuid())
+  code                  String            @unique
+  name                  String
+  group                 Int               @default(0)
+  isActive              Boolean           @default(true)
+  start                 DateTime
+  end                   DateTime?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  systemParameterValues SystemParameter[]
+  carInfos              CarInfo[]
 }
 
 model FiscalRegion {
-    id                        String                     @id @default(uuid())
-    code                      String                     @unique
-    isDefault                 Boolean                    @default(true)
-    translations              FiscalRegionTranslation[]
-    provinces                 Province[]
-    carTaxBaseRates           CarTaxBaseRate[]
-    carTaxEuroNormAdjustments CarTaxEuroNormAdjustment[]
-    carTaxFlatRates           CarTaxFlatRate[]
-    createdAt                 DateTime                   @default(now())
-    updatedAt                 DateTime                   @updatedAt
+  id                        String                     @id @default(uuid())
+  code                      String                     @unique
+  isDefault                 Boolean                    @default(true)
+  translations              FiscalRegionTranslation[]
+  provinces                 Province[]
+  carTaxBaseRates           CarTaxBaseRate[]
+  carTaxEuroNormAdjustments CarTaxEuroNormAdjustment[]
+  carTaxFlatRates           CarTaxFlatRate[]
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
 }
 
 model CarTaxEuroNormAdjustment {
-    id                String       @id @default(uuid())
-    fiscalRegionId    String
-    fiscalRegion      FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
-    euroNormGroup     Int
-    defaultAdjustment Decimal      @default(0)
-    dieselAdjustment  Decimal      @default(0)
-    createdAt         DateTime     @default(now())
-    updatedAt         DateTime     @updatedAt
+  id                String       @id @default(uuid())
+  fiscalRegionId    String
+  fiscalRegion      FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+  euroNormGroup     Int
+  defaultAdjustment Decimal      @default(0)
+  dieselAdjustment  Decimal      @default(0)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 }
 
 model CarTaxBaseRate {
-    id             String       @id @default(uuid())
-    fiscalRegionId String
-    fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
-    maxCc          Int
-    fiscalPk       Int
-    start          DateTime?
-    end            DateTime?
-    rate           Decimal
-    createdAt      DateTime     @default(now())
-    updatedAt      DateTime     @updatedAt
+  id             String       @id @default(uuid())
+  fiscalRegionId String
+  fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+  maxCc          Int
+  fiscalPk       Int
+  start          DateTime?
+  end            DateTime?
+  rate           Decimal
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model CarTaxFlatRate {
-    id             String       @id @default(uuid())
-    fiscalRegionId String
-    fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
-    start          DateTime?
-    rate           Decimal
-    createdAt      DateTime     @default(now())
-    updatedAt      DateTime     @updatedAt
+  id             String       @id @default(uuid())
+  fiscalRegionId String
+  fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+  start          DateTime?
+  rate           Decimal
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model FiscalRegionTranslation {
-    id             String       @id @default(uuid())
-    fiscalRegionId String
-    fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
-    locale         String
-    name           String
+  id             String       @id @default(uuid())
+  fiscalRegionId String
+  fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id], onDelete: Cascade)
+  locale         String
+  name           String
 
-    @@unique([fiscalRegionId, locale])
+  @@unique([fiscalRegionId, locale])
 }
 
 model Province {
-    id             String       @id @default(uuid())
-    name           String
-    fiscalRegionId String
-    fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id])
-    towns          Town[]
-    createdAt      DateTime     @default(now())
-    updatedAt      DateTime     @updatedAt
+  id             String       @id @default(uuid())
+  name           String
+  fiscalRegionId String
+  fiscalRegion   FiscalRegion @relation(fields: [fiscalRegionId], references: [id])
+  towns          Town[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Hub {
-    id                                    String         @id @default(uuid())
-    name                                  String
-    isDefault                             Boolean        @default(false)
-    simMaxAge                             Int            @default(15)
-    simMaxKm                              Int            @default(200000)
-    simMinEuroNormGroupDiesel             Int            @default(5)
-    simMinEcoScoreForBonus                Int            @default(65)
-    simMaxKmForBonus                      Int            @default(140000)
-    simMaxAgeForBonus                     Int            @default(7)
-    simDepreciationKm                     Int            @default(250000)
-    simDepreciationKmElectric             Int            @default(320000)
-    simInspectionCostPerYear              Decimal        @default(43)
-    simMaintenanceCostPerYear             Decimal        @default(950)
-    minSharedKm                           Int            @default(3000)
-    avgSharedKm                           Int            @default(5000)
-    maxSharedKm                           Int            @default(7000)
-    simMaxPrice                           Int?           @default(35000)
-    simAcceptedPriceCategoryA             Decimal        @default(0.38)
-    simAcceptedPriceCategoryB             Decimal        @default(0.46)
-    simAcceptedDepreciationCostKm         Decimal        @default(0.32)
-    simAcceptedElectricDepreciationCostKm Decimal        @default(0.33)
-    towns                                 Town[]
-    createdAt                             DateTime       @default(now())
-    updatedAt                             DateTime       @updatedAt
+  id                                    String   @id @default(uuid())
+  name                                  String
+  isDefault                             Boolean  @default(false)
+  simMaxAge                             Int      @default(15)
+  simMaxKm                              Int      @default(200000)
+  simMinEuroNormGroupDiesel             Int      @default(5)
+  simMinEcoScoreForBonus                Int      @default(65)
+  simMaxKmForBonus                      Int      @default(140000)
+  simMaxAgeForBonus                     Int      @default(7)
+  simDepreciationKm                     Int      @default(250000)
+  simDepreciationKmElectric             Int      @default(320000)
+  simInspectionCostPerYear              Decimal  @default(43)
+  simMaintenanceCostPerYear             Decimal  @default(950)
+  minSharedKm                           Int      @default(3000)
+  avgSharedKm                           Int      @default(5000)
+  maxSharedKm                           Int      @default(7000)
+  simMaxPrice                           Int?     @default(35000)
+  simAcceptedPriceCategoryA             Decimal  @default(0.38)
+  simAcceptedPriceCategoryB             Decimal  @default(0.46)
+  simAcceptedDepreciationCostKm         Decimal  @default(0.32)
+  simAcceptedElectricDepreciationCostKm Decimal  @default(0.33)
+  towns                                 Town[]
+  createdAt                             DateTime @default(now())
+  updatedAt                             DateTime @updatedAt
 }
 
 model InsurancePriceBenchmark {
-    id          String   @id @default(uuid())
-    year        Int
-    maxCarPrice Int
-    baseRate    Decimal
-    rate        Decimal
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+  id          String   @id @default(uuid())
+  year        Int
+  maxCarPrice Int
+  baseRate    Decimal
+  rate        Decimal
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-    @@unique([year, maxCarPrice])
+  @@unique([year, maxCarPrice])
 }
 
 model CarPriceEstimate {
-    id           String   @id @default(uuid())
-    carTypeId    String
-    carType      CarType  @relation(fields: [carTypeId], references: [id])
-    year         Int
-    estimateYear Int
-    price        Decimal
-    rangeMin     Decimal
-    rangeMax     Decimal
-    prompt       String?
-    remarks      String?
-    articleRefs  String[]
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
+  id           String   @id @default(uuid())
+  carTypeId    String
+  carType      CarType  @relation(fields: [carTypeId], references: [id])
+  year         Int
+  estimateYear Int
+  price        Decimal
+  rangeMin     Decimal
+  rangeMax     Decimal
+  prompt       String?
+  remarks      String?
+  articleRefs  String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-    @@unique([carTypeId, year, estimateYear])
+  @@unique([carTypeId, year, estimateYear])
 }
 
 model CarInfo {
-    id          String    @id @default(uuid())
-    carTypeId   String
-    carType     CarType   @relation(fields: [carTypeId], references: [id], onDelete: Cascade)
-    year        Int
-    cylinderCc  Int
-    co2Emission Int
-    ecoscore    Int
-    euroNormId  String?
-    euroNorm    EuroNorm? @relation(fields: [euroNormId], references: [id])
-    consumption Float
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
+  id          String    @id @default(uuid())
+  carTypeId   String
+  carType     CarType   @relation(fields: [carTypeId], references: [id], onDelete: Cascade)
+  year        Int
+  cylinderCc  Int
+  co2Emission Int
+  ecoscore    Int
+  euroNormId  String?
+  euroNorm    EuroNorm? @relation(fields: [euroNormId], references: [id])
+  consumption Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-    @@unique([carTypeId, year])
+  @@unique([carTypeId, year])
 }
 
 model Town {
-    id               String       @id @default(uuid())
-    zip              String
-    name             String
-    municipality     String
-    provinceId       String
-    province         Province     @relation(fields: [provinceId], references: [id])
-    highDemand       Boolean      @default(false) @map("highDemand")
-    hasActiveMembers Boolean      @default(false)
-    hubId            String
-    hub              Hub          @relation(fields: [hubId], references: [id])
-    simulations      Simulation[]
-    createdAt        DateTime     @default(now())
-    updatedAt        DateTime     @updatedAt
+  id               String       @id @default(uuid())
+  zip              String
+  name             String
+  municipality     String
+  provinceId       String
+  province         Province     @relation(fields: [provinceId], references: [id])
+  highDemand       Boolean      @default(false) @map("highDemand")
+  hasActiveMembers Boolean      @default(false)
+  hubId            String
+  hub              Hub          @relation(fields: [hubId], references: [id])
+  simulations      Simulation[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
 }
 
 enum SystemParameterCategory {
-    simulation
-    assistant
+  simulation
+  assistant
 }
 
 enum SystemParameterType {
-    number
-    number_range
-    euronorm
-    string
+  number
+  number_range
+  euronorm
+  string
 }
 
 model SystemParameter {
-    id              String                       @id @default(uuid())
-    code            String                       @unique
-    category        SystemParameterCategory
-    type            SystemParameterType
-    valueNumber     Float?
-    valueNumberMin  Float?
-    valueNumberMax  Float?
-    valueEuronormId String?
-    valueEuronorm   EuroNorm?                    @relation(fields: [valueEuronormId], references: [id])
-    valueString      String?
-    translations    SystemParameterTranslation[]
-    createdAt       DateTime                     @default(now())
-    updatedAt       DateTime                     @updatedAt
+  id              String                       @id @default(uuid())
+  code            String                       @unique
+  category        SystemParameterCategory
+  type            SystemParameterType
+  valueNumber     Float?
+  valueNumberMin  Float?
+  valueNumberMax  Float?
+  valueEuronormId String?
+  valueEuronorm   EuroNorm?                    @relation(fields: [valueEuronormId], references: [id])
+  valueString     String?
+  translations    SystemParameterTranslation[]
+  createdAt       DateTime                     @default(now())
+  updatedAt       DateTime                     @updatedAt
 }
 
 model SystemParameterTranslation {
-    id                String          @id @default(uuid())
-    systemParameterId String
-    systemParameter   SystemParameter @relation(fields: [systemParameterId], references: [id], onDelete: Cascade)
-    locale            String
-    name              String
-    description       String          @default("")
+  id                String          @id @default(uuid())
+  systemParameterId String
+  systemParameter   SystemParameter @relation(fields: [systemParameterId], references: [id], onDelete: Cascade)
+  locale            String
+  name              String
+  description       String          @default("")
 
-    @@unique([systemParameterId, locale])
+  @@unique([systemParameterId, locale])
 }
 
 model User {
-    id            String             @id
-    name          String
-    email         String
-    emailVerified Boolean            @default(false)
-    image         String?
-    locale        String?            @default("en")
-    createdAt     DateTime           @default(now())
-    updatedAt     DateTime           @default(now()) @updatedAt
-    role          String?
-    banned        Boolean?           @default(false)
-    banReason     String?
-    banExpires    DateTime?
-    sessions      Session[]
-    accounts      Account[]
-    conversations ChatConversation[]
+  id            String             @id
+  name          String
+  email         String
+  emailVerified Boolean            @default(false)
+  image         String?
+  locale        String?            @default("en")
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @default(now()) @updatedAt
+  role          String?
+  banned        Boolean?           @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  sessions      Session[]
+  accounts      Account[]
+  conversations ChatConversation[]
 
-    @@unique([email])
-    @@map("user")
+  oauthclients       OauthClient[]
+  oauthrefreshtokens OauthRefreshToken[]
+  oauthaccesstokens  OauthAccessToken[]
+  oauthconsents      OauthConsent[]
+
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
-    id             String   @id
-    expiresAt      DateTime
-    token          String
-    createdAt      DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-    ipAddress      String?
-    userAgent      String?
-    userId         String
-    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    impersonatedBy String?
+  id             String   @id
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
 
-    @@unique([token])
-    @@map("session")
+  oauthrefreshtokens OauthRefreshToken[]
+  oauthaccesstokens  OauthAccessToken[]
+
+  @@unique([token])
+  @@map("session")
+  @@index([userId])
 }
 
 model Account {
-    id                    String    @id
-    accountId             String
-    providerId            String
-    userId                String
-    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    accessToken           String?
-    refreshToken          String?
-    idToken               String?
-    accessTokenExpiresAt  DateTime?
-    refreshTokenExpiresAt DateTime?
-    scope                 String?
-    password              String?
-    createdAt             DateTime  @default(now())
-    updatedAt             DateTime  @updatedAt
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
-    @@map("account")
+  @@map("account")
+  @@index([userId])
 }
 
 model Verification {
-    id         String   @id
-    identifier String
-    value      String
-    expiresAt  DateTime
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now()) @updatedAt
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 
-    @@map("verification")
+  @@map("verification")
+  @@index([identifier])
 }
 
 enum DocumentationSource {
-    repository
-    notion
-    manual
+  repository
+  notion
+  manual
 }
 
 enum DocumentationFormat {
-    markdown
-    text
+  markdown
+  text
 }
 
 enum DocumentationAudienceRole {
-    technical
-    admin
-    user
-    public
+  technical
+  admin
+  user
+  public
 }
 
 enum DocumentationTag {
-    simulation_step_1
-    simulation_step_2_approved
-    simulation_step_2_rejected
-    simulation_step_2_review
-    simulation_step_3
-    simulation_step_4
+  simulation_step_1
+  simulation_step_2_approved
+  simulation_step_2_rejected
+  simulation_step_2_review
+  simulation_step_3
+  simulation_step_4
 }
 
 enum ChatConversationMedium {
-    frontend
-    email
+  frontend
+  email
 }
 
 model Documentation {
-    id            String                      @id @default(uuid())
-    source        DocumentationSource
-    externalId    String                      @unique
-    isFaq         Boolean                     @default(false)
-    isPublic      Boolean                     @default(false)
-    format        DocumentationFormat
-    audienceRoles DocumentationAudienceRole[]
-    tags          DocumentationTag[]
-    translations  DocumentationTranslation[]
-    chunks        DocumentationChunk[]
-    groups        DocumentationGroup[]
-    createdAt     DateTime                    @default(now())
-    updatedAt     DateTime                    @updatedAt
+  id            String                      @id @default(uuid())
+  source        DocumentationSource
+  externalId    String                      @unique
+  isFaq         Boolean                     @default(false)
+  isPublic      Boolean                     @default(false)
+  format        DocumentationFormat
+  audienceRoles DocumentationAudienceRole[]
+  tags          DocumentationTag[]
+  translations  DocumentationTranslation[]
+  chunks        DocumentationChunk[]
+  groups        DocumentationGroup[]
+  createdAt     DateTime                    @default(now())
+  updatedAt     DateTime                    @updatedAt
 }
 
 model DocumentationGroup {
-    id             String                          @id @default(uuid())
-    sortOrder      Int                             @default(0)
-    translations   DocumentationGroupTranslation[]
-    documentations Documentation[]
-    createdAt      DateTime                        @default(now())
-    updatedAt      DateTime                        @updatedAt
+  id             String                          @id @default(uuid())
+  sortOrder      Int                             @default(0)
+  translations   DocumentationGroupTranslation[]
+  documentations Documentation[]
+  createdAt      DateTime                        @default(now())
+  updatedAt      DateTime                        @updatedAt
 }
 
 model DocumentationGroupTranslation {
-    id                   String             @id @default(uuid())
-    documentationGroupId String
-    documentationGroup   DocumentationGroup @relation(fields: [documentationGroupId], references: [id], onDelete: Cascade)
-    locale               String
-    name                 String
+  id                   String             @id @default(uuid())
+  documentationGroupId String
+  documentationGroup   DocumentationGroup @relation(fields: [documentationGroupId], references: [id], onDelete: Cascade)
+  locale               String
+  name                 String
 
-    @@unique([documentationGroupId, locale])
+  @@unique([documentationGroupId, locale])
 }
 
 model DocumentationTranslation {
-    id              String        @id @default(uuid())
-    documentationId String
-    documentation   Documentation @relation(fields: [documentationId], references: [id], onDelete: Cascade)
-    locale          String
-    title           String
-    content         String        @default("")
+  id              String        @id @default(uuid())
+  documentationId String
+  documentation   Documentation @relation(fields: [documentationId], references: [id], onDelete: Cascade)
+  locale          String
+  title           String
+  content         String        @default("")
 
-    @@unique([documentationId, locale])
+  @@unique([documentationId, locale])
 }
 
 model DocumentationChunk {
-    id              String                      @id @default(uuid())
-    documentationId String
-    documentation   Documentation               @relation(fields: [documentationId], references: [id], onDelete: Cascade)
-    locale          String                      @default("nl")
-    chunkIndex      Int
-    chunkType       String
-    content         String
-    contentHash     String
-    embedding       Unsupported("vector(1536)")
-    createdAt       DateTime                    @default(now())
-    updatedAt       DateTime                    @updatedAt
+  id              String                      @id @default(uuid())
+  documentationId String
+  documentation   Documentation               @relation(fields: [documentationId], references: [id], onDelete: Cascade)
+  locale          String                      @default("nl")
+  chunkIndex      Int
+  chunkType       String
+  content         String
+  contentHash     String
+  embedding       Unsupported("vector(1536)")
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @updatedAt
 
-    @@unique([documentationId, locale, chunkIndex])
-    @@index([documentationId])
-    @@index([locale])
+  @@unique([documentationId, locale, chunkIndex])
+  @@index([documentationId])
+  @@index([locale])
 }
 
 model TranslationOverride {
-    id        String   @id @default(uuid())
-    key       String
-    locale    String
-    value     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(uuid())
+  key       String
+  locale    String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@unique([key, locale])
-    @@index([locale])
+  @@unique([key, locale])
+  @@index([locale])
 }
 
 model ChatConversation {
-    id            String                 @id @default(uuid())
-    userId        String?
-    user          User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-    medium        ChatConversationMedium @default(frontend)
-    emailThreadId String?
-    guestToken    String?                @unique
-    title         String                 @default("")
-    messages      ChatMessage[]
-    createdAt     DateTime               @default(now())
-    updatedAt     DateTime               @updatedAt
+  id            String                 @id @default(uuid())
+  userId        String?
+  user          User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medium        ChatConversationMedium @default(frontend)
+  emailThreadId String?
+  guestToken    String?                @unique
+  title         String                 @default("")
+  messages      ChatMessage[]
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
 
-    @@index([userId])
-    @@index([updatedAt])
-    @@index([medium, emailThreadId])
-    @@unique([medium, emailThreadId])
+  @@index([userId])
+  @@index([updatedAt])
+  @@index([medium, emailThreadId])
+  @@unique([medium, emailThreadId])
 }
 
 model ChatMessage {
-    id                String           @id @default(uuid())
-    conversationId    String
-    conversation      ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-    externalId        String?
-    externalMessageId String?
-    role              String
-    content           String
-    citations         Json             @default("[]")
-    createdAt         DateTime         @default(now())
+  id                String           @id @default(uuid())
+  conversationId    String
+  conversation      ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  externalId        String?
+  externalMessageId String?
+  role              String
+  content           String
+  citations         Json             @default("[]")
+  createdAt         DateTime         @default(now())
 
-    @@unique([conversationId, externalId])
-    @@unique([conversationId, externalMessageId])
-    @@index([conversationId, createdAt])
+  @@unique([conversationId, externalId])
+  @@unique([conversationId, externalMessageId])
+  @@index([conversationId, createdAt])
+}
+
+model Jwks {
+  id         String    @id
+  publicKey  String
+  privateKey String
+  createdAt  DateTime
+  expiresAt  DateTime?
+
+  @@map("jwks")
+}
+
+model OauthClient {
+  id                      String              @id
+  clientId                String
+  clientSecret            String?
+  disabled                Boolean?            @default(false)
+  skipConsent             Boolean?
+  enableEndSession        Boolean?
+  subjectType             String?
+  scopes                  String[]
+  userId                  String?
+  user                    User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt               DateTime?
+  updatedAt               DateTime?
+  name                    String?
+  uri                     String?
+  icon                    String?
+  contacts                String[]
+  tos                     String?
+  policy                  String?
+  softwareId              String?
+  softwareVersion         String?
+  softwareStatement       String?
+  redirectUris            String[]
+  postLogoutRedirectUris  String[]
+  tokenEndpointAuthMethod String?
+  grantTypes              String[]
+  responseTypes           String[]
+  public                  Boolean?
+  type                    String?
+  requirePKCE             Boolean?
+  referenceId             String?
+  metadata                Json?
+  oauthrefreshtokens      OauthRefreshToken[]
+  oauthaccesstokens       OauthAccessToken[]
+  oauthconsents           OauthConsent[]
+
+  @@unique([clientId])
+  @@index([userId])
+  @@map("oauthClient")
+}
+
+model OauthRefreshToken {
+  id                String             @id
+  token             String
+  clientId          String
+  oauthclient       OauthClient        @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  sessionId         String?
+  session           Session?           @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  userId            String
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referenceId       String?
+  expiresAt         DateTime?
+  createdAt         DateTime?
+  revoked           DateTime?
+  authTime          DateTime?
+  scopes            String[]
+  oauthaccesstokens OauthAccessToken[]
+
+  @@unique([token])
+  @@index([clientId])
+  @@index([sessionId])
+  @@index([userId])
+  @@map("oauthRefreshToken")
+}
+
+model OauthAccessToken {
+  id                String             @id
+  token             String?
+  clientId          String
+  oauthclient       OauthClient        @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  sessionId         String?
+  session           Session?           @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  userId            String?
+  user              User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referenceId       String?
+  refreshId         String?
+  oauthrefreshtoken OauthRefreshToken? @relation(fields: [refreshId], references: [id], onDelete: Cascade)
+  expiresAt         DateTime?
+  createdAt         DateTime?
+  scopes            String[]
+
+  @@unique([token])
+  @@index([clientId])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([refreshId])
+  @@map("oauthAccessToken")
+}
+
+model OauthConsent {
+  id          String      @id
+  clientId    String
+  oauthclient OauthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referenceId String?
+  scopes      String[]
+  createdAt   DateTime?
+  updatedAt   DateTime?
+
+  @@index([clientId])
+  @@index([userId])
+  @@map("oauthConsent")
 }

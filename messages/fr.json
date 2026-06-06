@@ -174,7 +174,17 @@
     "emailOtp": "Se connecter avec un code",
     "emailOtpLink": "Se connecter avec un code",
     "onboardingNoticeTitle": "Vous vous connectez à l'onboarding propriétaire",
-    "onboardingNoticeBody": "Cette application sert à inscrire votre voiture chez Dégage—pas pour réserver des voitures partagées ni gérer votre compte membre. Utilisez <degapp>Degapp</degapp> pour cela."
+    "onboardingNoticeBody": "Cette application sert à inscrire votre voiture chez Dégage—pas pour réserver des voitures partagées ni gérer votre compte membre. Utilisez <degapp>Degapp</degapp> pour cela.",
+    "oauthConsent": {
+      "title": "Autoriser l'application",
+      "description": "Une application demande l'accès à votre compte.",
+      "client": "Application",
+      "scopesTitle": "Autorisations demandées",
+      "scopeMcp": "Accès MCP ({role})",
+      "accept": "Autoriser",
+      "deny": "Refuser",
+      "error": "L'autorisation a échoué. Veuillez réessayer."
+    }
   },
   "admin": {
     "menu": "Admin",

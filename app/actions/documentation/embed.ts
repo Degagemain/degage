@@ -4,6 +4,7 @@ import { DocumentationSortColumns } from '@/domain/documentation.filter';
 import { SortOrder } from '@/domain/utils';
 import { type ContentLocale, contentLocales } from '@/i18n/locales';
 import { generateEmbedding } from '@/integrations/gemini';
+import { dbDocumentationRead } from '@/storage/documentation/documentation.read';
 import { dbDocumentationSearch } from '@/storage/documentation/documentation.search';
 import { dbDocumentationChunkReadHashesByLocale } from '@/storage/documentation-chunk/documentation-chunk.read';
 import { dbDocumentationChunkReplaceForLocale } from '@/storage/documentation-chunk/documentation-chunk.upsert';
@@ -80,6 +81,41 @@ const listAllDocumentationForEmbedding = async (): Promise<Documentation[]> => {
   });
 
   return allDocsPage.records;
+};
+
+export const embedDocumentationById = async (documentationId: string): Promise<void> => {
+  const doc = await dbDocumentationRead(documentationId);
+  if (!doc?.id) return;
+
+  const docId = doc.id;
+  const docRef = `${doc.externalId} (${docId})`;
+
+  for (const locale of contentLocales) {
+    const translation = doc.translations.find((item) => item.locale === locale);
+    if (!translation) continue;
+
+    const normalizedTitle = translation.title.trim();
+    const normalizedContent = translation.content.trim();
+    if (!normalizedTitle) continue;
+
+    const contentHash = sha256Hex(`${normalizedTitle}\n${normalizedContent}`);
+    const chunkDrafts = buildChunkDrafts(normalizedTitle, normalizedContent);
+
+    const chunksWithEmbeddings = await Promise.all(
+      chunkDrafts.map(async (chunk, index) => ({
+        documentationId: docId,
+        locale,
+        chunkIndex: index,
+        chunkType: chunk.chunkType,
+        content: chunk.content,
+        contentHash,
+        embedding: await generateEmbedding(chunk.content, 'RETRIEVAL_DOCUMENT'),
+      })),
+    );
+
+    await dbDocumentationChunkReplaceForLocale(docId, locale, chunksWithEmbeddings);
+    logger.info('[embeddings] single doc upsert succeeded', { docRef, locale, chunkCount: chunksWithEmbeddings.length });
+  }
 };
 
 export const syncDocumentationEmbeddings = async (): Promise<DocumentationEmbeddingSyncResult> => {

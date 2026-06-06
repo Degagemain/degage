@@ -6,6 +6,7 @@ export const authViewPaths = {
   RESET_PASSWORD: 'reset-password',
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
+  CONSENT: 'consent',
 } as const;
 
 export type AuthViewPathKey = keyof typeof authViewPaths;
@@ -19,6 +20,7 @@ const phase1Paths: AuthViewPathSlug[] = [
   authViewPaths.CALLBACK,
   authViewPaths.MAGIC_LINK,
   authViewPaths.EMAIL_OTP,
+  authViewPaths.CONSENT,
 ];
 
 export function authStaticParams() {

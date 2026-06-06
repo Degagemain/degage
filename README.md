@@ -302,6 +302,9 @@ This log explains why packages were installed.
 | Label Component                            | @radix-ui/react-label                                                                                  |
 | Separator Component                        | @radix-ui/react-separator                                                                              |
 | Auth setup                                 | better-auth                                                                                            |
+| OAuth 2.1 provider (MCP)                   | @better-auth/oauth-provider                                                                            |
+| MCP HTTP transport                         | mcp-handler                                                                                            |
+| MCP SDK types                              | @modelcontextprotocol/sdk                                                                              |
 | Toastr Component                           | sonner                                                                                                 |
 | ShadCN Table/Select                        | radix-ui                                                                                               |
 | Data Table                                 | @tanstack/react-table                                                                                  |
@@ -392,6 +395,10 @@ Configure Resend to receive support emails and forward them to this app webhook.
 
 The webhook responds immediately with `200`, then processes the email asynchronously (fetches content, links it to a conversation thread, generates a support answer, and sends a reply email).
 
+## Application MCP (optional)
+
+When `MCP_ENABLED=true`, this app exposes a documentation MCP server at `/mcp` with OAuth 2.1 (Better Auth). See [docs/en/mcp.md](docs/en/mcp.md).
+
 ## Cursor MCP
 
 Optional [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers for [Cursor](https://cursor.com/) live in **`.cursor/mcp.json`** at the repo root (project scope). That file is **gitignored** (see `.cursor/.gitignore`) so API keys and tokens are not committed.
@@ -424,6 +431,10 @@ Example **`.cursor/mcp.json`** (replace placeholder values; do not commit real s
 ```
 
 ## Known Issues
+
+### Better Auth + Kysely (Turbopack)
+
+`better-auth@1.6.x` bundles `@better-auth/kysely-adapter`, which breaks Turbopack builds when `kysely@0.29.x` is resolved (migration constants moved to `kysely/migration`). This project uses the Prisma adapter only; `package.json` pins `kysely` to `0.28.17` via `pnpm.overrides` until upstream fixes land. Remove the override after upgrading to a fixed `@better-auth/kysely-adapter`.
 
 ### Turbopack
 

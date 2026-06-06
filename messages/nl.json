@@ -174,7 +174,17 @@
     "emailOtp": "Inloggen met een code",
     "emailOtpLink": "Inloggen met een code",
     "onboardingNoticeTitle": "Je logt in op de onboarding voor eigenaars",
-    "onboardingNoticeBody": "Deze app is om je wagen in te schrijven bij Dégage—niet om gedeelde wagens te reserveren of je ledenaccount te beheren. Gebruik daarvoor <degapp>Degapp</degapp>."
+    "onboardingNoticeBody": "Deze app is om je wagen in te schrijven bij Dégage—niet om gedeelde wagens te reserveren of je ledenaccount te beheren. Gebruik daarvoor <degapp>Degapp</degapp>.",
+    "oauthConsent": {
+      "title": "Applicatie autoriseren",
+      "description": "Een applicatie vraagt toegang tot je account.",
+      "client": "Applicatie",
+      "scopesTitle": "Gevraagde rechten",
+      "scopeMcp": "MCP-toegang ({role})",
+      "accept": "Toestaan",
+      "deny": "Weigeren",
+      "error": "Autorisatie mislukt. Probeer opnieuw."
+    }
   },
   "admin": {
     "menu": "Admin",

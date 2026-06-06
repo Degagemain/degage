@@ -174,7 +174,17 @@
     "emailOtp": "Sign in with a code",
     "emailOtpLink": "Sign in with a code",
     "onboardingNoticeTitle": "You are signing in to owner onboarding",
-    "onboardingNoticeBody": "This app is for enrolling your car with Dégage—not for booking shared cars or your member account. Use <degapp>Degapp</degapp> for that instead."
+    "onboardingNoticeBody": "This app is for enrolling your car with Dégage—not for booking shared cars or your member account. Use <degapp>Degapp</degapp> for that instead.",
+    "oauthConsent": {
+      "title": "Authorize application",
+      "description": "An application is requesting access to your account.",
+      "client": "Application",
+      "scopesTitle": "Requested permissions",
+      "scopeMcp": "MCP access ({role})",
+      "accept": "Allow",
+      "deny": "Deny",
+      "error": "Authorization failed. Please try again."
+    }
   },
   "admin": {
     "menu": "Admin",
