@@ -5,7 +5,7 @@ import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { ChevronDownIcon, History, Plus, Trash2, X } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from '@/app/components/ai-elements/conversation';
 import { Reasoning, ReasoningContent, ReasoningTrigger } from '@/app/components/ai-elements/reasoning';
 import { Source, Sources, SourcesContent, SourcesTrigger } from '@/app/components/ai-elements/sources';
@@ -138,7 +138,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const [previewAudience, setPreviewAudience] = useState<DocumentationAudienceRole>(Role.ADMIN);
   const [input, setInput] = useState('');
   const [conversationList, setConversationList] = useState<ConversationListItem[]>([]);
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationId, setActiveConversationIdState] = useState<string | null>(null);
   const [isLoadingConversations, setIsLoadingConversations] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -146,13 +146,17 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const activeConversationIdRef = useRef<string | null>(null);
   const guestTokenRef = useRef<string | null>(null);
   const hadAuthenticatedSessionRef = useRef(Boolean(session?.user));
+
+  const setActiveConversationId = useCallback((value: SetStateAction<string | null>) => {
+    setActiveConversationIdState((current) => {
+      const next = typeof value === 'function' ? value(current) : value;
+      activeConversationIdRef.current = next;
+      return next;
+    });
+  }, []);
   const previewAudienceRef = useRef<DocumentationAudienceRole>(Role.ADMIN);
   const isViewerAdminRef = useRef(false);
   const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    activeConversationIdRef.current = activeConversationId;
-  }, [activeConversationId]);
 
   useEffect(() => {
     previewAudienceRef.current = previewAudience;
@@ -208,15 +212,19 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const { messages, setMessages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
-      prepareSendMessagesRequest: ({ id, messages }) => ({
-        body: {
-          id,
-          conversationId: activeConversationIdRef.current ?? undefined,
-          guestToken: guestTokenRef.current ?? undefined,
-          ...(isViewerAdminRef.current ? { previewAudience: previewAudienceRef.current } : {}),
-          messages,
-        },
-      }),
+      prepareSendMessagesRequest: ({ id, messages }) => {
+        const guestSession = activeConversationIdRef.current || !guestTokenRef.current ? null : readSupportChatGuestSession();
+
+        return {
+          body: {
+            id,
+            conversationId: activeConversationIdRef.current ?? guestSession?.conversationId ?? undefined,
+            guestToken: guestTokenRef.current ?? guestSession?.guestToken ?? undefined,
+            ...(isViewerAdminRef.current ? { previewAudience: previewAudienceRef.current } : {}),
+            messages,
+          },
+        };
+      },
     }),
     onFinish: async ({ message }) => {
       const metadata = (message as UIMessage).metadata as
@@ -224,15 +232,19 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         | undefined;
       const conversationId = activeConversationIdRef.current ?? metadata?.conversationId ?? null;
       if (!conversationId) return;
-      if (activeConversationIdRef.current !== conversationId) {
+
+      activeConversationIdRef.current = conversationId;
+      if (activeConversationId !== conversationId) {
         setActiveConversationId(conversationId);
         setLastLoadedConversationId(conversationId);
       }
-      if (!session?.user && metadata?.guestToken) {
-        guestTokenRef.current = metadata.guestToken;
+
+      const guestToken = metadata?.guestToken ?? guestTokenRef.current;
+      if (!session?.user && guestToken) {
+        guestTokenRef.current = guestToken;
         writeSupportChatGuestSession({
           conversationId,
-          guestToken: metadata.guestToken,
+          guestToken,
         });
       }
       if (session?.user) {

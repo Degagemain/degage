@@ -21,6 +21,10 @@ vi.mock('@/actions/conversation/read', () => ({
   readChatConversation: vi.fn(),
 }));
 
+vi.mock('@/actions/conversation/read-by-guest-token', () => ({
+  readChatConversationByGuestToken: vi.fn(),
+}));
+
 vi.mock('@/actions/conversation/update', () => ({
   updateChatConversation: vi.fn(),
 }));
@@ -36,6 +40,7 @@ vi.mock('@/actions/support/generate-reply', () => ({
 import { createChatConversation } from '@/actions/conversation/create';
 import { createMessage } from '@/actions/conversation/message/create';
 import { readChatConversation } from '@/actions/conversation/read';
+import { readChatConversationByGuestToken } from '@/actions/conversation/read-by-guest-token';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { auth } from '@/auth';
 import { POST } from '@/api/chat/route';
@@ -188,6 +193,47 @@ describe('POST /api/chat', () => {
     expect(vi.mocked(createMessage).mock.calls.some(([input]) => input.role === 'assistant' && input.content === 'anonymous answer')).toBe(
       true,
     );
+  });
+
+  it('resumes anonymous conversations when only guestToken is provided', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue(null);
+    vi.mocked(readChatConversationByGuestToken).mockResolvedValueOnce({
+      id: '6eccebe4-069a-4292-8d89-1f40392b935d',
+      userId: null,
+      medium: 'frontend',
+      emailThreadId: null,
+      guestToken: 'guest-token-1',
+      title: 'Hello',
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    vi.mocked(generateSupportReplyStream).mockImplementationOnce(async () => ({
+      result: {
+        toUIMessageStreamResponse: vi.fn().mockReturnValue(new Response('ok')),
+      } as any,
+      getLatestCitations: () => [],
+    }));
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        guestToken: 'guest-token-1',
+        messages: [
+          {
+            id: 'u2',
+            role: 'user',
+            parts: [{ type: 'text', text: 'Follow up' }],
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request as any);
+    expect(response.status).toBe(200);
+    expect(createChatConversation).not.toHaveBeenCalled();
+    expect(readChatConversationByGuestToken).toHaveBeenCalledWith('guest-token-1');
   });
 
   it('resumes anonymous conversations when conversationId and guestToken are provided', async () => {

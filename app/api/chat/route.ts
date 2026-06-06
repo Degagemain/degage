@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { type UIMessage } from 'ai';
 import { createChatConversation } from '@/actions/conversation/create';
 import { readChatConversation } from '@/actions/conversation/read';
+import { readChatConversationByGuestToken } from '@/actions/conversation/read-by-guest-token';
 import { updateChatConversation } from '@/actions/conversation/update';
 import { createMessage } from '@/actions/conversation/message/create';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
@@ -122,6 +123,15 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
     resolvedConversationId = existingConversation.id;
     resolvedGuestToken = existingConversation.guestToken;
     existingConversationMessages = existingConversation.messages;
+  } else if (!isAuthenticated && guestTokenRaw) {
+    const existingConversation = await readChatConversationByGuestToken(guestTokenRaw);
+    if (!existingConversation) {
+      return notFoundResponse('Conversation not found');
+    }
+
+    resolvedConversationId = existingConversation.id;
+    resolvedGuestToken = existingConversation.guestToken;
+    existingConversationMessages = existingConversation.messages;
   }
 
   const directMessages = Array.isArray(raw.messages) ? (raw.messages as UIMessage[]) : [];
@@ -148,6 +158,10 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
       }
 
       if (!resolvedConversationId) {
+        if (!isAuthenticated && guestTokenRaw) {
+          return notFoundResponse('Conversation not found');
+        }
+
         const guestToken = crypto.randomUUID();
         const conversation = await createChatConversation({
           userId: null,
