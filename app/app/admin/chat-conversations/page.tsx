@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import type { ChatConversationListItem } from '@/domain/chat.model';
 import { ChatConversationAdminSortColumns } from '@/domain/chat-conversation-admin.filter';
+import { type ChatConversationListItem, type ChatConversationMedium, chatConversationMediumValues } from '@/domain/chat.model';
 import type { Page } from '@/domain/page.model';
 import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -18,7 +18,6 @@ import {
   type FacetedFilterOption,
   type SearchableOption,
 } from '@/app/components/ui/data-table';
-import { type ChatConversationMedium, chatConversationMediumValues } from '@/domain/chat.model';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -77,10 +76,7 @@ export default function ChatConversationsPage() {
     [setCsvParam],
   );
 
-  const mediumLabel = useCallback(
-    (medium: ChatConversationMedium) => t(`mediums.${medium}`),
-    [t],
-  );
+  const mediumLabel = useCallback((medium: ChatConversationMedium) => t(`mediums.${medium}`), [t]);
 
   const mediumOptions: FacetedFilterOption[] = useMemo(
     () => chatConversationMediumValues.map((value) => ({ value, label: t(`mediums.${value}`) })),
