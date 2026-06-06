@@ -1341,6 +1341,37 @@
       "yes": "Yes",
       "no": "No"
     },
+    "chatConversations": {
+      "title": "Support chats",
+      "anonymousUser": "Anonymous",
+      "tryAgain": "Try again",
+      "filters": {
+        "user": "User",
+        "userPlaceholder": "Search users…",
+        "medium": "Channel"
+      },
+      "mediums": {
+        "frontend": "Chat",
+        "email": "Email"
+      },
+      "columns": {
+        "medium": "Channel",
+        "user": "User",
+        "title": "Title",
+        "updatedAt": "Last updated"
+      },
+      "detailPage": {
+        "backToList": "Back to chats",
+        "notFound": "Conversation not found",
+        "loadError": "Failed to load conversation",
+        "meta": "{user} · Last updated {updatedAt}",
+        "historyTitle": "Chat history",
+        "empty": "No messages in this conversation.",
+        "userLabel": "User",
+        "assistantLabel": "Assistant",
+        "articlesUsed": "Documentation search · {count, plural, one {# article} other {# articles}}"
+      }
+    },
     "users": {
       "title": "Users",
       "columns": {

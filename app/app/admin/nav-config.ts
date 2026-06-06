@@ -1,13 +1,14 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, Layers, LineChart, MapPin, Settings, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
-  translationKey: 'simulations' | 'users' | 'documentation';
+  translationKey: 'simulations' | 'users' | 'chatConversations' | 'documentation';
   href: string;
   icon: LucideIcon;
 }[] = [
   { translationKey: 'simulations', href: '/app/admin/simulations', icon: Calculator },
   { translationKey: 'users', href: '/app/admin/users', icon: Users },
+  { translationKey: 'chatConversations', href: '/app/admin/chat-conversations', icon: MessagesSquare },
   { translationKey: 'documentation', href: '/app/admin/documentation', icon: BookOpen },
 ];
 

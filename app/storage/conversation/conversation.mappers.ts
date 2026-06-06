@@ -1,9 +1,24 @@
-import type { ChatCitation, ChatConversation, ChatConversationUpdateInput, ChatMessage } from '@/domain/chat.model';
+import type {
+  ChatCitation,
+  ChatConversation,
+  ChatConversationAdminDetail,
+  ChatConversationListItem,
+  ChatConversationUpdateInput,
+  ChatMessage,
+} from '@/domain/chat.model';
 import type { Prisma } from '@/storage/client/client';
 
 type DbChatMessage = Prisma.ChatMessageGetPayload<Record<string, never>>;
 type DbChatConversation = Prisma.ChatConversationGetPayload<{
   include: { messages: true };
+}>;
+
+type DbChatConversationWithUser = Prisma.ChatConversationGetPayload<{
+  include: { user: true };
+}>;
+
+type DbChatConversationWithUserAndMessages = Prisma.ChatConversationGetPayload<{
+  include: { user: true; messages: true };
 }>;
 
 const parseCitations = (value: unknown): ChatCitation[] => {
@@ -55,5 +70,29 @@ export const dbChatConversationToDomain = (conversation: DbChatConversation): Ch
 export const chatConversationUpdateToDb = (input: ChatConversationUpdateInput): Prisma.ChatConversationUpdateInput => {
   return {
     title: input.title.trim(),
+  };
+};
+
+const dbUserToIdName = (user: NonNullable<DbChatConversationWithUser['user']>) => ({
+  id: user.id,
+  name: user.name?.trim() || user.email,
+});
+
+export const dbChatConversationToListItem = (conversation: DbChatConversationWithUser): ChatConversationListItem => {
+  return {
+    id: conversation.id,
+    title: conversation.title,
+    medium: conversation.medium,
+    user: conversation.user ? dbUserToIdName(conversation.user) : null,
+    updatedAt: conversation.updatedAt,
+  };
+};
+
+export const dbChatConversationToAdminDetail = (conversation: DbChatConversationWithUserAndMessages): ChatConversationAdminDetail => {
+  const domain = dbChatConversationToDomain(conversation);
+  const { guestToken: _guestToken, userId: _userId, ...rest } = domain;
+  return {
+    ...rest,
+    user: conversation.user ? dbUserToIdName(conversation.user) : null,
   };
 };

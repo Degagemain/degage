@@ -1341,6 +1341,37 @@
       "yes": "Ja",
       "no": "Nee"
     },
+    "chatConversations": {
+      "title": "Supportchats",
+      "anonymousUser": "Anoniem",
+      "tryAgain": "Opnieuw proberen",
+      "filters": {
+        "user": "Gebruiker",
+        "userPlaceholder": "Gebruikers zoeken…",
+        "medium": "Kanaal"
+      },
+      "mediums": {
+        "frontend": "Chat",
+        "email": "E-mail"
+      },
+      "columns": {
+        "medium": "Kanaal",
+        "user": "Gebruiker",
+        "title": "Titel",
+        "updatedAt": "Laatst bijgewerkt"
+      },
+      "detailPage": {
+        "backToList": "Terug naar chats",
+        "notFound": "Gesprek niet gevonden",
+        "loadError": "Gesprek laden mislukt",
+        "meta": "{user} · Laatst bijgewerkt {updatedAt}",
+        "historyTitle": "Chatgeschiedenis",
+        "empty": "Geen berichten in dit gesprek.",
+        "userLabel": "Gebruiker",
+        "assistantLabel": "Assistent",
+        "articlesUsed": "Documentatiezoekopdracht · {count, plural, one {# artikel} other {# artikelen}}"
+      }
+    },
     "users": {
       "title": "Gebruikers",
       "columns": {
