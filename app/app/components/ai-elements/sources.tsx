@@ -4,7 +4,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/compo
 import { cn } from '@/app/lib/utils';
 import Link from 'next/link';
 import { BookIcon, ChevronDownIcon } from 'lucide-react';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 
 export type SourcesProps = ComponentProps<typeof Collapsible>;
 
@@ -43,9 +43,10 @@ export const SourcesContent = ({ className, ...props }: SourcesContentProps) => 
 
 export type SourceProps = Omit<ComponentProps<'a'>, 'href'> & {
   href: string;
+  onNavigate?: () => void;
 };
 
-export const Source = ({ className, href, title, children, ...props }: SourceProps) => {
+export const Source = ({ className, href, title, children, onNavigate, onClick, ...props }: SourceProps) => {
   const content = children ?? (
     <>
       <BookIcon className="h-4 w-4 shrink-0" />
@@ -53,19 +54,25 @@ export const Source = ({ className, href, title, children, ...props }: SourcePro
     </>
   );
   const combinedClassName = cn(
-    'text-primary hover:text-primary/90 flex min-w-0 items-center gap-2 underline-offset-2 hover:underline',
+    'text-primary hover:text-primary/90 flex min-w-0 items-center gap-2 underline underline-offset-2 hover:no-underline',
     className,
   );
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) {
+      onNavigate?.();
+    }
+  };
   const isExternal = /^https?:\/\//i.test(href);
   if (!isExternal && href.startsWith('/')) {
     return (
-      <Link className={combinedClassName} href={href} title={title} {...props}>
+      <Link className={combinedClassName} href={href} onClick={handleClick} title={title} {...props}>
         {content}
       </Link>
     );
   }
   return (
-    <a className={combinedClassName} href={href} rel="noopener noreferrer" target="_blank" title={title} {...props}>
+    <a className={combinedClassName} href={href} onClick={handleClick} rel="noopener noreferrer" target="_blank" title={title} {...props}>
       {content}
     </a>
   );
