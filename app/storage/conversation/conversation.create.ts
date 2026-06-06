@@ -9,6 +9,7 @@ export const dbChatConversationCreate = async (input: ChatConversationCreateInpu
       userId: input.userId ?? null,
       medium: input.medium ?? 'frontend',
       emailThreadId: input.emailThreadId ?? null,
+      guestToken: input.guestToken ?? null,
       title: input.title ?? '',
     },
     include: { messages: { orderBy: { createdAt: 'asc' } } },

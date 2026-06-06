@@ -5,7 +5,7 @@ import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { ChevronDownIcon, History, Plus, Trash2, X } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from '@/app/components/ai-elements/conversation';
 import { Reasoning, ReasoningContent, ReasoningTrigger } from '@/app/components/ai-elements/reasoning';
 import { Source, Sources, SourcesContent, SourcesTrigger } from '@/app/components/ai-elements/sources';
@@ -25,6 +25,7 @@ import { type DocumentationAudienceRole, documentationAudienceRoleValues } from 
 import { Role } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { apiDelete, apiPost } from '@/app/lib/api-client';
+import { clearSupportChatGuestSession, readSupportChatGuestSession, writeSupportChatGuestSession } from '@/app/lib/support-chat-guest-session';
 import { cn } from '@/app/lib/utils';
 import { authClient } from '@/app/lib/auth';
 import { Button } from '@/app/components/ui/button';
@@ -146,19 +147,25 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const [previewAudience, setPreviewAudience] = useState<DocumentationAudienceRole>(Role.ADMIN);
   const [input, setInput] = useState('');
   const [conversationList, setConversationList] = useState<ConversationListItem[]>([]);
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationId, setActiveConversationIdState] = useState<string | null>(null);
   const [isLoadingConversations, setIsLoadingConversations] = useState(true);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [lastLoadedConversationId, setLastLoadedConversationId] = useState<string | null>(null);
   const activeConversationIdRef = useRef<string | null>(null);
+  const guestTokenRef = useRef<string | null>(null);
+  const hadAuthenticatedSessionRef = useRef(Boolean(session?.user));
+
+  const setActiveConversationId = useCallback((value: SetStateAction<string | null>) => {
+    setActiveConversationIdState((current) => {
+      const next = typeof value === 'function' ? value(current) : value;
+      activeConversationIdRef.current = next;
+      return next;
+    });
+  }, []);
   const previewAudienceRef = useRef<DocumentationAudienceRole>(Role.ADMIN);
   const isViewerAdminRef = useRef(false);
   const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    activeConversationIdRef.current = activeConversationId;
-  }, [activeConversationId]);
 
   useEffect(() => {
     previewAudienceRef.current = previewAudience;
@@ -191,7 +198,6 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const loadConversationList = useCallback(async () => {
     if (!session?.user) {
       setConversationList([]);
-      setActiveConversationId(null);
       setIsLoadingConversations(false);
       return;
     }
@@ -215,22 +221,40 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   const { messages, setMessages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
-      prepareSendMessagesRequest: ({ id, messages }) => ({
-        body: {
-          id,
-          conversationId: activeConversationIdRef.current ?? undefined,
-          ...(isViewerAdminRef.current ? { previewAudience: previewAudienceRef.current } : {}),
-          messages,
-        },
-      }),
+      prepareSendMessagesRequest: ({ id, messages }) => {
+        const guestSession = activeConversationIdRef.current || !guestTokenRef.current ? null : readSupportChatGuestSession();
+
+        return {
+          body: {
+            id,
+            conversationId: activeConversationIdRef.current ?? guestSession?.conversationId ?? undefined,
+            guestToken: guestTokenRef.current ?? guestSession?.guestToken ?? undefined,
+            ...(isViewerAdminRef.current ? { previewAudience: previewAudienceRef.current } : {}),
+            messages,
+          },
+        };
+      },
     }),
     onFinish: async ({ message }) => {
-      const metadata = (message as UIMessage).metadata as { citations?: ChatCitation[]; conversationId?: string } | undefined;
+      const metadata = (message as UIMessage).metadata as
+        | { citations?: ChatCitation[]; conversationId?: string; guestToken?: string }
+        | undefined;
       const conversationId = activeConversationIdRef.current ?? metadata?.conversationId ?? null;
       if (!conversationId) return;
-      if (activeConversationIdRef.current !== conversationId) {
+
+      activeConversationIdRef.current = conversationId;
+      if (activeConversationId !== conversationId) {
         setActiveConversationId(conversationId);
         setLastLoadedConversationId(conversationId);
+      }
+
+      const guestToken = metadata?.guestToken ?? guestTokenRef.current;
+      if (!session?.user && guestToken) {
+        guestTokenRef.current = guestToken;
+        writeSupportChatGuestSession({
+          conversationId,
+          guestToken,
+        });
       }
       if (session?.user) {
         await loadConversationList();
@@ -238,16 +262,63 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
     },
   });
 
+  const loadGuestConversation = useCallback(
+    async (conversationId: string, guestToken: string) => {
+      setIsLoadingMessages(true);
+      setActiveConversationId(conversationId);
+      guestTokenRef.current = guestToken;
+      try {
+        const response = await fetch(`/api/chat/guest/conversations/${conversationId}?guestToken=${encodeURIComponent(guestToken)}`);
+        if (!response.ok) {
+          clearSupportChatGuestSession();
+          guestTokenRef.current = null;
+          setActiveConversationId(null);
+          setLastLoadedConversationId(null);
+          setMessages([]);
+          return;
+        }
+        const conversation: ConversationDetail = await response.json();
+        setMessages(mapStoredMessagesToUi(conversation.messages));
+        setLastLoadedConversationId(conversationId);
+      } finally {
+        setIsLoadingMessages(false);
+      }
+    },
+    [setMessages],
+  );
+
   useEffect(() => {
-    if (session?.user) {
+    const isAuthenticated = Boolean(session?.user);
+    const justAuthenticated = isAuthenticated && !hadAuthenticatedSessionRef.current;
+    hadAuthenticatedSessionRef.current = isAuthenticated;
+
+    if (isAuthenticated) {
+      clearSupportChatGuestSession();
+      guestTokenRef.current = null;
+      if (justAuthenticated) {
+        setActiveConversationId(null);
+        setLastLoadedConversationId(null);
+        setMessages([]);
+        setIsHistoryOpen(false);
+      }
       return;
     }
-    setConversationList([]);
-    setActiveConversationId(null);
-    setLastLoadedConversationId(null);
-    setIsHistoryOpen(false);
-    setMessages([]);
-  }, [session?.user, setMessages]);
+
+    const guestSession = readSupportChatGuestSession();
+    if (!guestSession) {
+      setActiveConversationId(null);
+      setLastLoadedConversationId(null);
+      setMessages([]);
+      return;
+    }
+
+    guestTokenRef.current = guestSession.guestToken;
+    if (activeConversationIdRef.current === guestSession.conversationId && lastLoadedConversationId === guestSession.conversationId) {
+      return;
+    }
+
+    void loadGuestConversation(guestSession.conversationId, guestSession.guestToken);
+  }, [session?.user, setMessages, loadGuestConversation, lastLoadedConversationId]);
 
   const createConversation = useCallback(async () => {
     const response = await apiPost('/api/chat/conversations', {});
@@ -259,7 +330,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
     setMessages([]);
     setIsHistoryOpen(false);
     await loadConversationList();
-  }, [loadConversationList, session?.user, setMessages]);
+  }, [loadConversationList, setMessages]);
 
   const loadConversation = useCallback(
     async (conversationId: string) => {
@@ -306,11 +377,11 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   }, [open, session?.user, loadConversationList]);
 
   useEffect(() => {
-    if (!open || !activeConversationId) return;
+    if (!open || !activeConversationId || !session?.user) return;
     if (isLoadingMessages) return;
     if (activeConversationId === lastLoadedConversationId) return;
     void loadConversation(activeConversationId);
-  }, [open, activeConversationId, isLoadingMessages, lastLoadedConversationId, loadConversation]);
+  }, [open, activeConversationId, isLoadingMessages, lastLoadedConversationId, loadConversation, session?.user]);
 
   const activeConversationLabel = useMemo(() => {
     return conversationList.find((item) => item.id === activeConversationId)?.title || t('newConversation');

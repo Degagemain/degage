@@ -510,6 +510,7 @@ model ChatConversation {
     user          User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
     medium        ChatConversationMedium @default(frontend)
     emailThreadId String?
+    guestToken    String?                @unique
     title         String                 @default("")
     messages      ChatMessage[]
     createdAt     DateTime               @default(now())

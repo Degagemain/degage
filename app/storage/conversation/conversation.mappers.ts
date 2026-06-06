@@ -44,6 +44,7 @@ export const dbChatConversationToDomain = (conversation: DbChatConversation): Ch
     userId: conversation.userId,
     medium: conversation.medium,
     emailThreadId: conversation.emailThreadId,
+    guestToken: conversation.guestToken,
     title: conversation.title,
     messages: conversation.messages.map(dbChatMessageToDomain),
     createdAt: conversation.createdAt,
