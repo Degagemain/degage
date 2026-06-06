@@ -73,6 +73,7 @@ export const chatConversationListItemSchema = z
   .object({
     id: z.uuid(),
     title: z.string(),
+    medium: chatConversationMediumSchema,
     user: idNameSchema.nullable(),
     updatedAt: z.coerce.date().nullable(),
   })

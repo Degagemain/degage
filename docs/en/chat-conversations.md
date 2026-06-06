@@ -14,6 +14,7 @@ cited, and improve the help system.
 
 | Property     | Description                                                                        |
 | ------------ | ---------------------------------------------------------------------------------- |
+| Channel      | **Chat** (in-app support widget) or **Email** (support mailbox thread)             |
 | User         | Signed-in user who started the chat, or **Anonymous** for guest sessions           |
 | Title        | Conversation title set by the user or derived from the first message; may be empty |
 | Last updated | When the conversation was last active                                              |

@@ -1347,9 +1347,15 @@
       "tryAgain": "Opnieuw proberen",
       "filters": {
         "user": "Gebruiker",
-        "userPlaceholder": "Gebruikers zoeken…"
+        "userPlaceholder": "Gebruikers zoeken…",
+        "medium": "Kanaal"
+      },
+      "mediums": {
+        "frontend": "Chat",
+        "email": "E-mail"
       },
       "columns": {
+        "medium": "Kanaal",
         "user": "Gebruiker",
         "title": "Titel",
         "updatedAt": "Laatst bijgewerkt"

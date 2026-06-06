@@ -1347,9 +1347,15 @@
       "tryAgain": "Try again",
       "filters": {
         "user": "User",
-        "userPlaceholder": "Search users…"
+        "userPlaceholder": "Search users…",
+        "medium": "Channel"
+      },
+      "mediums": {
+        "frontend": "Chat",
+        "email": "Email"
       },
       "columns": {
+        "medium": "Channel",
         "user": "User",
         "title": "Title",
         "updatedAt": "Last updated"

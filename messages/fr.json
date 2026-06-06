@@ -1347,9 +1347,15 @@
       "tryAgain": "Réessayer",
       "filters": {
         "user": "Utilisateur",
-        "userPlaceholder": "Rechercher des utilisateurs…"
+        "userPlaceholder": "Rechercher des utilisateurs…",
+        "medium": "Canal"
+      },
+      "mediums": {
+        "frontend": "Chat",
+        "email": "E-mail"
       },
       "columns": {
+        "medium": "Canal",
         "user": "Utilisateur",
         "title": "Titre",
         "updatedAt": "Dernière mise à jour"

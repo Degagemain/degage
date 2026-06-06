@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { chatConversationMediumSchema } from './chat.model';
 import { DefaultTake, MaxTake, SortOrder } from './utils';
 
 export enum ChatConversationAdminSortColumns {
@@ -27,6 +28,7 @@ const commaSeparatedArray = <T extends z.ZodTypeAny>(schema: T) =>
 export const chatConversationAdminFilterSchema = z
   .object({
     userIds: commaSeparatedArray(z.string().min(1)),
+    mediums: commaSeparatedArray(chatConversationMediumSchema),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z

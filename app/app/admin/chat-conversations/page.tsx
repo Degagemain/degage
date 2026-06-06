@@ -11,11 +11,14 @@ import { Skeleton } from '@/app/components/ui/skeleton';
 import {
   AdminTablePage,
   DataTable,
+  DataTableFacetedFilter,
   DataTablePagination,
   DataTableSearchableMultiselect,
   DataTableToolbar,
+  type FacetedFilterOption,
   type SearchableOption,
 } from '@/app/components/ui/data-table';
+import { type ChatConversationMedium, chatConversationMediumValues } from '@/domain/chat.model';
 import { createColumns } from './columns';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -45,10 +48,11 @@ export default function ChatConversationsPage() {
     defaultPageSize: DEFAULT_PAGE_SIZE,
     defaultSort: { id: 'updatedAt', desc: true },
     validSortIds: Object.keys(SORT_COLUMN_MAP),
-    csvParamNames: ['userIds'],
+    csvParamNames: ['userIds', 'mediums'],
   });
 
   const userIds = csv.userIds;
+  const mediums = csv.mediums;
   const [userOptions, setUserOptions] = useState<SearchableOption[]>([]);
 
   const handleSort = useCallback(
@@ -66,7 +70,27 @@ export default function ChatConversationsPage() {
     [setCsvParam],
   );
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, t, anonymousLabel: t('anonymousUser') }), [handleSort, t]);
+  const handleMediumChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('mediums', values);
+    },
+    [setCsvParam],
+  );
+
+  const mediumLabel = useCallback(
+    (medium: ChatConversationMedium) => t(`mediums.${medium}`),
+    [t],
+  );
+
+  const mediumOptions: FacetedFilterOption[] = useMemo(
+    () => chatConversationMediumValues.map((value) => ({ value, label: t(`mediums.${value}`) })),
+    [t],
+  );
+
+  const columns = useMemo(
+    () => createColumns({ onSort: handleSort, t, anonymousLabel: t('anonymousUser'), mediumLabel }),
+    [handleSort, t, mediumLabel],
+  );
 
   const fetchConversations = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -74,6 +98,7 @@ export default function ChatConversationsPage() {
     try {
       const params = new URLSearchParams();
       if (userIds.length > 0) params.set('userIds', userIds.join(','));
+      if (mediums.length > 0) params.set('mediums', mediums.join(','));
       params.set('skip', String(pageIndex * pageSize));
       params.set('take', String(pageSize));
 
@@ -106,7 +131,7 @@ export default function ChatConversationsPage() {
         error: error instanceof Error ? error.message : 'An error occurred',
       }));
     }
-  }, [userIds, pageIndex, pageSize, sorting]);
+  }, [userIds, mediums, pageIndex, pageSize, sorting]);
 
   useEffect(() => {
     fetchConversations();
@@ -148,14 +173,22 @@ export default function ChatConversationsPage() {
           onSearchChange={() => {}}
           showSearch={false}
           filterSlot={
-            <DataTableSearchableMultiselect
-              title={t('filters.user')}
-              apiPath="users"
-              selectedValues={userIds}
-              selectedOptions={userOptions}
-              onSelectedChange={handleUserChange}
-              placeholder={t('filters.userPlaceholder')}
-            />
+            <>
+              <DataTableSearchableMultiselect
+                title={t('filters.user')}
+                apiPath="users"
+                selectedValues={userIds}
+                selectedOptions={userOptions}
+                onSelectedChange={handleUserChange}
+                placeholder={t('filters.userPlaceholder')}
+              />
+              <DataTableFacetedFilter
+                title={t('filters.medium')}
+                options={mediumOptions}
+                selectedValues={mediums}
+                onSelectedChange={handleMediumChange}
+              />
+            </>
           }
         />
       }

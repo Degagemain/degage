@@ -6,6 +6,7 @@ import { withAdmin } from '@/api/with-context';
 
 const filterInputFromSearchParams = (searchParams: URLSearchParams): Record<string, unknown> => ({
   userIds: searchParams.get('userIds') ?? undefined,
+  mediums: searchParams.get('mediums') ?? undefined,
   skip: searchParams.get('skip') ?? undefined,
   take: searchParams.get('take') ?? undefined,
   sortBy: searchParams.get('sortBy') ?? undefined,

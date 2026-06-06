@@ -14,6 +14,7 @@ documentatieartikelen werden gebruikt en het helpsysteem te verbeteren.
 
 | Eigenschap        | Beschrijving                                                                                |
 | ----------------- | ------------------------------------------------------------------------------------------- |
+| Kanaal            | **Chat** (supportwidget in de app) of **E-mail** (supportmailboxthread)                    |
 | Gebruiker         | Ingelogde gebruiker die de chat startte, of **Anoniem** voor gastsessies                    |
 | Titel             | Gesprekstitel ingesteld door de gebruiker of afgeleid van het eerste bericht; kan leeg zijn |
 | Laatst bijgewerkt | Wanneer het gesprek voor het laatst actief was                                              |

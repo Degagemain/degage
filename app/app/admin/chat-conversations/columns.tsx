@@ -10,9 +10,16 @@ interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   t: (key: string) => string;
   anonymousLabel: string;
+  mediumLabel: (medium: ChatConversationListItem['medium']) => string;
 }
 
-export const createColumns = ({ onSort, t, anonymousLabel }: ColumnOptions): ColumnDef<ChatConversationListItem>[] => [
+export const createColumns = ({ onSort, t, anonymousLabel, mediumLabel }: ColumnOptions): ColumnDef<ChatConversationListItem>[] => [
+  {
+    accessorKey: 'medium',
+    header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.medium')} onSort={onSort} />,
+    cell: ({ row }) => <span className="text-sm">{mediumLabel(row.original.medium)}</span>,
+    enableSorting: false,
+  },
   {
     accessorKey: 'user',
     header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.user')} onSort={onSort} />,

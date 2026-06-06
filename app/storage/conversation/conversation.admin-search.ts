@@ -6,10 +6,22 @@ import { getPrismaClient } from '@/storage/utils';
 import { dbChatConversationToListItem } from './conversation.mappers';
 
 export const filterToQuery = (filter: ChatConversationAdminFilter): Prisma.ChatConversationWhereInput => {
-  if (filter.userIds.length === 0) {
+  const conditions: Prisma.ChatConversationWhereInput[] = [];
+
+  if (filter.userIds.length > 0) {
+    conditions.push({ userId: { in: filter.userIds } });
+  }
+  if (filter.mediums.length > 0) {
+    conditions.push({ medium: { in: filter.mediums } });
+  }
+
+  if (conditions.length === 0) {
     return {};
   }
-  return { userId: { in: filter.userIds } };
+  if (conditions.length === 1) {
+    return conditions[0];
+  }
+  return { AND: conditions };
 };
 
 export const dbChatConversationAdminSearch = async (filter: ChatConversationAdminFilter): Promise<Page<ChatConversationListItem>> => {

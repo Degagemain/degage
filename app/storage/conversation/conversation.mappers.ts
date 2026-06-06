@@ -82,6 +82,7 @@ export const dbChatConversationToListItem = (conversation: DbChatConversationWit
   return {
     id: conversation.id,
     title: conversation.title,
+    medium: conversation.medium,
     user: conversation.user ? dbUserToIdName(conversation.user) : null,
     updatedAt: conversation.updatedAt,
   };
