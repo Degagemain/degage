@@ -30,7 +30,13 @@ Follow this order:
 2. **Storage** (`app/storage/`)
    - Add model to `schema.prisma`
    - Create `{entity}/` folder with mappers and CRUD operations
-   - **Prisma migrations**: Never create or edit migration SQL files. The user always runs `pnpm prisma migrate dev --name {migration_name}` manually; that command generates the migration file. Only change `schema.prisma` and then prompt the user to run the migration.
+   - **Prisma migrations**: Never manually create or edit migration SQL files — Prisma generates them from `schema.prisma`.
+     - **Cloud Agent mode**: After updating `schema.prisma`, you **must** run the migration yourself, commit the generated files, and verify the database is up to date:
+       ```bash
+       pnpm db:migrate -- --name {migration_name}
+       ```
+       Use a short, descriptive snake_case name (e.g. `add_car_trim`). If migration fails (missing DB, env, or Docker), fix the environment and retry before finishing the task.
+     - **Local/desktop Agent mode**: Only change `schema.prisma`, then prompt the developer to run `pnpm db:migrate -- --name {migration_name}` manually. Do not run migrations in this mode.
 
 3. **Actions** (`app/actions/`)
    - Create `{entity}/` folder with business logic functions
