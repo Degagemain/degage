@@ -1007,7 +1007,7 @@ export default function SimulationPage() {
           )}
 
           {showNewRegionWarning && (
-            <div className={styles.amberBanner} role="note">
+            <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="note">
               <p className={styles.amberBannerText}>
                 {t.rich('newRegionWarning', {
                   town: townRegionName || townLabel,
@@ -1353,7 +1353,7 @@ export default function SimulationPage() {
           </div>
 
           {showNewRegionWarning && (
-            <div className={styles.amberBanner} role="note">
+            <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="note">
               <p className={styles.amberBannerText}>
                 {t.rich('newRegionWarning', {
                   town: townRegionName || townLabel,

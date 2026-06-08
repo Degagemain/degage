@@ -2165,6 +2165,10 @@
   padding: var(--sim-s16) var(--sim-s24);
 }
 
+.amberBannerSpaced {
+  margin-top: var(--sim-s24);
+}
+
 .amberBannerText {
   font-family: var(--sim-sans);
   font-size: 12px;
