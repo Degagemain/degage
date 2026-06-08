@@ -68,6 +68,8 @@ export function SearchDropdown({
   const [loading, setLoading] = React.useState(false);
   const [loadingMore, setLoadingMore] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const passThroughKeysRef = React.useRef(passThroughKeys);
+  passThroughKeysRef.current = passThroughKeys;
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
@@ -93,7 +95,7 @@ export function SearchDropdown({
           id: String(r.id),
           name: (r[labelKey] as string) ?? (r.name as string) ?? '',
         };
-        for (const key of passThroughKeys) {
+        for (const key of passThroughKeysRef.current) {
           const val = r[key];
           if (typeof val === 'boolean' || typeof val === 'string' || typeof val === 'number') {
             option[key] = val;
@@ -108,7 +110,7 @@ export function SearchDropdown({
       }
       setTotal(data.total ?? 0);
     },
-    [apiPath, debouncedSearch, queryParams, labelKey, passThroughKeys],
+    [apiPath, debouncedSearch, queryParams, labelKey],
   );
 
   React.useEffect(() => {

@@ -86,6 +86,8 @@ const SIMULATION_LOADING_BAR_SECONDS = 60;
 
 const NEW_REGION_START_DOC_HREF = 'https://www.degage.be/wp-content/uploads/2021/03/Degage-starten-als-particulier-in-jouw-stad_gemeente.pdf';
 
+const TOWN_SEARCH_PASS_THROUGH_KEYS = ['hasActiveMembers', 'municipality'] as const;
+
 const SIMULATION_FAQ_TAGS = {
   step1: ['simulation_step_1'],
   step2Approved: ['simulation_step_2_approved'],
@@ -558,7 +560,7 @@ export default function SimulationPage() {
                 }}
                 apiPath="towns"
                 labelKey="displayLabel"
-                passThroughKeys={['hasActiveMembers', 'municipality']}
+                passThroughKeys={TOWN_SEARCH_PASS_THROUGH_KEYS}
                 placeholder={t('wageninfo.gemeentePlaceholder')}
               />
               {townLabel.length > 2 && (
