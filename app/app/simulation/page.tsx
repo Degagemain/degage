@@ -86,7 +86,7 @@ const SIMULATION_LOADING_BAR_SECONDS = 60;
 
 const NEW_REGION_START_DOC_HREF = 'https://www.degage.be/wp-content/uploads/2021/03/Degage-starten-als-particulier-in-jouw-stad_gemeente.pdf';
 
-const TOWN_SEARCH_PASS_THROUGH_KEYS = ['hasActiveMembers', 'municipality'] as const;
+const TOWN_SEARCH_PASS_THROUGH_KEYS = ['hasActiveMembers', 'municipality', 'highDemand'] as const;
 
 const SIMULATION_FAQ_TAGS = {
   step1: ['simulation_step_1'],
@@ -107,6 +107,7 @@ export default function SimulationPage() {
   const [townLabel, setTownLabel] = useState('');
   const [townRegionName, setTownRegionName] = useState('');
   const [townHasActiveMembers, setTownHasActiveMembers] = useState(true);
+  const [townHighDemand, setTownHighDemand] = useState(false);
   const [brandId, setBrandId] = useState('');
   const [brandLabel, setBrandLabel] = useState('');
   const [fuelTypeId, setFuelTypeId] = useState('');
@@ -343,12 +344,6 @@ export default function SimulationPage() {
     purchaseAmountInclVat,
   ]);
 
-  const isGent = useMemo(() => {
-    const lower = townLabel.toLowerCase();
-    const zip = townLabel.replace(/\s/g, '').slice(0, 4);
-    return lower.includes('gent') || /^90\d\d/.test(zip);
-  }, [townLabel]);
-
   useEffect(() => {
     if (screen !== STEP_RESULT || !isSuccessResult) {
       setResultHeroAutoState('parked');
@@ -557,18 +552,17 @@ export default function SimulationPage() {
                   setTownLabel(opt.name);
                   setTownRegionName(String(opt.municipality ?? opt.name));
                   setTownHasActiveMembers(opt.hasActiveMembers === true);
+                  setTownHighDemand(opt.highDemand === true);
                 }}
                 apiPath="towns"
                 labelKey="displayLabel"
                 passThroughKeys={TOWN_SEARCH_PASS_THROUGH_KEYS}
                 placeholder={t('wageninfo.gemeentePlaceholder')}
               />
-              {townLabel.length > 2 && (
-                <div className={`${styles.locationBadge} ${isGent ? styles.locationBadgeGent : styles.locationBadgeOther}`}>
-                  <div className={`${styles.locationBadgeDot} ${isGent ? styles.locationBadgeDotGent : styles.locationBadgeDotOther}`} />
-                  <span className={`${styles.locationBadgeText} ${isGent ? styles.locationBadgeTextGent : styles.locationBadgeTextOther}`}>
-                    {isGent ? t('wageninfo.badgeGent') : t('wageninfo.badgeOther')}
-                  </span>
+              {townHighDemand && (
+                <div className={`${styles.locationBadge} ${styles.locationBadgeGent}`}>
+                  <div className={`${styles.locationBadgeDot} ${styles.locationBadgeDotGent}`} />
+                  <span className={`${styles.locationBadgeText} ${styles.locationBadgeTextGent}`}>{t('wageninfo.badgeHighDemand')}</span>
                 </div>
               )}
             </div>
