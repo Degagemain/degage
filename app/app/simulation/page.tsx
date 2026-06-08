@@ -84,6 +84,8 @@ const CONFIRMATION_PATH_OPTIONS: { id: ConfirmationMemberPath; labelKey: string 
 /** Visual max duration for the public loading bar (seconds); the result screen shows as soon as the API responds. */
 const SIMULATION_LOADING_BAR_SECONDS = 60;
 
+const NEW_REGION_START_DOC_HREF = 'https://www.degage.be/wp-content/uploads/2021/03/Degage-starten-als-particulier-in-jouw-stad_gemeente.pdf';
+
 const SIMULATION_FAQ_TAGS = {
   step1: ['simulation_step_1'],
   step2Approved: ['simulation_step_2_approved'],
@@ -101,6 +103,8 @@ export default function SimulationPage() {
 
   const [townId, setTownId] = useState('');
   const [townLabel, setTownLabel] = useState('');
+  const [townRegionName, setTownRegionName] = useState('');
+  const [townHasActiveMembers, setTownHasActiveMembers] = useState(true);
   const [brandId, setBrandId] = useState('');
   const [brandLabel, setBrandLabel] = useState('');
   const [fuelTypeId, setFuelTypeId] = useState('');
@@ -180,6 +184,7 @@ export default function SimulationPage() {
   const displaySuccess = !!isSuccessResult;
   const displayNotOk = !!isNotOkResult;
   const displayUnclear = !!isUnclearResult;
+  const showNewRegionWarning = displaySuccess && !townHasActiveMembers;
 
   useEffect(() => {
     let cancelled = false;
@@ -548,9 +553,12 @@ export default function SimulationPage() {
                 onValueChange={(id, opt) => {
                   setTownId(id);
                   setTownLabel(opt.name);
+                  setTownRegionName(String(opt.municipality ?? opt.name));
+                  setTownHasActiveMembers(opt.hasActiveMembers === true);
                 }}
                 apiPath="towns"
                 labelKey="displayLabel"
+                passThroughKeys={['hasActiveMembers', 'municipality']}
                 placeholder={t('wageninfo.gemeentePlaceholder')}
               />
               {townLabel.length > 2 && (
@@ -996,6 +1004,21 @@ export default function SimulationPage() {
             </div>
           )}
 
+          {showNewRegionWarning && (
+            <div className={styles.amberBanner} role="note">
+              <p className={styles.amberBannerText}>
+                {t.rich('newRegionWarning', {
+                  town: townRegionName || townLabel,
+                  link: (chunks) => (
+                    <a href={NEW_REGION_START_DOC_HREF} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
+                      {chunks}
+                    </a>
+                  ),
+                })}
+              </p>
+            </div>
+          )}
+
           {displayNotOk && (
             <>
               <div className={styles.noGoCard}>
@@ -1326,6 +1349,21 @@ export default function SimulationPage() {
             <h1 className={styles.title}>{t('bevestiging.title')}</h1>
             <p className={styles.body}>{t('bevestiging.body')}</p>
           </div>
+
+          {showNewRegionWarning && (
+            <div className={styles.amberBanner} role="note">
+              <p className={styles.amberBannerText}>
+                {t.rich('newRegionWarning', {
+                  town: townRegionName || townLabel,
+                  link: (chunks) => (
+                    <a href={NEW_REGION_START_DOC_HREF} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
+                      {chunks}
+                    </a>
+                  ),
+                })}
+              </p>
+            </div>
+          )}
 
           <div className={styles.bevestigingFormCard}>
             {confirmationStatus !== 'success' ? (

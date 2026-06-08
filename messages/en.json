@@ -1795,6 +1795,7 @@
     "back": "← Back",
     "continue": "Continue →",
     "faqCollapsedTitle": "Frequently asked questions",
+    "newRegionWarning": "Please note: {town} is a new region for Dégage. We do not automatically launch in a new region — we need you for that. You can find more information in <link>this starter document</link>. Interested in getting involved? We'd love to hear from you!",
     "situatie": {
       "title": "Does your car fit Dégage?",
       "body": "Find out if your car is eligible for our sharing network — and what you could earn back with it.",

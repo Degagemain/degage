@@ -1795,6 +1795,7 @@
     "back": "← Vorige",
     "continue": "Verdergaan →",
     "faqCollapsedTitle": "Veelgestelde vragen",
+    "newRegionWarning": "Opgelet: {town} is een nieuwe regio voor Dégage. Opstart in een nieuwe regio doen we niet automatisch, daar hebben we jou voor nodig. Meer info kan je in <link>dit startdocument</link> vinden. Zie je een dergelijk engagement zitten? Dan horen we graag van je!",
     "situatie": {
       "title": "Past jouw wagen bij Dégage?",
       "body": "Ontdek of jouw wagen in aanmerking komt voor ons deelnetwerk — en wat je ermee kunt terugverdienen.",

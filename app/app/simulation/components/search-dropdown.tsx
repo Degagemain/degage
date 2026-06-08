@@ -30,6 +30,7 @@ function useIntersectionObserver(
 export interface SearchDropdownOption {
   id: string;
   name: string;
+  [key: string]: string | boolean | number | undefined;
 }
 
 export interface SearchDropdownProps {
@@ -39,6 +40,7 @@ export interface SearchDropdownProps {
   apiPath: string;
   queryParams?: Record<string, string>;
   labelKey?: string;
+  passThroughKeys?: string[];
   appendOptions?: SearchDropdownOption[];
   placeholder?: string;
   disabled?: boolean;
@@ -52,6 +54,7 @@ export function SearchDropdown({
   apiPath,
   queryParams,
   labelKey = 'name',
+  passThroughKeys = [],
   appendOptions = [],
   placeholder = 'Select…',
   disabled,
@@ -85,10 +88,19 @@ export function SearchDropdown({
       const res = await fetch(`/api/${apiPath}?${params.toString()}`);
       if (!res.ok) return;
       const data = await res.json();
-      const records = (data.records ?? []).map((r: Record<string, unknown>) => ({
-        id: String(r.id),
-        name: (r[labelKey] as string) ?? (r.name as string) ?? '',
-      }));
+      const records = (data.records ?? []).map((r: Record<string, unknown>) => {
+        const option: SearchDropdownOption = {
+          id: String(r.id),
+          name: (r[labelKey] as string) ?? (r.name as string) ?? '',
+        };
+        for (const key of passThroughKeys) {
+          const val = r[key];
+          if (typeof val === 'boolean' || typeof val === 'string' || typeof val === 'number') {
+            option[key] = val;
+          }
+        }
+        return option;
+      });
       if (append) {
         setOptions((prev) => (skip === 0 ? records : [...prev, ...records]));
       } else {
@@ -96,7 +108,7 @@ export function SearchDropdown({
       }
       setTotal(data.total ?? 0);
     },
-    [apiPath, debouncedSearch, queryParams, labelKey],
+    [apiPath, debouncedSearch, queryParams, labelKey, passThroughKeys],
   );
 
   React.useEffect(() => {

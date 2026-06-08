@@ -1795,6 +1795,7 @@
     "back": "← Précédent",
     "continue": "Continuer →",
     "faqCollapsedTitle": "Questions fréquentes",
+    "newRegionWarning": "Attention : {town} est une nouvelle région pour Dégage. Nous ne lançons pas automatiquement dans une nouvelle région — nous avons besoin de vous. Vous trouverez plus d'informations dans <link>ce document de démarrage</link>. Ce projet vous intéresse ? N'hésitez pas à nous contacter !",
     "situatie": {
       "title": "Votre voiture convient-elle à Dégage?",
       "body": "Découvrez si votre voiture est éligible pour notre réseau de partage — et ce que vous pouvez récupérer avec.",
