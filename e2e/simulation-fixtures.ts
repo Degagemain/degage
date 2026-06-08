@@ -1,0 +1,23 @@
+export const E2E_SIMULATION = {
+  brandCode: 'volkswagen',
+  brandName: 'Volkswagen',
+  fuelTypeCode: 'gasoline',
+  fuelTypeName: 'Gasoline',
+  carTypeName: 'GOLF',
+  townQuery: '9000',
+  townOption: '9000 Gent',
+  registrationYear: 2019,
+  firstRegistrationDate: '2019-06-01',
+  mileage: 80_000,
+  ownerKmPerYear: 10_000,
+  price: 15_000,
+  rangeMin: 12_000,
+  rangeMax: 18_000,
+  carInfo: {
+    cylinderCc: 1498,
+    co2Emission: 120,
+    ecoscore: 76,
+    euroNormCode: 'euro-6d',
+    consumption: 6.2,
+  },
+} as const;
