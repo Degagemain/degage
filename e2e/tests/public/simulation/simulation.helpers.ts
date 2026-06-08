@@ -2,7 +2,7 @@ import { type Page, expect } from '../../../fixtures';
 
 import { E2E_SIMULATION } from '../../../simulation-fixtures';
 
-import type { SimulationCopy } from './simulation.copy';
+import type { SimulationMessages } from './simulation.messages';
 
 export const SIMULATION_PATH = '/app/simulation';
 
@@ -20,12 +20,12 @@ export type CarFormData = {
   purchasePrice?: number;
 };
 
-const defaultCarFormData = (copy: SimulationCopy): CarFormData => ({
+const defaultCarFormData = (messages: SimulationMessages): CarFormData => ({
   townQuery: E2E_SIMULATION.townQuery,
   townOption: E2E_SIMULATION.townOption,
   brandQuery: E2E_SIMULATION.brandName,
   brandOption: E2E_SIMULATION.brandName,
-  fuelTypeName: copy.fuelTypeName,
+  fuelTypeName: messages.fuelTypeName,
   carTypeQuery: E2E_SIMULATION.carTypeName,
   carTypeOption: E2E_SIMULATION.carTypeName,
   mileage: E2E_SIMULATION.mileage,
@@ -33,22 +33,22 @@ const defaultCarFormData = (copy: SimulationCopy): CarFormData => ({
   ownerKmPerYear: E2E_SIMULATION.ownerKmPerYear,
 });
 
-export async function gotoSimulation(page: Page, baseURL: string, copy: SimulationCopy) {
+export async function gotoSimulation(page: Page, baseURL: string, messages: SimulationMessages) {
   await page.goto(`${baseURL}${SIMULATION_PATH}`);
-  await expect(page.getByRole('heading', { level: 1, name: copy.situationHeading })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: messages.situationHeading })).toBeVisible();
 }
 
-export async function selectExistingCarSituation(page: Page, copy: SimulationCopy) {
-  await page.getByRole('button', { name: copy.existingCarTile }).click();
+export async function selectExistingCarSituation(page: Page, messages: SimulationMessages) {
+  await page.getByRole('button', { name: messages.existingCarTile }).click();
 }
 
-export async function selectNewCarSituation(page: Page, copy: SimulationCopy) {
-  await page.getByRole('button', { name: copy.newCarTile }).click();
+export async function selectNewCarSituation(page: Page, messages: SimulationMessages) {
+  await page.getByRole('button', { name: messages.newCarTile }).click();
 }
 
-export async function continueFromSituation(page: Page, copy: SimulationCopy) {
-  await page.getByRole('button', { name: copy.startSimulationCta }).click();
-  await expect(page.getByRole('heading', { level: 1, name: copy.carInfoHeading })).toBeVisible();
+export async function continueFromSituation(page: Page, messages: SimulationMessages) {
+  await page.getByRole('button', { name: messages.startSimulationCta }).click();
+  await expect(page.getByRole('heading', { level: 1, name: messages.carInfoHeading })).toBeVisible();
 }
 
 function fieldByLabel(page: Page, labelText: string) {
@@ -62,49 +62,49 @@ async function selectSearchDropdown(page: Page, fieldLabel: string, query: strin
   await page.getByRole('option', { name: optionName, exact: true }).click();
 }
 
-async function fillSharedCarFields(page: Page, copy: SimulationCopy, data: CarFormData) {
-  await selectSearchDropdown(page, copy.townLabel, data.townQuery!, data.townOption!);
-  await selectSearchDropdown(page, copy.brandLabel, data.brandQuery!, data.brandOption!);
-  await fieldByLabel(page, copy.fuelTypeLabel).locator('select').selectOption({ label: data.fuelTypeName! });
-  await selectSearchDropdown(page, copy.carTypeLabel, data.carTypeQuery!, data.carTypeOption!);
-  await fieldByLabel(page, copy.ownerKmLabel).locator('input').fill(String(data.ownerKmPerYear));
+async function fillSharedCarFields(page: Page, messages: SimulationMessages, data: CarFormData) {
+  await selectSearchDropdown(page, messages.townLabel, data.townQuery!, data.townOption!);
+  await selectSearchDropdown(page, messages.brandLabel, data.brandQuery!, data.brandOption!);
+  await fieldByLabel(page, messages.fuelTypeLabel).locator('select').selectOption({ label: data.fuelTypeName! });
+  await selectSearchDropdown(page, messages.carTypeLabel, data.carTypeQuery!, data.carTypeOption!);
+  await fieldByLabel(page, messages.ownerKmLabel).locator('input').fill(String(data.ownerKmPerYear));
 }
 
-export async function fillExistingCarForm(page: Page, copy: SimulationCopy, overrides: CarFormData = {}) {
-  const data = { ...defaultCarFormData(copy), ...overrides };
+export async function fillExistingCarForm(page: Page, messages: SimulationMessages, overrides: CarFormData = {}) {
+  const data = { ...defaultCarFormData(messages), ...overrides };
 
-  await fillSharedCarFields(page, copy, data);
-  await fieldByLabel(page, copy.mileageLabel).locator('input').fill(String(data.mileage));
+  await fillSharedCarFields(page, messages, data);
+  await fieldByLabel(page, messages.mileageLabel).locator('input').fill(String(data.mileage));
   await page.locator('#sim-first-registration').fill(data.firstRegistrationDate!);
 }
 
-export async function fillNewCarForm(page: Page, copy: SimulationCopy, overrides: CarFormData = {}) {
+export async function fillNewCarForm(page: Page, messages: SimulationMessages, overrides: CarFormData = {}) {
   const data = {
-    ...defaultCarFormData(copy),
+    ...defaultCarFormData(messages),
     mileage: E2E_SIMULATION.newCarMileage,
     purchasePrice: E2E_SIMULATION.newCarPurchasePrice,
     ...overrides,
   };
 
-  await fillSharedCarFields(page, copy, data);
-  await fieldByLabel(page, copy.purchaseAmountLabel).locator('input').fill(String(data.purchasePrice));
-  await fieldByLabel(page, copy.mileageLabel).locator('input').fill(String(data.mileage));
+  await fillSharedCarFields(page, messages, data);
+  await fieldByLabel(page, messages.purchaseAmountLabel).locator('input').fill(String(data.purchasePrice));
+  await fieldByLabel(page, messages.mileageLabel).locator('input').fill(String(data.mileage));
 }
 
-export async function submitCarInfo(page: Page, copy: SimulationCopy) {
-  await page.getByRole('button', { name: copy.submitSimulationCta }).click();
+export async function submitCarInfo(page: Page, messages: SimulationMessages) {
+  await page.getByRole('button', { name: messages.submitSimulationCta }).click();
 }
 
-export async function runExistingCarSimulation(page: Page, copy: SimulationCopy, overrides: CarFormData = {}) {
-  await selectExistingCarSituation(page, copy);
-  await continueFromSituation(page, copy);
-  await fillExistingCarForm(page, copy, overrides);
-  await submitCarInfo(page, copy);
+export async function runExistingCarSimulation(page: Page, messages: SimulationMessages, overrides: CarFormData = {}) {
+  await selectExistingCarSituation(page, messages);
+  await continueFromSituation(page, messages);
+  await fillExistingCarForm(page, messages, overrides);
+  await submitCarInfo(page, messages);
 }
 
-export async function runNewCarSimulation(page: Page, copy: SimulationCopy, overrides: CarFormData = {}) {
-  await selectNewCarSituation(page, copy);
-  await continueFromSituation(page, copy);
-  await fillNewCarForm(page, copy, overrides);
-  await submitCarInfo(page, copy);
+export async function runNewCarSimulation(page: Page, messages: SimulationMessages, overrides: CarFormData = {}) {
+  await selectNewCarSituation(page, messages);
+  await continueFromSituation(page, messages);
+  await fillNewCarForm(page, messages, overrides);
+  await submitCarInfo(page, messages);
 }

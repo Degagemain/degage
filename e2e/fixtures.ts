@@ -1,6 +1,6 @@
 import { type BrowserContext, test as base } from '@playwright/test';
 
-import type { SimulationLocale } from './tests/public/simulation/simulation.copy';
+import type { SimulationLocale } from './tests/public/simulation/simulation.messages';
 import { createTestDatabase, dropTestDatabase, getTestDatabaseUrl } from './shared/db';
 import { signInAsAdmin } from './shared/auth';
 import { startNextServer, stopNextServer } from './shared/server';

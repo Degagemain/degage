@@ -2,7 +2,7 @@ export const SIMULATION_LOCALES = ['en', 'nl', 'fr'] as const;
 
 export type SimulationLocale = (typeof SIMULATION_LOCALES)[number];
 
-export type SimulationCopy = {
+export type SimulationMessages = {
   situationHeading: string;
   carInfoHeading: string;
   successResultHeading: string;
@@ -22,7 +22,7 @@ export type SimulationCopy = {
   categoryA: string;
 };
 
-export const simulationCopy: Record<SimulationLocale, SimulationCopy> = {
+export const simulationMessages: Record<SimulationLocale, SimulationMessages> = {
   en: {
     situationHeading: 'Does your car fit Dégage?',
     carInfoHeading: 'Tell us about your car',
