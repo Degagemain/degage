@@ -1,6 +1,8 @@
 import { auth } from '@/auth';
 import { getPrismaClient } from '@/storage/utils';
 
+import { seedE2eSimulationData } from './seed-e2e-simulation-data';
+
 const E2E_PASSWORD = process.env.E2E_PASSWORD ?? 'password';
 
 type E2eAccount = {
@@ -40,14 +42,15 @@ async function ensureE2eAccount({ email, role }: E2eAccount) {
   console.log(`E2E account created: ${email} (role: ${role})`);
 }
 
-async function seedE2eAccounts() {
+async function seedE2e() {
   for (const account of accounts) {
     await ensureE2eAccount(account);
   }
+  await seedE2eSimulationData();
   await getPrismaClient().$disconnect();
 }
 
-seedE2eAccounts().catch((error) => {
-  console.error('E2E account seed failed:', error);
+seedE2e().catch((error) => {
+  console.error('E2E seed failed:', error);
   process.exit(1);
 });
