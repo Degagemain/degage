@@ -45,7 +45,12 @@ function extractUrls(content) {
   return urls;
 }
 
-async function checkUrl(url) {
+const MAX_URL_ATTEMPTS = 3;
+const RETRY_BACKOFF_MS = 500;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function checkUrlOnce(url) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
@@ -83,6 +88,22 @@ async function checkUrl(url) {
       error: error.message,
     };
   }
+}
+
+async function checkUrl(url) {
+  let lastResult;
+
+  for (let attempt = 1; attempt <= MAX_URL_ATTEMPTS; attempt++) {
+    lastResult = await checkUrlOnce(url);
+    if (lastResult.ok) {
+      return lastResult;
+    }
+    if (attempt < MAX_URL_ATTEMPTS) {
+      await sleep(RETRY_BACKOFF_MS * attempt);
+    }
+  }
+
+  return lastResult;
 }
 
 function getMarkdownFiles() {
