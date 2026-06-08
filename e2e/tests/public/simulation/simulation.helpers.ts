@@ -60,7 +60,7 @@ async function selectSearchDropdown(page: Page, fieldLabel: string, query: strin
   const field = fieldByLabel(page, fieldLabel);
   await field.getByRole('button').first().click();
   await page.getByPlaceholder('Zoeken…').fill(query);
-  await page.getByRole('option', { name: optionName }).click();
+  await page.getByRole('option', { name: optionName, exact: true }).click();
 }
 
 export async function fillExistingCarForm(page: Page, overrides: ExistingCarFormData = {}) {

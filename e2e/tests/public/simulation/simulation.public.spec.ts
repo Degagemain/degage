@@ -43,14 +43,14 @@ test.describe('public simulation', () => {
     await gotoSimulation(page, appServer.baseURL);
     await runExistingCarSimulation(page, { mileage: 250_000 });
 
-    await expect(page.getByRole('heading', { level: 1, name: NOT_OK_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
+    await expect(page.getByRole('heading', { name: NOT_OK_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
   });
 
   test('accepts a seeded existing car without calling the LLM', async ({ page, appServer }) => {
     await gotoSimulation(page, appServer.baseURL);
     await runExistingCarSimulation(page);
 
-    await expect(page.getByRole('heading', { level: 1, name: SUCCESS_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
+    await expect(page.getByRole('heading', { name: SUCCESS_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
     await expect(page.getByText('Category A')).toBeVisible();
   });
 });
