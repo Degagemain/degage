@@ -1,12 +1,13 @@
 import { type BrowserContext, test as base } from '@playwright/test';
 
+import type { SimulationLocale } from './tests/public/simulation/simulation.copy';
 import { createTestDatabase, dropTestDatabase, getTestDatabaseUrl } from './shared/db';
 import { signInAsAdmin } from './shared/auth';
 import { startNextServer, stopNextServer } from './shared/server';
 
-const setEnglishLocale = async (context: BrowserContext, baseURL: string) => {
+const setLocaleCookie = async (context: BrowserContext, baseURL: string, locale: SimulationLocale) => {
   const host = new URL(baseURL).hostname;
-  await context.addCookies([{ name: 'locale', value: 'en', domain: host, path: '/' }]);
+  await context.addCookies([{ name: 'locale', value: locale, domain: host, path: '/' }]);
 };
 
 export type TestDbFixture = {
@@ -22,8 +23,10 @@ export type AppServerFixture = {
 export const test = base.extend<{
   testDb: TestDbFixture;
   appServer: AppServerFixture;
+  locale: SimulationLocale;
   asAdmin: void;
 }>({
+  locale: ['en', { option: true }],
   testDb: async ({}, use, testInfo) => {
     const name = await createTestDatabase(testInfo.parallelIndex, testInfo.testId);
     const databaseUrl = getTestDatabaseUrl(name);
@@ -37,8 +40,8 @@ export const test = base.extend<{
     await stopNextServer(testInfo.parallelIndex);
   },
 
-  page: async ({ page, context, appServer }, use) => {
-    await setEnglishLocale(context, appServer.baseURL);
+  page: async ({ page, context, appServer, locale }, use) => {
+    await setLocaleCookie(context, appServer.baseURL, locale);
     await use(page);
   },
 

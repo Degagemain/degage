@@ -24,25 +24,28 @@ export async function seedE2eSimulationData() {
 
   const euroNorm = await prisma.euroNorm.findFirst({ where: { code: E2E_SIMULATION.carInfo.euroNormCode } });
   const estimateYear = new Date().getFullYear();
+  const carInfoYears = [E2E_SIMULATION.registrationYear, estimateYear];
 
-  await prisma.carInfo.upsert({
-    where: {
-      carTypeId_year: {
-        carTypeId: carType.id,
-        year: E2E_SIMULATION.registrationYear,
+  for (const year of carInfoYears) {
+    await prisma.carInfo.upsert({
+      where: {
+        carTypeId_year: {
+          carTypeId: carType.id,
+          year,
+        },
       },
-    },
-    create: {
-      carTypeId: carType.id,
-      year: E2E_SIMULATION.registrationYear,
-      cylinderCc: E2E_SIMULATION.carInfo.cylinderCc,
-      co2Emission: E2E_SIMULATION.carInfo.co2Emission,
-      ecoscore: E2E_SIMULATION.carInfo.ecoscore,
-      euroNormId: euroNorm?.id ?? null,
-      consumption: E2E_SIMULATION.carInfo.consumption,
-    },
-    update: {},
-  });
+      create: {
+        carTypeId: carType.id,
+        year,
+        cylinderCc: E2E_SIMULATION.carInfo.cylinderCc,
+        co2Emission: E2E_SIMULATION.carInfo.co2Emission,
+        ecoscore: E2E_SIMULATION.carInfo.ecoscore,
+        euroNormId: euroNorm?.id ?? null,
+        consumption: E2E_SIMULATION.carInfo.consumption,
+      },
+      update: {},
+    });
+  }
 
   await prisma.carPriceEstimate.upsert({
     where: {

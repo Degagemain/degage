@@ -1,56 +1,76 @@
 import { expect, test } from '../../../fixtures';
 
+import { E2E_SIMULATION } from '../../../simulation-fixtures';
+
+import { SIMULATION_LOCALES, simulationCopy } from './simulation.copy';
 import {
-  CAR_INFO_HEADING,
-  NOT_OK_RESULT_HEADING,
-  START_SIMULATION_CTA,
-  SUBMIT_SIMULATION_CTA,
-  SUCCESS_RESULT_HEADING,
   continueFromSituation,
   fillExistingCarForm,
   gotoSimulation,
   runExistingCarSimulation,
+  runNewCarSimulation,
   selectExistingCarSituation,
 } from './simulation.helpers';
 
-test.describe('public simulation', () => {
-  test('requires a situation choice before continuing', async ({ page, appServer }) => {
-    await gotoSimulation(page, appServer.baseURL);
+for (const locale of SIMULATION_LOCALES) {
+  test.describe(`public simulation (${locale})`, () => {
+    test.use({ locale });
 
-    const startButton = page.getByRole('button', { name: START_SIMULATION_CTA });
-    await expect(startButton).toBeDisabled();
+    const copy = simulationCopy[locale];
 
-    await selectExistingCarSituation(page);
-    await expect(startButton).toBeEnabled();
+    test('requires a situation choice before continuing', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
 
-    await continueFromSituation(page);
-    await expect(page.getByRole('heading', { level: 1, name: CAR_INFO_HEADING })).toBeVisible();
+      const startButton = page.getByRole('button', { name: copy.startSimulationCta });
+      await expect(startButton).toBeDisabled();
+
+      await selectExistingCarSituation(page, copy);
+      await expect(startButton).toBeEnabled();
+
+      await continueFromSituation(page, copy);
+      await expect(page.getByRole('heading', { level: 1, name: copy.carInfoHeading })).toBeVisible();
+    });
+
+    test('keeps simulate disabled until the car form is complete', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
+      await selectExistingCarSituation(page, copy);
+      await continueFromSituation(page, copy);
+
+      const submitButton = page.getByRole('button', { name: copy.submitSimulationCta });
+      await expect(submitButton).toBeDisabled();
+
+      await fillExistingCarForm(page, copy);
+      await expect(submitButton).toBeEnabled();
+    });
+
+    test('rejects a car above the mileage limit', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
+      await runExistingCarSimulation(page, copy, { mileage: 250_000 });
+
+      await expect(page.getByRole('heading', { name: copy.notOkResultHeading })).toBeVisible({ timeout: 60_000 });
+    });
+
+    test('accepts a seeded existing car without calling the LLM', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
+      await runExistingCarSimulation(page, copy);
+
+      await expect(page.getByRole('heading', { name: copy.successResultHeading })).toBeVisible({ timeout: 60_000 });
+      await expect(page.getByText(copy.categoryA)).toBeVisible();
+    });
+
+    test('accepts a seeded new car without calling the LLM', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
+      await runNewCarSimulation(page, copy);
+
+      await expect(page.getByRole('heading', { name: copy.successResultHeading })).toBeVisible({ timeout: 60_000 });
+      await expect(page.getByText(copy.categoryA)).toBeVisible();
+    });
+
+    test('rejects an expensive new car', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, copy);
+      await runNewCarSimulation(page, copy, { purchasePrice: E2E_SIMULATION.newCarExpensivePurchasePrice });
+
+      await expect(page.getByRole('heading', { name: copy.notOkResultHeading })).toBeVisible({ timeout: 60_000 });
+    });
   });
-
-  test('keeps simulate disabled until the car form is complete', async ({ page, appServer }) => {
-    await gotoSimulation(page, appServer.baseURL);
-    await selectExistingCarSituation(page);
-    await continueFromSituation(page);
-
-    const submitButton = page.getByRole('button', { name: SUBMIT_SIMULATION_CTA });
-    await expect(submitButton).toBeDisabled();
-
-    await fillExistingCarForm(page);
-    await expect(submitButton).toBeEnabled();
-  });
-
-  test('rejects a car above the mileage limit', async ({ page, appServer }) => {
-    await gotoSimulation(page, appServer.baseURL);
-    await runExistingCarSimulation(page, { mileage: 250_000 });
-
-    await expect(page.getByRole('heading', { name: NOT_OK_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
-  });
-
-  test('accepts a seeded existing car without calling the LLM', async ({ page, appServer }) => {
-    await gotoSimulation(page, appServer.baseURL);
-    await runExistingCarSimulation(page);
-
-    await expect(page.getByRole('heading', { name: SUCCESS_RESULT_HEADING })).toBeVisible({ timeout: 60_000 });
-    await expect(page.getByText('Category A')).toBeVisible();
-  });
-});
+}
