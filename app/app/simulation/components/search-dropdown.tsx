@@ -40,7 +40,7 @@ export interface SearchDropdownProps {
   apiPath: string;
   queryParams?: Record<string, string>;
   labelKey?: string;
-  passThroughKeys?: string[];
+  passThroughKeys?: readonly string[];
   appendOptions?: SearchDropdownOption[];
   placeholder?: string;
   disabled?: boolean;
