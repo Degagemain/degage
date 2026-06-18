@@ -351,9 +351,27 @@ model User {
   oauthrefreshtokens OauthRefreshToken[]
   oauthaccesstokens  OauthAccessToken[]
   oauthconsents      OauthConsent[]
+  playConnector      PlayConnector?
 
   @@unique([email])
   @@map("user")
+}
+
+model PlayConnector {
+  id                     String    @id @default(uuid())
+  userId                 String    @unique
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email                  String
+  encryptedPassword      String
+  encryptedSessionCookie String?
+  sessionExpiresAt       DateTime?
+  credentialsInvalid     Boolean   @default(false)
+  failedLoginCount       Int       @default(0)
+  loginBlockedUntil      DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@map("play_connector")
 }
 
 model Session {

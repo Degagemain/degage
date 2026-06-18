@@ -1,0 +1,1605 @@
+<html>
+
+<head>
+    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <script>
+        window.apiEndpoint = '';
+        window.contextPath = '';
+    </script>
+    <script type="text/javascript" src="/assets/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/javascripts/responsiveTables.js"></script>
+    <script type="text/javascript" src="/assets/main.js"></script>
+    <style>
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle,
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+        .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view--down-arrow {
+            margin-left: -8px;
+            position: absolute;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle,
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+        .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view--down-arrow,
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before,
+        .react-datepicker__year-read-view--down-arrow::before,
+        .react-datepicker__month-read-view--down-arrow::before {
+            box-sizing: content-box;
+            position: absolute;
+            border: 8px solid transparent;
+            height: 0;
+            width: 1px;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before,
+        .react-datepicker__year-read-view--down-arrow::before,
+        .react-datepicker__month-read-view--down-arrow::before {
+            content: '';
+            z-index: -1;
+            border-width: 8px;
+            left: -8px;
+            border-bottom-color: #aeaeae;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
+            top: 0;
+            margin-top: -8px;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle,
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
+            border-top: none;
+            border-bottom-color: #f0f0f0;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
+            top: -1px;
+            border-bottom-color: #aeaeae;
+        }
+
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+        .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view--down-arrow {
+            bottom: 0;
+            margin-bottom: -8px;
+        }
+
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+        .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view--down-arrow,
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before,
+        .react-datepicker__year-read-view--down-arrow::before,
+        .react-datepicker__month-read-view--down-arrow::before {
+            border-bottom: none;
+            border-top-color: #fff;
+        }
+
+        .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before,
+        .react-datepicker__year-read-view--down-arrow::before,
+        .react-datepicker__month-read-view--down-arrow::before {
+            bottom: -1px;
+            border-top-color: #aeaeae;
+        }
+
+        .react-datepicker-wrapper {
+            display: inline-block;
+        }
+
+        .react-datepicker {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 0.8rem;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #aeaeae;
+            border-radius: 0.3rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .react-datepicker__triangle {
+            position: absolute;
+            left: 50px;
+        }
+
+        .react-datepicker-popper {
+            z-index: 1;
+        }
+
+        .react-datepicker-popper[data-placement^='bottom'] {
+            margin-top: 10px;
+        }
+
+        .react-datepicker-popper[data-placement^='top'] {
+            margin-bottom: 10px;
+        }
+
+        .react-datepicker-popper[data-placement^='right'] {
+            margin-left: 8px;
+        }
+
+        .react-datepicker-popper[data-placement^='right'] .react-datepicker__triangle {
+            left: auto;
+            right: 42px;
+        }
+
+        .react-datepicker-popper[data-placement^='left'] {
+            margin-right: 8px;
+        }
+
+        .react-datepicker-popper[data-placement^='left'] .react-datepicker__triangle {
+            left: 42px;
+            right: auto;
+        }
+
+        .react-datepicker__header {
+            text-align: center;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #aeaeae;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+            padding-top: 8px;
+            position: relative;
+        }
+
+        .react-datepicker__header--time {
+            padding-bottom: 8px;
+        }
+
+        .react-datepicker__year-dropdown-container--select,
+        .react-datepicker__month-dropdown-container--select,
+        .react-datepicker__year-dropdown-container--scroll,
+        .react-datepicker__month-dropdown-container--scroll {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .react-datepicker__current-month,
+        .react-datepicker-time__header {
+            margin-top: 0;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.944rem;
+        }
+
+        .react-datepicker__navigation {
+            line-height: 1.7rem;
+            text-align: center;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            width: 0;
+            border: 0.45rem solid transparent;
+            z-index: 1;
+        }
+
+        .react-datepicker__navigation--previous {
+            left: 10px;
+            border-right-color: #ccc;
+        }
+
+        .react-datepicker__navigation--previous:hover {
+            border-right-color: #b3b3b3;
+        }
+
+        .react-datepicker__navigation--next {
+            right: 10px;
+            border-left-color: #ccc;
+        }
+
+        .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+            right: 80px;
+        }
+
+        .react-datepicker__navigation--next:hover {
+            border-left-color: #b3b3b3;
+        }
+
+        .react-datepicker__navigation--years {
+            position: relative;
+            top: 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .react-datepicker__navigation--years-previous {
+            top: 4px;
+            border-top-color: #ccc;
+        }
+
+        .react-datepicker__navigation--years-previous:hover {
+            border-top-color: #b3b3b3;
+        }
+
+        .react-datepicker__navigation--years-upcoming {
+            top: -4px;
+            border-bottom-color: #ccc;
+        }
+
+        .react-datepicker__navigation--years-upcoming:hover {
+            border-bottom-color: #b3b3b3;
+        }
+
+        .react-datepicker__month-container {
+            float: left;
+        }
+
+        .react-datepicker__month {
+            margin: 0.4rem;
+            text-align: center;
+        }
+
+        .react-datepicker__time-container {
+            float: right;
+            border-left: 1px solid #aeaeae;
+        }
+
+        .react-datepicker__time-container--with-today-button {
+            display: inline;
+            border: 1px solid #aeaeae;
+            border-radius: 0.3rem;
+            position: absolute;
+            right: -72px;
+            top: 0;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time {
+            position: relative;
+            background: white;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+            width: 70px;
+            overflow-x: hidden;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+            list-style: none;
+            margin: 0;
+            height: calc(195px + (1.7rem / 2));
+            overflow-y: scroll;
+            padding-right: 30px;
+            width: 100%;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
+            padding: 5px 10px;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item:hover {
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+            background-color: #216ba5;
+            color: white;
+            font-weight: bold;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover {
+            background-color: #216ba5;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--disabled {
+            color: #ccc;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--disabled:hover {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .react-datepicker__week-number {
+            color: #ccc;
+            display: inline-block;
+            width: 1.7rem;
+            line-height: 1.7rem;
+            text-align: center;
+            margin: 0.166rem;
+        }
+
+        .react-datepicker__week-number.react-datepicker__week-number--clickable {
+            cursor: pointer;
+        }
+
+        .react-datepicker__week-number.react-datepicker__week-number--clickable:hover {
+            border-radius: 0.3rem;
+            background-color: #f0f0f0;
+        }
+
+        .react-datepicker__day-names,
+        .react-datepicker__week {
+            white-space: nowrap;
+        }
+
+        .react-datepicker__day-name,
+        .react-datepicker__day,
+        .react-datepicker__time-name {
+            color: #000;
+            display: inline-block;
+            width: 1.7rem;
+            line-height: 1.7rem;
+            text-align: center;
+            margin: 0.166rem;
+        }
+
+        .react-datepicker__day {
+            cursor: pointer;
+        }
+
+        .react-datepicker__day:hover {
+            border-radius: 0.3rem;
+            background-color: #f0f0f0;
+        }
+
+        .react-datepicker__day--today {
+            font-weight: bold;
+        }
+
+        .react-datepicker__day--highlighted {
+            border-radius: 0.3rem;
+            background-color: #3dcc4a;
+            color: #fff;
+        }
+
+        .react-datepicker__day--highlighted:hover {
+            background-color: #32be3f;
+        }
+
+        .react-datepicker__day--highlighted-custom-1 {
+            color: magenta;
+        }
+
+        .react-datepicker__day--highlighted-custom-2 {
+            color: green;
+        }
+
+        .react-datepicker__day--selected,
+        .react-datepicker__day--in-selecting-range,
+        .react-datepicker__day--in-range {
+            border-radius: 0.3rem;
+            background-color: #216ba5;
+            color: #fff;
+        }
+
+        .react-datepicker__day--selected:hover,
+        .react-datepicker__day--in-selecting-range:hover,
+        .react-datepicker__day--in-range:hover {
+            background-color: #1d5d90;
+        }
+
+        .react-datepicker__day--keyboard-selected {
+            border-radius: 0.3rem;
+            background-color: #2a87d0;
+            color: #fff;
+        }
+
+        .react-datepicker__day--keyboard-selected:hover {
+            background-color: #1d5d90;
+        }
+
+        .react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range) {
+            background-color: rgba(33, 107, 165, 0.5);
+        }
+
+        .react-datepicker__month--selecting-range .react-datepicker__day--in-range:not(.react-datepicker__day--in-selecting-range) {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        .react-datepicker__day--disabled {
+            cursor: default;
+            color: #ccc;
+        }
+
+        .react-datepicker__day--disabled:hover {
+            background-color: transparent;
+        }
+
+        .react-datepicker__input-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .react-datepicker__year-read-view,
+        .react-datepicker__month-read-view {
+            border: 1px solid transparent;
+            border-radius: 0.3rem;
+        }
+
+        .react-datepicker__year-read-view:hover,
+        .react-datepicker__month-read-view:hover {
+            cursor: pointer;
+        }
+
+        .react-datepicker__year-read-view:hover .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__year-read-view:hover .react-datepicker__month-read-view--down-arrow,
+        .react-datepicker__month-read-view:hover .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view:hover .react-datepicker__month-read-view--down-arrow {
+            border-top-color: #b3b3b3;
+        }
+
+        .react-datepicker__year-read-view--down-arrow,
+        .react-datepicker__month-read-view--down-arrow {
+            border-top-color: #ccc;
+            float: right;
+            margin-left: 20px;
+            top: 8px;
+            position: relative;
+            border-width: 0.45rem;
+        }
+
+        .react-datepicker__year-dropdown,
+        .react-datepicker__month-dropdown {
+            background-color: #f0f0f0;
+            position: absolute;
+            width: 50%;
+            left: 25%;
+            top: 30px;
+            z-index: 1;
+            text-align: center;
+            border-radius: 0.3rem;
+            border: 1px solid #aeaeae;
+        }
+
+        .react-datepicker__year-dropdown:hover,
+        .react-datepicker__month-dropdown:hover {
+            cursor: pointer;
+        }
+
+        .react-datepicker__year-dropdown--scrollable,
+        .react-datepicker__month-dropdown--scrollable {
+            height: 150px;
+            overflow-y: scroll;
+        }
+
+        .react-datepicker__year-option,
+        .react-datepicker__month-option {
+            line-height: 20px;
+            width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .react-datepicker__year-option:first-of-type,
+        .react-datepicker__month-option:first-of-type {
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+        }
+
+        .react-datepicker__year-option:last-of-type,
+        .react-datepicker__month-option:last-of-type {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border-bottom-left-radius: 0.3rem;
+            border-bottom-right-radius: 0.3rem;
+        }
+
+        .react-datepicker__year-option:hover,
+        .react-datepicker__month-option:hover {
+            background-color: #ccc;
+        }
+
+        .react-datepicker__year-option:hover .react-datepicker__navigation--years-upcoming,
+        .react-datepicker__month-option:hover .react-datepicker__navigation--years-upcoming {
+            border-bottom-color: #b3b3b3;
+        }
+
+        .react-datepicker__year-option:hover .react-datepicker__navigation--years-previous,
+        .react-datepicker__month-option:hover .react-datepicker__navigation--years-previous {
+            border-top-color: #b3b3b3;
+        }
+
+        .react-datepicker__year-option--selected,
+        .react-datepicker__month-option--selected {
+            position: absolute;
+            left: 15px;
+        }
+
+        .react-datepicker__close-icon {
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+            display: inline-block;
+            height: 0;
+            outline: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        .react-datepicker__close-icon::after {
+            background-color: #216ba5;
+            border-radius: 50%;
+            bottom: 0;
+            box-sizing: border-box;
+            color: #fff;
+            content: '\00d7';
+            cursor: pointer;
+            font-size: 12px;
+            height: 16px;
+            width: 16px;
+            line-height: 1;
+            margin: -8px auto 0;
+            padding: 2px;
+            position: absolute;
+            right: 7px;
+            text-align: center;
+            top: 50%;
+        }
+
+        .react-datepicker__today-button {
+            background: #f0f0f0;
+            border-top: 1px solid #aeaeae;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            padding: 5px 0;
+            clear: left;
+        }
+
+        .react-datepicker__portal {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            left: 0;
+            top: 0;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            z-index: 2147483647;
+        }
+
+        .react-datepicker__portal .react-datepicker__day-name,
+        .react-datepicker__portal .react-datepicker__day,
+        .react-datepicker__portal .react-datepicker__time-name {
+            width: 3rem;
+            line-height: 3rem;
+        }
+
+        @media (max-width: 400px),
+        (max-height: 550px) {
+
+            .react-datepicker__portal .react-datepicker__day-name,
+            .react-datepicker__portal .react-datepicker__day,
+            .react-datepicker__portal .react-datepicker__time-name {
+                width: 2rem;
+                line-height: 2rem;
+            }
+        }
+
+        .react-datepicker__portal .react-datepicker__current-month,
+        .react-datepicker__portal .react-datepicker-time__header {
+            font-size: 1.44rem;
+        }
+
+        .react-datepicker__portal .react-datepicker__navigation {
+            border: 0.81rem solid transparent;
+        }
+
+        .react-datepicker__portal .react-datepicker__navigation--previous {
+            border-right-color: #ccc;
+        }
+
+        .react-datepicker__portal .react-datepicker__navigation--previous:hover {
+            border-right-color: #b3b3b3;
+        }
+
+        .react-datepicker__portal .react-datepicker__navigation--next {
+            border-left-color: #ccc;
+        }
+
+        .react-datepicker__portal .react-datepicker__navigation--next:hover {
+            border-left-color: #b3b3b3;
+        }
+
+        /* Relative size
+Added by Developer Name
+Found @ https://github.com/Hacker0x01/react-datepicker/issues/624
+*/
+
+        .react-datepicker {
+            font-size: 1em;
+        }
+
+        .react-datepicker__header {
+            padding-top: 0.8em;
+        }
+
+        .react-datepicker__month {
+            margin: 0.4em 1em;
+        }
+
+        .react-datepicker__day-name,
+        .react-datepicker__day {
+            width: 1.9em;
+            line-height: 1.9em;
+            margin: 0.166em;
+        }
+
+        .react-datepicker__current-month {
+            font-size: 1em;
+        }
+
+        .react-datepicker__navigation {
+            top: 1em;
+            line-height: 1.7em;
+            border: 0.45em solid transparent;
+        }
+
+        .react-datepicker__navigation--previous {
+            border-right-color: #ccc;
+            left: 1em;
+        }
+
+        .react-datepicker__navigation--next {
+            border-left-color: #ccc;
+            right: 1em;
+        }
+
+        .react-datepicker-time__header {
+            font-size: 0.944em;
+        }
+
+        .react-datepicker__navigation--next--with-time {
+            right: 80px;
+        }
+
+        .react-datepicker__time-list-item {
+            width: 50px;
+        }
+
+        .react-datepicker__time-list {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        /* Car reservation extra style */
+        .reservation-db {
+            height: 34px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+    <style>
+        .dropdown-menu {
+            overflow-y: auto;
+        }
+    </style>
+
+    <script>
+        // Loadingimage to use in pagination.js
+        var loadingImage = '/assets/images/car-loader.gif';
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Infosessies</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" />
+
+    <!-- Core CSS - Include with every page -->
+
+    <link rel="stylesheet" media="screen" href="/assets/lib/bootstrap/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" media="screen" href="/assets/lib/font-awesome/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" media="screen" href="/assets/stylesheets/sb-admin.css" />
+
+    <script type="text/javascript" src="/assets/javascripts/routes"></script>
+
+    <script>
+        var infoSessionId;
+
+        // Show confirm message to subscribe to an infosession
+        function showConfirmationModal(id) {
+            infoSessionId = id;
+            $('#detailsModal').modal('show');
+        }
+
+        function changeInfoSession() {
+            window.location = myJsRoutes.controllers.InfoSessions.enrollSession(infoSessionId).url;
+        }
+    </script>
+
+    <script>
+        var map;
+        function initMap() {
+            var ghent = { lat: 51.0535, lng: 3.7304 };
+            var geocoder = new google.maps.Geocoder();
+            if (document.getElementById('map') == null) return;
+            if ('51.06353759765625' !== undefined && parseFloat('51.06353759765625') > 0) {
+                var markerPosition = { lat: parseFloat('51.06353759765625'), lng: parseFloat('3.711688995361328') };
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: parseInt('14'),
+                    center: ghent,
+                });
+                map.setCenter(markerPosition);
+                if ('Infosessie' !== 'unknown') {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: markerPosition,
+                        label: 'Infosessie',
+                    });
+                }
+            } else {
+                $('#map').html('Gelieve gps coordinaten in te geven via knop Wijzigen');
+            }
+        }
+    </script>
+    <script async="" defer=""
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY-NDEeZzuqfY_yQpvVpHmSgdnjo1FM7s&amp;callback=initMap"></script>
+
+    <link rel="stylesheet" media="screen" href="/assets/stylesheets/main.css" />
+
+    <!--[if lt IE 9]>
+      <script src="/assets/javascripts/compatibility/html5shiv.min.js" type="text/javascript"></script>
+      <script src="/assets/javascripts/compatibility/css3-mediaqueries.js" type="text/javascript"></script>
+      <script src="/assets/javascripts/compatibility/respond.min.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            ((i[r] =
+                i[r] ||
+                function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+                (i[r].l = 1 * new Date()));
+            ((a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]));
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-39622035-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/65/5e/common.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/65/5e/util.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/65/5e/geocoder.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigatie</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Dégage</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="">nl</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="/changelang/nl">nl</a></li>
+                        <li><a href="/changelang/fr">fr</a></li>
+                        <li><a href="/changelang/en">en</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a class="text-center" href="/messages">
+                                <strong>Bekijk alle berichten</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i>
+
+                        <span class="topnumber">82</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="/notifications">
+                                <div>
+                                    <strong>Aanvraag reservatie 2BAB voor ma 29 jun 2026 07:00 (ongelezen)</strong>
+
+                                    <span class="pull-right text-muted">
+                                        <em>do 18 jun 2026 14:01</em>
+                                    </span>
+                                </div>
+                                <div>
+                                    <p>Beste gebruiker,</p>
+                                    <p>Bestuurder <b>Driver One</b> wenst 2BAB te reserveren ...</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/notifications">
+                                <div>
+                                    <strong>Aanvraag reservatie 2BAB voor di 23 jun 2026 21:00 (ongelezen)</strong>
+
+                                    <span class="pull-right text-muted">
+                                        <em>do 11 jun 2026 20:49</em>
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/notifications">
+                                <div>
+                                    <strong>Kilometerstanden 2BAB voor do 28 mei 2026 09:00 (Driver Two)
+                                        (ongelezen)</strong>
+
+                                    <span class="pull-right text-muted">
+                                        <em>vr 29 mei 2026 21:31</em>
+                                    </span>
+                                </div>
+                                <div>
+                                    <p>Beste gebruiker,</p>
+                                    <p>Bestuurder <i>Driver Two</i> heeft de volgende kilomet...</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+
+                        <li>
+                            <a class="text-center" href="/notifications">
+                                <strong>Bekijk alle mededelingen</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="">User, Test</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="/profile"><i class="fa fa-user fa-fw"></i> Profiel</a>
+                        </li>
+                        <li>
+                            <a href="/changepass"><i class="fa fa-gear fa-fw"></i>Wachtwoord wijzigen</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Uitloggen</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+        </nav>
+        <!-- /.navbar-static-top -->
+
+        <nav class="navbar-default navbar-static-side" style="z-index: 0" role="navigation">
+            <div class="sidebar-collapse collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/"><i class="fa fa-fw fa-dashboard"></i>
+                            Welkom
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/rules"><i class="fa fa-fw fa-gavel"></i>
+                            Spelregels
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/faq/search"><i class="fa fa-fw fa-question"></i>
+                            FAQ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/owners"><i class="fa fa-fw fa fa-key"></i>
+                            Je auto delen
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="/infosession"><i class="fa fa-fw fa-lightbulb-o"></i>
+                            Infosessies
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/trips"><i class="fa fa-fw fa-car"></i>
+                            Ritten / reservaties
+                            <span class="sidenumber">29</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/refuels"><i class="fa fa-fw fa-beer"></i>
+                            Tankbeurten
+                            <span class="sidenumber">1</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/billing/list"><i class="fa fa-fw fa-money"></i>
+                            Afrekeningen
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/cars"><i class="fa fa-fw fa-car"></i>
+                            Mijn auto
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/damage"><i class="fa fa-fw fa fa-fire"></i>
+                            Schadegevallen
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/messages"><i class="fa fa-fw fa-envelope"></i>
+                            Berichten
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/notifications"><i class="fa fa-fw fa-bell"></i>
+                            Mededelingen
+                            <span class="sidenumber">82</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/profile"><i class="fa fa-fw fa-user"></i>
+                            Profiel
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/family/list"><i class="fa fa-fw fa-users"></i>
+                            Gezinsleden
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/campaign/list"><i class="fa fa-fw fa-bullhorn"></i>
+                            Campagnes
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/districts/user"><i class="fa fa-fw fa-map-o"></i>
+                            Mijn wijk
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/volunteers"><i class="fa fa-fw fa fa-hand-paper-o"></i>
+                            Vrijwilligers
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/promotions"><i class="fa fa-fw fa fa-newspaper-o"></i>
+                            Promomateriaal
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/changepass"><i class="fa fa-fw fa-exchange"></i>
+                            Wachtwoord wijzigen
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/logout"><i class="fa fa-fw fa-sign-out"></i>
+                            Uitloggen
+                        </a>
+                    </li>
+                </ul>
+                <!-- /#side-menu -->
+            </div>
+            <!-- /.sidebar-collapse -->
+        </nav>
+        <!-- /.navbar-static-side -->
+
+        <div id="page-header-wrapper">
+            <ol class="breadcrumb">
+                <li><a href="/">Welkom</a></li>
+
+                <li class="active">Infosessies</li>
+            </ol>
+        </div>
+
+        <div id="page-wrapper" style="margin-top: 0px">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Infosessies</h3>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            Wil je enkel een deelauto gebruiken, volg dan een <strong>sessie voor leners</strong>.<br />
+                            Wil je je auto delen, volg dan een <strong>sessie voor eigenaars</strong>. Hierbij is het
+                            handig dat je
+                            <a href="/cars/new">een autofiche</a> invult. Zo weten we of je auto in aanmerking komt om
+                            gedeeld te worden. Lees hier
+                            <a href="/owners">de stapjes om je auto te delen</a> via Dégage.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-check-square-o"></i> Je was aanwezig op onderstaande
+                    infosessie.</div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <dl class="dl-horizontal">
+                                <dt>Wanneer?</dt>
+                                <dd>do 16 jan 2025 20:00</dd>
+                                <dt>Waar?</dt>
+                                <dd>Example Street 1, 9000 Gent (België)</dd>
+                                <dt>Gastvrouw / gastheer</dt>
+                                <dd>Host Past</dd>
+                                <dt>Type</dt>
+                                <dd>Auto-eigenaar</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-calendar"></i> Geplande infosessies</div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="resultsTable" class="table-responsive">
+                            <div id="resultsTable" class="table-responsive col-xs-12">
+                                <table class="table-striped table-bordered table-hover no-footer table"
+                                    id="dataTables-infosessions">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Tijdstip</th>
+                                            <th>Wijk</th>
+                                            <th>Type</th>
+                                            <th>Inschrijvingen</th>
+                                            <th>Gastvrouw / gastheer</th>
+                                            <th>Acties</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">za 20 jun 2026
+                                                    09:25</div>
+                                            </td>
+
+                                            <td>Gent - Wondelgem</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>14 / 20</td>
+
+                                            <td>Host Alpha</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1359">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">ma 22 jun 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Gent - Ledeberg</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>6</td>
+
+                                            <td>Host Beta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1383">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 25 jun 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Gent - Ledeberg</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>8 / 14</td>
+
+                                            <td>Host Gamma</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1378">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">di 30 jun 2026
+                                                    19:00</div>
+                                            </td>
+
+                                            <td>ONLINE</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>5 / 20</td>
+
+                                            <td>Host Delta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1349">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">wo 01 jul 2026
+                                                    12:00</div>
+                                            </td>
+
+                                            <td>Gent - Oostakker</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>1 / 10</td>
+
+                                            <td>Host Epsilon</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1388">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">ma 06 jul 2026
+                                                    19:30</div>
+                                            </td>
+
+                                            <td>Gent - Binnenstad</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>6 / 10</td>
+
+                                            <td>Host Zeta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1369">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 09 jul 2026
+                                                    19:30</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>1 / 20</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1337">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 09 jul 2026
+                                                    19:35</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0 / 10</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1338">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 16 jul 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Gent - Ledeberg</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0</td>
+
+                                            <td>Host Beta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1384">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 16 jul 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>5 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1360">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">wo 05 aug 2026
+                                                    19:00</div>
+                                            </td>
+
+                                            <td>ONLINE</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0 / 20</td>
+
+                                            <td>Host Delta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1389">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 13 aug 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Gent - Ledeberg</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0</td>
+
+                                            <td>Host Beta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1385">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 20 aug 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>0 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1361">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">di 15 sep 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>1 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1362">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 01 okt 2026
+                                                    19:30</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>1 / 20</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1339">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 01 okt 2026
+                                                    19:35</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0 / 10</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1340">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 22 okt 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>0 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1363">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">di 17 nov 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>0 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1364">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 26 nov 2026
+                                                    19:30</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>0 / 20</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1341">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 26 nov 2026
+                                                    19:35</div>
+                                            </td>
+
+                                            <td>Mechelen</td>
+
+                                            <td><span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar</td>
+
+                                            <td>0 / 10</td>
+
+                                            <td>Host Eta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1342">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div style="min-width: 120px; white-space: break-spaces">do 17 dec 2026
+                                                    20:00</div>
+                                            </td>
+
+                                            <td>Dégage - Dampoort</td>
+
+                                            <td><span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets</td>
+
+                                            <td>1 / 25</td>
+
+                                            <td>Host Theta</td>
+
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <a class="btn btn-xs btn-success"
+                                                        href="/infosession/enroll?id=1365">inschrijven</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Infosessie wijzigen</h4>
+                        </div>
+                        <div id="modalBody" class="modal-body">
+                            Je hebt je reeds voor een andere infosessie ingeschreven. Ben je zeker dat je deze wilt
+                            wijzigen?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuleren</button>
+                            <button class="btn btn-success" onclick="changeInfoSession()">Ja, schrijf me in voor deze
+                                infosessie</button>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+
+                <div id="resultModal"></div>
+            </div>
+            <!-- /#wrapper -->
+        </div>
+    </div>
+</body>
+
+</html>

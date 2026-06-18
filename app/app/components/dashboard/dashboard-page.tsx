@@ -5,6 +5,7 @@ import { Car, CircleHelp, Shield } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { PublicPage } from '@/app/components/public/public-shell';
+import { DashboardPlayConnectorSection } from '@/app/components/dashboard/dashboard-play-connector-section';
 import { Button } from '@/app/components/ui/button';
 import { useIsAdmin } from '@/app/lib/role';
 
@@ -73,6 +74,8 @@ export function DashboardPage({ name }: DashboardPageProps) {
           </article>
         ) : null}
       </div>
+
+      <DashboardPlayConnectorSection />
     </PublicPage>
   );
 }

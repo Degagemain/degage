@@ -95,11 +95,12 @@ pnpm e2e:ui
 
 **How it works:**
 
-1. Global setup starts Postgres, creates `e2e_template` (migrations + reference seed + e2e users), and builds the app.
+1. Global setup starts Postgres, the play connector mock, creates `e2e_template` (migrations + reference seed + e2e users), and builds the app.
 2. Each test clones a fresh database from `e2e_template`, starts Next on a worker port (`next start`), then drops the database.
 3. Authenticated admin tests sign in via the Better Auth API (no UI login); seeded accounts come from `e2e/.env.e2e` (`E2E_ADMIN_EMAIL`, `E2E_USER_EMAIL`, `E2E_PASSWORD`).
 4. During `pnpm e2e`, `DATABASE_URL` is taken from Testcontainers, not from `e2e/.env.e2e`.
 5. On CI (`CI=true`), global setup writes a temporary `.env` from `e2e/.env.e2e` plus the container `DATABASE_URL` before `next build` (same idea as the build workflow’s dummy `.env`), then removes it after the run.
+6. To debug play connector flows locally: `pnpm play-connector:mock` in one terminal, set `PLAY_CONNECTOR_BASE_URL` in `.env`, then `pnpm dev`.
 
 Seed e2e users into **local Docker Postgres** manually (uses `e2e/.env.e2e` only, not `.env`):
 
@@ -321,6 +322,7 @@ This log explains why packages were installed.
 | Chat canvas/state utilities                | @radix-ui/react-use-controllable-state, motion                                                         |
 | Graph/flow editor UI                       | @xyflow/react                                                                                          |
 | Carousel support                           | embla-carousel-react                                                                                   |
+| Play connector HTML parsing                | cheerio                                                                                                |
 | Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
 | Syntax highlighting/runtime                | shiki, tokenlens, ansi-to-react                                                                        |
 | Rive animations                            | @rive-app/react-webgl2                                                                                 |

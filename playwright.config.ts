@@ -24,5 +24,10 @@ export default defineConfig({
       testMatch: [/admin\.users\.spec\.ts/, /admin\/.*\.spec\.ts/],
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'chromium-account',
+      testMatch: [/e2e\/tests\/account\/.*\.spec\.ts/],
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
 });

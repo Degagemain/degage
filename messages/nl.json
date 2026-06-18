@@ -2156,6 +2156,25 @@
         "description": "Beheer gebruikers en referentiedata voor Dégage medewerkers.",
         "cta": "Naar beheer →"
       }
+    },
+    "playConnector": {
+      "sectionTitle": "Infosessies",
+      "sectionDescription": "Geplande infosessies vanuit Degapp (demo).",
+      "setupTitle": "Koppel je Degapp-account",
+      "setupDescription": "Koppel je Degapp-gegevens in de instellingen om hier geplande infosessies te zien.",
+      "setupCta": "Degapp koppeling openen →",
+      "failingDescription": "Je Degapp koppeling heeft aandacht nodig. Werk je gegevens bij in de instellingen.",
+      "loadingInfosessions": "Infosessies laden…",
+      "loadError": "Infosessies laden mislukt. Controleer je Degapp koppeling in de instellingen.",
+      "tableEmpty": "Geen geplande infosessies gevonden.",
+      "showMore": "Toon {count} meer",
+      "columns": {
+        "scheduledAt": "Wanneer",
+        "district": "Wijk",
+        "type": "Type",
+        "registrations": "Inschrijvingen",
+        "host": "Gastvrouw / gastheer"
+      }
     }
   },
   "chat": {
@@ -2188,6 +2207,27 @@
     "audiencePublic": "Publiek",
     "audienceUser": "Gebruiker",
     "audienceAdmin": "Beheerder"
+  },
+  "playConnector": {
+    "tabTitle": "Degapp koppeling",
+    "title": "Degapp koppeling",
+    "description": "Koppel je Degapp-account zodat deze app namens jou toegang heeft tot infosessies en andere functies.",
+    "credentialsNoticeTitle": "Dit zijn je Degapp-inloggegevens",
+    "credentialsNoticeBody": "Dit is niet het wachtwoord van deze app. Gebruik het e-mailadres en wachtwoord waarmee je inlogt op Degapp. We slaan ze versleuteld op en gebruiken ze om namens jou acties uit te voeren op Degapp.",
+    "email": "E-mail",
+    "emailPlaceholder": "jij@voorbeeld.be",
+    "password": "Wachtwoord",
+    "connect": "Koppelen",
+    "disconnect": "Ontkoppelen",
+    "connectedAs": "Gekoppeld als {email}",
+    "connectSuccess": "Degapp koppeling geactiveerd.",
+    "disconnectSuccess": "Degapp koppeling ontkoppeld.",
+    "connectFailed": "Degapp koppeling mislukt. Controleer je gegevens.",
+    "disconnectFailed": "Degapp koppeling ontkoppelen mislukt.",
+    "loadFailed": "Status van Degapp koppeling laden mislukt.",
+    "failingTitle": "Verbinding mislukt",
+    "failingDescription": "Recente aanmeldpogingen zijn mislukt. Wacht even en koppel opnieuw met je Degapp-gegevens.",
+    "sessionValidUntil": "Sessie in cache tot {date}"
   },
   "docs": {
     "table": {
