@@ -5,7 +5,7 @@ import { disconnectPlayConnector } from '@/actions/play-connector/disconnect';
 import { linkPlayConnector } from '@/actions/play-connector/link';
 import { readPlayConnectorStatus } from '@/actions/play-connector/read-status';
 import { PlayConnectorActionError } from '@/domain/play-connector.errors';
-import type { PlayConnectorLinkInput } from '@/domain/play-connector.model';
+import { playConnectorLinkInputSchema } from '@/domain/play-connector.model';
 import { safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withAuth } from '@/api/with-context';
@@ -19,8 +19,13 @@ export const PUT = withAuth(async (request: NextRequest, _context, session) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
 
+  const parsed = playConnectorLinkInputSchema.safeParse(data);
+  if (!parsed.success) {
+    return Response.json({ code: 'validation_error', errors: parsed.error.issues }, { status: statusCodes.BAD_REQUEST });
+  }
+
   try {
-    const status = await linkPlayConnector(session.user.id, data as PlayConnectorLinkInput);
+    const status = await linkPlayConnector(session.user.id, parsed.data);
     return Response.json(status);
   } catch (error) {
     if (error instanceof ZodError) {

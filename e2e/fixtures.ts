@@ -2,7 +2,7 @@ import { type BrowserContext, test as base } from '@playwright/test';
 
 import type { SimulationLocale } from './tests/public/simulation/simulation.messages';
 import { createTestDatabase, dropTestDatabase, getTestDatabaseUrl } from './shared/db';
-import { signInAsAdmin } from './shared/auth';
+import { signInAsAdmin, signInAsUser } from './shared/auth';
 import { startNextServer, stopNextServer } from './shared/server';
 
 const setLocaleCookie = async (context: BrowserContext, baseURL: string, locale: SimulationLocale) => {
@@ -25,6 +25,7 @@ export const test = base.extend<{
   appServer: AppServerFixture;
   locale: SimulationLocale;
   asAdmin: void;
+  asUser: void;
 }>({
   locale: ['en', { option: true }],
   testDb: async ({}, use, testInfo) => {
@@ -47,6 +48,11 @@ export const test = base.extend<{
 
   asAdmin: async ({ appServer, context }, use) => {
     await signInAsAdmin(context, appServer.baseURL);
+    await use();
+  },
+
+  asUser: async ({ appServer, context }, use) => {
+    await signInAsUser(context, appServer.baseURL);
     await use();
   },
 });

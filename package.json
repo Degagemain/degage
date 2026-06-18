@@ -24,6 +24,8 @@
     "db:seed-e2e": "dotenv -e e2e/.env.e2e -- pnpx tsx e2e/seeding/seed-e2e.ts",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
+    "play-connector:mock": "pnpx tsx e2e/play-mock/server.ts",
+    "play-connector:generate-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\"",
     "db:backup": "bash scripts/db-backup.sh",
     "db:restore": "bash scripts/db-restore.sh",
     "docs": "node scripts/validate-docs.mjs",

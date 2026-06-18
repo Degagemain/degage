@@ -18,8 +18,32 @@ cookie, then reuses them for server-side requests (e.g. listing infosessions).
 Generate a key:
 
 ```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+pnpm play-connector:generate-key
 ```
+
+Copy the output into `PLAY_CONNECTOR_ENCRYPTION_KEY` in `.env`.
+
+## Local and E2E mock backend
+
+For local development or E2E without hitting the real Play backend, use the mock server in [`e2e/play-mock/`](../../e2e/play-mock/).
+
+```bash
+pnpm play-connector:mock
+```
+
+Set `PLAY_CONNECTOR_BASE_URL=...` (default localhost 3199). Mock login accepts `PLAY_MOCK_EMAIL` / `PLAY_MOCK_PASSWORD`, or falls back to
+`E2E_USER_EMAIL` / `E2E_PASSWORD` from [`e2e/.env.e2e`](../../e2e/.env.e2e).
+
+During `pnpm e2e`, global setup starts the mock automatically. You can also run `pnpm play-connector:mock` manually when testing connector flows
+against `pnpm dev`.
+
+Mock endpoints:
+
+| Method | Path           | Description                                                   |
+| ------ | -------------- | ------------------------------------------------------------- |
+| `POST` | `/login`       | Form login; returns session cookies on success                |
+| `GET`  | `/infosession` | HTML table with sample infosessions (requires session cookie) |
+| `GET`  | `/`            | Health check                                                  |
 
 ## Layers
 
