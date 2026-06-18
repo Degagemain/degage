@@ -2156,6 +2156,25 @@
         "description": "Manage users and reference data.",
         "cta": "Go to admin →"
       }
+    },
+    "playConnector": {
+      "sectionTitle": "Infosessions",
+      "sectionDescription": "Upcoming infosessions from Degapp (demo).",
+      "setupTitle": "Connect your Degapp account",
+      "setupDescription": "Link your Degapp credentials in settings to see upcoming infosessions here.",
+      "setupCta": "Open Degapp koppeling →",
+      "failingDescription": "Your Degapp koppeling needs attention. Update your credentials in settings.",
+      "loadingInfosessions": "Loading infosessions…",
+      "loadError": "Could not load infosessions. Check your Degapp koppeling in settings.",
+      "tableEmpty": "No upcoming infosessions found.",
+      "showMore": "Show {count} more",
+      "columns": {
+        "scheduledAt": "When",
+        "district": "District",
+        "type": "Type",
+        "registrations": "Registrations",
+        "host": "Host"
+      }
     }
   },
   "chat": {
@@ -2188,6 +2207,27 @@
     "audiencePublic": "Public",
     "audienceUser": "User",
     "audienceAdmin": "Admin"
+  },
+  "playConnector": {
+    "tabTitle": "Degapp connection",
+    "title": "Degapp connection",
+    "description": "Link your Degapp account so this app can access infosessions and other features on your behalf.",
+    "credentialsNoticeTitle": "These are your Degapp login credentials",
+    "credentialsNoticeBody": "This is not your password for this app. Use the email and password you sign in with on Degapp. They are stored encrypted and used to perform actions on Degapp on your behalf.",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "connectedAs": "Connected as {email}",
+    "connectSuccess": "Degapp connection linked.",
+    "disconnectSuccess": "Degapp connection removed.",
+    "connectFailed": "Could not link Degapp connection. Check your credentials.",
+    "disconnectFailed": "Could not remove Degapp connection.",
+    "loadFailed": "Could not load Degapp connection status.",
+    "failingTitle": "Connection failing",
+    "failingDescription": "Recent login attempts failed. Wait a moment, then reconnect with your Degapp credentials.",
+    "sessionValidUntil": "Session cached until {date}"
   },
   "docs": {
     "table": {

@@ -2156,6 +2156,25 @@
         "description": "Gérez les utilisateurs et les données de référence.",
         "cta": "Vers l’administration →"
       }
+    },
+    "playConnector": {
+      "sectionTitle": "Infosessions",
+      "sectionDescription": "Infosessions à venir depuis Degapp (démo).",
+      "setupTitle": "Connectez votre compte Degapp",
+      "setupDescription": "Liez vos identifiants Degapp dans les paramètres pour voir les infosessions ici.",
+      "setupCta": "Ouvrir la connexion Degapp →",
+      "failingDescription": "Votre connexion Degapp nécessite une action. Mettez à jour vos identifiants dans les paramètres.",
+      "loadingInfosessions": "Chargement des infosessions…",
+      "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Degapp dans les paramètres.",
+      "tableEmpty": "Aucune infosession à venir.",
+      "showMore": "Afficher {count} de plus",
+      "columns": {
+        "scheduledAt": "Quand",
+        "district": "Quartier",
+        "type": "Type",
+        "registrations": "Inscriptions",
+        "host": "Hôte"
+      }
     }
   },
   "chat": {
@@ -2188,6 +2207,27 @@
     "audiencePublic": "Public",
     "audienceUser": "Utilisateur",
     "audienceAdmin": "Admin"
+  },
+  "playConnector": {
+    "tabTitle": "Connexion Degapp",
+    "title": "Connexion Degapp",
+    "description": "Liez votre compte Degapp pour que cette application accède aux infosessions et autres fonctionnalités en votre nom.",
+    "credentialsNoticeTitle": "Ce sont vos identifiants Degapp",
+    "credentialsNoticeBody": "Ce n'est pas le mot de passe de cette application. Utilisez l'e-mail et le mot de passe avec lesquels vous vous connectez sur Degapp. Ils sont stockés de manière chiffrée et permettent d'effectuer des actions sur Degapp en votre nom.",
+    "email": "E-mail",
+    "emailPlaceholder": "vous@exemple.be",
+    "password": "Mot de passe",
+    "connect": "Connecter",
+    "disconnect": "Déconnecter",
+    "connectedAs": "Connecté en tant que {email}",
+    "connectSuccess": "Connexion Degapp activée.",
+    "disconnectSuccess": "Connexion Degapp supprimée.",
+    "connectFailed": "Impossible de lier la connexion Degapp. Vérifiez vos identifiants.",
+    "disconnectFailed": "Impossible de supprimer la connexion Degapp.",
+    "loadFailed": "Impossible de charger le statut de la connexion Degapp.",
+    "failingTitle": "Échec de connexion",
+    "failingDescription": "Les dernières tentatives de connexion ont échoué. Attendez un moment, puis reconnectez avec vos identifiants Degapp.",
+    "sessionValidUntil": "Session en cache jusqu'au {date}"
   },
   "docs": {
     "table": {

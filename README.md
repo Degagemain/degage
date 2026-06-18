@@ -321,6 +321,7 @@ This log explains why packages were installed.
 | Chat canvas/state utilities                | @radix-ui/react-use-controllable-state, motion                                                         |
 | Graph/flow editor UI                       | @xyflow/react                                                                                          |
 | Carousel support                           | embla-carousel-react                                                                                   |
+| Play connector HTML parsing                | cheerio                                                                                                |
 | Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
 | Syntax highlighting/runtime                | shiki, tokenlens, ansi-to-react                                                                        |
 | Rive animations                            | @rive-app/react-webgl2                                                                                 |
