@@ -1167,6 +1167,7 @@ export default function SimulationPage() {
           const neighbourCostSharePercent =
             scenarioTotalPerYear > 0 ? Math.min(100, Math.round((amountRepaid / scenarioTotalPerYear) * 100)) : 0;
           const netBalancePerYear = amountRepaid - scenarioTotalPerYear;
+          const savingsPerYear = netBalancePerYear >= 0 ? netBalancePerYear : amountRepaid;
           const estimatedTripsPerYear = Math.max(1, Math.round(sharedKm / 82));
           const fmtEuro = (n: number) => `€ ${Math.round(n).toLocaleString('nl-BE')}`;
 
@@ -1268,10 +1269,10 @@ export default function SimulationPage() {
                     )}
                     <div className={styles.kostenNettoFooter}>
                       <div className={styles.kostenNettoLabel}>
-                        {netBalancePerYear >= 0 ? t('kosten.nettoVoordeel') : t('kosten.nogBijteLegen')}
+                        {netBalancePerYear >= 0 ? t('kosten.nettoVoordeel') : t('kosten.besparing')}
                       </div>
                       <div className={styles.kostenNettoValue}>
-                        € {Math.round(Math.abs(netBalancePerYear)).toLocaleString('nl-BE')}
+                        € {Math.round(savingsPerYear).toLocaleString('nl-BE')}
                         <span className={styles.kostenSidebarPerYear}> /jaar</span>
                       </div>
                     </div>

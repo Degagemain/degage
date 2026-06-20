@@ -1995,7 +1995,7 @@
       "slijtageNote": "varies per scenario",
       "opbrengstLabel": "Income from sharing",
       "nettoVoordeel": "Net benefit",
-      "nogBijteLegen": "Still to pay yourself",
+      "besparing": "Savings from sharing",
       "kmGedeeldLabel": "Km shared per year",
       "rittenPerYearLabel": "Trips per year",
       "rittenPerYearSub": "~{km} km shared per year.",
