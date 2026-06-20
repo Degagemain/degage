@@ -41,6 +41,7 @@ export const SIMULATION_ITEMS: {
   translationKey:
     | 'carPriceEstimates'
     | 'carInfos'
+    | 'insurers'
     | 'insurancePriceBenchmarks'
     | 'carTaxBaseRates'
     | 'carTaxFlatRates'
@@ -49,6 +50,7 @@ export const SIMULATION_ITEMS: {
 }[] = [
   { translationKey: 'carPriceEstimates', href: '/app/admin/car-price-estimates' },
   { translationKey: 'carInfos', href: '/app/admin/car-infos' },
+  { translationKey: 'insurers', href: '/app/admin/insurers' },
   { translationKey: 'insurancePriceBenchmarks', href: '/app/admin/insurance-price-benchmarks' },
   { translationKey: 'carTaxBaseRates', href: '/app/admin/car-tax-base-rates' },
   { translationKey: 'carTaxFlatRates', href: '/app/admin/car-tax-flat-rates' },
