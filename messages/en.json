@@ -1022,6 +1022,61 @@
       "searchPlaceholder": "Search by fiscal region...",
       "tryAgain": "Try again"
     },
+    "insurers": {
+      "title": "Insurers",
+      "columns": {
+        "name": "Name",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "searchPlaceholder": "Search insurers...",
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Insurer name"
+        },
+        "help": {
+          "name": "Name of the insurance company."
+        }
+      },
+      "delete": {
+        "title": "Delete insurer",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Insurer deleted successfully.",
+        "error": "Failed to delete insurer.",
+        "conflict": "This insurer is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete insurers",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Insurer",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import insurers",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Insurer"
+      }
+    },
     "insurancePriceBenchmarks": {
       "title": "Insurance",
       "filters": {

@@ -1022,6 +1022,61 @@
       "searchPlaceholder": "Zoek op fiscale regio...",
       "tryAgain": "Opnieuw proberen"
     },
+    "insurers": {
+      "title": "Verzekeraars",
+      "columns": {
+        "name": "Naam",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "searchPlaceholder": "Zoek verzekeraars...",
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Naam verzekeraar"
+        },
+        "help": {
+          "name": "Naam van de verzekeringsmaatschappij."
+        }
+      },
+      "delete": {
+        "title": "Verzekeraar verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Verzekeraar succesvol verwijderd.",
+        "error": "Verzekeraar verwijderen mislukt.",
+        "conflict": "Deze verzekeraar is gekoppeld aan andere gegevens en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Geselecteerde verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Verzekeraars verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Verzekeraar",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wachtrij",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere gegevens"
+      },
+      "bulkImport": {
+        "title": "Verzekeraars importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Verzekeraar"
+      }
+    },
     "insurancePriceBenchmarks": {
       "title": "Verzekering",
       "filters": {

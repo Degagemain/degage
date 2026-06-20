@@ -1022,6 +1022,61 @@
       "searchPlaceholder": "Rechercher par région fiscale...",
       "tryAgain": "Réessayer"
     },
+    "insurers": {
+      "title": "Assureurs",
+      "columns": {
+        "name": "Nom",
+        "created": "Créé",
+        "updated": "Mis à jour"
+      },
+      "searchPlaceholder": "Rechercher des assureurs...",
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Nom de l'assureur"
+        },
+        "help": {
+          "name": "Nom de la compagnie d'assurance."
+        }
+      },
+      "delete": {
+        "title": "Supprimer l'assureur",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Assureur supprimé avec succès.",
+        "error": "Échec de la suppression de l'assureur.",
+        "conflict": "Cet assureur est lié à d'autres enregistrements et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer les assureurs",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Assureur",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des assureurs",
+        "description": "Les enregistrements suivants seront importés. Ceux avec un id seront mis à jour ; ceux sans id seront insérés.",
+        "columnName": "Assureur"
+      }
+    },
     "insurancePriceBenchmarks": {
       "title": "Prix assurance",
       "filters": {
