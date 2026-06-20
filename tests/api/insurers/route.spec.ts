@@ -48,13 +48,9 @@ describe('API Route - GET /api/insurers', () => {
     banned: false,
   };
 
-  describe('GET is public (no auth required)', () => {
-    it('returns 200 when unauthenticated', async () => {
+  describe('authentication', () => {
+    it('returns 401 when no session exists', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
-      vi.mocked(searchInsurers).mockResolvedValueOnce({
-        records: [insurer({ name: 'Ethias' })],
-        total: 1,
-      });
 
       const request = {
         nextUrl: new URL('http://localhost/api/insurers'),
@@ -63,14 +59,28 @@ describe('API Route - GET /api/insurers', () => {
       const response = await GET(request);
       const json = await response.json();
 
-      expect(response.status).toBe(200);
-      expect(json.records).toHaveLength(1);
-      expect(json.total).toBe(1);
-      expect(searchInsurers).toHaveBeenCalledTimes(1);
+      expect(response.status).toBe(401);
+      expect(json.code).toBe('unauthorized');
+      expect(searchInsurers).not.toHaveBeenCalled();
+    });
+
+    it('returns 401 when session has no user', async () => {
+      vi.mocked(auth.api.getSession).mockResolvedValueOnce({ user: null } as any);
+
+      const request = {
+        nextUrl: new URL('http://localhost/api/insurers'),
+      } as any;
+
+      const response = await GET(request);
+      const json = await response.json();
+
+      expect(response.status).toBe(401);
+      expect(json.code).toBe('unauthorized');
+      expect(searchInsurers).not.toHaveBeenCalled();
     });
   });
 
-  describe('GET returns list for any caller', () => {
+  describe('GET returns list for authenticated users', () => {
     it('returns 200 when regular user requests list', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockRegularUser } as any);
       vi.mocked(searchInsurers).mockResolvedValueOnce({

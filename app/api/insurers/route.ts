@@ -3,9 +3,9 @@ import { searchInsurers } from '@/actions/insurer/search';
 import { createInsurer } from '@/actions/insurer/create';
 import { insurerFilterSchema } from '@/domain/insurer.filter';
 import { badRequestResponseFromZod, safeParseRequestJson, tryCreateResource } from '@/api/utils';
-import { withAdmin, withPublic } from '@/api/with-context';
+import { withAdmin, withAuth } from '@/api/with-context';
 
-export const GET = withPublic(async (request: NextRequest) => {
+export const GET = withAuth(async (request: NextRequest) => {
   const filter = insurerFilterSchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!filter.success) {
     return badRequestResponseFromZod(filter);

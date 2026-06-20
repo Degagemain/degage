@@ -109,6 +109,8 @@ export default function InsurersPage() {
       const response = await fetch(`/api/insurers?${params.toString()}`);
 
       if (!response.ok) {
+        if (response.status === 401) throw new Error('Authentication required');
+        if (response.status === 403) throw new Error('Access denied');
         throw new Error('Failed to fetch insurers');
       }
 
