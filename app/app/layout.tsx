@@ -11,6 +11,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminArea = pathname?.startsWith('/app/admin');
   const isSimulationPage = pathname === '/app/simulation';
+  const isCarOnboardingSection = pathname?.startsWith('/app/car-onboardings');
   const isFaqSection = pathname?.startsWith('/app/faq');
   const isLandingPage = pathname === '/app';
   const isAuthArea = pathname?.startsWith('/app/auth');
@@ -20,9 +21,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <Providers>
       <SupportChatProvider>
-        {!isAdminArea && !isSimulationPage && !isFaqSection && !isLandingPage && !isAuthArea && !isAccountArea && !isDashboardArea && (
-          <Header />
-        )}
+        {!isAdminArea &&
+          !isSimulationPage &&
+          !isCarOnboardingSection &&
+          !isFaqSection &&
+          !isLandingPage &&
+          !isAuthArea &&
+          !isAccountArea &&
+          !isDashboardArea && <Header />}
         {children}
       </SupportChatProvider>
       <Toaster />

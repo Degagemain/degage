@@ -1,0 +1,55 @@
+import {
+  CarOnboarding,
+  CarOnboardingCarValueStatus,
+  CarOnboardingInPreparationStatus,
+  CarOnboardingInsurerStatus,
+} from '@/domain/car-onboarding.model';
+
+export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding => {
+  return {
+    id: data.id ?? '550e8400-e29b-41d4-a716-446655440000',
+    street: data.street !== undefined ? data.street : null,
+    town: data.town !== undefined ? data.town : null,
+    phone: data.phone !== undefined ? data.phone : null,
+    brand: data.brand !== undefined ? data.brand : null,
+    fuelType: data.fuelType !== undefined ? data.fuelType : null,
+    carType: data.carType !== undefined ? data.carType : null,
+    carTypeOther: data.carTypeOther !== undefined ? data.carTypeOther : null,
+    isPurchased: data.isPurchased ?? false,
+    purchasePrice: data.purchasePrice ?? 0,
+    carValue: data.carValue ?? 0,
+    carValueCounterProposal: data.carValueCounterProposal ?? 0,
+    carValueCounterProposalMessage: data.carValueCounterProposalMessage !== undefined ? data.carValueCounterProposalMessage : null,
+    carValueStatus: data.carValueStatus ?? CarOnboardingCarValueStatus.TODO,
+    insurer: data.insurer !== undefined ? data.insurer : null,
+    insurerStatus: data.insurerStatus ?? CarOnboardingInsurerStatus.TODO,
+    insurerContractStartedAt: data.insurerContractStartedAt !== undefined ? data.insurerContractStartedAt : null,
+    depreciationCostKm: data.depreciationCostKm ?? 0,
+    isNewCar: data.isNewCar ?? false,
+    mileage: data.mileage ?? 0,
+    firstRegisteredAt: data.firstRegisteredAt !== undefined ? data.firstRegisteredAt : null,
+    seats: data.seats ?? 0,
+    isVan: data.isVan ?? false,
+    owner: data.owner !== undefined ? data.owner : null,
+    simulation: data.simulation !== undefined ? data.simulation : null,
+    statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,
+    createdAt: data.createdAt ?? new Date(),
+    updatedAt: data.updatedAt ?? new Date(),
+  };
+};
+
+export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding => {
+  return carOnboarding({
+    street: 'Main Street 1',
+    town: { id: '550e8400-e29b-41d4-a716-446655440099', name: '1000 Brussels' },
+    phone: '+32 470 00 00 00',
+    brand: { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Audi' },
+    fuelType: { id: '550e8400-e29b-41d4-a716-446655440002', name: 'Diesel' },
+    carType: { id: '550e8400-e29b-41d4-a716-446655440003', name: 'A4' },
+    carValueStatus: CarOnboardingCarValueStatus.RESOLVED,
+    insurer: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'AXA' },
+    insurerStatus: CarOnboardingInsurerStatus.READY,
+    insurerContractStartedAt: new Date('2020-01-15'),
+    ...data,
+  });
+};

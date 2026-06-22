@@ -1,0 +1,842 @@
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
+import { Controller, useForm } from 'react-hook-form';
+import { Check, CheckCircle2, CircleDashed, Lock } from 'lucide-react';
+import * as z from 'zod';
+
+import {
+  CarOnboarding,
+  CarOnboardingCarValueStatus,
+  CarOnboardingInPreparationStatus,
+  CarOnboardingInsurerStatus,
+  isCarInfoSectionComplete,
+  isInsurerSectionComplete,
+  isUserInfoSectionComplete,
+} from '@/domain/car-onboarding.model';
+import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
+import { Button } from '@/app/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-control';
+import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
+import { AdminSearchableSelectField } from '@/app/components/form/admin-searchable-select-field';
+import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
+import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
+import { AdminTextareaFieldControl } from '@/app/components/form/admin-textarea-field-control';
+import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onboarding-subprocess-flow';
+
+export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
+
+export const CAR_ONBOARDING_TAB_IDS = ['userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
+export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
+
+export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId =>
+  CAR_ONBOARDING_TAB_IDS.includes(tab as CarOnboardingTabId) ? (tab as CarOnboardingTabId) : 'userInfo';
+
+const NONE = 'none';
+const CAR_TYPE_OTHER = '__other__';
+
+interface CarOnboardingFormProps {
+  initialCarOnboarding: CarOnboarding;
+  formId?: string;
+  isSubmitting?: boolean;
+  activeTab: CarOnboardingTabId;
+  onTabChange: (tab: CarOnboardingTabId) => void;
+  onSubmit: (row: CarOnboarding) => Promise<void>;
+  onOverruleCarValueAgreement?: () => Promise<void>;
+  onStartCarOnboarding?: () => Promise<void>;
+}
+
+interface FormValues {
+  street: string;
+  townId: string;
+  townName: string;
+  phone: string;
+  brandId: string;
+  brandName: string;
+  fuelTypeId: string;
+  fuelTypeName: string;
+  carTypeId: string;
+  carTypeName: string;
+  carTypeOther: string;
+  mileage: string;
+  seats: string;
+  firstRegisteredAt: string;
+  isVan: boolean;
+  isPurchased: boolean;
+  isNewCar: boolean;
+  purchasePrice: string;
+  depreciationCostKm: string;
+  carValue: string;
+  carValueCounterProposal: string;
+  carValueCounterProposalMessage: string;
+  insurerId: string;
+  insurerName: string;
+  insurerContractStartedAt: string;
+  ownerId: string;
+  ownerName: string;
+}
+
+const formatDateInput = (date: Date | string | null): string => {
+  if (date == null) return '';
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return parsed.toISOString().slice(0, 10);
+};
+
+const getInitialState = (row: CarOnboarding): FormValues => {
+  const hasOtherCarType = Boolean(row.carTypeOther?.trim()) && row.carType == null;
+  return {
+    street: row.street ?? '',
+    townId: row.town?.id ?? NONE,
+    townName: row.town?.name ?? '',
+    phone: row.phone ?? '',
+    brandId: row.brand?.id ?? NONE,
+    brandName: row.brand?.name ?? '',
+    fuelTypeId: row.fuelType?.id ?? NONE,
+    fuelTypeName: row.fuelType?.name ?? '',
+    carTypeId: hasOtherCarType ? CAR_TYPE_OTHER : (row.carType?.id ?? NONE),
+    carTypeName: row.carType?.name ?? '',
+    carTypeOther: row.carTypeOther ?? '',
+    mileage: String(row.mileage),
+    seats: String(row.seats),
+    firstRegisteredAt: formatDateInput(row.firstRegisteredAt),
+    isVan: row.isVan,
+    isPurchased: row.isPurchased,
+    isNewCar: row.isNewCar,
+    purchasePrice: String(row.purchasePrice),
+    depreciationCostKm: String(row.depreciationCostKm),
+    carValue: String(row.carValue),
+    carValueCounterProposal: String(row.carValueCounterProposal),
+    carValueCounterProposalMessage: row.carValueCounterProposalMessage ?? '',
+    insurerId: row.insurer?.id ?? NONE,
+    insurerName: row.insurer?.name ?? '',
+    insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
+    ownerId: row.owner?.id ?? NONE,
+    ownerName: row.owner?.name ?? '',
+  };
+};
+
+const createSchema = (tCommon: (key: string) => string) =>
+  z.object({
+    street: z.string(),
+    townId: z.string(),
+    townName: z.string(),
+    phone: z.string(),
+    brandId: z.string(),
+    brandName: z.string(),
+    fuelTypeId: z.string(),
+    fuelTypeName: z.string(),
+    carTypeId: z.string(),
+    carTypeName: z.string(),
+    carTypeOther: z.string(),
+    mileage: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
+    seats: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
+    firstRegisteredAt: z.string(),
+    isVan: z.boolean(),
+    isPurchased: z.boolean(),
+    isNewCar: z.boolean(),
+    purchasePrice: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
+    depreciationCostKm: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
+    carValue: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
+    carValueCounterProposal: z.string(),
+    carValueCounterProposalMessage: z.string(),
+    insurerId: z.string(),
+    insurerName: z.string(),
+    insurerContractStartedAt: z.string(),
+    ownerId: z.string(),
+    ownerName: z.string(),
+  });
+
+const toIdName = (id: string, name: string) => (id && id !== NONE ? { id, name: name.trim() || id } : null);
+
+function PreparationStatusIcon({ status }: { status: CarOnboardingInPreparationStatus }) {
+  switch (status) {
+    case CarOnboardingInPreparationStatus.READY:
+      return <CheckCircle2 className="size-3.5 shrink-0 text-green-600" aria-hidden />;
+    case CarOnboardingInPreparationStatus.LOCKED:
+      return <Lock className="text-muted-foreground size-3.5 shrink-0" aria-hidden />;
+    default:
+      return <CircleDashed className="text-muted-foreground size-3.5 shrink-0" aria-hidden />;
+  }
+}
+
+export function CarOnboardingForm({
+  initialCarOnboarding,
+  formId = CAR_ONBOARDING_FORM_ID,
+  isSubmitting = false,
+  activeTab,
+  onTabChange,
+  onSubmit,
+  onOverruleCarValueAgreement,
+  onStartCarOnboarding,
+}: CarOnboardingFormProps) {
+  const t = useTranslations('admin.carOnboardings');
+  const tCommon = useTranslations('admin.common');
+  const [isOverruleDialogOpen, setIsOverruleDialogOpen] = useState(false);
+  const [isOverruling, setIsOverruling] = useState(false);
+  const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
+  const schema = useMemo(() => createSchema(tCommon), [tCommon]);
+  const initialState = useMemo(() => getInitialState(initialCarOnboarding), [initialCarOnboarding]);
+  const initialStateKey = useMemo(() => JSON.stringify(initialState), [initialState]);
+  const lastResetKeyRef = useRef<string | null>(null);
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: initialState,
+  });
+
+  const hasOtherCarType = Boolean(initialCarOnboarding.carTypeOther?.trim()) && initialCarOnboarding.carType == null;
+  const brandId = form.watch('brandId');
+  const fuelTypeId = form.watch('fuelTypeId');
+  const carTypeQueryParams = useMemo(
+    () => (brandId && brandId !== NONE && fuelTypeId && fuelTypeId !== NONE ? { brandId, fuelTypeId, isActive: 'true' } : undefined),
+    [brandId, fuelTypeId],
+  );
+
+  const clearCarTypeSelection = () => {
+    form.setValue('carTypeId', NONE, { shouldValidate: true });
+    form.setValue('carTypeName', '', { shouldValidate: true });
+  };
+
+  const watchedValues = form.watch();
+  const userInfoComplete = isUserInfoSectionComplete({
+    street: watchedValues.street.trim() || null,
+    town: watchedValues.townId !== NONE ? { id: watchedValues.townId } : null,
+    phone: watchedValues.phone.trim() || null,
+  });
+  const carInfoComplete = isCarInfoSectionComplete({
+    brand: watchedValues.brandId !== NONE ? { id: watchedValues.brandId } : null,
+    fuelType: watchedValues.fuelTypeId !== NONE ? { id: watchedValues.fuelTypeId } : null,
+    carType:
+      hasOtherCarType || watchedValues.carTypeId === NONE || watchedValues.carTypeId === CAR_TYPE_OTHER
+        ? null
+        : { id: watchedValues.carTypeId },
+    carTypeOther: hasOtherCarType || watchedValues.carTypeId === CAR_TYPE_OTHER ? watchedValues.carTypeOther.trim() || null : null,
+  });
+  const insurerComplete = isInsurerSectionComplete({
+    insurerStatus: watchedValues.isPurchased
+      ? CarOnboardingInsurerStatus.NOT_APPLICABLE
+      : watchedValues.insurerId !== NONE && watchedValues.insurerContractStartedAt.trim() !== ''
+        ? CarOnboardingInsurerStatus.READY
+        : CarOnboardingInsurerStatus.TODO,
+  });
+  const carValueComplete = initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+  const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
+  const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
+
+  const userInfoFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: 'todo', label: t('subprocess.userInfo.todo') },
+      { id: 'ready', label: t('subprocess.userInfo.ready') },
+    ],
+    [t],
+  );
+
+  const carInfoFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: 'todo', label: t('subprocess.carInfo.todo') },
+      { id: 'ready', label: t('subprocess.carInfo.ready') },
+    ],
+    [t],
+  );
+
+  const insurerFlowSteps = useMemo((): SubprocessFlowStep[] => {
+    if (watchedValues.isPurchased) {
+      return [{ id: CarOnboardingInsurerStatus.NOT_APPLICABLE, label: t('subprocess.insurer.notApplicable') }];
+    }
+    return [
+      { id: CarOnboardingInsurerStatus.TODO, label: t('subprocess.insurer.todo') },
+      { id: CarOnboardingInsurerStatus.READY, label: t('subprocess.insurer.ready') },
+    ];
+  }, [t, watchedValues.isPurchased]);
+
+  const insurerFlowCurrent = watchedValues.isPurchased
+    ? CarOnboardingInsurerStatus.NOT_APPLICABLE
+    : insurerComplete
+      ? CarOnboardingInsurerStatus.READY
+      : CarOnboardingInsurerStatus.TODO;
+
+  const carValueFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: CarOnboardingCarValueStatus.TODO, label: t('subprocess.carValue.todo') },
+      { id: CarOnboardingCarValueStatus.PROPOSAL, label: t('subprocess.carValue.proposal') },
+      { id: CarOnboardingCarValueStatus.COUNTER, label: t('subprocess.carValue.counter') },
+      { id: CarOnboardingCarValueStatus.RESOLVED, label: t('subprocess.carValue.resolved') },
+    ],
+    [t],
+  );
+
+  useEffect(() => {
+    if (lastResetKeyRef.current === initialStateKey) return;
+    form.reset(initialState);
+    lastResetKeyRef.current = initialStateKey;
+  }, [form, initialState, initialStateKey]);
+
+  const handleSubmit = form.handleSubmit(async (values) => {
+    const payload: CarOnboarding = {
+      ...initialCarOnboarding,
+      street: values.street.trim() || null,
+      town: toIdName(values.townId, values.townName),
+      phone: values.phone.trim() || null,
+      brand: toIdName(values.brandId, values.brandName),
+      fuelType: toIdName(values.fuelTypeId, values.fuelTypeName),
+      carType:
+        hasOtherCarType || values.carTypeId === NONE || values.carTypeId === CAR_TYPE_OTHER
+          ? null
+          : toIdName(values.carTypeId, values.carTypeName),
+      carTypeOther: hasOtherCarType ? initialCarOnboarding.carTypeOther : null,
+      mileage: values.mileage === '' ? 0 : Number(values.mileage),
+      seats: values.seats === '' ? 0 : Number(values.seats),
+      firstRegisteredAt: values.firstRegisteredAt ? new Date(values.firstRegisteredAt) : null,
+      isVan: values.isVan,
+      isPurchased: values.isPurchased,
+      isNewCar: values.isNewCar,
+      purchasePrice: values.purchasePrice === '' ? 0 : Number(values.purchasePrice),
+      depreciationCostKm: values.depreciationCostKm === '' ? 0 : Number(values.depreciationCostKm),
+      carValue: values.carValue === '' ? 0 : Number(values.carValue),
+      carValueCounterProposal: initialCarOnboarding.carValueCounterProposal,
+      carValueCounterProposalMessage: initialCarOnboarding.carValueCounterProposalMessage,
+      insurer: values.isPurchased ? null : toIdName(values.insurerId, values.insurerName),
+      insurerContractStartedAt: values.isPurchased || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+      owner: toIdName(values.ownerId, values.ownerName),
+    };
+    await onSubmit(payload);
+  });
+
+  const handleOverruleConfirm = async () => {
+    if (!onOverruleCarValueAgreement) return;
+    setIsOverruling(true);
+    try {
+      await onOverruleCarValueAgreement();
+      setIsOverruleDialogOpen(false);
+    } finally {
+      setIsOverruling(false);
+    }
+  };
+
+  const handleStartConfirm = async () => {
+    if (!onStartCarOnboarding) return;
+    setIsStarting(true);
+    try {
+      await onStartCarOnboarding();
+      setIsStartDialogOpen(false);
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
+  const showOverruleButton =
+    onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
+
+  return (
+    <form id={formId} onSubmit={handleSubmit} className="px-4 py-6 md:px-6 md:py-8">
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => onTabChange(parseCarOnboardingTab(value))}
+        orientation="vertical"
+        className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8"
+      >
+        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-48">
+          <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">
+            <span>{t('tabs.preparationTitle')}</span>
+            <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
+              <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
+            </span>
+          </p>
+          <TabsList variant="line" className="h-fit w-full">
+            <TabsTrigger value="userInfo" className="gap-1.5">
+              {t('tabs.userInfo')}
+              {userInfoComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="carInfo" className="gap-1.5">
+              {t('tabs.carInfo')}
+              {carInfoComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="insurer" className="gap-1.5">
+              {t('tabs.insurer')}
+              {insurerComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="carValue" className="gap-1.5">
+              {t('tabs.carValue')}
+              {carValueComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="finalize" className="gap-1.5">
+              {t('tabs.finalize')}
+              {preparationLocked ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <TabsContent value="userInfo" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.userInfo')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={userInfoFlowSteps} currentStepId={userInfoComplete ? 'ready' : 'todo'} />
+              </div>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="ownerId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.owner')}
+                      value={field.value}
+                      selectedLabel={field.value === NONE ? undefined : form.watch('ownerName') || undefined}
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('ownerName', id === NONE ? '' : option.name, { shouldValidate: true });
+                      }}
+                      apiPath="users"
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={t('form.placeholders.owner')}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="street"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.street')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="townId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.town')}
+                      value={field.value}
+                      selectedLabel={field.value === NONE ? undefined : form.watch('townName') || undefined}
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('townName', id === NONE ? '' : option.name, { shouldValidate: true });
+                      }}
+                      apiPath="towns"
+                      labelKey="displayLabel"
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={t('form.placeholders.town')}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="phone"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.phone')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="carInfo" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.carInfo')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={carInfoFlowSteps} currentStepId={carInfoComplete ? 'ready' : 'todo'} />
+              </div>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="brandId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.brand')}
+                      value={field.value}
+                      selectedLabel={field.value === NONE ? undefined : form.watch('brandName') || undefined}
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('brandName', id === NONE ? '' : option.name, { shouldValidate: true });
+                        if (!hasOtherCarType) clearCarTypeSelection();
+                      }}
+                      apiPath="car-brands"
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={t('form.placeholders.brand')}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="fuelTypeId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.fuelType')}
+                      value={field.value}
+                      selectedLabel={field.value === NONE ? undefined : form.watch('fuelTypeName') || undefined}
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('fuelTypeName', id === NONE ? '' : option.name, { shouldValidate: true });
+                        if (!hasOtherCarType) clearCarTypeSelection();
+                      }}
+                      apiPath="fuel-types"
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={t('form.placeholders.fuelType')}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="carTypeId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.carType')}
+                      value={field.value}
+                      selectedLabel={
+                        hasOtherCarType
+                          ? t('form.carTypeOtherOption')
+                          : field.value === NONE
+                            ? undefined
+                            : form.watch('carTypeName') || undefined
+                      }
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('carTypeName', id === NONE ? '' : option.name, { shouldValidate: true });
+                      }}
+                      apiPath="car-types"
+                      queryParams={carTypeQueryParams}
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={
+                        brandId && brandId !== NONE && fuelTypeId && fuelTypeId !== NONE
+                          ? t('form.placeholders.carType')
+                          : t('form.placeholders.carTypeFirst')
+                      }
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting || hasOtherCarType || brandId === NONE || fuelTypeId === NONE || !brandId || !fuelTypeId}
+                    />
+                  )}
+                />
+                {hasOtherCarType ? (
+                  <Controller
+                    name="carTypeOther"
+                    control={form.control}
+                    render={({ field }) => (
+                      <AdminTextFieldControl
+                        label={t('columns.carTypeOther')}
+                        value={field.value}
+                        onChange={() => {}}
+                        disabled
+                        description={t('form.help.carTypeOtherReadOnly')}
+                      />
+                    )}
+                  />
+                ) : null}
+                <Controller
+                  name="mileage"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.mileage')}
+                      value={field.value}
+                      onChange={watchedValues.isNewCar ? () => {} : field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting || watchedValues.isNewCar}
+                      min={0}
+                      step={1}
+                      description={watchedValues.isNewCar ? t('form.help.firstRegisteredAtNewCarReadOnly') : undefined}
+                    />
+                  )}
+                />
+                <Controller
+                  name="seats"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.seats')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                      min={0}
+                      step={1}
+                    />
+                  )}
+                />
+                <Controller
+                  name="firstRegisteredAt"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminDateFieldControl
+                      label={t('columns.firstRegisteredAt')}
+                      value={field.value}
+                      onChange={watchedValues.isNewCar ? () => {} : field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting || watchedValues.isNewCar}
+                      description={watchedValues.isNewCar ? t('form.help.firstRegisteredAtNewCarReadOnly') : undefined}
+                    />
+                  )}
+                />
+                <Controller
+                  name="purchasePrice"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.purchasePrice')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                      min={0}
+                      step={0.01}
+                    />
+                  )}
+                />
+                <Controller
+                  name="isVan"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-is-van"
+                      label={t('columns.isVan')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="isPurchased"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-is-purchased-car"
+                      label={t('columns.isPurchased')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled
+                      description={t('form.help.isPurchasedReadOnly')}
+                    />
+                  )}
+                />
+                <Controller
+                  name="isNewCar"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-is-new-car"
+                      label={t('columns.isNewCar')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled
+                      description={t('form.help.isNewCarReadOnly')}
+                    />
+                  )}
+                />
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="insurer" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.insurer')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={insurerFlowSteps} currentStepId={insurerFlowCurrent} />
+              </div>
+              <FieldGroup className="gap-6">
+                {watchedValues.isPurchased ? (
+                  <p className="text-muted-foreground text-sm">{t('form.help.insurerNotApplicable')}</p>
+                ) : (
+                  <>
+                    <Controller
+                      name="insurerId"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminSearchableSelectField
+                          label={t('columns.insurer')}
+                          value={field.value}
+                          selectedLabel={field.value === NONE ? undefined : form.watch('insurerName') || undefined}
+                          onValueChange={(id, option) => {
+                            field.onChange(id);
+                            form.setValue('insurerName', id === NONE ? '' : option.name, { shouldValidate: true });
+                          }}
+                          apiPath="insurers"
+                          appendOptions={[{ id: NONE, name: t('form.none') }]}
+                          placeholder={t('form.placeholders.insurer')}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="insurerContractStartedAt"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminDateFieldControl
+                          label={t('columns.insurerContractStartedAt')}
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
+                    />
+                  </>
+                )}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="carValue" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.carValue')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={carValueFlowSteps} currentStepId={initialCarOnboarding.carValueStatus} />
+              </div>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="carValue"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.carValue')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                      min={0}
+                      step={0.01}
+                    />
+                  )}
+                />
+                <Controller
+                  name="depreciationCostKm"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.depreciationCostKm')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                      min={0}
+                      step={0.0001}
+                    />
+                  )}
+                />
+                <Controller
+                  name="carValueCounterProposal"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.carValueCounterProposal')}
+                      value={field.value}
+                      onChange={() => {}}
+                      disabled
+                      description={t('form.help.counterReadOnly')}
+                    />
+                  )}
+                />
+                <Controller
+                  name="carValueCounterProposalMessage"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminTextareaFieldControl
+                      label={t('columns.carValueCounterProposalMessage')}
+                      value={field.value}
+                      onChange={() => {}}
+                      disabled
+                      description={t('form.help.counterReadOnly')}
+                    />
+                  )}
+                />
+                {showOverruleButton ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsOverruleDialogOpen(true)}
+                    disabled={isSubmitting || isOverruling}
+                  >
+                    {t('form.overruleAgreement')}
+                  </Button>
+                ) : null}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="finalize" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('form.startOnboardingSection')}</FieldLegend>
+              {preparationLocked ? (
+                <FieldDescription>{t('form.startOnboardingLocked')}</FieldDescription>
+              ) : (
+                <>
+                  <FieldDescription>{preparationReady ? t('form.startOnboardingReady') : t('form.startOnboardingNotReady')}</FieldDescription>
+                  {onStartCarOnboarding != null ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsStartDialogOpen(true)}
+                      disabled={!preparationReady || isSubmitting || isStarting}
+                    >
+                      {t('form.startOnboarding')}
+                    </Button>
+                  ) : null}
+                </>
+              )}
+            </FieldSet>
+          </TabsContent>
+        </div>
+      </Tabs>
+
+      <Dialog open={isOverruleDialogOpen} onOpenChange={isOverruling ? undefined : setIsOverruleDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.overruleAgreementTitle')}</DialogTitle>
+            <DialogDescription>{t('form.overruleAgreementDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsOverruleDialogOpen(false)} disabled={isOverruling}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleOverruleConfirm()} disabled={isOverruling}>
+              {isOverruling ? t('form.overruleAgreementConfirming') : t('form.overruleAgreementConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isStartDialogOpen} onOpenChange={isStarting ? undefined : setIsStartDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.startOnboardingTitle')}</DialogTitle>
+            <DialogDescription>{t('form.startOnboardingDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsStartDialogOpen(false)} disabled={isStarting}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleStartConfirm()} disabled={isStarting}>
+              {isStarting ? t('form.startOnboardingConfirming') : t('form.startOnboardingConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </form>
+  );
+}

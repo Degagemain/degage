@@ -208,7 +208,8 @@
     "common": {
       "actions": {
         "new": "Nouveau",
-        "save": "Enregistrer"
+        "save": "Enregistrer",
+        "cancel": "Annuler"
       },
       "status": {
         "saving": "Enregistrement…"
@@ -1401,10 +1402,171 @@
         "euroNormCode": "Norme Euro",
         "consumption": "Consommation",
         "yes": "Oui",
-        "no": "Non"
+        "no": "Non",
+        "startOnboarding": "Démarrer l'intégration",
+        "startingOnboarding": "Démarrage…",
+        "startOnboardingError": "Échec du démarrage de l'intégration véhicule."
       },
       "yes": "Oui",
       "no": "Non"
+    },
+    "carOnboardings": {
+      "title": "Onboardings",
+      "columns": {
+        "description": "Description",
+        "owner": "Propriétaire",
+        "street": "Rue",
+        "town": "Commune",
+        "phone": "Téléphone",
+        "brand": "Marque",
+        "fuelType": "Type de carburant",
+        "carType": "Type de véhicule",
+        "carTypeOther": "Type de véhicule (autre)",
+        "mileage": "Kilométrage",
+        "seats": "Places",
+        "firstRegisteredAt": "Première immatriculation",
+        "isPurchased": "Véhicule acheté",
+        "isNewCar": "Véhicule neuf",
+        "isVan": "Utilitaire",
+        "purchasePrice": "Prix d'achat",
+        "carValue": "Valeur du véhicule",
+        "depreciationCostKm": "Amortissement par km",
+        "carValueCounterProposal": "Contre-proposition",
+        "carValueCounterProposalMessage": "Message de contre-proposition",
+        "carValueStatus": "Statut valeur",
+        "insurer": "Assureur",
+        "insurerContractStartedAt": "Début du contrat d'assurance",
+        "insurerStatus": "Statut assurance",
+        "simulation": "Simulation",
+        "statusInPreparation": "Statut de préparation",
+        "created": "Créé",
+        "updated": "Mis à jour"
+      },
+      "yes": "Oui",
+      "no": "Non",
+      "tabs": {
+        "preparationTitle": "Préparation",
+        "userInfo": "Infos utilisateur",
+        "carInfo": "Infos véhicule",
+        "insurer": "Assurance",
+        "carValue": "Valeur",
+        "finalize": "Finaliser"
+      },
+      "preparationStatus": {
+        "open": "Ouvert",
+        "ready": "Prêt",
+        "locked": "Verrouillé"
+      },
+      "subprocess": {
+        "userInfo": {
+          "todo": "À faire",
+          "ready": "Complet"
+        },
+        "carInfo": {
+          "todo": "À faire",
+          "ready": "Complet"
+        },
+        "insurer": {
+          "notApplicable": "Non applicable",
+          "todo": "À faire",
+          "ready": "Complet"
+        },
+        "carValue": {
+          "todo": "À faire",
+          "proposal": "Proposition",
+          "counter": "Contre-proposition",
+          "resolved": "Résolu"
+        }
+      },
+      "searchPlaceholder": "Rechercher des intégrations véhicule…",
+      "createTypes": {
+        "existingCar": "Véhicule existant",
+        "purchasedCar": "Véhicule acheté",
+        "purchasedNewCar": "Véhicule acheté (neuf)"
+      },
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "none": "Aucun",
+        "carTypeOtherOption": "Autre",
+        "placeholders": {
+          "town": "Rechercher des communes…",
+          "brand": "Rechercher des marques…",
+          "fuelType": "Rechercher des carburants…",
+          "carType": "Rechercher des types de véhicule…",
+          "carTypeFirst": "Sélectionnez d'abord la marque et le carburant",
+          "insurer": "Rechercher des assureurs…",
+          "owner": "Rechercher des utilisateurs…"
+        },
+        "openSimulation": "Ouvrir la simulation",
+        "openPublicPage": "Ouvrir la page publique",
+        "overruleAgreement": "Outrepasser l'accord",
+        "overruleAgreementTitle": "Outrepasser l'accord sur la valeur ?",
+        "overruleAgreementDescription": "À utiliser uniquement lorsque le propriétaire a explicitement accepté la valeur proposée en dehors du flux normal dans l'application. Cela marque la valeur comme résolue sans confirmation du propriétaire dans l'app.",
+        "overruleAgreementConfirm": "Outrepasser",
+        "overruleAgreementConfirming": "Outrepassement…",
+        "overruleAgreementSuccess": "Valeur marquée comme résolue.",
+        "overruleAgreementError": "Échec de l'outrepassement de l'accord sur la valeur.",
+        "startOnboardingSection": "Démarrer l'onboarding véhicule",
+        "startOnboarding": "Démarrer l'onboarding véhicule",
+        "startOnboardingTitle": "Démarrer l'onboarding véhicule ?",
+        "startOnboardingDescription": "Cela finalise la phase de préparation et verrouille le dossier. Le propriétaire ne peut plus modifier les infos véhicule, utilisateur, assurance ou valeur tant qu'un administrateur ne déverrouille pas.",
+        "startOnboardingConfirm": "Démarrer",
+        "startOnboardingConfirming": "Démarrage…",
+        "startOnboardingSuccess": "Onboarding véhicule démarré. La préparation est verrouillée.",
+        "startOnboardingError": "Échec du démarrage de l'onboarding véhicule.",
+        "startOnboardingReady": "La préparation est complète. Vous pouvez démarrer l'onboarding pour verrouiller la préparation.",
+        "startOnboardingNotReady": "Complétez toutes les étapes de préparation et enregistrez le dossier avant de démarrer.",
+        "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
+        "help": {
+          "counterReadOnly": "Défini par le propriétaire lors de la négociation.",
+          "carTypeOtherReadOnly": "Défini par l'utilisateur lorsque le type de véhicule n'est pas dans le catalogue.",
+          "isPurchasedReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
+          "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
+          "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
+          "insurerNotApplicable": "L'assurance ne s'applique pas aux véhicules achetés."
+        }
+      },
+      "detailPage": {
+        "owner": "Propriétaire",
+        "simulation": "Simulation"
+      },
+      "newPage": {
+        "create": "Créer un enregistrement vide",
+        "creating": "Création…",
+        "description": "Crée un nouvel enregistrement d'intégration véhicule avec les valeurs par défaut. Remplissez les détails à l'écran suivant."
+      },
+      "delete": {
+        "title": "Supprimer l'intégration véhicule",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Intégration véhicule supprimée avec succès.",
+        "error": "Échec de la suppression de l'intégration véhicule.",
+        "conflict": "Cette intégration véhicule est liée à d'autres enregistrements et ne peut pas être supprimée."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer les intégrations véhicule",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Intégration véhicule",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Lié à d'autres enregistrements"
+      }
     },
     "chatConversations": {
       "title": "Chats d'assistance",
@@ -2283,6 +2445,68 @@
     "failingTitle": "Échec de connexion",
     "failingDescription": "Les dernières tentatives de connexion ont échoué. Attendez un moment, puis reconnectez avec vos identifiants Degapp.",
     "sessionValidUntil": "Session en cache jusqu'au {date}"
+  },
+  "carOnboardingPublic": {
+    "eyebrow": "Intégration véhicule",
+    "title": "Votre intégration",
+    "intro": "Complétez les étapes ci-dessous pour terminer la préparation.",
+    "preparationTitle": "Préparation",
+    "backToOverview": "Retour à l'aperçu",
+    "stepNotFound": "Étape introuvable.",
+    "stepBlocked": "Cette étape n'est pas encore disponible. Terminez d'abord les étapes précédentes.",
+    "stepReadOnly": "Cette étape est en lecture seule. La préparation est verrouillée ou cette section est déjà complète.",
+    "save": "Enregistrer",
+    "next": "Suivant",
+    "saveSuccess": "Enregistré avec succès.",
+    "yes": "Oui",
+    "no": "Non",
+    "states": {
+      "todo": "À faire",
+      "pending": "En cours",
+      "done": "Terminé"
+    },
+    "errors": {
+      "load": "Échec du chargement de l'intégration véhicule.",
+      "save": "Échec de l'enregistrement.",
+      "forbidden": "Vous n'avez pas accès à cette intégration véhicule."
+    },
+    "steps": {
+      "userInfo": {
+        "title": "Infos utilisateur",
+        "subtitle": "Vos coordonnées",
+        "info": "Indiquez votre rue, commune et numéro de téléphone pour que nous puissions vous joindre.",
+        "panelTitle": "Coordonnées"
+      },
+      "carInfo": {
+        "title": "Infos véhicule",
+        "subtitle": "Informations de base sur votre véhicule",
+        "info": "Confirmez la marque, le carburant et le type de véhicule. Les autres détails sont affichés à titre de référence.",
+        "panelTitle": "Catalogue véhicule",
+        "readOnlyTitle": "Détails du véhicule"
+      },
+      "insurer": {
+        "title": "Assurance",
+        "subtitle": "Votre assurance auto actuelle",
+        "info": "Indiquez l'assureur actuel de votre véhicule et la date de début du contrat.",
+        "panelTitle": "Assurance actuelle",
+        "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
+      },
+      "carValue": {
+        "title": "Valeur",
+        "subtitle": "Accord sur l'amortissement par km partagé",
+        "info": "Consultez la valeur proposée et l'amortissement. Acceptez ou soumettez une contre-proposition.",
+        "chartTitle": "Amortissement par km partagé",
+        "chartBody": "Sur la base de {mileage} km, l'amortissement est d'environ €{depreciation} par kilomètre partagé.",
+        "waitingForProposal": "En attente d'une proposition de valeur par l'administrateur.",
+        "agreeTitle": "Acceptez-vous cette valeur ?",
+        "agreeYes": "Oui, j'accepte",
+        "agreeNo": "Non, contre-proposition",
+        "counterTitle": "Votre proposition",
+        "agreeConfirmHint": "Vous avez accepté la valeur proposée. Enregistrez pour confirmer.",
+        "pendingAdmin": "Votre contre-proposition de €{value} a été soumise. En attente de la réponse de l'administrateur.",
+        "resolved": "L'accord sur la valeur est résolu."
+      }
+    }
   },
   "docs": {
     "table": {

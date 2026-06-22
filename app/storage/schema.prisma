@@ -19,6 +19,7 @@ model FuelType {
   translations    FuelTypeTranslation[]
   carTypes        CarType[]
   simulations     Simulation[]
+  carOnboardings  CarOnboarding[]
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
 }
@@ -40,6 +41,7 @@ model CarBrand {
   translations CarBrandTranslation[]
   carTypes     CarType[]
   simulations  Simulation[]
+  carOnboardings CarOnboarding[]
   createdAt    DateTime              @default(now())
   updatedAt    DateTime              @updatedAt
 }
@@ -66,8 +68,66 @@ model CarType {
   simulations       Simulation[]
   carPriceEstimates CarPriceEstimate[]
   carInfos          CarInfo[]
+  carOnboardings    CarOnboarding[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+}
+
+enum CarOnboardingInPreparationStatus {
+  open
+  ready
+  locked
+}
+
+enum CarOnboardingCarValueStatus {
+  todo
+  proposal
+  counter
+  resolved
+}
+
+enum CarOnboardingInsurerStatus {
+  notApplicable
+  todo
+  ready
+}
+
+model CarOnboarding {
+  id                  String                           @id @default(uuid())
+  street              String?
+  townId              String?
+  town                Town?                            @relation(fields: [townId], references: [id])
+  phone               String?
+  brandId             String?
+  brand               CarBrand?                        @relation(fields: [brandId], references: [id])
+  fuelTypeId          String?
+  fuelType            FuelType?                        @relation(fields: [fuelTypeId], references: [id])
+  carTypeId           String?
+  carType             CarType?                         @relation(fields: [carTypeId], references: [id])
+  carTypeOther        String?
+  isPurchased      Boolean                          @default(false)
+  purchasePrice       Decimal                          @default(0)
+  carValue                       Decimal                          @default(0)
+  carValueCounterProposal        Decimal                          @default(0)
+  carValueCounterProposalMessage String?
+  carValueStatus                 CarOnboardingCarValueStatus      @default(todo)
+  insurerId                      String?
+  insurer                        Insurer?                         @relation(fields: [insurerId], references: [id], onDelete: Restrict)
+  insurerStatus                  CarOnboardingInsurerStatus       @default(todo)
+  insurerContractStartedAt       DateTime?
+  depreciationCostKm             Float                            @default(0)
+  isNewCar            Boolean                          @default(false)
+  mileage             Int                              @default(0)
+  firstRegisteredAt   DateTime?
+  seats               Int                              @default(0)
+  isVan               Boolean                          @default(false)
+  ownerId             String?
+  owner               User?                            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  simulationId        String?
+  simulation          Simulation?                      @relation(fields: [simulationId], references: [id], onDelete: SetNull)
+  statusInPreparation CarOnboardingInPreparationStatus @default(open)
+  createdAt           DateTime                         @default(now())
+  updatedAt           DateTime                         @updatedAt
 }
 
 enum SimulationResultCode {
@@ -116,6 +176,7 @@ model Simulation {
   duration                     Int                  @default(45)
   steps                        Json                 @default("[]")
   email                        String?
+  carOnboardings               CarOnboarding[]
   createdAt                    DateTime             @default(now())
   updatedAt                    DateTime             @updatedAt
 }
@@ -229,10 +290,11 @@ model Hub {
 }
 
 model Insurer {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String          @id @default(uuid())
+  name           String          @unique
+  carOnboardings CarOnboarding[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model InsurancePriceBenchmark {
@@ -294,6 +356,7 @@ model Town {
   hubId            String
   hub              Hub          @relation(fields: [hubId], references: [id])
   simulations      Simulation[]
+  carOnboardings   CarOnboarding[]
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
 }
@@ -359,6 +422,7 @@ model User {
   oauthaccesstokens  OauthAccessToken[]
   oauthconsents      OauthConsent[]
   playConnector      PlayConnector?
+  carOnboardings     CarOnboarding[]
 
   @@unique([email])
   @@map("user")
