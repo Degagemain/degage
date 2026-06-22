@@ -23,6 +23,23 @@ Attribue le propriétaire de l'intégration véhicule et indique s'il a lié son
 
 Cette étape est complète lorsque le propriétaire a configuré un enregistrement Play connector.
 
+### Session d'info
+
+Le propriétaire s'inscrit à une infosession Degapp à venir dans le parcours d'onboarding public.
+
+| Statut  | Signification                                                            |
+| ------- | ------------------------------------------------------------------------ |
+| Todo    | Le propriétaire n'est pas encore inscrit à une session d'info.           |
+| Inscrit | Le propriétaire est inscrit ; en attente de confirmation de présence.    |
+| Complet | Un admin a confirmé que le propriétaire a assisté à la session inscrite. |
+
+Le propriétaire ne peut être inscrit qu'à une seule session à la fois. Pour en choisir une autre, il doit d'abord se désinscrire.
+
+L'inscription débloque les étapes de préparation suivantes dans le parcours public. La confirmation de présence par un admin reste nécessaire
+avant que l'étape session d'info soit marquée complète et que la préparation puisse être finalisée.
+
+Cette étape est complète lorsque le statut de session d'info est **Complet**.
+
 ### Infos utilisateur
 
 Recueille les coordonnées du propriétaire : rue, commune et téléphone.
@@ -77,13 +94,14 @@ Cette étape est complète lorsque le statut de valeur est **Resolved**.
 
 ### Finaliser
 
-Lorsque les infos utilisateur, infos véhicule, assurance et valeur sont toutes complètes, le système définit le statut de préparation sur
-**Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer l'intégration véhicule sur l'onglet **Finaliser**.
+Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance et valeur sont toutes complètes, le système définit le
+statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer l'intégration véhicule sur l'onglet
+**Finaliser**.
 
 | Statut     | Signification                                                                                                                                                                                       |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ouvert     | L'intégration est en cours ; infos utilisateur, infos véhicule, assurance et négociation de valeur ne sont pas toutes complètes.                                                                    |
-| Prêt       | Infos utilisateur, infos véhicule, assurance (pas Todo) et valeur (Résolu) sont complètes. Le système définit ce statut automatiquement.                                                            |
+| Ouvert     | L'intégration est en cours ; les étapes de préparation ne sont pas toutes complètes.                                                                                                                |
+| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo) et valeur (Résolu) sont complètes. Le système définit ce statut automatiquement.                  |
 | Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Défini par un admin sur l'onglet **Finaliser** lorsque la préparation est **Prête**. |
 
 Lorsque la préparation est **Verrouillée**, les utilisateurs ne peuvent plus mettre à jour les infos utilisateur, infos véhicule, assurance ou
@@ -124,5 +142,8 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 | Utilitaire                    | Indique si le véhicule est classé comme utilitaire.                                         |
 | Propriétaire                  | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant). |
 | Propriétaire Play connector   | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                        |
+| Date session d'info           | Date prévue de la session d'info inscrite.                                                  |
+| ID PC session d'info          | Identifiant Play connector de la session d'info inscrite.                                   |
+| Statut session d'info         | Progression du sous-processus session d'info.                                               |
 | Simulation                    | Simulation associée, le cas échéant.                                                        |
 | Statut de préparation         | Suit la progression : Ouvert, Prêt ou Verrouillé.                                           |

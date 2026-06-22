@@ -82,6 +82,31 @@ const handleInfosession = (request: IncomingMessage, response: ServerResponse): 
   response.end(INFOSSESSION_HTML);
 };
 
+const handleInfosessionEnroll = (request: IncomingMessage, response: ServerResponse, url: URL): void => {
+  if (!isValidPlayMockSessionCookie(request.headers.cookie)) {
+    sendText(response, 401, 'Unauthorized');
+    return;
+  }
+
+  if (!url.searchParams.get('id')) {
+    sendText(response, 400, 'Missing id');
+    return;
+  }
+
+  response.writeHead(302, { Location: '/infosession' });
+  response.end();
+};
+
+const handleInfosessionUnenroll = (request: IncomingMessage, response: ServerResponse): void => {
+  if (!isValidPlayMockSessionCookie(request.headers.cookie)) {
+    sendText(response, 401, 'Unauthorized');
+    return;
+  }
+
+  response.writeHead(302, { Location: '/infosession' });
+  response.end();
+};
+
 const handleRequest = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
   const url = new URL(request.url ?? '/', getPlayMockBaseUrl());
   const { pathname } = url;
@@ -101,6 +126,16 @@ const handleRequest = async (request: IncomingMessage, response: ServerResponse)
 
     if (method === 'GET' && pathname === '/infosession') {
       handleInfosession(request, response);
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/infosession/enroll') {
+      handleInfosessionEnroll(request, response, url);
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/infosession/unenroll') {
+      handleInfosessionUnenroll(request, response);
       return;
     }
 

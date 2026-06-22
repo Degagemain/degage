@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
+import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
@@ -35,6 +36,9 @@ export const tryPartialCarOnboardingUpdate = async (
     }
     if (error instanceof CarOnboardingInvalidInsurerStatusError) {
       return Response.json({ code: 'invalid_insurer_status', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
+    }
+    if (error instanceof CarOnboardingInvalidInfoSessionStatusError) {
+      return Response.json({ code: 'invalid_info_session_status', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
     }
     if (isPrismaNotFoundError(error)) {
       return notFoundResponse();

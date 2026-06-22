@@ -39,11 +39,13 @@ against `pnpm dev`.
 
 Mock endpoints:
 
-| Method | Path           | Description                                                   |
-| ------ | -------------- | ------------------------------------------------------------- |
-| `POST` | `/login`       | Form login; returns session cookies on success                |
-| `GET`  | `/infosession` | HTML table with sample infosessions (requires session cookie) |
-| `GET`  | `/`            | Health check                                                  |
+| Method | Path                    | Description                                                   |
+| ------ | ----------------------- | ------------------------------------------------------------- |
+| `POST` | `/login`                | Form login; returns session cookies on success                |
+| `GET`  | `/infosession`          | HTML table with sample infosessions (requires session cookie) |
+| `GET`  | `/infosession/enroll`   | Enroll in session (`?id=` enroll id); requires session cookie |
+| `GET`  | `/infosession/unenroll` | Unenroll from current session; requires session cookie        |
+| `GET`  | `/`                     | Health check                                                  |
 
 ## Layers
 

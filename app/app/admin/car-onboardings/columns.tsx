@@ -8,6 +8,7 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
 } from '@/domain/car-onboarding.model';
 import { Badge } from '@/app/components/ui/badge';
@@ -74,6 +75,12 @@ const insurerStatusClass: Record<CarOnboardingInsurerStatus, string> = {
   [CarOnboardingInsurerStatus.READY]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
 };
 
+const infoSessionStatusClass: Record<CarOnboardingInfoSessionStatus, string> = {
+  [CarOnboardingInfoSessionStatus.TODO]: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+  [CarOnboardingInfoSessionStatus.ENROLLED]: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
+  [CarOnboardingInfoSessionStatus.DONE]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+};
+
 export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[] => {
   const { t } = options;
 
@@ -125,6 +132,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       accessorFn: (row) => row.owner?.hasPlayConnector ?? false,
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.ownerHasPlayConnector')} />,
       cell: ({ row }) => boolCell(row.original.owner?.hasPlayConnector ?? false),
+      enableSorting: false,
+    },
+    {
+      id: 'infoSessionStatus',
+      accessorKey: 'infoSessionStatus',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.infoSessionStatus')} />,
+      cell: ({ row }) => {
+        const status = row.original.infoSessionStatus;
+        return <ColoredStatusBadge label={t(`subprocess.infoSession.${status}`)} className={infoSessionStatusClass[status]} />;
+      },
       enableSorting: false,
     },
     {

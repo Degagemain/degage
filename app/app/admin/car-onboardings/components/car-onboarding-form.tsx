@@ -11,8 +11,10 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   isCarInfoSectionComplete,
+  isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
@@ -31,7 +33,7 @@ import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onbo
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
 
-export const CAR_ONBOARDING_TAB_IDS = ['owner', 'userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
+export const CAR_ONBOARDING_TAB_IDS = ['owner', 'infoSession', 'userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
 
 export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId => {
@@ -50,6 +52,7 @@ interface CarOnboardingFormProps {
   onTabChange: (tab: CarOnboardingTabId) => void;
   onSubmit: (row: CarOnboarding) => Promise<void>;
   onOverruleCarValueAgreement?: () => Promise<void>;
+  onConfirmInfoSession?: () => Promise<void>;
   onStartCarOnboarding?: () => Promise<void>;
 }
 
@@ -175,12 +178,15 @@ export function CarOnboardingForm({
   onTabChange,
   onSubmit,
   onOverruleCarValueAgreement,
+  onConfirmInfoSession,
   onStartCarOnboarding,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
   const [isOverruleDialogOpen, setIsOverruleDialogOpen] = useState(false);
   const [isOverruling, setIsOverruling] = useState(false);
+  const [isConfirmInfoSessionDialogOpen, setIsConfirmInfoSessionDialogOpen] = useState(false);
+  const [isConfirmingInfoSession, setIsConfirmingInfoSession] = useState(false);
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
   const schema = useMemo(() => createSchema(tCommon), [tCommon]);
@@ -209,6 +215,7 @@ export function CarOnboardingForm({
   const watchedValues = form.watch();
   const savedOwnerId = initialCarOnboarding.owner?.id ?? NONE;
   const playConnectorComplete = isPlayConnectorSectionComplete(initialCarOnboarding);
+  const infoSessionComplete = isInfoSessionSectionComplete(initialCarOnboarding);
   const userInfoComplete = isUserInfoSectionComplete({
     street: watchedValues.street.trim() || null,
     town: watchedValues.townId !== NONE ? { id: watchedValues.townId } : null,
@@ -246,6 +253,15 @@ export function CarOnboardingForm({
     (): SubprocessFlowStep[] => [
       { id: 'todo', label: t('subprocess.playConnector.todo') },
       { id: 'ready', label: t('subprocess.playConnector.ready') },
+    ],
+    [t],
+  );
+
+  const infoSessionFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: CarOnboardingInfoSessionStatus.TODO, label: t('subprocess.infoSession.todo') },
+      { id: CarOnboardingInfoSessionStatus.ENROLLED, label: t('subprocess.infoSession.enrolled') },
+      { id: CarOnboardingInfoSessionStatus.DONE, label: t('subprocess.infoSession.done') },
     ],
     [t],
   );
@@ -332,6 +348,17 @@ export function CarOnboardingForm({
     }
   };
 
+  const handleConfirmInfoSessionConfirm = async () => {
+    if (!onConfirmInfoSession) return;
+    setIsConfirmingInfoSession(true);
+    try {
+      await onConfirmInfoSession();
+      setIsConfirmInfoSessionDialogOpen(false);
+    } finally {
+      setIsConfirmingInfoSession(false);
+    }
+  };
+
   const handleStartConfirm = async () => {
     if (!onStartCarOnboarding) return;
     setIsStarting(true);
@@ -345,6 +372,14 @@ export function CarOnboardingForm({
 
   const showOverruleButton =
     onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
+
+  const showConfirmInfoSessionButton =
+    onConfirmInfoSession != null && initialCarOnboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.ENROLLED;
+
+  const formatInfoSessionDate = (value: Date | string | null): string => {
+    if (value == null) return '—';
+    return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  };
 
   return (
     <form id={formId} onSubmit={handleSubmit} className="px-4 py-6 md:px-6 md:py-8">
@@ -365,6 +400,10 @@ export function CarOnboardingForm({
             <TabsTrigger value="owner" className="gap-1.5">
               {t('tabs.owner')}
               {playConnectorComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="infoSession" className="gap-1.5">
+              {t('tabs.infoSession')}
+              {infoSessionComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
             </TabsTrigger>
             <TabsTrigger value="userInfo" className="gap-1.5">
               {t('tabs.userInfo')}
@@ -426,6 +465,36 @@ export function CarOnboardingForm({
                   <FieldDescription>{t('form.ownerPlayConnectorPendingSave')}</FieldDescription>
                 )}
                 <FieldDescription>{t('form.playConnectorHint')}</FieldDescription>
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+          <TabsContent value="infoSession" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.infoSession')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={infoSessionFlowSteps} currentStepId={initialCarOnboarding.infoSessionStatus} />
+              </div>
+              <FieldGroup className="gap-6">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.infoSessionDate')}</p>
+                  <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.infoSessionDate)}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.infoSessionPcId')}</p>
+                  <p className="text-muted-foreground text-sm">{initialCarOnboarding.infoSessionPcId?.trim() || '—'}</p>
+                </div>
+                <FieldDescription>{t('form.infoSessionHint')}</FieldDescription>
+                {showConfirmInfoSessionButton ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsConfirmInfoSessionDialogOpen(true)}
+                    disabled={isSubmitting || isConfirmingInfoSession}
+                  >
+                    {t('form.confirmInfoSession')}
+                  </Button>
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>
@@ -852,6 +921,23 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleOverruleConfirm()} disabled={isOverruling}>
               {isOverruling ? t('form.overruleAgreementConfirming') : t('form.overruleAgreementConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isConfirmInfoSessionDialogOpen} onOpenChange={isConfirmingInfoSession ? undefined : setIsConfirmInfoSessionDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.confirmInfoSessionTitle')}</DialogTitle>
+            <DialogDescription>{t('form.confirmInfoSessionDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsConfirmInfoSessionDialogOpen(false)} disabled={isConfirmingInfoSession}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleConfirmInfoSessionConfirm()} disabled={isConfirmingInfoSession}>
+              {isConfirmingInfoSession ? t('form.confirmInfoSessionConfirming') : t('form.confirmInfoSessionConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

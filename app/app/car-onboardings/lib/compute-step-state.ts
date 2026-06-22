@@ -2,9 +2,12 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
+  isInfoSessionEnrolled,
+  isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
@@ -12,7 +15,7 @@ import {
 import type { StepId, StepState } from './types';
 
 export const getStepsForRecord = (onboarding: CarOnboarding): StepId[] => {
-  const steps: StepId[] = ['play-connector', 'user-info', 'car-info'];
+  const steps: StepId[] = ['play-connector', 'info-session', 'user-info', 'car-info'];
   if (!onboarding.isPurchased) {
     steps.push('insurer');
   }
@@ -20,25 +23,30 @@ export const getStepsForRecord = (onboarding: CarOnboarding): StepId[] => {
   return steps;
 };
 
+const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
+  return isPlayConnectorSectionComplete(onboarding) && isInfoSessionEnrolled(onboarding);
+};
+
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector') return true;
-  if (stepId === 'user-info') return isPlayConnectorSectionComplete(onboarding);
+  if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
+  if (stepId === 'user-info') return hasInfoSessionPrerequisites(onboarding);
   if (stepId === 'car-info') {
-    return isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding);
+    return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding);
   }
   if (stepId === 'insurer') {
-    return isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding);
+    return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding);
   }
   const insurerOk = onboarding.isPurchased || isInsurerSectionComplete(onboarding);
-  return (
-    isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding) && insurerOk
-  );
+  return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding) && insurerOk;
 };
 
 export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   switch (stepId) {
     case 'play-connector':
       return isPlayConnectorSectionComplete(onboarding);
+    case 'info-session':
+      return isInfoSessionSectionComplete(onboarding);
     case 'user-info':
       return isUserInfoSectionComplete(onboarding);
     case 'car-info':
@@ -55,6 +63,11 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
 export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): StepState => {
   if (isStepComplete(stepId, onboarding)) return 'done';
   if (!arePrerequisitesMet(stepId, onboarding)) return 'blocked';
+
+  if (stepId === 'info-session') {
+    if (onboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.ENROLLED) return 'pending';
+    return 'todo';
+  }
 
   if (stepId === 'car-value') {
     switch (onboarding.carValueStatus) {
@@ -76,6 +89,10 @@ export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boole
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return true;
 
   if (stepId === 'play-connector' && isPlayConnectorSectionComplete(onboarding)) {
+    return true;
+  }
+
+  if (stepId === 'info-session' && isInfoSessionSectionComplete(onboarding)) {
     return true;
   }
 

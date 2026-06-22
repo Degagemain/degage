@@ -1416,6 +1416,9 @@
         "description": "Beschrijving",
         "owner": "Eigenaar",
         "ownerHasPlayConnector": "Play connector",
+        "infoSessionDate": "Infosessie datum",
+        "infoSessionPcId": "Infosessie PC-id",
+        "infoSessionStatus": "Infosessiestatus",
         "street": "Straat",
         "town": "Gemeente",
         "phone": "Telefoon",
@@ -1448,6 +1451,7 @@
       "tabs": {
         "preparationTitle": "Voorbereiding",
         "owner": "Eigenaar",
+        "infoSession": "Infosessie",
         "userInfo": "Gebruikersinfo",
         "carInfo": "Wageninfo",
         "insurer": "Verzekering",
@@ -1463,6 +1467,11 @@
         "playConnector": {
           "todo": "Todo",
           "ready": "Compleet"
+        },
+        "infoSession": {
+          "todo": "Todo",
+          "enrolled": "Ingeschreven",
+          "done": "Compleet"
         },
         "userInfo": {
           "todo": "Todo",
@@ -1528,6 +1537,14 @@
         "startOnboardingReady": "Voorbereiding is volledig. U kunt de auto-onboarding starten om de voorbereiding te vergrendelen.",
         "startOnboardingNotReady": "Voltooi alle voorbereidingsstappen en sla het dossier op voordat u start.",
         "playConnectorHint": "De eigenaar moet het legacy Dégage-account koppelen in de publieke onboardingflow. Deze status is alleen-lezen voor beheerders.",
+        "infoSessionHint": "De eigenaar schrijft zich in voor een infosessie in de publieke onboardingflow. Bevestig hier de aanwezigheid zodra de eigenaar heeft deelgenomen.",
+        "confirmInfoSession": "Aanwezigheid bevestigen",
+        "confirmInfoSessionTitle": "Aanwezigheid infosessie bevestigen?",
+        "confirmInfoSessionDescription": "Bevestig alleen wanneer de eigenaar aanwezig was op de ingeschreven infosessie. Dit markeert de infosessiestap als voltooid.",
+        "confirmInfoSessionConfirm": "Bevestigen",
+        "confirmInfoSessionConfirming": "Bezig met bevestigen…",
+        "confirmInfoSessionSuccess": "Infosessie gemarkeerd als voltooid.",
+        "confirmInfoSessionError": "Bevestigen van infosessie-aanwezigheid mislukt.",
         "ownerPlayConnectorPendingSave": "Sla het record op om de Play connector-status voor de geselecteerde eigenaar te vernieuwen.",
         "startOnboardingLocked": "Deze auto-onboarding is al gestart. Voorbereiding is vergrendeld.",
         "help": {
@@ -2484,6 +2501,33 @@
         "title": "Dégage koppelen",
         "subtitle": "Koppel je legacy Dégage-account",
         "info": "Verbind met het e-mailadres en wachtwoord dat je gebruikt op het legacy Dégage-platform. We hebben dit nodig om je account te synchroniseren tijdens de onboarding."
+      },
+      "infoSession": {
+        "title": "Infosessie",
+        "subtitle": "Neem deel aan een Degapp-infosessie",
+        "info": "Kies een komende infosessie en schrijf je in. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid.",
+        "loading": "Infosessies laden…",
+        "loadError": "Infosessies laden mislukt. Controleer je Play connector-verbinding en probeer opnieuw.",
+        "tableEmpty": "Geen komende infosessies gevonden.",
+        "registrationsFull": "Volzet",
+        "enroll": "Inschrijven",
+        "unenroll": "Uitschrijven",
+        "enrollSuccess": "Ingeschreven voor infosessie.",
+        "enrollError": "Inschrijven voor infosessie mislukt.",
+        "unenrollSuccess": "Uitgeschreven voor infosessie.",
+        "unenrollError": "Uitschrijven voor infosessie mislukt.",
+        "enrolledTitle": "Jouw ingeschreven sessie",
+        "confirmedTitle": "Infosessie voltooid",
+        "confirmed": "Je aanwezigheid is bevestigd. Je kunt verdergaan naar de volgende stap.",
+        "unenrollToSwitch": "Om je voor een andere sessie in te schrijven, schrijf je eerst uit.",
+        "waitingForConfirmation": "Wachten op bevestiging van je aanwezigheid door een beheerder.",
+        "columns": {
+          "scheduledAt": "Wanneer",
+          "district": "Regio",
+          "type": "Type",
+          "registrations": "Inschrijvingen",
+          "host": "Host"
+        }
       },
       "userInfo": {
         "title": "Gebruikersinfo",

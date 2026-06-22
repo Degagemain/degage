@@ -1416,6 +1416,9 @@
         "description": "Description",
         "owner": "Propriétaire",
         "ownerHasPlayConnector": "Play connector",
+        "infoSessionDate": "Date session d'info",
+        "infoSessionPcId": "ID PC session d'info",
+        "infoSessionStatus": "Statut session d'info",
         "street": "Rue",
         "town": "Commune",
         "phone": "Téléphone",
@@ -1448,6 +1451,7 @@
       "tabs": {
         "preparationTitle": "Préparation",
         "owner": "Propriétaire",
+        "infoSession": "Session d'info",
         "userInfo": "Infos utilisateur",
         "carInfo": "Infos véhicule",
         "insurer": "Assurance",
@@ -1463,6 +1467,11 @@
         "playConnector": {
           "todo": "À faire",
           "ready": "Complet"
+        },
+        "infoSession": {
+          "todo": "À faire",
+          "enrolled": "Inscrit",
+          "done": "Complet"
         },
         "userInfo": {
           "todo": "À faire",
@@ -1528,6 +1537,14 @@
         "startOnboardingReady": "La préparation est complète. Vous pouvez démarrer l'onboarding pour verrouiller la préparation.",
         "startOnboardingNotReady": "Complétez toutes les étapes de préparation et enregistrez le dossier avant de démarrer.",
         "playConnectorHint": "Le propriétaire doit lier son compte Dégage legacy dans le parcours d'onboarding public. Ce statut est en lecture seule pour les administrateurs.",
+        "infoSessionHint": "Le propriétaire s'inscrit à une session d'info dans le parcours public. Confirmez ici la présence une fois qu'il a participé.",
+        "confirmInfoSession": "Confirmer la présence",
+        "confirmInfoSessionTitle": "Confirmer la présence à la session d'info ?",
+        "confirmInfoSessionDescription": "Ne confirmez que si le propriétaire était présent à la session d'info pour laquelle il est inscrit. Cela marque l'étape session d'info comme complète.",
+        "confirmInfoSessionConfirm": "Confirmer",
+        "confirmInfoSessionConfirming": "Confirmation…",
+        "confirmInfoSessionSuccess": "Session d'info marquée comme complète.",
+        "confirmInfoSessionError": "Échec de la confirmation de présence à la session d'info.",
         "ownerPlayConnectorPendingSave": "Enregistrez la fiche pour actualiser le statut Play connector du propriétaire sélectionné.",
         "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
         "help": {
@@ -2484,6 +2501,33 @@
         "title": "Connecter Dégage",
         "subtitle": "Liez votre compte Dégage legacy",
         "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding."
+      },
+      "infoSession": {
+        "title": "Session d'info",
+        "subtitle": "Participez à une infosession Degapp",
+        "info": "Choisissez une infosession à venir et inscrivez-vous. Après votre participation, un administrateur confirmera votre présence.",
+        "loading": "Chargement des infosessions…",
+        "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Play connector et réessayez.",
+        "tableEmpty": "Aucune infosession à venir trouvée.",
+        "registrationsFull": "Complet",
+        "enroll": "S'inscrire",
+        "unenroll": "Se désinscrire",
+        "enrollSuccess": "Inscription à l'infosession réussie.",
+        "enrollError": "Échec de l'inscription à l'infosession.",
+        "unenrollSuccess": "Désinscription de l'infosession réussie.",
+        "unenrollError": "Échec de la désinscription de l'infosession.",
+        "enrolledTitle": "Votre session inscrite",
+        "confirmedTitle": "Session d'info terminée",
+        "confirmed": "Votre présence a été confirmée. Vous pouvez passer à l'étape suivante.",
+        "unenrollToSwitch": "Pour vous inscrire à une autre session, désinscrivez-vous d'abord.",
+        "waitingForConfirmation": "En attente de la confirmation de votre présence par un administrateur.",
+        "columns": {
+          "scheduledAt": "Quand",
+          "district": "Région",
+          "type": "Type",
+          "registrations": "Inscriptions",
+          "host": "Animateur"
+        }
       },
       "userInfo": {
         "title": "Infos utilisateur",

@@ -2,6 +2,7 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
 } from '@/domain/car-onboarding.model';
 
@@ -24,6 +25,9 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     insurer: data.insurer !== undefined ? data.insurer : null,
     insurerStatus: data.insurerStatus ?? CarOnboardingInsurerStatus.TODO,
     insurerContractStartedAt: data.insurerContractStartedAt !== undefined ? data.insurerContractStartedAt : null,
+    infoSessionDate: data.infoSessionDate !== undefined ? data.infoSessionDate : null,
+    infoSessionPcId: data.infoSessionPcId !== undefined ? data.infoSessionPcId : null,
+    infoSessionStatus: data.infoSessionStatus ?? CarOnboardingInfoSessionStatus.TODO,
     depreciationCostKm: data.depreciationCostKm ?? 0,
     isNewCar: data.isNewCar ?? false,
     mileage: data.mileage ?? 0,
@@ -51,6 +55,9 @@ export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnb
     insurer: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'AXA' },
     insurerStatus: CarOnboardingInsurerStatus.READY,
     insurerContractStartedAt: new Date('2020-01-15'),
+    infoSessionDate: new Date('2026-06-20T09:25:00'),
+    infoSessionPcId: '1359',
+    infoSessionStatus: CarOnboardingInfoSessionStatus.DONE,
     ...data,
   });
 };

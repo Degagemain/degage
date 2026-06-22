@@ -13,6 +13,11 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     subtitleKey: 'steps.playConnector.subtitle',
   },
   {
+    id: 'info-session',
+    titleKey: 'steps.infoSession.title',
+    subtitleKey: 'steps.infoSession.subtitle',
+  },
+  {
     id: 'user-info',
     titleKey: 'steps.userInfo.title',
     subtitleKey: 'steps.userInfo.subtitle',

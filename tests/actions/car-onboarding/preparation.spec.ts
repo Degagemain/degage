@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { CarOnboardingCarValueStatus, CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
+import {
+  CarOnboardingCarValueStatus,
+  CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
+  CarOnboardingInsurerStatus,
+} from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
@@ -26,10 +31,17 @@ describe('isCarValueSectionComplete', () => {
 });
 
 describe('isPreparationReady', () => {
-  it('returns true only when play connector, car-info, user-info, car value, and insurer are complete', () => {
+  it('returns true only when play connector, info session, car-info, user-info, car value, and insurer are complete', () => {
     expect(isPreparationReady(completeCarOnboarding())).toBe(true);
     expect(isPreparationReady(carOnboarding({ street: 'Main Street' }))).toBe(false);
     expect(isPreparationReady(completeCarOnboarding({ owner: { id: 'owner-1', hasPlayConnector: false } }))).toBe(false);
+    expect(
+      isPreparationReady(
+        completeCarOnboarding({
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+        }),
+      ),
+    ).toBe(false);
     expect(
       isPreparationReady(
         completeCarOnboarding({

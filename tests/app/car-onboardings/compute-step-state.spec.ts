@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { CarOnboardingCarValueStatus, CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
+import {
+  CarOnboardingCarValueStatus,
+  CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
+  CarOnboardingInsurerStatus,
+} from '@/domain/car-onboarding.model';
 import {
   arePrerequisitesMet,
   computeStepState,
@@ -16,10 +21,17 @@ const withPlayConnector = (data: Parameters<typeof carOnboarding>[0] = {}) =>
   });
 
 describe('getStepsForRecord', () => {
-  it('includes play connector as the first step', () => {
-    expect(getStepsForRecord(carOnboarding({ isPurchased: true }))).toEqual(['play-connector', 'user-info', 'car-info', 'car-value']);
+  it('includes play connector and info session before user info', () => {
+    expect(getStepsForRecord(carOnboarding({ isPurchased: true }))).toEqual([
+      'play-connector',
+      'info-session',
+      'user-info',
+      'car-info',
+      'car-value',
+    ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
       'play-connector',
+      'info-session',
       'user-info',
       'car-info',
       'insurer',
@@ -29,9 +41,35 @@ describe('getStepsForRecord', () => {
 });
 
 describe('computeStepState', () => {
-  it('blocks user info until play connector is complete', () => {
-    expect(computeStepState('user-info', carOnboarding())).toBe('blocked');
-    expect(computeStepState('user-info', withPlayConnector())).toBe('todo');
+  it('blocks info session until play connector is complete', () => {
+    expect(computeStepState('info-session', carOnboarding())).toBe('blocked');
+    expect(computeStepState('info-session', withPlayConnector())).toBe('todo');
+  });
+
+  it('maps info session enrolled to pending', () => {
+    expect(
+      computeStepState(
+        'info-session',
+        withPlayConnector({
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+          infoSessionPcId: '1359',
+        }),
+      ),
+    ).toBe('pending');
+  });
+
+  it('blocks user info until info session is enrolled', () => {
+    expect(computeStepState('user-info', withPlayConnector())).toBe('blocked');
+    expect(
+      computeStepState(
+        'user-info',
+        withPlayConnector({
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+          infoSessionPcId: '1359',
+        }),
+      ),
+    ).toBe('todo');
+    expect(computeStepState('user-info', completeCarOnboarding())).toBe('done');
   });
 
   it('blocks car-info until user info is complete', () => {
@@ -76,6 +114,18 @@ describe('isStepReadOnly', () => {
     expect(isStepReadOnly('play-connector', withPlayConnector())).toBe(true);
   });
 
+  it('is read-only for info session when done but not when enrolled', () => {
+    expect(
+      isStepReadOnly(
+        'info-session',
+        withPlayConnector({
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+        }),
+      ),
+    ).toBe(false);
+    expect(isStepReadOnly('info-session', completeCarOnboarding())).toBe(true);
+  });
+
   it('is read-only for insurer when status is not todo', () => {
     expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(true);
   });
@@ -87,6 +137,11 @@ describe('isStepComplete', () => {
     expect(isStepComplete('play-connector', carOnboarding())).toBe(false);
   });
 
+  it('returns true for completed info session', () => {
+    expect(isStepComplete('info-session', completeCarOnboarding())).toBe(true);
+    expect(isStepComplete('info-session', withPlayConnector({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED }))).toBe(false);
+  });
+
   it('returns true for completed user info', () => {
     expect(isStepComplete('user-info', completeCarOnboarding())).toBe(true);
     expect(isStepComplete('user-info', carOnboarding())).toBe(false);
@@ -94,9 +149,20 @@ describe('isStepComplete', () => {
 });
 
 describe('arePrerequisitesMet', () => {
-  it('requires play connector before user info', () => {
-    expect(arePrerequisitesMet('user-info', carOnboarding())).toBe(false);
-    expect(arePrerequisitesMet('user-info', withPlayConnector())).toBe(true);
+  it('requires play connector before info session', () => {
+    expect(arePrerequisitesMet('info-session', carOnboarding())).toBe(false);
+    expect(arePrerequisitesMet('info-session', withPlayConnector())).toBe(true);
+  });
+
+  it('requires info session enrolled before user info', () => {
+    expect(arePrerequisitesMet('user-info', withPlayConnector())).toBe(false);
+    expect(
+      arePrerequisitesMet(
+        'user-info',
+        withPlayConnector({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED, infoSessionPcId: '1359' }),
+      ),
+    ).toBe(true);
+    expect(arePrerequisitesMet('user-info', completeCarOnboarding())).toBe(true);
   });
 
   it('requires user info before car info', () => {

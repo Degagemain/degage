@@ -92,6 +92,12 @@ enum CarOnboardingInsurerStatus {
   ready
 }
 
+enum CarOnboardingInfoSessionStatus {
+  todo
+  enrolled
+  done
+}
+
 model CarOnboarding {
   id                  String                           @id @default(uuid())
   street              String?
@@ -115,6 +121,9 @@ model CarOnboarding {
   insurer                        Insurer?                         @relation(fields: [insurerId], references: [id], onDelete: Restrict)
   insurerStatus                  CarOnboardingInsurerStatus       @default(todo)
   insurerContractStartedAt       DateTime?
+  infoSessionDate                DateTime?
+  infoSessionPcId                String?
+  infoSessionStatus              CarOnboardingInfoSessionStatus   @default(todo)
   depreciationCostKm             Float                            @default(0)
   isNewCar            Boolean                          @default(false)
   mileage             Int                              @default(0)

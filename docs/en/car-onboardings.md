@@ -22,6 +22,23 @@ Assigns the car onboarding owner and shows whether they have linked their legacy
 
 This step is complete when the owner has a Play connector record configured.
 
+### Info session
+
+The owner enrolls in an upcoming Degapp info session during the public onboarding flow.
+
+| Status   | Meaning                                                                |
+| -------- | ---------------------------------------------------------------------- |
+| Todo     | The owner has not enrolled in an info session yet.                     |
+| Enrolled | The owner enrolled in a session; waiting for admin attendance confirm. |
+| Done     | An admin confirmed the owner attended the enrolled info session.       |
+
+The owner can enroll in only one session at a time. To choose a different session, they must unenroll first.
+
+Enrolling unlocks the next preparation steps in the public onboarding flow. Admin confirmation of attendance is still required before the info
+session step is marked complete and preparation can be finalized.
+
+This step is complete when info session status is **Done**.
+
 ### User info
 
 Collects the owner's contact details: street, town, and phone.
@@ -74,14 +91,14 @@ This step is complete when car value status is **Resolved**.
 
 ### Finalize
 
-When play connector, user info, car info, insurer, and car value are all complete, the system sets preparation status to **Ready** automatically
-on save. An admin can then start the car onboarding on the **Finalize** tab.
+When play connector, info session, user info, car info, insurer, and car value are all complete, the system sets preparation status to **Ready**
+automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
 
-| Status | Meaning                                                                                                                                              |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                         |
-| Ready  | Play connector, car-info, user-info, insurer (not Todo), and car value (Resolved) are all complete. The system sets this automatically.              |
-| Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**. |
+| Status | Meaning                                                                                                                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                                 |
+| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), and car value (Resolved) are all complete. The system sets this automatically. |
+| Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**.         |
 
 When preparation is **Locked**, users cannot update car-info, user-info, insurer, or car value until an admin unlocks it.
 
@@ -120,5 +137,8 @@ When preparation is **Locked**, users cannot update car-info, user-info, insurer
 | Van                      | Whether the vehicle is classified as a van.                          |
 | Owner                    | Platform user who owns this onboarding record (optional for now).    |
 | Owner Play connector     | Whether the owner has a Play connector account linked (Yes/No).      |
+| Info session date        | Scheduled date of the enrolled info session.                         |
+| Info session PC id       | Play connector identifier for the enrolled info session.             |
+| Info session status      | Progress of the info session subprocess.                             |
 | Simulation               | Linked simulation run, if any.                                       |
 | Preparation status       | Tracks preparation progress: Open, Ready, or Locked.                 |

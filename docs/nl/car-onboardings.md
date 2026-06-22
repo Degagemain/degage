@@ -23,6 +23,23 @@ Wijst de eigenaar van de auto-onboarding toe en toont of die het legacy Dégage-
 
 Deze stap is compleet wanneer de eigenaar een Play connector-record heeft geconfigureerd.
 
+### Infosessie
+
+De eigenaar schrijft zich in voor een komende Degapp-infosessie in de publieke onboardingflow.
+
+| Status       | Betekenis                                                                     |
+| ------------ | ----------------------------------------------------------------------------- |
+| Todo         | De eigenaar is nog niet ingeschreven voor een infosessie.                     |
+| Ingeschreven | De eigenaar is ingeschreven; wacht op bevestiging van aanwezigheid.           |
+| Compleet     | Een beheerder heeft bevestigd dat de eigenaar de infosessie heeft bijgewoond. |
+
+De eigenaar kan slechts in één sessie tegelijk ingeschreven zijn. Om een andere sessie te kiezen, moet hij zich eerst uitschrijven.
+
+Inschrijven ontgrendelt de volgende voorbereidingsstappen in de publieke onboardingflow. Bevestiging van aanwezigheid door een beheerder is nog
+steeds vereist voordat de infosessiestap als voltooid wordt gemarkeerd en de voorbereiding kan worden afgerond.
+
+Deze stap is compleet wanneer de infosessiestatus **Compleet** is.
+
 ### Gebruikersinfo
 
 Verzamelt de contactgegevens van de eigenaar: straat, gemeente en telefoon.
@@ -75,13 +92,13 @@ Deze stap is compleet wanneer de waarde-status **Resolved** is.
 
 ### Afronden
 
-Wanneer gebruikersinfo, wageninfo, verzekering en waarde allemaal compleet zijn, zet het systeem de voorbereidingsstatus automatisch op
-**Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad **Afronden**.
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering en waarde allemaal compleet zijn, zet het systeem de
+voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad **Afronden**.
 
 | Status      | Betekenis                                                                                                                                                                                    |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Open        | Onboarding is bezig; gebruikersinfo, wageninfo, verzekering en waarde-onderhandeling zijn nog niet allemaal compleet.                                                                        |
-| Klaar       | Gebruikersinfo, wageninfo, verzekering (niet Todo) en waarde (Opgelost) zijn compleet. Het systeem zet dit automatisch.                                                                      |
+| Open        | Onboarding is bezig; voorbereidingsstappen zijn nog niet allemaal compleet.                                                                                                                  |
+| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo) en waarde (Opgelost) zijn compleet. Het systeem zet dit automatisch.                               |
 | Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Gezet door een admin op het tabblad **Afronden** wanneer de voorbereiding **Klaar** is. |
 
 Wanneer de voorbereiding **Vergrendeld** is, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en waarde niet meer bijwerken tot een
@@ -122,5 +139,8 @@ admin dit vrijgeeft.
 | Bestelwagen                  | Of het voertuig als bestelwagen wordt geclassificeerd.                  |
 | Eigenaar                     | Platformgebruiker die dit onboardingrecord bezit (optioneel voorlopig). |
 | Eigenaar Play connector      | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).     |
+| Infosessie datum             | Geplande datum van de ingeschreven infosessie.                          |
+| Infosessie PC-id             | Play connector-identificatie van de ingeschreven infosessie.            |
+| Infosessiestatus             | Voortgang van het infosessie-proces.                                    |
 | Simulatie                    | Gekoppelde simulatie-run, indien aanwezig.                              |
 | Voorbereidingsstatus         | Volgt de voortgang: Open, Klaar of Vergrendeld.                         |

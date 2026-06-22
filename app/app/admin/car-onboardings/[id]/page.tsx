@@ -114,6 +114,24 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleConfirmInfoSession = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/info-session/confirm`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.confirmInfoSessionError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(t('form.confirmInfoSessionSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.confirmInfoSessionError'));
+    }
+  };
+
   const handleStartCarOnboarding = async () => {
     if (!id) return;
     try {
@@ -217,6 +235,7 @@ export default function EditCarOnboardingPage() {
               onTabChange={setActiveTab}
               onSubmit={handleSave}
               onOverruleCarValueAgreement={handleOverruleCarValueAgreement}
+              onConfirmInfoSession={handleConfirmInfoSession}
               onStartCarOnboarding={handleStartCarOnboarding}
             />
           )

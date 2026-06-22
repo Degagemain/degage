@@ -28,6 +28,12 @@ export enum CarOnboardingInsurerStatus {
   READY = 'ready',
 }
 
+export enum CarOnboardingInfoSessionStatus {
+  TODO = 'todo',
+  ENROLLED = 'enrolled',
+  DONE = 'done',
+}
+
 export const carOnboardingCarInfoSchema = z
   .object({
     brand: idNameSchema.nullable().default(null),
@@ -61,15 +67,25 @@ export const carOnboardingInsurerSchema = z
   })
   .strict();
 
+export const carOnboardingInfoSessionSchema = z
+  .object({
+    infoSessionDate: z.coerce.date().nullable().default(null),
+    infoSessionPcId: z.string().nullable().default(null),
+    infoSessionStatus: z.enum(CarOnboardingInfoSessionStatus).default(CarOnboardingInfoSessionStatus.TODO),
+  })
+  .strict();
+
 export type CarOnboardingCarInfo = z.infer<typeof carOnboardingCarInfoSchema>;
 export type CarOnboardingUserInfo = z.infer<typeof carOnboardingUserInfoSchema>;
 export type CarOnboardingCarValue = z.infer<typeof carOnboardingCarValueSchema>;
 export type CarOnboardingInsurer = z.infer<typeof carOnboardingInsurerSchema>;
+export type CarOnboardingInfoSession = z.infer<typeof carOnboardingInfoSessionSchema>;
 
 export const carOnboardingSchema = carOnboardingCarInfoSchema
   .merge(carOnboardingUserInfoSchema)
   .merge(carOnboardingCarValueSchema)
   .merge(carOnboardingInsurerSchema)
+  .merge(carOnboardingInfoSessionSchema)
   .extend({
     id: z.uuid().nullable(),
     carTypeOther: z.string().nullable().default(null),
@@ -137,6 +153,16 @@ export const carOnboardingInsurerInputSchema = carOnboardingInsurerSchema
 
 export type CarOnboardingInsurerInput = z.infer<typeof carOnboardingInsurerInputSchema>;
 
+export const carOnboardingInfoSessionEnrollInputSchema = carOnboardingInfoSessionSchema
+  .pick({ infoSessionDate: true, infoSessionPcId: true })
+  .extend({
+    infoSessionDate: z.coerce.date(),
+    infoSessionPcId: z.string().min(1),
+  })
+  .strict();
+
+export type CarOnboardingInfoSessionEnrollInput = z.infer<typeof carOnboardingInfoSessionEnrollInputSchema>;
+
 export const carOnboardingCreateInputSchema = z
   .object({
     simulation: idNameSchema.optional(),
@@ -186,6 +212,9 @@ export const carOnboardingFromSimulation = (
     owner: { id: options.ownerId },
     simulation: simulation.id != null ? { id: simulation.id } : null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
+    infoSessionDate: null,
+    infoSessionPcId: null,
+    infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
   };
 };
 
@@ -208,6 +237,17 @@ export const isUserInfoSectionComplete = (onboarding: CarOnboardingUserInfo): bo
 
 export const isPlayConnectorSectionComplete = (onboarding: Pick<CarOnboarding, 'owner'>): boolean => {
   return onboarding.owner?.hasPlayConnector === true;
+};
+
+export const isInfoSessionSectionComplete = (onboarding: Pick<CarOnboarding, 'infoSessionStatus'>): boolean => {
+  return onboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.DONE;
+};
+
+export const isInfoSessionEnrolled = (onboarding: Pick<CarOnboarding, 'infoSessionStatus'>): boolean => {
+  return (
+    onboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.ENROLLED ||
+    onboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.DONE
+  );
 };
 
 export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insurerStatus'>): boolean => {

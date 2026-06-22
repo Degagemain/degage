@@ -2,15 +2,18 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
+  isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
+import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { CarOnboardingPreparationNotReadyError } from '@/actions/car-onboarding/car-onboarding-preparation-not-ready.error';
@@ -24,6 +27,7 @@ export const isCarValueSectionComplete = (onboarding: CarOnboarding): boolean =>
 export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
   return (
     isPlayConnectorSectionComplete(onboarding) &&
+    isInfoSessionSectionComplete(onboarding) &&
     isCarInfoSectionComplete(onboarding) &&
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
@@ -58,6 +62,18 @@ export const assertCarValueStatusIsProposal = (onboarding: CarOnboarding): void 
 export const assertInsurerStatusIsTodo = (onboarding: CarOnboarding): void => {
   if (onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
     throw new CarOnboardingInvalidInsurerStatusError();
+  }
+};
+
+export const assertInfoSessionStatusIsTodo = (onboarding: CarOnboarding): void => {
+  if (onboarding.infoSessionStatus !== CarOnboardingInfoSessionStatus.TODO) {
+    throw new CarOnboardingInvalidInfoSessionStatusError();
+  }
+};
+
+export const assertInfoSessionStatusIsEnrolled = (onboarding: CarOnboarding): void => {
+  if (onboarding.infoSessionStatus !== CarOnboardingInfoSessionStatus.ENROLLED) {
+    throw new CarOnboardingInvalidInfoSessionStatusError();
   }
 };
 

@@ -2,6 +2,7 @@ import {
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
 } from '@/domain/car-onboarding.model';
 import { Prisma } from '@/storage/client/client';
@@ -50,6 +51,10 @@ const mapInsurerStatusFromDb = (value: string): CarOnboardingInsurerStatus => {
   return value as CarOnboardingInsurerStatus;
 };
 
+const mapInfoSessionStatusFromDb = (value: string): CarOnboardingInfoSessionStatus => {
+  return value as CarOnboardingInfoSessionStatus;
+};
+
 const optionalRelationConnect = (relation: { id: string } | null | undefined): { connect: { id: string } } | { disconnect: true } => {
   return relation != null ? { connect: { id: relation.id } } : { disconnect: true };
 };
@@ -73,6 +78,9 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     insurer: db.insurerId != null ? { id: db.insurerId } : null,
     insurerStatus: mapInsurerStatusFromDb(db.insurerStatus),
     insurerContractStartedAt: db.insurerContractStartedAt,
+    infoSessionDate: db.infoSessionDate,
+    infoSessionPcId: db.infoSessionPcId,
+    infoSessionStatus: mapInfoSessionStatusFromDb(db.infoSessionStatus),
     depreciationCostKm: db.depreciationCostKm != null ? Number(db.depreciationCostKm) : 0,
     isNewCar: db.isNewCar,
     mileage: db.mileage,
@@ -154,6 +162,9 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     insurer: onboarding.insurer != null ? { connect: { id: onboarding.insurer.id } } : undefined,
     insurerStatus: onboarding.insurerStatus,
     insurerContractStartedAt: onboarding.insurerContractStartedAt ?? undefined,
+    infoSessionDate: onboarding.infoSessionDate ?? undefined,
+    infoSessionPcId: onboarding.infoSessionPcId ?? undefined,
+    infoSessionStatus: onboarding.infoSessionStatus,
     depreciationCostKm: onboarding.depreciationCostKm,
     isNewCar: onboarding.isNewCar,
     mileage: onboarding.mileage,
@@ -184,6 +195,9 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     insurer: optionalRelationConnect(onboarding.insurer),
     insurerStatus: onboarding.insurerStatus,
     insurerContractStartedAt: onboarding.insurerContractStartedAt ?? undefined,
+    infoSessionDate: onboarding.infoSessionDate,
+    infoSessionPcId: onboarding.infoSessionPcId,
+    infoSessionStatus: onboarding.infoSessionStatus,
     depreciationCostKm: onboarding.depreciationCostKm,
     isNewCar: onboarding.isNewCar,
     mileage: onboarding.mileage,

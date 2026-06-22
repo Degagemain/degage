@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
+  CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   applyInsurerStatus,
   carOnboardingCarInfoInputSchema,
@@ -11,12 +12,16 @@ import {
   carOnboardingCarValueSchema,
   carOnboardingCreateInputSchema,
   carOnboardingFromSimulation,
+  carOnboardingInfoSessionEnrollInputSchema,
+  carOnboardingInfoSessionSchema,
   carOnboardingInsurerInputSchema,
   carOnboardingInsurerSchema,
   carOnboardingSchema,
   carOnboardingUserInfoInputSchema,
   carOnboardingUserInfoSchema,
   isCarInfoSectionComplete,
+  isInfoSessionEnrolled,
+  isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
@@ -67,6 +72,9 @@ describe('carOnboardingSchema', () => {
     expect(result.insurer).toBeNull();
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
     expect(result.insurerContractStartedAt).toBeNull();
+    expect(result.infoSessionDate).toBeNull();
+    expect(result.infoSessionPcId).toBeNull();
+    expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
     expect(result.depreciationCostKm).toBe(0);
     expect(result.seats).toBe(0);
     expect(result.owner).toBeNull();
@@ -135,6 +143,35 @@ describe('carOnboardingUserInfoInputSchema', () => {
     const result = carOnboardingUserInfoInputSchema.safeParse({
       street: 'Main Street',
       phone: '+32 470 00 00 00',
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('carOnboardingInfoSessionSchema', () => {
+  it('defaults info session fields', () => {
+    const result = carOnboardingInfoSessionSchema.parse({});
+    expect(result).toEqual({
+      infoSessionDate: null,
+      infoSessionPcId: null,
+      infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
+    });
+  });
+});
+
+describe('carOnboardingInfoSessionEnrollInputSchema', () => {
+  it('requires date and pc id', () => {
+    const result = carOnboardingInfoSessionEnrollInputSchema.safeParse({
+      infoSessionDate: '2026-06-20T09:25:00.000Z',
+      infoSessionPcId: '1359',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects empty pc id', () => {
+    const result = carOnboardingInfoSessionEnrollInputSchema.safeParse({
+      infoSessionDate: '2026-06-20T09:25:00.000Z',
+      infoSessionPcId: '',
     });
     expect(result.success).toBe(false);
   });
@@ -277,6 +314,9 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.insurer).toBeNull();
     expect(result.insurerContractStartedAt).toBeNull();
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+    expect(result.infoSessionDate).toBeNull();
+    expect(result.infoSessionPcId).toBeNull();
+    expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -331,6 +371,22 @@ describe('isCarInfoSectionComplete', () => {
         }),
       ),
     ).toBe(true);
+  });
+});
+
+describe('isInfoSessionSectionComplete', () => {
+  it('returns true only when info session status is done', () => {
+    expect(isInfoSessionSectionComplete(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.DONE }))).toBe(true);
+    expect(isInfoSessionSectionComplete(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED }))).toBe(false);
+    expect(isInfoSessionSectionComplete(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isInfoSessionEnrolled', () => {
+  it('returns true when status is enrolled or done', () => {
+    expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED }))).toBe(true);
+    expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.DONE }))).toBe(true);
+    expect(isInfoSessionEnrolled(carOnboarding())).toBe(false);
   });
 });
 
