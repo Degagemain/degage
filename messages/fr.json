@@ -1415,6 +1415,7 @@
       "columns": {
         "description": "Description",
         "owner": "Propriétaire",
+        "ownerHasPlayConnector": "Play connector",
         "street": "Rue",
         "town": "Commune",
         "phone": "Téléphone",
@@ -1446,6 +1447,7 @@
       "no": "Non",
       "tabs": {
         "preparationTitle": "Préparation",
+        "playConnector": "Play connector",
         "userInfo": "Infos utilisateur",
         "carInfo": "Infos véhicule",
         "insurer": "Assurance",
@@ -1458,6 +1460,10 @@
         "locked": "Verrouillé"
       },
       "subprocess": {
+        "playConnector": {
+          "todo": "À faire",
+          "ready": "Complet"
+        },
         "userInfo": {
           "todo": "À faire",
           "ready": "Complet"
@@ -1521,6 +1527,7 @@
         "startOnboardingError": "Échec du démarrage de l'onboarding véhicule.",
         "startOnboardingReady": "La préparation est complète. Vous pouvez démarrer l'onboarding pour verrouiller la préparation.",
         "startOnboardingNotReady": "Complétez toutes les étapes de préparation et enregistrez le dossier avant de démarrer.",
+        "playConnectorHint": "Le propriétaire doit lier son compte Dégage legacy dans le parcours d'onboarding public. Ce statut est en lecture seule pour les administrateurs.",
         "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
         "help": {
           "counterReadOnly": "Défini par le propriétaire lors de la négociation.",
@@ -2385,6 +2392,7 @@
       "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Degapp dans les paramètres.",
       "tableEmpty": "Aucune infosession à venir.",
       "showMore": "Afficher {count} de plus",
+      "registrationsFull": "Complet",
       "columns": {
         "scheduledAt": "Quand",
         "district": "Quartier",
@@ -2471,6 +2479,11 @@
       "forbidden": "Vous n'avez pas accès à cette intégration véhicule."
     },
     "steps": {
+      "playConnector": {
+        "title": "Connecter Dégage",
+        "subtitle": "Liez votre compte Dégage legacy",
+        "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding."
+      },
       "userInfo": {
         "title": "Infos utilisateur",
         "subtitle": "Vos coordonnées",

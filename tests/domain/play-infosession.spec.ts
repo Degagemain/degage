@@ -27,6 +27,7 @@ describe('parsePlayInfosessionRegistrations', () => {
     expect(parsePlayInfosessionRegistrations('14 / 20')).toEqual({
       enrolled: 14,
       maxRegistrations: 20,
+      isFull: false,
     });
   });
 
@@ -34,6 +35,20 @@ describe('parsePlayInfosessionRegistrations', () => {
     expect(parsePlayInfosessionRegistrations('6')).toEqual({
       enrolled: 6,
       maxRegistrations: null,
+      isFull: false,
+    });
+  });
+
+  it('parses full-session labels from the Play backend', () => {
+    expect(parsePlayInfosessionRegistrations('Volzet')).toEqual({
+      enrolled: 0,
+      maxRegistrations: null,
+      isFull: true,
+    });
+    expect(parsePlayInfosessionRegistrations('complet')).toEqual({
+      enrolled: 0,
+      maxRegistrations: null,
+      isFull: true,
     });
   });
 });
@@ -52,6 +67,7 @@ describe('playInfosessionSchema', () => {
 
     expect(result.enrolled).toBe(14);
     expect(result.maxRegistrations).toBe(20);
+    expect(result.isFull).toBe(false);
     expect(result.scheduledAt).toBeInstanceOf(Date);
     expect(result.scheduledAt.getFullYear()).toBe(2026);
   });

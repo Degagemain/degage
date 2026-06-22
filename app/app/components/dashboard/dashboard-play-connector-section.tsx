@@ -18,8 +18,13 @@ const INFOSSESSION_PREVIEW_COUNT = 10;
 const formatInfosessionScheduledAt = (value: Date | string): string =>
   new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
-const formatInfosessionRegistrations = (row: Pick<PlayInfosession, 'enrolled' | 'maxRegistrations'>): string =>
-  row.maxRegistrations != null ? `${row.enrolled} / ${row.maxRegistrations}` : String(row.enrolled);
+const formatInfosessionRegistrations = (
+  row: Pick<PlayInfosession, 'enrolled' | 'maxRegistrations' | 'isFull'>,
+  fullLabel: string,
+): string => {
+  if (row.isFull) return fullLabel;
+  return row.maxRegistrations != null ? `${row.enrolled} / ${row.maxRegistrations}` : String(row.enrolled);
+};
 
 export function DashboardPlayConnectorSection() {
   const t = useTranslations('dashboard.playConnector');
@@ -181,7 +186,7 @@ export function DashboardPlayConnectorSection() {
                         <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt)}</TableCell>
                         <TableCell>{row.district}</TableCell>
                         <TableCell className="min-w-[12rem]">{row.type}</TableCell>
-                        <TableCell className="whitespace-nowrap">{formatInfosessionRegistrations(row)}</TableCell>
+                        <TableCell className="whitespace-nowrap">{formatInfosessionRegistrations(row, t('registrationsFull'))}</TableCell>
                         <TableCell>{row.host}</TableCell>
                       </TableRow>
                     ))

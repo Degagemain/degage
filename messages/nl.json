@@ -1415,6 +1415,7 @@
       "columns": {
         "description": "Beschrijving",
         "owner": "Eigenaar",
+        "ownerHasPlayConnector": "Play connector",
         "street": "Straat",
         "town": "Gemeente",
         "phone": "Telefoon",
@@ -1446,6 +1447,7 @@
       "no": "Nee",
       "tabs": {
         "preparationTitle": "Voorbereiding",
+        "playConnector": "Play connector",
         "userInfo": "Gebruikersinfo",
         "carInfo": "Wageninfo",
         "insurer": "Verzekering",
@@ -1458,6 +1460,10 @@
         "locked": "Vergrendeld"
       },
       "subprocess": {
+        "playConnector": {
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
         "userInfo": {
           "todo": "Todo",
           "ready": "Compleet"
@@ -1521,6 +1527,7 @@
         "startOnboardingError": "Starten mislukt.",
         "startOnboardingReady": "Voorbereiding is volledig. U kunt de auto-onboarding starten om de voorbereiding te vergrendelen.",
         "startOnboardingNotReady": "Voltooi alle voorbereidingsstappen en sla het dossier op voordat u start.",
+        "playConnectorHint": "De eigenaar moet het legacy Dégage-account koppelen in de publieke onboardingflow. Deze status is alleen-lezen voor beheerders.",
         "startOnboardingLocked": "Deze auto-onboarding is al gestart. Voorbereiding is vergrendeld.",
         "help": {
           "counterReadOnly": "Ingesteld door de eigenaar tijdens onderhandeling.",
@@ -2385,6 +2392,7 @@
       "loadError": "Infosessies laden mislukt. Controleer je Degapp koppeling in de instellingen.",
       "tableEmpty": "Geen geplande infosessies gevonden.",
       "showMore": "Toon {count} meer",
+      "registrationsFull": "Volzet",
       "columns": {
         "scheduledAt": "Wanneer",
         "district": "Wijk",
@@ -2471,6 +2479,11 @@
       "forbidden": "Je hebt geen toegang tot deze auto-onboarding."
     },
     "steps": {
+      "playConnector": {
+        "title": "Dégage koppelen",
+        "subtitle": "Koppel je legacy Dégage-account",
+        "info": "Verbind met het e-mailadres en wachtwoord dat je gebruikt op het legacy Dégage-platform. We hebben dit nodig om je account te synchroniseren tijdens de onboarding."
+      },
       "userInfo": {
         "title": "Gebruikersinfo",
         "subtitle": "Jouw contactgegevens",

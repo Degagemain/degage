@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import type { PlayConnectorLinkInput } from '@/domain/play-connector.model';
 import { playConnectorLinkInputSchema } from '@/domain/play-connector.model';
 import { PlayConnectorActionError, playConnectorActionErrorCodes } from '@/domain/play-connector.errors';
@@ -24,8 +25,10 @@ export const linkPlayConnector = async (userId: string, input: PlayConnectorLink
     return dbPlayConnectorToStatus(row);
   } catch (error) {
     if (error instanceof PlayConnectorError) {
+      logger.error('[play-connector] link failed', { code: playConnectorActionErrorCodes.linkFailed, userId, playCode: error.code });
       throw new PlayConnectorActionError(playConnectorActionErrorCodes.linkFailed, 'Play connector link failed');
     }
+    logger.exception(error, { operation: 'linkPlayConnector', userId });
     throw error;
   }
 };

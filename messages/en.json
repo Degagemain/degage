@@ -1415,6 +1415,7 @@
       "columns": {
         "description": "Description",
         "owner": "Owner",
+        "ownerHasPlayConnector": "Play connector",
         "street": "Street",
         "town": "Town",
         "phone": "Phone",
@@ -1446,6 +1447,7 @@
       "no": "No",
       "tabs": {
         "preparationTitle": "Preparation",
+        "playConnector": "Play connector",
         "userInfo": "User info",
         "carInfo": "Car info",
         "insurer": "Insurer",
@@ -1458,6 +1460,10 @@
         "locked": "Locked"
       },
       "subprocess": {
+        "playConnector": {
+          "todo": "To do",
+          "ready": "Complete"
+        },
         "userInfo": {
           "todo": "To do",
           "ready": "Complete"
@@ -1521,6 +1527,7 @@
         "startOnboardingError": "Failed to start car onboarding.",
         "startOnboardingReady": "Preparation is complete. You can start the car onboarding to lock preparation.",
         "startOnboardingNotReady": "Complete all preparation steps and save the record before starting.",
+        "playConnectorHint": "The owner must link their legacy Dégage account in the public onboarding flow. This status is read-only for admins.",
         "startOnboardingLocked": "This car onboarding has already been started. Preparation is locked.",
         "help": {
           "counterReadOnly": "Set by the owner during negotiation.",
@@ -2385,6 +2392,7 @@
       "loadError": "Could not load infosessions. Check your Degapp koppeling in settings.",
       "tableEmpty": "No upcoming infosessions found.",
       "showMore": "Show {count} more",
+      "registrationsFull": "Full",
       "columns": {
         "scheduledAt": "When",
         "district": "District",
@@ -2471,6 +2479,11 @@
       "forbidden": "You do not have access to this car onboarding."
     },
     "steps": {
+      "playConnector": {
+        "title": "Connect Dégage",
+        "subtitle": "Link your legacy Dégage account",
+        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding."
+      },
       "userInfo": {
         "title": "User info",
         "subtitle": "Your contact details",
