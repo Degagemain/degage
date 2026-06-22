@@ -14,6 +14,7 @@ import {
   CarOnboardingInsurerStatus,
   isCarInfoSectionComplete,
   isInsurerSectionComplete,
+  isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
@@ -30,11 +31,13 @@ import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onbo
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
 
-export const CAR_ONBOARDING_TAB_IDS = ['userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
+export const CAR_ONBOARDING_TAB_IDS = ['owner', 'userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
 
-export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId =>
-  CAR_ONBOARDING_TAB_IDS.includes(tab as CarOnboardingTabId) ? (tab as CarOnboardingTabId) : 'userInfo';
+export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId => {
+  if (tab === 'playConnector') return 'owner';
+  return CAR_ONBOARDING_TAB_IDS.includes(tab as CarOnboardingTabId) ? (tab as CarOnboardingTabId) : 'owner';
+};
 
 const NONE = 'none';
 const CAR_TYPE_OTHER = '__other__';
@@ -204,6 +207,8 @@ export function CarOnboardingForm({
   };
 
   const watchedValues = form.watch();
+  const savedOwnerId = initialCarOnboarding.owner?.id ?? NONE;
+  const playConnectorComplete = isPlayConnectorSectionComplete(initialCarOnboarding);
   const userInfoComplete = isUserInfoSectionComplete({
     street: watchedValues.street.trim() || null,
     town: watchedValues.townId !== NONE ? { id: watchedValues.townId } : null,
@@ -233,6 +238,14 @@ export function CarOnboardingForm({
     (): SubprocessFlowStep[] => [
       { id: 'todo', label: t('subprocess.userInfo.todo') },
       { id: 'ready', label: t('subprocess.userInfo.ready') },
+    ],
+    [t],
+  );
+
+  const playConnectorFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: 'todo', label: t('subprocess.playConnector.todo') },
+      { id: 'ready', label: t('subprocess.playConnector.ready') },
     ],
     [t],
   );
@@ -349,6 +362,10 @@ export function CarOnboardingForm({
             </span>
           </p>
           <TabsList variant="line" className="h-fit w-full">
+            <TabsTrigger value="owner" className="gap-1.5">
+              {t('tabs.owner')}
+              {playConnectorComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
             <TabsTrigger value="userInfo" className="gap-1.5">
               {t('tabs.userInfo')}
               {userInfoComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
@@ -373,11 +390,11 @@ export function CarOnboardingForm({
         </div>
 
         <div className="min-w-0 flex-1">
-          <TabsContent value="userInfo" className="mt-0">
+          <TabsContent value="owner" className="mt-0">
             <FieldSet className="max-w-2xl">
               <div className="flex flex-col gap-1">
-                <FieldLegend className="mb-0">{t('tabs.userInfo')}</FieldLegend>
-                <CarOnboardingSubprocessFlow steps={userInfoFlowSteps} currentStepId={userInfoComplete ? 'ready' : 'todo'} />
+                <FieldLegend className="mb-0">{t('tabs.owner')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={playConnectorFlowSteps} currentStepId={playConnectorComplete ? 'ready' : 'todo'} />
               </div>
               <FieldGroup className="gap-6">
                 <Controller
@@ -400,6 +417,25 @@ export function CarOnboardingForm({
                     />
                   )}
                 />
+                {watchedValues.ownerId === savedOwnerId ? (
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium">{t('columns.ownerHasPlayConnector')}</p>
+                    <p className="text-muted-foreground text-sm">{initialCarOnboarding.owner?.hasPlayConnector ? t('yes') : t('no')}</p>
+                  </div>
+                ) : (
+                  <FieldDescription>{t('form.ownerPlayConnectorPendingSave')}</FieldDescription>
+                )}
+                <FieldDescription>{t('form.playConnectorHint')}</FieldDescription>
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+          <TabsContent value="userInfo" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.userInfo')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={userInfoFlowSteps} currentStepId={userInfoComplete ? 'ready' : 'todo'} />
+              </div>
+              <FieldGroup className="gap-6">
                 <Controller
                   name="street"
                   control={form.control}

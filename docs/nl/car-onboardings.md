@@ -14,12 +14,18 @@ aansluiten.
 Tijdens de voorbereiding verzamelt het systeem contactgegevens en voertuigkenmerken in aparte stappen. Een voorbereidingsstatus houdt bij of de
 vereiste invoer compleet is en of verdere wijzigingen nog zijn toegestaan.
 
-Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: gebruikersinfo, wageninfo, verzekering,
-waarde, afronden).
+Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: eigenaar, gebruikersinfo, wageninfo,
+verzekering, waarde, afronden).
+
+### Eigenaar
+
+Wijst de eigenaar van de auto-onboarding toe en toont of die het legacy Dégage-account (Play connector) heeft gekoppeld.
+
+Deze stap is compleet wanneer de eigenaar een Play connector-record heeft geconfigureerd.
 
 ### Gebruikersinfo
 
-Verzamelt de contactgegevens van de eigenaar: straat, gemeente, telefoon en eigenaarstoewijzing.
+Verzamelt de contactgegevens van de eigenaar: straat, gemeente en telefoon.
 
 Deze stap is compleet wanneer straat, gemeente en telefoon zijn ingevuld.
 
@@ -115,5 +121,6 @@ admin dit vrijgeeft.
 | Zitplaatsen                  | Aantal zitplaatsen.                                                     |
 | Bestelwagen                  | Of het voertuig als bestelwagen wordt geclassificeerd.                  |
 | Eigenaar                     | Platformgebruiker die dit onboardingrecord bezit (optioneel voorlopig). |
+| Eigenaar Play connector      | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).     |
 | Simulatie                    | Gekoppelde simulatie-run, indien aanwezig.                              |
 | Voorbereidingsstatus         | Volgt de voortgang: Open, Klaar of Vergrendeld.                         |

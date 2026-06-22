@@ -46,6 +46,7 @@ export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnb
     brand: { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Audi' },
     fuelType: { id: '550e8400-e29b-41d4-a716-446655440002', name: 'Diesel' },
     carType: { id: '550e8400-e29b-41d4-a716-446655440003', name: 'A4' },
+    owner: { id: '550e8400-e29b-41d4-a716-446655440098', hasPlayConnector: true },
     carValueStatus: CarOnboardingCarValueStatus.RESOLVED,
     insurer: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'AXA' },
     insurerStatus: CarOnboardingInsurerStatus.READY,

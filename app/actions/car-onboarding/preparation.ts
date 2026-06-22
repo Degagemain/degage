@@ -6,6 +6,7 @@ import {
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInsurerSectionComplete,
+  isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
@@ -22,6 +23,7 @@ export const isCarValueSectionComplete = (onboarding: CarOnboarding): boolean =>
 
 export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
   return (
+    isPlayConnectorSectionComplete(onboarding) &&
     isCarInfoSectionComplete(onboarding) &&
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&

@@ -1447,7 +1447,7 @@
       "no": "No",
       "tabs": {
         "preparationTitle": "Preparation",
-        "playConnector": "Play connector",
+        "owner": "Owner",
         "userInfo": "User info",
         "carInfo": "Car info",
         "insurer": "Insurer",
@@ -1528,6 +1528,7 @@
         "startOnboardingReady": "Preparation is complete. You can start the car onboarding to lock preparation.",
         "startOnboardingNotReady": "Complete all preparation steps and save the record before starting.",
         "playConnectorHint": "The owner must link their legacy Dégage account in the public onboarding flow. This status is read-only for admins.",
+        "ownerPlayConnectorPendingSave": "Save the record to refresh the Play connector status for the selected owner.",
         "startOnboardingLocked": "This car onboarding has already been started. Preparation is locked.",
         "help": {
           "counterReadOnly": "Set by the owner during negotiation.",

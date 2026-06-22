@@ -18,10 +18,7 @@ const INFOSSESSION_PREVIEW_COUNT = 10;
 const formatInfosessionScheduledAt = (value: Date | string): string =>
   new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
-const formatInfosessionRegistrations = (
-  row: Pick<PlayInfosession, 'enrolled' | 'maxRegistrations' | 'isFull'>,
-  fullLabel: string,
-): string => {
+const formatInfosessionRegistrations = (row: Pick<PlayInfosession, 'enrolled' | 'maxRegistrations' | 'isFull'>, fullLabel: string): string => {
   if (row.isFull) return fullLabel;
   return row.maxRegistrations != null ? `${row.enrolled} / ${row.maxRegistrations}` : String(row.enrolled);
 };

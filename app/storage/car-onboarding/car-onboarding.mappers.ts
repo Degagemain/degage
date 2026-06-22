@@ -9,16 +9,24 @@ import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
 
 type CarOnboardingDb = Prisma.CarOnboardingGetPayload<object>;
 
+export const carOnboardingRelationsInclude = {
+  town: true,
+  brand: { include: { translations: true } },
+  fuelType: { include: { translations: true } },
+  carType: true,
+  insurer: true,
+  owner: {
+    include: {
+      playConnector: {
+        select: { id: true },
+      },
+    },
+  },
+  simulation: true,
+} as const satisfies Prisma.CarOnboardingInclude;
+
 type CarOnboardingWithRelations = Prisma.CarOnboardingGetPayload<{
-  include: {
-    town: true;
-    brand: { include: { translations: true } };
-    fuelType: { include: { translations: true } };
-    carType: true;
-    insurer: true;
-    owner: true;
-    simulation: true;
-  };
+  include: typeof carOnboardingRelationsInclude;
 }>;
 
 function townDisplayLabel(town: { zip: string; name: string; municipality: string }): string {
@@ -116,6 +124,7 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
       ? {
           id: db.ownerId!,
           name: db.owner.name,
+          hasPlayConnector: db.owner.playConnector != null,
         }
       : null,
     simulation: db.simulation

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { use } from 'react';
 
 import { isStepId } from '../../lib/types';
+import { PlayConnectorStep } from '../../components/steps/play-connector-step';
 import { UserInfoStep } from '../../components/steps/user-info-step';
 import { CarInfoStep } from '../../components/steps/car-info-step';
 import { InsurerStep } from '../../components/steps/insurer-step';
@@ -17,6 +18,8 @@ export default function CarOnboardingStepPage({ params }: { params: Promise<{ id
   }
 
   switch (stepId) {
+    case 'play-connector':
+      return <PlayConnectorStep />;
     case 'user-info':
       return <UserInfoStep />;
     case 'car-info':

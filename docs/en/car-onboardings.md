@@ -13,11 +13,18 @@ Car onboarding is a multi-step process that collects vehicle and user details be
 During preparation, the system gathers contact information and car characteristics in separate steps. A preparation status tracks whether the
 required input is complete and whether further edits are allowed.
 
-Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: user info, car info, insurer, car value, finalize).
+Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, car value,
+finalize).
+
+### Owner
+
+Assigns the car onboarding owner and shows whether they have linked their legacy Dégage account (Play connector).
+
+This step is complete when the owner has a Play connector record configured.
 
 ### User info
 
-Collects the owner's contact details: street, town, phone, and owner assignment.
+Collects the owner's contact details: street, town, and phone.
 
 This step is complete when street, town, and phone are all filled in.
 
@@ -67,13 +74,13 @@ This step is complete when car value status is **Resolved**.
 
 ### Finalize
 
-When user info, car info, insurer, and car value are all complete, the system sets preparation status to **Ready** automatically on save. An
-admin can then start the car onboarding on the **Finalize** tab.
+When play connector, user info, car info, insurer, and car value are all complete, the system sets preparation status to **Ready** automatically
+on save. An admin can then start the car onboarding on the **Finalize** tab.
 
 | Status | Meaning                                                                                                                                              |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                         |
-| Ready  | Car-info, user-info, insurer (not Todo), and car value (Resolved) are all complete. The system sets this automatically.                              |
+| Ready  | Play connector, car-info, user-info, insurer (not Todo), and car value (Resolved) are all complete. The system sets this automatically.              |
 | Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**. |
 
 When preparation is **Locked**, users cannot update car-info, user-info, insurer, or car value until an admin unlocks it.
@@ -112,5 +119,6 @@ When preparation is **Locked**, users cannot update car-info, user-info, insurer
 | Seats                    | Number of seats.                                                     |
 | Van                      | Whether the vehicle is classified as a van.                          |
 | Owner                    | Platform user who owns this onboarding record (optional for now).    |
+| Owner Play connector     | Whether the owner has a Play connector account linked (Yes/No).      |
 | Simulation               | Linked simulation run, if any.                                       |
 | Preparation status       | Tracks preparation progress: Open, Ready, or Locked.                 |

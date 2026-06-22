@@ -1447,7 +1447,7 @@
       "no": "Non",
       "tabs": {
         "preparationTitle": "Préparation",
-        "playConnector": "Play connector",
+        "owner": "Propriétaire",
         "userInfo": "Infos utilisateur",
         "carInfo": "Infos véhicule",
         "insurer": "Assurance",
@@ -1528,6 +1528,7 @@
         "startOnboardingReady": "La préparation est complète. Vous pouvez démarrer l'onboarding pour verrouiller la préparation.",
         "startOnboardingNotReady": "Complétez toutes les étapes de préparation et enregistrez le dossier avant de démarrer.",
         "playConnectorHint": "Le propriétaire doit lier son compte Dégage legacy dans le parcours d'onboarding public. Ce statut est en lecture seule pour les administrateurs.",
+        "ownerPlayConnectorPendingSave": "Enregistrez la fiche pour actualiser le statut Play connector du propriétaire sélectionné.",
         "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
         "help": {
           "counterReadOnly": "Défini par le propriétaire lors de la négociation.",

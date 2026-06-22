@@ -4,7 +4,7 @@ import { Page } from '@/domain/page.model';
 import { getRequestContentLocale } from '@/context/request-context';
 import { getPrismaClient } from '@/storage/utils';
 import { Prisma } from '@/storage/client/client';
-import { dbCarOnboardingToDomainWithRelations } from './car-onboarding.mappers';
+import { carOnboardingRelationsInclude, dbCarOnboardingToDomainWithRelations } from './car-onboarding.mappers';
 
 export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboardingWhereInput => {
   return {
@@ -32,15 +32,7 @@ export const dbCarOnboardingSearch = async (filter: CarOnboardingFilter): Promis
   });
   const records = await prisma.carOnboarding.findMany({
     where: whereClause,
-    include: {
-      town: true,
-      brand: { include: { translations: true } },
-      fuelType: { include: { translations: true } },
-      carType: true,
-      insurer: true,
-      owner: true,
-      simulation: true,
-    },
+    include: carOnboardingRelationsInclude,
     skip: filter.skip,
     take: filter.take,
     orderBy: filter.sortBy ? { [filter.sortBy]: filter.sortOrder } : undefined,

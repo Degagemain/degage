@@ -8,6 +8,11 @@ export type StepDefinition = {
 
 export const STEP_DEFINITIONS: StepDefinition[] = [
   {
+    id: 'play-connector',
+    titleKey: 'steps.playConnector.title',
+    subtitleKey: 'steps.playConnector.subtitle',
+  },
+  {
     id: 'user-info',
     titleKey: 'steps.userInfo.title',
     subtitleKey: 'steps.userInfo.subtitle',

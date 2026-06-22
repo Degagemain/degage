@@ -121,6 +121,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       enableSorting: false,
     },
     {
+      id: 'ownerHasPlayConnector',
+      accessorFn: (row) => row.owner?.hasPlayConnector ?? false,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.ownerHasPlayConnector')} />,
+      cell: ({ row }) => boolCell(row.original.owner?.hasPlayConnector ?? false),
+      enableSorting: false,
+    },
+    {
       id: 'street',
       accessorKey: 'street',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.street')} />,

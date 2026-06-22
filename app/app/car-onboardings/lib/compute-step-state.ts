@@ -6,12 +6,13 @@ import {
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInsurerSectionComplete,
+  isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import type { StepId, StepState } from './types';
 
 export const getStepsForRecord = (onboarding: CarOnboarding): StepId[] => {
-  const steps: StepId[] = ['user-info', 'car-info'];
+  const steps: StepId[] = ['play-connector', 'user-info', 'car-info'];
   if (!onboarding.isPurchased) {
     steps.push('insurer');
   }
@@ -20,17 +21,24 @@ export const getStepsForRecord = (onboarding: CarOnboarding): StepId[] => {
 };
 
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
-  if (stepId === 'user-info') return true;
-  if (stepId === 'car-info') return isUserInfoSectionComplete(onboarding);
+  if (stepId === 'play-connector') return true;
+  if (stepId === 'user-info') return isPlayConnectorSectionComplete(onboarding);
+  if (stepId === 'car-info') {
+    return isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding);
+  }
   if (stepId === 'insurer') {
-    return isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding);
+    return isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding);
   }
   const insurerOk = onboarding.isPurchased || isInsurerSectionComplete(onboarding);
-  return isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding) && insurerOk;
+  return (
+    isPlayConnectorSectionComplete(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding) && insurerOk
+  );
 };
 
 export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   switch (stepId) {
+    case 'play-connector':
+      return isPlayConnectorSectionComplete(onboarding);
     case 'user-info':
       return isUserInfoSectionComplete(onboarding);
     case 'car-info':
@@ -66,6 +74,10 @@ export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): Ste
 
 export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return true;
+
+  if (stepId === 'play-connector' && isPlayConnectorSectionComplete(onboarding)) {
+    return true;
+  }
 
   if (stepId === 'insurer' && onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
     return true;

@@ -1,6 +1,12 @@
 import * as z from 'zod';
 
 import { idNameSchema, userReferenceSchema } from '@/domain/id-name.model';
+
+export const carOnboardingOwnerSchema = userReferenceSchema.extend({
+  hasPlayConnector: z.boolean().optional(),
+});
+
+export type CarOnboardingOwner = z.infer<typeof carOnboardingOwnerSchema>;
 import type { Simulation } from '@/domain/simulation.model';
 
 export enum CarOnboardingInPreparationStatus {
@@ -75,7 +81,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     firstRegisteredAt: z.coerce.date().nullable().default(null),
     seats: z.number().int().min(0).default(0),
     isVan: z.boolean().default(false),
-    owner: userReferenceSchema.nullable().default(null),
+    owner: carOnboardingOwnerSchema.nullable().default(null),
     simulation: idNameSchema.nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
@@ -198,6 +204,10 @@ export const isCarValueProposedToOwner = (onboarding: Pick<CarOnboarding, 'carVa
 
 export const isUserInfoSectionComplete = (onboarding: CarOnboardingUserInfo): boolean => {
   return isNonEmptyString(onboarding.street) && onboarding.town != null && isNonEmptyString(onboarding.phone);
+};
+
+export const isPlayConnectorSectionComplete = (onboarding: Pick<CarOnboarding, 'owner'>): boolean => {
+  return onboarding.owner?.hasPlayConnector === true;
 };
 
 export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insurerStatus'>): boolean => {

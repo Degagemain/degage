@@ -14,12 +14,18 @@ puisse rejoindre pleinement la plateforme.
 Pendant la préparation, le système recueille les coordonnées et les caractéristiques du véhicule en étapes distinctes. Un statut de préparation
 indique si les informations requises sont complètes et si de nouvelles modifications sont autorisées.
 
-Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et détail avec onglets : infos utilisateur, infos véhicule,
-assurance, valeur, finaliser).
+Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et détail avec onglets : propriétaire, infos utilisateur, infos
+véhicule, assurance, valeur, finaliser).
+
+### Propriétaire
+
+Attribue le propriétaire de l'intégration véhicule et indique s'il a lié son compte Dégage legacy (Play connector).
+
+Cette étape est complète lorsque le propriétaire a configuré un enregistrement Play connector.
 
 ### Infos utilisateur
 
-Recueille les coordonnées du propriétaire : rue, commune, téléphone et attribution du propriétaire.
+Recueille les coordonnées du propriétaire : rue, commune et téléphone.
 
 Cette étape est complète lorsque la rue, la commune et le téléphone sont tous renseignés.
 
@@ -117,5 +123,6 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 | Places                        | Nombre de places assises.                                                                   |
 | Utilitaire                    | Indique si le véhicule est classé comme utilitaire.                                         |
 | Propriétaire                  | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant). |
+| Propriétaire Play connector   | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                        |
 | Simulation                    | Simulation associée, le cas échéant.                                                        |
 | Statut de préparation         | Suit la progression : Ouvert, Prêt ou Verrouillé.                                           |

@@ -18,6 +18,7 @@ import {
   carOnboardingUserInfoSchema,
   isCarInfoSectionComplete,
   isInsurerSectionComplete,
+  isPlayConnectorSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { carOnboarding } from '../builders/car-onboarding.builder';
@@ -87,6 +88,17 @@ describe('carOnboardingSchema', () => {
       owner: { id: 'better-auth-user-id' },
     });
     expect(result.success).toBe(true);
+  });
+
+  it('accepts read-only hasPlayConnector on owner', () => {
+    const result = carOnboardingSchema.safeParse({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      owner: { id: 'better-auth-user-id', name: 'Jane Doe', hasPlayConnector: true },
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.owner?.hasPlayConnector).toBe(true);
+    }
   });
 });
 
@@ -319,6 +331,14 @@ describe('isCarInfoSectionComplete', () => {
         }),
       ),
     ).toBe(true);
+  });
+});
+
+describe('isPlayConnectorSectionComplete', () => {
+  it('returns true only when owner has play connector configured', () => {
+    expect(isPlayConnectorSectionComplete(carOnboarding({ owner: { id: 'owner-1', hasPlayConnector: true } }))).toBe(true);
+    expect(isPlayConnectorSectionComplete(carOnboarding({ owner: { id: 'owner-1' } }))).toBe(false);
+    expect(isPlayConnectorSectionComplete(carOnboarding())).toBe(false);
   });
 });
 
