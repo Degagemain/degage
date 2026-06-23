@@ -515,6 +515,18 @@
   background: var(--demo-brand-light);
 }
 
+.enrollmentStatusCard {
+  background: var(--demo-brand-light);
+  border: 1.5px solid var(--demo-brand-border);
+  border-radius: var(--demo-r12);
+  padding: var(--demo-s16);
+  margin-bottom: var(--demo-s24);
+}
+
+.enrollmentStatusCardDone {
+  background: var(--demo-green-bg);
+}
+
 .sessionMeta {
   font-size: 13px;
   color: var(--demo-mid);

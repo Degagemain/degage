@@ -13,6 +13,7 @@ import {
 } from './credentials';
 
 const INFOSSESSION_HTML = readFileSync(join(process.cwd(), 'e2e/play-mock/pages/infosession.html'), 'utf8');
+const PROFILE_HTML = readFileSync(join(process.cwd(), 'e2e/play-mock/pages/profile.html'), 'utf8');
 
 const serverReadyTimeoutMs = 30_000;
 
@@ -82,6 +83,16 @@ const handleInfosession = (request: IncomingMessage, response: ServerResponse): 
   response.end(INFOSSESSION_HTML);
 };
 
+const handleProfile = (request: IncomingMessage, response: ServerResponse): void => {
+  if (!isValidPlayMockSessionCookie(request.headers.cookie)) {
+    sendText(response, 401, 'Unauthorized');
+    return;
+  }
+
+  response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+  response.end(PROFILE_HTML);
+};
+
 const handleInfosessionEnroll = (request: IncomingMessage, response: ServerResponse, url: URL): void => {
   if (!isValidPlayMockSessionCookie(request.headers.cookie)) {
     sendText(response, 401, 'Unauthorized');
@@ -126,6 +137,11 @@ const handleRequest = async (request: IncomingMessage, response: ServerResponse)
 
     if (method === 'GET' && pathname === '/infosession') {
       handleInfosession(request, response);
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/profile') {
+      handleProfile(request, response);
       return;
     }
 

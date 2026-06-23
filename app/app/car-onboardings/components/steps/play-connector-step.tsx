@@ -10,12 +10,15 @@ import { useCarOnboarding } from '../../lib/car-onboarding-context';
 
 export function PlayConnectorStep() {
   const t = useTranslations('carOnboardingPublic');
-  const { reload } = useCarOnboarding();
+  const { carOnboarding, reload } = useCarOnboarding();
 
   return (
     <StepLayout stepId="play-connector">
       <p className="mb-6 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('steps.playConnector.info')}</p>
-      <PlayConnectorCard onStatusChange={() => void reload()} />
+      <PlayConnectorCard
+        connectPath={carOnboarding.id ? `/api/car-onboardings/${carOnboarding.id}/play-connector` : undefined}
+        onStatusChange={() => void reload()}
+      />
       <StepActions stepId="play-connector" showSave={false} />
     </StepLayout>
   );

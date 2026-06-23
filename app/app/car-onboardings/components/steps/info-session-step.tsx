@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
+import styles from '../../car-onboarding-public.module.css';
 
 export function InfoSessionStep() {
   const t = useTranslations('carOnboardingPublic');
@@ -103,7 +104,7 @@ export function InfoSessionStep() {
       <p className="mb-6 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('steps.infoSession.info')}</p>
 
       {isEnrolled || isDone ? (
-        <div className="mb-6 rounded-xl border border-stone-200/80 bg-stone-50 p-4 dark:border-stone-700/80 dark:bg-stone-800/50">
+        <div className={`${styles.enrollmentStatusCard}${isDone ? ` ${styles.enrollmentStatusCardDone}` : ''}`}>
           <p className="text-sm font-medium text-stone-900 dark:text-stone-50">
             {isDone ? t('steps.infoSession.confirmedTitle') : t('steps.infoSession.enrolledTitle')}
           </p>
