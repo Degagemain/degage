@@ -192,6 +192,7 @@
       "backToApp": "Terug naar app",
       "administration": "Administratie",
       "panel": "Beheerpaneel",
+      "underConstruction": "In aanbouw",
       "settings": "Instellingen",
       "coreSettings": "Kern",
       "carSettings": "Auto",
@@ -208,7 +209,8 @@
     "common": {
       "actions": {
         "new": "Nieuw",
-        "save": "Opslaan"
+        "save": "Opslaan",
+        "cancel": "Annuleren"
       },
       "status": {
         "saving": "Opslaan…"
@@ -1401,10 +1403,196 @@
         "euroNormCode": "Euro norm",
         "consumption": "Verbruik",
         "yes": "Ja",
-        "no": "Nee"
+        "no": "Nee",
+        "startOnboarding": "Start auto-onboarding",
+        "startingOnboarding": "Bezig met starten…",
+        "startOnboardingError": "Auto-onboarding starten mislukt."
       },
       "yes": "Ja",
       "no": "Nee"
+    },
+    "carOnboardings": {
+      "title": "Onboardings",
+      "columns": {
+        "description": "Beschrijving",
+        "owner": "Eigenaar",
+        "ownerHasPlayConnector": "Play connector",
+        "infoSessionDate": "Infosessie datum",
+        "infoSessionPcId": "Infosessie PC-id",
+        "infoSessionStatus": "Infosessiestatus",
+        "street": "Straat",
+        "town": "Gemeente",
+        "phone": "Telefoon",
+        "brand": "Merk",
+        "fuelType": "Brandstoftype",
+        "carType": "Voertuigtype",
+        "carTypeOther": "Voertuigtype (overig)",
+        "mileage": "Kilometerstand",
+        "seats": "Zitplaatsen",
+        "firstRegisteredAt": "Eerste inschrijving",
+        "isPurchased": "Aangekochte wagen",
+        "isNewCar": "Nieuwe wagen",
+        "isVan": "Bestelwagen",
+        "purchasePrice": "Aankoopprijs",
+        "carValue": "Waarde van de wagen",
+        "depreciationCostKm": "Afschrijving per km",
+        "carValueCounterProposal": "Tegenvoorstel",
+        "carValueCounterProposalMessage": "Tegenvoorstel bericht",
+        "carValueStatus": "Waarde-status",
+        "insurer": "Verzekeraar",
+        "insurerContractStartedAt": "Verzekeringscontract gestart",
+        "insurerStatus": "Verzekeringsstatus",
+        "simulation": "Simulatie",
+        "statusInPreparation": "Voorbereidingsstatus",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "yes": "Ja",
+      "no": "Nee",
+      "tabs": {
+        "preparationTitle": "Voorbereiding",
+        "owner": "Eigenaar",
+        "infoSession": "Infosessie",
+        "userInfo": "Gebruikersinfo",
+        "carInfo": "Wageninfo",
+        "insurer": "Verzekering",
+        "carValue": "Waarde",
+        "finalize": "Afronden"
+      },
+      "preparationStatus": {
+        "open": "Open",
+        "ready": "Klaar",
+        "locked": "Vergrendeld"
+      },
+      "subprocess": {
+        "playConnector": {
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
+        "infoSession": {
+          "todo": "Todo",
+          "enrolled": "Ingeschreven",
+          "done": "Compleet"
+        },
+        "userInfo": {
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
+        "carInfo": {
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
+        "insurer": {
+          "notApplicable": "Niet van toepassing",
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
+        "carValue": {
+          "todo": "Todo",
+          "proposal": "Voorstel",
+          "counter": "Tegenvoorstel",
+          "resolved": "Opgelost"
+        }
+      },
+      "searchPlaceholder": "Zoek auto-onboarding…",
+      "createTypes": {
+        "existingCar": "Bestaande wagen",
+        "purchasedCar": "Aangekochte wagen",
+        "purchasedNewCar": "Aangekochte wagen (nieuw)"
+      },
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "none": "Leeg",
+        "carTypeOtherOption": "Anders",
+        "placeholders": {
+          "town": "Zoek gemeenten…",
+          "brand": "Zoek merken…",
+          "fuelType": "Zoek brandstoftypes…",
+          "carType": "Zoek voertuigtypes…",
+          "carTypeFirst": "Selecteer eerst merk en brandstoftype",
+          "insurer": "Zoek verzekeraars…",
+          "owner": "Zoek gebruikers…"
+        },
+        "openSimulation": "Open simulatie",
+        "openPublicPage": "Publieke pagina openen",
+        "overruleAgreement": "Overschrijven",
+        "overruleAgreementTitle": "Akkoord overschrijven?",
+        "overruleAgreementDescription": "Gebruik dit enkel als de eigenaar expliciet akkoord is gegaan.",
+        "overruleAgreementConfirm": "Overschrijven",
+        "overruleAgreementConfirming": "Bezig…",
+        "overruleAgreementSuccess": "Waarde opgelost.",
+        "overruleAgreementError": "Overschrijven mislukt.",
+        "startOnboardingSection": "Start auto-onboarding",
+        "startOnboarding": "Start auto-onboarding",
+        "startOnboardingTitle": "Auto-onboarding starten?",
+        "startOnboardingDescription": "Dit rondt de voorbereidingsfase af en vergrendelt het dossier. De eigenaar kan wageninfo, gebruikersinfo, verzekering en waarde niet meer wijzigen tot een beheerder ontgrendelt.",
+        "startOnboardingConfirm": "Starten",
+        "startOnboardingConfirming": "Bezig…",
+        "startOnboardingSuccess": "Auto-onboarding gestart. Voorbereiding is vergrendeld.",
+        "startOnboardingError": "Starten mislukt.",
+        "startOnboardingReady": "Voorbereiding is volledig. U kunt de auto-onboarding starten om de voorbereiding te vergrendelen.",
+        "startOnboardingNotReady": "Voltooi alle voorbereidingsstappen en sla het dossier op voordat u start.",
+        "playConnectorHint": "De eigenaar moet het legacy Dégage-account koppelen in de publieke onboardingflow. Deze status is alleen-lezen voor beheerders.",
+        "infoSessionHint": "De eigenaar schrijft zich in voor een infosessie in de publieke onboardingflow. Bevestig hier de aanwezigheid zodra de eigenaar heeft deelgenomen.",
+        "confirmInfoSession": "Aanwezigheid bevestigen",
+        "confirmInfoSessionTitle": "Aanwezigheid infosessie bevestigen?",
+        "confirmInfoSessionDescription": "Bevestig alleen wanneer de eigenaar aanwezig was op de ingeschreven infosessie. Dit markeert de infosessiestap als voltooid.",
+        "confirmInfoSessionConfirm": "Bevestigen",
+        "confirmInfoSessionConfirming": "Bezig met bevestigen…",
+        "confirmInfoSessionSuccess": "Infosessie gemarkeerd als voltooid.",
+        "confirmInfoSessionError": "Bevestigen van infosessie-aanwezigheid mislukt.",
+        "ownerPlayConnectorPendingSave": "Sla het record op om de Play connector-status voor de geselecteerde eigenaar te vernieuwen.",
+        "startOnboardingLocked": "Deze auto-onboarding is al gestart. Voorbereiding is vergrendeld.",
+        "help": {
+          "counterReadOnly": "Ingesteld door de eigenaar tijdens onderhandeling.",
+          "carTypeOtherReadOnly": "Ingesteld door de gebruiker wanneer het voertuigtype niet in de catalogus staat.",
+          "isPurchasedReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
+          "isNewCarReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
+          "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
+          "insurerNotApplicable": "Verzekering is niet van toepassing voor aangekochte wagens."
+        }
+      },
+      "detailPage": {
+        "owner": "Eigenaar",
+        "simulation": "Simulatie"
+      },
+      "newPage": {
+        "create": "Leeg record aanmaken",
+        "creating": "Bezig met aanmaken…",
+        "description": "Maakt een nieuw auto-onboardingrecord aan met standaardwaarden. Vul de details in op het volgende scherm."
+      },
+      "delete": {
+        "title": "Auto-onboarding verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Auto-onboarding succesvol verwijderd.",
+        "error": "Verwijderen van auto-onboarding mislukt.",
+        "conflict": "Deze auto-onboarding is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Geselecteerde verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Auto-onboarding verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Auto-onboarding",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In wachtrij",
+        "statusDeleting": "Bezig met verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      }
     },
     "chatConversations": {
       "title": "Supportchats",
@@ -2223,6 +2411,7 @@
       "loadError": "Infosessies laden mislukt. Controleer je Degapp koppeling in de instellingen.",
       "tableEmpty": "Geen geplande infosessies gevonden.",
       "showMore": "Toon {count} meer",
+      "registrationsFull": "Volzet",
       "columns": {
         "scheduledAt": "Wanneer",
         "district": "Wijk",
@@ -2283,6 +2472,100 @@
     "failingTitle": "Verbinding mislukt",
     "failingDescription": "Recente aanmeldpogingen zijn mislukt. Wacht even en koppel opnieuw met je Degapp-gegevens.",
     "sessionValidUntil": "Sessie in cache tot {date}"
+  },
+  "carOnboardingPublic": {
+    "eyebrow": "Auto-onboarding",
+    "title": "Jouw onboarding",
+    "intro": "Doorloop de onderstaande stappen om de voorbereiding af te ronden.",
+    "preparationTitle": "Voorbereiding",
+    "backToOverview": "Terug naar overzicht",
+    "stepNotFound": "Stap niet gevonden.",
+    "stepBlocked": "Deze stap is nog niet beschikbaar. Rond eerst de vorige stappen af.",
+    "stepReadOnly": "Deze stap is alleen-lezen. De voorbereiding is vergrendeld of deze sectie is al afgerond.",
+    "save": "Opslaan",
+    "next": "Volgende",
+    "saveSuccess": "Succesvol opgeslagen.",
+    "yes": "Ja",
+    "no": "Nee",
+    "states": {
+      "todo": "Todo",
+      "pending": "In behandeling",
+      "done": "Afgerond"
+    },
+    "errors": {
+      "load": "Auto-onboarding laden mislukt.",
+      "save": "Opslaan mislukt.",
+      "forbidden": "Je hebt geen toegang tot deze auto-onboarding."
+    },
+    "steps": {
+      "playConnector": {
+        "title": "Dégage koppelen",
+        "subtitle": "Koppel je legacy Dégage-account",
+        "info": "Verbind met het e-mailadres en wachtwoord dat je gebruikt op het legacy Dégage-platform. We hebben dit nodig om je account te synchroniseren tijdens de onboarding."
+      },
+      "infoSession": {
+        "title": "Infosessie",
+        "subtitle": "Neem deel aan een Degapp-infosessie",
+        "info": "Kies een komende infosessie en schrijf je in. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid.",
+        "loading": "Infosessies laden…",
+        "loadError": "Infosessies laden mislukt. Controleer je Play connector-verbinding en probeer opnieuw.",
+        "tableEmpty": "Geen komende infosessies gevonden.",
+        "registrationsFull": "Volzet",
+        "enroll": "Inschrijven",
+        "unenroll": "Uitschrijven",
+        "enrollSuccess": "Ingeschreven voor infosessie.",
+        "enrollError": "Inschrijven voor infosessie mislukt.",
+        "unenrollSuccess": "Uitgeschreven voor infosessie.",
+        "unenrollError": "Uitschrijven voor infosessie mislukt.",
+        "enrolledTitle": "Jouw ingeschreven sessie",
+        "confirmedTitle": "Infosessie voltooid",
+        "confirmed": "Je aanwezigheid is bevestigd. Je kunt verdergaan naar de volgende stap.",
+        "unenrollToSwitch": "Om je voor een andere sessie in te schrijven, schrijf je eerst uit.",
+        "waitingForConfirmation": "Wachten op bevestiging van je aanwezigheid door een beheerder.",
+        "columns": {
+          "scheduledAt": "Wanneer",
+          "district": "Regio",
+          "type": "Type",
+          "registrations": "Inschrijvingen",
+          "host": "Host"
+        }
+      },
+      "userInfo": {
+        "title": "Gebruikersinfo",
+        "subtitle": "Jouw contactgegevens",
+        "info": "Vul je straat, gemeente en telefoonnummer in zodat we je kunnen bereiken tijdens de onboarding.",
+        "panelTitle": "Contactgegevens"
+      },
+      "carInfo": {
+        "title": "Wageninfo",
+        "subtitle": "Basisgegevens van je wagen",
+        "info": "Bevestig merk, brandstoftype en voertuigtype. Andere voertuiggegevens worden ter referentie getoond.",
+        "panelTitle": "Voertuigcatalogus",
+        "readOnlyTitle": "Voertuigdetails"
+      },
+      "insurer": {
+        "title": "Verzekering",
+        "subtitle": "Je huidige autoverzekering",
+        "info": "Geef door bij welke verzekeraar je wagen vandaag verzekerd is en sinds wanneer.",
+        "panelTitle": "Huidige verzekering",
+        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
+      },
+      "carValue": {
+        "title": "Waarde",
+        "subtitle": "Afspraak over waardevermindering per gedeelde km",
+        "info": "Bekijk de voorgestelde waarde en afschrijving. Ga akkoord of dien een tegenvoorstel in.",
+        "chartTitle": "Waardevermindering per gedeelde km",
+        "chartBody": "Op basis van {mileage} km is de afschrijving ongeveer €{depreciation} per gedeelde kilometer.",
+        "waitingForProposal": "Wachten op een waarde-voorstel van de admin.",
+        "agreeTitle": "Ga je akkoord met deze waarde?",
+        "agreeYes": "Ja, akkoord",
+        "agreeNo": "Nee, tegenvoorstel",
+        "counterTitle": "Jouw voorstel",
+        "agreeConfirmHint": "Je bent akkoord met de voorgestelde waarde. Sla op om te bevestigen.",
+        "pendingAdmin": "Je tegenvoorstel van €{value} is ingediend. Wachten op reactie van de admin.",
+        "resolved": "De waarde-afspraak is afgerond."
+      }
+    }
   },
   "docs": {
     "table": {

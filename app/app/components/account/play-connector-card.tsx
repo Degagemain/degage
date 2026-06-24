@@ -13,7 +13,13 @@ import { apiDelete, apiPut } from '@/app/lib/api-client';
 import { authClient } from '@/app/lib/auth';
 import type { PlayConnectorStatus } from '@/domain/play-connector.model';
 
-export function PlayConnectorCard() {
+export function PlayConnectorCard({
+  connectPath = '/api/play-connector',
+  onStatusChange,
+}: {
+  connectPath?: string;
+  onStatusChange?: (status: PlayConnectorStatus) => void;
+}) {
   const t = useTranslations('playConnector');
   const { data: session } = authClient.useSession();
   const [status, setStatus] = useState<PlayConnectorStatus | null>(null);
@@ -54,13 +60,14 @@ export function PlayConnectorCard() {
     event.preventDefault();
     setLoading('connect');
     try {
-      const response = await apiPut('/api/play-connector', { email, password });
+      const response = await apiPut(connectPath, { email, password });
       const data = (await response.json()) as PlayConnectorStatus & { code?: string };
       if (!response.ok) {
         throw new Error(data.code ?? 'connect failed');
       }
       setStatus(data);
       setPassword('');
+      onStatusChange?.(data);
       toast.success(t('connectSuccess'));
     } catch {
       toast.error(t('connectFailed'));
@@ -82,6 +89,7 @@ export function PlayConnectorCard() {
       if (session?.user?.email) {
         setEmail(session.user.email);
       }
+      onStatusChange?.(data);
       toast.success(t('disconnectSuccess'));
     } catch {
       toast.error(t('disconnectFailed'));

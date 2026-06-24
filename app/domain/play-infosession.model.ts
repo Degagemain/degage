@@ -15,7 +15,7 @@ export const playInfosessionRawSchema = z.object({
 export type PlayInfosessionRaw = z.infer<typeof playInfosessionRawSchema>;
 
 export const playInfosessionSchema = playInfosessionRawSchema.transform((raw) => {
-  const { enrolled, maxRegistrations } = parsePlayInfosessionRegistrations(raw.registrations);
+  const { enrolled, maxRegistrations, isFull } = parsePlayInfosessionRegistrations(raw.registrations);
 
   return {
     scheduledAt: parsePlayInfosessionScheduledAt(raw.scheduledAt),
@@ -23,6 +23,7 @@ export const playInfosessionSchema = playInfosessionRawSchema.transform((raw) =>
     type: raw.type,
     enrolled,
     maxRegistrations,
+    isFull,
     host: raw.host,
     enrollId: raw.enrollId,
     enrollUrl: raw.enrollUrl,

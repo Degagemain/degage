@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { getPlayConnectorBaseUrl } from '@/play-connector/config';
 import { buildCookieHeader, computeSessionExpiry, parseSetCookieHeaders } from '@/play-connector/cookie';
 import { PlayConnectorError } from '@/play-connector/errors';
@@ -22,6 +23,11 @@ export const loginToPlay = async (email: string, password: string): Promise<Play
   const parsedCookies = parseSetCookieHeaders(setCookieHeaders);
 
   if (parsedCookies.length === 0 || response.status >= 400) {
+    logger.error('[play-connector] login failed', {
+      code: 'login_failed',
+      status: response.status,
+      hasCookies: parsedCookies.length > 0,
+    });
     throw new PlayConnectorError('login_failed', 'Play login failed');
   }
 

@@ -39,15 +39,20 @@ against `pnpm dev`.
 
 Mock endpoints:
 
-| Method | Path           | Description                                                   |
-| ------ | -------------- | ------------------------------------------------------------- |
-| `POST` | `/login`       | Form login; returns session cookies on success                |
-| `GET`  | `/infosession` | HTML table with sample infosessions (requires session cookie) |
-| `GET`  | `/`            | Health check                                                  |
+| Method | Path                    | Description                                                      |
+| ------ | ----------------------- | ---------------------------------------------------------------- |
+| `POST` | `/login`                | Form login; returns session cookies on success                   |
+| `GET`  | `/infosession`          | HTML table with sample infosessions (requires session cookie)    |
+| `GET`  | `/infosession/enroll`   | Enroll in session (`?id=` enroll id); requires session cookie    |
+| `GET`  | `/infosession/unenroll` | Unenroll from current session; requires session cookie           |
+| `GET`  | `/profile`              | HTML profile page with sample user data; requires session cookie |
+| `GET`  | `/`                     | Health check                                                     |
 
 ## Layers
 
 - `app/play-connector/` — HTTP client, login, cookie parsing, HTML parsers (no database)
+  - `parsers/infosession-table.parser.ts` — infosession table rows from `/infosession` HTML
+  - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/zip/city), GSM from `/profile` HTML
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration
 - `app/actions/play-infosession/` — first consumer use case
@@ -62,13 +67,15 @@ Mock endpoints:
 
 ## API
 
-| Method   | Path                     | Description                                                            |
-| -------- | ------------------------ | ---------------------------------------------------------------------- |
-| `GET`    | `/api/play-connector`    | Current user's connector status: `missing`, `success`, or `failing`    |
-| `PUT`    | `/api/play-connector`    | Link credentials (`email`, `password`); validates login before storing |
-| `DELETE` | `/api/play-connector`    | Remove linked credentials                                              |
-| `GET`    | `/api/play-infosessions` | List parsed infosessions from the Play backend                         |
+| Method   | Path                                       | Description                                                                                                                                                 |
+| -------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`    | `/api/play-connector`                      | Current user's connector status: `missing`, `success`, or `failing`                                                                                         |
+| `PUT`    | `/api/play-connector`                      | Link credentials (`email`, `password`); validates login before storing                                                                                      |
+| `DELETE` | `/api/play-connector`                      | Remove linked credentials                                                                                                                                   |
+| `GET`    | `/api/play-infosessions`                   | List parsed infosessions from the Play backend                                                                                                              |
+| `PUT`    | `/api/car-onboardings/{id}/play-connector` | Link credentials during car onboarding; on success fetches Play profile and pre-fills empty `street`, `town` (by zip + city), and `phone` on the onboarding |
 
 ## UI
 
-Account settings → **Play connector** tab (`/app/account/settings`).
+Account settings → **Play connector** tab (`/app/account/settings`). Car onboarding → **Play connector** step uses the onboarding-specific
+connect endpoint above.

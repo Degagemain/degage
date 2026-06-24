@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { getPlayConnectorBaseUrl } from '@/play-connector/config';
 import { PlayConnectorError } from '@/play-connector/errors';
 
@@ -18,6 +19,7 @@ export const fetchPlay = async (path: string, cookieHeader: string): Promise<Pla
   const html = await response.text();
 
   if (!response.ok) {
+    logger.error('[play-connector] fetch failed', { code: 'fetch_failed', path, status: response.status });
     throw new PlayConnectorError('fetch_failed', `Play fetch failed with status ${response.status}`);
   }
 

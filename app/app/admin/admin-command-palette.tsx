@@ -13,6 +13,7 @@ import {
   MAIN_ITEMS,
   SIDEBAR_SETTINGS_ICONS,
   SIMULATION_ITEMS,
+  UNDER_CONSTRUCTION_ITEMS,
 } from '@/app/admin/nav-config';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/app/components/ui/command';
 
@@ -64,6 +65,18 @@ export function AdminCommandPalette() {
               item.translationKey === 'documentationGroups' ? `${title} ${t('documentation.title')} documentation groups` : title;
             return (
               <CommandItem key={item.href} value={searchValue} onSelect={() => run(item.href)}>
+                <item.icon />
+                {title}
+              </CommandItem>
+            );
+          })}
+        </CommandGroup>
+
+        <CommandGroup heading={t('sidebar.underConstruction')}>
+          {UNDER_CONSTRUCTION_ITEMS.map((item) => {
+            const title = t(`${item.translationKey}.title`);
+            return (
+              <CommandItem key={item.href} value={title} onSelect={() => run(item.href)}>
                 <item.icon />
                 {title}
               </CommandItem>

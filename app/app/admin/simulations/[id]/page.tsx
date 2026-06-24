@@ -2,14 +2,17 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { format } from 'date-fns';
-import { Check, Info, X } from 'lucide-react';
+import { Check, ClipboardList, Info, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
+import { CarOnboarding } from '@/domain/car-onboarding.model';
 import { SimulationResultCode, SimulationStepIcon } from '@/domain/simulation.model';
-import { apiPut } from '@/app/lib/api-client';
+import { apiPost, apiPut } from '@/app/lib/api-client';
+import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
@@ -40,6 +43,7 @@ function FieldRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 export default function SimulationDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = typeof params.id === 'string' ? params.id : null;
   const tForm = useTranslations('simulation.form');
   const tCol = useTranslations('admin.simulations.columns');
@@ -52,6 +56,7 @@ export default function SimulationDetailPage() {
   const [emailDraft, setEmailDraft] = useState('');
   const [isSavingEmail, setIsSavingEmail] = useState(false);
   const [emailSaveMessage, setEmailSaveMessage] = useState<'success' | 'error' | 'validation' | null>(null);
+  const [isStartingOnboarding, setIsStartingOnboarding] = useState(false);
 
   const fetchSimulation = useCallback(async () => {
     if (!id) return;
@@ -111,6 +116,33 @@ export default function SimulationDetailPage() {
       setIsSavingEmail(false);
     }
   }, [simulation, emailDraft, fetchSimulation]);
+
+  const startOnboarding = useCallback(async () => {
+    if (!simulation?.id) return;
+    setIsStartingOnboarding(true);
+    try {
+      const response = await apiPost('/api/car-onboardings', {
+        simulation: { id: simulation.id },
+      });
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, tDetail('startOnboardingError'));
+        toast.error(message);
+        return;
+      }
+
+      const created: CarOnboarding = await response.json();
+      if (created.id) {
+        router.push(`/app/admin/car-onboardings/${created.id}`);
+      } else {
+        toast.error(tDetail('startOnboardingError'));
+      }
+    } catch {
+      toast.error(tDetail('startOnboardingError'));
+    } finally {
+      setIsStartingOnboarding(false);
+    }
+  }, [simulation, router, tDetail]);
 
   if (isLoading) {
     return (
@@ -177,9 +209,13 @@ export default function SimulationDetailPage() {
 
   return (
     <div className="flex flex-col gap-4 px-3 py-4 md:px-4">
-      <div>
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/app/admin/simulations">{tDetail('backToSimulations')}</Link>
+        </Button>
+        <Button type="button" size="sm" onClick={() => void startOnboarding()} disabled={isStartingOnboarding || !simulation.id}>
+          <ClipboardList className="size-3.5" />
+          {isStartingOnboarding ? tDetail('startingOnboarding') : tDetail('startOnboarding')}
         </Button>
       </div>
 

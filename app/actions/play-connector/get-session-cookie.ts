@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { PlayConnectorActionError, playConnectorActionErrorCodes } from '@/domain/play-connector.errors';
 import { decryptPlayConnectorSecret, encryptPlayConnectorSecret } from '@/play-connector/crypto';
 import { loginToPlay } from '@/play-connector/login';
@@ -56,6 +57,11 @@ export const getPlaySessionCookie = async (userId: string): Promise<PlaySessionC
   await dbPlayConnectorRecordLoginFailure(userId);
 
   if (lastError instanceof PlayConnectorError) {
+    logger.error('[play-connector] session refresh failed after retries', {
+      code: playConnectorActionErrorCodes.loginFailed,
+      userId,
+      attempts: MAX_LOGIN_ATTEMPTS,
+    });
     throw new PlayConnectorActionError(playConnectorActionErrorCodes.loginFailed, 'Play login failed');
   }
 

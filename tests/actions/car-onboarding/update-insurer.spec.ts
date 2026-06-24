@@ -1,0 +1,112 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/storage/car-onboarding/car-onboarding.read', () => ({
+  dbCarOnboardingReadWithRelations: vi.fn(),
+}));
+
+vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
+  saveCarOnboardingWithPreparationCheck: vi.fn(),
+}));
+
+import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
+import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
+import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
+import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { updateCarOnboardingInsurer } from '@/actions/car-onboarding/update-insurer';
+import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
+import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { carOnboarding, completeCarOnboarding } from '../../builders/car-onboarding.builder';
+
+const onboardingId = '550e8400-e29b-41d4-a716-446655440000';
+const owner = { id: 'user-1', role: 'user', banned: false };
+const otherUser = { id: 'user-2', role: 'user', banned: false };
+
+describe('updateCarOnboardingInsurer', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('merges insurer info and saves with preparation check', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    const body = {
+      insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+      insurerContractStartedAt: '2020-01-15',
+    };
+
+    await updateCarOnboardingInsurer(onboardingId, body, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: onboardingId,
+        insurer: body.insurer,
+        insurerContractStartedAt: new Date(body.insurerContractStartedAt),
+      }),
+    );
+  });
+
+  it('throws when user is not the owner', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+
+    await expect(
+      updateCarOnboardingInsurer(
+        onboardingId,
+        {
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurerContractStartedAt: '2020-01-15',
+        },
+        otherUser,
+      ),
+    ).rejects.toThrow(CarOnboardingForbiddenError);
+
+    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+
+  it('throws when onboarding is locked', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        insurerStatus: CarOnboardingInsurerStatus.TODO,
+        statusInPreparation: CarOnboardingInPreparationStatus.LOCKED,
+      }),
+    );
+
+    await expect(
+      updateCarOnboardingInsurer(
+        onboardingId,
+        {
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurerContractStartedAt: '2020-01-15',
+        },
+        owner,
+      ),
+    ).rejects.toThrow(CarOnboardingLockedError);
+
+    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+
+  it('throws when insurer status is not todo', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.READY }),
+    );
+
+    await expect(
+      updateCarOnboardingInsurer(
+        onboardingId,
+        {
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurerContractStartedAt: '2020-01-15',
+        },
+        owner,
+      ),
+    ).rejects.toThrow(CarOnboardingInvalidInsurerStatusError);
+
+    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+});

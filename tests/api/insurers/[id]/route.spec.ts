@@ -255,5 +255,20 @@ describe('API Route - DELETE /api/insurers/[id]', () => {
       expect(response.status).toBe(204);
       expect(deleteInsurer).toHaveBeenCalledWith(validId);
     });
+
+    it('returns 409 when insurer is linked to car onboardings', async () => {
+      vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
+      vi.mocked(deleteInsurer).mockRejectedValueOnce({ code: 'P2003' });
+
+      const request = {} as any;
+      const route = { params: Promise.resolve({ id: validId }) };
+
+      const response = await DELETE(request, route);
+      const json = await response.json();
+
+      expect(response.status).toBe(409);
+      expect(json.code).toBe('conflict');
+      expect(json.errors[0].message).toBe('Resource is linked to other records and cannot be deleted');
+    });
   });
 });

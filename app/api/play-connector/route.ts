@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
+import { logger } from '@/lib/logger';
 import { disconnectPlayConnector } from '@/actions/play-connector/disconnect';
 import { linkPlayConnector } from '@/actions/play-connector/link';
 import { readPlayConnectorStatus } from '@/actions/play-connector/read-status';
@@ -32,8 +33,10 @@ export const PUT = withAuth(async (request: NextRequest, _context, session) => {
       return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
     }
     if (error instanceof PlayConnectorActionError) {
+      logger.error('[play-connector] link request failed', { code: error.code, message: error.message });
       return Response.json({ code: error.code, errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
     }
+    logger.exception(error, { route: 'PUT /api/play-connector' });
     return Response.json(
       { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
       { status: statusCodes.INTERNAL_SERVER_ERROR },

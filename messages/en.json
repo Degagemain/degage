@@ -192,6 +192,7 @@
       "backToApp": "Back to App",
       "administration": "Administration",
       "panel": "Admin Panel",
+      "underConstruction": "Under Construction",
       "settings": "Settings",
       "coreSettings": "Core",
       "carSettings": "Car",
@@ -208,7 +209,8 @@
     "common": {
       "actions": {
         "new": "New",
-        "save": "Save"
+        "save": "Save",
+        "cancel": "Cancel"
       },
       "status": {
         "saving": "Saving…"
@@ -1401,10 +1403,196 @@
         "euroNormCode": "Euro norm",
         "consumption": "Consumption",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "startOnboarding": "Start onboarding",
+        "startingOnboarding": "Starting…",
+        "startOnboardingError": "Failed to start car onboarding."
       },
       "yes": "Yes",
       "no": "No"
+    },
+    "carOnboardings": {
+      "title": "Onboardings",
+      "columns": {
+        "description": "Description",
+        "owner": "Owner",
+        "ownerHasPlayConnector": "Play connector",
+        "infoSessionDate": "Info session date",
+        "infoSessionPcId": "Info session PC id",
+        "infoSessionStatus": "Info session status",
+        "street": "Street",
+        "town": "Town",
+        "phone": "Phone",
+        "brand": "Brand",
+        "fuelType": "Fuel type",
+        "carType": "Car type",
+        "carTypeOther": "Car type (other)",
+        "mileage": "Mileage (km)",
+        "seats": "Seats",
+        "firstRegisteredAt": "First registered",
+        "isPurchased": "Purchased car",
+        "isNewCar": "New car",
+        "isVan": "Van",
+        "purchasePrice": "Purchase price",
+        "carValue": "Car value",
+        "depreciationCostKm": "Depreciation per km",
+        "carValueCounterProposal": "Counter proposal",
+        "carValueCounterProposalMessage": "Counter message",
+        "carValueStatus": "Car value status",
+        "insurer": "Insurer",
+        "insurerContractStartedAt": "Insurer contract started",
+        "insurerStatus": "Insurer status",
+        "simulation": "Simulation",
+        "statusInPreparation": "Preparation status",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "yes": "Yes",
+      "no": "No",
+      "tabs": {
+        "preparationTitle": "Preparation",
+        "owner": "Owner",
+        "infoSession": "Info session",
+        "userInfo": "User info",
+        "carInfo": "Car info",
+        "insurer": "Insurer",
+        "carValue": "Car value",
+        "finalize": "Finalize"
+      },
+      "preparationStatus": {
+        "open": "Open",
+        "ready": "Ready",
+        "locked": "Locked"
+      },
+      "subprocess": {
+        "playConnector": {
+          "todo": "To do",
+          "ready": "Complete"
+        },
+        "infoSession": {
+          "todo": "To do",
+          "enrolled": "Enrolled",
+          "done": "Complete"
+        },
+        "userInfo": {
+          "todo": "To do",
+          "ready": "Complete"
+        },
+        "carInfo": {
+          "todo": "To do",
+          "ready": "Complete"
+        },
+        "insurer": {
+          "notApplicable": "Not applicable",
+          "todo": "To do",
+          "ready": "Complete"
+        },
+        "carValue": {
+          "todo": "To do",
+          "proposal": "Proposal",
+          "counter": "Counter",
+          "resolved": "Resolved"
+        }
+      },
+      "searchPlaceholder": "Search car onboardings...",
+      "createTypes": {
+        "existingCar": "Existing car",
+        "purchasedCar": "Purchased car",
+        "purchasedNewCar": "Purchased car (new)"
+      },
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "none": "None",
+        "carTypeOtherOption": "Other",
+        "placeholders": {
+          "town": "Search towns…",
+          "brand": "Search brands…",
+          "fuelType": "Search fuel types…",
+          "carType": "Search car types…",
+          "carTypeFirst": "Select brand and fuel type first",
+          "insurer": "Search insurers…",
+          "owner": "Search users…"
+        },
+        "openSimulation": "Open simulation",
+        "openPublicPage": "Open public page",
+        "overruleAgreement": "Overrule agreement",
+        "overruleAgreementTitle": "Overrule car value agreement?",
+        "overruleAgreementDescription": "Only use this when the owner has explicitly agreed to the proposed car value outside the normal in-app flow. This marks the car value as resolved without the owner confirming in the app.",
+        "overruleAgreementConfirm": "Overrule",
+        "overruleAgreementConfirming": "Overruling…",
+        "overruleAgreementSuccess": "Car value marked as resolved.",
+        "overruleAgreementError": "Failed to overrule car value agreement.",
+        "startOnboardingSection": "Start car onboarding",
+        "startOnboarding": "Start car onboarding",
+        "startOnboardingTitle": "Start car onboarding?",
+        "startOnboardingDescription": "This finalizes the preparation phase and locks the record. The owner can no longer update car info, user info, insurer, or car value until an admin unlocks it.",
+        "startOnboardingConfirm": "Start",
+        "startOnboardingConfirming": "Starting…",
+        "startOnboardingSuccess": "Car onboarding started. Preparation is locked.",
+        "startOnboardingError": "Failed to start car onboarding.",
+        "startOnboardingReady": "Preparation is complete. You can start the car onboarding to lock preparation.",
+        "startOnboardingNotReady": "Complete all preparation steps and save the record before starting.",
+        "playConnectorHint": "The owner must link their legacy Dégage account in the public onboarding flow. This status is read-only for admins.",
+        "infoSessionHint": "The owner enrolls in an info session in the public onboarding flow. Confirm attendance here once they have participated.",
+        "confirmInfoSession": "Confirm attendance",
+        "confirmInfoSessionTitle": "Confirm info session attendance?",
+        "confirmInfoSessionDescription": "Only confirm when the owner was present at the enrolled info session. This marks the info session step as complete.",
+        "confirmInfoSessionConfirm": "Confirm",
+        "confirmInfoSessionConfirming": "Confirming…",
+        "confirmInfoSessionSuccess": "Info session marked as complete.",
+        "confirmInfoSessionError": "Failed to confirm info session attendance.",
+        "ownerPlayConnectorPendingSave": "Save the record to refresh the Play connector status for the selected owner.",
+        "startOnboardingLocked": "This car onboarding has already been started. Preparation is locked.",
+        "help": {
+          "counterReadOnly": "Set by the owner during negotiation.",
+          "carTypeOtherReadOnly": "Set by the user when their car type is not in the catalog.",
+          "isPurchasedReadOnly": "Set when the record is created and cannot be changed here.",
+          "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
+          "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
+          "insurerNotApplicable": "Insurance is not applicable for purchased cars."
+        }
+      },
+      "detailPage": {
+        "owner": "Owner",
+        "simulation": "Simulation"
+      },
+      "newPage": {
+        "create": "Create empty record",
+        "creating": "Creating…",
+        "description": "Creates a new car onboarding record with default values. You can fill in the details on the next screen."
+      },
+      "delete": {
+        "title": "Delete car onboarding",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car onboarding deleted successfully.",
+        "error": "Failed to delete car onboarding.",
+        "conflict": "This car onboarding is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car onboardings",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Car onboarding",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      }
     },
     "chatConversations": {
       "title": "Support chats",
@@ -2223,6 +2411,7 @@
       "loadError": "Could not load infosessions. Check your Degapp koppeling in settings.",
       "tableEmpty": "No upcoming infosessions found.",
       "showMore": "Show {count} more",
+      "registrationsFull": "Full",
       "columns": {
         "scheduledAt": "When",
         "district": "District",
@@ -2283,6 +2472,100 @@
     "failingTitle": "Connection failing",
     "failingDescription": "Recent login attempts failed. Wait a moment, then reconnect with your Degapp credentials.",
     "sessionValidUntil": "Session cached until {date}"
+  },
+  "carOnboardingPublic": {
+    "eyebrow": "Car onboarding",
+    "title": "Your onboarding",
+    "intro": "Complete the steps below to finish preparation.",
+    "preparationTitle": "Preparation",
+    "backToOverview": "Back to overview",
+    "stepNotFound": "Step not found.",
+    "stepBlocked": "This step is not available yet. Complete the previous steps first.",
+    "stepReadOnly": "This step is read-only. Preparation is locked or this section is already complete.",
+    "save": "Save",
+    "next": "Next",
+    "saveSuccess": "Saved successfully.",
+    "yes": "Yes",
+    "no": "No",
+    "states": {
+      "todo": "To do",
+      "pending": "In progress",
+      "done": "Complete"
+    },
+    "errors": {
+      "load": "Failed to load car onboarding.",
+      "save": "Failed to save.",
+      "forbidden": "You do not have access to this car onboarding."
+    },
+    "steps": {
+      "playConnector": {
+        "title": "Connect Dégage",
+        "subtitle": "Link your legacy Dégage account",
+        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding."
+      },
+      "infoSession": {
+        "title": "Info session",
+        "subtitle": "Attend a Degapp info session",
+        "info": "Choose an upcoming info session and enroll. After you attend, an admin will confirm your participation.",
+        "loading": "Loading info sessions…",
+        "loadError": "Could not load info sessions. Check your Play connector connection and try again.",
+        "tableEmpty": "No upcoming info sessions found.",
+        "registrationsFull": "Full",
+        "enroll": "Enroll",
+        "unenroll": "Unenroll",
+        "enrollSuccess": "Enrolled in info session.",
+        "enrollError": "Failed to enroll in info session.",
+        "unenrollSuccess": "Unenrolled from info session.",
+        "unenrollError": "Failed to unenroll from info session.",
+        "enrolledTitle": "Your enrolled session",
+        "confirmedTitle": "Info session complete",
+        "confirmed": "Your attendance has been confirmed. You can continue to the next step.",
+        "unenrollToSwitch": "To enroll in a different session, unenroll first.",
+        "waitingForConfirmation": "Waiting for an admin to confirm your attendance.",
+        "columns": {
+          "scheduledAt": "When",
+          "district": "District",
+          "type": "Type",
+          "registrations": "Registrations",
+          "host": "Host"
+        }
+      },
+      "userInfo": {
+        "title": "User info",
+        "subtitle": "Your contact details",
+        "info": "Enter your street, town, and phone number so we can reach you during onboarding.",
+        "panelTitle": "Contact details"
+      },
+      "carInfo": {
+        "title": "Car info",
+        "subtitle": "Basic details of your car",
+        "info": "Confirm the brand, fuel type, and car type. Other vehicle details are shown for reference.",
+        "panelTitle": "Vehicle catalog",
+        "readOnlyTitle": "Vehicle details"
+      },
+      "insurer": {
+        "title": "Insurer",
+        "subtitle": "Your current car insurance",
+        "info": "Tell us which insurer covers your car today and when the contract started.",
+        "panelTitle": "Current insurance",
+        "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
+      },
+      "carValue": {
+        "title": "Car value",
+        "subtitle": "Agreement on depreciation per shared km",
+        "info": "Review the proposed car value and depreciation. Agree or submit a counter proposal.",
+        "chartTitle": "Depreciation per shared km",
+        "chartBody": "Based on {mileage} km, depreciation is about €{depreciation} per shared kilometre.",
+        "waitingForProposal": "Waiting for an admin to propose a car value.",
+        "agreeTitle": "Do you agree with this value?",
+        "agreeYes": "Yes, I agree",
+        "agreeNo": "No, counter proposal",
+        "counterTitle": "Your proposal",
+        "agreeConfirmHint": "You agreed to the proposed car value. Save to confirm.",
+        "pendingAdmin": "Your counter proposal of €{value} was submitted. Waiting for admin response.",
+        "resolved": "The car value agreement is resolved."
+      }
+    }
   },
   "docs": {
     "table": {
