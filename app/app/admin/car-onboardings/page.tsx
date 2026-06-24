@@ -78,14 +78,12 @@ export default function CarOnboardingsPage() {
     isVan: false,
     purchasePrice: false,
     depreciationCostKm: false,
+    carValue: false,
     carValueCounterProposal: false,
     carValueCounterProposalMessage: false,
-    carValueStatus: false,
     insurer: false,
     insurerContractStartedAt: false,
-    insurerStatus: false,
     simulation: false,
-    statusInPreparation: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [itemToDelete, setItemToDelete] = useState<CarOnboarding | null>(null);
@@ -108,6 +106,8 @@ export default function CarOnboardingsPage() {
     () => ({
       description: t('columns.description'),
       owner: t('columns.owner'),
+      ownerHasPlayConnector: t('columns.ownerHasPlayConnector'),
+      infoSessionStatus: t('columns.infoSessionStatus'),
       street: t('columns.street'),
       town: t('columns.town'),
       phone: t('columns.phone'),

@@ -14,6 +14,7 @@ import {
   MAIN_ITEMS,
   SIDEBAR_SETTINGS_ICONS,
   SIMULATION_ITEMS,
+  UNDER_CONSTRUCTION_ITEMS,
 } from '@/app/admin/nav-config';
 import { getAdminDocExternalIdForPath } from '@/app/admin/admin-doc-help';
 import { AdminCommandPalette } from '@/app/admin/admin-command-palette';
@@ -153,6 +154,28 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {MAIN_ITEMS.map((item) => {
+                    const title = t(`${item.translationKey}.title`);
+                    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                    return (
+                      <SidebarMenuItem key={item.href}>
+                        <SidebarMenuButton asChild isActive={isActive} tooltip={title}>
+                          <Link href={item.href}>
+                            <item.icon />
+                            <span>{title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>{t('sidebar.underConstruction')}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {UNDER_CONSTRUCTION_ITEMS.map((item) => {
                     const title = t(`${item.translationKey}.title`);
                     const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                     return (

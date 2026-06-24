@@ -2,16 +2,21 @@ import type { LucideIcon } from 'lucide-react';
 import { BookOpen, Calculator, Car, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
-  translationKey: 'simulations' | 'carOnboardings' | 'users' | 'chatConversations' | 'documentation';
+  translationKey: 'simulations' | 'users' | 'chatConversations' | 'documentation';
   href: string;
   icon: LucideIcon;
 }[] = [
   { translationKey: 'simulations', href: '/app/admin/simulations', icon: Calculator },
-  { translationKey: 'carOnboardings', href: '/app/admin/car-onboardings', icon: Car },
   { translationKey: 'users', href: '/app/admin/users', icon: Users },
   { translationKey: 'chatConversations', href: '/app/admin/chat-conversations', icon: MessagesSquare },
   { translationKey: 'documentation', href: '/app/admin/documentation', icon: BookOpen },
 ];
+
+export const UNDER_CONSTRUCTION_ITEMS: {
+  translationKey: 'carOnboardings';
+  href: string;
+  icon: LucideIcon;
+}[] = [{ translationKey: 'carOnboardings', href: '/app/admin/car-onboardings', icon: Car }];
 
 /** Linked from the documentation admin “More” menu; listed in quick search (⌘K), not the sidebar. */
 export const DOCUMENTATION_SUB_ITEMS: {
@@ -69,6 +74,7 @@ export const GEO_SETTINGS_ITEMS: {
 ];
 
 export type MainItemTranslationKey = (typeof MAIN_ITEMS)[number]['translationKey'];
+export type UnderConstructionItemTranslationKey = (typeof UNDER_CONSTRUCTION_ITEMS)[number]['translationKey'];
 export type CarSettingsTranslationKey = (typeof CAR_SETTINGS_ITEMS)[number]['translationKey'];
 export type CoreSettingsTranslationKey = (typeof CORE_SETTINGS_ITEMS)[number]['translationKey'];
 export type SimulationSettingsTranslationKey = (typeof SIMULATION_ITEMS)[number]['translationKey'];
@@ -77,6 +83,7 @@ export type GeoSettingsTranslationKey = (typeof GEO_SETTINGS_ITEMS)[number]['tra
 /** All admin pages with titleKey for i18n. Used by sidebar (page title) and command palette. */
 export const ALL_PAGE_ITEMS = [
   ...MAIN_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
+  ...UNDER_CONSTRUCTION_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...DOCUMENTATION_SUB_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...CORE_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
   ...CAR_SETTINGS_ITEMS.map((i) => ({ ...i, titleKey: `${i.translationKey}.title` as const })),
