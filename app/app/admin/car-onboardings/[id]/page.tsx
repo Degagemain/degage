@@ -8,7 +8,7 @@ import { ExternalLink, Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarOnboarding } from '@/domain/car-onboarding.model';
-import { apiDelete, apiPut } from '@/app/lib/api-client';
+import { apiDelete, apiPut, apiPutForm } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { Button } from '@/app/components/ui/button';
@@ -150,6 +150,32 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleUploadRegistrationCertificate = async (side: 'front' | 'back', file: File) => {
+    if (!id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${id}/registration-certificate/${side}`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.registrationCertificate.uploadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(t('form.registrationCertificate.uploadSuccess'));
+    await loadCarOnboarding({ silent: true });
+  };
+
+  const handleDownloadRegistrationCertificate = async (side: 'front' | 'back') => {
+    if (!id) return;
+    const response = await fetch(`/api/car-onboardings/${id}/registration-certificate/${side}/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.registrationCertificate.downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleDelete = async () => {
     if (!id) return;
     const response = await apiDelete(`/api/car-onboardings/${id}`);
@@ -237,6 +263,8 @@ export default function EditCarOnboardingPage() {
               onOverruleCarValueAgreement={handleOverruleCarValueAgreement}
               onConfirmInfoSession={handleConfirmInfoSession}
               onStartCarOnboarding={handleStartCarOnboarding}
+              onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
+              onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
             />
           )
         )}

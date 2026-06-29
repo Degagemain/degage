@@ -36,6 +36,8 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     isVan: data.isVan ?? false,
     owner: data.owner !== undefined ? data.owner : null,
     simulation: data.simulation !== undefined ? data.simulation : null,
+    registrationCertificateFront: data.registrationCertificateFront !== undefined ? data.registrationCertificateFront : null,
+    registrationCertificateBack: data.registrationCertificateBack !== undefined ? data.registrationCertificateBack : null,
     statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,
     createdAt: data.createdAt ?? new Date(),
     updatedAt: data.updatedAt ?? new Date(),

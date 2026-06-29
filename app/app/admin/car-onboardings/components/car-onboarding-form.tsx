@@ -29,6 +29,7 @@ import { AdminSearchableSelectField } from '@/app/components/form/admin-searchab
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
 import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
 import { AdminTextareaFieldControl } from '@/app/components/form/admin-textarea-field-control';
+import { AdminRegistrationCertificateField } from './admin-registration-certificate-field';
 import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onboarding-subprocess-flow';
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
@@ -54,6 +55,8 @@ interface CarOnboardingFormProps {
   onOverruleCarValueAgreement?: () => Promise<void>;
   onConfirmInfoSession?: () => Promise<void>;
   onStartCarOnboarding?: () => Promise<void>;
+  onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
+  onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
 }
 
 interface FormValues {
@@ -180,6 +183,8 @@ export function CarOnboardingForm({
   onOverruleCarValueAgreement,
   onConfirmInfoSession,
   onStartCarOnboarding,
+  onUploadRegistrationCertificate,
+  onDownloadRegistrationCertificate,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
@@ -752,6 +757,32 @@ export function CarOnboardingForm({
                     />
                   )}
                 />
+                {onUploadRegistrationCertificate ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.registrationCertificateFront')}
+                    fileName={initialCarOnboarding.registrationCertificateFront?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    onUpload={(file) => onUploadRegistrationCertificate('front', file)}
+                    onDownload={
+                      onDownloadRegistrationCertificate && initialCarOnboarding.registrationCertificateFront
+                        ? () => onDownloadRegistrationCertificate('front')
+                        : undefined
+                    }
+                  />
+                ) : null}
+                {onUploadRegistrationCertificate ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.registrationCertificateBack')}
+                    fileName={initialCarOnboarding.registrationCertificateBack?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    onUpload={(file) => onUploadRegistrationCertificate('back', file)}
+                    onDownload={
+                      onDownloadRegistrationCertificate && initialCarOnboarding.registrationCertificateBack
+                        ? () => onDownloadRegistrationCertificate('back')
+                        : undefined
+                    }
+                  />
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>

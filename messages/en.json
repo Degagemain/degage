@@ -1434,6 +1434,8 @@
         "isNewCar": "New car",
         "isVan": "Van",
         "purchasePrice": "Purchase price",
+        "registrationCertificateFront": "Registration certificate (front)",
+        "registrationCertificateBack": "Registration certificate (back)",
         "carValue": "Car value",
         "depreciationCostKm": "Depreciation per km",
         "carValueCounterProposal": "Counter proposal",
@@ -1548,6 +1550,18 @@
         "confirmInfoSessionError": "Failed to confirm info session attendance.",
         "ownerPlayConnectorPendingSave": "Save the record to refresh the Play connector status for the selected owner.",
         "startOnboardingLocked": "This car onboarding has already been started. Preparation is locked.",
+        "registrationCertificate": {
+          "upload": "Upload file",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Registration certificate uploaded.",
+          "uploadError": "Failed to upload registration certificate.",
+          "download": "Download",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open registration certificate.",
+          "currentFile": "Current file",
+          "noFile": "No file uploaded yet.",
+          "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
+        },
         "help": {
           "counterReadOnly": "Set by the owner during negotiation.",
           "carTypeOtherReadOnly": "Set by the user when their car type is not in the catalog.",

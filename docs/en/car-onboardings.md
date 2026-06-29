@@ -48,7 +48,22 @@ This step is complete when street, town, and phone are all filled in.
 ### Car info
 
 Collects vehicle characteristics: brand, fuel type, car type (or free-text other), mileage, seats, first registration date, van flag, purchased
-car flag, new car flag, purchase price, and depreciation per km.
+car flag, new car flag, purchase price, depreciation per km, and registration certificate scans (front and back).
+
+| Property                       | Description                                              |
+| ------------------------------ | -------------------------------------------------------- |
+| Brand                          | Vehicle brand.                                           |
+| Fuel type                      | Fuel or powertrain type.                                 |
+| Car type                       | Catalog car type, or free-text other if not in catalog.  |
+| Mileage                        | Odometer reading in km.                                  |
+| Seats                          | Number of seats.                                         |
+| First registered               | Date of first registration.                              |
+| Van                            | Whether the vehicle is a van.                            |
+| Purchased car                  | Whether the vehicle was purchased (set at creation).     |
+| New car                        | Whether the vehicle is new (set at creation).            |
+| Purchase price                 | Purchase price.                                          |
+| Registration certificate front | Scan or photo of the front of the registration document. |
+| Registration certificate back  | Scan or photo of the back of the registration document.  |
 
 This step is complete when brand, fuel type, and car type are all set.
 

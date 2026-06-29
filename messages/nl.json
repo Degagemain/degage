@@ -1434,6 +1434,8 @@
         "isNewCar": "Nieuwe wagen",
         "isVan": "Bestelwagen",
         "purchasePrice": "Aankoopprijs",
+        "registrationCertificateFront": "Inschrijvingsbewijs (voorzijde)",
+        "registrationCertificateBack": "Inschrijvingsbewijs (achterzijde)",
         "carValue": "Waarde van de wagen",
         "depreciationCostKm": "Afschrijving per km",
         "carValueCounterProposal": "Tegenvoorstel",
@@ -1548,6 +1550,18 @@
         "confirmInfoSessionError": "Bevestigen van infosessie-aanwezigheid mislukt.",
         "ownerPlayConnectorPendingSave": "Sla het record op om de Play connector-status voor de geselecteerde eigenaar te vernieuwen.",
         "startOnboardingLocked": "Deze auto-onboarding is al gestart. Voorbereiding is vergrendeld.",
+        "registrationCertificate": {
+          "upload": "Bestand uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Inschrijvingsbewijs geüpload.",
+          "uploadError": "Uploaden van inschrijvingsbewijs mislukt.",
+          "download": "Downloaden",
+          "downloading": "Openen…",
+          "downloadError": "Inschrijvingsbewijs openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen bestand geüpload.",
+          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+        },
         "help": {
           "counterReadOnly": "Ingesteld door de eigenaar tijdens onderhandeling.",
           "carTypeOtherReadOnly": "Ingesteld door de gebruiker wanneer het voertuigtype niet in de catalogus staat.",
