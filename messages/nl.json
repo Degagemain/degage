@@ -173,8 +173,8 @@
     "featureNotConfigured": "Deze aanmeldmethode is nog niet beschikbaar.",
     "emailOtp": "Inloggen met een code",
     "emailOtpLink": "Inloggen met een code",
-    "onboardingNoticeTitle": "Je logt in op de onboarding voor eigenaars",
-    "onboardingNoticeBody": "Deze app is om je wagen in te schrijven bij Dégage—niet om gedeelde wagens te reserveren of je ledenaccount te beheren. Gebruik daarvoor <degapp>Degapp</degapp>.",
+    "onboardingNoticeTitle": "Je logt in op het instapportaal voor eigenaars",
+    "onboardingNoticeBody": "Op deze pagina kan je een nieuwe auto toevoegen aan de Dégage-vloot. Om een wagen te reserveren of je ledenaccount te beheren, ga je naar <degapp>Degapp</degapp>.",
     "oauthConsent": {
       "title": "Applicatie autoriseren",
       "description": "Een applicatie vraagt toegang tot je account.",
@@ -263,7 +263,7 @@
       }
     },
     "translationOverrides": {
-      "title": "Vertaaloverrides",
+      "title": "Vertalingen",
       "description": "Pas interface-teksten aan in de database terwijl de originele message-bestanden zichtbaar blijven.",
       "listDescription": "Zoek op tekstwaarde en open daarna een sleutel om overrides te bewerken.",
       "searchPlaceholder": "Zoek waarden...",
@@ -1225,7 +1225,7 @@
         "hubPlaceholder": "Selecteer hub…",
         "highDemandLabel": "Hoge vraag",
         "hasActiveMembersLabel": "Actieve leden",
-        "unsetOption": "Niet ingesteld",
+        "unsetOption": "Niet aanpassen",
         "replaceOption": "Hub instellen",
         "yesOption": "Ja",
         "noOption": "Nee",
@@ -1949,7 +1949,7 @@
       },
       "town": {
         "title": "Waar woon je?",
-        "description": "Aan de hand van uw locatie kunnen we inschatten hoeveel km per jaar de auto gedeeld zal worden.",
+        "description": "Op basis van je locatie kunnen we inschatten hoeveel kilometer per jaar de auto gedeeld zal worden.",
         "label": "Gemeente",
         "searchPlaceholder": "Zoek gemeente (postcode of naam)",
         "cantSeeTown": "Ik zie mijn gemeente niet",
@@ -2031,7 +2031,7 @@
   "simulationPublic": {
     "header": {
       "logoTitle": "Dégage!",
-      "logoSub": "Eigenaar onboarding",
+      "logoSub": "Instap eigenaar",
       "fase": "Fase {n} / 4"
     },
     "stepOf": "Stap {current} van {total}",
@@ -2044,7 +2044,7 @@
       "body": "Ontdek of jouw wagen in aanmerking komt voor ons deelnetwerk — en wat je ermee kunt terugverdienen.",
       "tileHeeftTitle": "Mijn huidige wagen checken",
       "tileHeeftDesc": "Ik wil weten of mijn huidige wagen in aanmerking komt.",
-      "tileKooptTitle": "Een wagen die ik ga kopen",
+      "tileKooptTitle": "Een wagen die ik wil kopen/net gekocht heb",
       "tileKooptDesc": "Ik wil weten of een wagen die ik wil aankopen in aanmerking komt.",
       "kooptBanner": "Heb je de wagen al gekocht, maar nog geen verzekering geregeld? Wij kunnen de verzekering op een paar werkdagen voor je regelen, als je wagen in onze vloot past en je wil instappen. Doorloop de simulatie, en we maken er meteen werk van.",
       "koopgidsEyebrow": "Koopgids",
@@ -2055,12 +2055,12 @@
       "koopgidsKnockout2": "Minder dan 200.000 km",
       "koopgidsKnockout3": "Diesel? Dan euroklasse 5 of hoger",
       "koopgidsKnockout4": "Geen bedrijfswagens of (deels) ingebracht als beroepskosten",
-      "koopgidsIdealTitle": "Ideaal profiel: minstens 2 van 3 nodig",
+      "koopgidsIdealTitle": "De ideale deelwagen (minstens 2 van deze 3 criteria nodig)",
       "koopgidsIdeal1": "Ecoscore ≥ 65 (berekenen wij automatisch)",
       "koopgidsIdeal2": "Kilometerstand < 140.000",
       "koopgidsIdeal3": "Jonger dan 7 jaar",
       "koopgidsTipLead": "Tip:",
-      "koopgidsTipBody": "Hoe meer je wagen gedeeld wordt, hoe meer je terugverdient via Dégage.",
+      "koopgidsTipBody": "Hoe meer je je wagen deelt, hoe meer je via Dégage terugverdient.",
       "startCta": "Start de simulatie →"
     },
     "wageninfo": {
@@ -2089,7 +2089,7 @@
       "firstRegistrationLabel": "Eerste inschrijving",
       "firstRegistrationHint": "Je kan dit terugvinden op het inschrijvingbewijs van de auto.",
       "firstRegistrationHelpAria": "Uitleg: waar vind je de datum van eerste inschrijving?",
-      "ownerKmLabel": "Km per jaar",
+      "ownerKmLabel": "Kilometer per jaar",
       "ownerKmPlaceholder": "bv. 15000",
       "ownerKmHint": "Hoeveel kilometer je per jaar met deze wagen rijdt. Ter indicatie: af en toe gebruik circa 5.000–8.000; woon-werk circa 12.000–20.000; intensief gebruik 25.000 of meer.",
       "submit": "Simuleer mijn wagen →"
@@ -2174,7 +2174,7 @@
       "scenarioVaakSub": "Auto vaak vrij, ook in het weekend. Eigenaar reageert snel.",
       "scenarioMedianBadge": "MEEST VOORKOMEND",
       "scenarioHint": "Klik op een scenario om de berekening te zien ↓",
-      "burenBetalingLabel": "Ontleners betalen terug",
+      "burenBetalingLabel": "Ontleners betalen",
       "burenBetalingOf": "van jouw totale autokosten van {total}",
       "kostenverdelingLabel": "Kostenverdeling",
       "slijtageBreakdownLabel": "Slijtage (afschrijving)",
@@ -2187,7 +2187,7 @@
       "kmGedeeldLabel": "Km gedeeld per jaar",
       "rittenPerYearLabel": "Ritten per jaar",
       "rittenPerYearSub": "~{km} gedeelde kilometers per jaar",
-      "mensenHelpTitle": "Mensen die je helpt",
+      "mensenHelpTitle": "Sociale en leefbare buurt",
       "mensenHelpSuffix": "ontleners",
       "mensenHelpBody": "krijgen toegang tot een wagen zonder er zelf één te bezitten.",
       "wagensReplaceBody": "Jouw auto vervangt gemiddeld {n} andere wagens in de straat.",
@@ -2198,7 +2198,7 @@
     },
     "bevestiging": {
       "title": "Je simulatie is klaar",
-      "body": "Laat je gegevens achter en we sturen je een samenvatting.",
+      "body": "Laat je e-mailadres hieronder achter. We sturen je een samenvatting en meer uitleg over hoe je je wagen aan onze vloot kan toevoegen. ",
       "emailLabel": "E-mailadres",
       "emailPlaceholder": "jouw@email.be",
       "isMemberLabel": "Ben je al lid van Dégage?",
@@ -2214,7 +2214,7 @@
       "sentSubNieuw": "Een medewerker neemt contact op binnen 2 werkdagen.",
       "sentSubRegularCar": "We hebben je samenvatting verstuurd.",
       "whatNext": "Wat gebeurt er nu?",
-      "whatNextRegularBody": "Bedankt voor het invullen van deze autofiche. We contacteren je binnenkort via e-mail om de volgende stappen te bespreken.",
+      "whatNextRegularBody": "Heb je na deze simulatie nog steeds interesse om je auto via Dégage te delen? Contacteer ons dan via deeljeauto@degage.be. ",
       "nieuwMemberHintBold": "Eerst lid worden",
       "nieuwMemberHintRest": "— dat is gratis, kan online en duurt 2 minuten. Daarna kun je een eigenaars-infosessie inplannen.",
       "infosessiePlanCta": "Infosessie inplannen →",
@@ -2272,8 +2272,8 @@
           "description": "Reserveer gedeelde wagens, beheer je reservaties en gebruik je ledenaccount als ontlener of eigenaar."
         },
         "onboarding": {
-          "title": "Onboarding nieuwe eigenaar",
-          "description": "Ga verder met de inschrijving van je wagen bij Dégage. Volg je aanvraag en upload documenten."
+          "title": "Instap nieuwe eigenaar",
+          "description": "Ga verder met de inschrijving van je wagen bij Dégage. "
         }
       }
     },
@@ -2281,7 +2281,7 @@
       "badge": "Community supported mobility",
       "title": "Deel je auto, deel de kosten",
       "subtitle": "Al meer dan 580 tevreden eigenaars delen hun auto. Geniet mee van al onze Dégage voordelen.",
-      "intro": "Staat je auto vaak stil, maar de auto wegdoen is voor jou een stap te ver? Wil je een (elektrische) auto kopen maar je wil de hoge kosten niet alleen dragen? Auto delen via Dégage is misschien wel iets voor jou.",
+      "intro": "Staat je auto vaak stil, maar gaat de auto wegdoen een stap te ver voor jou? Wil je een (elektrische) auto kopen, maar de hoge kosten niet alleen dragen? Autodelen via Dégage is misschien iets voor jou.",
       "cta": "Controleer of je wagen in aanmerking komt",
       "ctaHint": "Gratis en vrijblijvend. Duurt enkele minuten."
     },
@@ -2292,11 +2292,11 @@
       },
       "flexible": {
         "title": "Je auto wanneer je wil",
-        "desc": "Jij behoudt controle over je agenda. Reserveer je eigen ritten en stel de spelregels voor je wagen."
+        "desc": "Jij behoudt controle over je agenda. Reserveer je eigen ritten en bepaal de spelregels voor jouw wagen."
       },
       "environment": {
         "title": "Goed voor het milieu",
-        "desc": "Minder auto's op de weg betekent minder uitstoot en slimmer gebruik van wat we al hebben."
+        "desc": "Minder auto's betekent slimmer gebruik van wat we al hebben."
       },
       "community": {
         "title": "Sociale en leefbare buurt",
@@ -2306,7 +2306,7 @@
     "eligibility": {
       "eyebrow": "Autodelen",
       "title": "Komt je auto in aanmerking om te delen?",
-      "body": "Aan de hand van een autofiche kijken we of je auto past binnen onze gedeelde vloot. Doorloop de gratis simulatie om het te weten en ontdek wat je kunt terugverdienen.",
+      "body": "Doorloop de gratis simulatie om te zien of jouw auto in onze vloot past, en ontdek wat je kan terugverdienen.",
       "cta": "Start de simulatie →"
     },
     "costSharing": {
@@ -2320,9 +2320,9 @@
       "title": "Dégage: je auto delen zonder zorgen",
       "imageAlt": "Dégage autodelen, zorgeloos delen",
       "billing": "Centrale en correcte afrekening",
-      "insurance": "Omnium verzekerd",
+      "insurance": "Vergoeding bij schade",
       "platform": "Eenvoudig platform",
-      "damage": "Schaderegeling",
+      "damage": "Ondersteuning bij schade-afhandeling",
       "breakdown": "Pechhulp",
       "access": "Toegang tot andere auto's",
       "parking": "Parkeervoordelen"
@@ -2332,12 +2332,21 @@
       "title": "Wat is Dégage?",
       "lead": "Dégage biedt \"community supported mobility\" aan.",
       "paragraph1": "Alle deelauto's en deelfietsen zijn van particulieren, zoals jij, en worden onder elkaar gedeeld.",
-      "paragraph2": "Dégage is een snelgroeiende community van meer dan 550 eigenaars en 7000 leden. Dégage streeft geen winst na, wel betaalbare, betrouwbare en toegankelijke mobiliteit.",
+      "paragraph2": "Dégage is een snelgroeiende community van meer dan 580 eigenaars en 8000 leden. Dégage streeft geen winst na, wel betaalbare, betrouwbare en toegankelijke mobiliteit.",
       "paragraph3": "Door auto's en fietsen onderling te delen wil Dégage mensen terug met elkaar in contact brengen. Dit doen we al meer dan 25 jaar, onafhankelijk en zelfvoorzienend. En daar zijn we fier op!",
       "stats": {
-        "owners": { "value": "550+", "label": "eigenaars" },
-        "members": { "value": "7.000", "label": "leden" },
-        "years": { "value": "25+", "label": "jaar ervaring" }
+        "owners": {
+          "value": "550+",
+          "label": "eigenaars"
+        },
+        "members": {
+          "value": "8.000",
+          "label": "leden"
+        },
+        "years": {
+          "value": "25+",
+          "label": "jaar ervaring"
+        }
       },
       "imageAlt": "Dégage gemeenschap, autodelen in de buurt"
     },
@@ -2350,7 +2359,7 @@
       },
       "insurance": {
         "q": "Is mijn auto goed verzekerd?",
-        "a": "Ja! Dégage heeft een voordelige groepsverzekering aangepast aan autodelen. Ben jij niet in fout, dan betaal je natuurlijk niks."
+        "a": "Ja! Dégage heeft een groepsverzekering aangepast aan autodelen. Alle auto's die op onze vlootpolis staan, hebben volgende verzekeringen:\n- Burgerlijke aansprakelijkheid (BA): schade aan derden en lichamelijke schade van inzittenden.\n- Rechtsbijstand: juridische ondersteuning bij ongevallen.\n- Bestuurdersverzekering: dekt lichamelijke schade van de bestuurder zelf."
       },
       "effort": {
         "q": "Is mijn auto delen veel werk?",
@@ -2422,10 +2431,10 @@
     }
   },
   "chat": {
-    "nav": "Support Chat",
+    "nav": "Stel je vraag",
     "openChat": "Support Chat openen",
-    "supportChat": "Support Chat",
-    "openChatCardTitle": "Support Chat",
+    "supportChat": "Stel je vraag",
+    "openChatCardTitle": "Stel je vraag",
     "openChatCardDescription": "Stel vragen over het platform. Antwoorden gebruiken je documentatie waar relevant.",
     "closeChat": "Support Chat sluiten",
     "conversations": "Gesprekken",
@@ -2433,7 +2442,7 @@
     "conversationCreatedLabel": "Aangemaakt {time}",
     "deleteConversation": "Gesprek verwijderen",
     "emptyConversationTitle": "Stel een vraag",
-    "emptyConversationDescription": "Je kunt elke vraag over Dégage stellen. Antwoorden gebruiken je documentatie als dat helpt.",
+    "emptyConversationDescription": "Je kan me alles over Dégage vragen. Ik doe mijn best om te antwoorden. ",
     "inputPlaceholder": "Stel je vraag...",
     "inputCharacterCount": "{current} / {max}",
     "send": "Versturen",
@@ -2447,7 +2456,7 @@
     "docsSearchError": "Opzoeken in documentatie mislukt.",
     "signIn": "Aanmelden",
     "sourcesUsed": "{count, plural, one {# bron gebruikt} other {# bronnen gebruikt}}",
-    "faqFallbackOpenChat": "Nog hulp nodig? Open Support Chat",
+    "faqFallbackOpenChat": "Nog hulp nodig? Stel hier je vraag aan onze chatbot.",
     "audiencePublic": "Publiek",
     "audienceUser": "Gebruiker",
     "audienceAdmin": "Beheerder"
