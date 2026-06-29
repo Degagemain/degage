@@ -49,7 +49,8 @@ Cette étape est complète lorsque la rue, la commune et le téléphone sont tou
 ### Infos véhicule
 
 Recueille les caractéristiques du véhicule : marque, type de carburant, type de véhicule (ou texte libre), kilométrage, places, date de première
-immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat et amortissement par km.
+immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat, amortissement par km et scans du certificat d'immatriculation (recto
+et verso).
 
 Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis.
 
@@ -116,34 +117,36 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 
 ## Propriétés
 
-| Propriété                     | Description                                                                                 |
-| ----------------------------- | ------------------------------------------------------------------------------------------- |
-| Rue                           | Adresse (rue) de l'utilisateur.                                                             |
-| Commune                       | Commune de l'utilisateur (code postal et localité).                                         |
-| Téléphone                     | Numéro de téléphone de l'utilisateur.                                                       |
-| Marque                        | Marque du véhicule.                                                                         |
-| Type de carburant             | Type de carburant du véhicule.                                                              |
-| Type de véhicule              | Modèle/type du véhicule dans le catalogue.                                                  |
-| Type de véhicule (autre)      | Texte libre lorsqu'aucune entrée du catalogue ne convient.                                  |
-| Véhicule acheté               | Indique si le véhicule a été acheté.                                                        |
-| Prix d'achat                  | Prix d'achat du véhicule.                                                                   |
-| Valeur du véhicule            | Valeur actuelle estimée du véhicule (proposée par l'admin).                                 |
-| Contre-proposition            | Valeur alternative proposée par le propriétaire.                                            |
-| Message de contre-proposition | Explication optionnelle de la contre-proposition.                                           |
-| Statut de valeur              | Progression de la négociation sur la valeur du véhicule.                                    |
-| Assureur                      | Compagnie d'assurance actuelle du véhicule.                                                 |
-| Début du contrat d'assurance  | Date de début du contrat d'assurance.                                                       |
-| Statut d'assurance            | Progression du sous-processus assurance.                                                    |
-| Amortissement par km          | Coût d'amortissement estimé par kilomètre parcouru.                                         |
-| Véhicule neuf                 | Indique si le véhicule est neuf.                                                            |
-| Kilométrage                   | Kilométrage actuel.                                                                         |
-| Première immatriculation      | Date de première immatriculation.                                                           |
-| Places                        | Nombre de places assises.                                                                   |
-| Utilitaire                    | Indique si le véhicule est classé comme utilitaire.                                         |
-| Propriétaire                  | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant). |
-| Propriétaire Play connector   | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                        |
-| Date session d'info           | Date prévue de la session d'info inscrite.                                                  |
-| ID PC session d'info          | Identifiant Play connector de la session d'info inscrite.                                   |
-| Statut session d'info         | Progression du sous-processus session d'info.                                               |
-| Simulation                    | Simulation associée, le cas échéant.                                                        |
-| Statut de préparation         | Suit la progression : Ouvert, Prêt ou Verrouillé.                                           |
+| Propriété                            | Description                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Rue                                  | Adresse (rue) de l'utilisateur.                                                             |
+| Commune                              | Commune de l'utilisateur (code postal et localité).                                         |
+| Téléphone                            | Numéro de téléphone de l'utilisateur.                                                       |
+| Marque                               | Marque du véhicule.                                                                         |
+| Type de carburant                    | Type de carburant du véhicule.                                                              |
+| Type de véhicule                     | Modèle/type du véhicule dans le catalogue.                                                  |
+| Type de véhicule (autre)             | Texte libre lorsqu'aucune entrée du catalogue ne convient.                                  |
+| Véhicule acheté                      | Indique si le véhicule a été acheté.                                                        |
+| Prix d'achat                         | Prix d'achat du véhicule.                                                                   |
+| Certificat d'immatriculation (recto) | Scan ou photo du recto du certificat d'immatriculation.                                     |
+| Certificat d'immatriculation (verso) | Scan ou photo du verso du certificat d'immatriculation.                                     |
+| Valeur du véhicule                   | Valeur actuelle estimée du véhicule (proposée par l'admin).                                 |
+| Contre-proposition                   | Valeur alternative proposée par le propriétaire.                                            |
+| Message de contre-proposition        | Explication optionnelle de la contre-proposition.                                           |
+| Statut de valeur                     | Progression de la négociation sur la valeur du véhicule.                                    |
+| Assureur                             | Compagnie d'assurance actuelle du véhicule.                                                 |
+| Début du contrat d'assurance         | Date de début du contrat d'assurance.                                                       |
+| Statut d'assurance                   | Progression du sous-processus assurance.                                                    |
+| Amortissement par km                 | Coût d'amortissement estimé par kilomètre parcouru.                                         |
+| Véhicule neuf                        | Indique si le véhicule est neuf.                                                            |
+| Kilométrage                          | Kilométrage actuel.                                                                         |
+| Première immatriculation             | Date de première immatriculation.                                                           |
+| Places                               | Nombre de places assises.                                                                   |
+| Utilitaire                           | Indique si le véhicule est classé comme utilitaire.                                         |
+| Propriétaire                         | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant). |
+| Propriétaire Play connector          | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                        |
+| Date session d'info                  | Date prévue de la session d'info inscrite.                                                  |
+| ID PC session d'info                 | Identifiant Play connector de la session d'info inscrite.                                   |
+| Statut session d'info                | Progression du sous-processus session d'info.                                               |
+| Simulation                           | Simulation associée, le cas échéant.                                                        |
+| Statut de préparation                | Suit la progression : Ouvert, Prêt ou Verrouillé.                                           |

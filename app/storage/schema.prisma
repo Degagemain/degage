@@ -98,6 +98,25 @@ enum CarOnboardingInfoSessionStatus {
   done
 }
 
+enum DocumentType {
+  registrationCertificate
+  other
+}
+
+model Document {
+  id          String       @id @default(uuid())
+  type        DocumentType
+  objectKey   String       @unique
+  fileName    String
+  contentType String
+  sizeBytes   Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  carOnboardingsRegistrationCertificateFront CarOnboarding[] @relation("RegistrationCertificateFront")
+  carOnboardingsRegistrationCertificateBack  CarOnboarding[] @relation("RegistrationCertificateBack")
+}
+
 model CarOnboarding {
   id                  String                           @id @default(uuid())
   street              String?
@@ -134,6 +153,10 @@ model CarOnboarding {
   owner               User?                            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   simulationId        String?
   simulation          Simulation?                      @relation(fields: [simulationId], references: [id], onDelete: SetNull)
+  registrationCertificateFrontId String?
+  registrationCertificateFront   Document?                        @relation("RegistrationCertificateFront", fields: [registrationCertificateFrontId], references: [id], onDelete: SetNull)
+  registrationCertificateBackId  String?
+  registrationCertificateBack    Document?                        @relation("RegistrationCertificateBack", fields: [registrationCertificateBackId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt

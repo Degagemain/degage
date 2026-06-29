@@ -1434,6 +1434,8 @@
         "isNewCar": "Véhicule neuf",
         "isVan": "Utilitaire",
         "purchasePrice": "Prix d'achat",
+        "registrationCertificateFront": "Certificat d'immatriculation (recto)",
+        "registrationCertificateBack": "Certificat d'immatriculation (verso)",
         "carValue": "Valeur du véhicule",
         "depreciationCostKm": "Amortissement par km",
         "carValueCounterProposal": "Contre-proposition",
@@ -1548,6 +1550,18 @@
         "confirmInfoSessionError": "Échec de la confirmation de présence à la session d'info.",
         "ownerPlayConnectorPendingSave": "Enregistrez la fiche pour actualiser le statut Play connector du propriétaire sélectionné.",
         "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
+        "registrationCertificate": {
+          "upload": "Téléverser un fichier",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Certificat d'immatriculation téléversé.",
+          "uploadError": "Échec du téléversement du certificat d'immatriculation.",
+          "download": "Télécharger",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir le certificat d'immatriculation.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucun fichier téléversé.",
+          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+        },
         "help": {
           "counterReadOnly": "Défini par le propriétaire lors de la négociation.",
           "carTypeOtherReadOnly": "Défini par l'utilisateur lorsque le type de véhicule n'est pas dans le catalogue.",

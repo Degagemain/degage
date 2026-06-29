@@ -10,6 +10,9 @@ export const apiPost = (url: string, body?: unknown, init?: RequestInit): Promis
 
 export const apiPut = (url: string, body?: unknown, init?: RequestInit): Promise<Response> => jsonRequest('PUT', url, body, init);
 
+export const apiPutForm = (url: string, formData: FormData, init?: RequestInit): Promise<Response> =>
+  fetch(url, { ...init, method: 'PUT', body: formData });
+
 export const apiPatch = (url: string, body?: unknown, init?: RequestInit): Promise<Response> => jsonRequest('PATCH', url, body, init);
 
 export const apiDelete = (url: string, init?: RequestInit): Promise<Response> => fetch(url, { ...init, method: 'DELETE' });
