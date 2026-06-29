@@ -1416,7 +1416,7 @@
       "columns": {
         "description": "Beschrijving",
         "owner": "Eigenaar",
-        "ownerHasPlayConnector": "Play connector",
+        "ownerHasPlayConnector": "Degapp Verbonden",
         "infoSessionDate": "Infosessie datum",
         "infoSessionPcId": "Infosessie PC-id",
         "infoSessionStatus": "Infosessiestatus",

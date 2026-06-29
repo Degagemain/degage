@@ -17,6 +17,7 @@ import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { cn } from '@/app/lib/utils';
+import type { CarOnboardingTabId } from './components/car-onboarding-form';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
@@ -48,7 +49,20 @@ const formatCurrencyPerKm = (value: number | null | undefined): string => {
   return `${new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(value)}/km`;
 };
 
-function ColoredStatusBadge({ label, className }: { label: string; className: string }) {
+function carOnboardingDetailTabHref(id: string | null | undefined, tab: CarOnboardingTabId): string | undefined {
+  if (!id) return undefined;
+  return `/app/admin/car-onboardings/${id}?tab=${tab}`;
+}
+
+function ColoredStatusBadge({ label, className, href }: { label: string; className: string; href?: string }) {
+  if (href) {
+    return (
+      <Badge variant="outline" asChild className={cn('border-transparent font-normal', className)}>
+        <Link href={href}>{label}</Link>
+      </Badge>
+    );
+  }
+
   return (
     <Badge variant="outline" className={cn('border-transparent font-normal', className)}>
       {label}
@@ -56,30 +70,42 @@ function ColoredStatusBadge({ label, className }: { label: string; className: st
   );
 }
 
+const statusColors = {
+  todo: 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300',
+  inProgress: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
+  done: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  notApplicable: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
+} as const;
+
 const preparationStatusClass: Record<CarOnboardingInPreparationStatus, string> = {
-  [CarOnboardingInPreparationStatus.OPEN]: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
-  [CarOnboardingInPreparationStatus.READY]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
-  [CarOnboardingInPreparationStatus.LOCKED]: 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300',
+  [CarOnboardingInPreparationStatus.OPEN]: statusColors.todo,
+  [CarOnboardingInPreparationStatus.READY]: statusColors.done,
+  [CarOnboardingInPreparationStatus.LOCKED]: statusColors.done,
 };
 
 const carValueStatusClass: Record<CarOnboardingCarValueStatus, string> = {
-  [CarOnboardingCarValueStatus.TODO]: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
-  [CarOnboardingCarValueStatus.PROPOSAL]: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
-  [CarOnboardingCarValueStatus.COUNTER]: 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300',
-  [CarOnboardingCarValueStatus.RESOLVED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  [CarOnboardingCarValueStatus.TODO]: statusColors.todo,
+  [CarOnboardingCarValueStatus.PROPOSAL]: statusColors.inProgress,
+  [CarOnboardingCarValueStatus.COUNTER]: statusColors.inProgress,
+  [CarOnboardingCarValueStatus.RESOLVED]: statusColors.done,
 };
 
 const insurerStatusClass: Record<CarOnboardingInsurerStatus, string> = {
-  [CarOnboardingInsurerStatus.NOT_APPLICABLE]: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
-  [CarOnboardingInsurerStatus.TODO]: 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300',
-  [CarOnboardingInsurerStatus.READY]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  [CarOnboardingInsurerStatus.NOT_APPLICABLE]: statusColors.notApplicable,
+  [CarOnboardingInsurerStatus.TODO]: statusColors.todo,
+  [CarOnboardingInsurerStatus.READY]: statusColors.done,
 };
 
 const infoSessionStatusClass: Record<CarOnboardingInfoSessionStatus, string> = {
-  [CarOnboardingInfoSessionStatus.TODO]: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
-  [CarOnboardingInfoSessionStatus.ENROLLED]: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
-  [CarOnboardingInfoSessionStatus.DONE]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  [CarOnboardingInfoSessionStatus.TODO]: statusColors.todo,
+  [CarOnboardingInfoSessionStatus.ENROLLED]: statusColors.inProgress,
+  [CarOnboardingInfoSessionStatus.DONE]: statusColors.done,
 };
+
+const playConnectorStatusClass = {
+  todo: statusColors.todo,
+  ready: statusColors.done,
+} as const;
 
 export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[] => {
   const { t } = options;
@@ -131,7 +157,18 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       id: 'ownerHasPlayConnector',
       accessorFn: (row) => row.owner?.hasPlayConnector ?? false,
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.ownerHasPlayConnector')} />,
-      cell: ({ row }) => boolCell(row.original.owner?.hasPlayConnector ?? false),
+      cell: ({ row }) => {
+        const item = row.original;
+        const hasPlayConnector = item.owner?.hasPlayConnector ?? false;
+        const status = hasPlayConnector ? 'ready' : 'todo';
+        return (
+          <ColoredStatusBadge
+            label={t(`subprocess.playConnector.${status}`)}
+            className={playConnectorStatusClass[status]}
+            href={carOnboardingDetailTabHref(item.id, 'owner')}
+          />
+        );
+      },
       enableSorting: false,
     },
     {
@@ -139,8 +176,15 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       accessorKey: 'infoSessionStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.infoSessionStatus')} />,
       cell: ({ row }) => {
-        const status = row.original.infoSessionStatus;
-        return <ColoredStatusBadge label={t(`subprocess.infoSession.${status}`)} className={infoSessionStatusClass[status]} />;
+        const item = row.original;
+        const status = item.infoSessionStatus;
+        return (
+          <ColoredStatusBadge
+            label={t(`subprocess.infoSession.${status}`)}
+            className={infoSessionStatusClass[status]}
+            href={carOnboardingDetailTabHref(item.id, 'infoSession')}
+          />
+        );
       },
       enableSorting: false,
     },
@@ -287,8 +331,15 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       accessorKey: 'carValueStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.carValueStatus')} />,
       cell: ({ row }) => {
-        const status = row.original.carValueStatus;
-        return <ColoredStatusBadge label={t(`subprocess.carValue.${status}`)} className={carValueStatusClass[status]} />;
+        const item = row.original;
+        const status = item.carValueStatus;
+        return (
+          <ColoredStatusBadge
+            label={t(`subprocess.carValue.${status}`)}
+            className={carValueStatusClass[status]}
+            href={carOnboardingDetailTabHref(item.id, 'carValue')}
+          />
+        );
       },
       enableSorting: false,
     },
@@ -311,8 +362,15 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       accessorKey: 'insurerStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.insurerStatus')} />,
       cell: ({ row }) => {
-        const status = row.original.insurerStatus;
-        return <ColoredStatusBadge label={t(`subprocess.insurer.${status}`)} className={insurerStatusClass[status]} />;
+        const item = row.original;
+        const status = item.insurerStatus;
+        return (
+          <ColoredStatusBadge
+            label={t(`subprocess.insurer.${status}`)}
+            className={insurerStatusClass[status]}
+            href={carOnboardingDetailTabHref(item.id, 'insurer')}
+          />
+        );
       },
       enableSorting: false,
     },
@@ -336,8 +394,15 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       accessorKey: 'statusInPreparation',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.statusInPreparation')} />,
       cell: ({ row }) => {
-        const status = row.original.statusInPreparation;
-        return <ColoredStatusBadge label={t(`preparationStatus.${status}`)} className={preparationStatusClass[status]} />;
+        const item = row.original;
+        const status = item.statusInPreparation;
+        return (
+          <ColoredStatusBadge
+            label={t(`preparationStatus.${status}`)}
+            className={preparationStatusClass[status]}
+            href={carOnboardingDetailTabHref(item.id, 'finalize')}
+          />
+        );
       },
       enableSorting: false,
     },

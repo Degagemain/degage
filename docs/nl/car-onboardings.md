@@ -138,7 +138,7 @@ admin dit vrijgeeft.
 | Zitplaatsen                  | Aantal zitplaatsen.                                                     |
 | Bestelwagen                  | Of het voertuig als bestelwagen wordt geclassificeerd.                  |
 | Eigenaar                     | Platformgebruiker die dit onboardingrecord bezit (optioneel voorlopig). |
-| Eigenaar Play connector      | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).     |
+| Degapp Verbonden             | Of de eigenaar een Degapp-account heeft gekoppeld (Todo/Compleet).      |
 | Infosessie datum             | Geplande datum van de ingeschreven infosessie.                          |
 | Infosessie PC-id             | Play connector-identificatie van de ingeschreven infosessie.            |
 | Infosessiestatus             | Voortgang van het infosessie-proces.                                    |
