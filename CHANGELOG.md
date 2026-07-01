@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: the FAQ on the first simulation step now appears at the bottom, consistent with the other steps.
 - Added: the public simulation now asks whether the car is a commercial vehicle or partly claimed as business expenses; answering yes shows a warning and blocks continuing.
 - Added: when buying a car in the simulation, you can mark it as new or used; for new cars, mileage and first registration are filled in automatically.
 - Changed: on the cost scenario screen, the income line is no longer repeated in the cost breakdown.
