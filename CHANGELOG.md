@@ -1,0 +1,15 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+### Public features
+
+- Changed: the simulation now enforces a cap on a car's depreciation cost per km.
+  When the cost is too high, the estimated car value is automatically adjusted
+  within its valuation range to meet the limit; if that isn't possible, the car
+  is not accepted and the price criteria are reported as not met.

@@ -1896,6 +1896,7 @@
       "price_criteria_not_met": "Price criteria were not met",
       "car_price_manual_review_would_accept": "Rules would assign {outcome}, but estimated value ({estimatedPrice}) exceeds the hub limit ({maxPrice}); result is manual review",
       "depreciation_cost_per_km": "Depreciation cost per km: €{depreciationCostPerKm}",
+      "car_value_adapted": "Estimated value adapted from {carValueBefore} (€{depreciationCostKmBefore}/km) to {carValueAfter} (€{depreciationCostKmAfter}/km) to meet the depreciation criteria",
       "estimated_total_yearly_mileage": "Estimated total yearly mileage: {estimatedTotalYearlyMileage} km (owner: {ownerKmPerYear} km/year)",
       "fixed_year_cost": "Fixed yearly cost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonus points: {bonusPoints}"

@@ -1896,6 +1896,7 @@
       "price_criteria_not_met": "Prijscriteria zijn niet gehaald",
       "car_price_manual_review_would_accept": "De regels zouden {outcome} geven, maar de geschatte waarde ({estimatedPrice}) overschrijdt de hubgrens ({maxPrice}); resultaat is handmatige review",
       "depreciation_cost_per_km": "Afschrijvingskosten per km: €{depreciationCostPerKm}",
+      "car_value_adapted": "Geschatte waarde aangepast van {carValueBefore} (€{depreciationCostKmBefore}/km) naar {carValueAfter} (€{depreciationCostKmAfter}/km) om aan de afschrijvingscriteria te voldoen",
       "estimated_total_yearly_mileage": "Geschat totaal jaarkilometrage: {estimatedTotalYearlyMileage} km (eigenaar: {ownerKmPerYear} km/jaar)",
       "fixed_year_cost": "Vaste jaarlijkse kost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonuspunten: {bonusPoints}"

@@ -1896,6 +1896,7 @@
       "price_criteria_not_met": "Les critères de prix ne sont pas remplis",
       "car_price_manual_review_would_accept": "Les règles auraient donné {outcome}, mais la valeur estimée ({estimatedPrice}) dépasse le plafond du hub ({maxPrice}) ; résultat : relecture manuelle",
       "depreciation_cost_per_km": "Coût d'amortissement au km : {depreciationCostPerKm} €",
+      "car_value_adapted": "Valeur estimée adaptée de {carValueBefore} ({depreciationCostKmBefore} €/km) à {carValueAfter} ({depreciationCostKmAfter} €/km) pour respecter les critères d'amortissement",
       "estimated_total_yearly_mileage": "Kilométrage annuel total estimé : {estimatedTotalYearlyMileage} km (propriétaire : {ownerKmPerYear} km/an)",
       "fixed_year_cost": "Coût annuel fixe : {fixedYearCost} €",
       "extra_bonus_points": "Points bonus supplémentaires : {bonusPoints}"

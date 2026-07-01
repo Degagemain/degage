@@ -5,7 +5,7 @@ vi.mock('@/actions/car-price-estimate/car-price-estimator', () => ({
 }));
 
 vi.mock('@/actions/simulation/car-info-estimator', () => ({
-  carInfoEstimator: vi.fn().mockResolvedValue({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' }),
+  carInfoEstimator: vi.fn().mockResolvedValue({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d', consumption: 6 }),
 }));
 
 vi.mock('@/actions/simulation/car-tax-calculator', () => ({
@@ -20,7 +20,7 @@ vi.mock('@/i18n/get-message', () => ({
 }));
 
 vi.mock('@/storage/town/town.read', () => ({
-  dbTownRead: vi.fn().mockResolvedValue({ id: 'town-1', province: { id: 'province-1' }, hub: { id: 'hub-1' } }),
+  dbTownRead: vi.fn().mockResolvedValue({ id: 'town-1', province: { id: 'province-1' }, hub: { id: 'hub-1' }, highDemand: false }),
 }));
 
 vi.mock('@/storage/hub/hub.read', () => ({
@@ -52,7 +52,7 @@ vi.mock('@/storage/hub/hub.read', () => ({
 }));
 
 vi.mock('@/storage/fuel-type/fuel-type.read', () => ({
-  dbFuelTypeRead: vi.fn().mockResolvedValue({ id: 'fuel-1', code: 'petrol' }),
+  dbFuelTypeRead: vi.fn().mockResolvedValue({ id: 'fuel-1', code: 'petrol', name: 'Petrol', pricePer: 1.5 }),
 }));
 
 vi.mock('@/storage/province/province.read', () => ({
@@ -230,7 +230,7 @@ describe('runSimulationEngine', () => {
     expect(result.rejectionReason).toBe('simulation.step.car_price_manual_review_would_accept');
     const lastInfo = result.steps.filter((s) => s.status === SimulationStepIcon.INFO).pop();
     expect(lastInfo?.message).toBe('simulation.step.car_price_manual_review_would_accept');
-    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
+    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d', consumption: 6 });
   });
 
   it('calls carValueEstimator and returns steps when rules pass', async () => {
@@ -241,7 +241,7 @@ describe('runSimulationEngine', () => {
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
     expect(result.steps[1].status).toBe(SimulationStepIcon.OK);
     expect(result.steps[2].status).toBe(SimulationStepIcon.INFO);
-    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d' });
+    expect(result.carInfo).toEqual({ cylinderCc: 1498, co2Emission: 120, ecoscore: 72, euroNormCode: 'euro-6d', consumption: 6 });
     expect(typeof result.duration).toBe('number');
     expect(result.duration).toBeGreaterThanOrEqual(0);
     expect(result.resultMinSharedKm).toBe(3_000);
@@ -277,9 +277,9 @@ describe('runSimulationEngine', () => {
         maxSharedKm: 7_000,
         simMaxPrice: null,
         simAcceptedPriceCategoryA: 0.01,
-        simAcceptedPriceCategoryB: 0.01,
-        simAcceptedDepreciationCostKm: 0.01,
-        simAcceptedElectricDepreciationCostKm: 0.01,
+        simAcceptedPriceCategoryB: 1,
+        simAcceptedDepreciationCostKm: 1,
+        simAcceptedElectricDepreciationCostKm: 1,
         simMinEcoScoreForBonus: 60,
         simMaxKmForBonus: 140_000,
         simMaxAgeForBonus: 7,
@@ -390,8 +390,8 @@ describe('runSimulationEngine', () => {
         simMaxPrice: null,
         simAcceptedPriceCategoryA: 0.01,
         simAcceptedPriceCategoryB: 0.01,
-        simAcceptedDepreciationCostKm: 0.01,
-        simAcceptedElectricDepreciationCostKm: 0.01,
+        simAcceptedDepreciationCostKm: 1,
+        simAcceptedElectricDepreciationCostKm: 1,
         simMinEcoScoreForBonus: 60,
         simMaxKmForBonus: 140_000,
         simMaxAgeForBonus: 7,

@@ -26,6 +26,7 @@ export enum SimulationStepCode {
   CAR_TAX_ESTIMATED_ELECTRIC = 'car_tax_estimated_electric',
   CAR_TAX_EURO_NORM_ADJUSTMENT = 'car_tax_euro_norm_adjustment',
   CAR_TAX_FAILED = 'car_tax_failed',
+  CAR_VALUE_ADAPTED = 'car_value_adapted',
   DEPRECIATION_COST_PER_KM = 'depreciation_cost_per_km',
   ECO_SCORE_BONUS = 'eco_score_bonus',
   ERROR_DURING_STEP = 'error_during_step',
