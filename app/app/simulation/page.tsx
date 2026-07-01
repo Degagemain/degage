@@ -259,9 +259,9 @@ export default function SimulationPage() {
   useEffect(() => {
     if (screen !== STEP_LOADING || simulationRequestInFlight.current) return;
 
-    const isNewCar = carChoice === 'newCar';
+    const isPurchased = carChoice === 'newCar';
     const seatsNum = parseInt(seats.trim(), 10) || 1;
-    const firstRegisteredAtValue = isNewCar
+    const firstRegisteredAtValue = isPurchased
       ? new Date().toISOString().slice(0, 10)
       : firstRegisteredAt.trim() || new Date().toISOString().slice(0, 10);
     const mileageNum = parseInt(mileage.trim(), 10) || 0;
@@ -278,9 +278,9 @@ export default function SimulationPage() {
       seats: seatsNum,
       firstRegisteredAt: firstRegisteredAtValue,
       isVan: isVan,
-      isNewCar,
+      isPurchased,
       purchasePrice:
-        isNewCar && purchaseAmountInclVat.trim()
+        isPurchased && purchaseAmountInclVat.trim()
           ? (() => {
               const n = parseFloat(purchaseAmountInclVat.replace(/,/g, '.'));
               return Number.isFinite(n) && n > 0 ? n : null;

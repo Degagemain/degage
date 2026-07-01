@@ -938,8 +938,8 @@
         "simMaxPrice": "Max autoprijs (handmatige review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (minder dan 7 zitpl.)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ zitpl.)",
-        "simAcceptedDepreciationCostKm": "Cat. A afschr. €/km (standaard hub)",
-        "simAcceptedElectricDepreciationCostKm": "Cat. A afschr. €/km (elektrisch)",
+        "simAcceptedDepreciationCostKm": "Max afschr. €/km (cat. A)",
+        "simAcceptedElectricDepreciationCostKm": "Max afschr. €/km (elektrisch & cat. B)",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Selectie",
+        "update": "Bulk bijwerken",
         "delete": "Selectie verwijderen"
+      },
+      "bulkUpdate": {
+        "title": "Hubs bulk bijwerken",
+        "description": "De volgende {count} record(s) worden bijgewerkt. Niet-ingestelde velden blijven ongewijzigd.",
+        "unsetOption": "Niet aanpassen",
+        "setOption": "Waarde instellen",
+        "clearOption": "Wissen",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Alles bijwerken",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wacht",
+        "statusUpdating": "Bijwerken…",
+        "statusSuccess": "Bijgewerkt",
+        "statusError": "Mislukt"
       },
       "bulkDelete": {
         "title": "Hubs verwijderen",
@@ -1304,7 +1321,7 @@
         "seats": "Zitplaatsen",
         "firstRegisteredAt": "Eerste inschrijving",
         "purchasePrice": "Aankoopprijs",
-        "isNewCar": "Nieuwe wagen",
+        "isPurchased": "Aangekochte wagen",
         "isVan": "Bestelwagen",
         "resultEstimatedCarValue": "Geschatte waarde",
         "resultDepreciationCostKm": "Afschrijving/km",
@@ -1392,7 +1409,7 @@
         "saveSuccess": "Opgeslagen.",
         "saveError": "Opslaan mislukt. Probeer opnieuw.",
         "validationError": "Ongeldig e-mailadres.",
-        "isNewCar": "Nieuwe auto",
+        "isPurchased": "Aangekochte wagen",
         "purchasePrice": "Aankoopprijs (incl. btw)",
         "rejectionReason": "Afwijzingsreden",
         "duration": "Looptijd (seconden)",
@@ -1896,6 +1913,7 @@
       "price_criteria_not_met": "Prijscriteria zijn niet gehaald",
       "car_price_manual_review_would_accept": "De regels zouden {outcome} geven, maar de geschatte waarde ({estimatedPrice}) overschrijdt de hubgrens ({maxPrice}); resultaat is handmatige review",
       "depreciation_cost_per_km": "Afschrijvingskosten per km: €{depreciationCostPerKm}",
+      "car_value_adapted": "Geschatte waarde aangepast van {carValueBefore} (€{depreciationCostKmBefore}/km) naar {carValueAfter} (€{depreciationCostKmAfter}/km) om aan de afschrijvingscriteria te voldoen",
       "estimated_total_yearly_mileage": "Geschat totaal jaarkilometrage: {estimatedTotalYearlyMileage} km (eigenaar: {ownerKmPerYear} km/jaar)",
       "fixed_year_cost": "Vaste jaarlijkse kost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonuspunten: {bonusPoints}"

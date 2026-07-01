@@ -244,7 +244,7 @@ export default function SimulationDetailPage() {
             <FieldRow label={tForm('seats')} value={String(simulation.seats)} />
             <FieldRow label={tForm('firstRegistrationDate')} value={firstRegisteredAt ? format(firstRegisteredAt, 'dd-MM-yyyy') : null} />
             <FieldRow label={tForm('isVan')} value={simulation.isVan ? tDetail('yes') : tDetail('no')} />
-            <FieldRow label={tDetail('isNewCar')} value={simulation.isNewCar ? tDetail('yes') : tDetail('no')} />
+            <FieldRow label={tDetail('isPurchased')} value={simulation.isPurchased ? tDetail('yes') : tDetail('no')} />
             <FieldRow
               label={tDetail('purchasePrice')}
               value={simulation.purchasePrice != null ? `€ ${simulation.purchasePrice.toLocaleString()}` : null}

@@ -938,8 +938,8 @@
         "simMaxPrice": "Max car price (manual review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (under 7 seats)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ seats)",
-        "simAcceptedDepreciationCostKm": "Cat. A deprec. €/km (default hub)",
-        "simAcceptedElectricDepreciationCostKm": "Cat. A deprec. €/km (electric)",
+        "simAcceptedDepreciationCostKm": "Max deprec. €/km (cat. A)",
+        "simAcceptedElectricDepreciationCostKm": "Max deprec. €/km (electric & cat. B)",
         "created": "Created",
         "updated": "Updated"
       },
@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Selection",
+        "update": "Bulk update",
         "delete": "Delete selected"
+      },
+      "bulkUpdate": {
+        "title": "Bulk update hubs",
+        "description": "The following {count} record(s) will be updated. Unset fields stay unchanged.",
+        "unsetOption": "Unset",
+        "setOption": "Set value",
+        "clearOption": "Clear",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Update all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusUpdating": "Updating…",
+        "statusSuccess": "Updated",
+        "statusError": "Failed"
       },
       "bulkDelete": {
         "title": "Delete hubs",
@@ -1304,7 +1321,7 @@
         "seats": "Seats",
         "firstRegisteredAt": "First registered",
         "purchasePrice": "Purchase price",
-        "isNewCar": "New car",
+        "isPurchased": "Purchased car",
         "isVan": "Van",
         "resultEstimatedCarValue": "Est. car value",
         "resultDepreciationCostKm": "Depreciation cost/km",
@@ -1392,7 +1409,7 @@
         "saveSuccess": "Saved.",
         "saveError": "Save failed. Try again.",
         "validationError": "Invalid email.",
-        "isNewCar": "New car",
+        "isPurchased": "Purchased car",
         "purchasePrice": "Purchase price (incl. VAT)",
         "rejectionReason": "Rejection reason",
         "duration": "Run duration (seconds)",
@@ -1896,6 +1913,7 @@
       "price_criteria_not_met": "Price criteria were not met",
       "car_price_manual_review_would_accept": "Rules would assign {outcome}, but estimated value ({estimatedPrice}) exceeds the hub limit ({maxPrice}); result is manual review",
       "depreciation_cost_per_km": "Depreciation cost per km: €{depreciationCostPerKm}",
+      "car_value_adapted": "Estimated value adapted from {carValueBefore} (€{depreciationCostKmBefore}/km) to {carValueAfter} (€{depreciationCostKmAfter}/km) to meet the depreciation criteria",
       "estimated_total_yearly_mileage": "Estimated total yearly mileage: {estimatedTotalYearlyMileage} km (owner: {ownerKmPerYear} km/year)",
       "fixed_year_cost": "Fixed yearly cost: €{fixedYearCost}",
       "extra_bonus_points": "Extra bonus points: {bonusPoints}"

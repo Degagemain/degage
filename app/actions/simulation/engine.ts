@@ -1,6 +1,7 @@
 import { addYears, isBefore } from 'date-fns';
 
 import {
+  type PriceRange,
   type SimulationEngineResult,
   SimulationPhase,
   type SimulationResultBuilder,
@@ -86,7 +87,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     brandId: input.brand.id,
     fuelTypeId: input.fuelType.id,
     mileage: input.mileage,
-    isNewCar: input.isNewCar,
+    isPurchased: input.isPurchased,
     isVan: input.isVan,
     seats: input.seats,
   });
@@ -115,6 +116,10 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   }
 }
 
+const simulationCarIsCategoryBCandidate = (input: SimulationRunInput): boolean => {
+  return input.seats >= 7 || input.isVan;
+};
+
 export async function tryRunSimulationEngine(input: SimulationRunInput, result: SimulationEngineResult): Promise<SimulationEngineResult> {
   setCurrentStep(result, SimulationPhase.INITIAL_CHECKS);
   const town = await dbTownRead(input.town.id);
@@ -132,7 +137,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     return result;
   }
 
-  if (!input.isNewCar) {
+  if (!input.isPurchased) {
     if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
       result.resultCode = SimulationResultCode.NOT_OK;
       result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
@@ -140,7 +145,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }
 
     setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
-    let priceRange;
+    let priceRange: PriceRange;
     try {
       priceRange = await carValueEstimator(
         input.brand.id,
@@ -180,7 +185,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   setCurrentStep(result, SimulationPhase.CAR_INFO);
-  const estimatedBuildYear = input.isNewCar ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
+  const estimatedBuildYear = input.isPurchased ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
   const carInfo = await carInfoEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, estimatedBuildYear);
   addInfoMessage(
     result,
@@ -244,7 +249,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     await getSimulationMessage(SimulationStepCode.FUEL_COST_PER_KM, { fuelCostPerKm: Math.round(fuelCostPerKm * 100) / 100 }),
   );
 
-  const depreciationCostKm = kmToDepreciation > 0 ? result.resultEstimatedCarValue! / kmToDepreciation : 0;
+  let depreciationCostKm = kmToDepreciation > 0 ? result.resultEstimatedCarValue! / kmToDepreciation : 0;
   result.resultDepreciationCostKm = depreciationCostKm;
 
   addInfoMessage(
@@ -253,6 +258,43 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
       depreciationCostPerKm: Math.round(depreciationCostKm * 10000) / 10000,
     }),
   );
+
+  // Depreciation cost criteria rejection
+  const isCategoryBOrElectric = simulationCarIsCategoryBCandidate(input) || isElectricFuelType(fuelType);
+  if (
+    (isCategoryBOrElectric && depreciationCostKm > hub.simAcceptedElectricDepreciationCostKm) ||
+    (!isCategoryBOrElectric && depreciationCostKm > hub.simAcceptedDepreciationCostKm)
+  ) {
+    // Modify car value within bounds to reach acceptance criteria if possible
+    const maxDepreciationCostKm = isCategoryBOrElectric ? hub.simAcceptedElectricDepreciationCostKm : hub.simAcceptedDepreciationCostKm;
+    const maxCarValue = kmToDepreciation * maxDepreciationCostKm;
+
+    if (result.estimate?.min && result.estimate?.max && maxCarValue >= result.estimate.min && maxCarValue <= result.estimate.max) {
+      // Lower depreciation cost
+      const values = {
+        carValueBefore: result.resultEstimatedCarValue ?? 0,
+        depreciationCostKmBefore: depreciationCostKm,
+      };
+      result.resultEstimatedCarValue = maxCarValue;
+      depreciationCostKm = maxDepreciationCostKm;
+      result.resultDepreciationCostKm = depreciationCostKm;
+      addInfoMessage(
+        result,
+        await getSimulationMessage(SimulationStepCode.CAR_VALUE_ADAPTED, {
+          carValueBefore: formatPriceInThousands(values.carValueBefore),
+          depreciationCostKmBefore: Math.round(values.depreciationCostKmBefore * 10000) / 10000,
+          carValueAfter: formatPriceInThousands(result.resultEstimatedCarValue),
+          depreciationCostKmAfter: Math.round(depreciationCostKm * 10000) / 10000,
+        }),
+      );
+    } else {
+      const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
+      addErrorMessage(result, priceFailure);
+      result.resultCode = SimulationResultCode.NOT_OK;
+      result.rejectionReason = priceFailure;
+      return result;
+    }
+  }
 
   const kmCost = fuelCostPerKm + fixedYearCost / estimatedTotalYearlyMileage + depreciationCostKm;
   const roundedKmCost = Math.round(kmCost * 10000) / 10000;
@@ -318,24 +360,8 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   if (roundedKmCost <= hub.simAcceptedPriceCategoryA && input.seats < 7) {
     return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
   }
-  if (input.seats >= 7 && roundedKmCost <= hub.simAcceptedPriceCategoryB) {
+  if (simulationCarIsCategoryBCandidate(input) && roundedKmCost <= hub.simAcceptedPriceCategoryB) {
     return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_B);
-  }
-  if (input.isVan) {
-    return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_B);
-  }
-
-  if (hub.isDefault) {
-    if (depreciationCostKm <= hub.simAcceptedDepreciationCostKm) {
-      const fallbackCategory = input.seats >= 7 ? SimulationResultCode.CATEGORY_B : SimulationResultCode.CATEGORY_A;
-      return await resolveAcceptanceOrMaxPriceReview(result, hub, fallbackCategory);
-    }
-  }
-
-  if (isElectricFuelType(fuelType)) {
-    if (depreciationCostKm <= hub.simAcceptedElectricDepreciationCostKm) {
-      return await resolveAcceptanceOrMaxPriceReview(result, hub, SimulationResultCode.CATEGORY_A);
-    }
   }
 
   const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);

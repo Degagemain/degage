@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Plus, Trash2, X } from 'lucide-react';
+import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Hub } from '@/domain/hub.model';
@@ -25,6 +25,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { BulkUpdateHubDialog, type BulkUpdateHubItem, HUB_BULK_NUMERIC_FIELDS } from '@/app/components/bulk-update-hub-dialog';
 import { apiDelete, apiPost, apiPut } from '@/app/lib/api-client';
 import { createColumns } from './columns';
 
@@ -86,6 +87,7 @@ export default function HubsPage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [hubToDelete, setHubToDelete] = useState<Hub | null>(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const handleSort = useCallback(
@@ -217,9 +219,32 @@ export default function HubsPage() {
     [rowSelection, state.data],
   );
 
+  const selectedHubsFull: BulkUpdateHubItem[] = useMemo(
+    () =>
+      Object.keys(rowSelection)
+        .map((index) => state.data[parseInt(index)])
+        .filter(Boolean)
+        .map((hub) => ({ id: hub.id!, label: hub.name, hub })),
+    [rowSelection, state.data],
+  );
+
+  const bulkUpdateFieldLabels = useMemo(
+    () =>
+      Object.fromEntries(HUB_BULK_NUMERIC_FIELDS.map((field) => [field.key, columnLabels[field.key]])) as Record<
+        (typeof HUB_BULK_NUMERIC_FIELDS)[number]['key'],
+        string
+      >,
+    [columnLabels],
+  );
+
   const handleBulkDeleteItem = useCallback((id: string) => apiDelete(`/api/hubs/${id}`), []);
 
   const handleBulkDeleteComplete = useCallback(() => {
+    setRowSelection({});
+    fetchHubs();
+  }, [fetchHubs]);
+
+  const handleBulkUpdateComplete = useCallback(() => {
     setRowSelection({});
     fetchHubs();
   }, [fetchHubs]);
@@ -301,6 +326,10 @@ export default function HubsPage() {
             filterSlot={
               <>
                 <BulkActionsButton count={selectedHubs.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem onClick={() => setBulkUpdateOpen(true)}>
+                    <Pencil />
+                    {t('bulkActions.update')}
+                  </DropdownMenuItem>
                   <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
                     <Trash2 />
                     {t('bulkActions.delete')}
@@ -386,6 +415,30 @@ export default function HubsPage() {
           title: t('bulkImport.title'),
           description: t('bulkImport.description'),
           columnName: t('bulkImport.columnName'),
+        }}
+      />
+
+      <BulkUpdateHubDialog
+        open={bulkUpdateOpen}
+        onOpenChange={setBulkUpdateOpen}
+        items={selectedHubsFull}
+        fieldLabels={bulkUpdateFieldLabels}
+        onComplete={handleBulkUpdateComplete}
+        labels={{
+          title: t('bulkUpdate.title'),
+          description: t('bulkUpdate.description', { count: selectedHubsFull.length }),
+          unsetOption: t('bulkUpdate.unsetOption'),
+          setOption: t('bulkUpdate.setOption'),
+          clearOption: t('bulkUpdate.clearOption'),
+          columnName: t('bulkUpdate.columnName'),
+          columnStatus: t('bulkUpdate.columnStatus'),
+          confirm: t('bulkUpdate.confirm'),
+          cancel: t('bulkUpdate.cancel'),
+          close: t('bulkUpdate.close'),
+          statusPending: t('bulkUpdate.statusPending'),
+          statusUpdating: t('bulkUpdate.statusUpdating'),
+          statusSuccess: t('bulkUpdate.statusSuccess'),
+          statusError: t('bulkUpdate.statusError'),
         }}
       />
     </>

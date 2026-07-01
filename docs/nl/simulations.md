@@ -32,8 +32,8 @@ Elke run geeft een resultaat plus een lijst met stappen/boodschappen, zodat admi
 De simulatie gebruikt onder andere:
 
 - Merk, brandstoftype, autotype (of "overig")
-- Nieuw/tweedehands, eerste inschrijving, kilometerstand (stand bij aankoop voor nieuwe wagens), aantal zitplaatsen, bestelwagen
-- Aankoopprijs (voor nieuwe auto's)
+- Aangekocht/bestaand, eerste inschrijving, kilometerstand (stand bij aankoop voor aangekochte wagens), aantal zitplaatsen, bestelwagen
+- Aankoopprijs (voor aangekochte wagens)
 - Gemeente en verwachte eigen km per jaar
 
 ## Volledige flow
@@ -48,7 +48,7 @@ De simulatie gebruikt onder andere:
 ### 2) Schatting van voertuigwaarde
 
 - Tweedehands: een waarderange wordt geschat en omgezet naar een huidige geschatte voertuigwaarde.
-- Nieuw: de aankoopprijs wordt gebruikt als geschatte waarde.
+- Aangekocht: de aankoopprijs wordt gebruikt als geschatte waarde.
 
 ### 3) Schatting van technisch profiel
 
@@ -106,10 +106,10 @@ Als de kwaliteitscriteria slagen, worden categorieregels toegepast:
 - **Niet OK**: als prijscriteria niet gehaald worden
 
 **Handmatige beoordeling bij hoge waarde (hubinstelling):** De hub kan een **maximale autoprijs** voor automatische acceptatie instellen. Als
-die grens is ingevuld en de **geschatte voertuigwaarde** (tweedehands) of **aankoopprijs** (nieuw) is **hoger**, loopt de simulatie toch
-volledig door. Alleen wanneer het resultaat **Categorie A** of **Categorie B** zou zijn, vervangt de engine dat door **Handmatige beoordeling**.
-Een stapmelding vermeldt welke categorie anders zou zijn toegekend. Zou het resultaat **Niet OK** zijn, dan wijzigt de prijslimiet **niets**.
-Zie [Hubs](hubs.md) voor uitleg en configuratie.
+die grens is ingevuld en de **geschatte voertuigwaarde** (bestaande wagens) of **aankoopprijs** (aangekocht) is **hoger**, loopt de simulatie
+toch volledig door. Alleen wanneer het resultaat **Categorie A** of **Categorie B** zou zijn, vervangt de engine dat door **Handmatige
+beoordeling**. Een stapmelding vermeldt welke categorie anders zou zijn toegekend. Zou het resultaat **Niet OK** zijn, dan wijzigt de
+prijslimiet **niets**. Zie [Hubs](hubs.md) voor uitleg en configuratie.
 
 ## Resultaatcodes
 
@@ -162,8 +162,8 @@ Kolommen gemarkeerd met _(standaard verborgen)_ zijn beschikbaar via de kolomkie
 | Brandstoftype          | Ingevoerd brandstoftype. _(standaard verborgen)_                                               |
 | Autotype               | Autotype of "Overig"-beschrijving. _(standaard verborgen)_                                     |
 | Eigenaar km/jaar       | Verwachte jaarlijkse km van de eigenaar. _(standaard verborgen)_                               |
-| Aankoopprijs           | Aankoopprijs voor nieuwe wagens. _(standaard verborgen)_                                       |
-| Nieuwe wagen           | Of de wagen als nieuw is aangemerkt. _(standaard verborgen)_                                   |
+| Aankoopprijs           | Aankoopprijs voor aangekochte wagens. _(standaard verborgen)_                                  |
+| Aangekochte wagen      | Of de wagen als aangekocht is aangemerkt. _(standaard verborgen)_                              |
 | Bestelwagen            | Of de wagen als bestelwagen is aangemerkt. _(standaard verborgen)_                             |
 | Verkeersbelasting/jaar | Geschatte jaarlijkse verkeersbelasting. _(standaard verborgen)_                                |
 | Keuring/jaar           | Geschatte jaarlijkse keuringskosten. _(standaard verborgen)_                                   |

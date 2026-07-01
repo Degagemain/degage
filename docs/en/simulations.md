@@ -32,8 +32,8 @@ Each run produces a result plus a detailed list of steps/messages so admins can 
 The run uses car and context data such as:
 
 - Brand, fuel type, car type (or "other" type)
-- New/used flag, first registration date, mileage (odometer at purchase for new cars), seats, van flag
-- Purchase price (for new cars)
+- Purchased/existing flag, first registration date, mileage (odometer at purchase for purchased cars), seats, van flag
+- Purchase price (for purchased cars)
 - Town and expected owner km per year
 
 ## End-to-end flow
@@ -48,7 +48,7 @@ The run uses car and context data such as:
 ### 2) Car value estimate
 
 - Used car: value range is estimated and converted into an estimated current car value.
-- New car: the purchase price is used as estimated value.
+- Purchased car: the purchase price is used as estimated value.
 
 ### 3) Car technical profile estimate
 
@@ -105,9 +105,9 @@ If quality criteria pass, the engine applies category rules:
 - **Not OK**: if pricing criteria are not met
 
 **High-value manual review (hub setting):** The hub can define a **maximum car price** for automatic acceptance. If that limit is set and the
-**estimated car value** (used cars) or **purchase price** (new cars) is **above** it, the simulation still runs the full calculation. Only when
-the outcome **would** have been **Category A** or **Category B** does the engine replace that with **Manual review**. A step message explains
-which category would have applied. If the outcome would have been **Not OK**, the price cap does **not** change the result. Details and
+**estimated car value** (existing cars) or **purchase price** (purchased cars) is **above** it, the simulation still runs the full calculation.
+Only when the outcome **would** have been **Category A** or **Category B** does the engine replace that with **Manual review**. A step message
+explains which category would have applied. If the outcome would have been **Not OK**, the price cap does **not** change the result. Details and
 configuration are in [Hubs](hubs.md).
 
 ## Result codes
@@ -161,8 +161,8 @@ Columns marked _(hidden by default)_ are available via the column picker but not
 | Fuel type             | Fuel type entered. _(hidden by default)_                                      |
 | Car type              | Car type or "Other" description. _(hidden by default)_                        |
 | Owner km/year         | Expected yearly km driven by the owner. _(hidden by default)_                 |
-| Purchase price        | Purchase price entered for new cars. _(hidden by default)_                    |
-| New car               | Whether the car was marked as new. _(hidden by default)_                      |
+| Purchase price        | Purchase price entered for purchased cars. _(hidden by default)_              |
+| Purchased car         | Whether the car was marked as purchased. _(hidden by default)_                |
 | Van                   | Whether the car was marked as a van. _(hidden by default)_                    |
 | Tax cost/year         | Estimated yearly road tax. _(hidden by default)_                              |
 | Inspection cost/year  | Estimated yearly inspection cost. _(hidden by default)_                       |

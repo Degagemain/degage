@@ -938,8 +938,8 @@
         "simMaxPrice": "Prix max véhicule (revue manuelle)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (moins de 7 places)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7 places ou plus)",
-        "simAcceptedDepreciationCostKm": "Cat. A dépréc. EUR/km (hub par défaut)",
-        "simAcceptedElectricDepreciationCostKm": "Cat. A dépréc. EUR/km (électrique)",
+        "simAcceptedDepreciationCostKm": "Max dépréc. EUR/km (cat. A)",
+        "simAcceptedElectricDepreciationCostKm": "Max dépréc. EUR/km (électrique & cat. B)",
         "created": "Créé le",
         "updated": "Modifié le"
       },
@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Sélection",
+        "update": "Mise à jour groupée",
         "delete": "Supprimer la sélection"
+      },
+      "bulkUpdate": {
+        "title": "Mise à jour groupée des hubs",
+        "description": "Les {count} enregistrement(s) suivants seront mis à jour. Les champs non définis restent inchangés.",
+        "unsetOption": "Ne pas modifier",
+        "setOption": "Définir la valeur",
+        "clearOption": "Effacer",
+        "columnName": "Hub",
+        "columnStatus": "Statut",
+        "confirm": "Tout mettre à jour",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusUpdating": "Mise à jour…",
+        "statusSuccess": "Mis à jour",
+        "statusError": "Échoué"
       },
       "bulkDelete": {
         "title": "Supprimer des hubs",
@@ -1304,7 +1321,7 @@
         "seats": "Places assises",
         "firstRegisteredAt": "Première immatriculation",
         "purchasePrice": "Prix d'achat",
-        "isNewCar": "Voiture neuve",
+        "isPurchased": "Véhicule acheté",
         "isVan": "Utilitaire",
         "resultEstimatedCarValue": "Valeur estimée",
         "resultDepreciationCostKm": "Amortissement/km",
@@ -1392,7 +1409,7 @@
         "saveSuccess": "Enregistré.",
         "saveError": "Échec de l'enregistrement. Réessayez.",
         "validationError": "E-mail invalide.",
-        "isNewCar": "Voiture neuve",
+        "isPurchased": "Véhicule acheté",
         "purchasePrice": "Prix d'achat (TVA incl.)",
         "rejectionReason": "Motif de rejet",
         "duration": "Durée d'exécution (secondes)",
@@ -1896,6 +1913,7 @@
       "price_criteria_not_met": "Les critères de prix ne sont pas remplis",
       "car_price_manual_review_would_accept": "Les règles auraient donné {outcome}, mais la valeur estimée ({estimatedPrice}) dépasse le plafond du hub ({maxPrice}) ; résultat : relecture manuelle",
       "depreciation_cost_per_km": "Coût d'amortissement au km : {depreciationCostPerKm} €",
+      "car_value_adapted": "Valeur estimée adaptée de {carValueBefore} ({depreciationCostKmBefore} €/km) à {carValueAfter} ({depreciationCostKmAfter} €/km) pour respecter les critères d'amortissement",
       "estimated_total_yearly_mileage": "Kilométrage annuel total estimé : {estimatedTotalYearlyMileage} km (propriétaire : {ownerKmPerYear} km/an)",
       "fixed_year_cost": "Coût annuel fixe : {fixedYearCost} €",
       "extra_bonus_points": "Points bonus supplémentaires : {bonusPoints}"
