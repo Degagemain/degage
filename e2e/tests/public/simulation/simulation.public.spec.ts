@@ -52,7 +52,7 @@ for (const locale of SIMULATION_LOCALES) {
       const commercialField = page.getByText(messages.commercialVehicleLabel, { exact: true }).locator('..');
       await commercialField.getByRole('button').click();
 
-      await expect(page.getByRole('alert')).toContainText(messages.commercialVehicleWarning);
+      await expect(page.getByRole('alert').filter({ hasText: messages.commercialVehicleWarning })).toBeVisible();
       await expect(submitButton).toBeDisabled();
 
       await fillExistingCarForm(page, messages);
