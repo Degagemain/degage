@@ -52,7 +52,7 @@ export async function continueFromSituation(page: Page, messages: SimulationMess
 }
 
 function fieldByLabel(page: Page, labelText: string) {
-  return page.getByText(labelText, { exact: true }).locator('..');
+  return page.getByText(labelText, { exact: true }).locator('xpath=ancestor::div[.//button or .//input or .//select][1]');
 }
 
 async function selectSearchDropdown(page: Page, fieldLabel: string, query: string, optionName: string) {

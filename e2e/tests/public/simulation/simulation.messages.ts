@@ -67,7 +67,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     purchaseAmountLabel: 'Aankoopbedrag (incl. btw)',
     commercialVehicleLabel: 'Bedrijfswagen',
     commercialVehicleWarning: 'Bedrijfswagens en wagens die (deels) als beroepskosten zijn ingebracht, komen niet in aanmerking voor Dégage.',
-    isNewCarLabel: 'Nieuwe wagen',
+    isNewCarLabel: 'Nieuwe wagen?',
     categoryA: 'Categorie A',
   },
   fr: {
