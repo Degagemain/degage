@@ -5,6 +5,7 @@ import { seedEuroNorms } from './seed-euro-norms';
 import { seedFiscalRegions } from './seed-fiscal-regions';
 import { seedProvinces } from './seed-provinces';
 import { seedCarTaxBaseRates } from './seed-car-tax-base-rates';
+import { seedCarTaxBaseRates202607 } from './seed-car-tax-base-rates-2026-07';
 import { seedCarTaxEuroNormAdjustments } from './seed-car-tax-euro-norm-adjustments';
 import { seedCarTaxFlatRates } from './seed-car-tax-flat-rates';
 import { seedHubs } from './seed-hubs';
@@ -26,6 +27,7 @@ async function seed() {
   await seedFiscalRegions(prisma);
   await seedProvinces(prisma);
   await seedCarTaxBaseRates(prisma);
+  await seedCarTaxBaseRates202607(prisma);
   await seedCarTaxEuroNormAdjustments(prisma);
   await seedCarTaxFlatRates(prisma);
   await seedHubs(prisma);
