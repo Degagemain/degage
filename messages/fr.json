@@ -10,6 +10,10 @@
     "dark": "Sombre",
     "automatic": "Automatique"
   },
+  "common": {
+    "yes": "Oui",
+    "no": "Non"
+  },
   "notFound": {
     "eyebrow": "Page introuvable",
     "title": "Nous ne trouvons pas cette page",
@@ -1244,8 +1248,6 @@
         "hasActiveMembersLabel": "Membres actifs",
         "unsetOption": "Non défini",
         "replaceOption": "Définir le hub",
-        "yesOption": "Oui",
-        "noOption": "Non",
         "columnName": "Ville",
         "columnStatus": "Statut",
         "confirm": "Tout mettre à jour",
@@ -1419,14 +1421,10 @@
         "ecoscore": "Ecoscore",
         "euroNormCode": "Norme Euro",
         "consumption": "Consommation",
-        "yes": "Oui",
-        "no": "Non",
         "startOnboarding": "Démarrer l'intégration",
         "startingOnboarding": "Démarrage…",
         "startOnboardingError": "Échec du démarrage de l'intégration véhicule."
-      },
-      "yes": "Oui",
-      "no": "Non"
+      }
     },
     "carOnboardings": {
       "title": "Onboardings",
@@ -1466,8 +1464,6 @@
         "created": "Créé",
         "updated": "Mis à jour"
       },
-      "yes": "Oui",
-      "no": "Non",
       "tabs": {
         "preparationTitle": "Préparation",
         "owner": "Propriétaire",
@@ -1670,8 +1666,6 @@
       },
       "roleAdmin": "Admin",
       "roleUser": "Utilisateur",
-      "yes": "Oui",
-      "no": "Non",
       "statusActive": "Actif",
       "statusBanned": "Banni",
       "filters": {
@@ -1759,8 +1753,6 @@
         "multiSelectAudience": "Sélectionner les rôles du public…",
         "multiSelectTags": "Sélectionner des tags…"
       },
-      "yes": "Oui",
-      "no": "Non",
       "actions": {
         "openMenu": "Ouvrir le menu",
         "view": "Voir",
@@ -2101,8 +2093,6 @@
       "privacyPolicyLink": "Politique de confidentialité",
       "bedrijfswagenLabel": "Véhicule utilitaire",
       "bedrijfswagenHint": "Véhicule utilitaire ou (partiellement) déduit comme frais professionnels",
-      "bedrijfswagenYes": "Oui",
-      "bedrijfswagenNo": "Non",
       "bedrijfswagenWarning": "Les véhicules utilitaires et les voitures (partiellement) déduites comme frais professionnels ne sont pas éligibles pour Dégage.",
       "gemeenteLabel": "Commune",
       "gemeenteHint": "La demande de voitures partagées varie d'un quartier à l'autre.",
@@ -2119,8 +2109,6 @@
       "carTypeOtherPlaceholder": "ex. Modèle personnalisé",
       "seatsLabel": "Places",
       "isVanLabel": "Véhicule utilitaire léger?",
-      "isVanYes": "Oui",
-      "isVanNo": "Non",
       "mileageLabel": "Kilométrage",
       "mileagePlaceholder": "ex. 78000",
       "firstRegistrationLabel": "Première immatriculation",
@@ -2522,8 +2510,6 @@
     "save": "Enregistrer",
     "next": "Suivant",
     "saveSuccess": "Enregistré avec succès.",
-    "yes": "Oui",
-    "no": "Non",
     "states": {
       "todo": "À faire",
       "pending": "En cours",

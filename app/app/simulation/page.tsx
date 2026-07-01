@@ -100,6 +100,7 @@ const SIMULATION_FAQ_TAGS = {
 export default function SimulationPage() {
   const t = useTranslations('simulationPublic');
   const tWizard = useTranslations('simulation.wizard');
+  const tShared = useTranslations('common');
   const [screen, setScreen] = useState(1);
   const [carChoice, setCarChoice] = useState<CarChoice | null>(null);
 
@@ -556,9 +557,7 @@ export default function SimulationPage() {
                 >
                   <span className={`${styles.toggleThumb} ${isCommercialVehicle ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
                 </button>
-                <span className={styles.captionInline}>
-                  {isCommercialVehicle ? t('wageninfo.bedrijfswagenYes') : t('wageninfo.bedrijfswagenNo')}
-                </span>
+                <span className={styles.captionInline}>{isCommercialVehicle ? tShared('yes') : tShared('no')}</span>
               </div>
               {isCommercialVehicle && (
                 <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="alert">
@@ -694,7 +693,7 @@ export default function SimulationPage() {
                   >
                     <span className={`${styles.toggleThumb} ${isVan ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
                   </button>
-                  <span className={styles.captionInline}>{isVan ? t('wageninfo.isVanYes') : t('wageninfo.isVanNo')}</span>
+                  <span className={styles.captionInline}>{isVan ? tShared('yes') : tShared('no')}</span>
                 </div>
               </div>
             </div>

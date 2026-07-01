@@ -14,6 +14,7 @@ interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   onDelete?: (item: Simulation) => void;
   t: (key: string) => string;
+  tShared: (key: string) => string;
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -27,7 +28,7 @@ function formatCurrencyPerKm(value: number | null | undefined): string {
 }
 
 export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] => {
-  const { t, onSort } = options;
+  const { t, tShared, onSort } = options;
   return [
     {
       id: 'select',
@@ -167,14 +168,14 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
     {
       accessorKey: 'isPurchased',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isPurchased')} onSort={onSort} />,
-      cell: ({ row }) => <span className="text-sm">{row.original.isPurchased ? t('yes') : t('no')}</span>,
+      cell: ({ row }) => <span className="text-sm">{row.original.isPurchased ? tShared('yes') : tShared('no')}</span>,
       enableHiding: true,
       enableSorting: false,
     },
     {
       accessorKey: 'isVan',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isVan')} onSort={onSort} />,
-      cell: ({ row }) => <span className="text-sm">{row.original.isVan ? t('yes') : t('no')}</span>,
+      cell: ({ row }) => <span className="text-sm">{row.original.isVan ? tShared('yes') : tShared('no')}</span>,
       enableHiding: true,
       enableSorting: false,
     },

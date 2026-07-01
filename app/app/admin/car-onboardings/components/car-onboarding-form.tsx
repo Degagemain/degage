@@ -188,6 +188,7 @@ export function CarOnboardingForm({
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
+  const tShared = useTranslations('common');
   const [isOverruleDialogOpen, setIsOverruleDialogOpen] = useState(false);
   const [isOverruling, setIsOverruling] = useState(false);
   const [isConfirmInfoSessionDialogOpen, setIsConfirmInfoSessionDialogOpen] = useState(false);
@@ -464,7 +465,9 @@ export function CarOnboardingForm({
                 {watchedValues.ownerId === savedOwnerId ? (
                   <div className="space-y-1">
                     <p className="text-sm font-medium">{t('columns.ownerHasPlayConnector')}</p>
-                    <p className="text-muted-foreground text-sm">{initialCarOnboarding.owner?.hasPlayConnector ? t('yes') : t('no')}</p>
+                    <p className="text-muted-foreground text-sm">
+                      {initialCarOnboarding.owner?.hasPlayConnector ? tShared('yes') : tShared('no')}
+                    </p>
                   </div>
                 ) : (
                   <FieldDescription>{t('form.ownerPlayConnectorPendingSave')}</FieldDescription>

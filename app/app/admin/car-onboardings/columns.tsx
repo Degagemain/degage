@@ -23,6 +23,7 @@ interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   onDelete?: (item: CarOnboarding) => void;
   t: (key: string) => string;
+  tShared: (key: string) => string;
 }
 
 const formatDescription = (item: CarOnboarding): string => {
@@ -108,9 +109,9 @@ const playConnectorStatusClass = {
 } as const;
 
 export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[] => {
-  const { t } = options;
+  const { t, tShared } = options;
 
-  const boolCell = (value: boolean) => <span className="text-sm">{value ? t('yes') : t('no')}</span>;
+  const boolCell = (value: boolean) => <span className="text-sm">{value ? tShared('yes') : tShared('no')}</span>;
 
   return [
     {

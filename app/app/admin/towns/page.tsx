@@ -52,6 +52,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function TownsPage() {
   const t = useTranslations('admin.towns');
   const tCommon = useTranslations('admin.common');
+  const tShared = useTranslations('common');
   const [state, setState] = useState<TownsState>({
     data: [],
     total: 0,
@@ -508,8 +509,8 @@ export default function TownsPage() {
           hasActiveMembersLabel: t('bulkUpdate.hasActiveMembersLabel'),
           unsetOption: t('bulkUpdate.unsetOption'),
           replaceOption: t('bulkUpdate.replaceOption'),
-          yesOption: t('bulkUpdate.yesOption'),
-          noOption: t('bulkUpdate.noOption'),
+          yesOption: tShared('yes'),
+          noOption: tShared('no'),
           columnName: t('bulkUpdate.columnName'),
           columnStatus: t('bulkUpdate.columnStatus'),
           confirm: t('bulkUpdate.confirm'),

@@ -40,6 +40,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function UsersPage() {
   const t = useTranslations('admin.users');
+  const tShared = useTranslations('common');
   const isMobile = useIsMobile();
   const [state, setState] = useState<UsersState>({
     data: [],
@@ -86,7 +87,7 @@ export default function UsersPage() {
     [setSort],
   );
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, t }), [handleSort, t]);
+  const columns = useMemo(() => createColumns({ onSort: handleSort, t, tShared }), [handleSort, t, tShared]);
 
   const statusOptions: FacetedFilterOption[] = useMemo(
     () =>
