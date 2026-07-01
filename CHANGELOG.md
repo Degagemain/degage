@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Changed: simulation records now show whether a car was **purchased** instead of
+  labelled as a "new car", matching how car onboarding describes the same choice.
 - Added: admins can bulk-update simulation parameters on selected hubs from the
   hubs list.
 - Changed: clarified hub labels for depreciation cost per km limits — the

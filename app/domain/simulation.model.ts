@@ -86,7 +86,7 @@ export const simulationRunInputSchema = z
     seats: z.number().int().min(1),
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
-    isNewCar: z.coerce.boolean().default(false),
+    isPurchased: z.coerce.boolean().default(false),
     purchasePrice: z.number().min(0).nullable().default(null),
     backtestYear: z.number().int().nullable().default(null),
   })
@@ -113,7 +113,7 @@ export const simulationSchema = z
     seats: z.number().int().min(1),
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),
-    isNewCar: z.boolean().default(false),
+    isPurchased: z.boolean().default(false),
     purchasePrice: z.number().min(0).nullable().default(null),
     rejectionReason: z.string().nullable().default(null),
     resultCode: z.enum(SimulationResultCode),

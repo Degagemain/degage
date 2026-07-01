@@ -19,7 +19,7 @@ function buildSimulationFromResult(
     seats: validated.seats,
     firstRegisteredAt: validated.firstRegisteredAt,
     isVan: validated.isVan,
-    isNewCar: validated.isNewCar,
+    isPurchased: validated.isPurchased,
     purchasePrice: validated.purchasePrice ?? null,
     rejectionReason: result.rejectionReason ?? null,
     resultCode: result.resultCode,

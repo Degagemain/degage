@@ -40,24 +40,24 @@ export function buildAdminSimulationUrl(simulationId: string): string {
   return `${base}/app/admin/simulations/${simulationId}`;
 }
 
-export function buildSupportTopAlertRow(isNewCar: boolean): string {
-  if (!isNewCar) return '';
+export function buildSupportTopAlertRow(isPurchased: boolean): string {
+  if (!isPurchased) return '';
   const alert =
     '<tr><td style="padding:16px;background-color:#FDF3E0;border:1px solid #DECA80;' +
     'color:#181510;font-size:18px;font-weight:700;font-family:Arial,Helvetica,sans-serif;line-height:1.5;">' +
-    'Nieuwe wagen</td></tr>';
+    'Aangekochte wagen</td></tr>';
   const spacer = '<tr><td style="padding:0;height:16px;font-size:0;line-height:0;">&nbsp;</td></tr>';
   return alert + spacer;
 }
 
-/** Support-only (NL): prominent manual-review banner + optional new-car banner. */
-export function buildManualReviewSupportTopRows(isNewCar: boolean): string {
+/** Support-only (NL): prominent manual-review banner + optional purchased-car banner. */
+export function buildManualReviewSupportTopRows(isPurchased: boolean): string {
   const manualBanner =
     '<tr><td style="padding:16px;background-color:#EAF1FA;border:1px solid #B5CDE5;' +
     'color:#181510;font-size:18px;font-weight:700;font-family:Arial,Helvetica,sans-serif;line-height:1.5;">' +
     'Handmatige beoordeling</td></tr>';
   const spacer = '<tr><td style="padding:0;height:16px;font-size:0;line-height:0;">&nbsp;</td></tr>';
-  return manualBanner + spacer + buildSupportTopAlertRow(isNewCar);
+  return manualBanner + spacer + buildSupportTopAlertRow(isPurchased);
 }
 
 function buildSupportSummaryNl(s: Simulation, recipientEmail: string): string {
@@ -69,7 +69,7 @@ function buildSupportSummaryNl(s: Simulation, recipientEmail: string): string {
     `Brandstof: ${s.fuelType?.name ?? '—'}`,
     `Autotype: ${s.carType?.name ?? s.carTypeOther ?? '—'}`,
     `Resultaat: ${nlResultLabel(s.resultCode)}`,
-    `Nieuwe wagen: ${s.isNewCar ? 'ja' : 'nee'}`,
+    `Aangekochte wagen: ${s.isPurchased ? 'ja' : 'nee'}`,
     `Eigen km/jaar: ${formatOptionalKm(s.ownerKmPerYear)}`,
     `Km-stand: ${s.mileage.toLocaleString('nl-BE')} km`,
     `Km-tarief (afgerond): ${formatOptionalEuro(s.resultRoundedKmCost)}`,
@@ -90,7 +90,7 @@ function buildSupportSummaryNl(s: Simulation, recipientEmail: string): string {
       s.resultMaxSharedKm,
     )}`,
   ];
-  const value = s.isNewCar ? s.purchasePrice : s.resultEstimatedCarValue;
+  const value = s.isPurchased ? s.purchasePrice : s.resultEstimatedCarValue;
   lines.push(`Geschatte / koopprijs: ${formatOptionalEuro(value ?? null)}`);
   return lines.join('\n');
 }
@@ -117,9 +117,9 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
     TOWN_NAME: simulation.town?.name ?? '—',
     FUEL_TYPE: simulation.fuelType?.name ?? '—',
     RESULT_LABEL: simulationResultLabel(locale, simulation.resultCode),
-    IS_NEW_CAR: localizedYesNo(locale, simulation.isNewCar),
+    IS_PURCHASED: localizedYesNo(locale, simulation.isPurchased),
     MILEAGE_KM: formatOptionalKm(simulation.mileage),
-    CAR_VALUE: formatOptionalEuro(simulation.isNewCar ? simulation.purchasePrice : simulation.resultEstimatedCarValue),
+    CAR_VALUE: formatOptionalEuro(simulation.isPurchased ? simulation.purchasePrice : simulation.resultEstimatedCarValue),
     DEPRECIATION_RATE: formatOptionalEuro(simulation.resultDepreciationCostKm),
   };
 
@@ -139,7 +139,7 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
       template: TemplatesEnum.SimulationManualReviewSupportEmail,
       locale: null,
       variables: {
-        TOP_ALERT_ROW: buildManualReviewSupportTopRows(simulation.isNewCar),
+        TOP_ALERT_ROW: buildManualReviewSupportTopRows(simulation.isPurchased),
         ADMIN_LINK: adminLink,
         RECIPIENT_EMAIL: options.recipientEmail,
         SUMMARY_NL: buildSupportSummaryNl(simulation, options.recipientEmail),
@@ -162,7 +162,7 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
     template: TemplatesEnum.SimulationResultsSupportEmail,
     locale: null,
     variables: {
-      TOP_ALERT_ROW: buildSupportTopAlertRow(simulation.isNewCar),
+      TOP_ALERT_ROW: buildSupportTopAlertRow(simulation.isPurchased),
       ADMIN_LINK: adminLink,
       RECIPIENT_EMAIL: options.recipientEmail,
       SUMMARY_NL: buildSupportSummaryNl(simulation, options.recipientEmail),

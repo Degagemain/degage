@@ -32,7 +32,7 @@ describe('createCarOnboarding', () => {
   const createdId = '550e8400-e29b-41d4-a716-446655440000';
 
   it('creates from simulation with owner set to caller', async () => {
-    const sim = simulation({ id: simulationId, isNewCar: true });
+    const sim = simulation({ id: simulationId, isPurchased: true });
     vi.mocked(readSimulation).mockResolvedValueOnce(sim);
     vi.mocked(dbCarOnboardingCreate).mockImplementationOnce(async (draft) => carOnboarding({ ...draft, id: createdId }));
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: createdId, owner: { id: ownerId, name: 'User' } }));

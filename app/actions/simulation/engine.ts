@@ -87,7 +87,7 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
     brandId: input.brand.id,
     fuelTypeId: input.fuelType.id,
     mileage: input.mileage,
-    isNewCar: input.isNewCar,
+    isPurchased: input.isPurchased,
     isVan: input.isVan,
     seats: input.seats,
   });
@@ -137,7 +137,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     return result;
   }
 
-  if (!input.isNewCar) {
+  if (!input.isPurchased) {
     if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
       result.resultCode = SimulationResultCode.NOT_OK;
       result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
@@ -185,7 +185,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   setCurrentStep(result, SimulationPhase.CAR_INFO);
-  const estimatedBuildYear = input.isNewCar ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
+  const estimatedBuildYear = input.isPurchased ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
   const carInfo = await carInfoEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, estimatedBuildYear);
   addInfoMessage(
     result,

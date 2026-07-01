@@ -49,7 +49,7 @@ describe('simulationRunInputParseSchema', () => {
       seats: 5,
       firstRegisteredAt: '2020-01-01',
       isVan: false,
-      isNewCar: false,
+      isPurchased: false,
       purchasePrice: null,
     });
     expect(result.success).toBe(true);
@@ -90,7 +90,7 @@ describe('simulationSchema', () => {
       seats: 5,
       firstRegisteredAt: new Date('2019-01-01'),
       isVan: false,
-      isNewCar: false,
+      isPurchased: false,
       purchasePrice: null,
       rejectionReason: null,
       resultCode: SimulationResultCode.NOT_OK,
@@ -111,7 +111,7 @@ describe('simulationSchema', () => {
       seats: 5,
       firstRegisteredAt: new Date(),
       isVan: false,
-      isNewCar: false,
+      isPurchased: false,
       purchasePrice: null,
       rejectionReason: null,
       resultCode: SimulationResultCode.CATEGORY_A,

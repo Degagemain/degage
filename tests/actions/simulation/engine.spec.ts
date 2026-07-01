@@ -152,7 +152,7 @@ describe('runSimulationEngine', () => {
 
   it('rejects new car when mileage over limit', async () => {
     const input = simulationRunInput({
-      isNewCar: true,
+      isPurchased: true,
       purchasePrice: 25_000,
       mileage: 300_000,
       firstRegisteredAt: new Date(),
@@ -165,7 +165,7 @@ describe('runSimulationEngine', () => {
 
   it('uses mileage for new car depreciation km runway', async () => {
     const lowMileageInput = simulationRunInput({
-      isNewCar: true,
+      isPurchased: true,
       purchasePrice: 25_000,
       mileage: 0,
       ownerKmPerYear: 10_000,

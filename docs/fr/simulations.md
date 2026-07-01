@@ -32,8 +32,8 @@ Chaque execution renvoie un resultat et une liste detaillee d'etapes/messages po
 La simulation utilise notamment :
 
 - Marque, type de carburant, type de vehicule (ou "autre")
-- Neuf/occasion, premiere immatriculation, kilometrage (compteur a l'achat pour un vehicule neuf), nombre de places, indicateur van
-- Prix d'achat (vehicule neuf)
+- Acheté/existant, premiere immatriculation, kilometrage (compteur a l'achat pour un vehicule achete), nombre de places, indicateur van
+- Prix d'achat (vehicule achete)
 - Commune et km proprietaire prevus par an
 
 ## Flux de simulation
@@ -48,7 +48,7 @@ La simulation utilise notamment :
 ### 2) Estimation de la valeur du vehicule
 
 - Occasion : estimation d'une plage de valeur puis conversion en valeur courante estimee.
-- Neuf : le prix d'achat est utilise comme valeur estimee.
+- Achete : le prix d'achat est utilise comme valeur estimee.
 
 ### 3) Estimation du profil technique
 
@@ -106,10 +106,10 @@ Si les criteres qualite sont valides, le moteur applique les regles de categorie
 - **Not OK** : si les criteres de prix ne sont pas atteints
 
 **Manual review pour valeur elevee (parametrage hub) :** Le hub peut definir un **prix maximum** pour l'acceptation automatique. Si ce plafond
-est renseigne et que la **valeur estimee** (occasion) ou le **prix d'achat** (neuf) le **depasse**, le moteur effectue quand meme tout le
-calcul. Ce n'est que si le resultat **aurait ete** **Category A** ou **Category B** que le moteur le remplace par **Manual review**. Un message
-d'etape indique quelle categorie aurait ete attribuee. Si le resultat **aurait ete** **Not OK**, le plafond de prix **ne modifie pas** l'issue.
-Voir [Hubs](hubs.md) pour le detail et la configuration.
+est renseigne et que la **valeur estimee** (vehicule existant) ou le **prix d'achat** (achete) le **depasse**, le moteur effectue quand meme
+tout le calcul. Ce n'est que si le resultat **aurait ete** **Category A** ou **Category B** que le moteur le remplace par **Manual review**. Un
+message d'etape indique quelle categorie aurait ete attribuee. Si le resultat **aurait ete** **Not OK**, le plafond de prix **ne modifie pas**
+l'issue. Voir [Hubs](hubs.md) pour le detail et la configuration.
 
 ## Codes de resultat
 
@@ -163,8 +163,8 @@ Les colonnes marquées _(masquées par défaut)_ sont disponibles via le sélect
 | Type de carburant       | Type de carburant saisi. _(masquée par défaut)_                                           |
 | Type de véhicule        | Type de véhicule ou description "Autre". _(masquée par défaut)_                           |
 | Km/an propriétaire      | Kilométrage annuel attendu du propriétaire. _(masquée par défaut)_                        |
-| Prix d'achat            | Prix d'achat pour les véhicules neufs. _(masquée par défaut)_                             |
-| Voiture neuve           | Indique si le véhicule a été marqué comme neuf. _(masquée par défaut)_                    |
+| Prix d'achat            | Prix d'achat pour les vehicules achetes. _(masquee par defaut)_                           |
+| Vehicule achete         | Indique si le vehicule a ete marque comme achete. _(masquee par defaut)_                  |
 | Utilitaire              | Indique si le véhicule a été marqué comme utilitaire. _(masquée par défaut)_              |
 | Taxe/an                 | Taxe de circulation annuelle estimée. _(masquée par défaut)_                              |
 | Contrôle technique/an   | Coût annuel estimé du contrôle technique. _(masquée par défaut)_                          |

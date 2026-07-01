@@ -282,7 +282,7 @@ describe('carOnboardingFromSimulation', () => {
   it('maps overlapping fields and links simulation', () => {
     const sim = simulation({
       id: '550e8400-e29b-41d4-a716-446655440010',
-      isNewCar: true,
+      isPurchased: true,
       purchasePrice: 25_000,
       resultEstimatedCarValue: 18_000,
       resultDepreciationCostKm: 0.12,

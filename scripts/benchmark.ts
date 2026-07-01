@@ -189,9 +189,9 @@ async function main() {
     const firstRegisteredAt = parseDate(row.firstRegisteredAt);
     const simulationDate = parseDate(row.date);
     const nlName = brand.translations.find((t) => t.locale === 'nl')?.name ?? brand.code;
-    const isNewCar = row.new === 'TRUE';
+    const isPurchased = row.new === 'TRUE';
     const rawValue = row.value?.trim();
-    const purchasePrice = isNewCar && rawValue ? parseFloat(rawValue.replace(',', '.')) || null : null;
+    const purchasePrice = isPurchased && rawValue ? parseFloat(rawValue.replace(',', '.')) || null : null;
 
     inputs.push({
       id: row.id,
@@ -206,7 +206,7 @@ async function main() {
         seats: parseInt(row.seats),
         firstRegisteredAt,
         isVan: row.van === 'TRUE',
-        isNewCar,
+        isPurchased,
         purchasePrice,
         backtestYear: simulationDate.getFullYear(),
       },
