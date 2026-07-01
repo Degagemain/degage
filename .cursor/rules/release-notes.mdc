@@ -1,0 +1,80 @@
+---
+description: How to write release notes and maintain the changelog
+alwaysApply: false
+globs:
+  - CHANGELOG.md
+---
+
+# Release Notes
+
+Release notes live in `CHANGELOG.md` at the repo root. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[Semantic Versioning](https://semver.org/).
+
+## Golden rules
+
+- **Short and to the point.** One line per change. No filler.
+- **Functional, not technical** — except in the Technical section.
+- **Write for the reader of that section.** A public entry is read by end users;
+  an admin entry by hub operators; a technical entry by developers.
+- **Latest version first.** Newest release at the top, under `Unreleased`.
+- **Omit empty sections.** Only include a section when it has entries.
+
+## Structure
+
+Keep a top `## [Unreleased]` section; move it into a dated version at release time.
+
+Each version is split into three fixed sections, always in this order:
+
+```markdown
+## [Unreleased]
+
+### Public features
+<!-- End-user facing changes: the simulation, public pages, e-mails users receive. -->
+- ...
+
+### Admin features
+<!-- Admin zone changes: entities, configuration, exports/imports operators use. -->
+- ...
+
+### Technical
+<!-- Developer-facing changes: refactors, dependencies, migrations, internal APIs. -->
+- ...
+```
+
+## Writing each section
+
+### Public features & Admin features (functional)
+
+- Describe **what changed for the person using it**, not how it was built.
+- No code, file paths, function names, or table names.
+- Prefix with a Keep a Changelog verb when it adds clarity: `Added`, `Changed`,
+  `Fixed`, `Removed`, `Deprecated`, `Security`.
+
+Good:
+
+- `Changed: cars with a too-high depreciation cost are now rejected automatically.`
+- `Added: admins can set a maximum accepted price per hub.`
+
+Avoid:
+
+- `Refactored runSimulationEngine to extract simulationCarIsCategoryBCandidate.`
+  (technical — belongs in Technical, and too detailed)
+
+### Technical
+
+- Here detail is welcome: refactors, new domain models, migrations, new
+  dependencies, breaking internal changes.
+- Call out **breaking changes** and **migrations** explicitly.
+
+## Versioning
+
+- `MAJOR` — breaking change for users or integrators.
+- `MINOR` — new backward-compatible feature.
+- `PATCH` — backward-compatible bug fix.
+
+## When to update
+
+Add an entry under `## [Unreleased]` in the same change that ships a
+user-, admin-, or developer-visible change. Derive the entry from the change
+itself, not from the git log.
