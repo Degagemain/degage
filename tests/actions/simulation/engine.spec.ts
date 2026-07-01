@@ -154,6 +154,7 @@ describe('runSimulationEngine', () => {
   it('rejects new car when mileage over limit', async () => {
     const input = simulationRunInput({
       isPurchased: true,
+      isNewCar: false,
       purchasePrice: 25_000,
       mileage: 300_000,
       firstRegisteredAt: new Date(),
@@ -167,6 +168,7 @@ describe('runSimulationEngine', () => {
   it('uses mileage for new car depreciation km runway', async () => {
     const lowMileageInput = simulationRunInput({
       isPurchased: true,
+      isNewCar: false,
       purchasePrice: 25_000,
       mileage: 0,
       ownerKmPerYear: 10_000,
@@ -180,6 +182,35 @@ describe('runSimulationEngine', () => {
     const highResult = await runSimulationEngine(highMileageInput);
     expect(highResult.resultDepreciationCostKm).toBeGreaterThan(lowResult.resultDepreciationCostKm ?? 0);
     expect(carValueEstimator).not.toHaveBeenCalled();
+  });
+
+  it('uses current year for car info when purchased car is new', async () => {
+    vi.mocked(carInfoEstimator).mockClear();
+    const currentYear = new Date().getFullYear();
+    await runSimulationEngine(
+      simulationRunInput({
+        isPurchased: true,
+        isNewCar: true,
+        purchasePrice: 25_000,
+        mileage: 0,
+        firstRegisteredAt: new Date(),
+      }),
+    );
+    expect(carInfoEstimator).toHaveBeenCalledWith(expect.any(String), expect.anything(), expect.anything(), null, currentYear);
+  });
+
+  it('uses first registration year for car info when purchased car is used', async () => {
+    vi.mocked(carInfoEstimator).mockClear();
+    await runSimulationEngine(
+      simulationRunInput({
+        isPurchased: true,
+        isNewCar: false,
+        purchasePrice: 25_000,
+        mileage: 50_000,
+        firstRegisteredAt: new Date('2018-03-15'),
+      }),
+    );
+    expect(carInfoEstimator).toHaveBeenCalledWith(expect.any(String), expect.anything(), expect.anything(), null, 2018);
   });
 
   it('rejects when car too old and returns steps with not_ok on second step', async () => {

@@ -206,7 +206,7 @@ export const carOnboardingFromSimulation = (
     insurerContractStartedAt: null,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
     depreciationCostKm: simulation.resultDepreciationCostKm ?? 0,
-    isNewCar: simulation.isPurchased,
+    isNewCar: simulation.isNewCar,
     mileage: simulation.mileage,
     firstRegisteredAt: simulation.firstRegisteredAt,
     seats: simulation.seats,

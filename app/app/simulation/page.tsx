@@ -123,6 +123,7 @@ export default function SimulationPage() {
   const [ownerKmPerYear, setOwnerKmPerYear] = useState('');
   const [purchaseAmountInclVat, setPurchaseAmountInclVat] = useState('');
   const [isCommercialVehicle, setIsCommercialVehicle] = useState(false);
+  const [isNewCar, setIsNewCar] = useState(false);
 
   const [fuelTypes, setFuelTypes] = useState<{ id: string; name: string }[]>([]);
   const [fuelTypesLoading, setFuelTypesLoading] = useState(true);
@@ -217,6 +218,18 @@ export default function SimulationPage() {
     return Number.isNaN(d.getTime()) ? undefined : d;
   }
 
+  function todayIsoDate(): string {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function setIsNewCarChecked(checked: boolean) {
+    setIsNewCar(checked);
+    if (checked) {
+      setMileage('');
+      setFirstRegisteredAt(todayIsoDate());
+    }
+  }
+
   const parsedOwnerKmPerYear = useMemo(() => {
     const n = ownerKmPerYear.trim() ? parseInt(ownerKmPerYear.trim(), 10) : NaN;
     return Number.isInteger(n) && n > 0 ? n : null;
@@ -235,9 +248,12 @@ export default function SimulationPage() {
     if (!Number.isInteger(seatsNum) || seatsNum < 1) return false;
     if (carChoice === 'newCar') {
       const amount = purchaseAmountInclVat.trim() ? parseFloat(purchaseAmountInclVat.replace(/,/g, '.')) : NaN;
-      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
       if (!Number.isFinite(amount) || amount <= 0) return false;
+      if (isNewCar) return parsedOwnerKmPerYear !== null;
+      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
+      const date = firstRegistrationDateToDate(firstRegisteredAt);
       if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
+      if (!date || date > new Date()) return false;
       return parsedOwnerKmPerYear !== null;
     }
     const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
@@ -248,6 +264,7 @@ export default function SimulationPage() {
   }, [
     carChoice,
     isCommercialVehicle,
+    isNewCar,
     townId,
     brandId,
     fuelTypeId,
@@ -264,11 +281,10 @@ export default function SimulationPage() {
     if (screen !== STEP_LOADING || simulationRequestInFlight.current) return;
 
     const isPurchased = carChoice === 'newCar';
+    const isNewCarValue = isPurchased && isNewCar;
     const seatsNum = parseInt(seats.trim(), 10) || 1;
-    const firstRegisteredAtValue = isPurchased
-      ? new Date().toISOString().slice(0, 10)
-      : firstRegisteredAt.trim() || new Date().toISOString().slice(0, 10);
-    const mileageNum = parseInt(mileage.trim(), 10) || 0;
+    const firstRegisteredAtValue = isNewCarValue ? todayIsoDate() : firstRegisteredAt.trim() || todayIsoDate();
+    const mileageNum = isNewCarValue ? 0 : parseInt(mileage.trim(), 10) || 0;
     const ownerKmNum = parsedOwnerKmPerYear ?? 0;
 
     const body = {
@@ -283,6 +299,7 @@ export default function SimulationPage() {
       firstRegisteredAt: firstRegisteredAtValue,
       isVan: isVan,
       isPurchased,
+      isNewCar: isNewCarValue,
       purchasePrice:
         isPurchased && purchaseAmountInclVat.trim()
           ? (() => {
@@ -331,6 +348,7 @@ export default function SimulationPage() {
     screen,
     loadingAttempt,
     carChoice,
+    isNewCar,
     townId,
     townLabel,
     brandId,
@@ -388,6 +406,7 @@ export default function SimulationPage() {
   const restartSimulationFromNotOk = () => {
     setSimulationResult(null);
     setCarChoice(null);
+    setIsNewCar(false);
     setCreatedSimulationId(null);
     setManualReviewEmail('');
     setManualReviewStatus('idle');
@@ -699,31 +718,75 @@ export default function SimulationPage() {
             </div>
 
             {carChoice === 'newCar' && (
-              <div className={styles.formGridTwoCol}>
-                <div className={styles.field}>
-                  <label className={styles.fieldLabel}>{tWizard('mileage.purchaseAmountInclVat')}</label>
-                  <input
-                    type="number"
-                    min={1}
-                    step={1}
-                    value={purchaseAmountInclVat}
-                    onChange={(e) => setPurchaseAmountInclVat(e.target.value)}
-                    placeholder={tWizard('mileage.purchaseAmountPlaceholder')}
-                    className={styles.input}
-                  />
+              <>
+                <div className={styles.formGridTwoCol}>
+                  <div className={styles.field}>
+                    <label className={styles.fieldLabel}>{tWizard('mileage.purchaseAmountInclVat')}</label>
+                    <input
+                      type="number"
+                      min={1}
+                      step={1}
+                      value={purchaseAmountInclVat}
+                      onChange={(e) => setPurchaseAmountInclVat(e.target.value)}
+                      placeholder={tWizard('mileage.purchaseAmountPlaceholder')}
+                      className={styles.input}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label className={styles.fieldLabel}>{t('wageninfo.isNewCarLabel')}</label>
+                    <div className={styles.toggleRow}>
+                      <button
+                        type="button"
+                        onClick={() => setIsNewCarChecked(!isNewCar)}
+                        className={`${styles.toggleTrack} ${isNewCar ? styles.toggleTrackOn : styles.toggleTrackOff}`}
+                        aria-pressed={isNewCar}
+                      >
+                        <span className={`${styles.toggleThumb} ${isNewCar ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
+                      </button>
+                      <span className={styles.captionInline}>{isNewCar ? t('wageninfo.isNewCarYes') : t('wageninfo.isNewCarNo')}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.field}>
-                  <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
-                  <input
-                    type="number"
-                    min={0}
-                    value={mileage}
-                    onChange={(e) => setMileage(e.target.value)}
-                    placeholder={t('wageninfo.mileagePlaceholder')}
-                    className={styles.input}
-                  />
-                </div>
-              </div>
+                {!isNewCar && (
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.field}>
+                      <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={mileage}
+                        onChange={(e) => setMileage(e.target.value)}
+                        placeholder={t('wageninfo.mileagePlaceholder')}
+                        className={styles.input}
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <div className={styles.fieldLabelRow}>
+                        <label htmlFor="sim-first-registration-purchase" className={styles.fieldLabelInline}>
+                          {t('wageninfo.firstRegistrationLabel')}
+                        </label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button type="button" className={styles.fieldHelpTrigger} aria-label={t('wageninfo.firstRegistrationHelpAria')}>
+                              ?
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
+                            <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <input
+                        id="sim-first-registration-purchase"
+                        type="date"
+                        value={firstRegisteredAt}
+                        onChange={(e) => setFirstRegisteredAt(e.target.value)}
+                        className={styles.input}
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {carChoice === 'existing' && (

@@ -55,6 +55,44 @@ describe('simulationRunInputParseSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('rejects isNewCar without isPurchased', () => {
+    const result = simulationRunInputParseSchema.safeParse({
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+      fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+      carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
+      carTypeOther: null,
+      mileage: 0,
+      ownerKmPerYear: 10_000,
+      seats: 5,
+      firstRegisteredAt: '2026-01-01',
+      isVan: false,
+      isPurchased: false,
+      isNewCar: true,
+      purchasePrice: null,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts isNewCar when isPurchased', () => {
+    const result = simulationRunInputParseSchema.safeParse({
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+      fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+      carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
+      carTypeOther: null,
+      mileage: 0,
+      ownerKmPerYear: 10_000,
+      seats: 5,
+      firstRegisteredAt: '2026-01-01',
+      isVan: false,
+      isPurchased: true,
+      isNewCar: true,
+      purchasePrice: 25_000,
+    });
+    expect(result.success).toBe(true);
+  });
+
   it('rejects when carType is null and carTypeOther is empty', () => {
     const result = simulationRunInputParseSchema.safeParse({
       town: { id: '550e8400-e29b-41d4-a716-446655440099' },

@@ -88,7 +88,15 @@ export async function fillNewCarForm(page: Page, messages: SimulationMessages, o
 
   await fillSharedCarFields(page, messages, data);
   await fieldByLabel(page, messages.purchaseAmountLabel).locator('input').fill(String(data.purchasePrice));
-  await fieldByLabel(page, messages.mileageLabel).locator('input').fill(String(data.mileage));
+  const isNewCarField = fieldByLabel(page, messages.isNewCarLabel);
+  const isNewCarToggle = isNewCarField.getByRole('button').first();
+  const isNewCarOn = (await isNewCarToggle.getAttribute('aria-pressed')) === 'true';
+  if (!isNewCarOn) {
+    await isNewCarToggle.click();
+  }
+  if (data.mileage != null && data.mileage > 0) {
+    await fieldByLabel(page, messages.mileageLabel).locator('input').fill(String(data.mileage));
+  }
 }
 
 export async function submitCarInfo(page: Page, messages: SimulationMessages) {

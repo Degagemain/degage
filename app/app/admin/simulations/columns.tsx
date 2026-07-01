@@ -173,6 +173,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
       enableSorting: false,
     },
     {
+      accessorKey: 'isNewCar',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isNewCar')} onSort={onSort} />,
+      cell: ({ row }) => <span className="text-sm">{row.original.isNewCar ? t('yes') : t('no')}</span>,
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'isVan',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isVan')} onSort={onSort} />,
       cell: ({ row }) => <span className="text-sm">{row.original.isVan ? tShared('yes') : tShared('no')}</span>,

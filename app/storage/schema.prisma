@@ -186,6 +186,7 @@ model Simulation {
   firstRegisteredAt            DateTime
   isVan                        Boolean              @default(false)
   isPurchased                  Boolean              @default(false)
+  isNewCar                     Boolean              @default(false)
   purchasePrice                Decimal?
   rejectionReason              String?
   resultCode                   SimulationResultCode

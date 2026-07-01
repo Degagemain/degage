@@ -17,6 +17,7 @@ export const simulation = (data: Partial<Simulation> = {}): Simulation => {
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
     isPurchased: data.isPurchased ?? false,
+    isNewCar: data.isNewCar ?? false,
     purchasePrice: data.purchasePrice ?? null,
     rejectionReason: data.rejectionReason ?? null,
     resultCode: data.resultCode ?? SimulationResultCode.MANUAL_REVIEW,
@@ -72,6 +73,7 @@ export const simulationRunInput = (data: Partial<SimulationRunInput> = {}): Simu
     firstRegisteredAt: data.firstRegisteredAt ?? new Date('2020-01-01'),
     isVan: data.isVan ?? false,
     isPurchased: data.isPurchased ?? false,
+    isNewCar: data.isNewCar ?? false,
     purchasePrice: data.purchasePrice ?? null,
     backtestYear: data.backtestYear ?? null,
   };
