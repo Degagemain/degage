@@ -18,3 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Added: admins can bulk-update simulation parameters on selected hubs from the
   hubs list.
+- Changed: clarified hub labels for depreciation cost per km limits — the
+  standard limit applies on every hub, and electric vehicles share one limit
+  with category B.

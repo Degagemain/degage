@@ -938,8 +938,8 @@
         "simMaxPrice": "Max autoprijs (handmatige review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (minder dan 7 zitpl.)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ zitpl.)",
-        "simAcceptedDepreciationCostKm": "Cat. A afschr. €/km (standaard hub)",
-        "simAcceptedElectricDepreciationCostKm": "Cat. A afschr. €/km (elektrisch)",
+        "simAcceptedDepreciationCostKm": "Max afschr. €/km (cat. A)",
+        "simAcceptedElectricDepreciationCostKm": "Max afschr. €/km (elektrisch & cat. B)",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },

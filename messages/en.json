@@ -938,8 +938,8 @@
         "simMaxPrice": "Max car price (manual review)",
         "simAcceptedPriceCategoryA": "Cat. A max €/km (under 7 seats)",
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ seats)",
-        "simAcceptedDepreciationCostKm": "Cat. A deprec. €/km (default hub)",
-        "simAcceptedElectricDepreciationCostKm": "Cat. A deprec. €/km (electric)",
+        "simAcceptedDepreciationCostKm": "Max deprec. €/km (cat. A)",
+        "simAcceptedElectricDepreciationCostKm": "Max deprec. €/km (electric & cat. B)",
         "created": "Created",
         "updated": "Updated"
       },
