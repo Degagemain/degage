@@ -43,6 +43,22 @@ for (const locale of SIMULATION_LOCALES) {
       await expect(submitButton).toBeEnabled();
     });
 
+    test('blocks commercial vehicles with a warning', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, messages);
+      await selectExistingCarSituation(page, messages);
+      await continueFromSituation(page, messages);
+
+      const submitButton = page.getByRole('button', { name: messages.submitSimulationCta });
+      const commercialField = page.getByText(messages.commercialVehicleLabel, { exact: true }).locator('..');
+      await commercialField.getByRole('button').click();
+
+      await expect(page.getByRole('alert')).toContainText(messages.commercialVehicleWarning);
+      await expect(submitButton).toBeDisabled();
+
+      await fillExistingCarForm(page, messages);
+      await expect(submitButton).toBeDisabled();
+    });
+
     test('rejects a car above the mileage limit', async ({ page, appServer }) => {
       await gotoSimulation(page, appServer.baseURL, messages);
       await runExistingCarSimulation(page, messages, { mileage: 250_000 });

@@ -19,6 +19,8 @@ export type SimulationMessages = {
   mileageLabel: string;
   ownerKmLabel: string;
   purchaseAmountLabel: string;
+  commercialVehicleLabel: string;
+  commercialVehicleWarning: string;
   categoryA: string;
 };
 
@@ -40,6 +42,8 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     mileageLabel: 'Mileage',
     ownerKmLabel: 'Km per year',
     purchaseAmountLabel: 'Purchase amount (incl. VAT)',
+    commercialVehicleLabel: 'Commercial vehicle',
+    commercialVehicleWarning: 'Commercial vehicles and cars (partly) claimed as business expenses are not eligible for Dégage.',
     categoryA: 'Category A',
   },
   nl: {
@@ -59,6 +63,8 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     mileageLabel: 'Kilometerstand',
     ownerKmLabel: 'Kilometer per jaar',
     purchaseAmountLabel: 'Aankoopbedrag (incl. btw)',
+    commercialVehicleLabel: 'Bedrijfswagen',
+    commercialVehicleWarning: 'Bedrijfswagens en wagens die (deels) als beroepskosten zijn ingebracht, komen niet in aanmerking voor Dégage.',
     categoryA: 'Categorie A',
   },
   fr: {
@@ -78,6 +84,9 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     mileageLabel: 'Kilométrage',
     ownerKmLabel: 'Km par an',
     purchaseAmountLabel: "Montant d'achat (TVA incl.)",
+    commercialVehicleLabel: 'Véhicule utilitaire',
+    commercialVehicleWarning:
+      'Les véhicules utilitaires et les voitures (partiellement) déduites comme frais professionnels ne sont pas éligibles pour Dégage.',
     categoryA: 'Catégorie A',
   },
 };
