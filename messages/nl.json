@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Selectie",
+        "update": "Bulk bijwerken",
         "delete": "Selectie verwijderen"
+      },
+      "bulkUpdate": {
+        "title": "Hubs bulk bijwerken",
+        "description": "De volgende {count} record(s) worden bijgewerkt. Niet-ingestelde velden blijven ongewijzigd.",
+        "unsetOption": "Niet aanpassen",
+        "setOption": "Waarde instellen",
+        "clearOption": "Wissen",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Alles bijwerken",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wacht",
+        "statusUpdating": "Bijwerken…",
+        "statusSuccess": "Bijgewerkt",
+        "statusError": "Mislukt"
       },
       "bulkDelete": {
         "title": "Hubs verwijderen",

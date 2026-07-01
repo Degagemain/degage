@@ -13,3 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   When the cost is too high, the estimated car value is automatically adjusted
   within its valuation range to meet the limit; if that isn't possible, the car
   is not accepted and the price criteria are reported as not met.
+
+### Admin features
+
+- Added: admins can bulk-update simulation parameters on selected hubs from the
+  hubs list.

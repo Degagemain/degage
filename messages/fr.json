@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Sélection",
+        "update": "Mise à jour groupée",
         "delete": "Supprimer la sélection"
+      },
+      "bulkUpdate": {
+        "title": "Mise à jour groupée des hubs",
+        "description": "Les {count} enregistrement(s) suivants seront mis à jour. Les champs non définis restent inchangés.",
+        "unsetOption": "Ne pas modifier",
+        "setOption": "Définir la valeur",
+        "clearOption": "Effacer",
+        "columnName": "Hub",
+        "columnStatus": "Statut",
+        "confirm": "Tout mettre à jour",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusUpdating": "Mise à jour…",
+        "statusSuccess": "Mis à jour",
+        "statusError": "Échoué"
       },
       "bulkDelete": {
         "title": "Supprimer des hubs",

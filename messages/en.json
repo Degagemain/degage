@@ -975,7 +975,24 @@
       },
       "bulkActions": {
         "label": "Selection",
+        "update": "Bulk update",
         "delete": "Delete selected"
+      },
+      "bulkUpdate": {
+        "title": "Bulk update hubs",
+        "description": "The following {count} record(s) will be updated. Unset fields stay unchanged.",
+        "unsetOption": "Unset",
+        "setOption": "Set value",
+        "clearOption": "Clear",
+        "columnName": "Hub",
+        "columnStatus": "Status",
+        "confirm": "Update all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusUpdating": "Updating…",
+        "statusSuccess": "Updated",
+        "statusError": "Failed"
       },
       "bulkDelete": {
         "title": "Delete hubs",
