@@ -1043,7 +1043,9 @@ export default function SimulationPage() {
                     </div>
                   </div>
                   <div className={styles.resultStatBox}>
-                    <div className={styles.resultStatLabel}>{t('result.statWaarde')}</div>
+                    <div className={styles.resultStatLabel}>
+                      {carChoice === 'newCar' ? t('result.statWaardePurchased') : t('result.statWaarde')}
+                    </div>
                     <div className={styles.resultStatValue}>
                       {simulationResult?.resultEstimatedCarValue != null
                         ? `€ ${Math.round(simulationResult.resultEstimatedCarValue).toLocaleString('nl-BE')}`
@@ -1348,10 +1350,6 @@ export default function SimulationPage() {
                             <div className={styles.kostenDetailNote}>{t('kosten.slijtageNote')}</div>
                           </div>
                           <span className={styles.kostenDetailRowVal}>{fmtEuro(depAnnualEuro)}</span>
-                        </div>
-                        <div className={`${styles.kostenDetailBreakdownRow} ${styles.kostenBreakdownSep}`}>
-                          <span className={styles.kostenDetailRowLabel}>{t('kosten.opbrengstLabel')}</span>
-                          <span className={styles.kostenDetailRowVal}>{fmtEuro(amountRepaid)}</span>
                         </div>
                       </div>
                     )}
