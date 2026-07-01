@@ -18,6 +18,7 @@ regio.
    bedrag in euro, wordt een run die anders **Categorie A** of **Categorie B** zou geven omgezet naar **Handmatige review** (met een stap die
    het bedoelde resultaat vermeldt). **Niet OK** blijft ongewijzigd. Leeg = geen limiet.
 3. **Waardeschatting en afschrijving** — **Afschrijving km** (of **Afschrijving km (elektrisch)**) bepaalt hoe snel de wagenwaarde per km daalt.
+   Is de geschatte afschrijvingskost per km lager dan **Min afschr. €/km**, dan wordt die opgehoogd tot die ondergrens.
 4. **Vaste kosten in km-prijs** — **Keuringkosten/jaar** en **Onderhoudskosten/jaar** zitten mee in de vaste jaarkost en dus in het berekende
    km-tarief.
 5. **Scenario's gedeelde km** — **Min gedeelde km/jaar**, **Gem. gedeelde km/jaar** en **Max gedeelde km/jaar** worden op simulaties bewaard en
@@ -48,6 +49,7 @@ regio.
 | Cat. B max €/km (7+ zitpl.)            | **Categorie B.** Maximaal toegelaten afgerond kost per km (€/km) bij 7 of meer zitplaatsen.                                                                                     |
 | Max afschr. €/km (cat. A)              | **Alle hubs.** Maximaal toegelaten afschrijvingskost per km (€/km) voor standaardvoertuigen (niet elektrisch, geen categorie B).                                                |
 | Max afschr. €/km (elektrisch & cat. B) | **Elektrisch en categorie B.** Maximaal toegelaten afschrijvingskost per km (€/km) voor elektrische voertuigen en categorie B-kandidaten (7+ zitpl. of bestelwagens).           |
+| Min afschr. €/km                       | **Afschrijving.** Minimale afschrijvingskost per km (€/km) in de simulatie; lagere schattingen worden opgehoogd tot deze waarde.                                                |
 | Min euronorm (diesel)                  | Ondergrens voor dieselwagens op hubniveau. Deze waarde is beschikbaar in beheerdata, maar wordt momenteel niet rechtstreeks gebruikt in de eindbeslissing van de simulatieflow. |
 | Min ecoscore (bonus)                   | **Kwaliteit.** Als de ecoscore van de auto ≥ deze waarde is, krijgt de auto 1 bonuspunt. Minstens 2 bonuspunten nodig om te slagen.                                             |
 | Max km (bonus)                         | **Kwaliteit.** Als de kilometerstand ≤ deze waarde is, krijgt de auto 1 bonuspunt.                                                                                              |

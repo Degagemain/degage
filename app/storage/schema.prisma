@@ -186,6 +186,7 @@ model Simulation {
   firstRegisteredAt            DateTime
   isVan                        Boolean              @default(false)
   isPurchased                  Boolean              @default(false)
+  isNewCar                     Boolean              @default(false)
   purchasePrice                Decimal?
   rejectionReason              String?
   resultCode                   SimulationResultCode
@@ -316,6 +317,7 @@ model Hub {
   simAcceptedPriceCategoryB             Decimal  @default(0.46)
   simAcceptedDepreciationCostKm         Decimal  @default(0.32)
   simAcceptedElectricDepreciationCostKm Decimal  @default(0.33)
+  simMinDepreciationCostKm              Decimal  @default(0.05)
   towns                                 Town[]
   createdAt                             DateTime @default(now())
   updatedAt                             DateTime @updatedAt

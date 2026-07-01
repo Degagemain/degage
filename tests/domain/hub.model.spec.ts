@@ -13,5 +13,6 @@ describe('hubSchema', () => {
     expect(result.minSharedKm).toBe(3_000);
     expect(result.avgSharedKm).toBe(5_000);
     expect(result.maxSharedKm).toBe(7_000);
+    expect(result.simMinDepreciationCostKm).toBe(0.05);
   });
 });

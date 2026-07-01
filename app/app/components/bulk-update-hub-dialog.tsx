@@ -52,6 +52,7 @@ export const HUB_BULK_NUMERIC_FIELDS = [
   { key: 'simAcceptedPriceCategoryB', integer: false, step: 0.01 },
   { key: 'simAcceptedDepreciationCostKm', integer: false, step: 0.01 },
   { key: 'simAcceptedElectricDepreciationCostKm', integer: false, step: 0.01 },
+  { key: 'simMinDepreciationCostKm', integer: false, step: 0.01 },
 ] as const satisfies readonly FieldConfig[];
 
 type HubBulkNumericFieldKey = (typeof HUB_BULK_NUMERIC_FIELDS)[number]['key'];

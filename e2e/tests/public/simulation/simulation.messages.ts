@@ -21,6 +21,7 @@ export type SimulationMessages = {
   purchaseAmountLabel: string;
   commercialVehicleLabel: string;
   commercialVehicleWarning: string;
+  isNewCarLabel: string;
   categoryA: string;
 };
 
@@ -44,6 +45,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     purchaseAmountLabel: 'Purchase amount (incl. VAT)',
     commercialVehicleLabel: 'Commercial vehicle',
     commercialVehicleWarning: 'Commercial vehicles and cars (partly) claimed as business expenses are not eligible for Dégage.',
+    isNewCarLabel: 'New car',
     categoryA: 'Category A',
   },
   nl: {
@@ -65,6 +67,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     purchaseAmountLabel: 'Aankoopbedrag (incl. btw)',
     commercialVehicleLabel: 'Bedrijfswagen',
     commercialVehicleWarning: 'Bedrijfswagens en wagens die (deels) als beroepskosten zijn ingebracht, komen niet in aanmerking voor Dégage.',
+    isNewCarLabel: 'Nieuwe wagen?',
     categoryA: 'Categorie A',
   },
   fr: {
@@ -87,6 +90,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     commercialVehicleLabel: 'Véhicule utilitaire',
     commercialVehicleWarning:
       'Les véhicules utilitaires et les voitures (partiellement) déduites comme frais professionnels ne sont pas éligibles pour Dégage.',
+    isNewCarLabel: 'Véhicule neuf',
     categoryA: 'Catégorie A',
   },
 };

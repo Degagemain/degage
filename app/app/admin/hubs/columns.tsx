@@ -242,6 +242,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Hub>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'simMinDepreciationCostKm',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.simMinDepreciationCostKm')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const val = row.getValue('simMinDepreciationCostKm') as number;
+        return <span className="font-mono text-sm">€{val.toFixed(4)}/km</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,

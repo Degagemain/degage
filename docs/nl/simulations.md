@@ -32,7 +32,8 @@ Elke run geeft een resultaat plus een lijst met stappen/boodschappen, zodat admi
 De simulatie gebruikt onder andere:
 
 - Merk, brandstoftype, autotype (of "overig")
-- Aangekocht/bestaand, eerste inschrijving, kilometerstand (stand bij aankoop voor aangekochte wagens), aantal zitplaatsen, bestelwagen
+- Aangekocht/bestaand, nieuw vs tweedehands (alleen aangekochte wagens), eerste inschrijving, kilometerstand (stand bij aankoop voor aangekochte
+  wagens), aantal zitplaatsen, bestelwagen
 - Aankoopprijs (voor aangekochte wagens)
 - Gemeente en verwachte eigen km per jaar
 
@@ -164,6 +165,7 @@ Kolommen gemarkeerd met _(standaard verborgen)_ zijn beschikbaar via de kolomkie
 | Eigenaar km/jaar       | Verwachte jaarlijkse km van de eigenaar. _(standaard verborgen)_                               |
 | Aankoopprijs           | Aankoopprijs voor aangekochte wagens. _(standaard verborgen)_                                  |
 | Aangekochte wagen      | Of de wagen als aangekocht is aangemerkt. _(standaard verborgen)_                              |
+| Nieuwe wagen           | Of een aangekochte wagen als nieuw is aangemerkt (vs tweedehands). _(standaard verborgen)_     |
 | Bestelwagen            | Of de wagen als bestelwagen is aangemerkt. _(standaard verborgen)_                             |
 | Verkeersbelasting/jaar | Geschatte jaarlijkse verkeersbelasting. _(standaard verborgen)_                                |
 | Keuring/jaar           | Geschatte jaarlijkse keuringskosten. _(standaard verborgen)_                                   |

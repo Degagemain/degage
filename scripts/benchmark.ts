@@ -207,6 +207,7 @@ async function main() {
         firstRegisteredAt,
         isVan: row.van === 'TRUE',
         isPurchased,
+        isNewCar: false,
         purchasePrice,
         backtestYear: simulationDate.getFullYear(),
       },

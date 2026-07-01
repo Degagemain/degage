@@ -185,7 +185,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   setCurrentStep(result, SimulationPhase.CAR_INFO);
-  const estimatedBuildYear = input.isPurchased ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
+  const estimatedBuildYear = input.isPurchased && input.isNewCar ? new Date().getFullYear() : input.firstRegisteredAt.getFullYear();
   const carInfo = await carInfoEstimator(input.brand.id, fuelType, input.carType?.id ?? null, input.carTypeOther, estimatedBuildYear);
   addInfoMessage(
     result,
@@ -250,6 +250,9 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   );
 
   let depreciationCostKm = kmToDepreciation > 0 ? result.resultEstimatedCarValue! / kmToDepreciation : 0;
+  if (depreciationCostKm < hub.simMinDepreciationCostKm) {
+    depreciationCostKm = hub.simMinDepreciationCostKm;
+  }
   result.resultDepreciationCostKm = depreciationCostKm;
 
   addInfoMessage(

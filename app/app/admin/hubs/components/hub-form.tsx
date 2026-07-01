@@ -42,6 +42,7 @@ type HubFormValues = {
   simAcceptedPriceCategoryB: string;
   simAcceptedDepreciationCostKm: string;
   simAcceptedElectricDepreciationCostKm: string;
+  simMinDepreciationCostKm: string;
 };
 
 type HubNumericFormFieldKey = Exclude<keyof HubFormValues, 'name' | 'isDefault'>;
@@ -67,6 +68,7 @@ const hubToFormValues = (hub?: Hub): HubFormValues => ({
   simAcceptedPriceCategoryB: hub != null ? String(hub.simAcceptedPriceCategoryB) : '0.46',
   simAcceptedDepreciationCostKm: hub != null ? String(hub.simAcceptedDepreciationCostKm) : '0.32',
   simAcceptedElectricDepreciationCostKm: hub != null ? String(hub.simAcceptedElectricDepreciationCostKm) : '0.33',
+  simMinDepreciationCostKm: hub != null ? String(hub.simMinDepreciationCostKm) : '0.05',
 });
 
 const nonNegInt = (msg: string) =>
@@ -108,6 +110,7 @@ const createHubFormSchema = (tCommon: (key: string) => string) =>
     simAcceptedPriceCategoryB: nonNegNum(tCommon('validation.nonNegativeNumber')),
     simAcceptedDepreciationCostKm: nonNegNum(tCommon('validation.nonNegativeNumber')),
     simAcceptedElectricDepreciationCostKm: nonNegNum(tCommon('validation.nonNegativeNumber')),
+    simMinDepreciationCostKm: nonNegNum(tCommon('validation.nonNegativeNumber')),
   });
 
 export function HubForm({ initialHub, formId = HUB_FORM_ID, isSubmitting = false, onSubmit }: HubFormProps) {
@@ -153,6 +156,7 @@ export function HubForm({ initialHub, formId = HUB_FORM_ID, isSubmitting = false
       simAcceptedPriceCategoryB: Number(values.simAcceptedPriceCategoryB),
       simAcceptedDepreciationCostKm: Number(values.simAcceptedDepreciationCostKm),
       simAcceptedElectricDepreciationCostKm: Number(values.simAcceptedElectricDepreciationCostKm),
+      simMinDepreciationCostKm: Number(values.simMinDepreciationCostKm),
       createdAt: initialHub?.createdAt ?? null,
       updatedAt: initialHub?.updatedAt ?? null,
     };
@@ -245,6 +249,7 @@ export function HubForm({ initialHub, formId = HUB_FORM_ID, isSubmitting = false
         {num('simAcceptedPriceCategoryB', 'simAcceptedPriceCategoryB', 0.01)}
         {num('simAcceptedDepreciationCostKm', 'simAcceptedDepreciationCostKm', 0.01)}
         {num('simAcceptedElectricDepreciationCostKm', 'simAcceptedElectricDepreciationCostKm', 0.01)}
+        {num('simMinDepreciationCostKm', 'simMinDepreciationCostKm', 0.01)}
       </FieldGroup>
     </form>
   );

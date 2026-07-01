@@ -32,7 +32,8 @@ Each run produces a result plus a detailed list of steps/messages so admins can 
 The run uses car and context data such as:
 
 - Brand, fuel type, car type (or "other" type)
-- Purchased/existing flag, first registration date, mileage (odometer at purchase for purchased cars), seats, van flag
+- Purchased/existing flag, new vs used car flag (purchased cars only), first registration date, mileage (odometer at purchase for purchased
+  cars), seats, van flag
 - Purchase price (for purchased cars)
 - Town and expected owner km per year
 
@@ -145,42 +146,43 @@ The list shows simulation runs with entered car data and calculated results. Ope
 
 Columns marked _(hidden by default)_ are available via the column picker but not shown on first load.
 
-| Property              | Description                                                                   |
-| --------------------- | ----------------------------------------------------------------------------- |
-| Description           | One-line summary combining town, brand, fuel type, and car type.              |
-| Result code           | Overall result (e.g. Not OK, Manual review). Links to the detail page.        |
-| Mileage               | Mileage entered in km.                                                        |
-| Seats                 | Number of seats.                                                              |
-| First registered at   | First registration date.                                                      |
-| Est. car value        | Estimated market value of the vehicle used in the calculation.                |
-| Depreciation cost/km  | Depreciation contribution per km as calculated by the engine.                 |
-| Insurance cost/year   | Estimated yearly insurance cost.                                              |
-| Created               | Date and time the simulation was saved.                                       |
-| Town                  | Town selected for the run. _(hidden by default)_                              |
-| Brand                 | Car brand entered. _(hidden by default)_                                      |
-| Fuel type             | Fuel type entered. _(hidden by default)_                                      |
-| Car type              | Car type or "Other" description. _(hidden by default)_                        |
-| Owner km/year         | Expected yearly km driven by the owner. _(hidden by default)_                 |
-| Purchase price        | Purchase price entered for purchased cars. _(hidden by default)_              |
-| Purchased car         | Whether the car was marked as purchased. _(hidden by default)_                |
-| Van                   | Whether the car was marked as a van. _(hidden by default)_                    |
-| Tax cost/year         | Estimated yearly road tax. _(hidden by default)_                              |
-| Inspection cost/year  | Estimated yearly inspection cost. _(hidden by default)_                       |
-| Maintenance cost/year | Estimated yearly maintenance cost. _(hidden by default)_                      |
-| Km rate               | Final rounded km-cost used for the result. _(hidden by default)_              |
-| Min shared km         | Minimum shared km scenario from hub settings. _(hidden by default)_           |
-| Avg shared km         | Average shared km scenario from hub settings. _(hidden by default)_           |
-| Max shared km         | Maximum shared km scenario from hub settings. _(hidden by default)_           |
-| Euro norm             | Euro emission norm of the vehicle. _(hidden by default)_                      |
-| Ecoscore              | Environmental score of the vehicle. _(hidden by default)_                     |
-| Consumption           | Estimated fuel consumption. _(hidden by default)_                             |
-| Cylinder cc           | Engine cylinder capacity in cc. _(hidden by default)_                         |
-| CO2 (g/km)            | CO2 emission in g/km. _(hidden by default)_                                   |
-| Rejection reason      | Reason text when the result is Not OK. _(hidden by default)_                  |
-| Car type (other)      | Custom type description when "Other" was chosen. _(hidden by default)_        |
-| Duration              | How long the engine run took, in whole seconds. _(hidden by default)_         |
-| Result email          | Address used to e-mail the simulation outcome (if set). _(hidden by default)_ |
-| Updated               | Date and time the simulation was last updated. _(hidden by default)_          |
+| Property              | Description                                                                      |
+| --------------------- | -------------------------------------------------------------------------------- |
+| Description           | One-line summary combining town, brand, fuel type, and car type.                 |
+| Result code           | Overall result (e.g. Not OK, Manual review). Links to the detail page.           |
+| Mileage               | Mileage entered in km.                                                           |
+| Seats                 | Number of seats.                                                                 |
+| First registered at   | First registration date.                                                         |
+| Est. car value        | Estimated market value of the vehicle used in the calculation.                   |
+| Depreciation cost/km  | Depreciation contribution per km as calculated by the engine.                    |
+| Insurance cost/year   | Estimated yearly insurance cost.                                                 |
+| Created               | Date and time the simulation was saved.                                          |
+| Town                  | Town selected for the run. _(hidden by default)_                                 |
+| Brand                 | Car brand entered. _(hidden by default)_                                         |
+| Fuel type             | Fuel type entered. _(hidden by default)_                                         |
+| Car type              | Car type or "Other" description. _(hidden by default)_                           |
+| Owner km/year         | Expected yearly km driven by the owner. _(hidden by default)_                    |
+| Purchase price        | Purchase price entered for purchased cars. _(hidden by default)_                 |
+| Purchased car         | Whether the car was marked as purchased. _(hidden by default)_                   |
+| New car               | Whether a purchased car was marked as brand new (vs used). _(hidden by default)_ |
+| Van                   | Whether the car was marked as a van. _(hidden by default)_                       |
+| Tax cost/year         | Estimated yearly road tax. _(hidden by default)_                                 |
+| Inspection cost/year  | Estimated yearly inspection cost. _(hidden by default)_                          |
+| Maintenance cost/year | Estimated yearly maintenance cost. _(hidden by default)_                         |
+| Km rate               | Final rounded km-cost used for the result. _(hidden by default)_                 |
+| Min shared km         | Minimum shared km scenario from hub settings. _(hidden by default)_              |
+| Avg shared km         | Average shared km scenario from hub settings. _(hidden by default)_              |
+| Max shared km         | Maximum shared km scenario from hub settings. _(hidden by default)_              |
+| Euro norm             | Euro emission norm of the vehicle. _(hidden by default)_                         |
+| Ecoscore              | Environmental score of the vehicle. _(hidden by default)_                        |
+| Consumption           | Estimated fuel consumption. _(hidden by default)_                                |
+| Cylinder cc           | Engine cylinder capacity in cc. _(hidden by default)_                            |
+| CO2 (g/km)            | CO2 emission in g/km. _(hidden by default)_                                      |
+| Rejection reason      | Reason text when the result is Not OK. _(hidden by default)_                     |
+| Car type (other)      | Custom type description when "Other" was chosen. _(hidden by default)_           |
+| Duration              | How long the engine run took, in whole seconds. _(hidden by default)_            |
+| Result email          | Address used to e-mail the simulation outcome (if set). _(hidden by default)_    |
+| Updated               | Date and time the simulation was last updated. _(hidden by default)_             |
 
 On the simulation **detail** screen you can enter or change this address. The e-mail to the recipient uses your **current interface language**.
 For simulations that finished successfully (not **Not OK**, and without an engine error), saving a **new or changed** address sends the result

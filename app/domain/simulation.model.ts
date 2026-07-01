@@ -87,16 +87,27 @@ export const simulationRunInputSchema = z
     firstRegisteredAt: z.coerce.date(),
     isVan: z.coerce.boolean().default(false),
     isPurchased: z.coerce.boolean().default(false),
+    isNewCar: z.coerce.boolean().default(false),
     purchasePrice: z.number().min(0).nullable().default(null),
     backtestYear: z.number().int().nullable().default(null),
   })
   .strict();
 
 /** Run input with business rule: carTypeOther required when car type is Other. Use for parsing request body. */
-export const simulationRunInputParseSchema = simulationRunInputSchema.refine(
-  (data) => data.carType != null || (data.carTypeOther != null && data.carTypeOther.trim().length > 0),
-  { message: 'carTypeOther is required when car type is Other', path: ['carTypeOther'] },
-);
+export const simulationRunInputParseSchema = simulationRunInputSchema
+  .refine((data) => data.carType != null || (data.carTypeOther != null && data.carTypeOther.trim().length > 0), {
+    message: 'carTypeOther is required when car type is Other',
+    path: ['carTypeOther'],
+  })
+  .superRefine((data, ctx) => {
+    if (data.isNewCar === true && data.isPurchased !== true) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'isNewCar requires isPurchased',
+        path: ['isNewCar'],
+      });
+    }
+  });
 
 export type SimulationRunInput = z.infer<typeof simulationRunInputSchema>;
 
@@ -114,6 +125,7 @@ export const simulationSchema = z
     firstRegisteredAt: z.date(),
     isVan: z.boolean(),
     isPurchased: z.boolean().default(false),
+    isNewCar: z.boolean().default(false),
     purchasePrice: z.number().min(0).nullable().default(null),
     rejectionReason: z.string().nullable().default(null),
     resultCode: z.enum(SimulationResultCode),

@@ -123,6 +123,7 @@ export default function SimulationPage() {
   const [ownerKmPerYear, setOwnerKmPerYear] = useState('');
   const [purchaseAmountInclVat, setPurchaseAmountInclVat] = useState('');
   const [isCommercialVehicle, setIsCommercialVehicle] = useState(false);
+  const [isNewCar, setIsNewCar] = useState(false);
 
   const [fuelTypes, setFuelTypes] = useState<{ id: string; name: string }[]>([]);
   const [fuelTypesLoading, setFuelTypesLoading] = useState(true);
@@ -217,6 +218,18 @@ export default function SimulationPage() {
     return Number.isNaN(d.getTime()) ? undefined : d;
   }
 
+  function todayIsoDate(): string {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function setIsNewCarChecked(checked: boolean) {
+    setIsNewCar(checked);
+    if (checked) {
+      setMileage('');
+      setFirstRegisteredAt(todayIsoDate());
+    }
+  }
+
   const parsedOwnerKmPerYear = useMemo(() => {
     const n = ownerKmPerYear.trim() ? parseInt(ownerKmPerYear.trim(), 10) : NaN;
     return Number.isInteger(n) && n > 0 ? n : null;
@@ -235,9 +248,12 @@ export default function SimulationPage() {
     if (!Number.isInteger(seatsNum) || seatsNum < 1) return false;
     if (carChoice === 'newCar') {
       const amount = purchaseAmountInclVat.trim() ? parseFloat(purchaseAmountInclVat.replace(/,/g, '.')) : NaN;
-      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
       if (!Number.isFinite(amount) || amount <= 0) return false;
+      if (isNewCar) return parsedOwnerKmPerYear !== null;
+      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
+      const date = firstRegistrationDateToDate(firstRegisteredAt);
       if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
+      if (!date || date > new Date()) return false;
       return parsedOwnerKmPerYear !== null;
     }
     const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
@@ -248,6 +264,7 @@ export default function SimulationPage() {
   }, [
     carChoice,
     isCommercialVehicle,
+    isNewCar,
     townId,
     brandId,
     fuelTypeId,
@@ -264,11 +281,10 @@ export default function SimulationPage() {
     if (screen !== STEP_LOADING || simulationRequestInFlight.current) return;
 
     const isPurchased = carChoice === 'newCar';
+    const isNewCarValue = isPurchased && isNewCar;
     const seatsNum = parseInt(seats.trim(), 10) || 1;
-    const firstRegisteredAtValue = isPurchased
-      ? new Date().toISOString().slice(0, 10)
-      : firstRegisteredAt.trim() || new Date().toISOString().slice(0, 10);
-    const mileageNum = parseInt(mileage.trim(), 10) || 0;
+    const firstRegisteredAtValue = isNewCarValue ? todayIsoDate() : firstRegisteredAt.trim() || todayIsoDate();
+    const mileageNum = isNewCarValue ? 0 : parseInt(mileage.trim(), 10) || 0;
     const ownerKmNum = parsedOwnerKmPerYear ?? 0;
 
     const body = {
@@ -283,6 +299,7 @@ export default function SimulationPage() {
       firstRegisteredAt: firstRegisteredAtValue,
       isVan: isVan,
       isPurchased,
+      isNewCar: isNewCarValue,
       purchasePrice:
         isPurchased && purchaseAmountInclVat.trim()
           ? (() => {
@@ -331,6 +348,7 @@ export default function SimulationPage() {
     screen,
     loadingAttempt,
     carChoice,
+    isNewCar,
     townId,
     townLabel,
     brandId,
@@ -388,6 +406,7 @@ export default function SimulationPage() {
   const restartSimulationFromNotOk = () => {
     setSimulationResult(null);
     setCarChoice(null);
+    setIsNewCar(false);
     setCreatedSimulationId(null);
     setManualReviewEmail('');
     setManualReviewStatus('idle');
@@ -526,179 +545,179 @@ export default function SimulationPage() {
       )}
 
       {screen === STEP_CAR_INFO && (
-        <div className={styles.pageTwoCol}>
-          <div>
-            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary} ${styles.backBtnTop}`}>
-              {t('back')}
-            </button>
-            <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: NUMBERED_STEP_TOTAL })}</p>
-            <h1 className={styles.title}>{t('wageninfo.title')}</h1>
-            <p className={`${styles.body} ${styles.bodyAfterTitle}`}>
-              {t('wageninfo.body')}
-              {process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL && (
-                <>
-                  {' '}
-                  <a href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
-                    {t('wageninfo.privacyPolicyLink')}
-                  </a>
-                </>
-              )}
-            </p>
+        <div className={styles.page}>
+          <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary} ${styles.backBtnTop}`}>
+            {t('back')}
+          </button>
+          <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: NUMBERED_STEP_TOTAL })}</p>
+          <h1 className={styles.title}>{t('wageninfo.title')}</h1>
+          <p className={`${styles.body} ${styles.bodyAfterTitle}`}>
+            {t('wageninfo.body')}
+            {process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL && (
+              <>
+                {' '}
+                <a href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
+                  {t('wageninfo.privacyPolicyLink')}
+                </a>
+              </>
+            )}
+          </p>
 
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>{t('wageninfo.bedrijfswagenLabel')}</label>
+            <p className={styles.fieldHint}>{t('wageninfo.bedrijfswagenHint')}</p>
+            <div className={styles.toggleRow}>
+              <button
+                type="button"
+                onClick={() => setIsCommercialVehicle(!isCommercialVehicle)}
+                className={`${styles.toggleTrack} ${isCommercialVehicle ? styles.toggleTrackOn : styles.toggleTrackOff}`}
+                aria-pressed={isCommercialVehicle}
+              >
+                <span className={`${styles.toggleThumb} ${isCommercialVehicle ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
+              </button>
+              <span className={styles.captionInline}>{isCommercialVehicle ? tShared('yes') : tShared('no')}</span>
+            </div>
+            {isCommercialVehicle && (
+              <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="alert">
+                <p className={styles.amberBannerText}>{t('wageninfo.bedrijfswagenWarning')}</p>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
+            <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
+            <SearchDropdown
+              value={townId}
+              selectedLabel={townLabel || undefined}
+              onValueChange={(id, opt) => {
+                setTownId(id);
+                setTownLabel(opt.name);
+                setTownRegionName(String(opt.municipality ?? opt.name));
+                setTownHasActiveMembers(opt.hasActiveMembers === true);
+                setTownHighDemand(opt.highDemand === true);
+              }}
+              apiPath="towns"
+              labelKey="displayLabel"
+              passThroughKeys={TOWN_SEARCH_PASS_THROUGH_KEYS}
+              placeholder={t('wageninfo.gemeentePlaceholder')}
+            />
+            {townHighDemand && (
+              <div className={`${styles.locationBadge} ${styles.locationBadgeGent}`}>
+                <div className={`${styles.locationBadgeDot} ${styles.locationBadgeDotGent}`} />
+                <span className={`${styles.locationBadgeText} ${styles.locationBadgeTextGent}`}>{t('wageninfo.badgeHighDemand')}</span>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.formGridTwoCol}>
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('wageninfo.bedrijfswagenLabel')}</label>
-              <p className={styles.fieldHint}>{t('wageninfo.bedrijfswagenHint')}</p>
+              <label className={styles.fieldLabel}>{t('wageninfo.merkLabel')}</label>
+              <SearchDropdown
+                value={brandId}
+                selectedLabel={brandLabel || undefined}
+                onValueChange={(id, opt) => {
+                  setBrandId(id);
+                  setBrandLabel(opt.name);
+                  if (carTypeId) {
+                    setCarTypeId('');
+                    setCarTypeName('');
+                    setCarTypeOther('');
+                  }
+                }}
+                apiPath="car-brands"
+                queryParams={{ isActive: 'true' }}
+                placeholder={t('wageninfo.brandPlaceholder')}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>{t('wageninfo.fuelTypeLabel')}</label>
+              <select
+                value={fuelTypeId}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setFuelTypeId(v);
+                  setFuelTypeName(fuelTypes.find((f) => f.id === v)?.name ?? '');
+                  if (carTypeId) {
+                    setCarTypeId('');
+                    setCarTypeName('');
+                    setCarTypeOther('');
+                  }
+                }}
+                disabled={fuelTypesLoading}
+                className={styles.select}
+              >
+                <option value="">{t('wageninfo.fuelTypePlaceholder')}</option>
+                {fuelTypes
+                  .filter((f) => f.id)
+                  .map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>{t('wageninfo.carTypeLabel')}</label>
+            <SearchDropdown
+              value={carTypeId}
+              selectedLabel={carTypeId === CAR_TYPE_OTHER ? tWizard('carDetails.carTypeOtherOption') : carTypeName || undefined}
+              onValueChange={(id, opt) => {
+                setCarTypeId(id);
+                setCarTypeName(opt.name);
+                if (id !== CAR_TYPE_OTHER) setCarTypeOther('');
+              }}
+              apiPath="car-types"
+              queryParams={carTypeQueryParams}
+              appendOptions={brandId && fuelTypeId ? [{ id: CAR_TYPE_OTHER, name: tWizard('carDetails.carTypeOtherOption') }] : []}
+              placeholder={brandId && fuelTypeId ? t('wageninfo.carTypePlaceholder') : t('wageninfo.carTypePlaceholderFirst')}
+              disabled={!brandId || !fuelTypeId}
+            />
+          </div>
+          {carTypeId === CAR_TYPE_OTHER && (
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>{t('wageninfo.carTypeOtherLabel')}</label>
+              <input
+                type="text"
+                value={carTypeOther}
+                onChange={(e) => setCarTypeOther(e.target.value)}
+                placeholder={t('wageninfo.carTypeOtherPlaceholder')}
+                className={styles.input}
+              />
+            </div>
+          )}
+
+          <div className={styles.formGridTwoCol}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>{t('wageninfo.seatsLabel')}</label>
+              <select value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.select}>
+                {Array.from({ length: 8 }, (_, i) => i + 2).map((n) => (
+                  <option key={n} value={String(n)}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>{t('wageninfo.isVanLabel')}</label>
               <div className={styles.toggleRow}>
                 <button
                   type="button"
-                  onClick={() => setIsCommercialVehicle(!isCommercialVehicle)}
-                  className={`${styles.toggleTrack} ${isCommercialVehicle ? styles.toggleTrackOn : styles.toggleTrackOff}`}
-                  aria-pressed={isCommercialVehicle}
+                  onClick={() => setIsVan(!isVan)}
+                  className={`${styles.toggleTrack} ${isVan ? styles.toggleTrackOn : styles.toggleTrackOff}`}
+                  aria-pressed={isVan}
                 >
-                  <span className={`${styles.toggleThumb} ${isCommercialVehicle ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
+                  <span className={`${styles.toggleThumb} ${isVan ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
                 </button>
-                <span className={styles.captionInline}>{isCommercialVehicle ? tShared('yes') : tShared('no')}</span>
-              </div>
-              {isCommercialVehicle && (
-                <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="alert">
-                  <p className={styles.amberBannerText}>{t('wageninfo.bedrijfswagenWarning')}</p>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
-              <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
-              <SearchDropdown
-                value={townId}
-                selectedLabel={townLabel || undefined}
-                onValueChange={(id, opt) => {
-                  setTownId(id);
-                  setTownLabel(opt.name);
-                  setTownRegionName(String(opt.municipality ?? opt.name));
-                  setTownHasActiveMembers(opt.hasActiveMembers === true);
-                  setTownHighDemand(opt.highDemand === true);
-                }}
-                apiPath="towns"
-                labelKey="displayLabel"
-                passThroughKeys={TOWN_SEARCH_PASS_THROUGH_KEYS}
-                placeholder={t('wageninfo.gemeentePlaceholder')}
-              />
-              {townHighDemand && (
-                <div className={`${styles.locationBadge} ${styles.locationBadgeGent}`}>
-                  <div className={`${styles.locationBadgeDot} ${styles.locationBadgeDotGent}`} />
-                  <span className={`${styles.locationBadgeText} ${styles.locationBadgeTextGent}`}>{t('wageninfo.badgeHighDemand')}</span>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.formGridTwoCol}>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{t('wageninfo.merkLabel')}</label>
-                <SearchDropdown
-                  value={brandId}
-                  selectedLabel={brandLabel || undefined}
-                  onValueChange={(id, opt) => {
-                    setBrandId(id);
-                    setBrandLabel(opt.name);
-                    if (carTypeId) {
-                      setCarTypeId('');
-                      setCarTypeName('');
-                      setCarTypeOther('');
-                    }
-                  }}
-                  apiPath="car-brands"
-                  queryParams={{ isActive: 'true' }}
-                  placeholder={t('wageninfo.brandPlaceholder')}
-                />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{t('wageninfo.fuelTypeLabel')}</label>
-                <select
-                  value={fuelTypeId}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setFuelTypeId(v);
-                    setFuelTypeName(fuelTypes.find((f) => f.id === v)?.name ?? '');
-                    if (carTypeId) {
-                      setCarTypeId('');
-                      setCarTypeName('');
-                      setCarTypeOther('');
-                    }
-                  }}
-                  disabled={fuelTypesLoading}
-                  className={styles.select}
-                >
-                  <option value="">{t('wageninfo.fuelTypePlaceholder')}</option>
-                  {fuelTypes
-                    .filter((f) => f.id)
-                    .map((f) => (
-                      <option key={f.id} value={f.id}>
-                        {f.name}
-                      </option>
-                    ))}
-                </select>
+                <span className={styles.captionInline}>{isVan ? tShared('yes') : tShared('no')}</span>
               </div>
             </div>
+          </div>
 
-            <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('wageninfo.carTypeLabel')}</label>
-              <SearchDropdown
-                value={carTypeId}
-                selectedLabel={carTypeId === CAR_TYPE_OTHER ? tWizard('carDetails.carTypeOtherOption') : carTypeName || undefined}
-                onValueChange={(id, opt) => {
-                  setCarTypeId(id);
-                  setCarTypeName(opt.name);
-                  if (id !== CAR_TYPE_OTHER) setCarTypeOther('');
-                }}
-                apiPath="car-types"
-                queryParams={carTypeQueryParams}
-                appendOptions={brandId && fuelTypeId ? [{ id: CAR_TYPE_OTHER, name: tWizard('carDetails.carTypeOtherOption') }] : []}
-                placeholder={brandId && fuelTypeId ? t('wageninfo.carTypePlaceholder') : t('wageninfo.carTypePlaceholderFirst')}
-                disabled={!brandId || !fuelTypeId}
-              />
-            </div>
-            {carTypeId === CAR_TYPE_OTHER && (
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{t('wageninfo.carTypeOtherLabel')}</label>
-                <input
-                  type="text"
-                  value={carTypeOther}
-                  onChange={(e) => setCarTypeOther(e.target.value)}
-                  placeholder={t('wageninfo.carTypeOtherPlaceholder')}
-                  className={styles.input}
-                />
-              </div>
-            )}
-
-            <div className={styles.formGridTwoCol}>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{t('wageninfo.seatsLabel')}</label>
-                <select value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.select}>
-                  {Array.from({ length: 8 }, (_, i) => i + 2).map((n) => (
-                    <option key={n} value={String(n)}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>{t('wageninfo.isVanLabel')}</label>
-                <div className={styles.toggleRow}>
-                  <button
-                    type="button"
-                    onClick={() => setIsVan(!isVan)}
-                    className={`${styles.toggleTrack} ${isVan ? styles.toggleTrackOn : styles.toggleTrackOff}`}
-                    aria-pressed={isVan}
-                  >
-                    <span className={`${styles.toggleThumb} ${isVan ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
-                  </button>
-                  <span className={styles.captionInline}>{isVan ? tShared('yes') : tShared('no')}</span>
-                </div>
-              </div>
-            </div>
-
-            {carChoice === 'newCar' && (
+          {carChoice === 'newCar' && (
+            <>
               <div className={styles.formGridTwoCol}>
                 <div className={styles.field}>
                   <label className={styles.fieldLabel}>{tWizard('mileage.purchaseAmountInclVat')}</label>
@@ -713,84 +732,126 @@ export default function SimulationPage() {
                   />
                 </div>
                 <div className={styles.field}>
-                  <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
-                  <input
-                    type="number"
-                    min={0}
-                    value={mileage}
-                    onChange={(e) => setMileage(e.target.value)}
-                    placeholder={t('wageninfo.mileagePlaceholder')}
-                    className={styles.input}
-                  />
-                </div>
-              </div>
-            )}
-
-            {carChoice === 'existing' && (
-              <div className={styles.formGridTwoCol}>
-                <div className={styles.field}>
-                  <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
-                  <input
-                    type="number"
-                    min={0}
-                    value={mileage}
-                    onChange={(e) => setMileage(e.target.value)}
-                    placeholder={t('wageninfo.mileagePlaceholder')}
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.field}>
-                  <div className={styles.fieldLabelRow}>
-                    <label htmlFor="sim-first-registration" className={styles.fieldLabelInline}>
-                      {t('wageninfo.firstRegistrationLabel')}
-                    </label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <button type="button" className={styles.fieldHelpTrigger} aria-label={t('wageninfo.firstRegistrationHelpAria')}>
-                          ?
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
-                        <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
-                      </PopoverContent>
-                    </Popover>
+                  <label className={styles.fieldLabel}>{t('wageninfo.isNewCarLabel')}</label>
+                  <div className={styles.toggleRow}>
+                    <button
+                      type="button"
+                      onClick={() => setIsNewCarChecked(!isNewCar)}
+                      className={`${styles.toggleTrack} ${isNewCar ? styles.toggleTrackOn : styles.toggleTrackOff}`}
+                      aria-pressed={isNewCar}
+                    >
+                      <span className={`${styles.toggleThumb} ${isNewCar ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
+                    </button>
+                    <span className={styles.captionInline}>{isNewCar ? t('wageninfo.isNewCarYes') : t('wageninfo.isNewCarNo')}</span>
                   </div>
-                  <input
-                    id="sim-first-registration"
-                    type="date"
-                    value={firstRegisteredAt}
-                    onChange={(e) => setFirstRegisteredAt(e.target.value)}
-                    className={styles.input}
-                  />
                 </div>
               </div>
-            )}
+              {!isNewCar && (
+                <div className={styles.formGridTwoCol}>
+                  <div className={styles.field}>
+                    <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={mileage}
+                      onChange={(e) => setMileage(e.target.value)}
+                      placeholder={t('wageninfo.mileagePlaceholder')}
+                      className={styles.input}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <div className={styles.fieldLabelRow}>
+                      <label htmlFor="sim-first-registration-purchase" className={styles.fieldLabelInline}>
+                        {t('wageninfo.firstRegistrationLabel')}
+                      </label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <button type="button" className={styles.fieldHelpTrigger} aria-label={t('wageninfo.firstRegistrationHelpAria')}>
+                            ?
+                          </button>
+                        </PopoverTrigger>
+                        <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
+                          <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <input
+                      id="sim-first-registration-purchase"
+                      type="date"
+                      value={firstRegisteredAt}
+                      onChange={(e) => setFirstRegisteredAt(e.target.value)}
+                      className={styles.input}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
 
-            <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('wageninfo.ownerKmLabel')}</label>
-              <input
-                type="number"
-                min={1}
-                required
-                value={ownerKmPerYear}
-                onChange={(e) => setOwnerKmPerYear(e.target.value)}
-                placeholder={t('wageninfo.ownerKmPlaceholder')}
-                className={styles.input}
-              />
-              <p className={styles.fieldHint}>{t('wageninfo.ownerKmHint')}</p>
+          {carChoice === 'existing' && (
+            <div className={styles.formGridTwoCol}>
+              <div className={styles.field}>
+                <label className={styles.fieldLabel}>{t('wageninfo.mileageLabel')}</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={mileage}
+                  onChange={(e) => setMileage(e.target.value)}
+                  placeholder={t('wageninfo.mileagePlaceholder')}
+                  className={styles.input}
+                />
+              </div>
+              <div className={styles.field}>
+                <div className={styles.fieldLabelRow}>
+                  <label htmlFor="sim-first-registration" className={styles.fieldLabelInline}>
+                    {t('wageninfo.firstRegistrationLabel')}
+                  </label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button type="button" className={styles.fieldHelpTrigger} aria-label={t('wageninfo.firstRegistrationHelpAria')}>
+                        ?
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
+                      <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <input
+                  id="sim-first-registration"
+                  type="date"
+                  value={firstRegisteredAt}
+                  onChange={(e) => setFirstRegisteredAt(e.target.value)}
+                  className={styles.input}
+                />
+              </div>
             </div>
+          )}
 
-            <div className={styles.buttonRow}>
-              <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
-                {t('back')}
-              </button>
-              <button type="button" onClick={goNext} disabled={!isCarInfoValid} className={`${styles.btn} ${styles.btnPrimary}`}>
-                {t('wageninfo.submit')}
-              </button>
-            </div>
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>{t('wageninfo.ownerKmLabel')}</label>
+            <input
+              type="number"
+              min={1}
+              required
+              value={ownerKmPerYear}
+              onChange={(e) => setOwnerKmPerYear(e.target.value)}
+              placeholder={t('wageninfo.ownerKmPlaceholder')}
+              className={styles.input}
+            />
+            <p className={styles.fieldHint}>{t('wageninfo.ownerKmHint')}</p>
           </div>
 
-          <div className={styles.stickySidebar}>
+          <div className={styles.buttonRow}>
+            <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
+              {t('back')}
+            </button>
+            <button type="button" onClick={goNext} disabled={!isCarInfoValid} className={`${styles.btn} ${styles.btnPrimary}`}>
+              {t('wageninfo.submit')}
+            </button>
+          </div>
+
+          <div className={styles.marginTop32}>
             <FaqByTags tags={SIMULATION_FAQ_TAGS.step1} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
           </div>
         </div>
@@ -980,7 +1041,9 @@ export default function SimulationPage() {
                     </div>
                   </div>
                   <div className={styles.resultStatBox}>
-                    <div className={styles.resultStatLabel}>{t('result.statWaarde')}</div>
+                    <div className={styles.resultStatLabel}>
+                      {carChoice === 'newCar' ? t('result.statWaardePurchased') : t('result.statWaarde')}
+                    </div>
                     <div className={styles.resultStatValue}>
                       {simulationResult?.resultEstimatedCarValue != null
                         ? `€ ${Math.round(simulationResult.resultEstimatedCarValue).toLocaleString('nl-BE')}`
@@ -1285,10 +1348,6 @@ export default function SimulationPage() {
                             <div className={styles.kostenDetailNote}>{t('kosten.slijtageNote')}</div>
                           </div>
                           <span className={styles.kostenDetailRowVal}>{fmtEuro(depAnnualEuro)}</span>
-                        </div>
-                        <div className={`${styles.kostenDetailBreakdownRow} ${styles.kostenBreakdownSep}`}>
-                          <span className={styles.kostenDetailRowLabel}>{t('kosten.opbrengstLabel')}</span>
-                          <span className={styles.kostenDetailRowVal}>{fmtEuro(amountRepaid)}</span>
                         </div>
                       </div>
                     )}

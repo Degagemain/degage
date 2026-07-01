@@ -58,6 +58,10 @@ const buildHubExportColumns = async (locale: string): Promise<CsvColumn<Hub>[]> 
       label: t('columns.simAcceptedElectricDepreciationCostKm'),
       format: (row) => formatExportValueByKey('simAcceptedElectricDepreciationCostKm', row.simAcceptedElectricDepreciationCostKm, locale),
     },
+    {
+      label: t('columns.simMinDepreciationCostKm'),
+      format: (row) => formatExportValueByKey('simMinDepreciationCostKm', row.simMinDepreciationCostKm, locale),
+    },
     { label: t('columns.created'), format: (row) => formatExportValueByKey('createdAt', row.createdAt, locale) },
     { label: t('columns.updated'), format: (row) => formatExportValueByKey('updatedAt', row.updatedAt, locale) },
   ];
