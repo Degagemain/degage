@@ -43,6 +43,7 @@ vi.mock('@/storage/hub/hub.read', () => ({
     simAcceptedPriceCategoryB: 0.46,
     simAcceptedDepreciationCostKm: 0.32,
     simAcceptedElectricDepreciationCostKm: 0.33,
+    simMinDepreciationCostKm: 0.05,
     simMinEcoScoreForBonus: 60,
     simMaxKmForBonus: 140_000,
     simMaxAgeForBonus: 7,
@@ -295,6 +296,45 @@ describe('runSimulationEngine', () => {
     });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('categoryB');
+  });
+
+  it('floors depreciation cost per km to hub minimum without changing estimated car value', async () => {
+    vi.mocked(carValueEstimator).mockResolvedValueOnce({ price: 2_000, min: 1_500, max: 2_500 });
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400b0',
+        name: 'hub-min-depreciation',
+        isDefault: false,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.55,
+        simAcceptedPriceCategoryB: 0.55,
+        simAcceptedDepreciationCostKm: 0.32,
+        simAcceptedElectricDepreciationCostKm: 0.33,
+        simMinDepreciationCostKm: 0.05,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+
+    const result = await runSimulationEngine(
+      simulationRunInput({ mileage: 100_000, ownerKmPerYear: 10_000, firstRegisteredAt: new Date('2020-01-01') }),
+    );
+
+    expect(result.resultEstimatedCarValue).toBe(1_750);
+    expect(result.resultDepreciationCostKm).toBe(0.05);
   });
 
   it('recomputes km cost after adapting car value to depreciation criteria', async () => {

@@ -18,6 +18,7 @@ donc varier selon la zone.
    **superieure** a ce montant en euros, une execution qui se serait terminee en **Category A** ou **Category B** devient **Manual review**
    (avec une etape qui indique le resultat prevu). **Not OK** reste inchange. Vide = pas de plafond.
 3. **Valeur et depreciation** — **Sim depreciation km** (ou **Sim depreciation km electric**) influence directement la baisse de valeur par km.
+   Si le cout de depreciation estime par km est inferieur a **Min dépréc. EUR/km**, il est releve a ce plancher.
 4. **Couts fixes dans le taux km** — **Sim inspection cost per year** et **Sim maintenance cost per year** entrent dans le cout annuel fixe,
    puis dans le taux au km final.
 5. **Scenarios de km partages** — **Km partagés min/an**, **Km partagés moy./an** et **Km partagés max/an** sont stockes sur les simulations et
@@ -48,6 +49,7 @@ donc varier selon la zone.
 | Cat. B max EUR/km (7 places ou plus)     | **Category B.** Cout au km arrondi maximal (EUR/km) si le vehicule a 7 places ou plus.                                                                          |
 | Max dépréc. EUR/km (cat. A)              | **Tous les hubs.** Cout de depreciation par km maximal (EUR/km) pour les vehicules standards (non electriques, hors category B).                                |
 | Max dépréc. EUR/km (électrique & cat. B) | **Electrique et category B.** Cout de depreciation par km maximal (EUR/km) pour les vehicules electriques et les candidats category B (7+ places ou vans).      |
+| Min dépréc. EUR/km                       | **Dépréciation.** Cout de depreciation par km minimal (EUR/km) utilise dans la simulation ; les estimations plus basses sont relevees a cette valeur.           |
 | Sim min euro norm group diesel           | Seuil diesel stocke au niveau hub. Disponible dans les donnees admin, mais actuellement non utilise directement dans la decision finale de la simulation.       |
 | Sim min ecoscore for bonus               | **Qualité.** Si l'écoscore du véhicule ≥ cette valeur, il reçoit 1 point bonus. Il faut 2+ points pour passer.                                                  |
 | Sim max km for bonus                     | **Qualité.** Si le kilométrage ≤ cette valeur, le véhicule reçoit 1 point bonus.                                                                                |

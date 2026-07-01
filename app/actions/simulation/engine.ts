@@ -250,6 +250,9 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   );
 
   let depreciationCostKm = kmToDepreciation > 0 ? result.resultEstimatedCarValue! / kmToDepreciation : 0;
+  if (depreciationCostKm < hub.simMinDepreciationCostKm) {
+    depreciationCostKm = hub.simMinDepreciationCostKm;
+  }
   result.resultDepreciationCostKm = depreciationCostKm;
 
   addInfoMessage(

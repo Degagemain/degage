@@ -24,6 +24,7 @@ export const dbHubToDomain = (hub: Prisma.HubGetPayload<object>): Hub => {
     simAcceptedPriceCategoryB: Number(hub.simAcceptedPriceCategoryB),
     simAcceptedDepreciationCostKm: Number(hub.simAcceptedDepreciationCostKm),
     simAcceptedElectricDepreciationCostKm: Number(hub.simAcceptedElectricDepreciationCostKm),
+    simMinDepreciationCostKm: Number(hub.simMinDepreciationCostKm),
     createdAt: hub.createdAt,
     updatedAt: hub.updatedAt,
   };
@@ -51,6 +52,7 @@ export const hubToDbCreate = (hub: Hub): Prisma.HubCreateInput => {
     simAcceptedPriceCategoryB: hub.simAcceptedPriceCategoryB,
     simAcceptedDepreciationCostKm: hub.simAcceptedDepreciationCostKm,
     simAcceptedElectricDepreciationCostKm: hub.simAcceptedElectricDepreciationCostKm,
+    simMinDepreciationCostKm: hub.simMinDepreciationCostKm,
   };
 };
 
@@ -76,5 +78,6 @@ export const hubToDbUpdate = (hub: Hub): Prisma.HubUpdateInput => {
     simAcceptedPriceCategoryB: hub.simAcceptedPriceCategoryB,
     simAcceptedDepreciationCostKm: hub.simAcceptedDepreciationCostKm,
     simAcceptedElectricDepreciationCostKm: hub.simAcceptedElectricDepreciationCostKm,
+    simMinDepreciationCostKm: hub.simMinDepreciationCostKm,
   };
 };

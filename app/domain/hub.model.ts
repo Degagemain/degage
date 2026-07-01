@@ -23,6 +23,7 @@ export const hubSchema = z
     simAcceptedPriceCategoryB: z.number().min(0).default(0.46),
     simAcceptedDepreciationCostKm: z.number().min(0).default(0.32),
     simAcceptedElectricDepreciationCostKm: z.number().min(0).default(0.33),
+    simMinDepreciationCostKm: z.number().min(0).default(0.05),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
   })

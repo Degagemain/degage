@@ -16,7 +16,8 @@ For each simulation run, the hub of the selected town is applied. This means adm
 2. **Car price cap** — If **Sim max price (manual review)** is set and the estimated car value (or new-car purchase price) is **above** that
    amount in euros, a run that would otherwise end as **Category A** or **Category B** is turned into **Manual review** instead (with a step
    explaining the intended outcome). **Not OK** outcomes are unchanged. Leave empty for no limit.
-3. **Value and depreciation** — **Sim depreciation km** (or **Sim depreciation km electric**) controls how fast value declines per km.
+3. **Value and depreciation** — **Sim depreciation km** (or **Sim depreciation km electric**) controls how fast value declines per km. When the
+   estimated depreciation cost per km is below **Min deprec. €/km**, it is raised to that floor.
 4. **Fixed costs in km rate** — **Sim inspection cost per year** and **Sim maintenance cost per year** are included in fixed yearly cost and
    therefore in the final km rate.
 5. **Shared km scenarios** — **Min shared km/year**, **Avg shared km/year**, and **Max shared km/year** are returned on simulations and power
@@ -46,6 +47,7 @@ For each simulation run, the hub of the selected town is applied. This means adm
 | Cat. B max €/km (7+ seats)           | **Category B.** Maximum allowed rounded cost per km (€/km) when the car has 7 or more seats.                                                               |
 | Max deprec. €/km (cat. A)            | **All hubs.** Maximum depreciation cost per km (€/km) for standard vehicles (not electric, not category B).                                                |
 | Max deprec. €/km (electric & cat. B) | **Electric and category B.** Maximum depreciation cost per km (€/km) for electric vehicles and category B candidates (7+ seats or vans).                   |
+| Min deprec. €/km                     | **Depreciation.** Minimum depreciation cost per km (€/km) used in the simulation; lower estimates are raised to this value.                                |
 | Sim min euro norm group diesel       | Diesel threshold stored on hub level. Available in admin data, but currently not directly used in the simulation’s final decision flow.                    |
 | Sim min ecoscore for bonus           | **Quality.** If the car’s ecoscore is ≥ this value, it receives 1 bonus point. Need 2+ points to pass quality.                                             |
 | Sim max km for bonus                 | **Quality.** If the car’s mileage is ≤ this value, it receives 1 bonus point.                                                                              |

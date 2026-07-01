@@ -944,6 +944,7 @@
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7 places ou plus)",
         "simAcceptedDepreciationCostKm": "Max dépréc. EUR/km (cat. A)",
         "simAcceptedElectricDepreciationCostKm": "Max dépréc. EUR/km (électrique & cat. B)",
+        "simMinDepreciationCostKm": "Min dépréc. EUR/km",
         "created": "Créé le",
         "updated": "Modifié le"
       },

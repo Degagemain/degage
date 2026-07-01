@@ -944,6 +944,7 @@
         "simAcceptedPriceCategoryB": "Cat. B max €/km (7+ zitpl.)",
         "simAcceptedDepreciationCostKm": "Max afschr. €/km (cat. A)",
         "simAcceptedElectricDepreciationCostKm": "Max afschr. €/km (elektrisch & cat. B)",
+        "simMinDepreciationCostKm": "Min afschr. €/km",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },

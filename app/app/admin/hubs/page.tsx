@@ -81,6 +81,7 @@ export default function HubsPage() {
     simAcceptedPriceCategoryB: false,
     simAcceptedDepreciationCostKm: false,
     simAcceptedElectricDepreciationCostKm: false,
+    simMinDepreciationCostKm: false,
     createdAt: false,
     updatedAt: false,
   });
@@ -140,6 +141,7 @@ export default function HubsPage() {
       simAcceptedPriceCategoryB: t('columns.simAcceptedPriceCategoryB'),
       simAcceptedDepreciationCostKm: t('columns.simAcceptedDepreciationCostKm'),
       simAcceptedElectricDepreciationCostKm: t('columns.simAcceptedElectricDepreciationCostKm'),
+      simMinDepreciationCostKm: t('columns.simMinDepreciationCostKm'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),
