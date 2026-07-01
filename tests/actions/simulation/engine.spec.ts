@@ -297,6 +297,87 @@ describe('runSimulationEngine', () => {
     expect(result.resultCode).toBe('categoryB');
   });
 
+  it('recomputes km cost after adapting car value to depreciation criteria', async () => {
+    vi.mocked(carValueEstimator).mockResolvedValueOnce({ price: 70_000, min: 60_000, max: 75_000 });
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400ae',
+        name: 'hub-adapt-value',
+        isDefault: false,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.55,
+        simAcceptedPriceCategoryB: 0.55,
+        simAcceptedDepreciationCostKm: 0.32,
+        simAcceptedElectricDepreciationCostKm: 0.33,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+
+    const result = await runSimulationEngine(
+      simulationRunInput({ mileage: 0, ownerKmPerYear: 10_000, firstRegisteredAt: new Date('2024-01-01') }),
+    );
+
+    expect(result.resultCode).toBe('categoryA');
+    expect(result.resultEstimatedCarValue).toBe(64_000);
+    expect(result.resultDepreciationCostKm).toBe(0.32);
+    expect(result.resultRoundedKmCost).toBeCloseTo(0.5262, 4);
+  });
+
+  it('adds an explicit NOT_OK step when depreciation criteria are not met', async () => {
+    vi.mocked(carValueEstimator).mockResolvedValueOnce({ price: 70_000, min: 60_000, max: 75_000 });
+    vi.mocked(dbHubRead).mockResolvedValueOnce(
+      hubSchema.parse({
+        id: '550e8400-e29b-41d4-a716-4466554400af',
+        name: 'hub-depreciation-fail',
+        isDefault: false,
+        simMaxAge: 15,
+        simMaxKm: 250_000,
+        simMinEuroNormGroupDiesel: 5,
+        simDepreciationKm: 200_000,
+        simDepreciationKmElectric: 300_000,
+        simInspectionCostPerYear: 43,
+        simMaintenanceCostPerYear: 950,
+        minSharedKm: 3_000,
+        avgSharedKm: 5_000,
+        maxSharedKm: 7_000,
+        simMaxPrice: null,
+        simAcceptedPriceCategoryA: 0.55,
+        simAcceptedPriceCategoryB: 0.55,
+        simAcceptedDepreciationCostKm: 0.1,
+        simAcceptedElectricDepreciationCostKm: 0.1,
+        simMinEcoScoreForBonus: 60,
+        simMaxKmForBonus: 140_000,
+        simMaxAgeForBonus: 7,
+        createdAt: null,
+        updatedAt: null,
+      }),
+    );
+
+    const result = await runSimulationEngine(
+      simulationRunInput({ mileage: 0, ownerKmPerYear: 10_000, firstRegisteredAt: new Date('2024-01-01') }),
+    );
+
+    expect(result.resultCode).toBe('notOk');
+    expect(result.rejectionReason).toBe('simulation.step.price_criteria_not_met');
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.price_criteria_not_met');
+  });
+
   it('returns manualReview with price_estimation_failed when estimator returns invalid prices', async () => {
     vi.mocked(carValueEstimator).mockRejectedValueOnce(new InvalidCarPriceEstimateError('non-positive price (0)'));
     const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-01-01') });

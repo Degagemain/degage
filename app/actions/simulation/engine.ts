@@ -259,11 +259,6 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     }),
   );
 
-  const kmCost = fuelCostPerKm + fixedYearCost / estimatedTotalYearlyMileage + depreciationCostKm;
-  const roundedKmCost = Math.round(kmCost * 10000) / 10000;
-  result.resultRoundedKmCost = roundedKmCost;
-  addInfoMessage(result, await getSimulationMessage(SimulationStepCode.KM_RATE_ESTIMATED, { estimated: roundedKmCost }));
-
   // Depreciation cost criteria rejection
   const isCategoryBOrElectric = simulationCarIsCategoryBCandidate(input) || isElectricFuelType(fuelType);
   if (
@@ -293,11 +288,18 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
         }),
       );
     } else {
+      const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
+      addErrorMessage(result, priceFailure);
       result.resultCode = SimulationResultCode.NOT_OK;
-      result.rejectionReason = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
+      result.rejectionReason = priceFailure;
       return result;
     }
   }
+
+  const kmCost = fuelCostPerKm + fixedYearCost / estimatedTotalYearlyMileage + depreciationCostKm;
+  const roundedKmCost = Math.round(kmCost * 10000) / 10000;
+  result.resultRoundedKmCost = roundedKmCost;
+  addInfoMessage(result, await getSimulationMessage(SimulationStepCode.KM_RATE_ESTIMATED, { estimated: roundedKmCost }));
 
   // Quality criteria:
   let bonusPoints = 0;
