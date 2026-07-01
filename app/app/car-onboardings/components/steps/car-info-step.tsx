@@ -24,6 +24,7 @@ const formatBool = (value: boolean, t: (key: string) => string): string => (valu
 
 export function CarInfoStep() {
   const t = useTranslations('carOnboardingPublic');
+  const tShared = useTranslations('common');
   const tAdmin = useTranslations('admin.carOnboardings');
   const { carOnboarding, reload } = useCarOnboarding();
   const hasOtherCarType = Boolean(carOnboarding.carTypeOther?.trim()) && carOnboarding.carType == null;
@@ -126,11 +127,11 @@ export function CarInfoStep() {
         <PublicReadOnlyValue label={tAdmin('columns.mileage')} value={String(carOnboarding.mileage)} />
         <PublicReadOnlyValue label={tAdmin('columns.seats')} value={String(carOnboarding.seats)} />
         <PublicReadOnlyValue label={tAdmin('columns.firstRegisteredAt')} value={formatDate(carOnboarding.firstRegisteredAt)} />
-        <PublicReadOnlyValue label={tAdmin('columns.isVan')} value={formatBool(carOnboarding.isVan, t)} />
-        <PublicReadOnlyValue label={tAdmin('columns.isPurchased')} value={formatBool(carOnboarding.isPurchased, t)} />
+        <PublicReadOnlyValue label={tAdmin('columns.isVan')} value={formatBool(carOnboarding.isVan, tShared)} />
+        <PublicReadOnlyValue label={tAdmin('columns.isPurchased')} value={formatBool(carOnboarding.isPurchased, tShared)} />
         {carOnboarding.isPurchased ? (
           <>
-            <PublicReadOnlyValue label={tAdmin('columns.isNewCar')} value={formatBool(carOnboarding.isNewCar, t)} />
+            <PublicReadOnlyValue label={tAdmin('columns.isNewCar')} value={formatBool(carOnboarding.isNewCar, tShared)} />
             <PublicReadOnlyValue label={tAdmin('columns.purchasePrice')} value={String(carOnboarding.purchasePrice)} />
           </>
         ) : null}

@@ -11,6 +11,7 @@ import { type UILocale, localeDisplayNames } from '@/i18n/locales';
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   t: (key: string) => string;
+  tShared: (key: string) => string;
 }
 
 function getInitials(name: string | null | undefined): string {
@@ -24,7 +25,7 @@ function getInitials(name: string | null | undefined): string {
 }
 
 export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
-  const { t } = options;
+  const { t, tShared } = options;
   return [
     {
       id: 'select',
@@ -99,7 +100,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
         const verified = row.getValue('emailVerified') as boolean;
         return (
           <Badge variant={verified ? 'default' : 'outline'} className="font-normal">
-            {verified ? t('yes') : t('no')}
+            {verified ? tShared('yes') : tShared('no')}
           </Badge>
         );
       },

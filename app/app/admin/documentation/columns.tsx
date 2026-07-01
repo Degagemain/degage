@@ -14,12 +14,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export type DocumentationColumnsCtx = {
   t: (key: string) => string;
+  tShared: (key: string) => string;
   getTitle: (doc: Documentation) => string;
   onSort: (columnId: string, desc: boolean) => void;
 };
 
 export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documentation>[] => {
-  const { t, getTitle, onSort } = ctx;
+  const { t, tShared, getTitle, onSort } = ctx;
 
   return [
     {
@@ -64,14 +65,18 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
       accessorKey: 'isFaq',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isFaq')} onSort={onSort} />,
       cell: ({ row }) =>
-        row.original.isFaq ? <Check className="text-primary size-4" aria-label={t('yes')} /> : <span className="text-muted-foreground">—</span>,
+        row.original.isFaq ? (
+          <Check className="text-primary size-4" aria-label={tShared('yes')} />
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
     },
     {
       accessorKey: 'isPublic',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isPublic')} onSort={onSort} />,
       cell: ({ row }) =>
         row.original.isPublic ? (
-          <Check className="text-primary size-4" aria-label={t('yes')} />
+          <Check className="text-primary size-4" aria-label={tShared('yes')} />
         ) : (
           <span className="text-muted-foreground">—</span>
         ),

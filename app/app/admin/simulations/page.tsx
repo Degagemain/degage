@@ -48,6 +48,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 
 export default function SimulationsPage() {
   const t = useTranslations('admin.simulations');
+  const tShared = useTranslations('common');
   const tExport = useTranslations('admin.common.export');
   const [state, setState] = useState<SimulationsState>({
     data: [],
@@ -181,7 +182,10 @@ export default function SimulationsPage() {
     setItemToDelete(item);
   }, []);
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t }), [handleSort, handleDeleteRequest, t]);
+  const columns = useMemo(
+    () => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t, tShared }),
+    [handleSort, handleDeleteRequest, t, tShared],
+  );
 
   const resultCodeOptions: FacetedFilterOption[] = useMemo(
     () => [

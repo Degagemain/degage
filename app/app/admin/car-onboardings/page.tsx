@@ -46,6 +46,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function CarOnboardingsPage() {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
+  const tShared = useTranslations('common');
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [state, setState] = useState<CarOnboardingsState>({
@@ -100,7 +101,10 @@ export default function CarOnboardingsPage() {
     setItemToDelete(item);
   }, []);
 
-  const columns = useMemo(() => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t }), [handleSort, handleDeleteRequest, t]);
+  const columns = useMemo(
+    () => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t, tShared }),
+    [handleSort, handleDeleteRequest, t, tShared],
+  );
 
   const columnLabels = useMemo(
     () => ({

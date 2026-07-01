@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: the public simulation now asks whether the car is a commercial vehicle or partly claimed as business expenses; answering yes shows a warning and blocks continuing.
 - Changed: the simulation now enforces a cap on a car's depreciation cost per km.
   When the cost is too high, the estimated car value is automatically adjusted
   within its valuation range to meet the limit; if that isn't possible, the car
@@ -23,3 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Changed: clarified hub labels for depreciation cost per km limits — the
   standard limit applies on every hub, and electric vehicles share one limit
   with category B.
+
+### Technical
+
+- Changed: consolidated duplicate "Yes" / "No" message keys into shared `common.yes` and `common.no` translations.

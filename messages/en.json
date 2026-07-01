@@ -10,6 +10,10 @@
     "dark": "Dark",
     "automatic": "Automatic"
   },
+  "common": {
+    "yes": "Yes",
+    "no": "No"
+  },
   "notFound": {
     "eyebrow": "Page not found",
     "title": "We can’t find that page",
@@ -1244,8 +1248,6 @@
         "hasActiveMembersLabel": "Active members",
         "unsetOption": "Unset",
         "replaceOption": "Set hub",
-        "yesOption": "Yes",
-        "noOption": "No",
         "columnName": "Town",
         "columnStatus": "Status",
         "confirm": "Update all",
@@ -1419,14 +1421,10 @@
         "ecoscore": "Ecoscore",
         "euroNormCode": "Euro norm",
         "consumption": "Consumption",
-        "yes": "Yes",
-        "no": "No",
         "startOnboarding": "Start onboarding",
         "startingOnboarding": "Starting…",
         "startOnboardingError": "Failed to start car onboarding."
-      },
-      "yes": "Yes",
-      "no": "No"
+      }
     },
     "carOnboardings": {
       "title": "Onboardings",
@@ -1466,8 +1464,6 @@
         "created": "Created",
         "updated": "Updated"
       },
-      "yes": "Yes",
-      "no": "No",
       "tabs": {
         "preparationTitle": "Preparation",
         "owner": "Owner",
@@ -1670,8 +1666,6 @@
       },
       "roleAdmin": "Admin",
       "roleUser": "User",
-      "yes": "Yes",
-      "no": "No",
       "statusActive": "Active",
       "statusBanned": "Banned",
       "filters": {
@@ -1759,8 +1753,6 @@
         "multiSelectAudience": "Select audience roles…",
         "multiSelectTags": "Select tags…"
       },
-      "yes": "Yes",
-      "no": "No",
       "actions": {
         "openMenu": "Open menu",
         "view": "View",
@@ -2099,6 +2091,9 @@
       "title": "Tell us about your car",
       "body": "We need this information to create a simulation for your car.",
       "privacyPolicyLink": "Privacy Policy",
+      "bedrijfswagenLabel": "Commercial vehicle",
+      "bedrijfswagenHint": "Commercial vehicle or (partly) claimed as business expenses",
+      "bedrijfswagenWarning": "Commercial vehicles and cars (partly) claimed as business expenses are not eligible for Dégage.",
       "gemeenteLabel": "Town",
       "gemeenteHint": "Demand for shared cars varies from neighbourhood to neighbourhood.",
       "gemeentePlaceholder": "Postcode or town",
@@ -2114,8 +2109,6 @@
       "carTypeOtherPlaceholder": "e.g. Custom model",
       "seatsLabel": "Seats",
       "isVanLabel": "Light commercial?",
-      "isVanYes": "Yes",
-      "isVanNo": "No",
       "mileageLabel": "Mileage",
       "mileagePlaceholder": "e.g. 78000",
       "firstRegistrationLabel": "First registration",
@@ -2517,8 +2510,6 @@
     "save": "Save",
     "next": "Next",
     "saveSuccess": "Saved successfully.",
-    "yes": "Yes",
-    "no": "No",
     "states": {
       "todo": "To do",
       "pending": "In progress",

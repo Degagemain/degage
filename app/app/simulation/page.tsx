@@ -100,6 +100,7 @@ const SIMULATION_FAQ_TAGS = {
 export default function SimulationPage() {
   const t = useTranslations('simulationPublic');
   const tWizard = useTranslations('simulation.wizard');
+  const tShared = useTranslations('common');
   const [screen, setScreen] = useState(1);
   const [carChoice, setCarChoice] = useState<CarChoice | null>(null);
 
@@ -121,6 +122,7 @@ export default function SimulationPage() {
   const [firstRegisteredAt, setFirstRegisteredAt] = useState('');
   const [ownerKmPerYear, setOwnerKmPerYear] = useState('');
   const [purchaseAmountInclVat, setPurchaseAmountInclVat] = useState('');
+  const [isCommercialVehicle, setIsCommercialVehicle] = useState(false);
 
   const [fuelTypes, setFuelTypes] = useState<{ id: string; name: string }[]>([]);
   const [fuelTypesLoading, setFuelTypesLoading] = useState(true);
@@ -226,6 +228,7 @@ export default function SimulationPage() {
   );
 
   const isCarInfoValid = useMemo(() => {
+    if (isCommercialVehicle) return false;
     if (!townId || !brandId || !fuelTypeId || !carTypeId) return false;
     if (carTypeId === CAR_TYPE_OTHER && !carTypeOther.trim()) return false;
     const seatsNum = parseInt(seats.trim(), 10);
@@ -244,6 +247,7 @@ export default function SimulationPage() {
     return parsedOwnerKmPerYear !== null;
   }, [
     carChoice,
+    isCommercialVehicle,
     townId,
     brandId,
     fuelTypeId,
@@ -542,6 +546,27 @@ export default function SimulationPage() {
             </p>
 
             <div className={styles.field}>
+              <label className={styles.fieldLabel}>{t('wageninfo.bedrijfswagenLabel')}</label>
+              <p className={styles.fieldHint}>{t('wageninfo.bedrijfswagenHint')}</p>
+              <div className={styles.toggleRow}>
+                <button
+                  type="button"
+                  onClick={() => setIsCommercialVehicle(!isCommercialVehicle)}
+                  className={`${styles.toggleTrack} ${isCommercialVehicle ? styles.toggleTrackOn : styles.toggleTrackOff}`}
+                  aria-pressed={isCommercialVehicle}
+                >
+                  <span className={`${styles.toggleThumb} ${isCommercialVehicle ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
+                </button>
+                <span className={styles.captionInline}>{isCommercialVehicle ? tShared('yes') : tShared('no')}</span>
+              </div>
+              {isCommercialVehicle && (
+                <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="alert">
+                  <p className={styles.amberBannerText}>{t('wageninfo.bedrijfswagenWarning')}</p>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
               <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
               <SearchDropdown
@@ -668,7 +693,7 @@ export default function SimulationPage() {
                   >
                     <span className={`${styles.toggleThumb} ${isVan ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
                   </button>
-                  <span className={styles.captionInline}>{isVan ? t('wageninfo.isVanYes') : t('wageninfo.isVanNo')}</span>
+                  <span className={styles.captionInline}>{isVan ? tShared('yes') : tShared('no')}</span>
                 </div>
               </div>
             </div>

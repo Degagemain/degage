@@ -59,6 +59,7 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function DocumentationAdminPage() {
   const t = useTranslations('admin.documentation');
   const tCommon = useTranslations('admin.common');
+  const tShared = useTranslations('common');
   const uiLocale = useLocale();
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : defaultUILocale;
@@ -307,10 +308,11 @@ export default function DocumentationAdminPage() {
     () =>
       createColumns({
         t,
+        tShared,
         getTitle,
         onSort: handleSort,
       }),
-    [t, getTitle, handleSort],
+    [t, tShared, getTitle, handleSort],
   );
 
   const columnLabels = useMemo(
@@ -331,18 +333,18 @@ export default function DocumentationAdminPage() {
 
   const isFaqOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: t('yes'), icon: Check },
-      { value: 'false', label: t('no'), icon: X },
+      { value: 'true', label: tShared('yes'), icon: Check },
+      { value: 'false', label: tShared('no'), icon: X },
     ],
-    [t],
+    [tShared],
   );
 
   const isPublicOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: t('yes'), icon: Check },
-      { value: 'false', label: t('no'), icon: X },
+      { value: 'true', label: tShared('yes'), icon: Check },
+      { value: 'false', label: tShared('no'), icon: X },
     ],
-    [t],
+    [tShared],
   );
 
   const sourceOptions: FacetedFilterOption[] = useMemo(() => {
@@ -554,8 +556,8 @@ export default function DocumentationAdminPage() {
           rolesLabel: t('bulkUpdate.rolesLabel'),
           groupsLabel: t('bulkUpdate.groupsLabel'),
           unsetOption: t('bulkUpdate.unsetOption'),
-          yesOption: t('yes'),
-          noOption: t('no'),
+          yesOption: tShared('yes'),
+          noOption: tShared('no'),
           replaceOption: t('bulkUpdate.replaceOption'),
           tagsPlaceholder: t('form.multiSelectTags'),
           rolesPlaceholder: t('form.multiSelectAudience'),

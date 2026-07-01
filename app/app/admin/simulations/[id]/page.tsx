@@ -49,6 +49,7 @@ export default function SimulationDetailPage() {
   const tCol = useTranslations('admin.simulations.columns');
   const tResult = useTranslations('simulation.resultCode');
   const tDetail = useTranslations('admin.simulations.detailPage');
+  const tShared = useTranslations('common');
 
   const [simulation, setSimulation] = useState<Simulation | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -243,8 +244,8 @@ export default function SimulationDetailPage() {
             <FieldRow label={tForm('ownerKmPerYear')} value={simulation.ownerKmPerYear.toLocaleString()} />
             <FieldRow label={tForm('seats')} value={String(simulation.seats)} />
             <FieldRow label={tForm('firstRegistrationDate')} value={firstRegisteredAt ? format(firstRegisteredAt, 'dd-MM-yyyy') : null} />
-            <FieldRow label={tForm('isVan')} value={simulation.isVan ? tDetail('yes') : tDetail('no')} />
-            <FieldRow label={tDetail('isPurchased')} value={simulation.isPurchased ? tDetail('yes') : tDetail('no')} />
+            <FieldRow label={tForm('isVan')} value={simulation.isVan ? tShared('yes') : tShared('no')} />
+            <FieldRow label={tDetail('isPurchased')} value={simulation.isPurchased ? tShared('yes') : tShared('no')} />
             <FieldRow
               label={tDetail('purchasePrice')}
               value={simulation.purchasePrice != null ? `€ ${simulation.purchasePrice.toLocaleString()}` : null}

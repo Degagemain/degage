@@ -10,6 +10,10 @@
     "dark": "Donker",
     "automatic": "Automatisch"
   },
+  "common": {
+    "yes": "Ja",
+    "no": "Nee"
+  },
   "notFound": {
     "eyebrow": "Pagina niet gevonden",
     "title": "We vinden die pagina niet",
@@ -1244,8 +1248,6 @@
         "hasActiveMembersLabel": "Actieve leden",
         "unsetOption": "Niet aanpassen",
         "replaceOption": "Hub instellen",
-        "yesOption": "Ja",
-        "noOption": "Nee",
         "columnName": "Gemeente",
         "columnStatus": "Status",
         "confirm": "Alles bijwerken",
@@ -1419,14 +1421,10 @@
         "ecoscore": "Ecoscore",
         "euroNormCode": "Euro norm",
         "consumption": "Verbruik",
-        "yes": "Ja",
-        "no": "Nee",
         "startOnboarding": "Start auto-onboarding",
         "startingOnboarding": "Bezig met starten…",
         "startOnboardingError": "Auto-onboarding starten mislukt."
-      },
-      "yes": "Ja",
-      "no": "Nee"
+      }
     },
     "carOnboardings": {
       "title": "Onboardings",
@@ -1466,8 +1464,6 @@
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
-      "yes": "Ja",
-      "no": "Nee",
       "tabs": {
         "preparationTitle": "Voorbereiding",
         "owner": "Eigenaar",
@@ -1670,8 +1666,6 @@
       },
       "roleAdmin": "Admin",
       "roleUser": "Gebruiker",
-      "yes": "Ja",
-      "no": "Nee",
       "statusActive": "Actief",
       "statusBanned": "Geblokkeerd",
       "filters": {
@@ -1759,8 +1753,6 @@
         "multiSelectAudience": "Doelpubliek kiezen…",
         "multiSelectTags": "Tags kiezen…"
       },
-      "yes": "Ja",
-      "no": "Nee",
       "actions": {
         "openMenu": "Menu openen",
         "view": "Bekijken",
@@ -2099,6 +2091,9 @@
       "title": "Vertel ons over je wagen",
       "body": "Deze informatie hebben we nodig om een simulatie voor je wagen te maken.",
       "privacyPolicyLink": "Privacy Policy",
+      "bedrijfswagenLabel": "Bedrijfswagen",
+      "bedrijfswagenHint": "Bedrijfswagen of (deels) ingebracht als beroepskosten",
+      "bedrijfswagenWarning": "Bedrijfswagens en wagens die (deels) als beroepskosten zijn ingebracht, komen niet in aanmerking voor Dégage.",
       "gemeenteLabel": "Gemeente",
       "gemeenteHint": "De vraag naar deelauto's verschilt van buurt tot buurt.",
       "gemeentePlaceholder": "Postcode of gemeente",
@@ -2114,8 +2109,6 @@
       "carTypeOtherPlaceholder": "bijv. Aangepast model",
       "seatsLabel": "Zitplaatsen",
       "isVanLabel": "Lichte vracht?",
-      "isVanYes": "Ja",
-      "isVanNo": "Nee",
       "mileageLabel": "Kilometerstand",
       "mileagePlaceholder": "bv. 78000",
       "firstRegistrationLabel": "Eerste inschrijving",
@@ -2526,8 +2519,6 @@
     "save": "Opslaan",
     "next": "Volgende",
     "saveSuccess": "Succesvol opgeslagen.",
-    "yes": "Ja",
-    "no": "Nee",
     "states": {
       "todo": "Todo",
       "pending": "In behandeling",
