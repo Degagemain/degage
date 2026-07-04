@@ -157,7 +157,7 @@ export default function EditCarOnboardingPage() {
     const response = await apiPutForm(`/api/car-onboardings/${id}/registration-certificate/${side}`, formData);
     if (!response.ok) {
       const message = await parseApiErrorMessage(response, t('form.registrationCertificate.uploadError'), {
-        registration_certificate_not_recognized: t('form.registrationCertificate.notRecognizedError'),
+        document_not_recognized: t('form.registrationCertificate.notRecognizedError'),
       });
       toast.error(message);
       throw new Error(message);
@@ -184,7 +184,9 @@ export default function EditCarOnboardingPage() {
     formData.append('file', file);
     const response = await apiPutForm(`/api/car-onboardings/${id}/inspection-certificate`, formData);
     if (!response.ok) {
-      const message = await parseApiErrorMessage(response, t('form.inspectionCertificate.uploadError'));
+      const message = await parseApiErrorMessage(response, t('form.inspectionCertificate.uploadError'), {
+        document_not_recognized: t('form.inspectionCertificate.notRecognizedError'),
+      });
       toast.error(message);
       throw new Error(message);
     }
@@ -210,7 +212,9 @@ export default function EditCarOnboardingPage() {
     formData.append('file', file);
     const response = await apiPutForm(`/api/car-onboardings/${id}/pink-form`, formData);
     if (!response.ok) {
-      const message = await parseApiErrorMessage(response, t('form.pinkForm.uploadError'));
+      const message = await parseApiErrorMessage(response, t('form.pinkForm.uploadError'), {
+        document_not_recognized: t('form.pinkForm.notRecognizedError'),
+      });
       toast.error(message);
       throw new Error(message);
     }

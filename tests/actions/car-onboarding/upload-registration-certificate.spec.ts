@@ -21,9 +21,10 @@ vi.mock('@/actions/document/analyze-registration-certificate', () => ({
 }));
 
 import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model';
+import { DocumentType } from '@/domain/document.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
-import { RegistrationCertificateNotRecognizedError } from '@/actions/car-onboarding/registration-certificate-not-recognized.error';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { uploadCarOnboardingRegistrationCertificate } from '@/actions/car-onboarding/upload-registration-certificate';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
@@ -42,8 +43,9 @@ const file = {
   body: Buffer.from('data'),
 };
 
-const registrationAnalysis = {
+const frontAnalysis = {
   isRegistrationDocument: true,
+  side: 'front' as const,
   vin: 'WVWZZZ3CZWE123456',
   plate: '1-ABC-123',
   firstRegisteredAt: new Date('2020-03-15'),
@@ -53,23 +55,35 @@ const registrationAnalysis = {
   ownerCity: 'Brussels',
 };
 
+const backAnalysis = {
+  isRegistrationDocument: true,
+  side: 'back' as const,
+  vin: null,
+  plate: null,
+  firstRegisteredAt: null,
+  ownerName: null,
+  ownerStreet: null,
+  ownerZip: null,
+  ownerCity: null,
+};
+
 describe('uploadCarOnboardingRegistrationCertificate', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('creates and links a document on first front upload and prefills empty fields', async () => {
+  it('analyzes before creating and links a document on first front upload and prefills empty fields', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(frontAnalysis);
     vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
-    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(registrationAnalysis);
 
     await uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner);
 
-    expect(createDocumentWithUpload).toHaveBeenCalled();
     expect(analyzeRegistrationCertificate).toHaveBeenCalledWith({
       body: file.body,
       contentType: file.contentType,
     });
+    expect(createDocumentWithUpload).toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         registrationCertificateFront: { id: 'doc-1' },
@@ -92,8 +106,8 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
         firstRegisteredAt: existingDate,
       }),
     );
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(frontAnalysis);
     vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
-    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(registrationAnalysis);
 
     await uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner);
 
@@ -107,7 +121,7 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
     );
   });
 
-  it('updates an existing front document and prefills on re-upload', async () => {
+  it('analyzes before updating an existing front document and prefills on re-upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -115,10 +129,11 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
         registrationCertificateFront: { id: 'doc-1', name: 'front.jpg' },
       }),
     );
-    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(registrationAnalysis);
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(frontAnalysis);
 
     await uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner);
 
+    expect(analyzeRegistrationCertificate).toHaveBeenCalled();
     expect(updateDocumentWithUpload).toHaveBeenCalledWith({
       documentId: 'doc-1',
       fileName: file.fileName,
@@ -126,7 +141,6 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
       sizeBytes: file.sizeBytes,
       body: file.body,
     });
-    expect(analyzeRegistrationCertificate).toHaveBeenCalled();
     expect(createDocumentWithUpload).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -137,7 +151,7 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
     );
   });
 
-  it('throws when front analysis does not recognize a registration document on re-upload', async () => {
+  it('does not store when front analysis does not recognize a registration document on re-upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -150,6 +164,7 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
     );
     vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce({
       isRegistrationDocument: false,
+      side: null,
       vin: null,
       plate: null,
       firstRegisteredAt: null,
@@ -159,19 +174,17 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
       ownerCity: null,
     });
 
-    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner)).rejects.toThrow(
-      RegistrationCertificateNotRecognizedError,
-    );
+    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner)).rejects.toThrow(DocumentNotRecognizedError);
 
-    expect(updateDocumentWithUpload).toHaveBeenCalled();
+    expect(updateDocumentWithUpload).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('throws when front analysis does not recognize a registration document on first upload', async () => {
+  it('does not store when front analysis does not recognize a registration document on first upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
-    vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
     vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce({
       isRegistrationDocument: false,
+      side: null,
       vin: null,
       plate: null,
       firstRegisteredAt: null,
@@ -181,27 +194,46 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
       ownerCity: null,
     });
 
-    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner)).rejects.toThrow(
-      RegistrationCertificateNotRecognizedError,
-    );
+    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner)).rejects.toThrow(DocumentNotRecognizedError);
 
-    expect(createDocumentWithUpload).toHaveBeenCalled();
+    expect(createDocumentWithUpload).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('creates back document without analysis', async () => {
+  it('does not store when front analysis detects the back side', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(backAnalysis);
+
+    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner)).rejects.toThrow(
+      new DocumentNotRecognizedError(DocumentType.REGISTRATION_CERTIFICATE),
+    );
+
+    expect(createDocumentWithUpload).not.toHaveBeenCalled();
+  });
+
+  it('analyzes before creating back document and requires back side', async () => {
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(backAnalysis);
     vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-back' }));
 
     await uploadCarOnboardingRegistrationCertificate(onboardingId, 'back', file, owner);
 
+    expect(analyzeRegistrationCertificate).toHaveBeenCalled();
     expect(createDocumentWithUpload).toHaveBeenCalled();
-    expect(analyzeRegistrationCertificate).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         registrationCertificateBack: { id: 'doc-back' },
       }),
     );
+  });
+
+  it('does not store when back analysis detects the front side', async () => {
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(frontAnalysis);
+
+    await expect(uploadCarOnboardingRegistrationCertificate(onboardingId, 'back', file, owner)).rejects.toThrow(DocumentNotRecognizedError);
+
+    expect(createDocumentWithUpload).not.toHaveBeenCalled();
   });
 
   it('throws when onboarding is locked', async () => {

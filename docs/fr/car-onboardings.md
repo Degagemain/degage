@@ -50,7 +50,12 @@ Cette étape est complète lorsque la rue, la commune et le téléphone sont tou
 
 Recueille les caractéristiques du véhicule : marque, type de carburant, type de véhicule (ou texte libre), kilométrage, places, date de première
 immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat, amortissement par km, scans du certificat d'immatriculation (recto et
-verso) et certificat de contrôle technique.
+verso), certificat de contrôle technique et formulaire rose.
+
+Les images de documents téléversées sont vérifiées automatiquement avant d'être enregistrées. Si une photo est floue ou ne correspond pas au
+type de document attendu, le téléversement est refusé et l'utilisateur est invité à téléverser une photo nette. Le recto du certificat
+d'immatriculation peut aussi préremplir le VIN, la plaque d'immatriculation et la date de première immatriculation lorsque ces champs sont
+encore vides.
 
 Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis.
 

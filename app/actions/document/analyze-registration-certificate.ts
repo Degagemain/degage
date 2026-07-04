@@ -16,6 +16,11 @@ const responseSchema: Schema = {
       type: Type.BOOLEAN,
       description: 'Whether the image is a vehicle registration certificate (registration document)',
     },
+    side: {
+      type: Type.STRING,
+      nullable: true,
+      description: 'Which side of the registration document is shown: front or back',
+    },
     vin: { type: Type.STRING, nullable: true, description: 'Full VIN number' },
     plate: { type: Type.STRING, nullable: true, description: 'License plate number' },
     firstRegisteredAt: {
@@ -35,7 +40,8 @@ const buildPrompt = (): string => {
   return [
     'Analyze this image of a vehicle registration certificate (registration document).',
     'Determine whether this is really a vehicle registration document.',
-    'If it is, extract the following fields from the document:',
+    'If it is, determine whether the image shows the front side or the back side of the document (return "front" or "back" for side).',
+    'If it is the front side, extract the following fields from the document:',
     '1. Full VIN number',
     '2. License plate number',
     '3. First registration date (return as YYYY-MM-DD)',

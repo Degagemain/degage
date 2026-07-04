@@ -68,6 +68,10 @@ form.
 | Inspection certificate         | Valid vehicle inspection report (required for cars older than 4 years). |
 | Pink form                      | Vehicle transfer form (pink form) for purchased used cars.              |
 
+Uploaded document images are checked automatically before they are saved. If a photo is unclear or does not match the expected document type,
+the upload is rejected and the user is asked to upload a clear photo. The registration certificate front can also prefill VIN, licence plate,
+and first registration date when those fields are still empty.
+
 This step is complete when brand, fuel type, and car type are all set.
 
 ### Insurer

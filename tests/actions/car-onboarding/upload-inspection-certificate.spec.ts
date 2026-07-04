@@ -16,14 +16,21 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
   saveCarOnboardingWithPreparationCheck: vi.fn(),
 }));
 
+vi.mock('@/actions/document/analyze-inspection-certificate', () => ({
+  analyzeInspectionCertificate: vi.fn(),
+}));
+
 import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model';
+import { DocumentType } from '@/domain/document.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { uploadCarOnboardingInspectionCertificate } from '@/actions/car-onboarding/upload-inspection-certificate';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { analyzeInspectionCertificate } from '@/actions/document/analyze-inspection-certificate';
 import { carOnboarding } from '../../builders/car-onboarding.builder';
 import { document } from '../../builders/document.builder';
 
@@ -41,12 +48,17 @@ describe('uploadCarOnboardingInspectionCertificate', () => {
     vi.clearAllMocks();
   });
 
-  it('creates and links a document on first upload', async () => {
+  it('analyzes before creating and links a document on first upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzeInspectionCertificate).mockResolvedValueOnce({ isInspectionCertificate: true });
     vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
 
     await uploadCarOnboardingInspectionCertificate(onboardingId, file, owner);
 
+    expect(analyzeInspectionCertificate).toHaveBeenCalledWith({
+      body: file.body,
+      contentType: file.contentType,
+    });
     expect(createDocumentWithUpload).toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -56,7 +68,7 @@ describe('uploadCarOnboardingInspectionCertificate', () => {
     expect(updateDocumentWithUpload).not.toHaveBeenCalled();
   });
 
-  it('updates an existing document on re-upload', async () => {
+  it('analyzes before updating an existing document on re-upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -64,9 +76,11 @@ describe('uploadCarOnboardingInspectionCertificate', () => {
         inspectionCertificate: { id: 'doc-1', name: 'inspection.jpg' },
       }),
     );
+    vi.mocked(analyzeInspectionCertificate).mockResolvedValueOnce({ isInspectionCertificate: true });
 
     await uploadCarOnboardingInspectionCertificate(onboardingId, file, owner);
 
+    expect(analyzeInspectionCertificate).toHaveBeenCalled();
     expect(updateDocumentWithUpload).toHaveBeenCalledWith({
       documentId: 'doc-1',
       fileName: file.fileName,
@@ -76,6 +90,24 @@ describe('uploadCarOnboardingInspectionCertificate', () => {
     });
     expect(createDocumentWithUpload).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+
+  it('does not store when analysis does not recognize an inspection certificate', async () => {
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        inspectionCertificate: { id: 'doc-1', name: 'inspection.jpg' },
+      }),
+    );
+    vi.mocked(analyzeInspectionCertificate).mockResolvedValueOnce({ isInspectionCertificate: false });
+
+    await expect(uploadCarOnboardingInspectionCertificate(onboardingId, file, owner)).rejects.toThrow(
+      new DocumentNotRecognizedError(DocumentType.INSPECTION_CERTIFICATE),
+    );
+
+    expect(updateDocumentWithUpload).not.toHaveBeenCalled();
+    expect(createDocumentWithUpload).not.toHaveBeenCalled();
   });
 
   it('throws when onboarding is locked', async () => {

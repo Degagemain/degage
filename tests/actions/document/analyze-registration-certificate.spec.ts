@@ -17,6 +17,7 @@ describe('analyzeRegistrationCertificate', () => {
   it('calls Gemini with image and returns parsed analysis', async () => {
     vi.mocked(generateStructuredJsonFromImage).mockResolvedValueOnce({
       isRegistrationDocument: true,
+      side: 'front',
       vin: 'WVWZZZ3CZWE123456',
       plate: '1-ABC-123',
       firstRegisteredAt: '2020-03-15',
@@ -41,6 +42,7 @@ describe('analyzeRegistrationCertificate', () => {
     );
     expect(result).toEqual({
       isRegistrationDocument: true,
+      side: 'front',
       vin: 'WVWZZZ3CZWE123456',
       plate: '1-ABC-123',
       firstRegisteredAt: new Date('2020-03-15'),
@@ -54,6 +56,7 @@ describe('analyzeRegistrationCertificate', () => {
   it('returns non-registration result with null fields', async () => {
     vi.mocked(generateStructuredJsonFromImage).mockResolvedValueOnce({
       isRegistrationDocument: false,
+      side: null,
       vin: null,
       plate: null,
       firstRegisteredAt: null,
@@ -69,6 +72,7 @@ describe('analyzeRegistrationCertificate', () => {
     });
 
     expect(result.isRegistrationDocument).toBe(false);
+    expect(result.side).toBeNull();
     expect(result.vin).toBeNull();
   });
 });

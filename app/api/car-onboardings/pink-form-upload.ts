@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import type { PinkFormUploadFile } from '@/actions/car-onboarding/upload-pink-form';
 import { forbiddenResponse, isPrismaNotFoundError, noContentResponse, notFoundResponse } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
@@ -45,6 +46,9 @@ export const tryCarOnboardingPinkFormUpload = async (
   } catch (error) {
     if (error instanceof CarOnboardingLockedError || error instanceof CarOnboardingForbiddenError) {
       return forbiddenResponse(error.message);
+    }
+    if (error instanceof DocumentNotRecognizedError) {
+      return Response.json({ code: 'document_not_recognized', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
     }
     if (error instanceof Error && (error.message.startsWith('Unsupported content type') || error.message.startsWith('File'))) {
       return Response.json({ code: 'validation_error', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });

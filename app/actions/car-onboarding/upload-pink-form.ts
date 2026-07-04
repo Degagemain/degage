@@ -1,6 +1,8 @@
 import { DocumentType, assertRegistrationCertificateUpload } from '@/domain/document.model';
 import type { UserWithRole } from '@/domain/role.model';
+import { analyzePinkForm } from '@/actions/document/analyze-pink-form';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
 import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
@@ -18,6 +20,11 @@ export const uploadCarOnboardingPinkForm = async (id: string, file: PinkFormUplo
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
   assertRegistrationCertificateUpload(file.contentType, file.sizeBytes);
+
+  const analysis = await analyzePinkForm({ body: file.body, contentType: file.contentType });
+  if (!analysis.isPinkForm) {
+    throw new DocumentNotRecognizedError(DocumentType.PINK_FORM);
+  }
 
   const linkedDocument = existing.pinkForm;
 

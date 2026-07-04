@@ -18,6 +18,8 @@ vi.mock('next/headers', () => ({
 }));
 
 import { PUT } from '@/api/car-onboardings/[id]/inspection-certificate/route';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
+import { DocumentType } from '@/domain/document.model';
 import { auth } from '@/auth';
 import { uploadCarOnboardingInspectionCertificate } from '@/actions/car-onboarding/upload-inspection-certificate';
 
@@ -62,6 +64,17 @@ describe('PUT /api/car-onboardings/[id]/inspection-certificate', () => {
       }),
       mockUser,
     );
+  });
+
+  it('returns 400 when upload is not recognized as an inspection certificate', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
+    vi.mocked(uploadCarOnboardingInspectionCertificate).mockRejectedValueOnce(
+      new DocumentNotRecognizedError(DocumentType.INSPECTION_CERTIFICATE),
+    );
+    const response = await PUT(makeMultipartRequest(), { params: Promise.resolve({ id: validId }) });
+    expect(response.status).toBe(400);
+    const json = await response.json();
+    expect(json.code).toBe('document_not_recognized');
   });
 
   it('returns 400 when file field is missing', async () => {

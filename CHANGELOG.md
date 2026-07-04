@@ -42,5 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Changed: car onboarding document uploads run Gemini vision validation before storage
 - Added: registration certificate front OCR via Gemini vision
 - Changed: consolidated duplicate "Yes" / "No" message keys into shared `common.yes` and `common.no` translations.

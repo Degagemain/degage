@@ -16,14 +16,21 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
   saveCarOnboardingWithPreparationCheck: vi.fn(),
 }));
 
+vi.mock('@/actions/document/analyze-pink-form', () => ({
+  analyzePinkForm: vi.fn(),
+}));
+
 import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model';
+import { DocumentType } from '@/domain/document.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { uploadCarOnboardingPinkForm } from '@/actions/car-onboarding/upload-pink-form';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { analyzePinkForm } from '@/actions/document/analyze-pink-form';
 import { carOnboarding } from '../../builders/car-onboarding.builder';
 import { document } from '../../builders/document.builder';
 
@@ -41,12 +48,17 @@ describe('uploadCarOnboardingPinkForm', () => {
     vi.clearAllMocks();
   });
 
-  it('creates and links a document on first upload', async () => {
+  it('analyzes before creating and links a document on first upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: onboardingId, owner: { id: owner.id } }));
+    vi.mocked(analyzePinkForm).mockResolvedValueOnce({ isPinkForm: true });
     vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
 
     await uploadCarOnboardingPinkForm(onboardingId, file, owner);
 
+    expect(analyzePinkForm).toHaveBeenCalledWith({
+      body: file.body,
+      contentType: file.contentType,
+    });
     expect(createDocumentWithUpload).toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -56,7 +68,7 @@ describe('uploadCarOnboardingPinkForm', () => {
     expect(updateDocumentWithUpload).not.toHaveBeenCalled();
   });
 
-  it('updates an existing document on re-upload', async () => {
+  it('analyzes before updating an existing document on re-upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -64,9 +76,11 @@ describe('uploadCarOnboardingPinkForm', () => {
         pinkForm: { id: 'doc-1', name: 'pink-form.jpg' },
       }),
     );
+    vi.mocked(analyzePinkForm).mockResolvedValueOnce({ isPinkForm: true });
 
     await uploadCarOnboardingPinkForm(onboardingId, file, owner);
 
+    expect(analyzePinkForm).toHaveBeenCalled();
     expect(updateDocumentWithUpload).toHaveBeenCalledWith({
       documentId: 'doc-1',
       fileName: file.fileName,
@@ -76,6 +90,24 @@ describe('uploadCarOnboardingPinkForm', () => {
     });
     expect(createDocumentWithUpload).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+
+  it('does not store when analysis does not recognize a pink form', async () => {
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        pinkForm: { id: 'doc-1', name: 'pink-form.jpg' },
+      }),
+    );
+    vi.mocked(analyzePinkForm).mockResolvedValueOnce({ isPinkForm: false });
+
+    await expect(uploadCarOnboardingPinkForm(onboardingId, file, owner)).rejects.toThrow(
+      new DocumentNotRecognizedError(DocumentType.PINK_FORM),
+    );
+
+    expect(updateDocumentWithUpload).not.toHaveBeenCalled();
+    expect(createDocumentWithUpload).not.toHaveBeenCalled();
   });
 
   it('throws when onboarding is locked', async () => {

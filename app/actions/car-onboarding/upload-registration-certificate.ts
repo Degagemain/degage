@@ -4,8 +4,8 @@ import type { RegistrationCertificateAnalysis } from '@/domain/registration-cert
 import type { UserWithRole } from '@/domain/role.model';
 import { analyzeRegistrationCertificate } from '@/actions/document/analyze-registration-certificate';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
-import { RegistrationCertificateNotRecognizedError } from '@/actions/car-onboarding/registration-certificate-not-recognized.error';
 import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
@@ -45,29 +45,36 @@ const buildPrefillPatch = (
   return patch;
 };
 
-const saveFrontUploadWithAnalysis = async (
-  existing: CarOnboarding,
+const assertRegistrationCertificateAnalysis = (analysis: RegistrationCertificateAnalysis, side: RegistrationCertificateSide): void => {
+  if (!analysis.isRegistrationDocument || analysis.side !== side) {
+    throw new DocumentNotRecognizedError(DocumentType.REGISTRATION_CERTIFICATE);
+  }
+};
+
+const persistDocument = async (
+  linkedDocument: { id: string } | null | undefined,
   file: RegistrationCertificateUploadFile,
-  documentLinkPatch: Partial<Pick<CarOnboarding, 'registrationCertificateFront'>>,
-): Promise<void> => {
-  const analysis = await analyzeRegistrationCertificate({ body: file.body, contentType: file.contentType });
-
-  if (!analysis.isRegistrationDocument) {
-    throw new RegistrationCertificateNotRecognizedError();
+): Promise<{ id: string }> => {
+  if (linkedDocument?.id) {
+    await updateDocumentWithUpload({
+      documentId: linkedDocument.id,
+      fileName: file.fileName,
+      contentType: file.contentType,
+      sizeBytes: file.sizeBytes,
+      body: file.body,
+    });
+    return { id: linkedDocument.id };
   }
 
-  const prefillPatch = buildPrefillPatch(existing, analysis);
-  const hasChanges = Object.keys(documentLinkPatch).length > 0 || Object.keys(prefillPatch).length > 0;
-
-  if (!hasChanges) {
-    return;
-  }
-
-  await saveCarOnboardingWithPreparationCheck({
-    ...existing,
-    ...documentLinkPatch,
-    ...prefillPatch,
+  const created = await createDocumentWithUpload({
+    type: DocumentType.REGISTRATION_CERTIFICATE,
+    fileName: file.fileName,
+    contentType: file.contentType,
+    sizeBytes: file.sizeBytes,
+    body: file.body,
   });
+
+  return { id: created.id! };
 };
 
 export const uploadCarOnboardingRegistrationCertificate = async (
@@ -82,57 +89,34 @@ export const uploadCarOnboardingRegistrationCertificate = async (
   assertRegistrationCertificateUpload(file.contentType, file.sizeBytes);
 
   const linkedDocument = getExistingDocument(existing, side);
+  const analysis = await analyzeRegistrationCertificate({ body: file.body, contentType: file.contentType });
+  assertRegistrationCertificateAnalysis(analysis, side);
+
+  const persisted = await persistDocument(linkedDocument, file);
 
   if (side === 'front') {
-    if (linkedDocument?.id) {
-      await updateDocumentWithUpload({
-        documentId: linkedDocument.id,
-        fileName: file.fileName,
-        contentType: file.contentType,
-        sizeBytes: file.sizeBytes,
-        body: file.body,
-      });
-      await saveFrontUploadWithAnalysis(existing, file, {});
+    const prefillPatch = buildPrefillPatch(existing, analysis);
+    const documentLinkPatch = linkedDocument?.id == null ? { registrationCertificateFront: { id: persisted.id } } : {};
+    const hasChanges = Object.keys(documentLinkPatch).length > 0 || Object.keys(prefillPatch).length > 0;
+
+    if (!hasChanges) {
       return;
     }
 
-    const created = await createDocumentWithUpload({
-      type: DocumentType.REGISTRATION_CERTIFICATE,
-      fileName: file.fileName,
-      contentType: file.contentType,
-      sizeBytes: file.sizeBytes,
-      body: file.body,
-    });
-
-    await saveFrontUploadWithAnalysis(existing, file, {
-      registrationCertificateFront: { id: created.id! },
+    await saveCarOnboardingWithPreparationCheck({
+      ...existing,
+      ...documentLinkPatch,
+      ...prefillPatch,
     });
     return;
   }
 
   if (linkedDocument?.id) {
-    await updateDocumentWithUpload({
-      documentId: linkedDocument.id,
-      fileName: file.fileName,
-      contentType: file.contentType,
-      sizeBytes: file.sizeBytes,
-      body: file.body,
-    });
     return;
   }
 
-  const created = await createDocumentWithUpload({
-    type: DocumentType.REGISTRATION_CERTIFICATE,
-    fileName: file.fileName,
-    contentType: file.contentType,
-    sizeBytes: file.sizeBytes,
-    body: file.body,
-  });
-
-  const merged = {
+  await saveCarOnboardingWithPreparationCheck({
     ...existing,
-    registrationCertificateBack: { id: created.id! },
-  };
-
-  await saveCarOnboardingWithPreparationCheck(merged);
+    registrationCertificateBack: { id: persisted.id },
+  });
 };

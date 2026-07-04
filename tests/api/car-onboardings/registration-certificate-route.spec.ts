@@ -12,7 +12,8 @@ vi.mock('@/actions/car-onboarding/upload-registration-certificate', () => ({
   uploadCarOnboardingRegistrationCertificate: vi.fn(),
 }));
 
-import { RegistrationCertificateNotRecognizedError } from '@/actions/car-onboarding/registration-certificate-not-recognized.error';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
+import { DocumentType } from '@/domain/document.model';
 
 vi.mock('next/headers', () => ({
   headers: vi.fn().mockResolvedValue(new Headers()),
@@ -77,11 +78,13 @@ describe('PUT /api/car-onboardings/[id]/registration-certificate/*', () => {
 
   it('returns 400 when front upload is not recognized as a registration certificate', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
-    vi.mocked(uploadCarOnboardingRegistrationCertificate).mockRejectedValueOnce(new RegistrationCertificateNotRecognizedError());
+    vi.mocked(uploadCarOnboardingRegistrationCertificate).mockRejectedValueOnce(
+      new DocumentNotRecognizedError(DocumentType.REGISTRATION_CERTIFICATE),
+    );
     const response = await putFront(makeMultipartRequest(), { params: Promise.resolve({ id: validId }) });
     expect(response.status).toBe(400);
     const json = await response.json();
-    expect(json.code).toBe('registration_certificate_not_recognized');
+    expect(json.code).toBe('document_not_recognized');
   });
 
   it('returns 400 when file field is missing', async () => {

@@ -1,6 +1,8 @@
 import { DocumentType, assertRegistrationCertificateUpload } from '@/domain/document.model';
 import type { UserWithRole } from '@/domain/role.model';
+import { analyzeInspectionCertificate } from '@/actions/document/analyze-inspection-certificate';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
+import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
 import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
@@ -22,6 +24,11 @@ export const uploadCarOnboardingInspectionCertificate = async (
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
   assertRegistrationCertificateUpload(file.contentType, file.sizeBytes);
+
+  const analysis = await analyzeInspectionCertificate({ body: file.body, contentType: file.contentType });
+  if (!analysis.isInspectionCertificate) {
+    throw new DocumentNotRecognizedError(DocumentType.INSPECTION_CERTIFICATE);
+  }
 
   const linkedDocument = existing.inspectionCertificate;
 

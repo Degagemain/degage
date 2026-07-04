@@ -45,7 +45,7 @@ export function CarInfoStep() {
     const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/registration-certificate/${side}`, formData);
     if (!response.ok) {
       const message = await parseApiErrorMessage(response, tCert('uploadError'), {
-        registration_certificate_not_recognized: tCert('notRecognizedError'),
+        document_not_recognized: tCert('notRecognizedError'),
       });
       toast.error(message);
       throw new Error(message);
@@ -72,7 +72,9 @@ export function CarInfoStep() {
     formData.append('file', file);
     const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/inspection-certificate`, formData);
     if (!response.ok) {
-      const message = await parseApiErrorMessage(response, tInspection('uploadError'));
+      const message = await parseApiErrorMessage(response, tInspection('uploadError'), {
+        document_not_recognized: tInspection('notRecognizedError'),
+      });
       toast.error(message);
       throw new Error(message);
     }
@@ -98,7 +100,9 @@ export function CarInfoStep() {
     formData.append('file', file);
     const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/pink-form`, formData);
     if (!response.ok) {
-      const message = await parseApiErrorMessage(response, tPink('uploadError'));
+      const message = await parseApiErrorMessage(response, tPink('uploadError'), {
+        document_not_recognized: tPink('notRecognizedError'),
+      });
       toast.error(message);
       throw new Error(message);
     }

@@ -49,8 +49,12 @@ Deze stap is compleet wanneer straat, gemeente en telefoon zijn ingevuld.
 ### Wageninfo
 
 Verzamelt voertuigkenmerken: merk, brandstoftype, voertuigtype (of vrije tekst), kilometerstand, zitplaatsen, datum eerste inschrijving,
-bestelwagen, aangekochte wagen, nieuwe wagen, aankoopprijs, afschrijving per km, scans van het inschrijvingsbewijs (voor- en achterzijde) en
-keuringsbewijs.
+bestelwagen, aangekochte wagen, nieuwe wagen, aankoopprijs, afschrijving per km, scans van het inschrijvingsbewijs (voor- en achterzijde),
+keuringsbewijs en roze formulier.
+
+Geüploade documentfoto's worden automatisch gecontroleerd voordat ze worden opgeslagen. Als een foto onduidelijk is of niet overeenkomt met het
+verwachte documenttype, wordt de upload geweigerd en wordt de gebruiker gevraagd een duidelijke foto te uploaden. De voorzijde van het
+inschrijvingsbewijs kan ook VIN, nummerplaat en datum eerste inschrijving invullen wanneer die velden nog leeg zijn.
 
 Deze stap is compleet wanneer merk, brandstoftype en voertuigtype zijn ingesteld.
 
