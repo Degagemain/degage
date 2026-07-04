@@ -59,6 +59,8 @@ interface CarOnboardingFormProps {
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
   onDownloadInspectionCertificate?: () => Promise<void>;
+  onUploadPinkForm?: (file: File) => Promise<void>;
+  onDownloadPinkForm?: () => Promise<void>;
 }
 
 interface FormValues {
@@ -195,6 +197,8 @@ export function CarOnboardingForm({
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
   onDownloadInspectionCertificate,
+  onUploadPinkForm,
+  onDownloadPinkForm,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
@@ -836,6 +840,16 @@ export function CarOnboardingForm({
                         ? onDownloadInspectionCertificate
                         : undefined
                     }
+                  />
+                ) : null}
+                {onUploadPinkForm ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.pinkForm')}
+                    fileName={initialCarOnboarding.pinkForm?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    namespace="pinkForm"
+                    onUpload={onUploadPinkForm}
+                    onDownload={onDownloadPinkForm && initialCarOnboarding.pinkForm ? onDownloadPinkForm : undefined}
                   />
                 ) : null}
               </FieldGroup>

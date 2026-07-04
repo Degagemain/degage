@@ -28,6 +28,7 @@ export function CarInfoStep() {
   const t = useTranslations('carOnboardingPublic');
   const tCert = useTranslations('carOnboardingPublic.steps.carInfo.registrationCertificate');
   const tInspection = useTranslations('carOnboardingPublic.steps.carInfo.inspectionCertificate');
+  const tPink = useTranslations('carOnboardingPublic.steps.carInfo.pinkForm');
   const tShared = useTranslations('common');
   const tAdmin = useTranslations('admin.carOnboardings');
   const readOnly = useStepReadOnly();
@@ -91,6 +92,32 @@ export function CarInfoStep() {
     window.open(data.url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleUploadPink = async (file: File) => {
+    if (!carOnboarding.id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/pink-form`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tPink('uploadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(tPink('uploadSuccess'));
+    await reload();
+  };
+
+  const handleDownloadPink = async () => {
+    if (!carOnboarding.id) return;
+    const response = await fetch(`/api/car-onboardings/${carOnboarding.id}/pink-form/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tPink('downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <StepLayout stepId="car-info">
       <PublicPanel title={t('steps.carInfo.panelTitle')} body={t('steps.carInfo.panelSubtitle')}>
@@ -114,6 +141,17 @@ export function CarInfoStep() {
       {carOnboarding.isPurchased ? (
         <PublicPanel title={tAdmin('columns.isPurchased')}>
           <PublicReadOnlyValue label={tAdmin('columns.purchasePrice')} value={String(carOnboarding.purchasePrice)} />
+          {!carOnboarding.isNewCar ? (
+            <PublicRegistrationCertificateField
+              label={tPink('label')}
+              hint={tPink('hint')}
+              fileName={carOnboarding.pinkForm?.name}
+              disabled={uploadDisabled}
+              namespace="pinkForm"
+              onUpload={handleUploadPink}
+              onDownload={carOnboarding.pinkForm ? handleDownloadPink : undefined}
+            />
+          ) : null}
         </PublicPanel>
       ) : (
         <PublicPanel title={tCert('panelTitle')}>

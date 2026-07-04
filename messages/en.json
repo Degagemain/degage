@@ -1454,6 +1454,7 @@
         "registrationCertificateFront": "Registration certificate (front)",
         "registrationCertificateBack": "Registration certificate (back)",
         "inspectionCertificate": "Inspection certificate",
+        "pinkForm": "Pink form",
         "vin": "VIN",
         "plate": "Licence plate",
         "carValue": "Car value",
@@ -1589,6 +1590,18 @@
           "download": "Download",
           "downloading": "Opening…",
           "downloadError": "Failed to open inspection certificate.",
+          "currentFile": "Current file",
+          "noFile": "No file uploaded yet.",
+          "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
+        },
+        "pinkForm": {
+          "upload": "Upload file",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Pink form uploaded.",
+          "uploadError": "Failed to upload pink form.",
+          "download": "Download",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open pink form.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet.",
           "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
@@ -2619,6 +2632,21 @@
           "download": "View",
           "downloading": "Opening…",
           "downloadError": "Failed to open inspection certificate.",
+          "currentFile": "Current file",
+          "noFile": "No file uploaded yet.",
+          "help": "JPEG or PNG. Maximum 10 MB. Uploading replaces the existing file."
+        },
+        "pinkForm": {
+          "panelTitle": "Pink form",
+          "label": "Pink form",
+          "hint": "Vehicle transfer form (pink form)",
+          "upload": "Upload file",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Pink form uploaded.",
+          "uploadError": "Failed to upload pink form.",
+          "download": "View",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open pink form.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet.",
           "help": "JPEG or PNG. Maximum 10 MB. Uploading replaces the existing file."

@@ -101,6 +101,7 @@ enum CarOnboardingInfoSessionStatus {
 enum DocumentType {
   registrationCertificate
   inspectionCertificate
+  pinkForm
   other
 }
 
@@ -117,6 +118,7 @@ model Document {
   carOnboardingsRegistrationCertificateFront CarOnboarding[] @relation("RegistrationCertificateFront")
   carOnboardingsRegistrationCertificateBack  CarOnboarding[] @relation("RegistrationCertificateBack")
   carOnboardingsInspectionCertificate        CarOnboarding[] @relation("InspectionCertificate")
+  carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
 }
 
 model CarOnboarding {
@@ -163,6 +165,8 @@ model CarOnboarding {
   registrationCertificateBack    Document?                        @relation("RegistrationCertificateBack", fields: [registrationCertificateBackId], references: [id], onDelete: SetNull)
   inspectionCertificateId        String?
   inspectionCertificate          Document?                        @relation("InspectionCertificate", fields: [inspectionCertificateId], references: [id], onDelete: SetNull)
+  pinkFormId                     String?
+  pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt

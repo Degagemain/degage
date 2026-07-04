@@ -27,6 +27,7 @@ export const carOnboardingRelationsInclude = {
   registrationCertificateFront: true,
   registrationCertificateBack: true,
   inspectionCertificate: true,
+  pinkForm: true,
 } as const satisfies Prisma.CarOnboardingInclude;
 
 type CarOnboardingWithRelations = Prisma.CarOnboardingGetPayload<{
@@ -97,6 +98,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     registrationCertificateFront: db.registrationCertificateFrontId != null ? { id: db.registrationCertificateFrontId } : null,
     registrationCertificateBack: db.registrationCertificateBackId != null ? { id: db.registrationCertificateBackId } : null,
     inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
+    pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -167,6 +169,12 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.inspectionCertificate.fileName,
         }
       : null,
+    pinkForm: db.pinkForm
+      ? {
+          id: db.pinkFormId!,
+          name: db.pinkForm.fileName,
+        }
+      : null,
   };
 };
 
@@ -206,6 +214,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     registrationCertificateBack:
       onboarding.registrationCertificateBack != null ? { connect: { id: onboarding.registrationCertificateBack.id } } : undefined,
     inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
+    pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };
@@ -244,6 +253,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     registrationCertificateFront: optionalRelationConnect(onboarding.registrationCertificateFront),
     registrationCertificateBack: optionalRelationConnect(onboarding.registrationCertificateBack),
     inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
+    pinkForm: optionalRelationConnect(onboarding.pinkForm),
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

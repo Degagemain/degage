@@ -204,6 +204,32 @@ export default function EditCarOnboardingPage() {
     window.open(data.url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleUploadPinkForm = async (file: File) => {
+    if (!id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${id}/pink-form`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.pinkForm.uploadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(t('form.pinkForm.uploadSuccess'));
+    await loadCarOnboarding({ silent: true });
+  };
+
+  const handleDownloadPinkForm = async () => {
+    if (!id) return;
+    const response = await fetch(`/api/car-onboardings/${id}/pink-form/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.pinkForm.downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleDelete = async () => {
     if (!id) return;
     const response = await apiDelete(`/api/car-onboardings/${id}`);
@@ -295,6 +321,8 @@ export default function EditCarOnboardingPage() {
               onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
               onUploadInspectionCertificate={handleUploadInspectionCertificate}
               onDownloadInspectionCertificate={handleDownloadInspectionCertificate}
+              onUploadPinkForm={handleUploadPinkForm}
+              onDownloadPinkForm={handleDownloadPinkForm}
             />
           )
         )}

@@ -1454,6 +1454,7 @@
         "registrationCertificateFront": "Inschrijvingsbewijs (voorzijde)",
         "registrationCertificateBack": "Inschrijvingsbewijs (achterzijde)",
         "inspectionCertificate": "Keuringsbewijs",
+        "pinkForm": "Roze formulier",
         "vin": "Chassis nummer (VIN)",
         "plate": "Nummerplaat",
         "carValue": "Waarde van de wagen",
@@ -1589,6 +1590,18 @@
           "download": "Downloaden",
           "downloading": "Openen…",
           "downloadError": "Keuringsbewijs openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen bestand geüpload.",
+          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+        },
+        "pinkForm": {
+          "upload": "Bestand uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Roze formulier geüpload.",
+          "uploadError": "Uploaden van roze formulier mislukt.",
+          "download": "Downloaden",
+          "downloading": "Openen…",
+          "downloadError": "Roze formulier openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload.",
           "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
@@ -2628,6 +2641,21 @@
           "download": "Bekijken",
           "downloading": "Openen…",
           "downloadError": "Keuringsbewijs openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen bestand geüpload.",
+          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+        },
+        "pinkForm": {
+          "panelTitle": "Roze formulier",
+          "label": "Roze formulier",
+          "hint": "Overdrachtsformulier van het voertuig (roze formulier)",
+          "upload": "Bestand uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Roze formulier geüpload.",
+          "uploadError": "Uploaden van roze formulier mislukt.",
+          "download": "Bekijken",
+          "downloading": "Openen…",
+          "downloadError": "Roze formulier openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload.",
           "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."

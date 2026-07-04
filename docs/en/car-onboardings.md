@@ -48,7 +48,8 @@ This step is complete when street, town, and phone are all filled in.
 ### Car info
 
 Collects vehicle characteristics: brand, fuel type, car type (or free-text other), mileage, seats, first registration date, van flag, purchased
-car flag, new car flag, purchase price, depreciation per km, registration certificate scans (front and back), and inspection certificate.
+car flag, new car flag, purchase price, depreciation per km, registration certificate scans (front and back), inspection certificate, and pink
+form.
 
 | Property                       | Description                                                             |
 | ------------------------------ | ----------------------------------------------------------------------- |
@@ -65,6 +66,7 @@ car flag, new car flag, purchase price, depreciation per km, registration certif
 | Registration certificate front | Scan or photo of the front of the registration document.                |
 | Registration certificate back  | Scan or photo of the back of the registration document.                 |
 | Inspection certificate         | Valid vehicle inspection report (required for cars older than 4 years). |
+| Pink form                      | Vehicle transfer form (pink form) for purchased used cars.              |
 
 This step is complete when brand, fuel type, and car type are all set.
 

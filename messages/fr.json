@@ -1454,6 +1454,7 @@
         "registrationCertificateFront": "Certificat d'immatriculation (recto)",
         "registrationCertificateBack": "Certificat d'immatriculation (verso)",
         "inspectionCertificate": "Certificat de contrôle technique",
+        "pinkForm": "Formulaire rose",
         "vin": "VIN",
         "plate": "Plaque d'immatriculation",
         "carValue": "Valeur du véhicule",
@@ -1589,6 +1590,18 @@
           "download": "Télécharger",
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le certificat de contrôle technique.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucun fichier téléversé.",
+          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+        },
+        "pinkForm": {
+          "upload": "Téléverser un fichier",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Formulaire rose téléversé.",
+          "uploadError": "Échec du téléversement du formulaire rose.",
+          "download": "Télécharger",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir le formulaire rose.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé.",
           "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
@@ -2619,6 +2632,21 @@
           "download": "Voir",
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le certificat de contrôle technique.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucun fichier téléversé pour l'instant.",
+          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+        },
+        "pinkForm": {
+          "panelTitle": "Formulaire rose",
+          "label": "Formulaire rose",
+          "hint": "Formulaire de cession du véhicule (formulaire rose)",
+          "upload": "Téléverser un fichier",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Formulaire rose téléversé.",
+          "uploadError": "Échec du téléversement du formulaire rose.",
+          "download": "Voir",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir le formulaire rose.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé pour l'instant.",
           "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."

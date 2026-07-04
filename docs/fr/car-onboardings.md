@@ -131,6 +131,7 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 | Certificat d'immatriculation (recto) | Scan ou photo du recto du certificat d'immatriculation.                                     |
 | Certificat d'immatriculation (verso) | Scan ou photo du verso du certificat d'immatriculation.                                     |
 | Certificat de contrôle technique     | Rapport de contrôle technique valide (requis pour les véhicules de plus de 4 ans).          |
+| Formulaire rose                      | Formulaire de cession du véhicule (formulaire rose) pour les véhicules achetés d'occasion.  |
 | Valeur du véhicule                   | Valeur actuelle estimée du véhicule (proposée par l'admin).                                 |
 | Contre-proposition                   | Valeur alternative proposée par le propriétaire.                                            |
 | Message de contre-proposition        | Explication optionnelle de la contre-proposition.                                           |

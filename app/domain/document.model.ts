@@ -3,6 +3,7 @@ import * as z from 'zod';
 export enum DocumentType {
   REGISTRATION_CERTIFICATE = 'registrationCertificate',
   INSPECTION_CERTIFICATE = 'inspectionCertificate',
+  PINK_FORM = 'pinkForm',
   OTHER = 'other',
 }
 

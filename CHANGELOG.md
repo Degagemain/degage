@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: during car onboarding, owners who purchased a used car can upload the pink form (vehicle transfer form).
 - Added: during car onboarding, owners of non-purchased cars can upload an inspection certificate when the car is more than four years old; the section stays visible but disabled with an explanation otherwise.
 - Added: during car onboarding, upload the front and back of your registration certificate; VIN and licence plate are filled in automatically from the front when readable.
 - Added: a clear message when the front photo cannot be read, asking you to upload a sharper picture of the front side.
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: car onboarding records include a pink form upload on the car info tab.
 - Added: car onboarding records include an inspection certificate upload on the car info tab.
 - Added: car onboarding records include VIN and licence plate; admins can view and edit them on the detail form.
 - Added: hubs have a new **Min deprec. €/km** setting (bulk-update supported).
