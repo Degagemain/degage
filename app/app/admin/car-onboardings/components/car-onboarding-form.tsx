@@ -71,6 +71,8 @@ interface FormValues {
   carTypeId: string;
   carTypeName: string;
   carTypeOther: string;
+  vin: string;
+  plate: string;
   mileage: string;
   seats: string;
   firstRegisteredAt: string;
@@ -110,6 +112,8 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     carTypeId: hasOtherCarType ? CAR_TYPE_OTHER : (row.carType?.id ?? NONE),
     carTypeName: row.carType?.name ?? '',
     carTypeOther: row.carTypeOther ?? '',
+    vin: row.vin ?? '',
+    plate: row.plate ?? '',
     mileage: String(row.mileage),
     seats: String(row.seats),
     firstRegisteredAt: formatDateInput(row.firstRegisteredAt),
@@ -142,6 +146,8 @@ const createSchema = (tCommon: (key: string) => string) =>
     carTypeId: z.string(),
     carTypeName: z.string(),
     carTypeOther: z.string(),
+    vin: z.string(),
+    plate: z.string(),
     mileage: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
     seats: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
     firstRegisteredAt: z.string(),
@@ -325,6 +331,8 @@ export function CarOnboardingForm({
           ? null
           : toIdName(values.carTypeId, values.carTypeName),
       carTypeOther: hasOtherCarType ? initialCarOnboarding.carTypeOther : null,
+      vin: values.vin.trim() || null,
+      plate: values.plate.trim() || null,
       mileage: values.mileage === '' ? 0 : Number(values.mileage),
       seats: values.seats === '' ? 0 : Number(values.seats),
       firstRegisteredAt: values.firstRegisteredAt ? new Date(values.firstRegisteredAt) : null,
@@ -786,6 +794,32 @@ export function CarOnboardingForm({
                     }
                   />
                 ) : null}
+                <Controller
+                  name="vin"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.vin')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="plate"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.plate')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
               </FieldGroup>
             </FieldSet>
           </TabsContent>

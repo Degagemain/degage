@@ -156,7 +156,9 @@ export default function EditCarOnboardingPage() {
     formData.append('file', file);
     const response = await apiPutForm(`/api/car-onboardings/${id}/registration-certificate/${side}`, formData);
     if (!response.ok) {
-      const message = await parseApiErrorMessage(response, t('form.registrationCertificate.uploadError'));
+      const message = await parseApiErrorMessage(response, t('form.registrationCertificate.uploadError'), {
+        registration_certificate_not_recognized: t('form.registrationCertificate.notRecognizedError'),
+      });
       toast.error(message);
       throw new Error(message);
     }

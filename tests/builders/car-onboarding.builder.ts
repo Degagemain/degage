@@ -31,6 +31,8 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     depreciationCostKm: data.depreciationCostKm ?? 0,
     isNewCar: data.isNewCar ?? false,
     mileage: data.mileage ?? 0,
+    vin: data.vin !== undefined ? data.vin : null,
+    plate: data.plate !== undefined ? data.plate : null,
     firstRegisteredAt: data.firstRegisteredAt !== undefined ? data.firstRegisteredAt : null,
     seats: data.seats ?? 0,
     isVan: data.isVan ?? false,

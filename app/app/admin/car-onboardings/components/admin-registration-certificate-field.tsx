@@ -41,8 +41,9 @@ export function AdminRegistrationCertificateField({
     setIsUploading(true);
     try {
       await onUpload(file);
-    } catch {
-      setError(t('uploadError'));
+    } catch (err) {
+      const message = err instanceof Error && err.message ? err.message : t('uploadError');
+      setError(message);
     } finally {
       setIsUploading(false);
     }

@@ -307,6 +307,35 @@
   line-height: 1.45;
 }
 
+.fieldError {
+  font-size: 12px;
+  color: var(--demo-red);
+  margin-top: var(--demo-s8);
+  line-height: 1.45;
+}
+
+.uploadFileStatus {
+  font-size: 14px;
+  color: var(--demo-mid);
+  margin-bottom: var(--demo-s8);
+  line-height: 1.45;
+}
+
+.uploadFileName {
+  color: var(--demo-ink);
+  font-weight: 600;
+}
+
+.uploadActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--demo-s8);
+}
+
+.uploadInput {
+  display: none;
+}
+
 .input,
 .select {
   width: 100%;

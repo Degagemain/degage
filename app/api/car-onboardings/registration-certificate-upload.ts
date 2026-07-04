@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { RegistrationCertificateNotRecognizedError } from '@/actions/car-onboarding/registration-certificate-not-recognized.error';
 import type { RegistrationCertificateSide } from '@/actions/car-onboarding/registration-certificate-side';
 import type { RegistrationCertificateUploadFile } from '@/actions/car-onboarding/upload-registration-certificate';
 import { forbiddenResponse, isPrismaNotFoundError, noContentResponse, notFoundResponse } from '@/api/utils';
@@ -47,6 +48,12 @@ export const tryCarOnboardingRegistrationCertificateUpload = async (
   } catch (error) {
     if (error instanceof CarOnboardingLockedError || error instanceof CarOnboardingForbiddenError) {
       return forbiddenResponse(error.message);
+    }
+    if (error instanceof RegistrationCertificateNotRecognizedError) {
+      return Response.json(
+        { code: 'registration_certificate_not_recognized', errors: [{ message: error.message }] },
+        { status: statusCodes.BAD_REQUEST },
+      );
     }
     if (error instanceof Error && (error.message.startsWith('Unsupported content type') || error.message.startsWith('File'))) {
       return Response.json({ code: 'validation_error', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });

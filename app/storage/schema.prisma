@@ -146,6 +146,8 @@ model CarOnboarding {
   depreciationCostKm             Float                            @default(0)
   isNewCar            Boolean                          @default(false)
   mileage             Int                              @default(0)
+  vin                 String?
+  plate               String?
   firstRegisteredAt   DateTime?
   seats               Int                              @default(0)
   isVan               Boolean                          @default(false)
