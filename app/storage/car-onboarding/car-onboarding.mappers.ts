@@ -26,6 +26,8 @@ export const carOnboardingRelationsInclude = {
   simulation: true,
   registrationCertificateFront: true,
   registrationCertificateBack: true,
+  inspectionCertificate: true,
+  pinkForm: true,
 } as const satisfies Prisma.CarOnboardingInclude;
 
 type CarOnboardingWithRelations = Prisma.CarOnboardingGetPayload<{
@@ -86,6 +88,8 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     depreciationCostKm: db.depreciationCostKm != null ? Number(db.depreciationCostKm) : 0,
     isNewCar: db.isNewCar,
     mileage: db.mileage,
+    vin: db.vin,
+    plate: db.plate,
     firstRegisteredAt: db.firstRegisteredAt,
     seats: db.seats,
     isVan: db.isVan,
@@ -93,6 +97,8 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     simulation: db.simulationId != null ? { id: db.simulationId } : null,
     registrationCertificateFront: db.registrationCertificateFrontId != null ? { id: db.registrationCertificateFrontId } : null,
     registrationCertificateBack: db.registrationCertificateBackId != null ? { id: db.registrationCertificateBackId } : null,
+    inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
+    pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -157,6 +163,18 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.registrationCertificateBack.fileName,
         }
       : null,
+    inspectionCertificate: db.inspectionCertificate
+      ? {
+          id: db.inspectionCertificateId!,
+          name: db.inspectionCertificate.fileName,
+        }
+      : null,
+    pinkForm: db.pinkForm
+      ? {
+          id: db.pinkFormId!,
+          name: db.pinkForm.fileName,
+        }
+      : null,
   };
 };
 
@@ -184,6 +202,8 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     depreciationCostKm: onboarding.depreciationCostKm,
     isNewCar: onboarding.isNewCar,
     mileage: onboarding.mileage,
+    vin: onboarding.vin ?? undefined,
+    plate: onboarding.plate ?? undefined,
     firstRegisteredAt: onboarding.firstRegisteredAt ?? undefined,
     seats: onboarding.seats,
     isVan: onboarding.isVan,
@@ -193,6 +213,8 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
       onboarding.registrationCertificateFront != null ? { connect: { id: onboarding.registrationCertificateFront.id } } : undefined,
     registrationCertificateBack:
       onboarding.registrationCertificateBack != null ? { connect: { id: onboarding.registrationCertificateBack.id } } : undefined,
+    inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
+    pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };
@@ -221,6 +243,8 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     depreciationCostKm: onboarding.depreciationCostKm,
     isNewCar: onboarding.isNewCar,
     mileage: onboarding.mileage,
+    vin: onboarding.vin ?? undefined,
+    plate: onboarding.plate ?? undefined,
     firstRegisteredAt: onboarding.firstRegisteredAt ?? undefined,
     seats: onboarding.seats,
     isVan: onboarding.isVan,
@@ -228,6 +252,8 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     simulation: optionalRelationConnect(onboarding.simulation),
     registrationCertificateFront: optionalRelationConnect(onboarding.registrationCertificateFront),
     registrationCertificateBack: optionalRelationConnect(onboarding.registrationCertificateBack),
+    inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
+    pinkForm: optionalRelationConnect(onboarding.pinkForm),
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

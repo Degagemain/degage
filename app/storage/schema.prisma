@@ -100,6 +100,8 @@ enum CarOnboardingInfoSessionStatus {
 
 enum DocumentType {
   registrationCertificate
+  inspectionCertificate
+  pinkForm
   other
 }
 
@@ -115,6 +117,8 @@ model Document {
 
   carOnboardingsRegistrationCertificateFront CarOnboarding[] @relation("RegistrationCertificateFront")
   carOnboardingsRegistrationCertificateBack  CarOnboarding[] @relation("RegistrationCertificateBack")
+  carOnboardingsInspectionCertificate        CarOnboarding[] @relation("InspectionCertificate")
+  carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
 }
 
 model CarOnboarding {
@@ -146,6 +150,8 @@ model CarOnboarding {
   depreciationCostKm             Float                            @default(0)
   isNewCar            Boolean                          @default(false)
   mileage             Int                              @default(0)
+  vin                 String?
+  plate               String?
   firstRegisteredAt   DateTime?
   seats               Int                              @default(0)
   isVan               Boolean                          @default(false)
@@ -157,6 +163,10 @@ model CarOnboarding {
   registrationCertificateFront   Document?                        @relation("RegistrationCertificateFront", fields: [registrationCertificateFrontId], references: [id], onDelete: SetNull)
   registrationCertificateBackId  String?
   registrationCertificateBack    Document?                        @relation("RegistrationCertificateBack", fields: [registrationCertificateBackId], references: [id], onDelete: SetNull)
+  inspectionCertificateId        String?
+  inspectionCertificate          Document?                        @relation("InspectionCertificate", fields: [inspectionCertificateId], references: [id], onDelete: SetNull)
+  pinkFormId                     String?
+  pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt

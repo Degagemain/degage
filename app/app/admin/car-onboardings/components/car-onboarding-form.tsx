@@ -57,6 +57,10 @@ interface CarOnboardingFormProps {
   onStartCarOnboarding?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
+  onUploadInspectionCertificate?: (file: File) => Promise<void>;
+  onDownloadInspectionCertificate?: () => Promise<void>;
+  onUploadPinkForm?: (file: File) => Promise<void>;
+  onDownloadPinkForm?: () => Promise<void>;
 }
 
 interface FormValues {
@@ -71,6 +75,8 @@ interface FormValues {
   carTypeId: string;
   carTypeName: string;
   carTypeOther: string;
+  vin: string;
+  plate: string;
   mileage: string;
   seats: string;
   firstRegisteredAt: string;
@@ -110,6 +116,8 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     carTypeId: hasOtherCarType ? CAR_TYPE_OTHER : (row.carType?.id ?? NONE),
     carTypeName: row.carType?.name ?? '',
     carTypeOther: row.carTypeOther ?? '',
+    vin: row.vin ?? '',
+    plate: row.plate ?? '',
     mileage: String(row.mileage),
     seats: String(row.seats),
     firstRegisteredAt: formatDateInput(row.firstRegisteredAt),
@@ -142,6 +150,8 @@ const createSchema = (tCommon: (key: string) => string) =>
     carTypeId: z.string(),
     carTypeName: z.string(),
     carTypeOther: z.string(),
+    vin: z.string(),
+    plate: z.string(),
     mileage: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
     seats: z.string().refine((v) => v === '' || (Number.isInteger(Number(v)) && Number(v) >= 0), tCommon('validation.nonNegativeInteger')),
     firstRegisteredAt: z.string(),
@@ -185,6 +195,10 @@ export function CarOnboardingForm({
   onStartCarOnboarding,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
+  onUploadInspectionCertificate,
+  onDownloadInspectionCertificate,
+  onUploadPinkForm,
+  onDownloadPinkForm,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
@@ -235,6 +249,13 @@ export function CarOnboardingForm({
         ? null
         : { id: watchedValues.carTypeId },
     carTypeOther: hasOtherCarType || watchedValues.carTypeId === CAR_TYPE_OTHER ? watchedValues.carTypeOther.trim() || null : null,
+    isPurchased: watchedValues.isPurchased,
+    isNewCar: watchedValues.isNewCar,
+    firstRegisteredAt: watchedValues.firstRegisteredAt ? new Date(watchedValues.firstRegisteredAt) : null,
+    registrationCertificateFront: initialCarOnboarding.registrationCertificateFront,
+    registrationCertificateBack: initialCarOnboarding.registrationCertificateBack,
+    inspectionCertificate: initialCarOnboarding.inspectionCertificate,
+    pinkForm: initialCarOnboarding.pinkForm,
   });
   const insurerComplete = isInsurerSectionComplete({
     insurerStatus: watchedValues.isPurchased
@@ -325,6 +346,8 @@ export function CarOnboardingForm({
           ? null
           : toIdName(values.carTypeId, values.carTypeName),
       carTypeOther: hasOtherCarType ? initialCarOnboarding.carTypeOther : null,
+      vin: values.vin.trim() || null,
+      plate: values.plate.trim() || null,
       mileage: values.mileage === '' ? 0 : Number(values.mileage),
       seats: values.seats === '' ? 0 : Number(values.seats),
       firstRegisteredAt: values.firstRegisteredAt ? new Date(values.firstRegisteredAt) : null,
@@ -784,6 +807,56 @@ export function CarOnboardingForm({
                         ? () => onDownloadRegistrationCertificate('back')
                         : undefined
                     }
+                  />
+                ) : null}
+                <Controller
+                  name="vin"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.vin')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="plate"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.plate')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                {onUploadInspectionCertificate ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.inspectionCertificate')}
+                    fileName={initialCarOnboarding.inspectionCertificate?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    namespace="inspectionCertificate"
+                    onUpload={onUploadInspectionCertificate}
+                    onDownload={
+                      onDownloadInspectionCertificate && initialCarOnboarding.inspectionCertificate
+                        ? onDownloadInspectionCertificate
+                        : undefined
+                    }
+                  />
+                ) : null}
+                {onUploadPinkForm ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.pinkForm')}
+                    fileName={initialCarOnboarding.pinkForm?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    namespace="pinkForm"
+                    onUpload={onUploadPinkForm}
+                    onDownload={onDownloadPinkForm && initialCarOnboarding.pinkForm ? onDownloadPinkForm : undefined}
                   />
                 ) : null}
               </FieldGroup>

@@ -94,6 +94,8 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     depreciationCostKm: z.number().min(0).default(0),
     isNewCar: z.boolean().default(false),
     mileage: z.number().int().min(0).default(0),
+    vin: z.string().nullable().default(null),
+    plate: z.string().nullable().default(null),
     firstRegisteredAt: z.coerce.date().nullable().default(null),
     seats: z.number().int().min(0).default(0),
     isVan: z.boolean().default(false),
@@ -101,6 +103,8 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     simulation: idNameSchema.nullable().default(null),
     registrationCertificateFront: idNameSchema.nullable().default(null),
     registrationCertificateBack: idNameSchema.nullable().default(null),
+    inspectionCertificate: idNameSchema.nullable().default(null),
+    pinkForm: idNameSchema.nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -208,6 +212,8 @@ export const carOnboardingFromSimulation = (
     depreciationCostKm: simulation.resultDepreciationCostKm ?? 0,
     isNewCar: simulation.isNewCar,
     mileage: simulation.mileage,
+    vin: null,
+    plate: null,
     firstRegisteredAt: simulation.firstRegisteredAt,
     seats: simulation.seats,
     isVan: simulation.isVan,
@@ -215,6 +221,8 @@ export const carOnboardingFromSimulation = (
     simulation: simulation.id != null ? { id: simulation.id } : null,
     registrationCertificateFront: null,
     registrationCertificateBack: null,
+    inspectionCertificate: null,
+    pinkForm: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     infoSessionDate: null,
     infoSessionPcId: null,
@@ -226,8 +234,51 @@ const isNonEmptyString = (value: string | null | undefined): boolean => {
   return value != null && value.trim().length > 0;
 };
 
-export const isCarInfoSectionComplete = (onboarding: Pick<CarOnboarding, 'brand' | 'fuelType' | 'carType' | 'carTypeOther'>): boolean => {
-  return onboarding.brand != null && onboarding.fuelType != null && (onboarding.carType != null || isNonEmptyString(onboarding.carTypeOther));
+export const isCarOlderThanFourYears = (firstRegisteredAt: Date | string | null): boolean => {
+  if (firstRegisteredAt == null) return false;
+  const parsed = firstRegisteredAt instanceof Date ? firstRegisteredAt : new Date(firstRegisteredAt);
+  if (Number.isNaN(parsed.getTime())) return false;
+  const threshold = new Date();
+  threshold.setFullYear(threshold.getFullYear() - 4);
+  return parsed.getTime() < threshold.getTime();
+};
+
+type CarInfoDocumentsFields = Pick<
+  CarOnboarding,
+  | 'isPurchased'
+  | 'isNewCar'
+  | 'firstRegisteredAt'
+  | 'registrationCertificateFront'
+  | 'registrationCertificateBack'
+  | 'inspectionCertificate'
+  | 'pinkForm'
+>;
+
+export const areCarInfoDocumentsComplete = (onboarding: CarInfoDocumentsFields): boolean => {
+  if (onboarding.isPurchased) {
+    if (onboarding.isNewCar) {
+      return true;
+    }
+    return onboarding.pinkForm != null;
+  }
+
+  if (onboarding.registrationCertificateFront == null || onboarding.registrationCertificateBack == null) {
+    return false;
+  }
+
+  if (isCarOlderThanFourYears(onboarding.firstRegisteredAt)) {
+    return onboarding.inspectionCertificate != null;
+  }
+
+  return true;
+};
+
+export const isCarInfoSectionComplete = (
+  onboarding: Pick<CarOnboarding, 'brand' | 'fuelType' | 'carType' | 'carTypeOther'> & CarInfoDocumentsFields,
+): boolean => {
+  const catalogComplete =
+    onboarding.brand != null && onboarding.fuelType != null && (onboarding.carType != null || isNonEmptyString(onboarding.carTypeOther));
+  return catalogComplete && areCarInfoDocumentsComplete(onboarding);
 };
 
 export const isCarValueProposedToOwner = (onboarding: Pick<CarOnboarding, 'carValueStatus' | 'carValue'>): boolean => {

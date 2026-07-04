@@ -15,6 +15,7 @@ interface AdminRegistrationCertificateFieldProps {
   label: string;
   fileName?: string | null;
   disabled?: boolean;
+  namespace?: 'registrationCertificate' | 'inspectionCertificate' | 'pinkForm';
   onUpload: (file: File) => Promise<void>;
   onDownload?: () => Promise<void>;
 }
@@ -23,10 +24,11 @@ export function AdminRegistrationCertificateField({
   label,
   fileName,
   disabled = false,
+  namespace = 'registrationCertificate',
   onUpload,
   onDownload,
 }: AdminRegistrationCertificateFieldProps) {
-  const t = useTranslations('admin.carOnboardings.form.registrationCertificate');
+  const t = useTranslations(`admin.carOnboardings.form.${namespace}`);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -41,8 +43,9 @@ export function AdminRegistrationCertificateField({
     setIsUploading(true);
     try {
       await onUpload(file);
-    } catch {
-      setError(t('uploadError'));
+    } catch (err) {
+      const message = err instanceof Error && err.message ? err.message : t('uploadError');
+      setError(message);
     } finally {
       setIsUploading(false);
     }

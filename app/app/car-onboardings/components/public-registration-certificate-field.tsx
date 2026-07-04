@@ -1,0 +1,116 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+
+import { REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES } from '@/domain/document.model';
+
+import { PublicBtn, PublicField } from './public-ui';
+import styles from '../car-onboarding-public.module.css';
+
+const ACCEPT = REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES.join(',');
+
+type PublicRegistrationCertificateFieldProps = {
+  label: string;
+  hint: string;
+  fileName?: string | null;
+  disabled?: boolean;
+  namespace?: 'registrationCertificate' | 'inspectionCertificate' | 'pinkForm';
+  onUpload: (file: File) => Promise<void>;
+  onDownload?: () => Promise<void>;
+};
+
+export function PublicRegistrationCertificateField({
+  label,
+  hint,
+  fileName,
+  disabled = false,
+  namespace = 'registrationCertificate',
+  onUpload,
+  onDownload,
+}: PublicRegistrationCertificateFieldProps) {
+  const t = useTranslations(`carOnboardingPublic.steps.carInfo.${namespace}`);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setError(null);
+    setIsUploading(true);
+    try {
+      await onUpload(file);
+    } catch (err) {
+      const message = err instanceof Error && err.message ? err.message : t('uploadError');
+      setError(message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!onDownload) return;
+    setError(null);
+    setIsDownloading(true);
+    try {
+      await onDownload();
+    } catch {
+      setError(t('downloadError'));
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  return (
+    <PublicField label={label} hint={hint}>
+      <p className={styles.uploadFileStatus}>
+        {fileName ? (
+          <>
+            {t('currentFile')}: <span className={styles.uploadFileName}>{fileName}</span>
+          </>
+        ) : (
+          t('noFile')
+        )}
+      </p>
+      <div className={styles.uploadActions}>
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPT}
+          className={styles.uploadInput}
+          disabled={disabled || isUploading}
+          onChange={(event) => void handleFileChange(event)}
+        />
+        <PublicBtn type="button" variant="secondary" small disabled={disabled || isUploading} onClick={() => inputRef.current?.click()}>
+          {isUploading ? (
+            <span className="inline-flex items-center gap-1.5">
+              <Loader2 className="size-3.5 animate-spin" aria-hidden />
+              {t('uploading')}
+            </span>
+          ) : (
+            t('upload')
+          )}
+        </PublicBtn>
+        {fileName && onDownload ? (
+          <PublicBtn type="button" variant="secondary" small disabled={disabled || isDownloading} onClick={() => void handleDownload()}>
+            {isDownloading ? (
+              <span className="inline-flex items-center gap-1.5">
+                <Loader2 className="size-3.5 animate-spin" aria-hidden />
+                {t('downloading')}
+              </span>
+            ) : (
+              t('download')
+            )}
+          </PublicBtn>
+        ) : null}
+      </div>
+      <p className={styles.fieldHint}>{t('help')}</p>
+      {error ? <p className={styles.fieldError}>{error}</p> : null}
+    </PublicField>
+  );
+}

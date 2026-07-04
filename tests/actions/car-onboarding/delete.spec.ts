@@ -30,6 +30,8 @@ describe('deleteCarOnboarding', () => {
       id: onboardingId,
       registrationCertificateFront: { id: 'front-doc' },
       registrationCertificateBack: { id: 'back-doc' },
+      inspectionCertificate: { id: 'inspection-doc' },
+      pinkForm: { id: 'pink-form-doc' },
     });
     vi.mocked(dbCarOnboardingRead).mockResolvedValueOnce(existing);
 
@@ -37,6 +39,8 @@ describe('deleteCarOnboarding', () => {
 
     expect(dbDocumentDelete).toHaveBeenCalledWith('front-doc');
     expect(dbDocumentDelete).toHaveBeenCalledWith('back-doc');
+    expect(dbDocumentDelete).toHaveBeenCalledWith('inspection-doc');
+    expect(dbDocumentDelete).toHaveBeenCalledWith('pink-form-doc');
     expect(dbCarOnboardingDelete).toHaveBeenCalledWith(onboardingId);
     expect(dbDocumentDelete.mock.invocationCallOrder[0]).toBeLessThan(dbCarOnboardingDelete.mock.invocationCallOrder[0]);
   });

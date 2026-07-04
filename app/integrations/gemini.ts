@@ -79,6 +79,29 @@ export async function generateStructuredJson<T>(prompt: string, responseSchema: 
   return JSON.parse(response.text) as T;
 }
 
+export async function generateStructuredJsonFromImage<T>(
+  prompt: string,
+  image: { data: Buffer; mimeType: string },
+  responseSchema: Schema,
+): Promise<T> {
+  const ai = getClient();
+
+  const response = await ai.models.generateContent({
+    model: INFERENCE_MODEL,
+    contents: [{ inlineData: { data: image.data.toString('base64'), mimeType: image.mimeType } }, { text: prompt }],
+    config: {
+      responseMimeType: 'application/json',
+      responseJsonSchema: responseSchema,
+    },
+  });
+
+  if (!response.text) {
+    throw new Error('Gemini returned an empty response');
+  }
+
+  return JSON.parse(response.text) as T;
+}
+
 /**
  * Sends a prompt to Gemini with Google Search grounding, then extracts
  * structured JSON from the grounded response using the provided schema.
