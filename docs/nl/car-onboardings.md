@@ -40,7 +40,7 @@ steeds vereist voordat de infosessiestap als voltooid wordt gemarkeerd en de voo
 
 Deze stap is compleet wanneer de infosessiestatus **Compleet** is.
 
-### Gebruikersinfo
+### Eigenaarsinfo
 
 Verzamelt de contactgegevens van de eigenaar: straat, gemeente en telefoon.
 
@@ -56,7 +56,9 @@ Geüploade documentfoto's worden automatisch gecontroleerd voordat ze worden opg
 verwachte documenttype, wordt de upload geweigerd en wordt de gebruiker gevraagd een duidelijke foto te uploaden. De voorzijde van het
 inschrijvingsbewijs kan ook VIN, nummerplaat en datum eerste inschrijving invullen wanneer die velden nog leeg zijn.
 
-Deze stap is compleet wanneer merk, brandstoftype en voertuigtype zijn ingesteld.
+Deze stap is compleet wanneer merk, brandstoftype en voertuigtype zijn ingesteld, en alle vereiste documenten voor de voertuigsituatie zijn
+geüpload: voor- en achterkant van het inschrijvingsbewijs wanneer de wagen niet gekocht is; keuringsattest bovendien wanneer de wagen ouder is
+dan vier jaar; roze formulier wanneer de wagen gekocht is en niet nieuw; geen documenten wanneer de wagen gekocht is en nieuw.
 
 ### Verzekering
 

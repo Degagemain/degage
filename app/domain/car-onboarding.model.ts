@@ -234,8 +234,51 @@ const isNonEmptyString = (value: string | null | undefined): boolean => {
   return value != null && value.trim().length > 0;
 };
 
-export const isCarInfoSectionComplete = (onboarding: Pick<CarOnboarding, 'brand' | 'fuelType' | 'carType' | 'carTypeOther'>): boolean => {
-  return onboarding.brand != null && onboarding.fuelType != null && (onboarding.carType != null || isNonEmptyString(onboarding.carTypeOther));
+export const isCarOlderThanFourYears = (firstRegisteredAt: Date | string | null): boolean => {
+  if (firstRegisteredAt == null) return false;
+  const parsed = firstRegisteredAt instanceof Date ? firstRegisteredAt : new Date(firstRegisteredAt);
+  if (Number.isNaN(parsed.getTime())) return false;
+  const threshold = new Date();
+  threshold.setFullYear(threshold.getFullYear() - 4);
+  return parsed.getTime() < threshold.getTime();
+};
+
+type CarInfoDocumentsFields = Pick<
+  CarOnboarding,
+  | 'isPurchased'
+  | 'isNewCar'
+  | 'firstRegisteredAt'
+  | 'registrationCertificateFront'
+  | 'registrationCertificateBack'
+  | 'inspectionCertificate'
+  | 'pinkForm'
+>;
+
+export const areCarInfoDocumentsComplete = (onboarding: CarInfoDocumentsFields): boolean => {
+  if (onboarding.isPurchased) {
+    if (onboarding.isNewCar) {
+      return true;
+    }
+    return onboarding.pinkForm != null;
+  }
+
+  if (onboarding.registrationCertificateFront == null || onboarding.registrationCertificateBack == null) {
+    return false;
+  }
+
+  if (isCarOlderThanFourYears(onboarding.firstRegisteredAt)) {
+    return onboarding.inspectionCertificate != null;
+  }
+
+  return true;
+};
+
+export const isCarInfoSectionComplete = (
+  onboarding: Pick<CarOnboarding, 'brand' | 'fuelType' | 'carType' | 'carTypeOther'> & CarInfoDocumentsFields,
+): boolean => {
+  const catalogComplete =
+    onboarding.brand != null && onboarding.fuelType != null && (onboarding.carType != null || isNonEmptyString(onboarding.carTypeOther));
+  return catalogComplete && areCarInfoDocumentsComplete(onboarding);
 };
 
 export const isCarValueProposedToOwner = (onboarding: Pick<CarOnboarding, 'carValueStatus' | 'carValue'>): boolean => {
@@ -264,15 +307,6 @@ export const isInfoSessionEnrolled = (onboarding: Pick<CarOnboarding, 'infoSessi
 
 export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insurerStatus'>): boolean => {
   return onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO;
-};
-
-export const isCarOlderThanFourYears = (firstRegisteredAt: Date | string | null): boolean => {
-  if (firstRegisteredAt == null) return false;
-  const parsed = firstRegisteredAt instanceof Date ? firstRegisteredAt : new Date(firstRegisteredAt);
-  if (Number.isNaN(parsed.getTime())) return false;
-  const threshold = new Date();
-  threshold.setFullYear(threshold.getFullYear() - 4);
-  return parsed.getTime() < threshold.getTime();
 };
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {

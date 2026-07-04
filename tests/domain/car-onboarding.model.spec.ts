@@ -5,6 +5,7 @@ import {
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   applyInsurerStatus,
+  areCarInfoDocumentsComplete,
   carOnboardingCarInfoInputSchema,
   carOnboardingCarInfoSchema,
   carOnboardingCarValueCounterInputSchema,
@@ -338,6 +339,17 @@ describe('carOnboardingFromSimulation', () => {
 });
 
 describe('isCarInfoSectionComplete', () => {
+  const catalogFields = {
+    brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
+    fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
+    carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
+  };
+
+  const registrationDocuments = {
+    registrationCertificateFront: { id: '550e8400-e29b-41d4-a716-446655440020' },
+    registrationCertificateBack: { id: '550e8400-e29b-41d4-a716-446655440021' },
+  };
+
   it('returns false when any car relation is missing', () => {
     expect(isCarInfoSectionComplete(carOnboarding())).toBe(false);
     expect(
@@ -350,13 +362,12 @@ describe('isCarInfoSectionComplete', () => {
     ).toBe(false);
   });
 
-  it('returns true when brand, fuelType, and carType are set', () => {
+  it('returns true when brand, fuelType, and carType are set with required documents', () => {
     expect(
       isCarInfoSectionComplete(
         carOnboarding({
-          brand: { id: '550e8400-e29b-41d4-a716-446655440001' },
-          fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
-          carType: { id: '550e8400-e29b-41d4-a716-446655440003' },
+          ...catalogFields,
+          ...registrationDocuments,
         }),
       ),
     ).toBe(true);
@@ -370,9 +381,105 @@ describe('isCarInfoSectionComplete', () => {
           fuelType: { id: '550e8400-e29b-41d4-a716-446655440002' },
           carType: null,
           carTypeOther: 'Custom model',
+          ...registrationDocuments,
         }),
       ),
     ).toBe(true);
+  });
+
+  it('returns false when catalog fields are set but required documents are missing', () => {
+    expect(isCarInfoSectionComplete(carOnboarding(catalogFields))).toBe(false);
+  });
+});
+
+describe('areCarInfoDocumentsComplete', () => {
+  const registrationDocuments = {
+    registrationCertificateFront: { id: '550e8400-e29b-41d4-a716-446655440020' },
+    registrationCertificateBack: { id: '550e8400-e29b-41d4-a716-446655440021' },
+  };
+
+  describe('not purchased', () => {
+    it('returns false when registration front or back is missing', () => {
+      expect(areCarInfoDocumentsComplete(carOnboarding({ isPurchased: false }))).toBe(false);
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: false,
+            registrationCertificateFront: registrationDocuments.registrationCertificateFront,
+          }),
+        ),
+      ).toBe(false);
+    });
+
+    it('returns true with registration front and back when car is 4 years old or less', () => {
+      const recent = new Date();
+      recent.setFullYear(recent.getFullYear() - 2);
+
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: false,
+            firstRegisteredAt: recent,
+            ...registrationDocuments,
+          }),
+        ),
+      ).toBe(true);
+    });
+
+    it('returns false when car is older than 4 years and inspection certificate is missing', () => {
+      const old = new Date();
+      old.setFullYear(old.getFullYear() - 5);
+
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: false,
+            firstRegisteredAt: old,
+            ...registrationDocuments,
+          }),
+        ),
+      ).toBe(false);
+    });
+
+    it('returns true when car is older than 4 years with all required documents', () => {
+      const old = new Date();
+      old.setFullYear(old.getFullYear() - 5);
+
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: false,
+            firstRegisteredAt: old,
+            ...registrationDocuments,
+            inspectionCertificate: { id: '550e8400-e29b-41d4-a716-446655440022' },
+          }),
+        ),
+      ).toBe(true);
+    });
+  });
+
+  describe('purchased, not new', () => {
+    it('returns false when pink form is missing', () => {
+      expect(areCarInfoDocumentsComplete(carOnboarding({ isPurchased: true, isNewCar: false }))).toBe(false);
+    });
+
+    it('returns true when pink form is present', () => {
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: true,
+            isNewCar: false,
+            pinkForm: { id: '550e8400-e29b-41d4-a716-446655440023' },
+          }),
+        ),
+      ).toBe(true);
+    });
+  });
+
+  describe('purchased and new', () => {
+    it('returns true without documents', () => {
+      expect(areCarInfoDocumentsComplete(carOnboarding({ isPurchased: true, isNewCar: true }))).toBe(true);
+    });
   });
 });
 

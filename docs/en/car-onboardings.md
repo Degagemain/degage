@@ -72,7 +72,9 @@ Uploaded document images are checked automatically before they are saved. If a p
 the upload is rejected and the user is asked to upload a clear photo. The registration certificate front can also prefill VIN, licence plate,
 and first registration date when those fields are still empty.
 
-This step is complete when brand, fuel type, and car type are all set.
+This step is complete when brand, fuel type, and car type are all set, and all required documents for the car situation are uploaded:
+registration certificate front and back when the car was not purchased; inspection certificate additionally when the car is older than four
+years; pink form when the car was purchased and is not new; no documents when the car was purchased and is new.
 
 ### Insurer
 

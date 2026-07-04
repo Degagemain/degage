@@ -57,7 +57,10 @@ type de document attendu, le téléversement est refusé et l'utilisateur est in
 d'immatriculation peut aussi préremplir le VIN, la plaque d'immatriculation et la date de première immatriculation lorsque ces champs sont
 encore vides.
 
-Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis.
+Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis, et que tous les documents requis pour
+la situation du véhicule sont téléversés : certificat d'immatriculation recto et verso lorsque le véhicule n'a pas été acheté ; certificat de
+contrôle technique en plus lorsque le véhicule a plus de quatre ans ; formulaire rose lorsque le véhicule a été acheté et n'est pas neuf ; aucun
+document lorsque le véhicule a été acheté et est neuf.
 
 ### Assurance
 

@@ -30,15 +30,10 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
-  if (stepId === 'user-info') return hasInfoSessionPrerequisites(onboarding);
-  if (stepId === 'car-info') {
-    return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding);
+  if (stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer' || stepId === 'car-value') {
+    return hasInfoSessionPrerequisites(onboarding);
   }
-  if (stepId === 'insurer') {
-    return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding);
-  }
-  const insurerOk = onboarding.isPurchased || isInsurerSectionComplete(onboarding);
-  return hasInfoSessionPrerequisites(onboarding) && isUserInfoSectionComplete(onboarding) && isCarInfoSectionComplete(onboarding) && insurerOk;
+  return false;
 };
 
 export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boolean => {

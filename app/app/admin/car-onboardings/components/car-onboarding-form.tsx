@@ -249,6 +249,13 @@ export function CarOnboardingForm({
         ? null
         : { id: watchedValues.carTypeId },
     carTypeOther: hasOtherCarType || watchedValues.carTypeId === CAR_TYPE_OTHER ? watchedValues.carTypeOther.trim() || null : null,
+    isPurchased: watchedValues.isPurchased,
+    isNewCar: watchedValues.isNewCar,
+    firstRegisteredAt: watchedValues.firstRegisteredAt ? new Date(watchedValues.firstRegisteredAt) : null,
+    registrationCertificateFront: initialCarOnboarding.registrationCertificateFront,
+    registrationCertificateBack: initialCarOnboarding.registrationCertificateBack,
+    inspectionCertificate: initialCarOnboarding.inspectionCertificate,
+    pinkForm: initialCarOnboarding.pinkForm,
   });
   const insurerComplete = isInsurerSectionComplete({
     insurerStatus: watchedValues.isPurchased
