@@ -16,6 +16,7 @@ type PublicRegistrationCertificateFieldProps = {
   hint: string;
   fileName?: string | null;
   disabled?: boolean;
+  namespace?: 'registrationCertificate' | 'inspectionCertificate';
   onUpload: (file: File) => Promise<void>;
   onDownload?: () => Promise<void>;
 };
@@ -25,10 +26,11 @@ export function PublicRegistrationCertificateField({
   hint,
   fileName,
   disabled = false,
+  namespace = 'registrationCertificate',
   onUpload,
   onDownload,
 }: PublicRegistrationCertificateFieldProps) {
-  const t = useTranslations('carOnboardingPublic.steps.carInfo.registrationCertificate');
+  const t = useTranslations(`carOnboardingPublic.steps.carInfo.${namespace}`);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);

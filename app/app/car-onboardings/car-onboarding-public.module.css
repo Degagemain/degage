@@ -362,6 +362,10 @@
   margin-bottom: var(--demo-s24);
 }
 
+.panelDisabled {
+  opacity: 0.55;
+}
+
 .panelTitle {
   font-family: var(--demo-serif);
   font-weight: 700;

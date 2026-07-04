@@ -20,6 +20,7 @@ import {
   carOnboardingUserInfoInputSchema,
   carOnboardingUserInfoSchema,
   isCarInfoSectionComplete,
+  isCarOlderThanFourYears,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
@@ -470,5 +471,33 @@ describe('applyInsurerStatus', () => {
       ).insurerStatus,
     ).toBe(CarOnboardingInsurerStatus.TODO);
     expect(applyInsurerStatus(carOnboarding()).insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+  });
+});
+
+describe('isCarOlderThanFourYears', () => {
+  it('returns false when firstRegisteredAt is null', () => {
+    expect(isCarOlderThanFourYears(null)).toBe(false);
+  });
+
+  it('returns false when car is less than 4 years old', () => {
+    const recent = new Date();
+    recent.setFullYear(recent.getFullYear() - 2);
+    expect(isCarOlderThanFourYears(recent)).toBe(false);
+  });
+
+  it('returns true when car is older than 4 years', () => {
+    const old = new Date();
+    old.setFullYear(old.getFullYear() - 5);
+    expect(isCarOlderThanFourYears(old)).toBe(true);
+  });
+
+  it('accepts ISO date strings from API responses', () => {
+    const old = new Date();
+    old.setFullYear(old.getFullYear() - 5);
+    expect(isCarOlderThanFourYears(old.toISOString())).toBe(true);
+  });
+
+  it('returns false for invalid date strings', () => {
+    expect(isCarOlderThanFourYears('not-a-date')).toBe(false);
   });
 });

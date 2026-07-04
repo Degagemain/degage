@@ -26,6 +26,7 @@ export const carOnboardingRelationsInclude = {
   simulation: true,
   registrationCertificateFront: true,
   registrationCertificateBack: true,
+  inspectionCertificate: true,
 } as const satisfies Prisma.CarOnboardingInclude;
 
 type CarOnboardingWithRelations = Prisma.CarOnboardingGetPayload<{
@@ -95,6 +96,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     simulation: db.simulationId != null ? { id: db.simulationId } : null,
     registrationCertificateFront: db.registrationCertificateFrontId != null ? { id: db.registrationCertificateFrontId } : null,
     registrationCertificateBack: db.registrationCertificateBackId != null ? { id: db.registrationCertificateBackId } : null,
+    inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -159,6 +161,12 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.registrationCertificateBack.fileName,
         }
       : null,
+    inspectionCertificate: db.inspectionCertificate
+      ? {
+          id: db.inspectionCertificateId!,
+          name: db.inspectionCertificate.fileName,
+        }
+      : null,
   };
 };
 
@@ -197,6 +205,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
       onboarding.registrationCertificateFront != null ? { connect: { id: onboarding.registrationCertificateFront.id } } : undefined,
     registrationCertificateBack:
       onboarding.registrationCertificateBack != null ? { connect: { id: onboarding.registrationCertificateBack.id } } : undefined,
+    inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };
@@ -234,6 +243,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     simulation: optionalRelationConnect(onboarding.simulation),
     registrationCertificateFront: optionalRelationConnect(onboarding.registrationCertificateFront),
     registrationCertificateBack: optionalRelationConnect(onboarding.registrationCertificateBack),
+    inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

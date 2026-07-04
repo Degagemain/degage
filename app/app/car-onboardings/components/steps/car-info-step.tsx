@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { isCarOlderThanFourYears } from '@/domain/car-onboarding.model';
 import { apiPutForm } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -12,6 +13,7 @@ import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
 import { useStepReadOnly } from '../step-read-only-context';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
+import styles from '../../car-onboarding-public.module.css';
 
 const formatDate = (value: Date | string | null): string => {
   if (value == null) return '—';
@@ -25,12 +27,15 @@ const formatBool = (value: boolean, t: (key: string) => string): string => (valu
 export function CarInfoStep() {
   const t = useTranslations('carOnboardingPublic');
   const tCert = useTranslations('carOnboardingPublic.steps.carInfo.registrationCertificate');
+  const tInspection = useTranslations('carOnboardingPublic.steps.carInfo.inspectionCertificate');
   const tShared = useTranslations('common');
   const tAdmin = useTranslations('admin.carOnboardings');
   const readOnly = useStepReadOnly();
   const { carOnboarding, reload, isLocked } = useCarOnboarding();
   const hasOtherCarType = Boolean(carOnboarding.carTypeOther?.trim()) && carOnboarding.carType == null;
   const uploadDisabled = readOnly || isLocked;
+  const inspectionRequired = isCarOlderThanFourYears(carOnboarding.firstRegisteredAt);
+  const inspectionUploadDisabled = uploadDisabled || !inspectionRequired;
 
   const handleUpload = async (side: 'front' | 'back', file: File) => {
     if (!carOnboarding.id) return;
@@ -53,6 +58,32 @@ export function CarInfoStep() {
     const response = await fetch(`/api/car-onboardings/${carOnboarding.id}/registration-certificate/${side}/view-url`);
     if (!response.ok) {
       const message = await parseApiErrorMessage(response, tCert('downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleUploadInspection = async (file: File) => {
+    if (!carOnboarding.id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/inspection-certificate`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tInspection('uploadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(tInspection('uploadSuccess'));
+    await reload();
+  };
+
+  const handleDownloadInspection = async () => {
+    if (!carOnboarding.id) return;
+    const response = await fetch(`/api/car-onboardings/${carOnboarding.id}/inspection-certificate/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tInspection('downloadError'));
       toast.error(message);
       throw new Error(message);
     }
@@ -106,6 +137,23 @@ export function CarInfoStep() {
           <PublicReadOnlyValue label={tCert('plateLabel')} value={carOnboarding.plate ?? ''} />
         </PublicPanel>
       )}
+
+      {!carOnboarding.isPurchased ? (
+        <div className={!inspectionRequired ? styles.panelDisabled : undefined}>
+          <PublicPanel title={tInspection('panelTitle')}>
+            {!inspectionRequired ? <p className={styles.fieldHint}>{tInspection('notYetRequired')}</p> : null}
+            <PublicRegistrationCertificateField
+              label={tInspection('label')}
+              hint={tInspection('hint')}
+              fileName={carOnboarding.inspectionCertificate?.name}
+              disabled={inspectionUploadDisabled}
+              namespace="inspectionCertificate"
+              onUpload={handleUploadInspection}
+              onDownload={carOnboarding.inspectionCertificate ? handleDownloadInspection : undefined}
+            />
+          </PublicPanel>
+        </div>
+      ) : null}
 
       <StepActions stepId="car-info" showSave={false} />
     </StepLayout>

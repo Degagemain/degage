@@ -178,6 +178,32 @@ export default function EditCarOnboardingPage() {
     window.open(data.url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleUploadInspectionCertificate = async (file: File) => {
+    if (!id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${id}/inspection-certificate`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.inspectionCertificate.uploadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(t('form.inspectionCertificate.uploadSuccess'));
+    await loadCarOnboarding({ silent: true });
+  };
+
+  const handleDownloadInspectionCertificate = async () => {
+    if (!id) return;
+    const response = await fetch(`/api/car-onboardings/${id}/inspection-certificate/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.inspectionCertificate.downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleDelete = async () => {
     if (!id) return;
     const response = await apiDelete(`/api/car-onboardings/${id}`);
@@ -267,6 +293,8 @@ export default function EditCarOnboardingPage() {
               onStartCarOnboarding={handleStartCarOnboarding}
               onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
               onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
+              onUploadInspectionCertificate={handleUploadInspectionCertificate}
+              onDownloadInspectionCertificate={handleDownloadInspectionCertificate}
             />
           )
         )}

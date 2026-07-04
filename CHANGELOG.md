@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: during car onboarding, owners of non-purchased cars can upload an inspection certificate when the car is more than four years old; the section stays visible but disabled with an explanation otherwise.
 - Added: during car onboarding, upload the front and back of your registration certificate; VIN and licence plate are filled in automatically from the front when readable.
 - Added: a clear message when the front photo cannot be read, asking you to upload a sharper picture of the front side.
 - Changed: car info in onboarding is read-only and comes from your simulation; registration certificate upload replaces manual car detail editing.
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: car onboarding records include an inspection certificate upload on the car info tab.
 - Added: car onboarding records include VIN and licence plate; admins can view and edit them on the detail form.
 - Added: hubs have a new **Min deprec. €/km** setting (bulk-update supported).
 - Added: fiscal tax base rates for July 2026 through June 2027.

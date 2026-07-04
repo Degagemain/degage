@@ -103,6 +103,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     simulation: idNameSchema.nullable().default(null),
     registrationCertificateFront: idNameSchema.nullable().default(null),
     registrationCertificateBack: idNameSchema.nullable().default(null),
+    inspectionCertificate: idNameSchema.nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -219,6 +220,7 @@ export const carOnboardingFromSimulation = (
     simulation: simulation.id != null ? { id: simulation.id } : null,
     registrationCertificateFront: null,
     registrationCertificateBack: null,
+    inspectionCertificate: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     infoSessionDate: null,
     infoSessionPcId: null,
@@ -260,6 +262,15 @@ export const isInfoSessionEnrolled = (onboarding: Pick<CarOnboarding, 'infoSessi
 
 export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insurerStatus'>): boolean => {
   return onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO;
+};
+
+export const isCarOlderThanFourYears = (firstRegisteredAt: Date | string | null): boolean => {
+  if (firstRegisteredAt == null) return false;
+  const parsed = firstRegisteredAt instanceof Date ? firstRegisteredAt : new Date(firstRegisteredAt);
+  if (Number.isNaN(parsed.getTime())) return false;
+  const threshold = new Date();
+  threshold.setFullYear(threshold.getFullYear() - 4);
+  return parsed.getTime() < threshold.getTime();
 };
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {

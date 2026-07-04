@@ -57,6 +57,8 @@ interface CarOnboardingFormProps {
   onStartCarOnboarding?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
+  onUploadInspectionCertificate?: (file: File) => Promise<void>;
+  onDownloadInspectionCertificate?: () => Promise<void>;
 }
 
 interface FormValues {
@@ -191,6 +193,8 @@ export function CarOnboardingForm({
   onStartCarOnboarding,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
+  onUploadInspectionCertificate,
+  onDownloadInspectionCertificate,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
@@ -820,6 +824,20 @@ export function CarOnboardingForm({
                     />
                   )}
                 />
+                {onUploadInspectionCertificate ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.inspectionCertificate')}
+                    fileName={initialCarOnboarding.inspectionCertificate?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    namespace="inspectionCertificate"
+                    onUpload={onUploadInspectionCertificate}
+                    onDownload={
+                      onDownloadInspectionCertificate && initialCarOnboarding.inspectionCertificate
+                        ? onDownloadInspectionCertificate
+                        : undefined
+                    }
+                  />
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>

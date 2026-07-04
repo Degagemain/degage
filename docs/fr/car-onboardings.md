@@ -49,8 +49,8 @@ Cette étape est complète lorsque la rue, la commune et le téléphone sont tou
 ### Infos véhicule
 
 Recueille les caractéristiques du véhicule : marque, type de carburant, type de véhicule (ou texte libre), kilométrage, places, date de première
-immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat, amortissement par km et scans du certificat d'immatriculation (recto
-et verso).
+immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat, amortissement par km, scans du certificat d'immatriculation (recto et
+verso) et certificat de contrôle technique.
 
 Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis.
 
@@ -130,6 +130,7 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 | Prix d'achat                         | Prix d'achat du véhicule.                                                                   |
 | Certificat d'immatriculation (recto) | Scan ou photo du recto du certificat d'immatriculation.                                     |
 | Certificat d'immatriculation (verso) | Scan ou photo du verso du certificat d'immatriculation.                                     |
+| Certificat de contrôle technique     | Rapport de contrôle technique valide (requis pour les véhicules de plus de 4 ans).          |
 | Valeur du véhicule                   | Valeur actuelle estimée du véhicule (proposée par l'admin).                                 |
 | Contre-proposition                   | Valeur alternative proposée par le propriétaire.                                            |
 | Message de contre-proposition        | Explication optionnelle de la contre-proposition.                                           |

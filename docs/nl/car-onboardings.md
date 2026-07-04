@@ -49,7 +49,8 @@ Deze stap is compleet wanneer straat, gemeente en telefoon zijn ingevuld.
 ### Wageninfo
 
 Verzamelt voertuigkenmerken: merk, brandstoftype, voertuigtype (of vrije tekst), kilometerstand, zitplaatsen, datum eerste inschrijving,
-bestelwagen, aangekochte wagen, nieuwe wagen, aankoopprijs, afschrijving per km en scans van het inschrijvingsbewijs (voor- en achterzijde).
+bestelwagen, aangekochte wagen, nieuwe wagen, aankoopprijs, afschrijving per km, scans van het inschrijvingsbewijs (voor- en achterzijde) en
+keuringsbewijs.
 
 Deze stap is compleet wanneer merk, brandstoftype en voertuigtype zijn ingesteld.
 
@@ -126,6 +127,7 @@ admin dit vrijgeeft.
 | Aankoopprijs                    | Aankoopprijs van het voertuig.                                          |
 | Inschrijvingsbewijs voorzijde   | Scan of foto van de voorzijde van het inschrijvingsbewijs.              |
 | Inschrijvingsbewijs achterzijde | Scan of foto van de achterzijde van het inschrijvingsbewijs.            |
+| Keuringsbewijs                  | Geldig keuringsrapport (verplicht voor wagens ouder dan 4 jaar).        |
 | Waarde van de wagen             | Geschatte huidige waarde van het voertuig (voorgesteld door admin).     |
 | Tegenvoorstel                   | Alternatieve waarde voorgesteld door de eigenaar.                       |
 | Tegenvoorstel bericht           | Optionele toelichting bij het tegenvoorstel.                            |
