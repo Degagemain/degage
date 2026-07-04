@@ -95,32 +95,6 @@ describe('uploadCarOnboardingRegistrationCertificate', () => {
     expect(updateDocumentWithUpload).not.toHaveBeenCalled();
   });
 
-  it('does not overwrite existing vin, plate, or firstRegisteredAt on front upload', async () => {
-    const existingDate = new Date('2019-01-01');
-    vi.mocked(readCarOnboarding).mockResolvedValueOnce(
-      carOnboarding({
-        id: onboardingId,
-        owner: { id: owner.id },
-        vin: 'EXISTING-VIN',
-        plate: 'EXISTING-PLATE',
-        firstRegisteredAt: existingDate,
-      }),
-    );
-    vi.mocked(analyzeRegistrationCertificate).mockResolvedValueOnce(frontAnalysis);
-    vi.mocked(createDocumentWithUpload).mockResolvedValueOnce(document({ id: 'doc-1' }));
-
-    await uploadCarOnboardingRegistrationCertificate(onboardingId, 'front', file, owner);
-
-    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
-      expect.objectContaining({
-        registrationCertificateFront: { id: 'doc-1' },
-        vin: 'EXISTING-VIN',
-        plate: 'EXISTING-PLATE',
-        firstRegisteredAt: existingDate,
-      }),
-    );
-  });
-
   it('analyzes before updating an existing front document and prefills on re-upload', async () => {
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({

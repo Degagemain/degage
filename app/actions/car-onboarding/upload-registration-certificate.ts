@@ -23,7 +23,7 @@ const getExistingDocument = (onboarding: Awaited<ReturnType<typeof readCarOnboar
 };
 
 const isEmptyString = (value: string | null | undefined): boolean => {
-  return value == null || value.trim().length === 0;
+  return value === undefined || value === null || value.trim().length === 0;
 };
 
 const buildPrefillPatch = (
@@ -32,13 +32,13 @@ const buildPrefillPatch = (
 ): Partial<Pick<CarOnboarding, 'vin' | 'plate' | 'firstRegisteredAt'>> => {
   const patch: Partial<Pick<CarOnboarding, 'vin' | 'plate' | 'firstRegisteredAt'>> = {};
 
-  if (isEmptyString(onboarding.vin) && analysis.vin != null && analysis.vin.trim().length > 0) {
-    patch.vin = analysis.vin.trim();
+  if (!isEmptyString(analysis.vin)) {
+    patch.vin = analysis.vin!.trim();
   }
-  if (isEmptyString(onboarding.plate) && analysis.plate != null && analysis.plate.trim().length > 0) {
-    patch.plate = analysis.plate.trim();
+  if (!isEmptyString(analysis.plate)) {
+    patch.plate = analysis.plate!.trim();
   }
-  if (onboarding.firstRegisteredAt == null && analysis.firstRegisteredAt != null) {
+  if (analysis.firstRegisteredAt != null) {
     patch.firstRegisteredAt = analysis.firstRegisteredAt;
   }
 
