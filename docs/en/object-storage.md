@@ -82,7 +82,8 @@ Upload via authenticated multipart endpoints:
 - `PUT /api/car-onboardings/{id}/registration-certificate/front`
 - `PUT /api/car-onboardings/{id}/registration-certificate/back`
 
-Request body: `multipart/form-data` with a `file` field (JPEG or PNG; max 10 MB).
+Request body: `multipart/form-data` with a `file` field (JPEG or PNG). Max size is set by `NEXT_PUBLIC_MAX_UPLOAD_FILE_SIZE_MB` (default `4.5`
+MB, aligned with Vercel request limits).
 
 First upload creates a `Document` row, uploads to GCS, and links the FK on the car onboarding. Re-upload updates the same document in place
 (stable id, FK unchanged).

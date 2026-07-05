@@ -1,5 +1,7 @@
 import * as z from 'zod';
 
+import { getMaxUploadFileSizeBytes } from '@/lib/max-upload-file-size';
+
 export enum DocumentType {
   REGISTRATION_CERTIFICATE = 'registrationCertificate',
   INSPECTION_CERTIFICATE = 'inspectionCertificate',
@@ -8,8 +10,6 @@ export enum DocumentType {
 }
 
 export const REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES = ['image/jpeg', 'image/png'] as const;
-
-export const REGISTRATION_CERTIFICATE_MAX_SIZE_BYTES = 10 * 1024 * 1024;
 
 const documentTypeSchema = z.enum(DocumentType);
 
@@ -44,7 +44,8 @@ export const assertRegistrationCertificateUpload = (contentType: string, sizeByt
   if (sizeBytes <= 0) {
     throw new Error('File is empty');
   }
-  if (sizeBytes > REGISTRATION_CERTIFICATE_MAX_SIZE_BYTES) {
-    throw new Error(`File exceeds maximum size of ${REGISTRATION_CERTIFICATE_MAX_SIZE_BYTES} bytes`);
+  const maxSizeBytes = getMaxUploadFileSizeBytes();
+  if (sizeBytes > maxSizeBytes) {
+    throw new Error(`File exceeds maximum size of ${maxSizeBytes} bytes`);
   }
 };

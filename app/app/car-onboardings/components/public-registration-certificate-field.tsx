@@ -5,6 +5,8 @@ import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES } from '@/domain/document.model';
+import { getMaxUploadFileSizeBytes, getMaxUploadFileSizeMb } from '@/lib/max-upload-file-size';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 
 import { PublicBtn, PublicField } from './public-ui';
 import styles from '../car-onboarding-public.module.css';
@@ -31,9 +33,13 @@ export function PublicRegistrationCertificateField({
   onDownload,
 }: PublicRegistrationCertificateFieldProps) {
   const t = useTranslations(`carOnboardingPublic.steps.carInfo.${namespace}`);
+  const tUpload = useTranslations('carOnboardingPublic.steps.carInfo.documentUpload');
+  const maxSizeMb = getMaxUploadFileSizeMb();
+  const maxSizeBytes = getMaxUploadFileSizeBytes();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [tipsOpen, setTipsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +48,11 @@ export function PublicRegistrationCertificateField({
     if (!file) return;
 
     setError(null);
+    if (file.size > maxSizeBytes) {
+      setError(tUpload('fileTooLarge', { maxSizeMb }));
+      return;
+    }
+
     setIsUploading(true);
     try {
       await onUpload(file);
@@ -109,7 +120,20 @@ export function PublicRegistrationCertificateField({
           </PublicBtn>
         ) : null}
       </div>
-      <p className={styles.fieldHint}>{t('help')}</p>
+      <p className={styles.fieldHint}>
+        {tUpload('help', { maxSizeMb })}{' '}
+        <button type="button" className={styles.fieldHelpLink} onClick={() => setTipsOpen(true)}>
+          {tUpload('tipsLink')}
+        </button>
+      </p>
+      <Dialog open={tipsOpen} onOpenChange={setTipsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{tUpload('tipsTitle')}</DialogTitle>
+            <DialogDescription>{tUpload('tipsBody', { maxSizeMb })}</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
       {error ? <p className={styles.fieldError}>{error}</p> : null}
     </PublicField>
   );

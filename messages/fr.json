@@ -1580,7 +1580,8 @@
           "downloadError": "Impossible d'ouvrir le certificat d'immatriculation.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
         },
         "inspectionCertificate": {
           "upload": "Téléverser un fichier",
@@ -1593,7 +1594,8 @@
           "downloadError": "Impossible d'ouvrir le certificat de contrôle technique.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
         },
         "pinkForm": {
           "upload": "Téléverser un fichier",
@@ -1606,7 +1608,8 @@
           "downloadError": "Impossible d'ouvrir le formulaire rose.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
         },
         "help": {
           "counterReadOnly": "Défini par le propriétaire lors de la négociation.",
@@ -2602,6 +2605,13 @@
         "info": "Consultez les détails du véhicule issus de votre simulation pour référence.",
         "panelTitle": "Détails du véhicule",
         "panelSubtitle": "Ces informations proviennent de votre simulation et ne peuvent plus être modifiées ici.",
+        "documentUpload": {
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "tipsLink": "Conseils pour l'envoi de photos",
+          "tipsTitle": "Conseils pour l'envoi de photos",
+          "tipsBody": "Votre photo est trop volumineuse ? Envoyez-la à vous-même sur WhatsApp, puis téléchargez-la à nouveau. WhatsApp compresse automatiquement les photos, ce qui ramène souvent le fichier sous {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
+        },
         "registrationCertificate": {
           "panelTitle": "Certificat d'immatriculation (Partie 1)",
           "vinLabel": "VIN",
@@ -2619,8 +2629,7 @@
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le certificat d'immatriculation.",
           "currentFile": "Fichier actuel",
-          "noFile": "Aucun fichier téléversé pour l'instant.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "noFile": "Aucun fichier téléversé pour l'instant."
         },
         "inspectionCertificate": {
           "panelTitle": "Certificat de contrôle technique",
@@ -2636,8 +2645,7 @@
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le certificat de contrôle technique.",
           "currentFile": "Fichier actuel",
-          "noFile": "Aucun fichier téléversé pour l'instant.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "noFile": "Aucun fichier téléversé pour l'instant."
         },
         "pinkForm": {
           "panelTitle": "Formulaire rose",
@@ -2652,8 +2660,7 @@
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le formulaire rose.",
           "currentFile": "Fichier actuel",
-          "noFile": "Aucun fichier téléversé pour l'instant.",
-          "help": "JPEG ou PNG. Maximum 10 Mo. Le téléversement remplace le fichier existant."
+          "noFile": "Aucun fichier téléversé pour l'instant."
         }
       },
       "insurer": {

@@ -5,6 +5,7 @@ import { Download, Upload } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES } from '@/domain/document.model';
+import { getMaxUploadFileSizeBytes, getMaxUploadFileSizeMb } from '@/lib/max-upload-file-size';
 import { Button } from '@/app/components/ui/button';
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '@/app/components/ui/field';
 import { Input } from '@/app/components/ui/input';
@@ -29,6 +30,8 @@ export function AdminRegistrationCertificateField({
   onDownload,
 }: AdminRegistrationCertificateFieldProps) {
   const t = useTranslations(`admin.carOnboardings.form.${namespace}`);
+  const maxSizeMb = getMaxUploadFileSizeMb();
+  const maxSizeBytes = getMaxUploadFileSizeBytes();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -40,6 +43,11 @@ export function AdminRegistrationCertificateField({
     if (!file) return;
 
     setError(null);
+    if (file.size > maxSizeBytes) {
+      setError(t('fileTooLarge', { maxSizeMb }));
+      return;
+    }
+
     setIsUploading(true);
     try {
       await onUpload(file);
@@ -95,7 +103,7 @@ export function AdminRegistrationCertificateField({
             </Button>
           ) : null}
         </div>
-        <FieldDescription>{t('help')}</FieldDescription>
+        <FieldDescription>{t('help', { maxSizeMb })}</FieldDescription>
         <FieldError>{error}</FieldError>
       </FieldContent>
     </Field>
