@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   DocumentType,
   assertRegistrationCertificateUpload,
@@ -44,6 +44,7 @@ describe('document.model', () => {
   });
 
   it('rejects oversized registration certificate uploads', () => {
+    vi.stubEnv('NEXT_PUBLIC_MAX_UPLOAD_FILE_SIZE_MB', '10');
     expect(() => assertRegistrationCertificateUpload('image/jpeg', 11 * 1024 * 1024)).toThrow('File exceeds maximum size');
   });
 });

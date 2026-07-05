@@ -1580,7 +1580,8 @@
           "downloadError": "Failed to open registration certificate.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
         },
         "inspectionCertificate": {
           "upload": "Upload file",
@@ -1593,7 +1594,8 @@
           "downloadError": "Failed to open inspection certificate.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
         },
         "pinkForm": {
           "upload": "Upload file",
@@ -1606,7 +1608,8 @@
           "downloadError": "Failed to open pink form.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Upload replaces the existing file."
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
         },
         "help": {
           "counterReadOnly": "Set by the owner during negotiation.",
@@ -2602,6 +2605,13 @@
         "info": "Review the vehicle details from your simulation for reference.",
         "panelTitle": "Vehicle details",
         "panelSubtitle": "This information comes from your simulation and cannot be changed here.",
+        "documentUpload": {
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "tipsLink": "Photo upload tips",
+          "tipsTitle": "Photo upload tips",
+          "tipsBody": "Is your photo too large? Send it to yourself on WhatsApp and download it again. WhatsApp compresses photos automatically, which often brings the file under {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
+        },
         "registrationCertificate": {
           "panelTitle": "Registration certificate (Part 1)",
           "vinLabel": "VIN",
@@ -2619,8 +2629,7 @@
           "downloading": "Opening…",
           "downloadError": "Failed to open registration certificate.",
           "currentFile": "Current file",
-          "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Uploading replaces the existing file."
+          "noFile": "No file uploaded yet."
         },
         "inspectionCertificate": {
           "panelTitle": "Inspection certificate",
@@ -2636,8 +2645,7 @@
           "downloading": "Opening…",
           "downloadError": "Failed to open inspection certificate.",
           "currentFile": "Current file",
-          "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Uploading replaces the existing file."
+          "noFile": "No file uploaded yet."
         },
         "pinkForm": {
           "panelTitle": "Pink form",
@@ -2652,8 +2660,7 @@
           "downloading": "Opening…",
           "downloadError": "Failed to open pink form.",
           "currentFile": "Current file",
-          "noFile": "No file uploaded yet.",
-          "help": "JPEG or PNG. Maximum 10 MB. Uploading replaces the existing file."
+          "noFile": "No file uploaded yet."
         }
       },
       "insurer": {

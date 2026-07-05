@@ -1580,7 +1580,8 @@
           "downloadError": "Inschrijvingsbewijs openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
         },
         "inspectionCertificate": {
           "upload": "Bestand uploaden",
@@ -1593,7 +1594,8 @@
           "downloadError": "Keuringsbewijs openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
         },
         "pinkForm": {
           "upload": "Bestand uploaden",
@@ -1606,7 +1608,8 @@
           "downloadError": "Roze formulier openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
         },
         "help": {
           "counterReadOnly": "Ingesteld door de eigenaar tijdens onderhandeling.",
@@ -2611,6 +2614,13 @@
         "info": "Bekijk de voertuiggegevens uit je simulatie ter referentie.",
         "panelTitle": "Voertuiggegevens",
         "panelSubtitle": "Deze gegevens komen uit je simulatie en zijn hier niet meer aan te passen.",
+        "documentUpload": {
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "tipsLink": "Tips voor foto upload",
+          "tipsTitle": "Tips voor foto upload",
+          "tipsBody": "Is je foto te groot? Stuur de foto via WhatsApp naar jezelf en download hem opnieuw. WhatsApp comprimeert foto's automatisch, waardoor het bestand vaak kleiner wordt dan {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
+        },
         "registrationCertificate": {
           "panelTitle": "Kentekenbewijs (Deel 1)",
           "vinLabel": "Chassis nummer (VIN)",
@@ -2628,8 +2638,7 @@
           "downloading": "Openen…",
           "downloadError": "Kentekenbewijs openen mislukt.",
           "currentFile": "Huidig bestand",
-          "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "noFile": "Nog geen bestand geüpload."
         },
         "inspectionCertificate": {
           "panelTitle": "Keuringsbewijs",
@@ -2645,8 +2654,7 @@
           "downloading": "Openen…",
           "downloadError": "Keuringsbewijs openen mislukt.",
           "currentFile": "Huidig bestand",
-          "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "noFile": "Nog geen bestand geüpload."
         },
         "pinkForm": {
           "panelTitle": "Roze formulier",
@@ -2661,8 +2669,7 @@
           "downloading": "Openen…",
           "downloadError": "Roze formulier openen mislukt.",
           "currentFile": "Huidig bestand",
-          "noFile": "Nog geen bestand geüpload.",
-          "help": "JPEG of PNG. Maximaal 10 MB. Uploaden vervangt het bestaande bestand."
+          "noFile": "Nog geen bestand geüpload."
         }
       },
       "insurer": {
