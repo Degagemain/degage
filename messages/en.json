@@ -1265,6 +1265,70 @@
         "columnName": "Town"
       }
     },
+    "roadAssistancePlans": {
+      "title": "Road Assistance Plans",
+      "filters": {
+        "active": "Status"
+      },
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "active": "Active",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "inactive": "Inactive",
+      "searchPlaceholder": "Search road assistance plans...",
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "help": {
+          "active": "Inactive plans are hidden from selection lists.",
+          "translations": "Provide a name and description for each locale tab."
+        },
+        "placeholders": {
+          "translationName": "Name ({locale})",
+          "translationDescription": "Description ({locale})"
+        }
+      },
+      "delete": {
+        "title": "Delete road assistance plan",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Road assistance plan deleted successfully.",
+        "error": "Failed to delete road assistance plan.",
+        "conflict": "This road assistance plan is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete road assistance plans",
+        "description": "The following {count} record(s) will be deleted. This action cannot be undone.",
+        "columnName": "Road assistance plan",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import road assistance plans",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Road assistance plan"
+      }
+    },
     "systemParameters": {
       "title": "System Parameters",
       "filters": {

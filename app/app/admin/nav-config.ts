@@ -36,11 +36,12 @@ export const CAR_SETTINGS_ITEMS: {
 ];
 
 export const CORE_SETTINGS_ITEMS: {
-  translationKey: 'systemParameters' | 'translationOverrides';
+  translationKey: 'systemParameters' | 'translationOverrides' | 'roadAssistancePlans';
   href: string;
 }[] = [
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides' },
+  { translationKey: 'roadAssistancePlans', href: '/app/admin/road-assistance-plans' },
 ];
 
 export const SIMULATION_ITEMS: {

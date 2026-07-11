@@ -1265,6 +1265,70 @@
         "columnName": "Gemeente"
       }
     },
+    "roadAssistancePlans": {
+      "title": "Pechverhelpingsplannen",
+      "filters": {
+        "active": "Status"
+      },
+      "columns": {
+        "name": "Naam",
+        "description": "Beschrijving",
+        "active": "Actief",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "active": "Actief",
+      "inactive": "Inactief",
+      "searchPlaceholder": "Zoek pechverhelpingsplannen...",
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "help": {
+          "active": "Inactieve plannen worden verborgen in selectielijsten.",
+          "translations": "Geef een naam en beschrijving op voor elk taaltabblad."
+        },
+        "placeholders": {
+          "translationName": "Naam ({locale})",
+          "translationDescription": "Beschrijving ({locale})"
+        }
+      },
+      "delete": {
+        "title": "Pechverhelpingsplan verwijderen",
+        "description": "Weet u zeker dat u \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Pechverhelpingsplan succesvol verwijderd.",
+        "error": "Verwijderen van pechverhelpingsplan mislukt.",
+        "conflict": "Dit pechverhelpingsplan is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Geselecteerde verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Pechverhelpingsplannen verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Pechverhelpingsplan",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "In afwachting",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Pechverhelpingsplannen importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden ingevoegd.",
+        "columnName": "Pechverhelpingsplan"
+      }
+    },
     "systemParameters": {
       "title": "Systeemparameters",
       "filters": {
