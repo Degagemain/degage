@@ -1265,6 +1265,70 @@
         "columnName": "Ville"
       }
     },
+    "roadAssistancePlans": {
+      "title": "Plans d'assistance routière",
+      "filters": {
+        "active": "Statut"
+      },
+      "columns": {
+        "name": "Nom",
+        "description": "Description",
+        "active": "Actif",
+        "created": "Créé",
+        "updated": "Mis à jour"
+      },
+      "active": "Actif",
+      "inactive": "Inactif",
+      "searchPlaceholder": "Rechercher des plans d'assistance routière...",
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "help": {
+          "active": "Les plans inactifs sont masqués dans les listes de sélection.",
+          "translations": "Fournissez un nom et une description pour chaque onglet de langue."
+        },
+        "placeholders": {
+          "translationName": "Nom ({locale})",
+          "translationDescription": "Description ({locale})"
+        }
+      },
+      "delete": {
+        "title": "Supprimer le plan d'assistance routière",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Plan d'assistance routière supprimé avec succès.",
+        "error": "Échec de la suppression du plan d'assistance routière.",
+        "conflict": "Ce plan d'assistance routière est lié à d'autres enregistrements et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer les plans d'assistance routière",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Cette action est irréversible.",
+        "columnName": "Plan d'assistance routière",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échec",
+        "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des plans d'assistance routière",
+        "description": "Les enregistrements suivants seront importés. Ceux avec un id seront mis à jour ; ceux sans id seront insérés.",
+        "columnName": "Plan d'assistance routière"
+      }
+    },
     "systemParameters": {
       "title": "Paramètres système",
       "filters": {

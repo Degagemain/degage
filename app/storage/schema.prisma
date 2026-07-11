@@ -797,3 +797,22 @@ model OauthConsent {
   @@index([userId])
   @@map("oauthConsent")
 }
+
+model RoadAssistancePlan {
+  id           String                         @id @default(uuid())
+  isActive     Boolean                        @default(true)
+  translations RoadAssistancePlanTranslation[]
+  createdAt    DateTime                       @default(now())
+  updatedAt    DateTime                       @updatedAt
+}
+
+model RoadAssistancePlanTranslation {
+  id                   String             @id @default(uuid())
+  roadAssistancePlanId String
+  roadAssistancePlan   RoadAssistancePlan @relation(fields: [roadAssistancePlanId], references: [id], onDelete: Cascade)
+  locale               String
+  name                 String
+  description          String             @default("")
+
+  @@unique([roadAssistancePlanId, locale])
+}
