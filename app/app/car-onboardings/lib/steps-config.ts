@@ -33,6 +33,11 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     subtitleKey: 'steps.insurer.subtitle',
   },
   {
+    id: 'road-assistance-plan',
+    titleKey: 'steps.roadAssistancePlan.title',
+    subtitleKey: 'steps.roadAssistancePlan.subtitle',
+  },
+  {
     id: 'car-value',
     titleKey: 'steps.carValue.title',
     subtitleKey: 'steps.carValue.subtitle',

@@ -2,6 +2,7 @@ import {
   CarOnboarding,
   type CarOnboardingCreateInput,
   applyInsurerStatus,
+  applyRoadAssistancePlanStatus,
   carOnboardingCreateInputSchema,
   carOnboardingFromSimulation,
   carOnboardingSchema,
@@ -45,6 +46,7 @@ export const createCarOnboarding = async (input: CarOnboardingCreateInput, calle
   });
 
   const withInsurer = applyInsurerStatus(toCreate);
-  const created = await dbCarOnboardingCreate(withInsurer);
+  const withRoadAssistancePlan = applyRoadAssistancePlanStatus(withInsurer);
+  const created = await dbCarOnboardingCreate(withRoadAssistancePlan);
   return readCarOnboarding(created.id!);
 };

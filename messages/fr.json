@@ -1605,6 +1605,10 @@
         "hasInsuranceContract": "A un contrat d'assurance",
         "insurerContractStartedAt": "Début du contrat d'assurance",
         "insurerStatus": "Statut assurance",
+        "hasExistingRoadAssistancePlan": "A un plan d'assistance routière existant",
+        "existingRoadAssistancePlanEndDate": "Date de fin du plan d'assistance existant",
+        "roadAssistancePlan": "Plan d'assistance routière",
+        "roadAssistancePlanStatus": "Statut du plan d'assistance",
         "simulation": "Simulation",
         "statusInPreparation": "Statut de préparation",
         "created": "Créé",
@@ -1617,6 +1621,7 @@
         "userInfo": "Infos utilisateur",
         "carInfo": "Infos véhicule",
         "insurer": "Assurance",
+        "roadAssistancePlan": "Assistance routière",
         "carValue": "Valeur",
         "finalize": "Finaliser"
       },
@@ -1645,6 +1650,10 @@
         },
         "insurer": {
           "notApplicable": "Non applicable",
+          "todo": "À faire",
+          "ready": "Complet"
+        },
+        "roadAssistancePlan": {
           "todo": "À faire",
           "ready": "Complet"
         },
@@ -1677,8 +1686,10 @@
           "carType": "Rechercher des types de véhicule…",
           "carTypeFirst": "Sélectionnez d'abord la marque et le carburant",
           "insurer": "Rechercher des assureurs…",
+          "roadAssistancePlan": "Rechercher des plans d'assistance…",
           "owner": "Rechercher des utilisateurs…"
         },
+        "includedRoadAssistancePlan": "Le véhicule acheté inclut un plan d'assistance routière",
         "openSimulation": "Ouvrir la simulation",
         "openPublicPage": "Ouvrir la page publique",
         "overruleAgreement": "Outrepasser l'accord",
@@ -2811,6 +2822,16 @@
         "hasInsuranceContractLabel": "J'ai déjà un contrat d'assurance pour ce véhicule",
         "hasInsuranceContractHint": "Désactivez cette option si Dégage organise l'assurance pour vous. Vous pourrez ajouter les détails plus tard.",
         "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
+      },
+      "roadAssistancePlan": {
+        "title": "Assistance routière",
+        "subtitle": "Votre couverture d'assistance routière",
+        "info": "Indiquez si votre véhicule a déjà une assistance routière et choisissez le plan souhaité avec Dégage.",
+        "existingPanelTitle": "Assistance routière existante",
+        "desiredPanelTitle": "Plan d'assistance souhaité",
+        "includedPlanLabel": "Plan inclus",
+        "includedPlanCheckbox": "Le véhicule acheté inclut un plan d'assistance routière",
+        "hasExistingLabel": "J'ai déjà un plan d'assistance routière pour ce véhicule"
       },
       "carValue": {
         "title": "Valeur",

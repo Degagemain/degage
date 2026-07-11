@@ -15,7 +15,7 @@ Tijdens de voorbereiding verzamelt het systeem contactgegevens en voertuigkenmer
 vereiste invoer compleet is en of verdere wijzigingen nog zijn toegestaan.
 
 Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: eigenaar, gebruikersinfo, wageninfo,
-verzekering, waarde, afronden).
+verzekering, pechverhelping, waarde, afronden).
 
 ### Eigenaar
 
@@ -85,6 +85,27 @@ dezelfde indiening als het vlagveld.
 
 Deze stap is compleet wanneer de verzekeringsstatus niet **Todo** is.
 
+### Pechverhelpingsplan
+
+Legt vast of de wagen al pechverhelping heeft en welk plan de eigenaar met Dégage wil.
+
+| Eigenschap                             | Beschrijving                                                                                          |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Heeft bestaand pechverhelpingsplan     | Of de wagen al pechverhelping heeft (bij een nieuwe aangekochte wagen kan dit inbegrepen zijn).       |
+| Einddatum bestaand pechverhelpingsplan | Einddatum van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat). |
+| Pechverhelpingsplan                    | Gewenst pechverhelpingsplan uit de catalogus.                                                         |
+
+| Status | Betekenis                                                                               |
+| ------ | --------------------------------------------------------------------------------------- |
+| Todo   | Verplichte velden ontbreken (gewenst plan en/of einddatum bestaand plan).               |
+| Klaar  | Gewenst plan is gekozen en bestaande plangegevens zijn compleet wanneer van toepassing. |
+
+Het systeem zet de status automatisch bij opslaan. Wanneer **Heeft bestaand pechverhelpingsplan** uit staat, wordt de einddatum gewist.
+
+De eigenaar kan pechverhelpingsgegevens bijwerken via een gedeeltelijke update zolang de status **Todo** is.
+
+Deze stap is compleet wanneer de pechverhelpingsstatus niet **Todo** is.
+
 ### Waarde
 
 Onderhandelt over de geschatte huidige waarde van het voertuig tussen admin en eigenaar.
@@ -107,7 +128,7 @@ Deze stap is compleet wanneer de waarde-status **Resolved** is.
 
 ### Afronden
 
-Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering en waarde allemaal compleet zijn, zet het systeem de
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping en waarde allemaal compleet zijn, zet het systeem de
 voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad **Afronden**.
 
 | Status      | Betekenis                                                                                                                                                                                    |

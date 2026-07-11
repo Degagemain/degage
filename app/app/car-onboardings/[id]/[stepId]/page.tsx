@@ -9,6 +9,7 @@ import { InfoSessionStep } from '../../components/steps/info-session-step';
 import { UserInfoStep } from '../../components/steps/user-info-step';
 import { CarInfoStep } from '../../components/steps/car-info-step';
 import { InsurerStep } from '../../components/steps/insurer-step';
+import { RoadAssistancePlanStep } from '../../components/steps/road-assistance-plan-step';
 import { CarValueStep } from '../../components/steps/car-value-step';
 
 export default function CarOnboardingStepPage({ params }: { params: Promise<{ id: string; stepId: string }> }) {
@@ -29,6 +30,8 @@ export default function CarOnboardingStepPage({ params }: { params: Promise<{ id
       return <CarInfoStep />;
     case 'insurer':
       return <InsurerStep />;
+    case 'road-assistance-plan':
+      return <RoadAssistancePlanStep />;
     case 'car-value':
       return <CarValueStep />;
     default:

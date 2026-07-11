@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
@@ -31,7 +32,7 @@ describe('isCarValueSectionComplete', () => {
 });
 
 describe('isPreparationReady', () => {
-  it('returns true only when play connector, info session, car-info, user-info, car value, and insurer are complete', () => {
+  it('returns true only when play connector, info session, car-info, user-info, car value, insurer, and road assistance plan are complete', () => {
     expect(isPreparationReady(completeCarOnboarding())).toBe(true);
     expect(isPreparationReady(carOnboarding({ street: 'Main Street' }))).toBe(false);
     expect(isPreparationReady(completeCarOnboarding({ owner: { id: 'owner-1', hasPlayConnector: false } }))).toBe(false);
@@ -53,6 +54,13 @@ describe('isPreparationReady', () => {
       isPreparationReady(
         completeCarOnboarding({
           insurerStatus: CarOnboardingInsurerStatus.TODO,
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isPreparationReady(
+        completeCarOnboarding({
+          roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
         }),
       ),
     ).toBe(false);

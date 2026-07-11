@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
 import { Prisma } from '@/storage/client/client';
 import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
@@ -16,6 +17,7 @@ export const carOnboardingRelationsInclude = {
   fuelType: { include: { translations: true } },
   carType: true,
   insurer: true,
+  roadAssistancePlan: { include: { translations: true } },
   owner: {
     include: {
       playConnector: {
@@ -55,6 +57,10 @@ const mapInsurerStatusFromDb = (value: string): CarOnboardingInsurerStatus => {
   return value as CarOnboardingInsurerStatus;
 };
 
+const mapRoadAssistancePlanStatusFromDb = (value: string): CarOnboardingRoadAssistancePlanStatus => {
+  return value as CarOnboardingRoadAssistancePlanStatus;
+};
+
 const mapInfoSessionStatusFromDb = (value: string): CarOnboardingInfoSessionStatus => {
   return value as CarOnboardingInfoSessionStatus;
 };
@@ -83,6 +89,10 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     insurer: db.insurerId != null ? { id: db.insurerId } : null,
     insurerStatus: mapInsurerStatusFromDb(db.insurerStatus),
     insurerContractStartedAt: db.insurerContractStartedAt,
+    hasExistingRoadAssistancePlan: db.hasExistingRoadAssistancePlan,
+    existingRoadAssistancePlanEndDate: db.existingRoadAssistancePlanEndDate,
+    roadAssistancePlan: db.roadAssistancePlanId != null ? { id: db.roadAssistancePlanId } : null,
+    roadAssistancePlanStatus: mapRoadAssistancePlanStatusFromDb(db.roadAssistancePlanStatus),
     infoSessionDate: db.infoSessionDate,
     infoSessionPcId: db.infoSessionPcId,
     infoSessionStatus: mapInfoSessionStatusFromDb(db.infoSessionStatus),
@@ -137,6 +147,12 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
       ? {
           id: db.insurerId!,
           name: db.insurer.name,
+        }
+      : null,
+    roadAssistancePlan: db.roadAssistancePlan
+      ? {
+          id: db.roadAssistancePlanId!,
+          name: pickTranslationName(db.roadAssistancePlan.translations, locale),
         }
       : null,
     owner: db.owner
@@ -198,6 +214,10 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     insurer: onboarding.insurer != null ? { connect: { id: onboarding.insurer.id } } : undefined,
     insurerStatus: onboarding.insurerStatus,
     insurerContractStartedAt: onboarding.insurerContractStartedAt ?? undefined,
+    hasExistingRoadAssistancePlan: onboarding.hasExistingRoadAssistancePlan,
+    existingRoadAssistancePlanEndDate: onboarding.existingRoadAssistancePlanEndDate ?? undefined,
+    roadAssistancePlan: onboarding.roadAssistancePlan != null ? { connect: { id: onboarding.roadAssistancePlan.id } } : undefined,
+    roadAssistancePlanStatus: onboarding.roadAssistancePlanStatus,
     infoSessionDate: onboarding.infoSessionDate ?? undefined,
     infoSessionPcId: onboarding.infoSessionPcId ?? undefined,
     infoSessionStatus: onboarding.infoSessionStatus,
@@ -240,6 +260,10 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     insurer: optionalRelationConnect(onboarding.insurer),
     insurerStatus: onboarding.insurerStatus,
     insurerContractStartedAt: onboarding.insurerContractStartedAt ?? undefined,
+    hasExistingRoadAssistancePlan: onboarding.hasExistingRoadAssistancePlan,
+    existingRoadAssistancePlanEndDate: onboarding.existingRoadAssistancePlanEndDate,
+    roadAssistancePlan: optionalRelationConnect(onboarding.roadAssistancePlan),
+    roadAssistancePlanStatus: onboarding.roadAssistancePlanStatus,
     infoSessionDate: onboarding.infoSessionDate,
     infoSessionPcId: onboarding.infoSessionPcId,
     infoSessionStatus: onboarding.infoSessionStatus,
