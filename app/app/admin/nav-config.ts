@@ -26,7 +26,7 @@ export const DOCUMENTATION_SUB_ITEMS: {
 }[] = [{ translationKey: 'documentationGroups', href: '/app/admin/documentation-groups', icon: Layers }];
 
 export const CAR_SETTINGS_ITEMS: {
-  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'carStickers';
+  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'carStickers' | 'roadAssistancePlans';
   href: string;
 }[] = [
   { translationKey: 'carBrands', href: '/app/admin/car-brands' },
@@ -34,15 +34,15 @@ export const CAR_SETTINGS_ITEMS: {
   { translationKey: 'fuelTypes', href: '/app/admin/fuel-types' },
   { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
   { translationKey: 'carStickers', href: '/app/admin/car-stickers' },
+  { translationKey: 'roadAssistancePlans', href: '/app/admin/road-assistance-plans' },
 ];
 
 export const CORE_SETTINGS_ITEMS: {
-  translationKey: 'systemParameters' | 'translationOverrides' | 'roadAssistancePlans';
+  translationKey: 'systemParameters' | 'translationOverrides';
   href: string;
 }[] = [
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides' },
-  { translationKey: 'roadAssistancePlans', href: '/app/admin/road-assistance-plans' },
 ];
 
 export const SIMULATION_ITEMS: {
