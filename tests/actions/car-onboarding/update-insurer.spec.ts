@@ -33,6 +33,7 @@ describe('updateCarOnboardingInsurer', () => {
     vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
     const body = {
+      hasInsurance: true,
       insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
       insurerContractStartedAt: '2020-01-15',
     };
@@ -42,8 +43,25 @@ describe('updateCarOnboardingInsurer', () => {
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         id: onboardingId,
+        hasInsurance: true,
         insurer: body.insurer,
         insurerContractStartedAt: new Date(body.insurerContractStartedAt),
+      }),
+    );
+  });
+
+  it('accepts hasInsurance false without insurer fields', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingInsurer(onboardingId, { hasInsurance: false }, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: onboardingId,
+        hasInsurance: false,
       }),
     );
   });
@@ -57,6 +75,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
+          hasInsurance: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },
@@ -81,6 +100,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
+          hasInsurance: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },
@@ -100,6 +120,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
+          hasInsurance: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },

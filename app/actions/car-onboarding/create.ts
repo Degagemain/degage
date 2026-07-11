@@ -5,6 +5,7 @@ import {
   carOnboardingCreateInputSchema,
   carOnboardingFromSimulation,
   carOnboardingSchema,
+  hasInsuranceFromIsPurchased,
 } from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
@@ -37,6 +38,7 @@ export const createCarOnboarding = async (input: CarOnboardingCreateInput, calle
 
   const toCreate = carOnboardingSchema.parse({
     ...withCarTypeFlags,
+    hasInsurance: hasInsuranceFromIsPurchased(withCarTypeFlags.isPurchased),
     id: null,
     createdAt: null,
     updatedAt: null,

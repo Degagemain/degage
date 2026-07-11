@@ -21,12 +21,13 @@ const withPlayConnector = (data: Parameters<typeof carOnboarding>[0] = {}) =>
   });
 
 describe('getStepsForRecord', () => {
-  it('includes play connector and info session before user info', () => {
+  it('always includes the insurer step', () => {
     expect(getStepsForRecord(carOnboarding({ isPurchased: true }))).toEqual([
       'play-connector',
       'info-session',
       'user-info',
       'car-info',
+      'insurer',
       'car-value',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([

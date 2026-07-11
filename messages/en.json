@@ -1463,6 +1463,7 @@
         "carValueCounterProposalMessage": "Counter message",
         "carValueStatus": "Car value status",
         "insurer": "Insurer",
+        "hasInsurance": "Has insurance",
         "insurerContractStartedAt": "Insurer contract started",
         "insurerStatus": "Insurer status",
         "simulation": "Simulation",
@@ -1617,7 +1618,7 @@
           "isPurchasedReadOnly": "Set when the record is created and cannot be changed here.",
           "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
-          "insurerNotApplicable": "Insurance is not applicable for purchased cars."
+          "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance."
         }
       },
       "detailPage": {
@@ -2668,6 +2669,8 @@
         "subtitle": "Your current car insurance",
         "info": "Tell us which insurer covers your car today and when the contract started.",
         "panelTitle": "Current insurance",
+        "hasInsuranceLabel": "I already have insurance for this car",
+        "hasInsuranceHint": "Turn this off if Dégage will arrange insurance for you.",
         "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
       },
       "carValue": {

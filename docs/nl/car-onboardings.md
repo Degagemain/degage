@@ -62,18 +62,24 @@ dan vier jaar; roze formulier wanneer de wagen gekocht is en niet nieuw; geen do
 
 ### Verzekering
 
-Legt de huidige verzekeringsmaatschappij en startdatum van het contract vast wanneer de wagen niet is aangekocht.
+Legt vast of de wagen al een verzekering heeft en, indien van toepassing, de huidige verzekeringsmaatschappij en startdatum van het contract.
 
-| Status              | Betekenis                                                                   |
-| ------------------- | --------------------------------------------------------------------------- |
-| Niet van toepassing | De wagen is aangekocht; er is geen bestaande verzekering om vast te leggen. |
-| Todo                | De eigenaar moet verzekeraar en startdatum van het contract invullen.       |
-| Klaar               | Verzekeraar en startdatum zijn beide ingevuld.                              |
+| Eigenschap                 | Beschrijving                                                                                    |
+| -------------------------- | ----------------------------------------------------------------------------------------------- |
+| Heeft verzekering          | Of de eigenaar al een verzekering heeft voor deze wagen.                                        |
+| Verzekeraar                | Huidige verzekeringsmaatschappij (zichtbaar wanneer heeft verzekering aan staat).               |
+| Start verzekeringscontract | Datum waarop het huidige verzekeringscontract is gestart (wanneer heeft verzekering aan staat). |
 
-Het systeem zet de verzekeringsstatus automatisch bij opslaan. Wanneer **Aangekochte wagen** aan staat, wordt de status **Niet van toepassing**
+| Status              | Betekenis                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Niet van toepassing | De wagen heeft geen bestaande verzekering om vast te leggen; verzekeringsvelden zijn niet verplicht. |
+| Todo                | Heeft verzekering staat aan maar de eigenaar moet nog verzekeraar en startdatum invullen.            |
+| Klaar               | Heeft verzekering staat aan en verzekeringsgegevens zijn ingevuld.                                   |
+
+Het systeem zet de verzekeringsstatus automatisch bij opslaan. Wanneer **Heeft verzekering** uit staat, wordt de status **Niet van toepassing**
 en worden verzekeringsvelden gewist.
 
-De eigenaar kan verzekeringsgegevens (verzekeraar en startdatum) indienen via een gedeeltelijke update zolang de status **Todo** is.
+De eigenaar kan verzekeringsgegevens indienen via een gedeeltelijke update zolang de status **Todo** is.
 
 Deze stap is compleet wanneer de verzekeringsstatus niet **Todo** is.
 

@@ -14,13 +14,8 @@ import {
 } from '@/domain/car-onboarding.model';
 import type { StepId, StepState } from './types';
 
-export const getStepsForRecord = (onboarding: CarOnboarding): StepId[] => {
-  const steps: StepId[] = ['play-connector', 'info-session', 'user-info', 'car-info'];
-  if (!onboarding.isPurchased) {
-    steps.push('insurer');
-  }
-  steps.push('car-value');
-  return steps;
+export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
+  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'car-value'];
 };
 
 const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
