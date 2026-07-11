@@ -91,6 +91,7 @@ interface FormValues {
   insurerId: string;
   insurerName: string;
   insurerContractStartedAt: string;
+  hasInsuranceContract: boolean;
   ownerId: string;
   ownerName: string;
 }
@@ -132,6 +133,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     insurerId: row.insurer?.id ?? NONE,
     insurerName: row.insurer?.name ?? '',
     insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
+    hasInsuranceContract: row.hasInsuranceContract,
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
   };
@@ -166,6 +168,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     insurerId: z.string(),
     insurerName: z.string(),
     insurerContractStartedAt: z.string(),
+    hasInsuranceContract: z.boolean(),
     ownerId: z.string(),
     ownerName: z.string(),
   });
@@ -258,7 +261,7 @@ export function CarOnboardingForm({
     pinkForm: initialCarOnboarding.pinkForm,
   });
   const insurerComplete = isInsurerSectionComplete({
-    insurerStatus: watchedValues.isPurchased
+    insurerStatus: !watchedValues.hasInsuranceContract
       ? CarOnboardingInsurerStatus.NOT_APPLICABLE
       : watchedValues.insurerId !== NONE && watchedValues.insurerContractStartedAt.trim() !== ''
         ? CarOnboardingInsurerStatus.READY
@@ -302,16 +305,16 @@ export function CarOnboardingForm({
   );
 
   const insurerFlowSteps = useMemo((): SubprocessFlowStep[] => {
-    if (watchedValues.isPurchased) {
+    if (!watchedValues.hasInsuranceContract) {
       return [{ id: CarOnboardingInsurerStatus.NOT_APPLICABLE, label: t('subprocess.insurer.notApplicable') }];
     }
     return [
       { id: CarOnboardingInsurerStatus.TODO, label: t('subprocess.insurer.todo') },
       { id: CarOnboardingInsurerStatus.READY, label: t('subprocess.insurer.ready') },
     ];
-  }, [t, watchedValues.isPurchased]);
+  }, [t, watchedValues.hasInsuranceContract]);
 
-  const insurerFlowCurrent = watchedValues.isPurchased
+  const insurerFlowCurrent = !watchedValues.hasInsuranceContract
     ? CarOnboardingInsurerStatus.NOT_APPLICABLE
     : insurerComplete
       ? CarOnboardingInsurerStatus.READY
@@ -359,8 +362,10 @@ export function CarOnboardingForm({
       carValue: values.carValue === '' ? 0 : Number(values.carValue),
       carValueCounterProposal: initialCarOnboarding.carValueCounterProposal,
       carValueCounterProposalMessage: initialCarOnboarding.carValueCounterProposalMessage,
-      insurer: values.isPurchased ? null : toIdName(values.insurerId, values.insurerName),
-      insurerContractStartedAt: values.isPurchased || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+      insurer: !values.hasInsuranceContract ? null : toIdName(values.insurerId, values.insurerName),
+      insurerContractStartedAt:
+        !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+      hasInsuranceContract: values.hasInsuranceContract,
       owner: toIdName(values.ownerId, values.ownerName),
     };
     await onSubmit(payload);
@@ -870,9 +875,20 @@ export function CarOnboardingForm({
                 <CarOnboardingSubprocessFlow steps={insurerFlowSteps} currentStepId={insurerFlowCurrent} />
               </div>
               <FieldGroup className="gap-6">
-                {watchedValues.isPurchased ? (
-                  <p className="text-muted-foreground text-sm">{t('form.help.insurerNotApplicable')}</p>
-                ) : (
+                <Controller
+                  name="hasInsuranceContract"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-has-insurance-contract"
+                      label={t('columns.hasInsuranceContract')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                {watchedValues.hasInsuranceContract ? (
                   <>
                     <Controller
                       name="insurerId"
@@ -908,7 +924,7 @@ export function CarOnboardingForm({
                       )}
                     />
                   </>
-                )}
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>

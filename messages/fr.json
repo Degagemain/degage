@@ -1602,6 +1602,7 @@
         "carValueCounterProposalMessage": "Message de contre-proposition",
         "carValueStatus": "Statut valeur",
         "insurer": "Assureur",
+        "hasInsuranceContract": "A un contrat d'assurance",
         "insurerContractStartedAt": "Début du contrat d'assurance",
         "insurerStatus": "Statut assurance",
         "simulation": "Simulation",
@@ -1756,7 +1757,7 @@
           "isPurchasedReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
-          "insurerNotApplicable": "L'assurance ne s'applique pas aux véhicules achetés."
+          "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante."
         }
       },
       "detailPage": {
@@ -2807,6 +2808,8 @@
         "subtitle": "Votre assurance auto actuelle",
         "info": "Indiquez l'assureur actuel de votre véhicule et la date de début du contrat.",
         "panelTitle": "Assurance actuelle",
+        "hasInsuranceContractLabel": "J'ai déjà un contrat d'assurance pour ce véhicule",
+        "hasInsuranceContractHint": "Désactivez cette option si Dégage organise l'assurance pour vous. Vous pourrez ajouter les détails plus tard.",
         "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
       },
       "carValue": {

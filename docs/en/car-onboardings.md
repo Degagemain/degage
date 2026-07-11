@@ -78,18 +78,25 @@ years; pink form when the car was purchased and is not new; no documents when th
 
 ### Insurer
 
-Records the current insurance company and contract start date when the vehicle was not purchased.
+Records whether the car already has an insurance contract and, when applicable, the current insurance company and contract start date.
 
-| Status         | Meaning                                                              |
-| -------------- | -------------------------------------------------------------------- |
-| Not applicable | The vehicle was purchased; there is no existing insurance to record. |
-| Todo           | The owner must provide the insurer and contract start date.          |
-| Ready          | Insurer and contract start date are both filled in.                  |
+| Property               | Description                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| Has insurance contract | Whether the owner already has an insurance contract for this car.                     |
+| Insurer                | Current insurance company (shown when has insurance contract is enabled).             |
+| Insurer contract start | Date the current insurance contract started (when has insurance contract is enabled). |
 
-The system sets insurer status automatically on save. When **Purchased car** is enabled, status becomes **Not applicable** and insurer fields
-are cleared.
+| Status         | Meaning                                                                                |
+| -------------- | -------------------------------------------------------------------------------------- |
+| Not applicable | The car has no existing insurance contract to record; insurer fields are not required. |
+| Todo           | Has insurance contract is enabled; insurer details can be filled in later.             |
+| Ready          | Has insurance contract is enabled and insurer details are filled in.                   |
 
-The owner can submit insurer details (insurer and contract start date) via a partial update while status is **Todo**.
+The system sets insurer status automatically on save. When **Has insurance contract** is off, status becomes **Not applicable** and insurer
+fields are cleared.
+
+The owner can update insurer details via a partial update while status is **Todo**. Insurer details are not required in the same submission as
+the has insurance contract flag.
 
 This step is complete when insurer status is not **Todo**.
 

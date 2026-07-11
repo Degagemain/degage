@@ -183,6 +183,7 @@ describe('carOnboardingInsurerSchema', () => {
   it('defaults insurer fields', () => {
     const result = carOnboardingInsurerSchema.parse({});
     expect(result).toEqual({
+      hasInsuranceContract: false,
       insurer: null,
       insurerStatus: CarOnboardingInsurerStatus.TODO,
       insurerContractStartedAt: null,
@@ -191,19 +192,27 @@ describe('carOnboardingInsurerSchema', () => {
 });
 
 describe('carOnboardingInsurerInputSchema', () => {
-  it('requires insurer and contract start date', () => {
+  it('requires insurer and contract start date when hasInsuranceContract is true', () => {
     const result = carOnboardingInsurerInputSchema.safeParse({
+      hasInsuranceContract: true,
       insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
       insurerContractStartedAt: '2020-01-15',
     });
     expect(result.success).toBe(true);
   });
 
-  it('rejects missing insurer', () => {
+  it('accepts hasInsuranceContract false without insurer fields', () => {
     const result = carOnboardingInsurerInputSchema.safeParse({
-      insurerContractStartedAt: '2020-01-15',
+      hasInsuranceContract: false,
     });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts hasInsuranceContract true without insurer fields', () => {
+    const result = carOnboardingInsurerInputSchema.safeParse({
+      hasInsuranceContract: true,
+    });
+    expect(result.success).toBe(true);
   });
 });
 
@@ -305,6 +314,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.firstRegisteredAt).toEqual(sim.firstRegisteredAt);
     expect(result.isVan).toBe(sim.isVan);
     expect(result.isPurchased).toBe(true);
+    expect(result.hasInsuranceContract).toBe(false);
     expect(result.isNewCar).toBe(true);
     expect(result.purchasePrice).toBe(25_000);
     expect(result.carValue).toBe(18_000);
@@ -545,10 +555,10 @@ describe('isInsurerSectionComplete', () => {
 });
 
 describe('applyInsurerStatus', () => {
-  it('sets not applicable and clears fields when purchased', () => {
+  it('sets not applicable and clears fields when hasInsuranceContract is false', () => {
     const result = applyInsurerStatus(
       carOnboarding({
-        isPurchased: true,
+        hasInsuranceContract: false,
         insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
         insurerContractStartedAt: new Date('2020-01-15'),
         insurerStatus: CarOnboardingInsurerStatus.READY,
@@ -562,6 +572,7 @@ describe('applyInsurerStatus', () => {
   it('sets ready when insurer and date are set', () => {
     const result = applyInsurerStatus(
       carOnboarding({
+        hasInsuranceContract: true,
         insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
         insurerContractStartedAt: new Date('2020-01-15'),
       }),
@@ -573,11 +584,12 @@ describe('applyInsurerStatus', () => {
     expect(
       applyInsurerStatus(
         carOnboarding({
+          hasInsuranceContract: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
         }),
       ).insurerStatus,
     ).toBe(CarOnboardingInsurerStatus.TODO);
-    expect(applyInsurerStatus(carOnboarding()).insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+    expect(applyInsurerStatus(carOnboarding({ hasInsuranceContract: true })).insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
   });
 });
 

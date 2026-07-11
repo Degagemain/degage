@@ -1602,6 +1602,7 @@
         "carValueCounterProposalMessage": "Tegenvoorstel bericht",
         "carValueStatus": "Waarde-status",
         "insurer": "Verzekeraar",
+        "hasInsuranceContract": "Heeft verzekeringscontract",
         "insurerContractStartedAt": "Verzekeringscontract gestart",
         "insurerStatus": "Verzekeringsstatus",
         "simulation": "Simulatie",
@@ -1756,7 +1757,7 @@
           "isPurchasedReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "isNewCarReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
-          "insurerNotApplicable": "Verzekering is niet van toepassing voor aangekochte wagens."
+          "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft."
         }
       },
       "detailPage": {
@@ -2816,6 +2817,8 @@
         "subtitle": "Je huidige autoverzekering",
         "info": "Geef door bij welke verzekeraar je wagen vandaag verzekerd is en sinds wanneer.",
         "panelTitle": "Huidige verzekering",
+        "hasInsuranceContractLabel": "Ik heb al een verzekeringscontract voor deze wagen",
+        "hasInsuranceContractHint": "Schakel dit uit als Dégage de verzekering voor je regelt. Je kunt de verzekeringsgegevens later invullen.",
         "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
       },
       "carValue": {

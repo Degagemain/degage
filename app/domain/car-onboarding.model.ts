@@ -61,6 +61,7 @@ export const carOnboardingCarValueSchema = z
 
 export const carOnboardingInsurerSchema = z
   .object({
+    hasInsuranceContract: z.boolean().default(false),
     insurer: idNameSchema.nullable().default(null),
     insurerStatus: z.enum(CarOnboardingInsurerStatus).default(CarOnboardingInsurerStatus.TODO),
     insurerContractStartedAt: z.coerce.date().nullable().default(null),
@@ -149,11 +150,11 @@ export const carOnboardingCarValueResolveInputSchema = z
 
 export type CarOnboardingCarValueResolveInput = z.infer<typeof carOnboardingCarValueResolveInputSchema>;
 
-export const carOnboardingInsurerInputSchema = carOnboardingInsurerSchema
-  .pick({ insurer: true, insurerContractStartedAt: true })
-  .extend({
-    insurer: idNameSchema,
-    insurerContractStartedAt: z.coerce.date(),
+export const carOnboardingInsurerInputSchema = z
+  .object({
+    hasInsuranceContract: z.boolean(),
+    insurer: idNameSchema.nullable().optional(),
+    insurerContractStartedAt: z.coerce.date().nullable().optional(),
   })
   .strict();
 
@@ -188,6 +189,8 @@ export const carOnboardingCreateInputSchema = z
 
 export type CarOnboardingCreateInput = z.infer<typeof carOnboardingCreateInputSchema>;
 
+export const hasInsuranceContractFromIsPurchased = (isPurchased: boolean): boolean => !isPurchased;
+
 export const carOnboardingFromSimulation = (
   simulation: Simulation,
   options: { ownerId: string },
@@ -206,6 +209,7 @@ export const carOnboardingFromSimulation = (
     carValueCounterProposal: 0,
     carValueCounterProposalMessage: null,
     carValueStatus: CarOnboardingCarValueStatus.TODO,
+    hasInsuranceContract: hasInsuranceContractFromIsPurchased(simulation.isPurchased),
     insurer: null,
     insurerContractStartedAt: null,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
@@ -310,7 +314,7 @@ export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insure
 };
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
-  if (onboarding.isPurchased) {
+  if (!onboarding.hasInsuranceContract) {
     return {
       ...onboarding,
       insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,

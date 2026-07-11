@@ -307,6 +307,24 @@
   line-height: 1.45;
 }
 
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--demo-s8);
+  font-size: 15px;
+  color: var(--demo-ink);
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type='checkbox'] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--demo-brand);
+}
+
 .fieldHelpLink {
   font: inherit;
   color: var(--demo-brand);
