@@ -878,12 +878,12 @@ export function CarOnboardingForm({
                 <Controller
                   name="hasInsurance"
                   control={form.control}
-                  render={({ field, fieldState }) => (
+                  render={({ field }) => (
                     <AdminSwitchFieldControl
+                      id="car-onboarding-has-insurance"
                       label={t('columns.hasInsurance')}
                       checked={field.value}
-                      onCheckedChange={field.onChange}
-                      error={fieldState.error?.message}
+                      onChange={field.onChange}
                       disabled={isSubmitting}
                     />
                   )}
