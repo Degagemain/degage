@@ -368,6 +368,81 @@
         "columnName": "Marque de voiture"
       }
     },
+    "carStickers": {
+      "title": "Stickers voiture",
+      "columns": {
+        "name": "Nom",
+        "isActive": "Actif",
+        "isAlwaysIncluded": "Toujours inclus",
+        "image": "Image",
+        "created": "Créé le",
+        "updated": "Modifié le"
+      },
+      "active": "Actif",
+      "alwaysIncluded": "Toujours inclus",
+      "searchPlaceholder": "Rechercher des stickers voiture...",
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Nom du sticker"
+        },
+        "help": {
+          "name": "Nom affiché du design de sticker voiture.",
+          "isActive": "Les stickers inactifs sont masqués dans les listes de sélection.",
+          "isAlwaysIncluded": "Lorsque activé, ce sticker est inclus automatiquement pour chaque voiture."
+        },
+        "image": {
+          "upload": "Téléverser une image",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Image du sticker téléversée.",
+          "uploadError": "Échec du téléversement de l'image du sticker.",
+          "download": "Voir",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir l'image du sticker.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucune image téléversée pour l'instant.",
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
+        }
+      },
+      "delete": {
+        "title": "Supprimer le sticker voiture",
+        "description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Le fichier image lié sera également supprimé. Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Sticker voiture supprimé avec succès.",
+        "error": "Échec de la suppression du sticker voiture.",
+        "conflict": "Ce sticker voiture est lié à d'autres enregistrements et ne peut pas être supprimé."
+      },
+      "bulkActions": {
+        "label": "Sélection",
+        "delete": "Supprimer la sélection"
+      },
+      "bulkDelete": {
+        "title": "Supprimer des stickers voiture",
+        "description": "Les {count} enregistrement(s) suivants seront supprimés. Les fichiers image liés seront également supprimés. Cette action est irréversible.",
+        "columnName": "Sticker voiture",
+        "columnStatus": "Statut",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "statusPending": "En attente",
+        "statusDeleting": "Suppression…",
+        "statusSuccess": "Supprimé",
+        "statusError": "Échoué",
+        "statusConflict": "Lié à d'autres enregistrements"
+      },
+      "bulkImport": {
+        "title": "Importer des stickers voiture",
+        "description": "Les enregistrements suivants seront importés. Les enregistrements avec un id seront mis à jour ; ceux sans id seront ajoutés.",
+        "columnName": "Sticker voiture"
+      }
+    },
     "fuelTypes": {
       "title": "Types de Carburant",
       "filters": {

@@ -368,6 +368,81 @@
         "columnName": "Automerk"
       }
     },
+    "carStickers": {
+      "title": "Autostickers",
+      "columns": {
+        "name": "Naam",
+        "isActive": "Actief",
+        "isAlwaysIncluded": "Altijd inbegrepen",
+        "image": "Afbeelding",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "active": "Actief",
+      "alwaysIncluded": "Altijd inbegrepen",
+      "searchPlaceholder": "Zoek autostickers...",
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Stickernaam"
+        },
+        "help": {
+          "name": "Weergavenaam van het autostickerontwerp.",
+          "isActive": "Inactieve stickers worden niet getoond in selecties.",
+          "isAlwaysIncluded": "Indien ingeschakeld wordt deze sticker automatisch voor elke wagen toegevoegd."
+        },
+        "image": {
+          "upload": "Afbeelding uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Stickerafbeelding geüpload.",
+          "uploadError": "Uploaden van stickerafbeelding mislukt.",
+          "download": "Bekijken",
+          "downloading": "Openen…",
+          "downloadError": "Stickerafbeelding openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen afbeelding geüpload.",
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
+        }
+      },
+      "delete": {
+        "title": "Autosticker verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Het gekoppelde afbeeldingsbestand wordt ook verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Autosticker succesvol verwijderd.",
+        "error": "Autosticker verwijderen mislukt.",
+        "conflict": "Deze autosticker is gekoppeld aan andere records en kan niet worden verwijderd."
+      },
+      "bulkActions": {
+        "label": "Selectie",
+        "delete": "Selectie verwijderen"
+      },
+      "bulkDelete": {
+        "title": "Autostickers verwijderen",
+        "description": "De volgende {count} record(s) worden verwijderd. Gekoppelde afbeeldingsbestanden worden ook verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "columnName": "Autosticker",
+        "columnStatus": "Status",
+        "confirm": "Alles verwijderen",
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "statusPending": "Wordt verwijderd",
+        "statusDeleting": "Verwijderen…",
+        "statusSuccess": "Verwijderd",
+        "statusError": "Mislukt",
+        "statusConflict": "Gekoppeld aan andere records"
+      },
+      "bulkImport": {
+        "title": "Autostickers importeren",
+        "description": "De volgende records worden geïmporteerd. Records met een id worden bijgewerkt; records zonder id worden toegevoegd.",
+        "columnName": "Autosticker"
+      }
+    },
     "fuelTypes": {
       "title": "Brandstoftypes",
       "filters": {

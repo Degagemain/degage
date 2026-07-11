@@ -1,0 +1,183 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Save, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { CarSticker } from '@/domain/car-sticker.model';
+import { apiDelete, apiPut } from '@/app/lib/api-client';
+import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
+import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
+import { Button } from '@/app/components/ui/button';
+import { Skeleton } from '@/app/components/ui/skeleton';
+import { CAR_STICKER_FORM_ID, CarStickerForm } from '../components/car-sticker-form';
+
+const OVERVIEW_PATH = '/app/admin/car-stickers';
+
+export default function EditCarStickerPage() {
+  const t = useTranslations('admin.carStickers');
+  const tCommon = useTranslations('admin.common');
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  const [sticker, setSticker] = useState<CarSticker | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadSticker = useCallback(async () => {
+    if (!id) {
+      setError(tCommon('feedback.loadError'));
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/car-stickers/${id}`);
+      if (!response.ok) {
+        throw new Error(tCommon('feedback.loadError'));
+      }
+      const data: CarSticker = await response.json();
+      setSticker(data);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : tCommon('feedback.loadError'));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id, tCommon]);
+
+  useEffect(() => {
+    loadSticker();
+  }, [loadSticker]);
+
+  const handleSave = async (payload: CarSticker) => {
+    if (!id) return;
+    setIsSaving(true);
+    try {
+      const response = await apiPut(`/api/car-stickers/${id}`, { ...payload, id });
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(tCommon('feedback.saveSuccess'));
+      await loadSticker();
+    } catch {
+      toast.error(tCommon('feedback.saveError'));
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleImageUpload = useCallback(
+    async (file: File) => {
+      if (!id) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch(`/api/car-stickers/${id}/image`, {
+        method: 'PUT',
+        body: formData,
+      });
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.image.uploadError'));
+        throw new Error(message);
+      }
+      toast.success(t('form.image.uploadSuccess'));
+      await loadSticker();
+    },
+    [id, loadSticker, t],
+  );
+
+  const handleImageDownload = useCallback(async () => {
+    if (!id) return;
+    const response = await fetch(`/api/car-stickers/${id}/image/view-url`);
+    if (!response.ok) {
+      throw new Error(t('form.image.downloadError'));
+    }
+    const { url } = (await response.json()) as { url: string };
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }, [id, t]);
+
+  const handleDelete = async () => {
+    if (!id) return;
+    const response = await apiDelete(`/api/car-stickers/${id}`);
+    if (response.ok) {
+      toast.success(t('delete.success'));
+      setIsDeleteDialogOpen(false);
+      router.push(OVERVIEW_PATH);
+      return;
+    }
+    if (response.status === 409) {
+      toast.error(t('delete.conflict'));
+      return;
+    }
+    toast.error(t('delete.error'));
+  };
+
+  if (error) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive font-medium">{error}</p>
+          <button type="button" onClick={loadSticker} className="text-muted-foreground mt-2 text-sm underline hover:no-underline">
+            {t('tryAgain')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="border-b px-3 md:px-4">
+          <div className="flex h-14 items-center justify-start gap-2">
+            <Button type="submit" form={CAR_STICKER_FORM_ID} disabled={isLoading || isSaving || !sticker} variant="outline" size="sm">
+              <Save className="size-3.5" />
+              {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setIsDeleteDialogOpen(true)} disabled={isLoading || isSaving || !sticker}>
+              <Trash2 className="size-3.5" />
+              {t('delete.confirm')}
+            </Button>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="space-y-6 px-3 py-4 md:px-4">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        ) : (
+          sticker && (
+            <CarStickerForm
+              formId={CAR_STICKER_FORM_ID}
+              initialCarSticker={sticker}
+              isSubmitting={isSaving}
+              onSubmit={handleSave}
+              onImageUpload={handleImageUpload}
+              onImageDownload={handleImageDownload}
+            />
+          )
+        )}
+      </div>
+
+      <DeleteConfirmationDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onConfirm={handleDelete}
+        title={t('delete.title')}
+        description={t('delete.description', { name: sticker?.name ?? '' })}
+        confirmLabel={t('delete.confirm')}
+        cancelLabel={t('delete.cancel')}
+      />
+    </>
+  );
+}

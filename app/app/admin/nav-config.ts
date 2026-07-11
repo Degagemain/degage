@@ -26,13 +26,14 @@ export const DOCUMENTATION_SUB_ITEMS: {
 }[] = [{ translationKey: 'documentationGroups', href: '/app/admin/documentation-groups', icon: Layers }];
 
 export const CAR_SETTINGS_ITEMS: {
-  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms';
+  translationKey: 'carBrands' | 'carTypes' | 'fuelTypes' | 'euroNorms' | 'carStickers';
   href: string;
 }[] = [
   { translationKey: 'carBrands', href: '/app/admin/car-brands' },
   { translationKey: 'carTypes', href: '/app/admin/car-types' },
   { translationKey: 'fuelTypes', href: '/app/admin/fuel-types' },
   { translationKey: 'euroNorms', href: '/app/admin/euro-norms' },
+  { translationKey: 'carStickers', href: '/app/admin/car-stickers' },
 ];
 
 export const CORE_SETTINGS_ITEMS: {

@@ -368,6 +368,81 @@
         "columnName": "Car brand"
       }
     },
+    "carStickers": {
+      "title": "Car Stickers",
+      "columns": {
+        "name": "Name",
+        "isActive": "Active",
+        "isAlwaysIncluded": "Always included",
+        "image": "Image",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "active": "Active",
+      "alwaysIncluded": "Always included",
+      "searchPlaceholder": "Search car stickers...",
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "placeholders": {
+          "name": "Sticker name"
+        },
+        "help": {
+          "name": "Display name of the car sticker design.",
+          "isActive": "Inactive stickers are hidden from selection lists.",
+          "isAlwaysIncluded": "When enabled, this sticker is included automatically for every car."
+        },
+        "image": {
+          "upload": "Upload image",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Sticker image uploaded.",
+          "uploadError": "Failed to upload sticker image.",
+          "download": "View",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open sticker image.",
+          "currentFile": "Current file",
+          "noFile": "No image uploaded yet.",
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
+        }
+      },
+      "delete": {
+        "title": "Delete car sticker",
+        "description": "Are you sure you want to delete \"{name}\"? The linked image file will also be removed. This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Car sticker deleted successfully.",
+        "error": "Failed to delete car sticker.",
+        "conflict": "This car sticker is linked to other records and cannot be deleted."
+      },
+      "bulkActions": {
+        "label": "Selection",
+        "delete": "Delete selected"
+      },
+      "bulkDelete": {
+        "title": "Delete car stickers",
+        "description": "The following {count} record(s) will be deleted. Linked image files will also be removed. This action cannot be undone.",
+        "columnName": "Car sticker",
+        "columnStatus": "Status",
+        "confirm": "Delete all",
+        "cancel": "Cancel",
+        "close": "Close",
+        "statusPending": "Pending",
+        "statusDeleting": "Deleting…",
+        "statusSuccess": "Deleted",
+        "statusError": "Failed",
+        "statusConflict": "Linked to other records"
+      },
+      "bulkImport": {
+        "title": "Import car stickers",
+        "description": "The following records will be imported. Records with an id will be updated; records without an id will be inserted.",
+        "columnName": "Car sticker"
+      }
+    },
     "fuelTypes": {
       "title": "Fuel Types",
       "filters": {
