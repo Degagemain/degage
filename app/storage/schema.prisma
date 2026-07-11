@@ -102,6 +102,7 @@ enum DocumentType {
   registrationCertificate
   inspectionCertificate
   pinkForm
+  carSticker
   other
 }
 
@@ -119,6 +120,7 @@ model Document {
   carOnboardingsRegistrationCertificateBack  CarOnboarding[] @relation("RegistrationCertificateBack")
   carOnboardingsInspectionCertificate        CarOnboarding[] @relation("InspectionCertificate")
   carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
+  carStickersImage                           CarSticker[]    @relation("CarStickerImage")
 }
 
 model CarOnboarding {
@@ -339,6 +341,17 @@ model Insurer {
   carOnboardings CarOnboarding[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+}
+
+model CarSticker {
+  id               String    @id @default(uuid())
+  name             String    @unique
+  isActive         Boolean   @default(true)
+  isAlwaysIncluded Boolean   @default(false)
+  imageId          String?
+  image            Document? @relation("CarStickerImage", fields: [imageId], references: [id], onDelete: SetNull)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model InsurancePriceBenchmark {

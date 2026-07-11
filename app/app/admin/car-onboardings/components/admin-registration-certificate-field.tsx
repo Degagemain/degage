@@ -17,6 +17,7 @@ interface AdminRegistrationCertificateFieldProps {
   fileName?: string | null;
   disabled?: boolean;
   namespace?: 'registrationCertificate' | 'inspectionCertificate' | 'pinkForm';
+  translationsNs?: string;
   onUpload: (file: File) => Promise<void>;
   onDownload?: () => Promise<void>;
 }
@@ -26,10 +27,11 @@ export function AdminRegistrationCertificateField({
   fileName,
   disabled = false,
   namespace = 'registrationCertificate',
+  translationsNs,
   onUpload,
   onDownload,
 }: AdminRegistrationCertificateFieldProps) {
-  const t = useTranslations(`admin.carOnboardings.form.${namespace}`);
+  const t = useTranslations(translationsNs ?? `admin.carOnboardings.form.${namespace}`);
   const maxSizeMb = getMaxUploadFileSizeMb();
   const maxSizeBytes = getMaxUploadFileSizeBytes();
   const inputRef = useRef<HTMLInputElement>(null);

@@ -1,0 +1,138 @@
+'use client';
+
+import Link from 'next/link';
+import { ColumnDef } from '@tanstack/react-table';
+import { Checkbox } from '@/app/components/ui/checkbox';
+import { DataTableColumnHeader } from '@/app/components/ui/data-table';
+import { Button } from '@/app/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
+import { Check, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { CarSticker } from '@/domain/car-sticker.model';
+
+interface ColumnOptions {
+  onSort?: (columnId: string, desc: boolean) => void;
+  onDelete?: (sticker: CarSticker) => void;
+  t: (key: string) => string;
+}
+
+function formatDate(value: Date | string | null): string {
+  if (value == null) return '—';
+  return new Date(value).toLocaleDateString();
+}
+
+export const createColumns = (options: ColumnOptions): ColumnDef<CarSticker>[] => {
+  const { t } = options;
+  return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.name')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const item = row.original;
+        if (!item.id) {
+          return <span className="font-medium">{row.getValue('name')}</span>;
+        }
+        return (
+          <Link href={`/app/admin/car-stickers/${item.id}`} className="font-medium hover:underline">
+            {row.getValue('name')}
+          </Link>
+        );
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'isActive',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isActive')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const isActive = row.getValue('isActive') as boolean;
+        return isActive ? <Check className="text-primary size-4" aria-label={t('active')} /> : <span className="text-muted-foreground">—</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'isAlwaysIncluded',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isAlwaysIncluded')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const isAlwaysIncluded = row.getValue('isAlwaysIncluded') as boolean;
+        return isAlwaysIncluded ? (
+          <Check className="text-primary size-4" aria-label={t('alwaysIncluded')} />
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        );
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'image',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.image')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const image = row.original.image;
+        return <span className="text-muted-foreground text-sm">{image?.name ?? '—'}</span>;
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'updatedAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
+      enableHiding: true,
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const sticker = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-xs">
+                <span className="sr-only">{t('actions.openMenu')}</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              {sticker.id && (
+                <DropdownMenuItem asChild>
+                  <Link href={`/app/admin/car-stickers/${sticker.id}`}>
+                    <Pencil />
+                    {t('actions.edit')}
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem variant="destructive" onClick={() => options.onDelete?.(sticker)}>
+                <Trash2 />
+                {t('actions.delete')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+};

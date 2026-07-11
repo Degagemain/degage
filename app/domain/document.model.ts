@@ -6,6 +6,7 @@ export enum DocumentType {
   REGISTRATION_CERTIFICATE = 'registrationCertificate',
   INSPECTION_CERTIFICATE = 'inspectionCertificate',
   PINK_FORM = 'pinkForm',
+  CAR_STICKER = 'carSticker',
   OTHER = 'other',
 }
 
@@ -36,6 +37,10 @@ export const documentSchema = z
   .strict();
 
 export type Document = z.infer<typeof documentSchema>;
+
+export const assertCarStickerImageUpload = (contentType: string, sizeBytes: number): void => {
+  assertRegistrationCertificateUpload(contentType, sizeBytes);
+};
 
 export const assertRegistrationCertificateUpload = (contentType: string, sizeBytes: number): void => {
   if (!(REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES as readonly string[]).includes(contentType)) {

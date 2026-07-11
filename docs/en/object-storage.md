@@ -66,9 +66,10 @@ The service account needs bucket access (for example `roles/storage.objectAdmin`
 Examples:
 
 - `registrationCertificate/550e8400-e29b-41d4-a716-446655440000/front.jpg`
+- `carSticker/550e8400-e29b-41d4-a716-446655440002/sticker.png`
 - `other/550e8400-e29b-41d4-a716-446655440001/invoice.pdf`
 
-`documentType` matches the `DocumentType` enum (`registrationCertificate`, `other`).
+`documentType` matches the `DocumentType` enum (`registrationCertificate`, `carSticker`, `other`).
 
 ## Signed view URLs
 
@@ -87,3 +88,14 @@ MB, aligned with Vercel request limits).
 
 First upload creates a `Document` row, uploads to GCS, and links the FK on the car onboarding. Re-upload updates the same document in place
 (stable id, FK unchanged).
+
+## Car sticker images
+
+Upload via admin multipart endpoint:
+
+- `PUT /api/car-stickers/{id}/image`
+
+Request body: `multipart/form-data` with a `file` field (JPEG or PNG). View URL: `GET /api/car-stickers/{id}/image/view-url` (any authenticated
+user).
+
+Deleting a car sticker removes the linked document from GCS and the database.
