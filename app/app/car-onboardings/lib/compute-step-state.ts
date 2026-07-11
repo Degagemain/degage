@@ -4,18 +4,20 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isRoadAssistancePlanSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import type { StepId, StepState } from './types';
 
 export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
-  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'car-value'];
+  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'road-assistance-plan', 'car-value'];
 };
 
 const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
@@ -25,7 +27,7 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
-  if (stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer' || stepId === 'car-value') {
+  if (stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer' || stepId === 'road-assistance-plan' || stepId === 'car-value') {
     return hasInfoSessionPrerequisites(onboarding);
   }
   return false;
@@ -43,6 +45,8 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
       return isCarInfoSectionComplete(onboarding);
     case 'insurer':
       return isInsurerSectionComplete(onboarding);
+    case 'road-assistance-plan':
+      return isRoadAssistancePlanSectionComplete(onboarding);
     case 'car-value':
       return onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
     default:
@@ -87,6 +91,10 @@ export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boole
   }
 
   if (stepId === 'insurer' && onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
+    return true;
+  }
+
+  if (stepId === 'road-assistance-plan' && onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO) {
     return true;
   }
 

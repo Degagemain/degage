@@ -1605,6 +1605,10 @@
         "hasInsuranceContract": "Has insurance contract",
         "insurerContractStartedAt": "Insurer contract started",
         "insurerStatus": "Insurer status",
+        "hasExistingRoadAssistancePlan": "Has existing road assistance plan",
+        "existingRoadAssistancePlanEndDate": "Existing road assistance plan end date",
+        "roadAssistancePlan": "Road assistance plan",
+        "roadAssistancePlanStatus": "Road assistance plan status",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
         "created": "Created",
@@ -1617,6 +1621,7 @@
         "userInfo": "User info",
         "carInfo": "Car info",
         "insurer": "Insurer",
+        "roadAssistancePlan": "Road assistance plan",
         "carValue": "Car value",
         "finalize": "Finalize"
       },
@@ -1645,6 +1650,10 @@
         },
         "insurer": {
           "notApplicable": "Not applicable",
+          "todo": "To do",
+          "ready": "Complete"
+        },
+        "roadAssistancePlan": {
           "todo": "To do",
           "ready": "Complete"
         },
@@ -1677,8 +1686,10 @@
           "carType": "Search car types…",
           "carTypeFirst": "Select brand and fuel type first",
           "insurer": "Search insurers…",
+          "roadAssistancePlan": "Search road assistance plans…",
           "owner": "Search users…"
         },
+        "includedRoadAssistancePlan": "Purchased car has an included road assistance plan",
         "openSimulation": "Open simulation",
         "openPublicPage": "Open public page",
         "overruleAgreement": "Overrule agreement",
@@ -2811,6 +2822,16 @@
         "hasInsuranceContractLabel": "I already have an insurance contract for this car",
         "hasInsuranceContractHint": "Turn this off if Dégage will arrange insurance for you. You can add insurer details later.",
         "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
+      },
+      "roadAssistancePlan": {
+        "title": "Road assistance plan",
+        "subtitle": "Your roadside assistance coverage",
+        "info": "Tell us whether your car already has road assistance and choose the plan you want with Dégage.",
+        "existingPanelTitle": "Existing road assistance",
+        "desiredPanelTitle": "Desired road assistance plan",
+        "includedPlanLabel": "Included plan",
+        "includedPlanCheckbox": "The purchased car has an included road assistance plan",
+        "hasExistingLabel": "I already have a road assistance plan for this car"
       },
       "carValue": {
         "title": "Car value",

@@ -4,7 +4,9 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
   applyInsurerStatus,
+  applyRoadAssistancePlanStatus,
   areCarInfoDocumentsComplete,
   carOnboardingCarInfoInputSchema,
   carOnboardingCarInfoSchema,
@@ -26,6 +28,7 @@ import {
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isRoadAssistancePlanSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { carOnboarding } from '../builders/car-onboarding.builder';
@@ -74,6 +77,10 @@ describe('carOnboardingSchema', () => {
     expect(result.insurer).toBeNull();
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
     expect(result.insurerContractStartedAt).toBeNull();
+    expect(result.hasExistingRoadAssistancePlan).toBe(false);
+    expect(result.existingRoadAssistancePlanEndDate).toBeNull();
+    expect(result.roadAssistancePlan).toBeNull();
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
     expect(result.infoSessionDate).toBeNull();
     expect(result.infoSessionPcId).toBeNull();
     expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
@@ -590,6 +597,63 @@ describe('applyInsurerStatus', () => {
       ).insurerStatus,
     ).toBe(CarOnboardingInsurerStatus.TODO);
     expect(applyInsurerStatus(carOnboarding({ hasInsuranceContract: true })).insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+  });
+});
+
+describe('applyRoadAssistancePlanStatus', () => {
+  it('clears end date when hasExistingRoadAssistancePlan is false', () => {
+    const result = applyRoadAssistancePlanStatus(
+      carOnboarding({
+        hasExistingRoadAssistancePlan: false,
+        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+      }),
+    );
+    expect(result.existingRoadAssistancePlanEndDate).toBeNull();
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
+  });
+
+  it('sets ready when desired plan is set and existing details are complete', () => {
+    const result = applyRoadAssistancePlanStatus(
+      carOnboarding({
+        hasExistingRoadAssistancePlan: true,
+        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+      }),
+    );
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
+  });
+
+  it('sets todo when desired plan or existing end date is missing', () => {
+    expect(
+      applyRoadAssistancePlanStatus(
+        carOnboarding({
+          hasExistingRoadAssistancePlan: true,
+          existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        }),
+      ).roadAssistancePlanStatus,
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+
+    expect(
+      applyRoadAssistancePlanStatus(
+        carOnboarding({
+          hasExistingRoadAssistancePlan: true,
+          roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+        }),
+      ).roadAssistancePlanStatus,
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+  });
+});
+
+describe('isRoadAssistancePlanSectionComplete', () => {
+  it('returns false when status is todo', () => {
+    expect(isRoadAssistancePlanSectionComplete(carOnboarding())).toBe(false);
+  });
+
+  it('returns true when status is ready', () => {
+    expect(isRoadAssistancePlanSectionComplete(carOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY }))).toBe(
+      true,
+    );
   });
 });
 

@@ -15,7 +15,7 @@ Pendant la préparation, le système recueille les coordonnées et les caractér
 indique si les informations requises sont complètes et si de nouvelles modifications sont autorisées.
 
 Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et détail avec onglets : propriétaire, infos utilisateur, infos
-véhicule, assurance, valeur, finaliser).
+véhicule, assurance, assistance routière, valeur, finaliser).
 
 ### Propriétaire
 
@@ -87,6 +87,28 @@ d'assurance ne sont pas requis dans la même soumission que le drapeau.
 
 Cette étape est complète lorsque le statut d'assurance n'est pas **Todo**.
 
+### Assistance routière
+
+Indique si le véhicule a déjà une assistance routière et quel plan le propriétaire souhaite avec Dégage.
+
+| Propriété                                 | Description                                                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| A un plan d'assistance existant           | Indique si le véhicule a déjà une assistance routière (pour un véhicule neuf acheté, cela peut être inclus). |
+| Date de fin du plan d'assistance existant | Date de fin du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                |
+| Plan d'assistance routière                | Plan d'assistance souhaité issu du catalogue.                                                                |
+
+| Statut | Signification                                                                  |
+| ------ | ------------------------------------------------------------------------------ |
+| Todo   | Champs requis manquants (plan souhaité et/ou date de fin du plan existant).    |
+| Prêt   | Plan souhaité sélectionné et détails du plan existant complets le cas échéant. |
+
+Le système définit le statut automatiquement à l'enregistrement. Lorsque **A un plan d'assistance existant** est désactivé, la date de fin est
+effacée.
+
+Le propriétaire peut mettre à jour les détails via une mise à jour partielle tant que le statut est **Todo**.
+
+Cette étape est complète lorsque le statut d'assistance routière n'est pas **Todo**.
+
 ### Valeur
 
 Négocie la valeur actuelle estimée du véhicule entre l'admin et le propriétaire.
@@ -110,9 +132,9 @@ Cette étape est complète lorsque le statut de valeur est **Resolved**.
 
 ### Finaliser
 
-Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance et valeur sont toutes complètes, le système définit le
-statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer l'intégration véhicule sur l'onglet
-**Finaliser**.
+Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière et valeur sont toutes complètes, le
+système définit le statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer l'intégration véhicule
+sur l'onglet **Finaliser**.
 
 | Statut     | Signification                                                                                                                                                                                       |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

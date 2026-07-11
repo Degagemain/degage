@@ -1605,6 +1605,10 @@
         "hasInsuranceContract": "Heeft verzekeringscontract",
         "insurerContractStartedAt": "Verzekeringscontract gestart",
         "insurerStatus": "Verzekeringsstatus",
+        "hasExistingRoadAssistancePlan": "Heeft bestaand pechverhelpingsplan",
+        "existingRoadAssistancePlanEndDate": "Einddatum bestaand pechverhelpingsplan",
+        "roadAssistancePlan": "Pechverhelpingsplan",
+        "roadAssistancePlanStatus": "Status pechverhelpingsplan",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
         "created": "Aangemaakt",
@@ -1617,6 +1621,7 @@
         "userInfo": "Eigenaarsinfo",
         "carInfo": "Wageninfo",
         "insurer": "Verzekering",
+        "roadAssistancePlan": "Pechverhelping",
         "carValue": "Waarde",
         "finalize": "Afronden"
       },
@@ -1645,6 +1650,10 @@
         },
         "insurer": {
           "notApplicable": "Niet van toepassing",
+          "todo": "Todo",
+          "ready": "Compleet"
+        },
+        "roadAssistancePlan": {
           "todo": "Todo",
           "ready": "Compleet"
         },
@@ -1677,8 +1686,10 @@
           "carType": "Zoek voertuigtypes…",
           "carTypeFirst": "Selecteer eerst merk en brandstoftype",
           "insurer": "Zoek verzekeraars…",
+          "roadAssistancePlan": "Zoek pechverhelpingsplannen…",
           "owner": "Zoek gebruikers…"
         },
+        "includedRoadAssistancePlan": "Aangekochte wagen heeft een inbegrepen pechverhelpingsplan",
         "openSimulation": "Open simulatie",
         "openPublicPage": "Publieke pagina openen",
         "overruleAgreement": "Overschrijven",
@@ -2820,6 +2831,16 @@
         "hasInsuranceContractLabel": "Ik heb al een verzekeringscontract voor deze wagen",
         "hasInsuranceContractHint": "Schakel dit uit als Dégage de verzekering voor je regelt. Je kunt de verzekeringsgegevens later invullen.",
         "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
+      },
+      "roadAssistancePlan": {
+        "title": "Pechverhelpingsplan",
+        "subtitle": "Je pechverhelping",
+        "info": "Geef aan of je wagen al pechverhelping heeft en kies het plan dat je met Dégage wilt.",
+        "existingPanelTitle": "Bestaande pechverhelping",
+        "desiredPanelTitle": "Gewenst pechverhelpingsplan",
+        "includedPlanLabel": "Inbegrepen plan",
+        "includedPlanCheckbox": "De aangekochte wagen heeft een inbegrepen pechverhelpingsplan",
+        "hasExistingLabel": "Ik heb al een pechverhelpingsplan voor deze wagen"
       },
       "carValue": {
         "title": "Waarde",

@@ -28,6 +28,11 @@ export enum CarOnboardingInsurerStatus {
   READY = 'ready',
 }
 
+export enum CarOnboardingRoadAssistancePlanStatus {
+  TODO = 'todo',
+  READY = 'ready',
+}
+
 export enum CarOnboardingInfoSessionStatus {
   TODO = 'todo',
   ENROLLED = 'enrolled',
@@ -68,6 +73,15 @@ export const carOnboardingInsurerSchema = z
   })
   .strict();
 
+export const carOnboardingRoadAssistancePlanSchema = z
+  .object({
+    hasExistingRoadAssistancePlan: z.boolean().default(false),
+    existingRoadAssistancePlanEndDate: z.coerce.date().nullable().default(null),
+    roadAssistancePlan: idNameSchema.nullable().default(null),
+    roadAssistancePlanStatus: z.enum(CarOnboardingRoadAssistancePlanStatus).default(CarOnboardingRoadAssistancePlanStatus.TODO),
+  })
+  .strict();
+
 export const carOnboardingInfoSessionSchema = z
   .object({
     infoSessionDate: z.coerce.date().nullable().default(null),
@@ -80,12 +94,14 @@ export type CarOnboardingCarInfo = z.infer<typeof carOnboardingCarInfoSchema>;
 export type CarOnboardingUserInfo = z.infer<typeof carOnboardingUserInfoSchema>;
 export type CarOnboardingCarValue = z.infer<typeof carOnboardingCarValueSchema>;
 export type CarOnboardingInsurer = z.infer<typeof carOnboardingInsurerSchema>;
+export type CarOnboardingRoadAssistancePlan = z.infer<typeof carOnboardingRoadAssistancePlanSchema>;
 export type CarOnboardingInfoSession = z.infer<typeof carOnboardingInfoSessionSchema>;
 
 export const carOnboardingSchema = carOnboardingCarInfoSchema
   .merge(carOnboardingUserInfoSchema)
   .merge(carOnboardingCarValueSchema)
   .merge(carOnboardingInsurerSchema)
+  .merge(carOnboardingRoadAssistancePlanSchema)
   .merge(carOnboardingInfoSessionSchema)
   .extend({
     id: z.uuid().nullable(),
@@ -160,6 +176,16 @@ export const carOnboardingInsurerInputSchema = z
 
 export type CarOnboardingInsurerInput = z.infer<typeof carOnboardingInsurerInputSchema>;
 
+export const carOnboardingRoadAssistancePlanInputSchema = z
+  .object({
+    hasExistingRoadAssistancePlan: z.boolean(),
+    existingRoadAssistancePlanEndDate: z.coerce.date().nullable().optional(),
+    roadAssistancePlan: idNameSchema.nullable().optional(),
+  })
+  .strict();
+
+export type CarOnboardingRoadAssistancePlanInput = z.infer<typeof carOnboardingRoadAssistancePlanInputSchema>;
+
 export const carOnboardingInfoSessionEnrollInputSchema = carOnboardingInfoSessionSchema
   .pick({ infoSessionDate: true, infoSessionPcId: true })
   .extend({
@@ -213,6 +239,10 @@ export const carOnboardingFromSimulation = (
     insurer: null,
     insurerContractStartedAt: null,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
+    hasExistingRoadAssistancePlan: false,
+    existingRoadAssistancePlanEndDate: null,
+    roadAssistancePlan: null,
+    roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
     depreciationCostKm: simulation.resultDepreciationCostKm ?? 0,
     isNewCar: simulation.isNewCar,
     mileage: simulation.mileage,
@@ -333,5 +363,33 @@ export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => 
   return {
     ...onboarding,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
+  };
+};
+
+export const isRoadAssistancePlanSectionComplete = (onboarding: Pick<CarOnboarding, 'roadAssistancePlanStatus'>): boolean => {
+  return onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO;
+};
+
+export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnboarding => {
+  if (!onboarding.hasExistingRoadAssistancePlan) {
+    onboarding = {
+      ...onboarding,
+      existingRoadAssistancePlanEndDate: null,
+    };
+  }
+
+  const hasRequiredExistingFields = !onboarding.hasExistingRoadAssistancePlan || onboarding.existingRoadAssistancePlanEndDate != null;
+  const hasDesiredPlan = onboarding.roadAssistancePlan != null;
+
+  if (hasRequiredExistingFields && hasDesiredPlan) {
+    return {
+      ...onboarding,
+      roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,
+    };
+  }
+
+  return {
+    ...onboarding,
+    roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
   };
 };

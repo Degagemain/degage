@@ -4,17 +4,20 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isRoadAssistancePlanSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
+import { CarOnboardingInvalidRoadAssistancePlanStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-road-assistance-plan-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { CarOnboardingPreparationNotReadyError } from '@/actions/car-onboarding/car-onboarding-preparation-not-ready.error';
 import { isAdmin } from '@/domain/role.utils';
@@ -31,7 +34,8 @@ export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
     isCarInfoSectionComplete(onboarding) &&
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
-    isInsurerSectionComplete(onboarding)
+    isInsurerSectionComplete(onboarding) &&
+    isRoadAssistancePlanSectionComplete(onboarding)
   );
 };
 
@@ -62,6 +66,12 @@ export const assertCarValueStatusIsProposal = (onboarding: CarOnboarding): void 
 export const assertInsurerStatusIsTodo = (onboarding: CarOnboarding): void => {
   if (onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
     throw new CarOnboardingInvalidInsurerStatusError();
+  }
+};
+
+export const assertRoadAssistancePlanStatusIsTodo = (onboarding: CarOnboarding): void => {
+  if (onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO) {
+    throw new CarOnboardingInvalidRoadAssistancePlanStatusError();
   }
 };
 

@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
 
 export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding => {
@@ -26,6 +27,10 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     insurer: data.insurer !== undefined ? data.insurer : null,
     insurerStatus: data.insurerStatus ?? CarOnboardingInsurerStatus.TODO,
     insurerContractStartedAt: data.insurerContractStartedAt !== undefined ? data.insurerContractStartedAt : null,
+    hasExistingRoadAssistancePlan: data.hasExistingRoadAssistancePlan ?? false,
+    existingRoadAssistancePlanEndDate: data.existingRoadAssistancePlanEndDate !== undefined ? data.existingRoadAssistancePlanEndDate : null,
+    roadAssistancePlan: data.roadAssistancePlan !== undefined ? data.roadAssistancePlan : null,
+    roadAssistancePlanStatus: data.roadAssistancePlanStatus ?? CarOnboardingRoadAssistancePlanStatus.TODO,
     infoSessionDate: data.infoSessionDate !== undefined ? data.infoSessionDate : null,
     infoSessionPcId: data.infoSessionPcId !== undefined ? data.infoSessionPcId : null,
     infoSessionStatus: data.infoSessionStatus ?? CarOnboardingInfoSessionStatus.TODO,
@@ -65,6 +70,9 @@ export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnb
     hasInsuranceContract: true,
     insurerStatus: CarOnboardingInsurerStatus.READY,
     insurerContractStartedAt: new Date('2020-01-15'),
+    roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011', name: 'Basic' },
+    hasExistingRoadAssistancePlan: false,
+    roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,
     infoSessionDate: new Date('2026-06-20T09:25:00'),
     infoSessionPcId: '1359',
     infoSessionStatus: CarOnboardingInfoSessionStatus.DONE,

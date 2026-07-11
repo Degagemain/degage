@@ -13,10 +13,12 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
   isCarInfoSectionComplete,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isRoadAssistancePlanSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
@@ -34,7 +36,16 @@ import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onbo
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
 
-export const CAR_ONBOARDING_TAB_IDS = ['owner', 'infoSession', 'userInfo', 'carInfo', 'insurer', 'carValue', 'finalize'] as const;
+export const CAR_ONBOARDING_TAB_IDS = [
+  'owner',
+  'infoSession',
+  'userInfo',
+  'carInfo',
+  'insurer',
+  'roadAssistancePlan',
+  'carValue',
+  'finalize',
+] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
 
 export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId => {
@@ -92,6 +103,10 @@ interface FormValues {
   insurerName: string;
   insurerContractStartedAt: string;
   hasInsuranceContract: boolean;
+  hasExistingRoadAssistancePlan: boolean;
+  existingRoadAssistancePlanEndDate: string;
+  roadAssistancePlanId: string;
+  roadAssistancePlanName: string;
   ownerId: string;
   ownerName: string;
 }
@@ -134,6 +149,10 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     insurerName: row.insurer?.name ?? '',
     insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
     hasInsuranceContract: row.hasInsuranceContract,
+    hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
+    existingRoadAssistancePlanEndDate: formatDateInput(row.existingRoadAssistancePlanEndDate),
+    roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
+    roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
   };
@@ -169,6 +188,10 @@ const createSchema = (tCommon: (key: string) => string) =>
     insurerName: z.string(),
     insurerContractStartedAt: z.string(),
     hasInsuranceContract: z.boolean(),
+    hasExistingRoadAssistancePlan: z.boolean(),
+    existingRoadAssistancePlanEndDate: z.string(),
+    roadAssistancePlanId: z.string(),
+    roadAssistancePlanName: z.string(),
     ownerId: z.string(),
     ownerName: z.string(),
   });
@@ -267,6 +290,14 @@ export function CarOnboardingForm({
         ? CarOnboardingInsurerStatus.READY
         : CarOnboardingInsurerStatus.TODO,
   });
+  const roadAssistancePlanComplete = isRoadAssistancePlanSectionComplete({
+    roadAssistancePlanStatus:
+      watchedValues.roadAssistancePlanId === NONE
+        ? CarOnboardingRoadAssistancePlanStatus.TODO
+        : watchedValues.hasExistingRoadAssistancePlan && watchedValues.existingRoadAssistancePlanEndDate.trim() === ''
+          ? CarOnboardingRoadAssistancePlanStatus.TODO
+          : CarOnboardingRoadAssistancePlanStatus.READY,
+  });
   const carValueComplete = initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
@@ -320,6 +351,18 @@ export function CarOnboardingForm({
       ? CarOnboardingInsurerStatus.READY
       : CarOnboardingInsurerStatus.TODO;
 
+  const roadAssistancePlanFlowSteps = useMemo(
+    (): SubprocessFlowStep[] => [
+      { id: CarOnboardingRoadAssistancePlanStatus.TODO, label: t('subprocess.roadAssistancePlan.todo') },
+      { id: CarOnboardingRoadAssistancePlanStatus.READY, label: t('subprocess.roadAssistancePlan.ready') },
+    ],
+    [t],
+  );
+
+  const roadAssistancePlanFlowCurrent = roadAssistancePlanComplete
+    ? CarOnboardingRoadAssistancePlanStatus.READY
+    : CarOnboardingRoadAssistancePlanStatus.TODO;
+
   const carValueFlowSteps = useMemo(
     (): SubprocessFlowStep[] => [
       { id: CarOnboardingCarValueStatus.TODO, label: t('subprocess.carValue.todo') },
@@ -366,6 +409,12 @@ export function CarOnboardingForm({
       insurerContractStartedAt:
         !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
       hasInsuranceContract: values.hasInsuranceContract,
+      hasExistingRoadAssistancePlan: values.hasExistingRoadAssistancePlan,
+      existingRoadAssistancePlanEndDate:
+        !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
+          ? null
+          : new Date(values.existingRoadAssistancePlanEndDate),
+      roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
       owner: toIdName(values.ownerId, values.ownerName),
     };
     await onSubmit(payload);
@@ -450,6 +499,10 @@ export function CarOnboardingForm({
             <TabsTrigger value="insurer" className="gap-1.5">
               {t('tabs.insurer')}
               {insurerComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+            </TabsTrigger>
+            <TabsTrigger value="roadAssistancePlan" className="gap-1.5">
+              {t('tabs.roadAssistancePlan')}
+              {roadAssistancePlanComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
             </TabsTrigger>
             <TabsTrigger value="carValue" className="gap-1.5">
               {t('tabs.carValue')}
@@ -925,6 +978,71 @@ export function CarOnboardingForm({
                     />
                   </>
                 ) : null}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="roadAssistancePlan" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <FieldLegend className="mb-0">{t('tabs.roadAssistancePlan')}</FieldLegend>
+                <CarOnboardingSubprocessFlow steps={roadAssistancePlanFlowSteps} currentStepId={roadAssistancePlanFlowCurrent} />
+              </div>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="hasExistingRoadAssistancePlan"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-has-existing-road-assistance-plan"
+                      label={
+                        watchedValues.isPurchased && watchedValues.isNewCar
+                          ? t('form.includedRoadAssistancePlan')
+                          : t('columns.hasExistingRoadAssistancePlan')
+                      }
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                {watchedValues.hasExistingRoadAssistancePlan ? (
+                  <Controller
+                    name="existingRoadAssistancePlanEndDate"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <AdminDateFieldControl
+                        label={t('columns.existingRoadAssistancePlanEndDate')}
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  />
+                ) : null}
+                <Controller
+                  name="roadAssistancePlanId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminSearchableSelectField
+                      label={t('columns.roadAssistancePlan')}
+                      value={field.value}
+                      selectedLabel={field.value === NONE ? undefined : form.watch('roadAssistancePlanName') || undefined}
+                      onValueChange={(id, option) => {
+                        field.onChange(id);
+                        form.setValue('roadAssistancePlanName', id === NONE ? '' : option.name, { shouldValidate: true });
+                      }}
+                      apiPath="road-assistance-plans"
+                      queryParams={{ isActive: 'true' }}
+                      descriptionKey="description"
+                      appendOptions={[{ id: NONE, name: t('form.none') }]}
+                      placeholder={t('form.placeholders.roadAssistancePlan')}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
               </FieldGroup>
             </FieldSet>
           </TabsContent>

@@ -21,13 +21,14 @@ const withPlayConnector = (data: Parameters<typeof carOnboarding>[0] = {}) =>
   });
 
 describe('getStepsForRecord', () => {
-  it('always includes the insurer step', () => {
+  it('always includes the insurer and road assistance plan steps', () => {
     expect(getStepsForRecord(carOnboarding({ isPurchased: true }))).toEqual([
       'play-connector',
       'info-session',
       'user-info',
       'car-info',
       'insurer',
+      'road-assistance-plan',
       'car-value',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
@@ -36,6 +37,7 @@ describe('getStepsForRecord', () => {
       'user-info',
       'car-info',
       'insurer',
+      'road-assistance-plan',
       'car-value',
     ]);
   });

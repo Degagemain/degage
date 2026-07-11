@@ -13,8 +13,8 @@ Car onboarding is a multi-step process that collects vehicle and user details be
 During preparation, the system gathers contact information and car characteristics in separate steps. A preparation status tracks whether the
 required input is complete and whether further edits are allowed.
 
-Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, car value,
-finalize).
+Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, road assistance
+plan, car value, finalize).
 
 ### Owner
 
@@ -100,6 +100,27 @@ the has insurance contract flag.
 
 This step is complete when insurer status is not **Todo**.
 
+### Road assistance plan
+
+Records whether the car already has road assistance coverage and which plan the owner wants with Dégage.
+
+| Property                               | Description                                                                                                           |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Has existing road assistance plan      | Whether the car already has road assistance coverage (for new purchased cars, this may be included with the vehicle). |
+| Existing road assistance plan end date | End date of the current road assistance plan (when has existing road assistance plan is enabled).                     |
+| Road assistance plan                   | Desired road assistance plan from the catalog.                                                                        |
+
+| Status | Meaning                                                                          |
+| ------ | -------------------------------------------------------------------------------- |
+| Todo   | Required fields are missing (desired plan and/or existing plan end date).        |
+| Ready  | Desired plan is selected and existing plan details are complete when applicable. |
+
+The system sets road assistance plan status automatically on save. When **Has existing road assistance plan** is off, the end date is cleared.
+
+The owner can update road assistance plan details via a partial update while status is **Todo**.
+
+This step is complete when road assistance plan status is not **Todo**.
+
 ### Car value
 
 Negotiates the estimated current value of the vehicle between admin and owner.
@@ -122,8 +143,8 @@ This step is complete when car value status is **Resolved**.
 
 ### Finalize
 
-When play connector, info session, user info, car info, insurer, and car value are all complete, the system sets preparation status to **Ready**
-automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
+When play connector, info session, user info, car info, insurer, road assistance plan, and car value are all complete, the system sets
+preparation status to **Ready** automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
 
 | Status | Meaning                                                                                                                                                      |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
