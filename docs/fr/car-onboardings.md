@@ -64,24 +64,26 @@ document lorsque le véhicule a été acheté et est neuf.
 
 ### Assurance
 
-Indique si le véhicule a déjà une assurance et, le cas échéant, enregistre la compagnie d'assurance actuelle et la date de début du contrat.
+Indique si le véhicule a déjà un contrat d'assurance et, le cas échéant, enregistre la compagnie d'assurance actuelle et la date de début du
+contrat.
 
-| Propriété        | Description                                                                       |
-| ---------------- | --------------------------------------------------------------------------------- |
-| A une assurance  | Indique si le propriétaire a déjà une assurance pour ce véhicule.                 |
-| Assureur         | Compagnie d'assurance actuelle (affichée lorsque a une assurance est activé).     |
-| Début du contrat | Date de début du contrat d'assurance actuel (lorsque a une assurance est activé). |
+| Propriété                | Description                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| A un contrat d'assurance | Indique si le propriétaire a déjà un contrat d'assurance pour ce véhicule.                 |
+| Assureur                 | Compagnie d'assurance actuelle (affichée lorsque a un contrat d'assurance est activé).     |
+| Début du contrat         | Date de début du contrat d'assurance actuel (lorsque a un contrat d'assurance est activé). |
 
-| Statut         | Signification                                                                                      |
-| -------------- | -------------------------------------------------------------------------------------------------- |
-| Non applicable | Le véhicule n'a pas d'assurance existante à enregistrer ; les champs assurance ne sont pas requis. |
-| Todo           | A une assurance est activé mais le propriétaire doit encore renseigner l'assureur et la date.      |
-| Prêt           | A une assurance est activé et les détails d'assurance sont renseignés.                             |
+| Statut         | Signification                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| Non applicable | Le véhicule n'a pas de contrat d'assurance existant à enregistrer ; les champs assurance ne sont pas requis. |
+| Todo           | A un contrat d'assurance est activé ; les détails d'assurance peuvent être renseignés plus tard.             |
+| Prêt           | A un contrat d'assurance est activé et les détails d'assurance sont renseignés.                              |
 
-Le système définit le statut d'assurance automatiquement à l'enregistrement. Lorsque **A une assurance** est désactivé, le statut devient **Non
-applicable** et les champs assurance sont effacés.
+Le système définit le statut d'assurance automatiquement à l'enregistrement. Lorsque **A un contrat d'assurance** est désactivé, le statut
+devient **Non applicable** et les champs assurance sont effacés.
 
-Le propriétaire peut soumettre les détails d'assurance via une mise à jour partielle tant que le statut est **Todo**.
+Le propriétaire peut mettre à jour les détails d'assurance via une mise à jour partielle tant que le statut est **Todo**. Les détails
+d'assurance ne sont pas requis dans la même soumission que le drapeau.
 
 Cette étape est complète lorsque le statut d'assurance n'est pas **Todo**.
 

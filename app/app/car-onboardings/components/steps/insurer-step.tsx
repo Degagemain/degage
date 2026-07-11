@@ -41,29 +41,28 @@ export function InsurerStep() {
   const tAdmin = useTranslations('admin.carOnboardings');
   const { carOnboarding, reload } = useCarOnboarding();
 
-  const [hasInsurance, setHasInsurance] = useState(carOnboarding.hasInsurance);
+  const [hasInsuranceContract, setHasInsuranceContract] = useState(carOnboarding.hasInsuranceContract);
   const [insurerId, setInsurerId] = useState(carOnboarding.insurer?.id ?? '');
   const [insurerName, setInsurerName] = useState(carOnboarding.insurer?.name ?? '');
   const [contractStartedAt, setContractStartedAt] = useState(formatDateInput(carOnboarding.insurerContractStartedAt));
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    setHasInsurance(carOnboarding.hasInsurance);
+    setHasInsuranceContract(carOnboarding.hasInsuranceContract);
     setInsurerId(carOnboarding.insurer?.id ?? '');
     setInsurerName(carOnboarding.insurer?.name ?? '');
     setContractStartedAt(formatDateInput(carOnboarding.insurerContractStartedAt));
   }, [carOnboarding]);
 
-  const showWarning = hasInsurance && contractStartedAt !== '' && isLessThanOneYearAgo(contractStartedAt);
-  const canSave = hasInsurance ? Boolean(insurerId && contractStartedAt) : true;
+  const showWarning = hasInsuranceContract && contractStartedAt !== '' && isLessThanOneYearAgo(contractStartedAt);
 
   const handleSave = async () => {
-    if (!carOnboarding.id || !canSave) return;
+    if (!carOnboarding.id) return;
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/insurer`, {
-        hasInsurance,
-        ...(hasInsurance
+        hasInsuranceContract,
+        ...(hasInsuranceContract && insurerId && contractStartedAt
           ? {
               insurer: { id: insurerId, name: insurerName },
               insurerContractStartedAt: contractStartedAt,
@@ -86,13 +85,13 @@ export function InsurerStep() {
   return (
     <StepLayout stepId="insurer">
       <PublicPanel title={t('steps.insurer.panelTitle')}>
-        <PublicField label={tAdmin('columns.hasInsurance')} hint={t('steps.insurer.hasInsuranceHint')}>
+        <PublicField label={tAdmin('columns.hasInsuranceContract')} hint={t('steps.insurer.hasInsuranceContractHint')}>
           <label className={styles.checkboxLabel}>
-            <PublicInput type="checkbox" checked={hasInsurance} onChange={(e) => setHasInsurance(e.target.checked)} />
-            <span>{t('steps.insurer.hasInsuranceLabel')}</span>
+            <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />
+            <span>{t('steps.insurer.hasInsuranceContractLabel')}</span>
           </label>
         </PublicField>
-        {hasInsurance ? (
+        {hasInsuranceContract ? (
           <>
             <PublicField label={tAdmin('columns.insurerContractStartedAt')}>
               <PublicInput type="date" value={contractStartedAt} onChange={(e) => setContractStartedAt(e.target.value)} />
@@ -116,7 +115,7 @@ export function InsurerStep() {
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
       ) : null}
 
-      <StepActions stepId="insurer" onSave={() => void handleSave()} saveDisabled={isSaving || !canSave} />
+      <StepActions stepId="insurer" onSave={() => void handleSave()} saveDisabled={isSaving} />
     </StepLayout>
   );
 }

@@ -61,7 +61,7 @@ export const carOnboardingCarValueSchema = z
 
 export const carOnboardingInsurerSchema = z
   .object({
-    hasInsurance: z.boolean().default(false),
+    hasInsuranceContract: z.boolean().default(false),
     insurer: idNameSchema.nullable().default(null),
     insurerStatus: z.enum(CarOnboardingInsurerStatus).default(CarOnboardingInsurerStatus.TODO),
     insurerContractStartedAt: z.coerce.date().nullable().default(null),
@@ -152,24 +152,11 @@ export type CarOnboardingCarValueResolveInput = z.infer<typeof carOnboardingCarV
 
 export const carOnboardingInsurerInputSchema = z
   .object({
-    hasInsurance: z.boolean(),
+    hasInsuranceContract: z.boolean(),
     insurer: idNameSchema.nullable().optional(),
     insurerContractStartedAt: z.coerce.date().nullable().optional(),
   })
-  .strict()
-  .superRefine((data, ctx) => {
-    if (!data.hasInsurance) return;
-    if (data.insurer == null) {
-      ctx.addIssue({ code: 'custom', message: 'Insurer is required when hasInsurance is true', path: ['insurer'] });
-    }
-    if (data.insurerContractStartedAt == null) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Insurer contract start date is required when hasInsurance is true',
-        path: ['insurerContractStartedAt'],
-      });
-    }
-  });
+  .strict();
 
 export type CarOnboardingInsurerInput = z.infer<typeof carOnboardingInsurerInputSchema>;
 
@@ -202,7 +189,7 @@ export const carOnboardingCreateInputSchema = z
 
 export type CarOnboardingCreateInput = z.infer<typeof carOnboardingCreateInputSchema>;
 
-export const hasInsuranceFromIsPurchased = (isPurchased: boolean): boolean => !isPurchased;
+export const hasInsuranceContractFromIsPurchased = (isPurchased: boolean): boolean => !isPurchased;
 
 export const carOnboardingFromSimulation = (
   simulation: Simulation,
@@ -222,7 +209,7 @@ export const carOnboardingFromSimulation = (
     carValueCounterProposal: 0,
     carValueCounterProposalMessage: null,
     carValueStatus: CarOnboardingCarValueStatus.TODO,
-    hasInsurance: hasInsuranceFromIsPurchased(simulation.isPurchased),
+    hasInsuranceContract: hasInsuranceContractFromIsPurchased(simulation.isPurchased),
     insurer: null,
     insurerContractStartedAt: null,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
@@ -327,7 +314,7 @@ export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insure
 };
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
-  if (!onboarding.hasInsurance) {
+  if (!onboarding.hasInsuranceContract) {
     return {
       ...onboarding,
       insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,

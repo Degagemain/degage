@@ -1463,7 +1463,7 @@
         "carValueCounterProposalMessage": "Tegenvoorstel bericht",
         "carValueStatus": "Waarde-status",
         "insurer": "Verzekeraar",
-        "hasInsurance": "Heeft verzekering",
+        "hasInsuranceContract": "Heeft verzekeringscontract",
         "insurerContractStartedAt": "Verzekeringscontract gestart",
         "insurerStatus": "Verzekeringsstatus",
         "simulation": "Simulatie",
@@ -2678,8 +2678,8 @@
         "subtitle": "Je huidige autoverzekering",
         "info": "Geef door bij welke verzekeraar je wagen vandaag verzekerd is en sinds wanneer.",
         "panelTitle": "Huidige verzekering",
-        "hasInsuranceLabel": "Ik heb al een verzekering voor deze wagen",
-        "hasInsuranceHint": "Schakel dit uit als Dégage de verzekering voor je regelt.",
+        "hasInsuranceContractLabel": "Ik heb al een verzekeringscontract voor deze wagen",
+        "hasInsuranceContractHint": "Schakel dit uit als Dégage de verzekering voor je regelt. Je kunt de verzekeringsgegevens later invullen.",
         "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
       },
       "carValue": {

@@ -33,7 +33,7 @@ describe('updateCarOnboardingInsurer', () => {
     vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
     const body = {
-      hasInsurance: true,
+      hasInsuranceContract: true,
       insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
       insurerContractStartedAt: '2020-01-15',
     };
@@ -43,25 +43,41 @@ describe('updateCarOnboardingInsurer', () => {
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         id: onboardingId,
-        hasInsurance: true,
+        hasInsuranceContract: true,
         insurer: body.insurer,
         insurerContractStartedAt: new Date(body.insurerContractStartedAt),
       }),
     );
   });
 
-  it('accepts hasInsurance false without insurer fields', async () => {
+  it('accepts hasInsuranceContract false without insurer fields', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
     );
     vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
-    await updateCarOnboardingInsurer(onboardingId, { hasInsurance: false }, owner);
+    await updateCarOnboardingInsurer(onboardingId, { hasInsuranceContract: false }, owner);
 
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         id: onboardingId,
-        hasInsurance: false,
+        hasInsuranceContract: false,
+      }),
+    );
+  });
+
+  it('accepts hasInsuranceContract true without insurer fields', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingInsurer(onboardingId, { hasInsuranceContract: true }, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: onboardingId,
+        hasInsuranceContract: true,
       }),
     );
   });
@@ -75,7 +91,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
-          hasInsurance: true,
+          hasInsuranceContract: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },
@@ -100,7 +116,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
-          hasInsurance: true,
+          hasInsuranceContract: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },
@@ -120,7 +136,7 @@ describe('updateCarOnboardingInsurer', () => {
       updateCarOnboardingInsurer(
         onboardingId,
         {
-          hasInsurance: true,
+          hasInsuranceContract: true,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
           insurerContractStartedAt: '2020-01-15',
         },

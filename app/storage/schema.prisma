@@ -140,7 +140,7 @@ model CarOnboarding {
   carValueCounterProposal        Decimal                          @default(0)
   carValueCounterProposalMessage String?
   carValueStatus                 CarOnboardingCarValueStatus      @default(todo)
-  hasInsurance                   Boolean                          @default(false)
+  hasInsuranceContract                   Boolean                          @default(false)
   insurerId                      String?
   insurer                        Insurer?                         @relation(fields: [insurerId], references: [id], onDelete: Restrict)
   insurerStatus                  CarOnboardingInsurerStatus       @default(todo)

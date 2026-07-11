@@ -95,7 +95,7 @@ describe('createCarOnboarding', () => {
       expect.objectContaining({
         isPurchased: true,
         isNewCar: true,
-        hasInsurance: false,
+        hasInsuranceContract: false,
         insurerStatus: 'notApplicable',
       }),
     );
@@ -111,7 +111,7 @@ describe('createCarOnboarding', () => {
       expect.objectContaining({
         isPurchased: false,
         isNewCar: false,
-        hasInsurance: true,
+        hasInsuranceContract: true,
       }),
     );
   });

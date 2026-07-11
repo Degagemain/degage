@@ -47,7 +47,7 @@ describe('PUT /api/car-onboardings/[id]/insurer', () => {
   const mockOtherUser = { id: 'other-user-id', name: 'Other', email: 'other@example.com', role: 'user', banned: false };
   const mockAdmin = { id: 'admin-id', name: 'Admin', email: 'admin@example.com', role: 'admin', banned: false };
   const body = {
-    hasInsurance: true,
+    hasInsuranceContract: true,
     insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
     insurerContractStartedAt: '2020-01-15',
   };

@@ -1463,7 +1463,7 @@
         "carValueCounterProposalMessage": "Counter message",
         "carValueStatus": "Car value status",
         "insurer": "Insurer",
-        "hasInsurance": "Has insurance",
+        "hasInsuranceContract": "Has insurance contract",
         "insurerContractStartedAt": "Insurer contract started",
         "insurerStatus": "Insurer status",
         "simulation": "Simulation",
@@ -2669,8 +2669,8 @@
         "subtitle": "Your current car insurance",
         "info": "Tell us which insurer covers your car today and when the contract started.",
         "panelTitle": "Current insurance",
-        "hasInsuranceLabel": "I already have insurance for this car",
-        "hasInsuranceHint": "Turn this off if Dégage will arrange insurance for you.",
+        "hasInsuranceContractLabel": "I already have an insurance contract for this car",
+        "hasInsuranceContractHint": "Turn this off if Dégage will arrange insurance for you. You can add insurer details later.",
         "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
       },
       "carValue": {
