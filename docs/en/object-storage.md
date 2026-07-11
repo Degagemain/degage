@@ -95,6 +95,7 @@ Upload via admin multipart endpoint:
 
 - `PUT /api/car-stickers/{id}/image`
 
-Request body: `multipart/form-data` with a `file` field (JPEG or PNG). View URL: `GET /api/car-stickers/{id}/image/view-url` (any authenticated user).
+Request body: `multipart/form-data` with a `file` field (JPEG or PNG). View URL: `GET /api/car-stickers/{id}/image/view-url` (any authenticated
+user).
 
 Deleting a car sticker removes the linked document from GCS and the database.
