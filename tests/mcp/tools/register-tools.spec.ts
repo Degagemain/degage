@@ -11,8 +11,10 @@ const {
   registerReadCarBrandTool,
   registerSearchCarTypesTool,
   registerSearchTownsTool,
+  registerCreateSimulationTool,
   registerCreateDocumentationGroupTool,
   registerUpdateDocumentationGroupTool,
+  registerCreateSimulationPrompt,
 } = vi.hoisted(() => ({
   registerSearchDocumentationTool: vi.fn(),
   registerUpdateDocumentationTool: vi.fn(),
@@ -22,8 +24,10 @@ const {
   registerReadCarBrandTool: vi.fn(),
   registerSearchCarTypesTool: vi.fn(),
   registerSearchTownsTool: vi.fn(),
+  registerCreateSimulationTool: vi.fn(),
   registerCreateDocumentationGroupTool: vi.fn(),
   registerUpdateDocumentationGroupTool: vi.fn(),
+  registerCreateSimulationPrompt: vi.fn(),
 }));
 
 vi.mock('@/mcp/tools/search-documentation', () => ({
@@ -56,6 +60,14 @@ vi.mock('@/mcp/tools/search-car-types', () => ({
 
 vi.mock('@/mcp/tools/search-towns', () => ({
   registerSearchTownsTool,
+}));
+
+vi.mock('@/mcp/tools/create-simulation', () => ({
+  registerCreateSimulationTool,
+}));
+
+vi.mock('@/mcp/prompts/create-simulation', () => ({
+  registerCreateSimulationPrompt,
 }));
 
 vi.mock('@/mcp/tools/create-documentation-group', () => ({
@@ -94,6 +106,8 @@ describe('registerMcpTools', () => {
     expect(registerReadCarBrandTool).not.toHaveBeenCalled();
     expect(registerSearchCarTypesTool).not.toHaveBeenCalled();
     expect(registerSearchTownsTool).not.toHaveBeenCalled();
+    expect(registerCreateSimulationTool).not.toHaveBeenCalled();
+    expect(registerCreateSimulationPrompt).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -109,6 +123,8 @@ describe('registerMcpTools', () => {
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -131,6 +147,8 @@ describe('registerMcpTools', () => {
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateDocumentationGroupTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationGroupTool).toHaveBeenCalledTimes(1);
@@ -146,6 +164,8 @@ describe('registerMcpTools', () => {
     expect(registerReadCarBrandTool).not.toHaveBeenCalled();
     expect(registerSearchCarTypesTool).not.toHaveBeenCalled();
     expect(registerSearchTownsTool).not.toHaveBeenCalled();
+    expect(registerCreateSimulationTool).not.toHaveBeenCalled();
+    expect(registerCreateSimulationPrompt).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -168,6 +188,8 @@ describe('registerMcpTools', () => {
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
+    expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
