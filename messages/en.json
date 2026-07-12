@@ -1616,6 +1616,7 @@
       },
       "tabs": {
         "preparationTitle": "Preparation",
+        "mobileNavToggle": "Preparation steps: {step}",
         "owner": "Owner",
         "infoSession": "Info session",
         "userInfo": "User info",

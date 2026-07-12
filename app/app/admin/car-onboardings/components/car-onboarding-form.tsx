@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
-import { Check, CheckCircle2, CircleDashed, Lock } from 'lucide-react';
+import { Check, CheckCircle2, ChevronDown, CircleDashed, Lock } from 'lucide-react';
 import * as z from 'zod';
 
 import {
@@ -24,6 +24,7 @@ import {
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
 import { Button } from '@/app/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-control';
 import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
@@ -209,6 +210,79 @@ function PreparationStatusIcon({ status }: { status: CarOnboardingInPreparationS
   }
 }
 
+type CarOnboardingStepTabCompletion = {
+  playConnector: boolean;
+  infoSession: boolean;
+  userInfo: boolean;
+  carInfo: boolean;
+  insurer: boolean;
+  roadAssistancePlan: boolean;
+  carValue: boolean;
+  preparationLocked: boolean;
+};
+
+function CarOnboardingPreparationTitle({
+  preparationStatus,
+  t,
+}: {
+  preparationStatus: CarOnboardingInPreparationStatus;
+  t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
+}) {
+  return (
+    <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">
+      <span>{t('tabs.preparationTitle')}</span>
+      <span className="inline-flex shrink-0" title={t(`preparationStatus.${preparationStatus}`)}>
+        <PreparationStatusIcon status={preparationStatus} />
+      </span>
+    </p>
+  );
+}
+
+function CarOnboardingStepTabsList({
+  completion,
+  t,
+}: {
+  completion: CarOnboardingStepTabCompletion;
+  t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
+}) {
+  return (
+    <TabsList variant="line" className="h-fit w-full">
+      <TabsTrigger value="owner" className="gap-1.5">
+        {t('tabs.owner')}
+        {completion.playConnector ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="infoSession" className="gap-1.5">
+        {t('tabs.infoSession')}
+        {completion.infoSession ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="userInfo" className="gap-1.5">
+        {t('tabs.userInfo')}
+        {completion.userInfo ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="carInfo" className="gap-1.5">
+        {t('tabs.carInfo')}
+        {completion.carInfo ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="insurer" className="gap-1.5">
+        {t('tabs.insurer')}
+        {completion.insurer ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="roadAssistancePlan" className="gap-1.5">
+        {t('tabs.roadAssistancePlan')}
+        {completion.roadAssistancePlan ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="carValue" className="gap-1.5">
+        {t('tabs.carValue')}
+        {completion.carValue ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="finalize" className="gap-1.5">
+        {t('tabs.finalize')}
+        {completion.preparationLocked ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+    </TabsList>
+  );
+}
+
 export function CarOnboardingForm({
   initialCarOnboarding,
   formId = CAR_ONBOARDING_FORM_ID,
@@ -235,6 +309,7 @@ export function CarOnboardingForm({
   const [isConfirmingInfoSession, setIsConfirmingInfoSession] = useState(false);
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const schema = useMemo(() => createSchema(tCommon), [tCommon]);
   const initialState = useMemo(() => getInitialState(initialCarOnboarding), [initialCarOnboarding]);
   const initialStateKey = useMemo(() => JSON.stringify(initialState), [initialState]);
@@ -301,6 +376,28 @@ export function CarOnboardingForm({
   const carValueComplete = initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
+  const stepTabCompletion = useMemo(
+    (): CarOnboardingStepTabCompletion => ({
+      playConnector: playConnectorComplete,
+      infoSession: infoSessionComplete,
+      userInfo: userInfoComplete,
+      carInfo: carInfoComplete,
+      insurer: insurerComplete,
+      roadAssistancePlan: roadAssistancePlanComplete,
+      carValue: carValueComplete,
+      preparationLocked,
+    }),
+    [
+      playConnectorComplete,
+      infoSessionComplete,
+      userInfoComplete,
+      carInfoComplete,
+      insurerComplete,
+      roadAssistancePlanComplete,
+      carValueComplete,
+      preparationLocked,
+    ],
+  );
 
   const userInfoFlowSteps = useMemo(
     (): SubprocessFlowStep[] => [
@@ -468,51 +565,40 @@ export function CarOnboardingForm({
     <form id={formId} onSubmit={handleSubmit} className="px-4 py-6 md:px-6 md:py-8">
       <Tabs
         value={activeTab}
-        onValueChange={(value) => onTabChange(parseCarOnboardingTab(value))}
+        onValueChange={(value) => {
+          onTabChange(parseCarOnboardingTab(value));
+          setMobileNavOpen(false);
+        }}
         orientation="vertical"
         className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8"
       >
         <div className="flex w-full shrink-0 flex-col gap-2 sm:w-48">
-          <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">
-            <span>{t('tabs.preparationTitle')}</span>
-            <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
-              <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
-            </span>
-          </p>
-          <TabsList variant="line" className="h-fit w-full">
-            <TabsTrigger value="owner" className="gap-1.5">
-              {t('tabs.owner')}
-              {playConnectorComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="infoSession" className="gap-1.5">
-              {t('tabs.infoSession')}
-              {infoSessionComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="userInfo" className="gap-1.5">
-              {t('tabs.userInfo')}
-              {userInfoComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="carInfo" className="gap-1.5">
-              {t('tabs.carInfo')}
-              {carInfoComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="insurer" className="gap-1.5">
-              {t('tabs.insurer')}
-              {insurerComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="roadAssistancePlan" className="gap-1.5">
-              {t('tabs.roadAssistancePlan')}
-              {roadAssistancePlanComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="carValue" className="gap-1.5">
-              {t('tabs.carValue')}
-              {carValueComplete ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-            <TabsTrigger value="finalize" className="gap-1.5">
-              {t('tabs.finalize')}
-              {preparationLocked ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
-            </TabsTrigger>
-          </TabsList>
+          <Collapsible open={mobileNavOpen} onOpenChange={setMobileNavOpen} className="group/mobile-nav sm:hidden">
+            <CollapsibleTrigger
+              className="border-border bg-muted/40 hover:bg-muted/60 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-left text-sm font-medium"
+              aria-label={t('tabs.mobileNavToggle', { step: t(`tabs.${activeTab}`) })}
+            >
+              <span className="flex min-w-0 items-center gap-1.5">
+                <span className="text-muted-foreground shrink-0">{t('tabs.preparationTitle')}</span>
+                <span className="text-muted-foreground shrink-0" aria-hidden>
+                  ·
+                </span>
+                <span className="truncate">{t(`tabs.${activeTab}`)}</span>
+                <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
+                  <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
+                </span>
+              </span>
+              <ChevronDown className="text-muted-foreground size-4 shrink-0 transition-transform group-data-[state=open]/mobile-nav:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="flex flex-col gap-2 pt-2">
+              <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+            </CollapsibleContent>
+          </Collapsible>
+
+          <div className="hidden flex-col gap-2 sm:flex">
+            <CarOnboardingPreparationTitle preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
+            <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+          </div>
         </div>
 
         <div className="min-w-0 flex-1">
