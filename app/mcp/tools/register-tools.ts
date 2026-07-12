@@ -8,6 +8,7 @@ import { registerSearchCarBrandsTool } from '@/mcp/tools/search-car-brands';
 import { registerSearchCarTypesTool } from '@/mcp/tools/search-car-types';
 import { registerSearchDocumentationGroupsTool } from '@/mcp/tools/search-documentation-groups';
 import { registerSearchFuelTypesTool } from '@/mcp/tools/search-fuel-types';
+import { registerSearchTownsTool } from '@/mcp/tools/search-towns';
 import { registerUpdateDocumentationGroupTool } from '@/mcp/tools/update-documentation-group';
 import { registerUpdateDocumentationTool } from '@/mcp/tools/update-documentation';
 import { registerSearchDocumentationTool } from '@/mcp/tools/search-documentation';
@@ -26,6 +27,7 @@ export const registerMcpTools = (server: McpServer): void => {
     registerSearchCarBrandsTool(server, getMcpAuthContext, userScope);
     registerReadCarBrandTool(server, getMcpAuthContext, userScope);
     registerSearchCarTypesTool(server, getMcpAuthContext, userScope);
+    registerSearchTownsTool(server, getMcpAuthContext, userScope);
   }
 
   if (canUseMcpTools(ctx, adminScope, true).ok) {

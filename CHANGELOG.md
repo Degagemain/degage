@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Added: MCP tool to list and search towns.
 - Added: MCP tool to search car types (requires car brand and fuel type).
 - Added: MCP tools to list and read car brands.
 - Added: MCP tool to list and search fuel types.
