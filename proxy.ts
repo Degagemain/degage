@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { type UILocale, defaultUILocale, uiLocales } from './app/i18n/locales';
 
+const skipLocaleCookie = (pathname: string): boolean =>
+  pathname.startsWith('/api') ||
+  pathname.startsWith('/mcp') ||
+  pathname.startsWith('/.well-known') ||
+  pathname.startsWith('/_next') ||
+  pathname.includes('.');
+
 export function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/api') || request.nextUrl.pathname.startsWith('/_next') || request.nextUrl.pathname.includes('.')) {
+  if (skipLocaleCookie(request.nextUrl.pathname)) {
     return NextResponse.next();
   }
 
