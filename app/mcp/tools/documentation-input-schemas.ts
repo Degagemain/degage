@@ -20,7 +20,7 @@ export const documentationUpdateBodySchema = documentationSchema.extend({
 });
 
 export const documentationUpdateMcpInputSchema = {
-  id: z.uuid().describe('Documentation UUID. Same as the {id} path segment in PUT /api/documentation/{id}.'),
+  id: z.uuid().describe('Documentation UUID.'),
   source: documentationSourceSchema.describe(`Origin of the article. One of: ${documentationSourceValues.join(', ')}.`),
   externalId: z.string().max(500).describe('Stable external identifier (e.g. notion page id or manual:slug).'),
   isFaq: z.boolean().describe('Whether the article appears in the FAQ catalog.'),
@@ -30,45 +30,39 @@ export const documentationUpdateMcpInputSchema = {
     .array(documentationAudienceRoleSchema)
     .describe(`Audience roles that may view this article. Values: ${documentationAudienceRoleValues.join(', ')}.`),
   tags: z.array(documentationTagSchema).describe(`Tags for filtering and workflows. Values: ${documentationTagValues.join(', ')}.`),
-  groups: z
-    .array(idNameSchema)
-    .describe('Documentation groups (id required; name optional). Same shape as the groups field on GET /api/documentation/{id}.'),
+  groups: z.array(idNameSchema).describe('Documentation groups to assign (id required; name optional).'),
   translations: z
     .array(documentationTranslationSchema)
     .min(1)
-    .describe('All locale translations for the article. Send the full set — this replaces the record like PUT, not a partial patch.'),
+    .describe('All locale translations for the article. Send the full set — partial updates are not supported.'),
 };
 
 export const documentationSearchMcpInputSchema = {
-  query: z.string().nullable().optional().describe('Free-text search in title and content (GET ?query=).'),
-  isFaq: z.boolean().nullable().optional().describe('Filter by FAQ flag (GET ?isFaq=true|false). Omit for no filter.'),
-  isPublic: z
-    .boolean()
-    .nullable()
-    .optional()
-    .describe('Filter by public visibility (GET ?isPublic=true|false). Non-admin callers are always limited to public docs.'),
+  query: z.string().nullable().optional().describe('Free-text search in title and content.'),
+  isFaq: z.boolean().nullable().optional().describe('Filter by FAQ flag. Omit for no filter.'),
+  isPublic: z.boolean().nullable().optional().describe('Filter by public visibility. Non-admin callers are always limited to public docs.'),
   sources: z
     .array(documentationSourceSchema)
     .optional()
-    .describe(`Filter by source (GET ?source=, repeatable). Values: ${documentationSourceValues.join(', ')}.`),
+    .describe(`Filter by source. Values: ${documentationSourceValues.join(', ')}.`),
   tags: z
     .array(documentationTagSchema)
     .optional()
-    .describe(`Filter by tag (GET ?tags=, repeatable). Values: ${documentationTagValues.join(', ')}.`),
+    .describe(`Filter by tag. Values: ${documentationTagValues.join(', ')}.`),
   formats: z
     .array(documentationFormatSchema)
     .optional()
-    .describe(`Filter by format (GET ?format=, repeatable). Values: ${documentationFormatValues.join(', ')}.`),
-  groupIds: z.array(z.uuid()).optional().describe('Filter by documentation group UUID (GET ?group= or ?groups=).'),
+    .describe(`Filter by format. Values: ${documentationFormatValues.join(', ')}.`),
+  groupIds: z.array(z.uuid()).optional().describe('Filter by documentation group UUID.'),
   audiences: z
     .array(documentationAudienceRoleSchema)
     .optional()
-    .describe(`Filter by audience role (GET ?audience=, repeatable). Values: ${documentationAudienceRoleValues.join(', ')}.`),
-  skip: z.number().int().min(0).optional().describe('Pagination offset (GET ?skip=, default 0).'),
-  take: z.number().int().min(0).max(MaxTake).optional().describe(`Page size (GET ?take=, default ${DefaultTake}, max ${MaxTake}).`),
+    .describe(`Filter by audience role. Values: ${documentationAudienceRoleValues.join(', ')}.`),
+  skip: z.number().int().min(0).optional().describe('Pagination offset (default 0).'),
+  take: z.number().int().min(0).max(MaxTake).optional().describe(`Page size (default ${DefaultTake}, max ${MaxTake}).`),
   sortBy: z
     .nativeEnum(DocumentationSortColumns)
     .optional()
-    .describe(`Sort column (GET ?sortBy=). Values: ${Object.values(DocumentationSortColumns).join(', ')}.`),
-  sortOrder: z.nativeEnum(SortOrder).optional().describe('Sort direction (GET ?sortOrder=): asc or desc.'),
+    .describe(`Sort column. Values: ${Object.values(DocumentationSortColumns).join(', ')}.`),
+  sortOrder: z.nativeEnum(SortOrder).optional().describe('Sort direction: asc or desc.'),
 };

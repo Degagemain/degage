@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Added: MCP tools to list, create, and update documentation groups.
+- Changed: MCP documentation tool descriptions no longer reference REST endpoints.
 - Integration of simple release notes.
 
 ## [0.0.1] - 2026-07-07

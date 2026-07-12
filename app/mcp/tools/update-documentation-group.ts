@@ -1,20 +1,23 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { updateDocumentation } from '@/actions/documentation/update';
-import { embedDocumentationById } from '@/actions/documentation/embed';
+import { updateDocumentationGroup } from '@/actions/documentation-group/update';
 import { withRequestContext } from '@/context/request-context';
 import { defaultUILocale, getContentLocale } from '@/i18n/locales';
 import { type McpAuthContext, canUseMcpTools, mcpToolGateErrorMessage } from '@/mcp/auth-context';
-import { documentationUpdateBodySchema, documentationUpdateMcpInputSchema } from '@/mcp/tools/documentation-input-schemas';
+import { documentationGroupUpdateBodySchema, documentationGroupUpdateMcpInputSchema } from '@/mcp/tools/documentation-group-input-schemas';
 
-export const registerUpdateDocumentationTool = (server: McpServer, getContext: () => McpAuthContext | null, requiredScope: string): void => {
+export const registerUpdateDocumentationGroupTool = (
+  server: McpServer,
+  getContext: () => McpAuthContext | null,
+  requiredScope: string,
+): void => {
   server.registerTool(
-    'update_documentation',
+    'update_documentation_group',
     {
       description:
-        'Replace a documentation article. Use search_documentation to load the current record, ' +
+        'Replace a documentation group. Use search_documentation_groups to load the current record, ' +
         'change the desired fields, then send the complete object including all translations. ' +
-        'This is a full replace, not a partial update. Regenerates search embeddings after save.',
-      inputSchema: documentationUpdateMcpInputSchema,
+        'This is a full replace, not a partial update.',
+      inputSchema: documentationGroupUpdateMcpInputSchema,
     },
     async (input) => {
       const ctx = getContext();
@@ -34,27 +37,21 @@ export const registerUpdateDocumentationTool = (server: McpServer, getContext: (
       }
 
       try {
-        const doc = documentationUpdateBodySchema.parse(input);
+        const group = documentationGroupUpdateBodySchema.parse(input);
         const updated = await withRequestContext(
           {
             locale: defaultUILocale,
             contentLocale: getContentLocale(defaultUILocale),
             userId: ctx.userId,
           },
-          async () => {
-            const saved = await updateDocumentation(doc);
-            if (saved.id) {
-              await embedDocumentationById(saved.id);
-            }
-            return saved;
-          },
+          () => updateDocumentationGroup(group),
         );
 
         return {
           content: [{ type: 'text' as const, text: JSON.stringify(updated, null, 2) }],
         };
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to update documentation';
+        const message = error instanceof Error ? error.message : 'Failed to update documentation group';
         return {
           content: [{ type: 'text' as const, text: message }],
           isError: true,
