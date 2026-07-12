@@ -2865,6 +2865,15 @@
         "agreeConfirmHint": "Je bent akkoord met de voorgestelde waarde. Sla op om te bevestigen.",
         "pendingAdmin": "Je tegenvoorstel van €{value} is ingediend. Wachten op reactie van de admin.",
         "resolved": "De waarde-afspraak is afgerond."
+      },
+      "carStickers": {
+        "title": "Autostickers",
+        "subtitle": "Kies je stickerontwerpen",
+        "panelTitle": "Stickerkeuze",
+        "helper": "Kies minstens één extra sticker. Altijd-inbegrepen stickers zijn automatisch geselecteerd en kunnen niet worden verwijderd.",
+        "loading": "Stickers laden…",
+        "loadError": "Stickers laden mislukt. Probeer opnieuw.",
+        "alwaysIncluded": "Altijd inbegrepen"
       }
     }
   },

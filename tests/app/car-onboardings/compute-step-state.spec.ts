@@ -31,6 +31,7 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
+      'car-stickers',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
       'play-connector',
@@ -40,6 +41,7 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
+      'car-stickers',
     ]);
   });
 });
@@ -170,6 +172,11 @@ describe('isStepComplete', () => {
     expect(isStepComplete('user-info', completeCarOnboarding())).toBe(true);
     expect(isStepComplete('user-info', carOnboarding())).toBe(false);
   });
+
+  it('returns true for completed car stickers when at least one extra sticker is saved', () => {
+    expect(isStepComplete('car-stickers', completeCarOnboarding())).toBe(true);
+    expect(isStepComplete('car-stickers', completeCarOnboarding({ carStickers: [] }))).toBe(false);
+  });
 });
 
 describe('arePrerequisitesMet', () => {
@@ -189,10 +196,11 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('user-info', completeCarOnboarding())).toBe(true);
   });
 
-  it('requires info session enrolled before car info, insurer, and car value', () => {
+  it('requires info session enrolled before car info, insurer, car value, and car stickers', () => {
     expect(arePrerequisitesMet('car-info', withPlayConnector())).toBe(false);
     expect(arePrerequisitesMet('insurer', withPlayConnector())).toBe(false);
     expect(arePrerequisitesMet('car-value', withPlayConnector())).toBe(false);
+    expect(arePrerequisitesMet('car-stickers', withPlayConnector())).toBe(false);
     const enrolled = withPlayConnector({
       infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
       infoSessionPcId: '1359',
@@ -201,5 +209,6 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('car-info', enrolled)).toBe(true);
     expect(arePrerequisitesMet('insurer', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-value', enrolled)).toBe(true);
+    expect(arePrerequisitesMet('car-stickers', enrolled)).toBe(true);
   });
 });

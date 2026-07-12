@@ -130,17 +130,28 @@ l'application.
 
 Cette étape est complète lorsque le statut de valeur est **Resolved**.
 
+### Stickers voiture
+
+Le propriétaire choisit des designs de stickers supplémentaires dans le catalogue pendant le flux d'intégration public. Les stickers toujours
+inclus sont affichés comme pré-sélectionnés et ne peuvent pas être retirés ; ils ne sont pas enregistrés sur l'enregistrement d'intégration.
+
+| Propriété        | Description                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| Stickers voiture | Designs de stickers supplémentaires sélectionnés et enregistrés par le propriétaire. |
+
+Cette étape est complète lorsqu'au moins un sticker supplémentaire est enregistré.
+
 ### Finaliser
 
-Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière et valeur sont toutes complètes, le
-système définit le statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer l'intégration véhicule
-sur l'onglet **Finaliser**.
+Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière, valeur et stickers voiture sont
+toutes complètes, le système définit le statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin peut ensuite démarrer
+l'intégration véhicule sur l'onglet **Finaliser**.
 
-| Statut     | Signification                                                                                                                                                                                       |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ouvert     | L'intégration est en cours ; les étapes de préparation ne sont pas toutes complètes.                                                                                                                |
-| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo) et valeur (Résolu) sont complètes. Le système définit ce statut automatiquement.                  |
-| Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Défini par un admin sur l'onglet **Finaliser** lorsque la préparation est **Prête**. |
+| Statut     | Signification                                                                                                                                                                                        |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ouvert     | L'intégration est en cours ; les étapes de préparation ne sont pas toutes complètes.                                                                                                                 |
+| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo), valeur (Résolu) et stickers voiture sont complètes. Le système définit ce statut automatiquement. |
+| Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Défini par un admin sur l'onglet **Finaliser** lorsque la préparation est **Prête**.  |
 
 Lorsque la préparation est **Verrouillée**, les utilisateurs ne peuvent plus mettre à jour les infos utilisateur, infos véhicule, assurance ou
 la valeur tant qu'un admin ne l'a pas déverrouillée.

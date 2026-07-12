@@ -181,8 +181,18 @@ model CarOnboarding {
   pinkFormId                     String?
   pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
+  stickerLinks        CarOnboardingSticker[]
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt
+}
+
+model CarOnboardingSticker {
+  carOnboardingId String
+  carStickerId    String
+  carOnboarding   CarOnboarding @relation(fields: [carOnboardingId], references: [id], onDelete: Cascade)
+  carSticker      CarSticker    @relation(fields: [carStickerId], references: [id], onDelete: Restrict)
+
+  @@id([carOnboardingId, carStickerId])
 }
 
 enum SimulationResultCode {
@@ -355,14 +365,15 @@ model Insurer {
 }
 
 model CarSticker {
-  id               String    @id @default(uuid())
-  name             String    @unique
-  isActive         Boolean   @default(true)
-  isAlwaysIncluded Boolean   @default(false)
+  id               String                 @id @default(uuid())
+  name             String                 @unique
+  isActive         Boolean                @default(true)
+  isAlwaysIncluded Boolean                @default(false)
   imageId          String?
-  image            Document? @relation("CarStickerImage", fields: [imageId], references: [id], onDelete: SetNull)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  image            Document?              @relation("CarStickerImage", fields: [imageId], references: [id], onDelete: SetNull)
+  carOnboardingLinks CarOnboardingSticker[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
 }
 
 model InsurancePriceBenchmark {

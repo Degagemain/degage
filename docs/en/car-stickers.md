@@ -15,6 +15,8 @@ Catalog of Dégage car sticker designs that users can choose from.
 | Always included | When on, the sticker is automatically included for every car. |
 | Image           | Sticker artwork file (JPEG or PNG).                           |
 
+A sticker that is linked to a car onboarding cannot be deleted.
+
 ## Export
 
 Use **More → Export** to download the current filtered/sorted list as CSV or JSON.

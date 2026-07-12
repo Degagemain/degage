@@ -32,7 +32,7 @@ describe('isCarValueSectionComplete', () => {
 });
 
 describe('isPreparationReady', () => {
-  it('returns true only when play connector, info session, car-info, user-info, car value, insurer, and road assistance plan are complete', () => {
+  it('returns true only when play connector, info session, car-info, user-info, car value, insurer, road assistance plan, and car stickers are complete', () => {
     expect(isPreparationReady(completeCarOnboarding())).toBe(true);
     expect(isPreparationReady(carOnboarding({ street: 'Main Street' }))).toBe(false);
     expect(isPreparationReady(completeCarOnboarding({ owner: { id: 'owner-1', hasPlayConnector: false } }))).toBe(false);
@@ -61,6 +61,13 @@ describe('isPreparationReady', () => {
       isPreparationReady(
         completeCarOnboarding({
           roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isPreparationReady(
+        completeCarOnboarding({
+          carStickers: [],
         }),
       ),
     ).toBe(false);

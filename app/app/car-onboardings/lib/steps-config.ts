@@ -42,6 +42,11 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     titleKey: 'steps.carValue.title',
     subtitleKey: 'steps.carValue.subtitle',
   },
+  {
+    id: 'car-stickers',
+    titleKey: 'steps.carStickers.title',
+    subtitleKey: 'steps.carStickers.subtitle',
+  },
 ];
 
 export const getStepDefinition = (id: StepId): StepDefinition | undefined => STEP_DEFINITIONS.find((s) => s.id === id);

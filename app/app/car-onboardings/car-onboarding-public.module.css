@@ -808,3 +808,77 @@
   color: #3d3832;
   font-size: 0.9375rem;
 }
+
+.stickerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--demo-s16);
+}
+
+.stickerCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--demo-s8);
+  padding: var(--demo-s16);
+  border: 1.5px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+  background: var(--demo-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.stickerCard:hover {
+  border-color: var(--demo-brand-border);
+}
+
+.stickerCardSelected {
+  border-color: var(--demo-brand);
+  box-shadow: 0 0 0 1px var(--demo-brand);
+}
+
+.stickerCardLocked {
+  cursor: default;
+  background: var(--demo-brand-light);
+}
+
+.stickerCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stickerImageFrame {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--demo-r8);
+  background: var(--demo-sand);
+}
+
+.stickerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.stickerImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--demo-sand), var(--demo-border));
+}
+
+.stickerLabel {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--demo-ink);
+  line-height: 1.3;
+}
+
+.stickerAlwaysIncluded {
+  font-size: 12px;
+  color: var(--demo-brand-mid);
+  font-weight: 500;
+}

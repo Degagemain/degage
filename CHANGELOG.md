@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added: during car onboarding, a new road assistance plan step lets you say
   whether you already have a plan (with end date) and choose a desired plan from
   the available options.
+- Added: during car onboarding preparation, a new car stickers step lets you
+  pick extra sticker designs from a grid; always-included stickers stay selected
+  and cannot be removed, and you must pick at least one extra sticker to
+  complete the step.
 
 ### Admin features
 
@@ -26,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   status per language) from the Car section of the admin menu.
 - Added: admins can manage car stickers (name, image, and whether they are
   active or always included).
+- Changed: car stickers linked to a car onboarding can no longer be deleted.
 
 ### Technical
 

@@ -15,6 +15,8 @@ Catalogue des designs de stickers voiture Dégage parmi lesquels les utilisateur
 | Toujours inclus | Si activé, le sticker est inclus automatiquement pour chaque voiture. |
 | Image           | Fichier visuel du sticker (JPEG ou PNG).                              |
 
+Un sticker lié à une intégration véhicule ne peut pas être supprimé.
+
 ## Export
 
 Utilisez **Plus → Exporter** pour télécharger la liste filtrée/triée actuelle en CSV ou JSON.

@@ -6,6 +6,7 @@ import {
   CarOnboardingRoadAssistancePlanStatus,
   canUpdateInsurer,
   isCarInfoSectionComplete,
+  isCarStickerSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
@@ -35,7 +36,8 @@ export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
     isInsurerSectionComplete(onboarding) &&
-    isRoadAssistancePlanSectionComplete(onboarding)
+    isRoadAssistancePlanSectionComplete(onboarding) &&
+    isCarStickerSectionComplete(onboarding)
   );
 };
 

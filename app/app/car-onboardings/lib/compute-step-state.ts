@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   isCarInfoSectionComplete,
+  isCarStickerSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
@@ -15,7 +16,7 @@ import {
 import type { StepId, StepState } from './types';
 
 export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
-  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'road-assistance-plan', 'car-value'];
+  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'road-assistance-plan', 'car-value', 'car-stickers'];
 };
 
 const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
@@ -25,7 +26,14 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
-  if (stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer' || stepId === 'road-assistance-plan' || stepId === 'car-value') {
+  if (
+    stepId === 'user-info' ||
+    stepId === 'car-info' ||
+    stepId === 'insurer' ||
+    stepId === 'road-assistance-plan' ||
+    stepId === 'car-value' ||
+    stepId === 'car-stickers'
+  ) {
     return hasInfoSessionPrerequisites(onboarding);
   }
   return false;
@@ -47,6 +55,8 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
       return isRoadAssistancePlanSectionComplete(onboarding);
     case 'car-value':
       return onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+    case 'car-stickers':
+      return isCarStickerSectionComplete(onboarding);
     default:
       return false;
   }

@@ -2856,6 +2856,15 @@
         "agreeConfirmHint": "You agreed to the proposed car value. Save to confirm.",
         "pendingAdmin": "Your counter proposal of €{value} was submitted. Waiting for admin response.",
         "resolved": "The car value agreement is resolved."
+      },
+      "carStickers": {
+        "title": "Car stickers",
+        "subtitle": "Choose your sticker designs",
+        "panelTitle": "Sticker selection",
+        "helper": "Pick at least one extra sticker. Always-included stickers are selected automatically and cannot be removed.",
+        "loading": "Loading stickers…",
+        "loadError": "Could not load stickers. Please try again.",
+        "alwaysIncluded": "Always included"
       }
     }
   },
