@@ -49,18 +49,24 @@ describe('GET /api/simulations/[id]', () => {
     expect(json.id).toBe(simId);
     expect(json.email).toBeNull();
     expect(json.townHasActiveMembers).toBe(true);
-    expect(readPublicSimulation).toHaveBeenCalledWith(simId);
+    expect(readPublicSimulation).toHaveBeenCalledWith(simId, { includeEmail: false });
   });
 
-  it('returns full simulation including email when authenticated', async () => {
+  it('returns simulation including email and town metadata when authenticated', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValueOnce({ user: { id: 'user-1' } } as any);
-    vi.mocked(readSimulation).mockResolvedValueOnce(simulation({ id: simId, email: 'admin@example.com' }));
+    vi.mocked(readPublicSimulation).mockResolvedValueOnce({
+      ...simulation({ id: simId, email: 'admin@example.com' }),
+      email: 'admin@example.com',
+      townHasActiveMembers: true,
+      townMunicipality: 'Test Municipality',
+    });
     const res = await GET({} as any, { params: Promise.resolve({ id: simId }) });
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.email).toBe('admin@example.com');
-    expect(readSimulation).toHaveBeenCalledWith(simId);
-    expect(readPublicSimulation).not.toHaveBeenCalled();
+    expect(json.townHasActiveMembers).toBe(true);
+    expect(readPublicSimulation).toHaveBeenCalledWith(simId, { includeEmail: true });
+    expect(readSimulation).not.toHaveBeenCalled();
   });
 });
 
