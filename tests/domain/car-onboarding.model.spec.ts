@@ -602,10 +602,35 @@ describe('applyInsurerStatus', () => {
   it('sets not applicable and clears fields when hasInsuranceContract is false', () => {
     const result = applyInsurerStatus(
       carOnboarding({
+        isPurchased: false,
         hasInsuranceContract: false,
         insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
         insurerContractStartedAt: new Date('2020-01-15'),
         insurerStatus: CarOnboardingInsurerStatus.READY,
+      }),
+    );
+    expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.NOT_APPLICABLE);
+    expect(result.insurer).toBeNull();
+    expect(result.insurerContractStartedAt).toBeNull();
+  });
+
+  it('keeps todo for purchased cars until the insurer step is completed', () => {
+    const result = applyInsurerStatus(
+      carOnboarding({
+        isPurchased: true,
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.TODO,
+      }),
+    );
+    expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+  });
+
+  it('sets not applicable for purchased cars after the insurer step is completed', () => {
+    const result = applyInsurerStatus(
+      carOnboarding({
+        isPurchased: true,
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
       }),
     );
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.NOT_APPLICABLE);

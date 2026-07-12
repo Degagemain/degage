@@ -65,6 +65,29 @@ describe('updateCarOnboardingInsurer', () => {
     );
   });
 
+  it('marks purchased cars without insurance as not applicable when saving insurer step', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        isPurchased: true,
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.TODO,
+      }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingInsurer(onboardingId, { hasInsuranceContract: false }, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: onboardingId,
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+      }),
+    );
+  });
+
   it('accepts hasInsuranceContract true without insurer fields', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),

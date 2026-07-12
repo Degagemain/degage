@@ -363,6 +363,13 @@ export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus'
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
   if (!onboarding.hasInsuranceContract) {
+    if (onboarding.isPurchased && onboarding.insurerStatus === CarOnboardingInsurerStatus.TODO) {
+      return {
+        ...onboarding,
+        insurerStatus: CarOnboardingInsurerStatus.TODO,
+      };
+    }
+
     return {
       ...onboarding,
       insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
