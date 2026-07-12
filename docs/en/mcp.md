@@ -30,6 +30,7 @@ URL: `/mcp`
 | `search_fuel_types`           | `mcp:user`  | List and search fuel types with code, price, and CO₂ contribution             |
 | `search_car_brands`           | `mcp:user`  | List and search car brands with code and locale names                         |
 | `read_car_brand`              | `mcp:user`  | Read a single car brand by UUID                                               |
+| `search_car_types`            | `mcp:user`  | List and search car types (requires brandId and fuelTypeId)                   |
 | `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
 | `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
 | `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |

@@ -9,6 +9,7 @@ const {
   registerSearchFuelTypesTool,
   registerSearchCarBrandsTool,
   registerReadCarBrandTool,
+  registerSearchCarTypesTool,
   registerCreateDocumentationGroupTool,
   registerUpdateDocumentationGroupTool,
 } = vi.hoisted(() => ({
@@ -18,6 +19,7 @@ const {
   registerSearchFuelTypesTool: vi.fn(),
   registerSearchCarBrandsTool: vi.fn(),
   registerReadCarBrandTool: vi.fn(),
+  registerSearchCarTypesTool: vi.fn(),
   registerCreateDocumentationGroupTool: vi.fn(),
   registerUpdateDocumentationGroupTool: vi.fn(),
 }));
@@ -44,6 +46,10 @@ vi.mock('@/mcp/tools/search-car-brands', () => ({
 
 vi.mock('@/mcp/tools/read-car-brand', () => ({
   registerReadCarBrandTool,
+}));
+
+vi.mock('@/mcp/tools/search-car-types', () => ({
+  registerSearchCarTypesTool,
 }));
 
 vi.mock('@/mcp/tools/create-documentation-group', () => ({
@@ -80,6 +86,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchFuelTypesTool).not.toHaveBeenCalled();
     expect(registerSearchCarBrandsTool).not.toHaveBeenCalled();
     expect(registerReadCarBrandTool).not.toHaveBeenCalled();
+    expect(registerSearchCarTypesTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -93,6 +100,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarBrandsTool).toHaveBeenCalledTimes(1);
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -113,6 +121,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarBrandsTool).toHaveBeenCalledTimes(1);
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateDocumentationGroupTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationGroupTool).toHaveBeenCalledTimes(1);
@@ -126,6 +135,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchFuelTypesTool).not.toHaveBeenCalled();
     expect(registerSearchCarBrandsTool).not.toHaveBeenCalled();
     expect(registerReadCarBrandTool).not.toHaveBeenCalled();
+    expect(registerSearchCarTypesTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -146,6 +156,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerSearchCarBrandsTool).toHaveBeenCalledTimes(1);
     expect(registerReadCarBrandTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchCarTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
