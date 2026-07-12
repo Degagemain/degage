@@ -29,6 +29,7 @@ export const SIM_FAQ_PANEL: Partial<FaqPanelClassNames> = {
 };
 
 export const SIMULATION_FAQ_TAGS = {
+  step1: ['simulation_step_1'],
   step2Approved: ['simulation_step_2_approved'],
   step2Rejected: ['simulation_step_2_rejected'],
   step2Review: ['simulation_step_2_review'],

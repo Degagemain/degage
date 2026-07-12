@@ -9,7 +9,7 @@ import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
 import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { SearchDropdown } from './components/search-dropdown';
-import { NUMBERED_STEP_TOTAL, SIM_FAQ_PANEL } from './simulation-public.constants';
+import { NUMBERED_STEP_TOTAL, SIMULATION_FAQ_TAGS, SIM_FAQ_PANEL } from './simulation-public.constants';
 import styles from './simulation.module.css';
 
 const STEP_SITUATION = 1;
@@ -24,10 +24,6 @@ type CarChoice = 'existing' | 'newCar';
 const SIMULATION_LOADING_BAR_SECONDS = 60;
 
 const TOWN_SEARCH_PASS_THROUGH_KEYS = ['hasActiveMembers', 'municipality', 'highDemand'] as const;
-
-const SIMULATION_FAQ_TAGS = {
-  step1: ['simulation_step_1'],
-} as const;
 
 export default function SimulationPage() {
   const router = useRouter();
