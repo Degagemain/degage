@@ -6,12 +6,14 @@ const {
   registerSearchDocumentationTool,
   registerUpdateDocumentationTool,
   registerSearchDocumentationGroupsTool,
+  registerSearchFuelTypesTool,
   registerCreateDocumentationGroupTool,
   registerUpdateDocumentationGroupTool,
 } = vi.hoisted(() => ({
   registerSearchDocumentationTool: vi.fn(),
   registerUpdateDocumentationTool: vi.fn(),
   registerSearchDocumentationGroupsTool: vi.fn(),
+  registerSearchFuelTypesTool: vi.fn(),
   registerCreateDocumentationGroupTool: vi.fn(),
   registerUpdateDocumentationGroupTool: vi.fn(),
 }));
@@ -26,6 +28,10 @@ vi.mock('@/mcp/tools/update-documentation', () => ({
 
 vi.mock('@/mcp/tools/search-documentation-groups', () => ({
   registerSearchDocumentationGroupsTool,
+}));
+
+vi.mock('@/mcp/tools/search-fuel-types', () => ({
+  registerSearchFuelTypesTool,
 }));
 
 vi.mock('@/mcp/tools/create-documentation-group', () => ({
@@ -59,6 +65,7 @@ describe('registerMcpTools', () => {
     registerMcpTools(server);
     expect(registerSearchDocumentationTool).not.toHaveBeenCalled();
     expect(registerSearchDocumentationGroupsTool).not.toHaveBeenCalled();
+    expect(registerSearchFuelTypesTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -69,6 +76,7 @@ describe('registerMcpTools', () => {
 
     expect(registerSearchDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerSearchDocumentationGroupsTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -86,6 +94,7 @@ describe('registerMcpTools', () => {
 
     expect(registerSearchDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerSearchDocumentationGroupsTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateDocumentationGroupTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationGroupTool).toHaveBeenCalledTimes(1);
@@ -96,6 +105,7 @@ describe('registerMcpTools', () => {
 
     expect(registerSearchDocumentationTool).not.toHaveBeenCalled();
     expect(registerSearchDocumentationGroupsTool).not.toHaveBeenCalled();
+    expect(registerSearchFuelTypesTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -113,6 +123,7 @@ describe('registerMcpTools', () => {
 
     expect(registerSearchDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerSearchDocumentationGroupsTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchFuelTypesTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();

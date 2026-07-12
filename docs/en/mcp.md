@@ -27,6 +27,7 @@ URL: `/mcp`
 | ----------------------------- | ----------- | ----------------------------------------------------------------------------- |
 | `search_documentation`        | `mcp:user`  | List and search help documentation articles (non-admins see public docs only) |
 | `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)    |
+| `search_fuel_types`           | `mcp:user`  | List and search fuel types with code, price, and CO₂ contribution             |
 | `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
 | `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
 | `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
