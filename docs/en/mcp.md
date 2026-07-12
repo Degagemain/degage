@@ -23,10 +23,13 @@ Run database migrations so OAuth Provider tables exist (`pnpm db:migrate`).
 
 URL: `/mcp`
 
-| Tool                   | OAuth scope | Description                                                                 |
-| ---------------------- | ----------- | --------------------------------------------------------------------------- |
-| `search_documentation` | `mcp:user`  | List/search documentation (same filters as `GET /api/documentation`)        |
-| `update_documentation` | `mcp:admin` | Replace a documentation record (same body as `PUT /api/documentation/{id}`) |
+| Tool                          | OAuth scope | Description                                                                 |
+| ----------------------------- | ----------- | --------------------------------------------------------------------------- |
+| `search_documentation`        | `mcp:user`  | List/search documentation (same filters as `GET /api/documentation`)        |
+| `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)  |
+| `update_documentation`        | `mcp:admin` | Replace a documentation record (same body as `PUT /api/documentation/{id}`) |
+| `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations        |
+| `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)      |
 
 MCP is a peer interface to REST (`/api/*`), not nested under it.
 
@@ -57,11 +60,11 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 
 - JWT audience must match `{BETTER_AUTH_URL}/mcp`.
 - `tools/list` only includes tools the caller is allowed to use (scope, email verification, ban status, and admin role for
-  `update_documentation`).
+  `update_documentation`, `create_documentation_group`, and `update_documentation_group`).
 - Each tool re-checks authorization at invocation time.
 - Banned users are rejected.
 - Unverified email/password users cannot call tools (OAuth may still complete).
-- `update_documentation` also requires `admin` role at runtime.
+- `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at runtime.
 
 ## Code layout
 
