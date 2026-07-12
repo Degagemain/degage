@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Added: MCP tools to list and read car brands.
 - Added: MCP tool to list and search fuel types.
 - Added: MCP tools to list, create, and update documentation groups.
 - Changed: MCP documentation tool descriptions no longer reference REST endpoints.

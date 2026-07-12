@@ -3,6 +3,8 @@ import { canUseMcpTools } from '@/mcp/auth-context';
 import { mcpRoleScope } from '@/mcp/config';
 import { getMcpAuthContext } from '@/mcp/request-context';
 import { registerCreateDocumentationGroupTool } from '@/mcp/tools/create-documentation-group';
+import { registerReadCarBrandTool } from '@/mcp/tools/read-car-brand';
+import { registerSearchCarBrandsTool } from '@/mcp/tools/search-car-brands';
 import { registerSearchDocumentationGroupsTool } from '@/mcp/tools/search-documentation-groups';
 import { registerSearchFuelTypesTool } from '@/mcp/tools/search-fuel-types';
 import { registerUpdateDocumentationGroupTool } from '@/mcp/tools/update-documentation-group';
@@ -20,6 +22,8 @@ export const registerMcpTools = (server: McpServer): void => {
     registerSearchDocumentationTool(server, getMcpAuthContext, userScope);
     registerSearchDocumentationGroupsTool(server, getMcpAuthContext, userScope);
     registerSearchFuelTypesTool(server, getMcpAuthContext, userScope);
+    registerSearchCarBrandsTool(server, getMcpAuthContext, userScope);
+    registerReadCarBrandTool(server, getMcpAuthContext, userScope);
   }
 
   if (canUseMcpTools(ctx, adminScope, true).ok) {
