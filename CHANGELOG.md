@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: after you run a simulation, you are taken to a personal result page
+  you can bookmark or reopen later; starting again begins a new simulation.
+- Changed: result e-mails now include a link to view your simulation online
+  instead of showing the simulation ID.
 - Added: during car onboarding, the insurance step always appears; you first
   indicate whether you have an insurance contract, and insurer details are only
   asked when you do.
@@ -22,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: on a simulation detail page, admins can open the public result page
+  for that simulation.
 - Added: car onboarding records show whether the owner has an insurance
   contract on the insurance tab; insurer details are optional when they do not.
 - Added: car onboarding records include a road assistance plan tab with
