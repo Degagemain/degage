@@ -1616,6 +1616,7 @@
       },
       "tabs": {
         "preparationTitle": "Voorbereiding",
+        "mobileNavToggle": "Voorbereidingsstappen: {step}",
         "owner": "Eigenaar",
         "infoSession": "Infosessie",
         "userInfo": "Eigenaarsinfo",
@@ -2825,11 +2826,12 @@
       },
       "insurer": {
         "title": "Verzekering",
-        "subtitle": "Je huidige autoverzekering",
-        "info": "Geef door bij welke verzekeraar je wagen vandaag verzekerd is en sinds wanneer.",
-        "panelTitle": "Huidige verzekering",
-        "hasInsuranceContractLabel": "Ik heb al een verzekeringscontract voor deze wagen",
-        "hasInsuranceContractHint": "Schakel dit uit als Dégage de verzekering voor je regelt. Je kunt de verzekeringsgegevens later invullen.",
+        "subtitle": "Bestaande autoverzekering opzeggen",
+        "info": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Geef dan de gegevens door zodat we die kunnen opzeggen.",
+        "panelTitle": "Bestaande verzekering",
+        "panelBody": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Vink dit aan en vul de gegevens in zodat we die kunnen opzeggen.",
+        "hasInsuranceContractLabel": "Ik heb nog een lopend verzekeringscontract voor deze wagen",
+        "contractStartedAtHint": "De oorspronkelijke startdatum van het contract, niet de (jaarlijkse) verlengingsdatum.",
         "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
       },
       "roadAssistancePlan": {
@@ -2837,10 +2839,17 @@
         "subtitle": "Je pechverhelping",
         "info": "Geef aan of je wagen al pechverhelping heeft en kies het plan dat je met Dégage wilt.",
         "existingPanelTitle": "Bestaande pechverhelping",
+        "existingPanelBody": "Nieuwe wagens hebben soms enkele jaren pechverhelping inbegrepen bij aankoop.",
+        "hasExistingFieldLabel": "Bestaande Pechverhelping?",
         "desiredPanelTitle": "Gewenst pechverhelpingsplan",
+        "desiredPanelBody": "Welk type pechverhelpingsplan wil je na je lidmaatschap bij Dégage?",
         "includedPlanLabel": "Inbegrepen plan",
         "includedPlanCheckbox": "De aangekochte wagen heeft een inbegrepen pechverhelpingsplan",
-        "hasExistingLabel": "Ik heb al een pechverhelpingsplan voor deze wagen"
+        "hasExistingLabel": "Ik heb momenteel een pechverhelpingsplan voor deze wagen",
+        "existingRoadAssistancePlanEndDateHint": "Je pechverhelping bij Dégage start automatisch na deze datum.",
+        "loading": "Pechverhelpingsplannen laden…",
+        "loadError": "Pechverhelpingsplannen konden niet worden geladen. Probeer het opnieuw.",
+        "empty": "Geen pechverhelpingsplannen beschikbaar."
       },
       "carValue": {
         "title": "Waarde",
@@ -2856,6 +2865,15 @@
         "agreeConfirmHint": "Je bent akkoord met de voorgestelde waarde. Sla op om te bevestigen.",
         "pendingAdmin": "Je tegenvoorstel van €{value} is ingediend. Wachten op reactie van de admin.",
         "resolved": "De waarde-afspraak is afgerond."
+      },
+      "carStickers": {
+        "title": "Autostickers",
+        "subtitle": "Kies je stickerontwerpen",
+        "panelTitle": "Stickerkeuze",
+        "helper": "Kies minstens één extra sticker. Altijd-inbegrepen stickers zijn automatisch geselecteerd en kunnen niet worden verwijderd.",
+        "loading": "Stickers laden…",
+        "loadError": "Stickers laden mislukt. Probeer opnieuw.",
+        "alwaysIncluded": "Altijd inbegrepen"
       }
     }
   },

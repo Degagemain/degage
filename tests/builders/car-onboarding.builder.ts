@@ -48,6 +48,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     registrationCertificateBack: data.registrationCertificateBack !== undefined ? data.registrationCertificateBack : null,
     inspectionCertificate: data.inspectionCertificate !== undefined ? data.inspectionCertificate : null,
     pinkForm: data.pinkForm !== undefined ? data.pinkForm : null,
+    carStickers: data.carStickers ?? [],
     statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,
     createdAt: data.createdAt ?? new Date(),
     updatedAt: data.updatedAt ?? new Date(),
@@ -76,6 +77,7 @@ export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnb
     infoSessionDate: new Date('2026-06-20T09:25:00'),
     infoSessionPcId: '1359',
     infoSessionStatus: CarOnboardingInfoSessionStatus.DONE,
+    carStickers: [{ id: '550e8400-e29b-41d4-a716-446655440012', name: 'Classic' }],
     ...data,
   });
 };

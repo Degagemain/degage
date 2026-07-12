@@ -98,16 +98,15 @@ describe('PUT /api/car-onboardings/[id]/insurer', () => {
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('returns 400 when insurer status is not todo', async () => {
+  it('returns 204 when insurer status is ready', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: validId, owner: { id: mockUser.id }, insurerStatus: CarOnboardingInsurerStatus.READY }),
     );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(carOnboarding({ id: validId }));
     const request = { json: vi.fn().mockResolvedValue(body) } as any;
     const response = await PUT(request, { params: Promise.resolve({ id: validId }) });
-    expect(response.status).toBe(400);
-    const json = await response.json();
-    expect(json.code).toBe('invalid_insurer_status');
-    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+    expect(response.status).toBe(204);
+    expect(updateCarOnboardingInsurer).toHaveBeenCalledWith(validId, body, mockUser);
   });
 });

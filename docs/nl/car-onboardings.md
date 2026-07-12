@@ -126,15 +126,27 @@ Admins kunnen het akkoord overschrijven op het tabblad waarde wanneer de eigenaa
 
 Deze stap is compleet wanneer de waarde-status **Resolved** is.
 
+### Autostickers
+
+De eigenaar kiest extra stickerontwerpen uit de catalogus tijdens de publieke onboarding-flow. Altijd-inbegrepen stickers worden vooraf
+geselecteerd getoond en kunnen niet worden verwijderd; ze worden niet opgeslagen op het onboarding-record.
+
+| Eigenschap   | Beschrijving                                                        |
+| ------------ | ------------------------------------------------------------------- |
+| Autostickers | Extra stickerontwerpen geselecteerd en opgeslagen door de eigenaar. |
+
+Deze stap is compleet wanneer minstens één extra sticker is opgeslagen.
+
 ### Afronden
 
-Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping en waarde allemaal compleet zijn, zet het systeem de
-voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad **Afronden**.
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde en autostickers allemaal compleet zijn, zet
+het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad
+**Afronden**.
 
 | Status      | Betekenis                                                                                                                                                                                    |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Open        | Onboarding is bezig; voorbereidingsstappen zijn nog niet allemaal compleet.                                                                                                                  |
-| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo) en waarde (Opgelost) zijn compleet. Het systeem zet dit automatisch.                               |
+| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost) en autostickers zijn compleet. Het systeem zet dit automatisch.                 |
 | Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Gezet door een admin op het tabblad **Afronden** wanneer de voorbereiding **Klaar** is. |
 
 Wanneer de voorbereiding **Vergrendeld** is, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en waarde niet meer bijwerken tot een

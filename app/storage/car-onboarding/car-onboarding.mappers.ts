@@ -30,6 +30,7 @@ export const carOnboardingRelationsInclude = {
   registrationCertificateBack: true,
   inspectionCertificate: true,
   pinkForm: true,
+  stickerLinks: { include: { carSticker: true } },
 } as const satisfies Prisma.CarOnboardingInclude;
 
 type CarOnboardingWithRelations = Prisma.CarOnboardingGetPayload<{
@@ -110,6 +111,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     registrationCertificateBack: db.registrationCertificateBackId != null ? { id: db.registrationCertificateBackId } : null,
     inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
     pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
+    carStickers: [],
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -192,6 +194,10 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.pinkForm.fileName,
         }
       : null,
+    carStickers: db.stickerLinks.map((link) => ({
+      id: link.carStickerId,
+      name: link.carSticker.name,
+    })),
   };
 };
 
@@ -281,6 +287,12 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     registrationCertificateBack: optionalRelationConnect(onboarding.registrationCertificateBack),
     inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
     pinkForm: optionalRelationConnect(onboarding.pinkForm),
+    stickerLinks: {
+      deleteMany: {},
+      create: onboarding.carStickers.map((sticker) => ({
+        carSticker: { connect: { id: sticker.id } },
+      })),
+    },
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

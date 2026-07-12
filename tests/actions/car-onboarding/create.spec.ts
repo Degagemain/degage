@@ -96,7 +96,7 @@ describe('createCarOnboarding', () => {
         isPurchased: true,
         isNewCar: true,
         hasInsuranceContract: false,
-        insurerStatus: 'notApplicable',
+        insurerStatus: 'todo',
       }),
     );
   });

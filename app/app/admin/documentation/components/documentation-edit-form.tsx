@@ -32,6 +32,7 @@ import { Textarea } from '@/app/components/ui/textarea';
 import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { Page } from '@/domain/page.model';
 import { MaxTake } from '@/domain/utils';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 export const DOCUMENTATION_EDIT_FORM_ID = 'documentation-edit-form';
 
@@ -244,23 +245,21 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b px-3 md:px-4">
-        <div className="flex h-14 flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Button type="submit" form={formId} disabled={isSaving} variant="outline" size="sm">
-              <Save className="size-3.5" />
-              {isSaving ? tCommon('status.saving') : tForm('save')}
-            </Button>
-            <Button type="button" variant="outline" size="sm" asChild>
-              <Link
-                href={isCreate ? '/app/admin/documentation' : `/app/admin/documentation/${encodeURIComponent(initialDocumentation.externalId)}`}
-              >
-                {tForm('cancel')}
-              </Link>
-            </Button>
-          </div>
+      <AdminPageToolbar>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button type="submit" form={formId} disabled={isSaving} variant="outline" size="sm">
+            <Save className="size-3.5" />
+            {isSaving ? tCommon('status.saving') : tForm('save')}
+          </Button>
+          <Button type="button" variant="outline" size="sm" asChild>
+            <Link
+              href={isCreate ? '/app/admin/documentation' : `/app/admin/documentation/${encodeURIComponent(initialDocumentation.externalId)}`}
+            >
+              {tForm('cancel')}
+            </Link>
+          </Button>
         </div>
-      </div>
+      </AdminPageToolbar>
 
       <form id={formId} onSubmit={(e) => void handleSubmit(e)} className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4">
         <h1 className="mb-4 text-xl font-semibold tracking-tight">{isCreate ? tForm('createTitle') : displayTitle}</h1>

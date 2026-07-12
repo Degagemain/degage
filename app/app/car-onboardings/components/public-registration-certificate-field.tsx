@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { ExternalLink, Loader2, Upload } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES } from '@/domain/document.model';
@@ -82,7 +82,29 @@ export function PublicRegistrationCertificateField({
       <p className={styles.uploadFileStatus}>
         {fileName ? (
           <>
-            {t('currentFile')}: <span className={styles.uploadFileName}>{fileName}</span>
+            {t('currentFile')}:{' '}
+            {onDownload ? (
+              <button
+                type="button"
+                className={styles.uploadFileLink}
+                disabled={disabled || isDownloading}
+                onClick={() => void handleDownload()}
+              >
+                {isDownloading ? (
+                  <span className="inline-flex items-center gap-1.5">
+                    <Loader2 className="size-3.5 animate-spin" aria-hidden />
+                    {t('downloading')}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1">
+                    {fileName}
+                    <ExternalLink className="size-3.5" aria-hidden />
+                  </span>
+                )}
+              </button>
+            ) : (
+              <span className={styles.uploadFileName}>{fileName}</span>
+            )}
           </>
         ) : (
           t('noFile')
@@ -104,21 +126,12 @@ export function PublicRegistrationCertificateField({
               {t('uploading')}
             </span>
           ) : (
-            t('upload')
+            <span className="inline-flex items-center gap-1.5">
+              <Upload className="size-3.5" aria-hidden />
+              {t('upload')}
+            </span>
           )}
         </PublicBtn>
-        {fileName && onDownload ? (
-          <PublicBtn type="button" variant="secondary" small disabled={disabled || isDownloading} onClick={() => void handleDownload()}>
-            {isDownloading ? (
-              <span className="inline-flex items-center gap-1.5">
-                <Loader2 className="size-3.5 animate-spin" aria-hidden />
-                {t('downloading')}
-              </span>
-            ) : (
-              t('download')
-            )}
-          </PublicBtn>
-        ) : null}
       </div>
       <p className={styles.fieldHint}>
         {tUpload('help', { maxSizeMb })}{' '}

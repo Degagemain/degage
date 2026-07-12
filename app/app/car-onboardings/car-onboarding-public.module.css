@@ -290,6 +290,10 @@
   margin-bottom: var(--demo-s24);
 }
 
+.checkboxLabel + .field {
+  margin-top: var(--demo-s16);
+}
+
 .fieldLabel {
   font-size: 12px;
   font-weight: 600;
@@ -359,10 +363,36 @@
   font-weight: 600;
 }
 
+.uploadFileLink {
+  font: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--demo-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.uploadFileLink:hover:not(:disabled) {
+  color: var(--demo-ink);
+}
+
+.uploadFileLink:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .uploadActions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--demo-s8);
+}
+
+.uploadActions + .fieldHint {
+  margin-top: var(--demo-s8);
 }
 
 .uploadInput {
@@ -704,6 +734,72 @@
   }
 }
 
+.planOptionStatus {
+  font-size: 15px;
+  color: var(--demo-mid);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.planOptionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--demo-s16);
+}
+
+.planOption {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--demo-s16);
+  padding: var(--demo-s16);
+  border: 1.5px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+  background: var(--demo-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.planOption:hover {
+  border-color: var(--demo-brand-border);
+}
+
+.planOptionSelected {
+  border-color: var(--demo-brand);
+  background: var(--demo-brand-light);
+}
+
+.planOptionRadio {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--demo-brand);
+}
+
+.planOptionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.planOptionName {
+  display: block;
+  font-family: var(--demo-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--demo-ink);
+  line-height: 1.3;
+}
+
+.planOptionDescription {
+  margin: var(--demo-s8) 0 0;
+  font-size: 15px;
+  color: var(--demo-mid);
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
 .readOnlyValue {
   margin: 0;
   padding: 0.65rem 0.75rem;
@@ -711,4 +807,78 @@
   background: #f5f2ed;
   color: #3d3832;
   font-size: 0.9375rem;
+}
+
+.stickerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--demo-s16);
+}
+
+.stickerCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--demo-s8);
+  padding: var(--demo-s16);
+  border: 1.5px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+  background: var(--demo-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.stickerCard:hover {
+  border-color: var(--demo-brand-border);
+}
+
+.stickerCardSelected {
+  border-color: var(--demo-brand);
+  box-shadow: 0 0 0 1px var(--demo-brand);
+}
+
+.stickerCardLocked {
+  cursor: default;
+  background: var(--demo-brand-light);
+}
+
+.stickerCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stickerImageFrame {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--demo-r8);
+  background: var(--demo-sand);
+}
+
+.stickerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.stickerImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--demo-sand), var(--demo-border));
+}
+
+.stickerLabel {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--demo-ink);
+  line-height: 1.3;
+}
+
+.stickerAlwaysIncluded {
+  font-size: 12px;
+  color: var(--demo-brand-mid);
+  font-weight: 500;
 }

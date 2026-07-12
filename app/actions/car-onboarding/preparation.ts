@@ -3,9 +3,10 @@ import {
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
-  CarOnboardingInsurerStatus,
   CarOnboardingRoadAssistancePlanStatus,
+  canUpdateInsurer,
   isCarInfoSectionComplete,
+  isCarStickerSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
@@ -35,7 +36,8 @@ export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
     isInsurerSectionComplete(onboarding) &&
-    isRoadAssistancePlanSectionComplete(onboarding)
+    isRoadAssistancePlanSectionComplete(onboarding) &&
+    isCarStickerSectionComplete(onboarding)
   );
 };
 
@@ -64,7 +66,7 @@ export const assertCarValueStatusIsProposal = (onboarding: CarOnboarding): void 
 };
 
 export const assertInsurerStatusIsTodo = (onboarding: CarOnboarding): void => {
-  if (onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
+  if (!canUpdateInsurer(onboarding)) {
     throw new CarOnboardingInvalidInsurerStatusError();
   }
 };

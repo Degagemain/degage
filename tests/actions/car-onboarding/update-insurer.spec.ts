@@ -10,7 +10,6 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
 
 import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
-import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { updateCarOnboardingInsurer } from '@/actions/car-onboarding/update-insurer';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
@@ -127,23 +126,52 @@ describe('updateCarOnboardingInsurer', () => {
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('throws when insurer status is not todo', async () => {
+  it('allows update when insurer status is ready', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.READY }),
     );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
-    await expect(
-      updateCarOnboardingInsurer(
-        onboardingId,
-        {
-          hasInsuranceContract: true,
-          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
-          insurerContractStartedAt: '2020-01-15',
-        },
-        owner,
-      ),
-    ).rejects.toThrow(CarOnboardingInvalidInsurerStatusError);
+    await updateCarOnboardingInsurer(
+      onboardingId,
+      {
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: '2020-01-15',
+      },
+      owner,
+    );
 
-    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalled();
+  });
+
+  it('allows purchased cars without insurance to opt into existing insurance', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        isPurchased: true,
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+      }),
+    );
+
+    await updateCarOnboardingInsurer(
+      onboardingId,
+      {
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: '2020-01-15',
+      },
+      owner,
+    );
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: new Date('2020-01-15'),
+      }),
+    );
   });
 });

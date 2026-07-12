@@ -122,6 +122,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     registrationCertificateBack: idNameSchema.nullable().default(null),
     inspectionCertificate: idNameSchema.nullable().default(null),
     pinkForm: idNameSchema.nullable().default(null),
+    carStickers: z.array(idNameSchema).default([]),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -196,6 +197,14 @@ export const carOnboardingInfoSessionEnrollInputSchema = carOnboardingInfoSessio
 
 export type CarOnboardingInfoSessionEnrollInput = z.infer<typeof carOnboardingInfoSessionEnrollInputSchema>;
 
+export const carOnboardingCarStickersInputSchema = z
+  .object({
+    carStickers: z.array(idNameSchema),
+  })
+  .strict();
+
+export type CarOnboardingCarStickersInput = z.infer<typeof carOnboardingCarStickersInputSchema>;
+
 export const carOnboardingCreateInputSchema = z
   .object({
     simulation: idNameSchema.optional(),
@@ -257,6 +266,7 @@ export const carOnboardingFromSimulation = (
     registrationCertificateBack: null,
     inspectionCertificate: null,
     pinkForm: null,
+    carStickers: [],
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     infoSessionDate: null,
     infoSessionPcId: null,
@@ -343,6 +353,14 @@ export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insure
   return onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO;
 };
 
+export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus' | 'isPurchased' | 'hasInsuranceContract'>): boolean => {
+  if (onboarding.insurerStatus === CarOnboardingInsurerStatus.TODO) {
+    return true;
+  }
+
+  return onboarding.isPurchased && !onboarding.hasInsuranceContract && onboarding.insurerStatus === CarOnboardingInsurerStatus.NOT_APPLICABLE;
+};
+
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
   if (!onboarding.hasInsuranceContract) {
     return {
@@ -368,6 +386,10 @@ export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => 
 
 export const isRoadAssistancePlanSectionComplete = (onboarding: Pick<CarOnboarding, 'roadAssistancePlanStatus'>): boolean => {
   return onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO;
+};
+
+export const isCarStickerSectionComplete = (onboarding: Pick<CarOnboarding, 'carStickers'>): boolean => {
+  return onboarding.carStickers.length >= 1;
 };
 
 export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnboarding => {

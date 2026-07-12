@@ -10,6 +10,7 @@ import { DocumentationMarkdown } from '@/app/components/documentation/documentat
 import { Button } from '@/app/components/ui/button';
 import { isAdmin } from '@/domain/role.utils';
 import { type UILocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 type PageProps = {
   params: Promise<{ externalId: string }>;
@@ -46,22 +47,20 @@ export default async function DocumentationDetailPage({ params }: PageProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b px-3 md:px-4">
-        <div className="flex h-14 items-center justify-between gap-3">
-          <Button variant="ghost" size="sm" className="shrink-0 gap-1.5 px-2" asChild>
-            <Link href={listHref}>
-              <ArrowLeft className="size-4" />
-              <span className="hidden sm:inline">{t('detail.backToList')}</span>
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm" className="shrink-0 gap-1.5" asChild>
-            <Link href={editHref}>
-              <Pencil className="size-4" />
-              {t('edit')}
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <AdminPageToolbar className="justify-between">
+        <Button variant="ghost" size="sm" className="shrink-0 gap-1.5 px-2" asChild>
+          <Link href={listHref}>
+            <ArrowLeft className="size-4" />
+            <span className="hidden sm:inline">{t('detail.backToList')}</span>
+          </Link>
+        </Button>
+        <Button variant="outline" size="sm" className="shrink-0 gap-1.5" asChild>
+          <Link href={editHref}>
+            <Pencil className="size-4" />
+            {t('edit')}
+          </Link>
+        </Button>
+      </AdminPageToolbar>
 
       <div className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto p-4 md:p-6">
         {doc.format === 'markdown' ? (

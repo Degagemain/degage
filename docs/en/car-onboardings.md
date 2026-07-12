@@ -141,16 +141,27 @@ Admins can overrule the agreement on the car value tab when the owner has explic
 
 This step is complete when car value status is **Resolved**.
 
+### Car stickers
+
+The owner chooses extra sticker designs from the catalog during the public onboarding flow. Always-included stickers are shown as pre-selected
+and cannot be removed; they are not stored on the onboarding record.
+
+| Property     | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| Car stickers | Extra sticker designs selected by the owner and saved. |
+
+This step is complete when at least one extra sticker is saved.
+
 ### Finalize
 
-When play connector, info session, user info, car info, insurer, road assistance plan, and car value are all complete, the system sets
-preparation status to **Ready** automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
+When play connector, info session, user info, car info, insurer, road assistance plan, car value, and car stickers are all complete, the system
+sets preparation status to **Ready** automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
 
-| Status | Meaning                                                                                                                                                      |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                                 |
-| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), and car value (Resolved) are all complete. The system sets this automatically. |
-| Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**.         |
+| Status | Meaning                                                                                                                                                                    |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                                               |
+| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), car value (Resolved), and car stickers are all complete. The system sets this automatically. |
+| Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**.                       |
 
 When preparation is **Locked**, users cannot update car-info, user-info, insurer, or car value until an admin unlocks it.
 

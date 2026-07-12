@@ -15,6 +15,8 @@ Catalogus van Dégage-autostickerontwerpen waaruit gebruikers kunnen kiezen.
 | Altijd inbegrepen | Indien ingeschakeld, wordt de sticker automatisch voor elke wagen toegevoegd. |
 | Afbeelding        | Stickerafbeelding (JPEG of PNG).                                              |
 
+Een sticker die aan een auto-onboarding is gekoppeld, kan niet worden verwijderd.
+
 ## Exporteren
 
 Gebruik **Meer → Exporteren** om de huidige gefilterde/gesorteerde lijst als CSV of JSON te downloaden.

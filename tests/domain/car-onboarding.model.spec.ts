@@ -8,6 +8,7 @@ import {
   applyInsurerStatus,
   applyRoadAssistancePlanStatus,
   areCarInfoDocumentsComplete,
+  canUpdateInsurer,
   carOnboardingCarInfoInputSchema,
   carOnboardingCarInfoSchema,
   carOnboardingCarValueCounterInputSchema,
@@ -24,6 +25,7 @@ import {
   carOnboardingUserInfoSchema,
   isCarInfoSectionComplete,
   isCarOlderThanFourYears,
+  isCarStickerSectionComplete,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
@@ -88,6 +90,7 @@ describe('carOnboardingSchema', () => {
     expect(result.seats).toBe(0);
     expect(result.owner).toBeNull();
     expect(result.simulation).toBeNull();
+    expect(result.carStickers).toEqual([]);
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -561,6 +564,40 @@ describe('isInsurerSectionComplete', () => {
   });
 });
 
+describe('canUpdateInsurer', () => {
+  it('returns true when insurer status is todo', () => {
+    expect(canUpdateInsurer(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.TODO }))).toBe(true);
+  });
+
+  it('returns true for purchased cars without insurance when status is not applicable', () => {
+    expect(
+      canUpdateInsurer(
+        carOnboarding({
+          isPurchased: true,
+          hasInsuranceContract: false,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('returns false when insurer status is ready', () => {
+    expect(canUpdateInsurer(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+  });
+
+  it('returns false for existing cars when status is not applicable', () => {
+    expect(
+      canUpdateInsurer(
+        carOnboarding({
+          isPurchased: false,
+          hasInsuranceContract: false,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }),
+      ),
+    ).toBe(false);
+  });
+});
+
 describe('applyInsurerStatus', () => {
   it('sets not applicable and clears fields when hasInsuranceContract is false', () => {
     const result = applyInsurerStatus(
@@ -654,6 +691,18 @@ describe('isRoadAssistancePlanSectionComplete', () => {
     expect(isRoadAssistancePlanSectionComplete(carOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY }))).toBe(
       true,
     );
+  });
+});
+
+describe('isCarStickerSectionComplete', () => {
+  it('returns true when at least one extra sticker is saved', () => {
+    expect(isCarStickerSectionComplete(carOnboarding({ carStickers: [{ id: '550e8400-e29b-41d4-a716-446655440012', name: 'Classic' }] }))).toBe(
+      true,
+    );
+  });
+
+  it('returns false when no extra stickers are saved', () => {
+    expect(isCarStickerSectionComplete(carOnboarding({ carStickers: [] }))).toBe(false);
   });
 });
 

@@ -11,6 +11,7 @@ import { apiPost } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { CAR_TAX_EURO_NORM_ADJUSTMENT_FORM_ID, CarTaxEuroNormAdjustmentForm } from '../components/car-tax-euro-norm-adjustment-form';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 const OVERVIEW_PATH = '/app/admin/car-tax-euro-norm-adjustments';
 
@@ -41,14 +42,12 @@ export default function NewCarTaxEuroNormAdjustmentPage() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b px-3 md:px-4">
-        <div className="flex h-14 items-center justify-start gap-2">
-          <Button type="submit" form={CAR_TAX_EURO_NORM_ADJUSTMENT_FORM_ID} disabled={isSaving} variant="outline" size="sm">
-            <Save className="size-3.5" />
-            {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
-          </Button>
-        </div>
-      </div>
+      <AdminPageToolbar>
+        <Button type="submit" form={CAR_TAX_EURO_NORM_ADJUSTMENT_FORM_ID} disabled={isSaving} variant="outline" size="sm">
+          <Save className="size-3.5" />
+          {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
+        </Button>
+      </AdminPageToolbar>
       <CarTaxEuroNormAdjustmentForm formId={CAR_TAX_EURO_NORM_ADJUSTMENT_FORM_ID} isSubmitting={isSaving} onSubmit={handleCreate} />
     </div>
   );

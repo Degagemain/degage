@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
 import {
   arePrerequisitesMet,
@@ -30,6 +31,7 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
+      'car-stickers',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
       'play-connector',
@@ -39,6 +41,7 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
+      'car-stickers',
     ]);
   });
 });
@@ -143,8 +146,14 @@ describe('isStepReadOnly', () => {
     expect(isStepReadOnly('info-session', completeCarOnboarding())).toBe(true);
   });
 
-  it('is read-only for insurer when status is not todo', () => {
-    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(true);
+  it('stays editable for insurer when status is ready and preparation is open', () => {
+    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+  });
+
+  it('stays editable for road assistance plan when status is ready and preparation is open', () => {
+    expect(
+      isStepReadOnly('road-assistance-plan', completeCarOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY })),
+    ).toBe(false);
   });
 });
 
@@ -162,6 +171,11 @@ describe('isStepComplete', () => {
   it('returns true for completed user info', () => {
     expect(isStepComplete('user-info', completeCarOnboarding())).toBe(true);
     expect(isStepComplete('user-info', carOnboarding())).toBe(false);
+  });
+
+  it('returns true for completed car stickers when at least one extra sticker is saved', () => {
+    expect(isStepComplete('car-stickers', completeCarOnboarding())).toBe(true);
+    expect(isStepComplete('car-stickers', completeCarOnboarding({ carStickers: [] }))).toBe(false);
   });
 });
 
@@ -182,10 +196,11 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('user-info', completeCarOnboarding())).toBe(true);
   });
 
-  it('requires info session enrolled before car info, insurer, and car value', () => {
+  it('requires info session enrolled before car info, insurer, car value, and car stickers', () => {
     expect(arePrerequisitesMet('car-info', withPlayConnector())).toBe(false);
     expect(arePrerequisitesMet('insurer', withPlayConnector())).toBe(false);
     expect(arePrerequisitesMet('car-value', withPlayConnector())).toBe(false);
+    expect(arePrerequisitesMet('car-stickers', withPlayConnector())).toBe(false);
     const enrolled = withPlayConnector({
       infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
       infoSessionPcId: '1359',
@@ -194,5 +209,6 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('car-info', enrolled)).toBe(true);
     expect(arePrerequisitesMet('insurer', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-value', enrolled)).toBe(true);
+    expect(arePrerequisitesMet('car-stickers', enrolled)).toBe(true);
   });
 });

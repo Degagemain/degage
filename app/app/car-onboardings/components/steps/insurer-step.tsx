@@ -84,18 +84,13 @@ export function InsurerStep() {
 
   return (
     <StepLayout stepId="insurer">
-      <PublicPanel title={t('steps.insurer.panelTitle')}>
-        <PublicField label={tAdmin('columns.hasInsuranceContract')} hint={t('steps.insurer.hasInsuranceContractHint')}>
-          <label className={styles.checkboxLabel}>
-            <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />
-            <span>{t('steps.insurer.hasInsuranceContractLabel')}</span>
-          </label>
-        </PublicField>
+      <PublicPanel title={t('steps.insurer.panelTitle')} body={t('steps.insurer.panelBody')}>
+        <label className={styles.checkboxLabel}>
+          <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />
+          <span>{t('steps.insurer.hasInsuranceContractLabel')}</span>
+        </label>
         {hasInsuranceContract ? (
           <>
-            <PublicField label={tAdmin('columns.insurerContractStartedAt')}>
-              <PublicInput type="date" value={contractStartedAt} onChange={(e) => setContractStartedAt(e.target.value)} />
-            </PublicField>
             <PublicSearchableField
               label={tAdmin('columns.insurer')}
               value={insurerId}
@@ -107,6 +102,9 @@ export function InsurerStep() {
               apiPath="insurers"
               placeholder={tAdmin('form.placeholders.insurer')}
             />
+            <PublicField label={tAdmin('columns.insurerContractStartedAt')} hint={t('steps.insurer.contractStartedAtHint')}>
+              <PublicInput type="date" value={contractStartedAt} onChange={(e) => setContractStartedAt(e.target.value)} />
+            </PublicField>
           </>
         ) : null}
       </PublicPanel>
