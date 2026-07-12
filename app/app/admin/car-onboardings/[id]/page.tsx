@@ -14,6 +14,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { CAR_ONBOARDING_FORM_ID, CarOnboardingForm, type CarOnboardingTabId, parseCarOnboardingTab } from '../components/car-onboarding-form';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 const OVERVIEW_PATH = '/app/admin/car-onboardings';
 
@@ -274,34 +275,32 @@ export default function EditCarOnboardingPage() {
   return (
     <>
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="border-b px-3 md:px-4">
-          <div className="flex h-14 items-center justify-start gap-2">
-            <Button type="submit" form={CAR_ONBOARDING_FORM_ID} disabled={isLoading || isSaving || !carOnboarding} variant="outline" size="sm">
-              <Save className="size-3.5" />
-              {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
+        <AdminPageToolbar>
+          <Button type="submit" form={CAR_ONBOARDING_FORM_ID} disabled={isLoading || isSaving || !carOnboarding} variant="outline" size="sm">
+            <Save className="size-3.5" />
+            {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setIsDeleteDialogOpen(true)} disabled={isLoading || isSaving || !carOnboarding}>
+            <Trash2 className="size-3.5" />
+            {t('delete.confirm')}
+          </Button>
+          {carOnboarding?.simulation?.id ? (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/app/admin/simulations/${carOnboarding.simulation.id}`}>
+                <ExternalLink className="size-3.5" />
+                {t('form.openSimulation')}
+              </Link>
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsDeleteDialogOpen(true)} disabled={isLoading || isSaving || !carOnboarding}>
-              <Trash2 className="size-3.5" />
-              {t('delete.confirm')}
+          ) : null}
+          {carOnboarding?.id ? (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/app/car-onboardings/${carOnboarding.id}`}>
+                <ExternalLink className="size-3.5" />
+                {t('form.openPublicPage')}
+              </Link>
             </Button>
-            {carOnboarding?.simulation?.id ? (
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/app/admin/simulations/${carOnboarding.simulation.id}`}>
-                  <ExternalLink className="size-3.5" />
-                  {t('form.openSimulation')}
-                </Link>
-              </Button>
-            ) : null}
-            {carOnboarding?.id ? (
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/app/car-onboardings/${carOnboarding.id}`}>
-                  <ExternalLink className="size-3.5" />
-                  {t('form.openPublicPage')}
-                </Link>
-              </Button>
-            ) : null}
-          </div>
-        </div>
+          ) : null}
+        </AdminPageToolbar>
 
         {isLoading ? (
           <div className="space-y-6 px-3 py-4 md:px-4">

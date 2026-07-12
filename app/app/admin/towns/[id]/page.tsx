@@ -13,6 +13,7 @@ import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-d
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { TOWN_FORM_ID, TownForm } from '../components/town-form';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 const OVERVIEW_PATH = '/app/admin/towns';
 
@@ -108,18 +109,16 @@ export default function EditTownPage() {
   return (
     <>
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="border-b px-3 md:px-4">
-          <div className="flex h-14 items-center justify-start gap-2">
-            <Button type="submit" form={TOWN_FORM_ID} disabled={isLoading || isSaving || !town} variant="outline" size="sm">
-              <Save className="size-3.5" />
-              {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsDeleteDialogOpen(true)} disabled={isLoading || isSaving || !town}>
-              <Trash2 className="size-3.5" />
-              {t('delete.confirm')}
-            </Button>
-          </div>
-        </div>
+        <AdminPageToolbar>
+          <Button type="submit" form={TOWN_FORM_ID} disabled={isLoading || isSaving || !town} variant="outline" size="sm">
+            <Save className="size-3.5" />
+            {isSaving ? tCommon('status.saving') : tCommon('actions.save')}
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setIsDeleteDialogOpen(true)} disabled={isLoading || isSaving || !town}>
+            <Trash2 className="size-3.5" />
+            {t('delete.confirm')}
+          </Button>
+        </AdminPageToolbar>
 
         {isLoading ? (
           <div className="space-y-6 px-3 py-4 md:px-4">

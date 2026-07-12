@@ -18,6 +18,7 @@ import { Textarea } from '@/app/components/ui/textarea';
 import { AdminLocaleTabsControl } from '@/app/components/form/admin-locale-tabs-control';
 import { emptyContentLocaleRecord } from '@/app/components/form/empty-content-locale-record';
 import { type TranslationCatalogEntry, formatTranslationKeyPath } from '../translation-overrides-utils';
+import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 
 const TRANSLATION_OVERRIDE_FORM_ID = 'translation-override-editor-form';
 
@@ -149,26 +150,24 @@ export default function TranslationOverrideDetailPage() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b px-3 md:px-4">
-        <div className="flex h-14 items-center justify-start gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/app/admin/translation-overrides">
-              <ArrowLeft className="size-3.5" />
-              {t('backToList')}
-            </Link>
-          </Button>
-          <Button
-            type="submit"
-            form={TRANSLATION_OVERRIDE_FORM_ID}
-            disabled={state.isLoading || isSubmitting || !entry || hasErrors}
-            variant="outline"
-            size="sm"
-          >
-            <Save className="size-3.5" />
-            {isSubmitting ? t('saving') : t('saveOverride')}
-          </Button>
-        </div>
-      </div>
+      <AdminPageToolbar>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/app/admin/translation-overrides">
+            <ArrowLeft className="size-3.5" />
+            {t('backToList')}
+          </Link>
+        </Button>
+        <Button
+          type="submit"
+          form={TRANSLATION_OVERRIDE_FORM_ID}
+          disabled={state.isLoading || isSubmitting || !entry || hasErrors}
+          variant="outline"
+          size="sm"
+        >
+          <Save className="size-3.5" />
+          {isSubmitting ? t('saving') : t('saveOverride')}
+        </Button>
+      </AdminPageToolbar>
 
       <div className="min-h-0 flex-1 overflow-auto">
         {state.isLoading ? (
