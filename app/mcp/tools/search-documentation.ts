@@ -10,8 +10,9 @@ export const registerSearchDocumentationTool = (server: McpServer, getContext: (
     'search_documentation',
     {
       description:
-        'Search and list documentation articles using the same filters as GET /api/documentation. ' +
-        'Returns { records, total } with pagination (skip/take) and optional text query.',
+        'List and search help documentation articles. ' +
+        'Returns { records, total } with pagination and optional text query on title and content. ' +
+        'Non-admin callers only see public articles.',
       inputSchema: documentationSearchMcpInputSchema,
     },
     async (input) => {

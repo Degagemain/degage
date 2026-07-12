@@ -11,8 +11,9 @@ export const registerUpdateDocumentationTool = (server: McpServer, getContext: (
     'update_documentation',
     {
       description:
-        'Replace a documentation record with the full JSON body (same as PUT /api/documentation/{id}). ' +
-        'Fetch the current article via GET /api/documentation/{id}, change the desired fields, then send the complete object including all translations.',
+        'Replace a documentation article. Use search_documentation to load the current record, ' +
+        'change the desired fields, then send the complete object including all translations. ' +
+        'This is a full replace, not a partial update. Regenerates search embeddings after save.',
       inputSchema: documentationUpdateMcpInputSchema,
     },
     async (input) => {

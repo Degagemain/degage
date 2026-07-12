@@ -23,13 +23,13 @@ Run database migrations so OAuth Provider tables exist (`pnpm db:migrate`).
 
 URL: `/mcp`
 
-| Tool                          | OAuth scope | Description                                                                 |
-| ----------------------------- | ----------- | --------------------------------------------------------------------------- |
-| `search_documentation`        | `mcp:user`  | List/search documentation (same filters as `GET /api/documentation`)        |
-| `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)  |
-| `update_documentation`        | `mcp:admin` | Replace a documentation record (same body as `PUT /api/documentation/{id}`) |
-| `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations        |
-| `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)      |
+| Tool                          | OAuth scope | Description                                                                   |
+| ----------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `search_documentation`        | `mcp:user`  | List and search help documentation articles (non-admins see public docs only) |
+| `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)    |
+| `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
+| `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
+| `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
 
 MCP is a peer interface to REST (`/api/*`), not nested under it.
 
