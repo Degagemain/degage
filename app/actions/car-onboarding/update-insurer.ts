@@ -1,4 +1,4 @@
-import { carOnboardingInsurerInputSchema } from '@/domain/car-onboarding.model';
+import { CarOnboardingInsurerStatus, carOnboardingInsurerInputSchema } from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
@@ -10,5 +10,14 @@ export const updateCarOnboardingInsurer = async (id: string, body: unknown, user
   assertCarOnboardingNotLocked(existing);
   const parsed = carOnboardingInsurerInputSchema.parse(body);
   const merged = { ...existing, ...parsed };
-  await saveCarOnboardingWithPreparationCheck(merged);
+  const withInsurerCompletion =
+    merged.isPurchased && !merged.hasInsuranceContract
+      ? {
+          ...merged,
+          insurer: null,
+          insurerContractStartedAt: null,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }
+      : merged;
+  await saveCarOnboardingWithPreparationCheck(withInsurerCompletion);
 };
