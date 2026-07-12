@@ -2,7 +2,9 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { canUseMcpTools } from '@/mcp/auth-context';
 import { mcpRoleScope } from '@/mcp/config';
 import { getMcpAuthContext } from '@/mcp/request-context';
+import { registerCreateSimulationPrompt } from '@/mcp/prompts/create-simulation';
 import { registerCreateDocumentationGroupTool } from '@/mcp/tools/create-documentation-group';
+import { registerCreateSimulationTool } from '@/mcp/tools/create-simulation';
 import { registerReadCarBrandTool } from '@/mcp/tools/read-car-brand';
 import { registerSearchCarBrandsTool } from '@/mcp/tools/search-car-brands';
 import { registerSearchCarTypesTool } from '@/mcp/tools/search-car-types';
@@ -28,6 +30,8 @@ export const registerMcpTools = (server: McpServer): void => {
     registerReadCarBrandTool(server, getMcpAuthContext, userScope);
     registerSearchCarTypesTool(server, getMcpAuthContext, userScope);
     registerSearchTownsTool(server, getMcpAuthContext, userScope);
+    registerCreateSimulationTool(server, getMcpAuthContext, userScope);
+    registerCreateSimulationPrompt(server);
   }
 
   if (canUseMcpTools(ctx, adminScope, true).ok) {

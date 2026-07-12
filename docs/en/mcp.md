@@ -32,11 +32,20 @@ URL: `/mcp`
 | `read_car_brand`              | `mcp:user`  | Read a single car brand by UUID                                               |
 | `search_car_types`            | `mcp:user`  | List and search car types (requires brandId and fuelTypeId)                   |
 | `search_towns`                | `mcp:user`  | List and search towns by zip, name, or municipality                           |
+| `create_simulation`           | `mcp:user`  | Run and persist a car eligibility simulation; returns summary and public link |
 | `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
 | `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
 | `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
 
 MCP is a peer interface to REST (`/api/*`), not nested under it.
+
+## Prompts
+
+| Prompt              | Description                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `create_simulation` | Guides collecting inputs for an existing car or a car being purchased, resolving entities via search tools, then calling `create_simulation` |
+
+Optional prompt argument `situation`: `existing` or `purchase` to skip the initial situation question.
 
 ## OAuth
 
@@ -76,4 +85,5 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 - Config: `app/mcp/config.ts`
 - Route: `app/mcp/route.ts`
 - Tools: `app/mcp/tools/`
+- Prompts: `app/mcp/prompts/`
 - Auth server: `app/auth.ts` (conditional `oauthProvider` + `jwt` plugins)
