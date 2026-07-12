@@ -53,10 +53,10 @@ export function PublicBtn({
   );
 }
 
-export function PublicPanel({ title, body, children }: { title: string; body?: string; children?: ReactNode }) {
+export function PublicPanel({ title, body, children }: { title?: string; body?: string; children?: ReactNode }) {
   return (
     <div className={styles.panel}>
-      <h3 className={styles.panelTitle}>{title}</h3>
+      {title ? <h3 className={styles.panelTitle}>{title}</h3> : null}
       {body ? <p className={styles.panelBody}>{body}</p> : null}
       {children}
     </div>

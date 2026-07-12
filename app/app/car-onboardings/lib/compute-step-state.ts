@@ -3,8 +3,6 @@ import {
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
-  CarOnboardingInsurerStatus,
-  CarOnboardingRoadAssistancePlanStatus,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionEnrolled,
@@ -87,14 +85,6 @@ export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boole
   }
 
   if (stepId === 'info-session' && isInfoSessionSectionComplete(onboarding)) {
-    return true;
-  }
-
-  if (stepId === 'insurer' && onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
-    return true;
-  }
-
-  if (stepId === 'road-assistance-plan' && onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO) {
     return true;
   }
 

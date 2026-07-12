@@ -4,6 +4,7 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
 import {
   arePrerequisitesMet,
@@ -143,8 +144,14 @@ describe('isStepReadOnly', () => {
     expect(isStepReadOnly('info-session', completeCarOnboarding())).toBe(true);
   });
 
-  it('is read-only for insurer when status is not todo', () => {
-    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(true);
+  it('stays editable for insurer when status is ready and preparation is open', () => {
+    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+  });
+
+  it('stays editable for road assistance plan when status is ready and preparation is open', () => {
+    expect(
+      isStepReadOnly('road-assistance-plan', completeCarOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY })),
+    ).toBe(false);
   });
 });
 

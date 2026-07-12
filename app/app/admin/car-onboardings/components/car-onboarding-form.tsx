@@ -653,6 +653,34 @@ export function CarOnboardingForm({
               </div>
               <FieldGroup className="gap-6">
                 <Controller
+                  name="isPurchased"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-is-purchased-car"
+                      label={t('columns.isPurchased')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled
+                      description={t('form.help.isPurchasedReadOnly')}
+                    />
+                  )}
+                />
+                <Controller
+                  name="isNewCar"
+                  control={form.control}
+                  render={({ field }) => (
+                    <AdminSwitchFieldControl
+                      id="car-onboarding-is-new-car"
+                      label={t('columns.isNewCar')}
+                      checked={field.value}
+                      onChange={field.onChange}
+                      disabled
+                      description={t('form.help.isNewCarReadOnly')}
+                    />
+                  )}
+                />
+                <Controller
                   name="brandId"
                   control={form.control}
                   render={({ field, fieldState }) => (
@@ -810,34 +838,6 @@ export function CarOnboardingForm({
                       checked={field.value}
                       onChange={field.onChange}
                       disabled={isSubmitting}
-                    />
-                  )}
-                />
-                <Controller
-                  name="isPurchased"
-                  control={form.control}
-                  render={({ field }) => (
-                    <AdminSwitchFieldControl
-                      id="car-onboarding-is-purchased-car"
-                      label={t('columns.isPurchased')}
-                      checked={field.value}
-                      onChange={field.onChange}
-                      disabled
-                      description={t('form.help.isPurchasedReadOnly')}
-                    />
-                  )}
-                />
-                <Controller
-                  name="isNewCar"
-                  control={form.control}
-                  render={({ field }) => (
-                    <AdminSwitchFieldControl
-                      id="car-onboarding-is-new-car"
-                      label={t('columns.isNewCar')}
-                      checked={field.value}
-                      onChange={field.onChange}
-                      disabled
-                      description={t('form.help.isNewCarReadOnly')}
                     />
                   )}
                 />

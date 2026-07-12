@@ -10,7 +10,15 @@ import { PublicBackLink, PublicRoot, StateIcon } from './public-ui';
 import { StepReadOnlyProvider } from './step-read-only-context';
 import styles from '../car-onboarding-public.module.css';
 
-export function StepLayout({ stepId, children }: { stepId: StepId; children: React.ReactNode }) {
+export function StepLayout({
+  stepId,
+  children,
+  beforeFieldset,
+}: {
+  stepId: StepId;
+  children: React.ReactNode;
+  beforeFieldset?: React.ReactNode;
+}) {
   const t = useTranslations('carOnboardingPublic');
   const { carOnboarding, basePath } = useCarOnboarding();
   const definition = getStepDefinition(stepId);
@@ -43,6 +51,7 @@ export function StepLayout({ stepId, children }: { stepId: StepId; children: Rea
           <h1 className={styles.pageTitle}>{t(definition.titleKey)}</h1>
           <StateIcon state={stepState} inline />
         </div>
+        {beforeFieldset}
         <fieldset disabled={readOnly} className={styles.subflowFieldset}>
           {children}
         </fieldset>

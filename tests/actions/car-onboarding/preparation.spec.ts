@@ -166,6 +166,18 @@ describe('assertInsurerStatusIsTodo', () => {
   it('does not throw when status is todo', () => {
     expect(() => assertInsurerStatusIsTodo(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.TODO }))).not.toThrow();
   });
+
+  it('does not throw for purchased cars without insurance when status is not applicable', () => {
+    expect(() =>
+      assertInsurerStatusIsTodo(
+        carOnboarding({
+          isPurchased: true,
+          hasInsuranceContract: false,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }),
+      ),
+    ).not.toThrow();
+  });
 });
 
 describe('applyCarValueProposalTransition', () => {

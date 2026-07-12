@@ -8,9 +8,10 @@ import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
 import { PublicField, PublicInput, PublicPanel } from '../public-ui';
-import { PublicSearchableField } from '../public-searchable-field';
+import { RoadAssistancePlanRadioList } from '../road-assistance-plan-radio-list';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
+import { useStepReadOnly } from '../step-read-only-context';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
 import styles from '../../car-onboarding-public.module.css';
 
@@ -23,14 +24,12 @@ const formatDateInput = (date: Date | string | null): string => {
 
 export function RoadAssistancePlanStep() {
   const t = useTranslations('carOnboardingPublic');
-  const tAdmin = useTranslations('admin.carOnboardings');
   const { carOnboarding, reload } = useCarOnboarding();
 
   const [hasExistingRoadAssistancePlan, setHasExistingRoadAssistancePlan] = useState(carOnboarding.hasExistingRoadAssistancePlan);
   const [existingEndDate, setExistingEndDate] = useState(formatDateInput(carOnboarding.existingRoadAssistancePlanEndDate));
   const [roadAssistancePlanId, setRoadAssistancePlanId] = useState(carOnboarding.roadAssistancePlan?.id ?? '');
   const [roadAssistancePlanName, setRoadAssistancePlanName] = useState(carOnboarding.roadAssistancePlan?.name ?? '');
-  const [roadAssistancePlanDescription, setRoadAssistancePlanDescription] = useState<string | undefined>(undefined);
   const [isSaving, setIsSaving] = useState(false);
 
   const isPurchasedNew = carOnboarding.isPurchased && carOnboarding.isNewCar;
@@ -41,27 +40,6 @@ export function RoadAssistancePlanStep() {
     setRoadAssistancePlanId(carOnboarding.roadAssistancePlan?.id ?? '');
     setRoadAssistancePlanName(carOnboarding.roadAssistancePlan?.name ?? '');
   }, [carOnboarding]);
-
-  useEffect(() => {
-    if (!roadAssistancePlanId) {
-      setRoadAssistancePlanDescription(undefined);
-      return;
-    }
-
-    let cancelled = false;
-    void (async () => {
-      const response = await fetch(`/api/road-assistance-plans/${roadAssistancePlanId}`);
-      if (!response.ok || cancelled) return;
-      const plan = (await response.json()) as { description?: string };
-      if (!cancelled) {
-        setRoadAssistancePlanDescription(plan.description?.trim() || undefined);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [roadAssistancePlanId]);
 
   const handleSave = async () => {
     if (!carOnboarding.id) return;
@@ -85,58 +63,85 @@ export function RoadAssistancePlanStep() {
     }
   };
 
-  return (
-    <StepLayout stepId="road-assistance-plan">
-      <PublicPanel title={t('steps.roadAssistancePlan.existingPanelTitle')}>
-        {isPurchasedNew ? (
-          <PublicField label={t('steps.roadAssistancePlan.includedPlanLabel')}>
-            <label className={styles.checkboxLabel}>
-              <PublicInput
-                type="checkbox"
-                checked={hasExistingRoadAssistancePlan}
-                onChange={(e) => setHasExistingRoadAssistancePlan(e.target.checked)}
-              />
-              <span>{t('steps.roadAssistancePlan.includedPlanCheckbox')}</span>
-            </label>
-          </PublicField>
-        ) : (
-          <PublicField label={tAdmin('columns.hasExistingRoadAssistancePlan')}>
-            <label className={styles.checkboxLabel}>
-              <PublicInput
-                type="checkbox"
-                checked={hasExistingRoadAssistancePlan}
-                onChange={(e) => setHasExistingRoadAssistancePlan(e.target.checked)}
-              />
-              <span>{t('steps.roadAssistancePlan.hasExistingLabel')}</span>
-            </label>
-          </PublicField>
-        )}
-        {hasExistingRoadAssistancePlan ? (
-          <PublicField label={tAdmin('columns.existingRoadAssistancePlanEndDate')}>
-            <PublicInput type="date" value={existingEndDate} onChange={(e) => setExistingEndDate(e.target.value)} />
-          </PublicField>
-        ) : null}
-      </PublicPanel>
+  const existingPlanField = (
+    <ExistingRoadAssistancePlanPanel
+      isPurchasedNew={isPurchasedNew}
+      hasExistingRoadAssistancePlan={hasExistingRoadAssistancePlan}
+      onHasExistingChange={setHasExistingRoadAssistancePlan}
+      existingEndDate={existingEndDate}
+      onExistingEndDateChange={setExistingEndDate}
+    />
+  );
 
-      <PublicPanel title={t('steps.roadAssistancePlan.desiredPanelTitle')}>
-        <PublicSearchableField
-          label={tAdmin('columns.roadAssistancePlan')}
+  return (
+    <StepLayout stepId="road-assistance-plan" beforeFieldset={existingPlanField}>
+      <PublicPanel title={t('steps.roadAssistancePlan.desiredPanelTitle')} body={t('steps.roadAssistancePlan.desiredPanelBody')}>
+        <RoadAssistancePlanRadioList
           value={roadAssistancePlanId}
-          selectedLabel={roadAssistancePlanName || undefined}
-          selectedDescription={roadAssistancePlanDescription}
           onValueChange={(id, option) => {
             setRoadAssistancePlanId(id);
             setRoadAssistancePlanName(option.name);
-            setRoadAssistancePlanDescription(option.description);
           }}
-          apiPath="road-assistance-plans"
-          queryParams={{ isActive: 'true' }}
-          descriptionKey="description"
-          placeholder={tAdmin('form.placeholders.roadAssistancePlan')}
         />
       </PublicPanel>
 
       <StepActions stepId="road-assistance-plan" onSave={() => void handleSave()} saveDisabled={isSaving} />
     </StepLayout>
+  );
+}
+
+function ExistingRoadAssistancePlanPanel({
+  isPurchasedNew,
+  hasExistingRoadAssistancePlan,
+  onHasExistingChange,
+  existingEndDate,
+  onExistingEndDateChange,
+}: {
+  isPurchasedNew: boolean;
+  hasExistingRoadAssistancePlan: boolean;
+  onHasExistingChange: (value: boolean) => void;
+  existingEndDate: string;
+  onExistingEndDateChange: (value: string) => void;
+}) {
+  const t = useTranslations('carOnboardingPublic');
+  const tAdmin = useTranslations('admin.carOnboardings');
+  const readOnly = useStepReadOnly();
+
+  return (
+    <PublicPanel>
+      {isPurchasedNew ? (
+        <PublicField label={t('steps.roadAssistancePlan.includedPlanLabel')} hint={t('steps.roadAssistancePlan.existingPanelBody')}>
+          <label className={styles.checkboxLabel}>
+            <PublicInput
+              type="checkbox"
+              checked={hasExistingRoadAssistancePlan}
+              disabled={readOnly}
+              onChange={(e) => onHasExistingChange(e.target.checked)}
+            />
+            <span>{t('steps.roadAssistancePlan.includedPlanCheckbox')}</span>
+          </label>
+        </PublicField>
+      ) : (
+        <PublicField label={t('steps.roadAssistancePlan.hasExistingFieldLabel')} hint={t('steps.roadAssistancePlan.existingPanelBody')}>
+          <label className={styles.checkboxLabel}>
+            <PublicInput
+              type="checkbox"
+              checked={hasExistingRoadAssistancePlan}
+              disabled={readOnly}
+              onChange={(e) => onHasExistingChange(e.target.checked)}
+            />
+            <span>{t('steps.roadAssistancePlan.hasExistingLabel')}</span>
+          </label>
+        </PublicField>
+      )}
+      {hasExistingRoadAssistancePlan ? (
+        <PublicField
+          label={tAdmin('columns.existingRoadAssistancePlanEndDate')}
+          hint={t('steps.roadAssistancePlan.existingRoadAssistancePlanEndDateHint')}
+        >
+          <PublicInput type="date" value={existingEndDate} disabled={readOnly} onChange={(e) => onExistingEndDateChange(e.target.value)} />
+        </PublicField>
+      ) : null}
+    </PublicPanel>
   );
 }

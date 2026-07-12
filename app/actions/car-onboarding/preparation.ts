@@ -3,8 +3,8 @@ import {
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
-  CarOnboardingInsurerStatus,
   CarOnboardingRoadAssistancePlanStatus,
+  canUpdateInsurer,
   isCarInfoSectionComplete,
   isCarValueProposedToOwner,
   isInfoSessionSectionComplete,
@@ -64,7 +64,7 @@ export const assertCarValueStatusIsProposal = (onboarding: CarOnboarding): void 
 };
 
 export const assertInsurerStatusIsTodo = (onboarding: CarOnboarding): void => {
-  if (onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO) {
+  if (!canUpdateInsurer(onboarding)) {
     throw new CarOnboardingInvalidInsurerStatusError();
   }
 };

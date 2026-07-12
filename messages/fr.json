@@ -2816,11 +2816,12 @@
       },
       "insurer": {
         "title": "Assurance",
-        "subtitle": "Votre assurance auto actuelle",
-        "info": "Indiquez l'assureur actuel de votre véhicule et la date de début du contrat.",
-        "panelTitle": "Assurance actuelle",
-        "hasInsuranceContractLabel": "J'ai déjà un contrat d'assurance pour ce véhicule",
-        "hasInsuranceContractHint": "Désactivez cette option si Dégage organise l'assurance pour vous. Vous pourrez ajouter les détails plus tard.",
+        "subtitle": "Résilier votre assurance auto actuelle",
+        "info": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, indiquez les détails pour que nous puissions la résilier.",
+        "panelTitle": "Assurance existante",
+        "panelBody": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, cochez cette case et indiquez les détails pour que nous puissions la résilier.",
+        "hasInsuranceContractLabel": "J'ai encore un contrat d'assurance en cours pour ce véhicule",
+        "contractStartedAtHint": "La date de début initiale du contrat, et non la date de renouvellement (annuel).",
         "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
       },
       "roadAssistancePlan": {
@@ -2828,10 +2829,17 @@
         "subtitle": "Votre couverture d'assistance routière",
         "info": "Indiquez si votre véhicule a déjà une assistance routière et choisissez le plan souhaité avec Dégage.",
         "existingPanelTitle": "Assistance routière existante",
+        "existingPanelBody": "Les véhicules neufs incluent parfois plusieurs années d'assistance routière à l'achat.",
+        "hasExistingFieldLabel": "Assistance routière existante ?",
         "desiredPanelTitle": "Plan d'assistance souhaité",
+        "desiredPanelBody": "Quel type de plan d'assistance routière souhaitez-vous après votre adhésion à Dégage ?",
         "includedPlanLabel": "Plan inclus",
         "includedPlanCheckbox": "Le véhicule acheté inclut un plan d'assistance routière",
-        "hasExistingLabel": "J'ai déjà un plan d'assistance routière pour ce véhicule"
+        "hasExistingLabel": "J'ai déjà un plan d'assistance routière pour ce véhicule",
+        "existingRoadAssistancePlanEndDateHint": "Votre assistance routière Dégage démarre automatiquement après cette date.",
+        "loading": "Chargement des plans d'assistance…",
+        "loadError": "Impossible de charger les plans d'assistance. Veuillez réessayer.",
+        "empty": "Aucun plan d'assistance disponible."
       },
       "carValue": {
         "title": "Valeur",

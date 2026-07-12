@@ -2815,12 +2815,13 @@
         }
       },
       "insurer": {
-        "title": "Insurer",
-        "subtitle": "Your current car insurance",
-        "info": "Tell us which insurer covers your car today and when the contract started.",
-        "panelTitle": "Current insurance",
-        "hasInsuranceContractLabel": "I already have an insurance contract for this car",
-        "hasInsuranceContractHint": "Turn this off if Dégage will arrange insurance for you. You can add insurer details later.",
+        "title": "Insurance",
+        "subtitle": "Cancel your existing car insurance",
+        "info": "Dégage always arranges insurance for your car. If you currently have your own car insurance, provide the details so we can cancel it.",
+        "panelTitle": "Existing insurance",
+        "panelBody": "Dégage always arranges insurance for your car. If you currently have your own car insurance, check this box and enter the details so we can cancel it.",
+        "hasInsuranceContractLabel": "I currently have an active insurance contract for this car",
+        "contractStartedAtHint": "The original contract start date, not the (yearly) renewal date.",
         "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
       },
       "roadAssistancePlan": {
@@ -2828,10 +2829,17 @@
         "subtitle": "Your roadside assistance coverage",
         "info": "Tell us whether your car already has road assistance and choose the plan you want with Dégage.",
         "existingPanelTitle": "Existing road assistance",
+        "existingPanelBody": "New cars sometimes include a few years of road assistance when purchased.",
+        "hasExistingFieldLabel": "Existing road assistance?",
         "desiredPanelTitle": "Desired road assistance plan",
+        "desiredPanelBody": "Which type of road assistance plan do you want after joining Dégage?",
         "includedPlanLabel": "Included plan",
         "includedPlanCheckbox": "The purchased car has an included road assistance plan",
-        "hasExistingLabel": "I already have a road assistance plan for this car"
+        "hasExistingLabel": "I already have a road assistance plan for this car",
+        "existingRoadAssistancePlanEndDateHint": "Your Dégage road assistance starts automatically after this date.",
+        "loading": "Loading road assistance plans…",
+        "loadError": "Could not load road assistance plans. Please try again.",
+        "empty": "No road assistance plans available."
       },
       "carValue": {
         "title": "Car value",

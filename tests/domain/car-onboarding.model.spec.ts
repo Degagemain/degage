@@ -8,6 +8,7 @@ import {
   applyInsurerStatus,
   applyRoadAssistancePlanStatus,
   areCarInfoDocumentsComplete,
+  canUpdateInsurer,
   carOnboardingCarInfoInputSchema,
   carOnboardingCarInfoSchema,
   carOnboardingCarValueCounterInputSchema,
@@ -558,6 +559,40 @@ describe('isInsurerSectionComplete', () => {
   it('returns true when insurer status is ready or not applicable', () => {
     expect(isInsurerSectionComplete(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(true);
     expect(isInsurerSectionComplete(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE }))).toBe(true);
+  });
+});
+
+describe('canUpdateInsurer', () => {
+  it('returns true when insurer status is todo', () => {
+    expect(canUpdateInsurer(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.TODO }))).toBe(true);
+  });
+
+  it('returns true for purchased cars without insurance when status is not applicable', () => {
+    expect(
+      canUpdateInsurer(
+        carOnboarding({
+          isPurchased: true,
+          hasInsuranceContract: false,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('returns false when insurer status is ready', () => {
+    expect(canUpdateInsurer(carOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+  });
+
+  it('returns false for existing cars when status is not applicable', () => {
+    expect(
+      canUpdateInsurer(
+        carOnboarding({
+          isPurchased: false,
+          hasInsuranceContract: false,
+          insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        }),
+      ),
+    ).toBe(false);
   });
 });
 

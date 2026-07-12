@@ -10,7 +10,6 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
 
 import { CarOnboardingInPreparationStatus, CarOnboardingRoadAssistancePlanStatus } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
-import { CarOnboardingInvalidRoadAssistancePlanStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-road-assistance-plan-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { updateCarOnboardingRoadAssistancePlan } from '@/actions/car-onboarding/update-road-assistance-plan';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
@@ -93,22 +92,21 @@ describe('updateCarOnboardingRoadAssistancePlan', () => {
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('throws when road assistance plan status is not todo', async () => {
+  it('allows update when road assistance plan status is ready', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY }),
     );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
-    await expect(
-      updateCarOnboardingRoadAssistancePlan(
-        onboardingId,
-        {
-          hasExistingRoadAssistancePlan: false,
-          roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
-        },
-        owner,
-      ),
-    ).rejects.toThrow(CarOnboardingInvalidRoadAssistancePlanStatusError);
+    await updateCarOnboardingRoadAssistancePlan(
+      onboardingId,
+      {
+        hasExistingRoadAssistancePlan: false,
+        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+      },
+      owner,
+    );
 
-    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalled();
   });
 });

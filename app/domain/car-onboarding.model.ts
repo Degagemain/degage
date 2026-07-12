@@ -343,6 +343,14 @@ export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insure
   return onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO;
 };
 
+export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus' | 'isPurchased' | 'hasInsuranceContract'>): boolean => {
+  if (onboarding.insurerStatus === CarOnboardingInsurerStatus.TODO) {
+    return true;
+  }
+
+  return onboarding.isPurchased && !onboarding.hasInsuranceContract && onboarding.insurerStatus === CarOnboardingInsurerStatus.NOT_APPLICABLE;
+};
+
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
   if (!onboarding.hasInsuranceContract) {
     return {

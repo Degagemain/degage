@@ -1,6 +1,7 @@
 import {
   CarOnboarding,
   type CarOnboardingCreateInput,
+  CarOnboardingInsurerStatus,
   applyInsurerStatus,
   applyRoadAssistancePlanStatus,
   carOnboardingCreateInputSchema,
@@ -45,7 +46,11 @@ export const createCarOnboarding = async (input: CarOnboardingCreateInput, calle
     updatedAt: null,
   });
 
-  const withInsurer = applyInsurerStatus(toCreate);
+  const withInsurerApplied = applyInsurerStatus(toCreate);
+  const withInsurer =
+    toCreate.isPurchased && !toCreate.hasInsuranceContract
+      ? { ...withInsurerApplied, insurerStatus: CarOnboardingInsurerStatus.TODO }
+      : withInsurerApplied;
   const withRoadAssistancePlan = applyRoadAssistancePlanStatus(withInsurer);
   const created = await dbCarOnboardingCreate(withRoadAssistancePlan);
   return readCarOnboarding(created.id!);
