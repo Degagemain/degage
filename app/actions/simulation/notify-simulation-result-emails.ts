@@ -35,9 +35,16 @@ function formatOptionalKm(value: number | null | undefined): string {
   return `${value.toLocaleString('nl-BE')} km`;
 }
 
+function appBaseUrl(): string {
+  return (process.env.BETTER_AUTH_URL ?? 'http://localhost:3000').replace(/\/$/, '');
+}
+
 export function buildAdminSimulationUrl(simulationId: string): string {
-  const base = (process.env.BETTER_AUTH_URL ?? 'http://localhost:3000').replace(/\/$/, '');
-  return `${base}/app/admin/simulations/${simulationId}`;
+  return `${appBaseUrl()}/app/admin/simulations/${simulationId}`;
+}
+
+export function buildPublicSimulationUrl(simulationId: string): string {
+  return `${appBaseUrl()}/app/simulation/${simulationId}`;
 }
 
 export function buildSupportTopAlertRow(isPurchased: boolean): string {
@@ -113,6 +120,7 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
   const adminLink = buildAdminSimulationUrl(simulation.id);
   const userVariables = {
     SIMULATION_ID: simulation.id,
+    SIMULATION_URL: buildPublicSimulationUrl(simulation.id),
     BRAND_NAME: simulation.brand?.name ?? '—',
     TOWN_NAME: simulation.town?.name ?? '—',
     FUEL_TYPE: simulation.fuelType?.name ?? '—',

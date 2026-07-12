@@ -1564,7 +1564,8 @@
         "consumption": "Verbruik",
         "startOnboarding": "Start auto-onboarding",
         "startingOnboarding": "Bezig met starten…",
-        "startOnboardingError": "Auto-onboarding starten mislukt."
+        "startOnboardingError": "Auto-onboarding starten mislukt.",
+        "openPublicPage": "Publieke pagina openen"
       }
     },
     "carOnboardings": {
@@ -2476,6 +2477,12 @@
       "resultaat": "Resultaat",
       "kosten": "Jouw kosten",
       "bevestiging": "Bevestiging"
+    },
+    "resultPage": {
+      "loading": "Je simulatie wordt geladen…",
+      "notFoundTitle": "Simulatie niet gevonden",
+      "notFoundBody": "Deze link is ongeldig of de simulatie bestaat niet meer. Start een nieuwe simulatie om een andere wagen te controleren.",
+      "startNewCta": "Nieuwe simulatie starten →"
     }
   },
   "landing": {

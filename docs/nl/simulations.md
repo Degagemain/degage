@@ -185,6 +185,23 @@ Kolommen gemarkeerd met _(standaard verborgen)_ zijn beschikbaar via de kolomkie
 | Resultaat e-mail       | Adres voor het e-mailen van het simulatieresultaat (indien ingesteld). _(standaard verborgen)_ |
 | Bijgewerkt             | Datum en tijdstip van de laatste wijziging. _(standaard verborgen)_                            |
 
+Op het **detailscherm** van een simulatie kun je dit adres invoeren of wijzigen. De e-mail naar de ontvanger gebruikt je **huidige
+interfacetaal**. Bij succesvolle simulaties (niet **Niet OK**, zonder enginefout) stuurt een **nieuw of gewijzigd** adres het resultaat naar die
+persoon en krijgt support een samenvatting met adminlink. Gebruikers-e-mails bevatten ook een **publieke resultaatlink** (`SIMULATION_URL` →
+`/app/simulation/{id}`).
+
+## Publieke simulatieflow
+
+Publieke runs starten op `/app/simulation` (situatie → wagengegevens → beoordeling). Na aanmaak gaat de gebruiker naar `/app/simulation/{id}`.
+Die pagina is bereikbaar via id: iedereen met de link kan het resultaat bekijken; het **e-mailadres** wordt niet meegegeven bij anonieme
+`GET /api/simulations/{id}`. Ingelogde gebruikers (inclusief admins) krijgen het volledige record inclusief e-mail.
+
+- **Aanmaken:** `POST /api/simulations` (publiek)
+- **Opvragen op id:** `GET /api/simulations/{id}` (publiek zonder login; e-mail weggelaten)
+- **Resultaat-URL in e-mails:** `{BETTER_AUTH_URL}/app/simulation/{id}` via sjabloonvariabele `SIMULATION_URL`
+
+Gebruikers kunnen niet terug naar de wizard vanaf een opgeslagen resultaat; opnieuw proberen start een nieuwe run op `/app/simulation`.
+
 ## Richtlijnen voor admins
 
 - Houd referentietabellen volledig en actueel voor grote simulatiebatches.

@@ -6,10 +6,12 @@ import { SIMULATION_LOCALES, simulationMessages } from './simulation.messages';
 import {
   continueFromSituation,
   fillExistingCarForm,
+  getSimulationIdFromUrl,
   gotoSimulation,
   runExistingCarSimulation,
   runNewCarSimulation,
   selectExistingCarSituation,
+  waitForSimulationResultPage,
 } from './simulation.helpers';
 
 for (const locale of SIMULATION_LOCALES) {
@@ -87,6 +89,18 @@ for (const locale of SIMULATION_LOCALES) {
       await runNewCarSimulation(page, messages, { purchasePrice: E2E_SIMULATION.newCarExpensivePurchasePrice });
 
       await expect(page.getByRole('heading', { name: messages.notOkResultHeading })).toBeVisible({ timeout: 60_000 });
+    });
+
+    test('opens a saved simulation directly by id', async ({ page, appServer }) => {
+      await gotoSimulation(page, appServer.baseURL, messages);
+      await runExistingCarSimulation(page, messages);
+
+      await expect(page.getByRole('heading', { name: messages.successResultHeading })).toBeVisible({ timeout: 60_000 });
+      const simulationId = await getSimulationIdFromUrl(page);
+
+      await page.goto(`${appServer.baseURL}/app/simulation/${simulationId}`);
+      await waitForSimulationResultPage(page);
+      await expect(page.getByRole('heading', { name: messages.successResultHeading })).toBeVisible({ timeout: 60_000 });
     });
   });
 }

@@ -186,6 +186,23 @@ Les colonnes marquées _(masquées par défaut)_ sont disponibles via le sélect
 | E-mail du résultat      | Adresse utilisée pour envoyer le résultat par e-mail (si définie). _(masquée par défaut)_   |
 | Modifié le              | Date et heure de la dernière mise à jour. _(masquée par défaut)_                            |
 
+Sur l'**écran détail** d'une simulation, vous pouvez saisir ou modifier cette adresse. L'e-mail au destinataire utilise la **langue de
+l'interface courante**. Pour les simulations réussies (pas **Pas OK**, sans erreur moteur), un **nouvel** ou **modifié** adresse envoie le
+résultat à ce destinataire et notifie le support avec un résumé et un lien admin. Les e-mails utilisateur incluent aussi un **lien public vers
+le résultat** (`SIMULATION_URL` → `/app/simulation/{id}`).
+
+## Flux simulation publique
+
+Les runs publics commencent sur `/app/simulation` (situation → infos voiture → évaluation). Après création, l'utilisateur est redirigé vers
+`/app/simulation/{id}`. Cette page est accessible par id : toute personne avec le lien peut voir le résultat ; l'**e-mail** n'est pas renvoyé
+sur `GET /api/simulations/{id}` anonyme. Les utilisateurs connectés (y compris admins) reçoivent l'enregistrement complet avec e-mail.
+
+- **Création :** `POST /api/simulations` (public)
+- **Lecture par id :** `GET /api/simulations/{id}` (public sans connexion ; e-mail omis)
+- **URL résultat dans les e-mails :** `{BETTER_AUTH_URL}/app/simulation/{id}` via la variable `SIMULATION_URL`
+
+Les utilisateurs ne peuvent pas revenir à l'assistant depuis un résultat enregistré ; une nouvelle tentative démarre sur `/app/simulation`.
+
 ## Conseils pour les admins
 
 - Garder les tables de reference completes et a jour avant les batchs de simulation.

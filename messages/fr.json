@@ -1564,7 +1564,8 @@
         "consumption": "Consommation",
         "startOnboarding": "Démarrer l'intégration",
         "startingOnboarding": "Démarrage…",
-        "startOnboardingError": "Échec du démarrage de l'intégration véhicule."
+        "startOnboardingError": "Échec du démarrage de l'intégration véhicule.",
+        "openPublicPage": "Ouvrir la page publique"
       }
     },
     "carOnboardings": {
@@ -2476,6 +2477,12 @@
       "resultaat": "Résultat",
       "kosten": "Vos coûts",
       "bevestiging": "Confirmation"
+    },
+    "resultPage": {
+      "loading": "Chargement de votre simulation…",
+      "notFoundTitle": "Simulation introuvable",
+      "notFoundBody": "Ce lien est peut-être invalide ou la simulation n'existe plus. Lancez une nouvelle simulation pour vérifier une autre voiture.",
+      "startNewCta": "Démarrer une nouvelle simulation →"
     }
   },
   "landing": {

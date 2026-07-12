@@ -1564,7 +1564,8 @@
         "consumption": "Consumption",
         "startOnboarding": "Start onboarding",
         "startingOnboarding": "Starting…",
-        "startOnboardingError": "Failed to start car onboarding."
+        "startOnboardingError": "Failed to start car onboarding.",
+        "openPublicPage": "Open public page"
       }
     },
     "carOnboardings": {
@@ -2476,6 +2477,12 @@
       "resultaat": "Result",
       "kosten": "Your costs",
       "bevestiging": "Confirmation"
+    },
+    "resultPage": {
+      "loading": "Loading your simulation…",
+      "notFoundTitle": "Simulation not found",
+      "notFoundBody": "This link may be invalid or the simulation may have been removed. Start a new simulation to check another car.",
+      "startNewCta": "Start a new simulation →"
     }
   },
   "landing": {

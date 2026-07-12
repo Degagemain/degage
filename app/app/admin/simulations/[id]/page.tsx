@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { format } from 'date-fns';
-import { Check, ClipboardList, Info, X } from 'lucide-react';
+import { Check, ClipboardList, ExternalLink, Info, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
@@ -214,10 +214,20 @@ export default function SimulationDetailPage() {
         <Button variant="ghost" size="sm" asChild>
           <Link href="/app/admin/simulations">{tDetail('backToSimulations')}</Link>
         </Button>
-        <Button type="button" size="sm" onClick={() => void startOnboarding()} disabled={isStartingOnboarding || !simulation.id}>
-          <ClipboardList className="size-3.5" />
-          {isStartingOnboarding ? tDetail('startingOnboarding') : tDetail('startOnboarding')}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          {simulation.id ? (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/app/simulation/${simulation.id}`}>
+                <ExternalLink className="size-3.5" />
+                {tDetail('openPublicPage')}
+              </Link>
+            </Button>
+          ) : null}
+          <Button type="button" size="sm" onClick={() => void startOnboarding()} disabled={isStartingOnboarding || !simulation.id}>
+            <ClipboardList className="size-3.5" />
+            {isStartingOnboarding ? tDetail('startingOnboarding') : tDetail('startOnboarding')}
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
