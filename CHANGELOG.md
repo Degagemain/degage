@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: during car onboarding, the insurance step always appears; you first
+  indicate whether you have an insurance contract, and insurer details are only
+  asked when you do.
+- Added: during car onboarding, a new road assistance plan step lets you say
+  whether you already have a plan (with end date) and choose a desired plan from
+  the available options.
+
+### Admin features
+
+- Added: car onboarding records show whether the owner has an insurance
+  contract on the insurance tab; insurer details are optional when they do not.
+- Added: car onboarding records include a road assistance plan tab with
+  existing plan status, end date, and desired plan.
+- Added: admins can manage road assistance plans (name, description, and active
+  status per language) from the Car section of the admin menu.
+- Added: admins can manage car stickers (name, image, and whether they are
+  active or always included).
+
+### Technical
+
+- Integration of simple release notes.
+
+## [0.0.1] - 2026-07-07
+
+### Public features
+
 - Added: during car onboarding, owners who purchased a used car can upload the pink form (vehicle transfer form).
 - Added: during car onboarding, owners of non-purchased cars can upload an inspection certificate when the car is more than four years old; the section stays visible but disabled with an explanation otherwise.
 - Added: during car onboarding, upload the front and back of your registration certificate; VIN and licence plate are filled in automatically from the front when readable.
