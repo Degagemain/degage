@@ -4,7 +4,7 @@ import { getPrismaClient } from '@/storage/utils';
 import { dbSimulationToDomain, dbSimulationToDomainWithRelations } from './simulation.mappers';
 
 export type PublicSimulationView = Omit<Simulation, 'email'> & {
-  email: null;
+  email: string | null;
   townHasActiveMembers: boolean;
   townMunicipality: string;
 };
@@ -32,7 +32,7 @@ export const dbSimulationReadWithRelations = async (id: string): Promise<Simulat
   return dbSimulationToDomainWithRelations(simulation, locale);
 };
 
-export const dbSimulationReadPublic = async (id: string): Promise<PublicSimulationView> => {
+export const dbSimulationReadPublic = async (id: string, options?: { includeEmail?: boolean }): Promise<PublicSimulationView> => {
   const prisma = getPrismaClient();
   const locale = getRequestContentLocale();
   const simulation = await prisma.simulation.findUniqueOrThrow({
@@ -47,7 +47,7 @@ export const dbSimulationReadPublic = async (id: string): Promise<PublicSimulati
   const domain = dbSimulationToDomainWithRelations(simulation, locale);
   return {
     ...domain,
-    email: null,
+    email: options?.includeEmail ? (simulation.email ?? null) : null,
     townHasActiveMembers: simulation.town.hasActiveMembers,
     townMunicipality: simulation.town.municipality,
   };

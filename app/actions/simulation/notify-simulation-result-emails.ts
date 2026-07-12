@@ -119,7 +119,6 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
   const locale = emailTemplateLocale();
   const adminLink = buildAdminSimulationUrl(simulation.id);
   const userVariables = {
-    SIMULATION_ID: simulation.id,
     SIMULATION_URL: buildPublicSimulationUrl(simulation.id),
     BRAND_NAME: simulation.brand?.name ?? '—',
     TOWN_NAME: simulation.town?.name ?? '—',
