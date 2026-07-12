@@ -5,6 +5,17 @@ import { E2E_SIMULATION } from '../../../simulation-fixtures';
 import type { SimulationMessages } from './simulation.messages';
 
 export const SIMULATION_PATH = '/app/simulation';
+export const SIMULATION_RESULT_PATH_PATTERN = /\/app\/simulation\/[0-9a-f-]{36}$/i;
+
+export async function waitForSimulationResultPage(page: Page) {
+  await expect(page).toHaveURL(SIMULATION_RESULT_PATH_PATTERN, { timeout: 60_000 });
+}
+
+export async function getSimulationIdFromUrl(page: Page): Promise<string> {
+  const url = new URL(page.url());
+  const segments = url.pathname.split('/').filter(Boolean);
+  return segments[segments.length - 1]!;
+}
 
 export type CarFormData = {
   townQuery?: string;
@@ -101,6 +112,7 @@ export async function fillNewCarForm(page: Page, messages: SimulationMessages, o
 
 export async function submitCarInfo(page: Page, messages: SimulationMessages) {
   await page.getByRole('button', { name: messages.submitSimulationCta }).click();
+  await waitForSimulationResultPage(page);
 }
 
 export async function runExistingCarSimulation(page: Page, messages: SimulationMessages, overrides: CarFormData = {}) {

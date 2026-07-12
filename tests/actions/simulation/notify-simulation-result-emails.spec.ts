@@ -20,7 +20,7 @@ vi.mock('@/context/request-context', () => ({
   getRequestLocale: () => getRequestLocaleMock(),
 }));
 
-import { notifySimulationResultEmails } from '@/actions/simulation/notify-simulation-result-emails';
+import { buildPublicSimulationUrl, notifySimulationResultEmails } from '@/actions/simulation/notify-simulation-result-emails';
 import type { Simulation } from '@/domain/simulation.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import { TemplatesEnum, sendTemplatedEmail } from '@/integrations/resend';
@@ -51,7 +51,9 @@ describe('notifySimulationResultEmails', () => {
       expect.objectContaining({
         template: TemplatesEnum.SimulationResultsEmail,
         locale: 'en',
-        variables: expect.not.objectContaining({ FLEET_CATEGORY_MESSAGE: expect.anything() }),
+        variables: expect.objectContaining({
+          SIMULATION_URL: buildPublicSimulationUrl(simId),
+        }),
       }),
     );
     expect(sendTemplatedEmail).toHaveBeenNthCalledWith(2, expect.objectContaining({ template: TemplatesEnum.SimulationResultsSupportEmail }));

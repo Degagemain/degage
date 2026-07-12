@@ -43,7 +43,7 @@ export type FaqPanelClassNames = {
 };
 
 type Props = {
-  tags: DocumentationTag[];
+  tags: readonly DocumentationTag[];
   className?: string;
   /** Section title (left side of the panel header). Defaults to simulationPublic.faqCollapsedTitle. */
   heading?: string;

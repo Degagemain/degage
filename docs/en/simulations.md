@@ -186,11 +186,24 @@ Columns marked _(hidden by default)_ are available via the column picker but not
 
 On the simulation **detail** screen you can enter or change this address. The e-mail to the recipient uses your **current interface language**.
 For simulations that finished successfully (not **Not OK**, and without an engine error), saving a **new or changed** address sends the result
-to that address and notifies support with a summary and an admin link.
+to that address and notifies support with a summary and an admin link. User-facing result emails include a **public result link**
+(`SIMULATION_URL` → `/app/simulation/{id}`).
 
 You can download the rows that match the current filters and sort order using **More**, then **Export**. Choose a spreadsheet-friendly download
 or a structured data download. Column labels match what you see in the list (including columns you may have hidden). Only administrators can
 export.
+
+## Public simulation flow
+
+Public runs start at `/app/simulation` (situation → car details → assessment). After creation, the user is redirected to `/app/simulation/{id}`.
+That page is addressable by id: anyone with the link can view the result; the submitter's **email is not returned** on anonymous
+`GET /api/simulations/{id}`. Logged-in users (including admins) receive the full record including email.
+
+- **Create:** `POST /api/simulations` (public)
+- **Read by id:** `GET /api/simulations/{id}` (public when unauthenticated; email omitted)
+- **Result URL in emails:** `{BETTER_AUTH_URL}/app/simulation/{id}` via template variable `SIMULATION_URL`
+
+Users cannot return to the wizard from a saved result; starting again opens a new run at `/app/simulation`.
 
 ## Admin guidance
 

@@ -10,7 +10,7 @@ import { SupportChatProvider } from './components/support-chat-provider';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminArea = pathname?.startsWith('/app/admin');
-  const isSimulationPage = pathname === '/app/simulation';
+  const isSimulationPage = pathname?.startsWith('/app/simulation');
   const isCarOnboardingSection = pathname?.startsWith('/app/car-onboardings');
   const isFaqSection = pathname?.startsWith('/app/faq');
   const isLandingPage = pathname === '/app';

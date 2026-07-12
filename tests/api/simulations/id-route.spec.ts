@@ -8,6 +8,11 @@ vi.mock('@/auth', () => ({
   },
 }));
 
+vi.mock('@/actions/simulation/read', () => ({
+  readPublicSimulation: vi.fn(),
+  readSimulation: vi.fn(),
+}));
+
 vi.mock('@/actions/simulation/update', () => ({
   updateSimulation: vi.fn(),
 }));
@@ -17,11 +22,47 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
-import { PUT } from '@/api/simulations/[id]/route';
+import { GET, PUT } from '@/api/simulations/[id]/route';
+import { readPublicSimulation, readSimulation } from '@/actions/simulation/read';
 import { auth } from '@/auth';
 import { updateSimulation } from '@/actions/simulation/update';
+import { simulation } from '../../builders/simulation.builder';
 
 const simId = '550e8400-e29b-41d4-a716-446655440000';
+
+describe('GET /api/simulations/[id]', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('returns 200 without auth and omits email', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
+    vi.mocked(readPublicSimulation).mockResolvedValueOnce({
+      ...simulation({ id: simId, email: 'secret@example.com' }),
+      email: null,
+      townHasActiveMembers: true,
+      townMunicipality: 'Test Municipality',
+    });
+    const res = await GET({} as any, { params: Promise.resolve({ id: simId }) });
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.id).toBe(simId);
+    expect(json.email).toBeNull();
+    expect(json.townHasActiveMembers).toBe(true);
+    expect(readPublicSimulation).toHaveBeenCalledWith(simId);
+  });
+
+  it('returns full simulation including email when authenticated', async () => {
+    vi.mocked(auth.api.getSession).mockResolvedValueOnce({ user: { id: 'user-1' } } as any);
+    vi.mocked(readSimulation).mockResolvedValueOnce(simulation({ id: simId, email: 'admin@example.com' }));
+    const res = await GET({} as any, { params: Promise.resolve({ id: simId }) });
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.email).toBe('admin@example.com');
+    expect(readSimulation).toHaveBeenCalledWith(simId);
+    expect(readPublicSimulation).not.toHaveBeenCalled();
+  });
+});
 
 describe('PUT /api/simulations/[id]', () => {
   afterEach(() => {
