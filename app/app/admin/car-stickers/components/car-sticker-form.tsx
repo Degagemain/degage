@@ -10,7 +10,7 @@ import { CarSticker } from '@/domain/car-sticker.model';
 import { FieldGroup } from '@/app/components/ui/field';
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
 import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
-import { AdminRegistrationCertificateField } from '@/app/admin/car-onboardings/components/admin-registration-certificate-field';
+import { AdminFileUploadField } from '@/app/admin/components/admin-file-upload-field';
 
 export const CAR_STICKER_FORM_ID = 'car-sticker-editor-form';
 
@@ -129,7 +129,7 @@ export function CarStickerForm({
           )}
         />
         {isEdit && onImageUpload ? (
-          <AdminRegistrationCertificateField
+          <AdminFileUploadField
             label={t('columns.image')}
             fileName={initialCarSticker?.image?.name}
             disabled={isSubmitting}
