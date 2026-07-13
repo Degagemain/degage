@@ -373,7 +373,7 @@ export function CarOnboardingForm({
           ? CarOnboardingRoadAssistancePlanStatus.TODO
           : CarOnboardingRoadAssistancePlanStatus.READY,
   });
-  const carValueComplete = initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+  const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
   const stepTabCompletion = useMemo(
