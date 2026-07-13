@@ -144,12 +144,12 @@ export function InfoSessionStep() {
           <Table>
             <TableHeader>
               <TableRow className="bg-stone-50 hover:bg-stone-50 dark:bg-stone-800/50 dark:hover:bg-stone-800/50">
+                <TableHead className="w-[7rem]" />
                 <TableHead>{t('steps.infoSession.columns.scheduledAt')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.district')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.type')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.registrations')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.host')}</TableHead>
-                <TableHead className="w-[7rem]" />
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -163,13 +163,6 @@ export function InfoSessionStep() {
                       key={`${row.enrollId ?? String(row.scheduledAt)}-${index}`}
                       className={isSelectedRow ? 'bg-[var(--public-icon-bg)]/40' : undefined}
                     >
-                      <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt)}</TableCell>
-                      <TableCell>{row.district}</TableCell>
-                      <TableCell className="min-w-[12rem]">{row.type}</TableCell>
-                      <TableCell className="whitespace-nowrap">
-                        {formatInfosessionRegistrations(row, t('steps.infoSession.registrationsFull'))}
-                      </TableCell>
-                      <TableCell>{row.host}</TableCell>
                       <TableCell>
                         {canEnroll ? (
                           <Button
@@ -183,6 +176,13 @@ export function InfoSessionStep() {
                           </Button>
                         ) : null}
                       </TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt)}</TableCell>
+                      <TableCell>{row.district}</TableCell>
+                      <TableCell className="min-w-[12rem]">{row.type}</TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {formatInfosessionRegistrations(row, t('steps.infoSession.registrationsFull'))}
+                      </TableCell>
+                      <TableCell>{row.host}</TableCell>
                     </TableRow>
                   );
                 })
