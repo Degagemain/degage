@@ -554,7 +554,7 @@ export function CarOnboardingForm({
     onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
 
   const showConfirmInfoSessionButton =
-    onConfirmInfoSession != null && initialCarOnboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.ENROLLED;
+    onConfirmInfoSession != null && initialCarOnboarding.infoSessionStatus !== CarOnboardingInfoSessionStatus.DONE;
 
   const formatInfoSessionDate = (value: Date | string | null): string => {
     if (value == null) return '—';
