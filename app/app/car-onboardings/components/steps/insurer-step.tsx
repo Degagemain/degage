@@ -56,8 +56,8 @@ export function InsurerStep() {
 
   const showWarning = hasInsuranceContract && contractStartedAt !== '' && isLessThanOneYearAgo(contractStartedAt);
 
-  const handleSave = async () => {
-    if (!carOnboarding.id) return;
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/insurer`, {
@@ -71,12 +71,14 @@ export function InsurerStep() {
       });
       if (!response.ok) {
         toast.error(await parseApiErrorMessage(response, t('errors.save')));
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +115,7 @@ export function InsurerStep() {
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
       ) : null}
 
-      <StepActions stepId="insurer" onSave={() => void handleSave()} saveDisabled={isSaving} />
+      <StepActions stepId="insurer" onSave={handleSave} saveDisabled={isSaving} />
     </StepLayout>
   );
 }

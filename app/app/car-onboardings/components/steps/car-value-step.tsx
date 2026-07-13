@@ -26,8 +26,8 @@ export function CarValueStep() {
   const status = carOnboarding.carValueStatus;
   const proposedValue = carOnboarding.carValue;
 
-  const handleSave = async () => {
-    if (!carOnboarding.id) return;
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
       if (agreed === true) {
@@ -36,7 +36,7 @@ export function CarValueStep() {
         });
         if (!response.ok) {
           toast.error(await parseApiErrorMessage(response, t('errors.save')));
-          return;
+          return false;
         }
       } else if (agreed === false) {
         const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/car-value`, {
@@ -45,15 +45,17 @@ export function CarValueStep() {
         });
         if (!response.ok) {
           toast.error(await parseApiErrorMessage(response, t('errors.save')));
-          return;
+          return false;
         }
       } else {
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -140,7 +142,7 @@ export function CarValueStep() {
 
       <StepActions
         stepId="car-value"
-        onSave={() => void handleSave()}
+        onSave={handleSave}
         saveDisabled={isSaving || agreed === null || (agreed === false && counterValue === '')}
         showSave={showProposalForm}
       />
