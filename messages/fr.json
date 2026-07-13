@@ -2823,7 +2823,7 @@
         }
       },
       "insurer": {
-        "title": "Assurance",
+        "title": "Assurance existante",
         "subtitle": "Résilier votre assurance auto actuelle",
         "info": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, indiquez les détails pour que nous puissions la résilier.",
         "panelTitle": "Assurance existante",

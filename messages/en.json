@@ -2823,7 +2823,7 @@
         }
       },
       "insurer": {
-        "title": "Insurance",
+        "title": "Existing Insurance",
         "subtitle": "Cancel your existing car insurance",
         "info": "Dégage always arranges insurance for your car. If you currently have your own car insurance, provide the details so we can cancel it.",
         "panelTitle": "Existing insurance",
