@@ -26,29 +26,30 @@ export async function seedE2eCarOnboarding(): Promise<void> {
     },
   });
 
-  const insurer =
-    (await prisma.insurer.findFirst({ where: { name: E2E_CAR_ONBOARDING.insurer.name } })) ??
-    (await prisma.insurer.create({
+  const existingInsurer = await prisma.insurer.findFirst({ where: { name: E2E_CAR_ONBOARDING.insurer.name } });
+  if (!existingInsurer) {
+    await prisma.insurer.create({
       data: {
         name: E2E_CAR_ONBOARDING.insurer.name,
       },
-    }));
+    });
+  }
 
   const existingTranslation = await prisma.roadAssistancePlanTranslation.findFirst({
     where: { locale: 'en', name: E2E_CAR_ONBOARDING.roadAssistancePlan.name },
     select: { roadAssistancePlanId: true },
   });
 
-  const roadAssistancePlan = existingTranslation
-    ? await prisma.roadAssistancePlan.findUniqueOrThrow({ where: { id: existingTranslation.roadAssistancePlanId } })
-    : await prisma.roadAssistancePlan.create({
-        data: {
-          isActive: true,
-          translations: {
-            create: [{ locale: 'en', name: E2E_CAR_ONBOARDING.roadAssistancePlan.name, description: 'E2E seed plan' }],
-          },
+  if (!existingTranslation) {
+    await prisma.roadAssistancePlan.create({
+      data: {
+        isActive: true,
+        translations: {
+          create: [{ locale: 'en', name: E2E_CAR_ONBOARDING.roadAssistancePlan.name, description: 'E2E seed plan' }],
         },
-      });
+      },
+    });
+  }
 
   await prisma.carOnboarding.upsert({
     where: { id: E2E_CAR_ONBOARDING.id },
@@ -58,8 +59,8 @@ export async function seedE2eCarOnboarding(): Promise<void> {
       infoSessionDate: new Date(E2E_CAR_ONBOARDING.infoSessionDateIso),
       infoSessionStatus: 'done',
       carValue: E2E_CAR_ONBOARDING.carValue.proposedValue,
-      insurerId: insurer.id,
-      roadAssistancePlanId: roadAssistancePlan.id,
+      insurerId: null,
+      roadAssistancePlanId: null,
     },
     create: {
       id: E2E_CAR_ONBOARDING.id,
@@ -68,8 +69,6 @@ export async function seedE2eCarOnboarding(): Promise<void> {
       infoSessionDate: new Date(E2E_CAR_ONBOARDING.infoSessionDateIso),
       infoSessionStatus: 'done',
       carValue: E2E_CAR_ONBOARDING.carValue.proposedValue,
-      insurerId: insurer.id,
-      roadAssistancePlanId: roadAssistancePlan.id,
     },
   });
 

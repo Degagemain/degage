@@ -18,7 +18,7 @@ test.describe('public car onboarding steps', () => {
     const townField = field(page, 'Town');
     await townField.getByRole('combobox').click();
     await page.getByPlaceholder('Search…').fill(E2E_CAR_ONBOARDING.userInfo.townQuery);
-    await page.getByText(E2E_CAR_ONBOARDING.userInfo.townOption, { exact: true }).click();
+    await page.getByRole('option', { name: E2E_CAR_ONBOARDING.userInfo.townOption, exact: true }).click();
 
     await field(page, 'Phone').getByRole('textbox').fill(E2E_CAR_ONBOARDING.userInfo.phone);
 
@@ -43,7 +43,7 @@ test.describe('public car onboarding steps', () => {
     const insurerField = field(page, 'Insurer');
     await insurerField.getByRole('combobox').click();
     await page.getByPlaceholder('Search…').fill(E2E_CAR_ONBOARDING.insurer.name);
-    await page.getByText(E2E_CAR_ONBOARDING.insurer.name, { exact: true }).click();
+    await page.getByRole('option', { name: E2E_CAR_ONBOARDING.insurer.name, exact: true }).click();
 
     await field(page, 'Insurer contract started').locator('input[type="date"]').fill(E2E_CAR_ONBOARDING.insurer.contractStartedAt);
 
