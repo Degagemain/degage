@@ -84,6 +84,7 @@ describe('updateCarOnboardingInsurer', () => {
         id: onboardingId,
         hasInsuranceContract: false,
         insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        insurerAnnouncedPriceIncrease: false,
       }),
     );
   });
@@ -194,6 +195,33 @@ describe('updateCarOnboardingInsurer', () => {
         hasInsuranceContract: true,
         insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
         insurerContractStartedAt: new Date('2020-01-15'),
+      }),
+    );
+  });
+
+  it('persists insurerAnnouncedPriceIncrease for recent contracts', async () => {
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    await updateCarOnboardingInsurer(
+      onboardingId,
+      {
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: sixMonthsAgo.toISOString().slice(0, 10),
+        insurerAnnouncedPriceIncrease: true,
+      },
+      owner,
+    );
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        insurerAnnouncedPriceIncrease: true,
       }),
     );
   });

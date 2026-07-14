@@ -80,11 +80,12 @@ years; pink form when the car was purchased and is not new; no documents when th
 
 Records whether the car already has an insurance contract and, when applicable, the current insurance company and contract start date.
 
-| Property               | Description                                                                           |
-| ---------------------- | ------------------------------------------------------------------------------------- |
-| Has insurance contract | Whether the owner already has an insurance contract for this car.                     |
-| Insurer                | Current insurance company (shown when has insurance contract is enabled).             |
-| Insurer contract start | Date the current insurance contract started (when has insurance contract is enabled). |
+| Property                        | Description                                                                                              |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Has insurance contract          | Whether the owner already has an insurance contract for this car.                                        |
+| Insurer                         | Current insurance company (shown when has insurance contract is enabled).                                |
+| Insurer contract start          | Date the current insurance contract started (when has insurance contract is enabled).                    |
+| Insurer announced rate increase | Whether the insurer announced a premium increase (shown when the contract started within the last year). |
 
 | Status         | Meaning                                                                                |
 | -------------- | -------------------------------------------------------------------------------------- |

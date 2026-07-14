@@ -1605,6 +1605,7 @@
         "insurer": "Assureur",
         "hasInsuranceContract": "A un contrat d'assurance",
         "insurerContractStartedAt": "Début du contrat d'assurance",
+        "insurerAnnouncedPriceIncrease": "Assureur a annoncé une hausse de tarif",
         "insurerStatus": "Statut assurance",
         "hasExistingRoadAssistancePlan": "A un plan d'assistance routière existant",
         "existingRoadAssistancePlanEndDate": "Date de fin du plan d'assistance existant",
@@ -2830,7 +2831,10 @@
         "panelBody": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, cochez cette case et indiquez les détails pour que nous puissions la résilier.",
         "hasInsuranceContractLabel": "J'ai encore un contrat d'assurance en cours pour ce véhicule",
         "contractStartedAtHint": "La date de début initiale du contrat, et non la date de renouvellement (annuel).",
-        "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
+        "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}.",
+        "insurerAnnouncedPriceIncreaseLabel": "Votre assureur a-t-il annoncé une hausse de tarif ?",
+        "insurerAnnouncedPriceIncreaseCheckbox": "Oui, une hausse de tarif a été annoncée",
+        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation."
       },
       "roadAssistancePlan": {
         "title": "Assistance routière",

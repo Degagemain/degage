@@ -16,6 +16,7 @@ import {
   CarOnboardingRoadAssistancePlanStatus,
   isCarInfoSectionComplete,
   isInfoSessionSectionComplete,
+  isInsurerContractStartedWithinLastYear,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isRoadAssistancePlanSectionComplete,
@@ -103,6 +104,7 @@ interface FormValues {
   insurerId: string;
   insurerName: string;
   insurerContractStartedAt: string;
+  insurerAnnouncedPriceIncrease: boolean;
   hasInsuranceContract: boolean;
   hasExistingRoadAssistancePlan: boolean;
   existingRoadAssistancePlanEndDate: string;
@@ -149,6 +151,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     insurerId: row.insurer?.id ?? NONE,
     insurerName: row.insurer?.name ?? '',
     insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
+    insurerAnnouncedPriceIncrease: row.insurerAnnouncedPriceIncrease,
     hasInsuranceContract: row.hasInsuranceContract,
     hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
     existingRoadAssistancePlanEndDate: formatDateInput(row.existingRoadAssistancePlanEndDate),
@@ -188,6 +191,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     insurerId: z.string(),
     insurerName: z.string(),
     insurerContractStartedAt: z.string(),
+    insurerAnnouncedPriceIncrease: z.boolean(),
     hasInsuranceContract: z.boolean(),
     hasExistingRoadAssistancePlan: z.boolean(),
     existingRoadAssistancePlanEndDate: z.string(),
@@ -505,6 +509,7 @@ export function CarOnboardingForm({
       insurer: !values.hasInsuranceContract ? null : toIdName(values.insurerId, values.insurerName),
       insurerContractStartedAt:
         !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+      insurerAnnouncedPriceIncrease: values.insurerAnnouncedPriceIncrease,
       hasInsuranceContract: values.hasInsuranceContract,
       hasExistingRoadAssistancePlan: values.hasExistingRoadAssistancePlan,
       existingRoadAssistancePlanEndDate:
@@ -1062,6 +1067,23 @@ export function CarOnboardingForm({
                         />
                       )}
                     />
+                    {watchedValues.hasInsuranceContract &&
+                    watchedValues.insurerContractStartedAt.trim() !== '' &&
+                    isInsurerContractStartedWithinLastYear(watchedValues.insurerContractStartedAt) ? (
+                      <Controller
+                        name="insurerAnnouncedPriceIncrease"
+                        control={form.control}
+                        render={({ field }) => (
+                          <AdminSwitchFieldControl
+                            id="car-onboarding-insurer-announced-price-increase"
+                            label={t('columns.insurerAnnouncedPriceIncrease')}
+                            checked={field.value}
+                            onChange={field.onChange}
+                            disabled={isSubmitting}
+                          />
+                        )}
+                      />
+                    ) : null}
                   </>
                 ) : null}
               </FieldGroup>

@@ -27,6 +27,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     insurer: data.insurer !== undefined ? data.insurer : null,
     insurerStatus: data.insurerStatus ?? CarOnboardingInsurerStatus.TODO,
     insurerContractStartedAt: data.insurerContractStartedAt !== undefined ? data.insurerContractStartedAt : null,
+    insurerAnnouncedPriceIncrease: data.insurerAnnouncedPriceIncrease ?? false,
     hasExistingRoadAssistancePlan: data.hasExistingRoadAssistancePlan ?? false,
     existingRoadAssistancePlanEndDate: data.existingRoadAssistancePlanEndDate !== undefined ? data.existingRoadAssistancePlanEndDate : null,
     roadAssistancePlan: data.roadAssistancePlan !== undefined ? data.roadAssistancePlan : null,

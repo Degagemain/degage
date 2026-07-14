@@ -1605,6 +1605,7 @@
         "insurer": "Verzekeraar",
         "hasInsuranceContract": "Heeft verzekeringscontract",
         "insurerContractStartedAt": "Verzekeringscontract gestart",
+        "insurerAnnouncedPriceIncrease": "Verzekeraar kondigde tariefverhoging aan",
         "insurerStatus": "Verzekeringsstatus",
         "hasExistingRoadAssistancePlan": "Heeft bestaand pechverhelpingsplan",
         "existingRoadAssistancePlanEndDate": "Einddatum bestaand pechverhelpingsplan",
@@ -2839,7 +2840,10 @@
         "panelBody": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Vink dit aan en vul de gegevens in zodat we die kunnen opzeggen.",
         "hasInsuranceContractLabel": "Ik heb nog een lopend verzekeringscontract voor deze wagen",
         "contractStartedAtHint": "De oorspronkelijke startdatum van het contract, niet de (jaarlijkse) verlengingsdatum.",
-        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
+        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}.",
+        "insurerAnnouncedPriceIncreaseLabel": "Heeft je verzekeraar een tariefverhoging aangekondigd?",
+        "insurerAnnouncedPriceIncreaseCheckbox": "Ja, er werd een tariefverhoging aangekondigd",
+        "insurerAnnouncedPriceIncreaseHint": "Zo ja, dan kan je je contract mogelijk sneller opzeggen. Aanvaard de nieuwe premie niet tot dan—betalen van de verhoogde premie geldt als instemming."
       },
       "roadAssistancePlan": {
         "title": "Pechverhelpingsplan",

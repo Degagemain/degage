@@ -70,6 +70,7 @@ export const carOnboardingInsurerSchema = z
     insurer: idNameSchema.nullable().default(null),
     insurerStatus: z.enum(CarOnboardingInsurerStatus).default(CarOnboardingInsurerStatus.TODO),
     insurerContractStartedAt: z.coerce.date().nullable().default(null),
+    insurerAnnouncedPriceIncrease: z.boolean().default(false),
   })
   .strict();
 
@@ -172,6 +173,7 @@ export const carOnboardingInsurerInputSchema = z
     hasInsuranceContract: z.boolean(),
     insurer: idNameSchema.nullable().optional(),
     insurerContractStartedAt: z.coerce.date().nullable().optional(),
+    insurerAnnouncedPriceIncrease: z.boolean().optional(),
   })
   .strict();
 
@@ -247,6 +249,7 @@ export const carOnboardingFromSimulation = (
     hasInsuranceContract: hasInsuranceContractFromIsPurchased(simulation.isPurchased),
     insurer: null,
     insurerContractStartedAt: null,
+    insurerAnnouncedPriceIncrease: false,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
     hasExistingRoadAssistancePlan: false,
     existingRoadAssistancePlanEndDate: null,
@@ -276,6 +279,15 @@ export const carOnboardingFromSimulation = (
 
 const isNonEmptyString = (value: string | null | undefined): boolean => {
   return value != null && value.trim().length > 0;
+};
+
+export const isInsurerContractStartedWithinLastYear = (startedAt: Date | string | null): boolean => {
+  if (startedAt == null) return false;
+  const parsed = startedAt instanceof Date ? startedAt : new Date(startedAt);
+  if (Number.isNaN(parsed.getTime())) return false;
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  return parsed.getTime() > oneYearAgo.getTime();
 };
 
 export const isCarOlderThanFourYears = (firstRegisteredAt: Date | string | null): boolean => {
@@ -362,31 +374,37 @@ export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus'
 };
 
 export const applyInsurerStatus = (onboarding: CarOnboarding): CarOnboarding => {
-  if (!onboarding.hasInsuranceContract) {
-    if (onboarding.isPurchased && onboarding.insurerStatus === CarOnboardingInsurerStatus.TODO) {
+  const withPriceIncrease =
+    onboarding.hasInsuranceContract && isInsurerContractStartedWithinLastYear(onboarding.insurerContractStartedAt)
+      ? onboarding.insurerAnnouncedPriceIncrease
+      : false;
+  const normalized = { ...onboarding, insurerAnnouncedPriceIncrease: withPriceIncrease };
+
+  if (!normalized.hasInsuranceContract) {
+    if (normalized.isPurchased && normalized.insurerStatus === CarOnboardingInsurerStatus.TODO) {
       return {
-        ...onboarding,
+        ...normalized,
         insurerStatus: CarOnboardingInsurerStatus.TODO,
       };
     }
 
     return {
-      ...onboarding,
+      ...normalized,
       insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
       insurer: null,
       insurerContractStartedAt: null,
     };
   }
 
-  if (onboarding.insurer != null && onboarding.insurerContractStartedAt != null) {
+  if (normalized.insurer != null && normalized.insurerContractStartedAt != null) {
     return {
-      ...onboarding,
+      ...normalized,
       insurerStatus: CarOnboardingInsurerStatus.READY,
     };
   }
 
   return {
-    ...onboarding,
+    ...normalized,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
   };
 };

@@ -1605,6 +1605,7 @@
         "insurer": "Insurer",
         "hasInsuranceContract": "Has insurance contract",
         "insurerContractStartedAt": "Insurer contract started",
+        "insurerAnnouncedPriceIncrease": "Insurer announced rate increase",
         "insurerStatus": "Insurer status",
         "hasExistingRoadAssistancePlan": "Has existing road assistance plan",
         "existingRoadAssistancePlanEndDate": "Existing road assistance plan end date",
@@ -2830,7 +2831,10 @@
         "panelBody": "Dégage always arranges insurance for your car. If you currently have your own car insurance, check this box and enter the details so we can cancel it.",
         "hasInsuranceContractLabel": "I currently have an active insurance contract for this car",
         "contractStartedAtHint": "The original contract start date, not the (yearly) renewal date.",
-        "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}."
+        "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}.",
+        "insurerAnnouncedPriceIncreaseLabel": "Did your insurer announce a rate increase?",
+        "insurerAnnouncedPriceIncreaseCheckbox": "Yes, a rate increase was announced",
+        "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it."
       },
       "roadAssistancePlan": {
         "title": "Road assistance plan",

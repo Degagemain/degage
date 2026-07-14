@@ -152,6 +152,7 @@ model CarOnboarding {
   insurer                        Insurer?                         @relation(fields: [insurerId], references: [id], onDelete: Restrict)
   insurerStatus                  CarOnboardingInsurerStatus       @default(todo)
   insurerContractStartedAt       DateTime?
+  insurerAnnouncedPriceIncrease    Boolean                          @default(false)
   hasExistingRoadAssistancePlan           Boolean                                @default(false)
   existingRoadAssistancePlanEndDate       DateTime?
   roadAssistancePlanId                    String?
