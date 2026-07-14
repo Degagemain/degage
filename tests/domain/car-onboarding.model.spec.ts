@@ -159,6 +159,15 @@ describe('carOnboardingUserInfoInputSchema', () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it('rejects invalid phone', () => {
+    const result = carOnboardingUserInfoInputSchema.safeParse({
+      street: 'Main Street',
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      phone: 'invalid',
+    });
+    expect(result.success).toBe(false);
+  });
 });
 
 describe('carOnboardingInfoSessionSchema', () => {
@@ -552,6 +561,18 @@ describe('isUserInfoSectionComplete', () => {
         }),
       ),
     ).toBe(true);
+  });
+
+  it('returns false when phone format is invalid', () => {
+    expect(
+      isUserInfoSectionComplete(
+        carOnboarding({
+          street: 'Main Street',
+          town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+          phone: 'invalid',
+        }),
+      ),
+    ).toBe(false);
   });
 });
 
