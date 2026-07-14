@@ -176,13 +176,13 @@ export function PlayConnectorCard({
         ) : null}
 
         {showForm ? (
-          <form onSubmit={(event) => void handleConnect(event)} className="space-y-4">
+          <form onSubmit={(event) => void handleConnect(event)} autoComplete="off" className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="play-connector-email">{t('email')}</Label>
               <Input
                 id="play-connector-email"
                 type="email"
-                autoComplete="username"
+                autoComplete="off"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder={t('emailPlaceholder')}
@@ -194,7 +194,7 @@ export function PlayConnectorCard({
               <Input
                 id="play-connector-password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="off"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
