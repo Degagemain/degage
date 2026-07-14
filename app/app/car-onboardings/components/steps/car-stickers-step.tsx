@@ -94,8 +94,8 @@ export function CarStickersStep() {
     setSelectedExtraIds((current) => (current.includes(stickerId) ? current.filter((id) => id !== stickerId) : [...current, stickerId]));
   };
 
-  const handleSave = async () => {
-    if (!carOnboarding.id || selectedExtraIds.length === 0) return;
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id || selectedExtraIds.length === 0) return false;
     setIsSaving(true);
     try {
       const selectedStickers = stickers
@@ -107,12 +107,14 @@ export function CarStickersStep() {
       });
       if (!response.ok) {
         toast.error(await parseApiErrorMessage(response, t('errors.save')));
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -158,7 +160,7 @@ export function CarStickersStep() {
           </div>
         ) : null}
       </PublicPanel>
-      <StepActions stepId="car-stickers" onSave={() => void handleSave()} saveDisabled={isSaving || selectedExtraIds.length === 0} />
+      <StepActions stepId="car-stickers" onSave={handleSave} saveDisabled={isSaving || selectedExtraIds.length === 0} />
     </StepLayout>
   );
 }

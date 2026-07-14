@@ -30,8 +30,8 @@ export function UserInfoStep() {
     setPhone(carOnboarding.phone ?? '');
   }, [carOnboarding]);
 
-  const handleSave = async () => {
-    if (!carOnboarding.id || !townId) return;
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id || !townId) return false;
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/user-info`, {
@@ -41,12 +41,14 @@ export function UserInfoStep() {
       });
       if (!response.ok) {
         toast.error(await parseApiErrorMessage(response, t('errors.save')));
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -74,7 +76,7 @@ export function UserInfoStep() {
           <PublicInput value={phone} onChange={(e) => setPhone(e.target.value)} />
         </PublicField>
       </PublicPanel>
-      <StepActions stepId="user-info" onSave={() => void handleSave()} saveDisabled={isSaving || !townId} />
+      <StepActions stepId="user-info" onSave={handleSave} saveDisabled={isSaving || !townId} />
     </StepLayout>
   );
 }

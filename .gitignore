@@ -32,6 +32,8 @@ next-env.d.ts
 # har files
 /recordings/
 
-
 # GCP integration
 *.credentials.json
+
+# Mac OS
+.DS_Store

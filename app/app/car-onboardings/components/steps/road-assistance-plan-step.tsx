@@ -41,8 +41,8 @@ export function RoadAssistancePlanStep() {
     setRoadAssistancePlanName(carOnboarding.roadAssistancePlan?.name ?? '');
   }, [carOnboarding]);
 
-  const handleSave = async () => {
-    if (!carOnboarding.id) return;
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/road-assistance-plan`, {
@@ -52,12 +52,14 @@ export function RoadAssistancePlanStep() {
       });
       if (!response.ok) {
         toast.error(await parseApiErrorMessage(response, t('errors.save')));
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -85,7 +87,7 @@ export function RoadAssistancePlanStep() {
         />
       </PublicPanel>
 
-      <StepActions stepId="road-assistance-plan" onSave={() => void handleSave()} saveDisabled={isSaving} />
+      <StepActions stepId="road-assistance-plan" onSave={handleSave} saveDisabled={isSaving} />
     </StepLayout>
   );
 }

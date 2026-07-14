@@ -67,9 +67,9 @@ export const createTestDatabase = async (workerIndex: number, testId: string): P
 };
 
 export const dropTestDatabase = async (name: string): Promise<void> => {
-  await terminateConnections(name);
   const client = await adminClient('postgres');
   try {
+    await terminateConnections(name);
     await client.query(`DROP DATABASE IF EXISTS ${quoteIdent(name)}`);
   } finally {
     await client.end();

@@ -54,7 +54,7 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
     case 'road-assistance-plan':
       return isRoadAssistancePlanSectionComplete(onboarding);
     case 'car-value':
-      return onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+      return onboarding.isPurchased || onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
     case 'car-stickers':
       return isCarStickerSectionComplete(onboarding);
     default:
@@ -99,6 +99,7 @@ export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boole
   }
 
   if (stepId === 'car-value') {
+    if (onboarding.isPurchased) return true;
     if (onboarding.carValueStatus === CarOnboardingCarValueStatus.COUNTER) return true;
     if (onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED) return true;
     if (onboarding.carValueStatus === CarOnboardingCarValueStatus.TODO && !isCarValueProposedToOwner(onboarding)) {

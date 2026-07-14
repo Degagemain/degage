@@ -10,7 +10,6 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
 
 import { CarOnboardingInPreparationStatus, CarOnboardingInfoSessionStatus } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
-import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { confirmCarOnboardingInfoSession } from '@/actions/car-onboarding/confirm-info-session';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
@@ -63,16 +62,24 @@ describe('confirmCarOnboardingInfoSession', () => {
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 
-  it('throws when status is not enrolled', async () => {
+  it('sets info session status to done for admin when status is todo', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
         infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
       }),
     );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, infoSessionStatus: CarOnboardingInfoSessionStatus.DONE }),
+    );
 
-    await expect(confirmCarOnboardingInfoSession(onboardingId, mockAdmin)).rejects.toThrow(CarOnboardingInvalidInfoSessionStatusError);
-    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+    await confirmCarOnboardingInfoSession(onboardingId, mockAdmin);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        infoSessionStatus: CarOnboardingInfoSessionStatus.DONE,
+      }),
+    );
   });
 
   it('throws when onboarding is locked', async () => {

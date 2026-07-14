@@ -23,11 +23,16 @@ export function CarValueStep() {
   const [counterMessage, setCounterMessage] = useState(carOnboarding.carValueCounterProposalMessage ?? '');
   const [isSaving, setIsSaving] = useState(false);
 
+  const isPurchased = carOnboarding.isPurchased;
   const status = carOnboarding.carValueStatus;
   const proposedValue = carOnboarding.carValue;
+  const purchasePrice = carOnboarding.purchasePrice;
 
-  const handleSave = async () => {
-    if (!carOnboarding.id) return;
+  const formatEuro = (value: number) => `€ ${value.toLocaleString()}`;
+  const formatDepreciation = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const handleSave = async (): Promise<boolean> => {
+    if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
       if (agreed === true) {
@@ -36,7 +41,7 @@ export function CarValueStep() {
         });
         if (!response.ok) {
           toast.error(await parseApiErrorMessage(response, t('errors.save')));
-          return;
+          return false;
         }
       } else if (agreed === false) {
         const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/car-value`, {
@@ -45,25 +50,27 @@ export function CarValueStep() {
         });
         if (!response.ok) {
           toast.error(await parseApiErrorMessage(response, t('errors.save')));
-          return;
+          return false;
         }
       } else {
-        return;
+        return false;
       }
       toast.success(t('saveSuccess'));
       await reload();
+      return true;
     } catch {
       toast.error(t('errors.save'));
+      return false;
     } finally {
       setIsSaving(false);
     }
   };
 
   const showProposalForm =
-    status === CarOnboardingCarValueStatus.PROPOSAL || (status === CarOnboardingCarValueStatus.TODO && proposedValue > 0);
-  const showPending = status === CarOnboardingCarValueStatus.COUNTER;
-  const showResolved = status === CarOnboardingCarValueStatus.RESOLVED;
-  const showWaiting = status === CarOnboardingCarValueStatus.TODO && proposedValue <= 0;
+    !isPurchased && (status === CarOnboardingCarValueStatus.PROPOSAL || (status === CarOnboardingCarValueStatus.TODO && proposedValue > 0));
+  const showPending = !isPurchased && status === CarOnboardingCarValueStatus.COUNTER;
+  const showResolved = !isPurchased && status === CarOnboardingCarValueStatus.RESOLVED;
+  const showWaiting = !isPurchased && status === CarOnboardingCarValueStatus.TODO && proposedValue <= 0;
 
   return (
     <StepLayout stepId="car-value">
@@ -71,11 +78,19 @@ export function CarValueStep() {
 
       {!showWaiting ? (
         <>
+          {isPurchased ? (
+            <PublicPanel title={tAdmin('columns.purchasePrice')}>
+              <PublicField label={tAdmin('columns.purchasePrice')}>
+                <p className={styles.readOnlyValue}>{formatEuro(purchasePrice)}</p>
+              </PublicField>
+            </PublicPanel>
+          ) : null}
+
           {showProposalForm ? (
             <>
               <PublicPanel title={t('steps.carValue.agreeTitle')}>
                 <PublicField label={tAdmin('columns.carValue')}>
-                  <p className={styles.readOnlyValue}>€ {proposedValue.toLocaleString()}</p>
+                  <p className={styles.readOnlyValue}>{formatEuro(proposedValue)}</p>
                 </PublicField>
                 <div className={styles.tileGrid}>
                   <button
@@ -113,10 +128,10 @@ export function CarValueStep() {
           {showPending ? (
             <PublicPanel title={tAdmin('columns.carValue')}>
               <PublicField label={tAdmin('columns.carValue')}>
-                <p className={styles.readOnlyValue}>€ {proposedValue.toLocaleString()}</p>
+                <p className={styles.readOnlyValue}>{formatEuro(proposedValue)}</p>
               </PublicField>
               <PublicField label={tAdmin('columns.carValueCounterProposal')}>
-                <p className={styles.readOnlyValue}>€ {carOnboarding.carValueCounterProposal.toLocaleString()}</p>
+                <p className={styles.readOnlyValue}>{formatEuro(carOnboarding.carValueCounterProposal)}</p>
               </PublicField>
               {carOnboarding.carValueCounterProposalMessage ? (
                 <PublicField label={tAdmin('columns.carValueCounterProposalMessage')}>
@@ -129,18 +144,22 @@ export function CarValueStep() {
           {showResolved ? (
             <PublicPanel title={tAdmin('columns.carValue')}>
               <PublicField label={tAdmin('columns.carValue')}>
-                <p className={styles.readOnlyValue}>€ {proposedValue.toLocaleString()}</p>
+                <p className={styles.readOnlyValue}>{formatEuro(proposedValue)}</p>
               </PublicField>
             </PublicPanel>
           ) : null}
         </>
       ) : null}
 
-      <PublicReadOnlyValue label={tAdmin('columns.depreciationCostKm')} value={String(carOnboarding.depreciationCostKm)} />
+      <PublicPanel title={tAdmin('columns.depreciationCostKm')}>
+        <PublicField label={tAdmin('columns.depreciationCostKm')}>
+          <p className={styles.readOnlyValue}>{formatDepreciation(carOnboarding.depreciationCostKm)}</p>
+        </PublicField>
+      </PublicPanel>
 
       <StepActions
         stepId="car-value"
-        onSave={() => void handleSave()}
+        onSave={handleSave}
         saveDisabled={isSaving || agreed === null || (agreed === false && counterValue === '')}
         showSave={showProposalForm}
       />

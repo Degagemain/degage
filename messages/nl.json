@@ -2832,7 +2832,7 @@
         }
       },
       "insurer": {
-        "title": "Verzekering",
+        "title": "Bestaande verzekering",
         "subtitle": "Bestaande autoverzekering opzeggen",
         "info": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Geef dan de gegevens door zodat we die kunnen opzeggen.",
         "panelTitle": "Bestaande verzekering",

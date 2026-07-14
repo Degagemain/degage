@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import { getPrismaClient } from '@/storage/utils';
 
 import { seedE2eSimulationData } from './seed-e2e-simulation-data';
+import { seedE2eCarOnboarding } from './seed-e2e-car-onboarding';
 
 const E2E_PASSWORD = process.env.E2E_PASSWORD ?? 'password';
 
@@ -47,6 +48,7 @@ async function seedE2e() {
     await ensureE2eAccount(account);
   }
   await seedE2eSimulationData();
+  await seedE2eCarOnboarding();
   await getPrismaClient().$disconnect();
 }
 

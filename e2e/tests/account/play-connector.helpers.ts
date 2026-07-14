@@ -12,17 +12,24 @@ export const openAccountSettings = async (page: Page, baseURL: string, path = AC
 
 export const openPlayConnectorTab = async (page: Page) => {
   await page.getByRole('tab', { name: playConnectorMessages.tabTitle }).click();
-  await expect(playConnectorEmail(page)).toBeVisible();
+  await expectPlayConnectorConnectForm(page);
 };
 
 export const expectPlayConnectorConnectForm = async (page: Page) => {
   await expect(page.getByRole('note')).toContainText(playConnectorMessages.credentialsNoticeTitle);
+
+  const disconnectButton = page.getByRole('button', { name: playConnectorMessages.disconnect, exact: true });
+  if (await disconnectButton.isVisible()) {
+    await disconnectButton.click();
+  }
+
   await expect(playConnectorEmail(page)).toBeVisible();
   await expect(playConnectorPassword(page)).toBeVisible();
   await expect(page.getByRole('button', { name: playConnectorMessages.connect, exact: true })).toBeVisible();
 };
 
 export const connectPlayConnector = async (page: Page, email: string = E2E_USER_EMAIL, password: string = E2E_PASSWORD) => {
+  await expectPlayConnectorConnectForm(page);
   await playConnectorEmail(page).fill(email);
   await playConnectorPassword(page).fill(password);
   await page.getByRole('button', { name: playConnectorMessages.connect, exact: true }).click();

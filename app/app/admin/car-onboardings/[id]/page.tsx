@@ -43,6 +43,27 @@ export default function EditCarOnboardingPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const downloadFileFromUrl = useCallback(async (url: string, fileName?: string | null) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = (fileName ?? '').trim() || 'download';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch {
+      // Fallback: keep same-tab navigation (avoids new tab UX)
+      window.location.assign(url);
+    }
+  }, []);
+
   const loadCarOnboarding = useCallback(
     async (options?: { silent?: boolean }) => {
       if (!id) {
@@ -176,7 +197,8 @@ export default function EditCarOnboardingPage() {
       throw new Error(message);
     }
     const data: { url: string } = await response.json();
-    window.open(data.url, '_blank', 'noopener,noreferrer');
+    const fileName = side === 'front' ? carOnboarding?.registrationCertificateFront?.name : carOnboarding?.registrationCertificateBack?.name;
+    await downloadFileFromUrl(data.url, fileName);
   };
 
   const handleUploadInspectionCertificate = async (file: File) => {
@@ -204,7 +226,7 @@ export default function EditCarOnboardingPage() {
       throw new Error(message);
     }
     const data: { url: string } = await response.json();
-    window.open(data.url, '_blank', 'noopener,noreferrer');
+    await downloadFileFromUrl(data.url, carOnboarding?.inspectionCertificate?.name);
   };
 
   const handleUploadPinkForm = async (file: File) => {
@@ -232,7 +254,7 @@ export default function EditCarOnboardingPage() {
       throw new Error(message);
     }
     const data: { url: string } = await response.json();
-    window.open(data.url, '_blank', 'noopener,noreferrer');
+    await downloadFileFromUrl(data.url, carOnboarding?.pinkForm?.name);
   };
 
   const handleDelete = async () => {

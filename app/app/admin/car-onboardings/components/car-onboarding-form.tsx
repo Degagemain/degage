@@ -373,7 +373,7 @@ export function CarOnboardingForm({
           ? CarOnboardingRoadAssistancePlanStatus.TODO
           : CarOnboardingRoadAssistancePlanStatus.READY,
   });
-  const carValueComplete = initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+  const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
   const stepTabCompletion = useMemo(
@@ -554,7 +554,7 @@ export function CarOnboardingForm({
     onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
 
   const showConfirmInfoSessionButton =
-    onConfirmInfoSession != null && initialCarOnboarding.infoSessionStatus === CarOnboardingInfoSessionStatus.ENROLLED;
+    onConfirmInfoSession != null && initialCarOnboarding.infoSessionStatus !== CarOnboardingInfoSessionStatus.DONE;
 
   const formatInfoSessionDate = (value: Date | string | null): string => {
     if (value == null) return '—';
