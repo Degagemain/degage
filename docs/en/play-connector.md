@@ -51,7 +51,8 @@ Mock endpoints:
 ## Layers
 
 - `app/play-connector/` — HTTP client, login, cookie parsing, HTML parsers (no database)
-  - `parsers/infosession-table.parser.ts` — infosession table rows from `/infosession` HTML
+  - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
+  - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
   - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/zip/city), GSM from `/profile` HTML
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration
@@ -72,7 +73,8 @@ Mock endpoints:
 | `GET`    | `/api/play-connector`                      | Current user's connector status: `missing`, `success`, or `failing`                                                                                         |
 | `PUT`    | `/api/play-connector`                      | Link credentials (`email`, `password`); validates login before storing                                                                                      |
 | `DELETE` | `/api/play-connector`                      | Remove linked credentials                                                                                                                                   |
-| `GET`    | `/api/play-infosessions`                   | List parsed infosessions from the Play backend                                                                                                              |
+| `GET`    | `/api/play-infosessions`                   | List parsed infosessions from the Play backend (upcoming table + chosen session when enrolled)                                                              |
+| `PUT`    | `/api/play-infosessions/unenroll`          | Unenroll from the current Play infosession (legacy platform only; does not update car onboarding)                                                           |
 | `PUT`    | `/api/car-onboardings/{id}/play-connector` | Link credentials during car onboarding; on success fetches Play profile and pre-fills empty `street`, `town` (by zip + city), and `phone` on the onboarding |
 
 ## UI

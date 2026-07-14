@@ -2745,6 +2745,8 @@
         "confirmed": "Your attendance has been confirmed. You can continue to the next step.",
         "unenrollToSwitch": "To enroll in a different session, unenroll first.",
         "waitingForConfirmation": "Waiting for an admin to confirm your attendance.",
+        "externalEnrollmentTitle": "Already enrolled elsewhere",
+        "externalEnrollmentWarning": "You are already enrolled in an info session on the legacy Dégage platform. Unenroll first before enrolling for this car onboarding.",
         "columns": {
           "scheduledAt": "When",
           "district": "District",
@@ -2757,7 +2759,8 @@
         "title": "User info",
         "subtitle": "Your contact details",
         "info": "Enter your street, town, and phone number so we can reach you during onboarding.",
-        "panelTitle": "Contact details"
+        "panelTitle": "Contact details",
+        "phoneInvalid": "Enter a valid phone number."
       },
       "carInfo": {
         "title": "Car info",
@@ -2831,7 +2834,7 @@
         "panelBody": "Dégage always arranges insurance for your car. If you currently have your own car insurance, check this box and enter the details so we can cancel it.",
         "hasInsuranceContractLabel": "I currently have an active insurance contract for this car",
         "contractStartedAtHint": "The original contract start date, not the (yearly) renewal date.",
-        "contractWarning": "Your insurance started less than a year ago. You can cancel at the earliest on {date}.",
+        "contractWarning": "Your insurance started less than a year ago. You can join Dégage at the earliest on {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Did your insurer announce a rate increase?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Yes, a rate increase was announced",
         "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it."

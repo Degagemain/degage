@@ -12,6 +12,10 @@ vi.mock('@/actions/play-infosession/list', () => ({
   listPlayInfosessions: vi.fn(),
 }));
 
+vi.mock('@/actions/play-infosession/unenroll', () => ({
+  unenrollPlayInfosession: vi.fn(),
+}));
+
 vi.mock('next/headers', () => ({
   headers: vi.fn().mockResolvedValue(new Headers()),
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
@@ -44,23 +48,27 @@ describe('API Route - GET /api/play-infosessions', () => {
 
   it('returns infosessions for authenticated user', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValueOnce({ user: mockUser } as any);
-    vi.mocked(listPlayInfosessions).mockResolvedValueOnce([
-      playInfosessionSchema.parse({
-        scheduledAt: 'za 20 jun 2026 09:25',
-        district: 'Gent - Wondelgem',
-        type: 'Voor Leners van auto of fiets',
-        registrations: '14 / 20',
-        host: 'Host Alpha',
-        enrollId: '1359',
-        enrollUrl: 'https://degapp.be/infosession/enroll?id=1359',
-      }),
-    ]);
+    vi.mocked(listPlayInfosessions).mockResolvedValueOnce({
+      infosessions: [
+        playInfosessionSchema.parse({
+          scheduledAt: 'za 20 jun 2026 09:25',
+          district: 'Gent - Wondelgem',
+          type: 'Voor Leners van auto of fiets',
+          registrations: '14 / 20',
+          host: 'Host Alpha',
+          enrollId: '1359',
+          enrollUrl: 'https://degapp.be/infosession/enroll?id=1359',
+        }),
+      ],
+      chosenInfosession: null,
+    });
 
     const response = await GET({} as any);
     const json = await response.json();
 
     expect(response.status).toBe(200);
     expect(json.infosessions).toHaveLength(1);
+    expect(json.chosenInfosession).toBeNull();
     expect(listPlayInfosessions).toHaveBeenCalledWith('user-id');
   });
 });
