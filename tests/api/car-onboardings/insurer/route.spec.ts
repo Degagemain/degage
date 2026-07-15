@@ -50,6 +50,7 @@ describe('PUT /api/car-onboardings/[id]/insurer', () => {
     hasInsuranceContract: true,
     insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
     insurerContractStartedAt: '2020-01-15',
+    insurerAnnouncedPriceIncrease: true,
   };
 
   it('returns 401 when unauthenticated', async () => {

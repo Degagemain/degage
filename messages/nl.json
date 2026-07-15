@@ -1605,6 +1605,7 @@
         "insurer": "Verzekeraar",
         "hasInsuranceContract": "Heeft verzekeringscontract",
         "insurerContractStartedAt": "Verzekeringscontract gestart",
+        "insurerAnnouncedPriceIncrease": "Verzekeraar kondigde tariefverhoging aan",
         "insurerStatus": "Verzekeringsstatus",
         "hasExistingRoadAssistancePlan": "Heeft bestaand pechverhelpingsplan",
         "existingRoadAssistancePlanEndDate": "Einddatum bestaand pechverhelpingsplan",
@@ -2753,6 +2754,8 @@
         "confirmed": "Je aanwezigheid is bevestigd. Je kunt verdergaan naar de volgende stap.",
         "unenrollToSwitch": "Om je voor een andere sessie in te schrijven, schrijf je eerst uit.",
         "waitingForConfirmation": "Wachten op bevestiging van je aanwezigheid door een beheerder.",
+        "externalEnrollmentTitle": "Al ingeschreven elders",
+        "externalEnrollmentWarning": "Je bent al ingeschreven voor een infosessie op het legacy Dégage-platform. Schrijf je eerst uit voordat je je inschrijft voor deze auto-onboarding.",
         "columns": {
           "scheduledAt": "Wanneer",
           "district": "Regio",
@@ -2765,7 +2768,8 @@
         "title": "Eigenaarsinfo",
         "subtitle": "Contactgegevens van de eigenaar van de wagen",
         "info": "Vul je straat, gemeente en telefoonnummer in zodat we je kunnen bereiken tijdens de onboarding.",
-        "panelTitle": "Contactgegevens"
+        "panelTitle": "Contactgegevens",
+        "phoneInvalid": "Voer een geldig telefoonnummer in."
       },
       "carInfo": {
         "title": "Wageninfo",
@@ -2839,7 +2843,10 @@
         "panelBody": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Vink dit aan en vul de gegevens in zodat we die kunnen opzeggen.",
         "hasInsuranceContractLabel": "Ik heb nog een lopend verzekeringscontract voor deze wagen",
         "contractStartedAtHint": "De oorspronkelijke startdatum van het contract, niet de (jaarlijkse) verlengingsdatum.",
-        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je opzeggen op {date}."
+        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je instappen in Dégage op {date}.",
+        "insurerAnnouncedPriceIncreaseLabel": "Heeft je verzekeraar een tariefverhoging aangekondigd?",
+        "insurerAnnouncedPriceIncreaseCheckbox": "Ja, er werd een tariefverhoging aangekondigd",
+        "insurerAnnouncedPriceIncreaseHint": "Zo ja, dan kan je je contract mogelijk sneller opzeggen. Aanvaard de nieuwe premie niet tot dan—betalen van de verhoogde premie geldt als instemming."
       },
       "roadAssistancePlan": {
         "title": "Pechverhelpingsplan",

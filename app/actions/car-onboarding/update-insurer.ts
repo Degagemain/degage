@@ -16,6 +16,7 @@ export const updateCarOnboardingInsurer = async (id: string, body: unknown, user
           ...merged,
           insurer: null,
           insurerContractStartedAt: null,
+          insurerAnnouncedPriceIncrease: false,
           insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
         }
       : merged;

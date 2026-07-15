@@ -1605,6 +1605,7 @@
         "insurer": "Assureur",
         "hasInsuranceContract": "A un contrat d'assurance",
         "insurerContractStartedAt": "Début du contrat d'assurance",
+        "insurerAnnouncedPriceIncrease": "Assureur a annoncé une hausse de tarif",
         "insurerStatus": "Statut assurance",
         "hasExistingRoadAssistancePlan": "A un plan d'assistance routière existant",
         "existingRoadAssistancePlanEndDate": "Date de fin du plan d'assistance existant",
@@ -2744,6 +2745,8 @@
         "confirmed": "Votre présence a été confirmée. Vous pouvez passer à l'étape suivante.",
         "unenrollToSwitch": "Pour vous inscrire à une autre session, désinscrivez-vous d'abord.",
         "waitingForConfirmation": "En attente de la confirmation de votre présence par un administrateur.",
+        "externalEnrollmentTitle": "Déjà inscrit ailleurs",
+        "externalEnrollmentWarning": "Vous êtes déjà inscrit à une séance d'information sur la plateforme Dégage legacy. Désinscrivez-vous d'abord avant de vous inscrire pour cet onboarding véhicule.",
         "columns": {
           "scheduledAt": "Quand",
           "district": "Région",
@@ -2756,7 +2759,8 @@
         "title": "Infos utilisateur",
         "subtitle": "Vos coordonnées",
         "info": "Indiquez votre rue, commune et numéro de téléphone pour que nous puissions vous joindre.",
-        "panelTitle": "Coordonnées"
+        "panelTitle": "Coordonnées",
+        "phoneInvalid": "Entrez un numéro de téléphone valide."
       },
       "carInfo": {
         "title": "Infos véhicule",
@@ -2830,7 +2834,10 @@
         "panelBody": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, cochez cette case et indiquez les détails pour que nous puissions la résilier.",
         "hasInsuranceContractLabel": "J'ai encore un contrat d'assurance en cours pour ce véhicule",
         "contractStartedAtHint": "La date de début initiale du contrat, et non la date de renouvellement (annuel).",
-        "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez résilier au plus tôt le {date}."
+        "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez rejoindre Dégage au plus tôt le {date}.",
+        "insurerAnnouncedPriceIncreaseLabel": "Votre assureur a-t-il annoncé une hausse de tarif ?",
+        "insurerAnnouncedPriceIncreaseCheckbox": "Oui, une hausse de tarif a été annoncée",
+        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation."
       },
       "roadAssistancePlan": {
         "title": "Assistance routière",

@@ -1,0 +1,1473 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            window.apiEndpoint = ''
+            window.contextPath = ''
+        </script>
+        <script type='text/javascript' src='/assets/lib/jquery/jquery.min.js'></script>
+        <script type='text/javascript' src='/assets/lib/bootstrap/js/bootstrap.min.js'></script>
+        <script type='text/javascript' src='/assets/javascripts/responsiveTables.js'></script>
+        <script type="text/javascript" src="/assets/main.js"></script>
+
+        <script>
+            // Loadingimage to use in pagination.js
+            var loadingImage = '/assets/images/car-loader.gif'
+        </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Infosessies</title>
+        <link rel="shortcut icon" type="image/png" href='/assets/images/favicon.png'>
+
+        <!-- Core CSS - Include with every page -->
+        
+
+
+
+  
+    <link rel="stylesheet" media="screen" href='/assets/lib/bootstrap/css/bootstrap.min.css'>
+  
+
+  
+    <link rel="stylesheet" media="screen" href='/assets/lib/font-awesome/css/font-awesome.min.css'>
+  
+
+  
+    <link rel="stylesheet" media="screen" href='/assets/stylesheets/sb-admin.css'>
+  
+
+
+        
+    
+
+<script type='text/javascript' src='/assets/javascripts/routes'></script>
+
+    <script>
+        
+        var infoSessionId;
+
+        // Show confirm message to subscribe to an infosession
+        function showConfirmationModal(id){
+            infoSessionId = id;
+            $('#detailsModal').modal('show');
+        }
+
+        function changeInfoSession() {
+            window.location = myJsRoutes.controllers.InfoSessions.enrollSession(infoSessionId).url;
+        }
+    </script>
+    
+<script>
+    var map;
+    function initMap() {
+        var ghent = {lat: 51.0535, lng: 3.7304};
+        var geocoder = new google.maps.Geocoder();
+        if (document.getElementById('map') == null) return;
+        if ('51.0535' !== undefined && parseFloat('51.0535') > 0) {
+            var markerPosition = {lat: parseFloat('51.0535'), lng: parseFloat('3.7304')};
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: parseInt('14'),
+              center: ghent
+            });
+            map.setCenter(markerPosition);
+            if ('Infosessie' !== 'unknown') {
+              var marker = new google.maps.Marker({
+                map: map,
+                position: markerPosition,
+                label: 'Infosessie'
+              });              
+            }
+        } else {
+            $('#map').html('Gelieve gps coordinaten in te geven via knop Wijzigen');
+        }
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyExampleKeyForTestsOnly&callback=initMap"></script>
+ 
+        
+
+
+
+  
+    <link rel="stylesheet" media="screen" href='/assets/stylesheets/main.css'>
+  
+
+
+        
+
+    <!--[if lt IE 9]>
+        <script src='/assets/javascripts/compatibility/html5shiv.min.js' type="text/javascript"></script>
+        <script src='/assets/javascripts/compatibility/css3-mediaqueries.js' type="text/javascript"></script>
+        <script src='/assets/javascripts/compatibility/respond.min.js' type="text/javascript"></script>
+    <![endif]-->
+        
+            <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-39622035-1', 'auto');
+            ga('send', 'pageview');
+
+            </script>
+        
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav class="navbar navbar-default navbar-static-top " role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="sr-only">Toggle navigatie</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Dégage</a>
+                </div>
+                <!-- /.navbar-header -->
+                <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="">nl</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="/changelang/nl">nl</a>
+                                    </li>
+                                    <li><a href="/changelang/fr">fr</a>
+                                    </li>
+                                    <li><a href="/changelang/en">en</a>
+                                    </li>
+                                </ul>
+                            </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope fa-fw"></i>
+                            
+                                
+                            
+                        </a>
+                       
+                        <ul class="dropdown-menu dropdown-messages">
+                            
+                            
+                                
+                            
+                            <li>
+                                <a class="text-center" href="/messages">
+                                    <strong>Bekijk alle berichten</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-messages -->
+                    </li>
+                    <!-- /.dropdown -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell fa-fw"></i>
+                            
+                              
+                                  <span class="topnumber">111</span>
+                              
+                            
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            
+                            
+                                
+                                    
+                                        <li>
+                                            <a href="/notifications">
+                                                <div>
+                                                    
+                                                    <strong>Aanvraag reservatie 1ABC voor di 14 jul 2026 09:45 (ongelezen)</strong>
+                                                    
+                                                    <span class="pull-right text-muted">
+                                                        <em>di 14 jul 2026 09:39</em>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <p>Beste gebruiker,</p><p>Bestuurder <b>Driver One</b> wenst 1ABC te reserveren...</b></i></strong></em> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a href="/notifications">
+                                                <div>
+                                                    
+                                                    <strong>Kilometerstanden 1ABC voor ma 13 jul 2026 09:00 (Driver Two) (ongelezen)</strong>
+                                                    
+                                                    <span class="pull-right text-muted">
+                                                        <em>ma 13 jul 2026 21:45</em>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <p>Beste gebruiker,</p><p>Bestuurder <i>Driver Two</i> heeft de volgende kilomet...</b></i></strong></em> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a href="/notifications">
+                                                <div>
+                                                    
+                                                    <strong>Nieuwe tankbeurt voor 1ABC (ongelezen)</strong>
+                                                    
+                                                    <span class="pull-right text-muted">
+                                                        <em>ma 13 jul 2026 21:45</em>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <p>Beste gebruiker,</p><p>Autolener <i>Driver Two</i> heeft een nieuwe tankbeurt...</b></i></strong></em> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                    
+                                
+                            
+                            <li>
+                                <a class="text-center" href="/notifications">
+                                    <strong>Bekijk alle mededelingen</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-messages -->
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="">User, Test</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="/profile"><i class="fa fa-user fa-fw"></i> Profiel</a>
+                            </li>
+                            <li><a href="/changepass"><i class="fa fa-gear fa-fw"></i>Wachtwoord wijzigen</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Uitloggen</a>
+                            </li>
+                            
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+                    <!-- /.dropdown -->
+                </ul>
+                <!-- /.navbar-top-links -->
+            </nav>
+            <!-- /.navbar-static-top -->
+
+            <nav class="navbar-default navbar-static-side" style="z-index:0;" role="navigation">
+                <div class="sidebar-collapse collapse">
+                    <ul class="nav" id="side-menu">
+                        
+
+
+
+
+
+<li  >
+    <a href="/"><i class="fa fa-fw fa-dashboard"></i>
+        Welkom
+        
+    </a>
+</li>
+
+
+
+                        
+                            
+                                                
+                        
+
+
+
+
+
+<li  >
+    <a href="/rules"><i class="fa fa-fw fa-gavel"></i>
+        Spelregels
+        
+    </a>
+</li>
+
+
+
+                        
+
+
+
+  
+
+
+
+<li  >
+    <a href="/faq/search"><i class="fa fa-fw fa-question"></i>
+        FAQ
+        
+    </a>
+</li>
+
+
+
+                        
+
+
+
+
+
+
+
+
+<li  >
+    <a href="/owners"><i class="fa fa-fw fa fa-key"></i>
+        Je auto delen
+        
+    </a>
+</li>
+
+
+
+    
+
+
+
+<li class="active" >
+    <a href="/infosession"><i class="fa fa-fw fa-lightbulb-o"></i>
+        Infosessies
+        
+    </a>
+</li>
+
+
+
+
+    
+        
+
+
+
+<li  >
+    <a href="/trips"><i class="fa fa-fw fa-car"></i>
+        Ritten / reservaties
+        <span class="sidenumber">10</span>
+    </a>
+</li>
+
+
+        
+
+
+
+<li  >
+    <a href="/refuels"><i class="fa fa-fw fa-beer"></i>
+        Tankbeurten
+        <span class="sidenumber">2</span>
+    </a>
+</li>
+
+
+    
+    
+        
+
+
+
+<li  >
+    <a href="/billing/list"><i class="fa fa-fw fa-money"></i>
+        Afrekeningen
+        
+    </a>
+</li>
+
+
+    
+
+
+                        
+
+
+  
+    
+
+
+
+<li  >
+    <a href="/cars"><i class="fa fa-fw fa-car"></i>
+        Mijn auto
+        
+    </a>
+</li>
+
+
+  
+
+
+                        
+
+
+  
+
+                        
+                            
+    
+        
+
+
+
+<li  >
+    <a href="/damage"><i class="fa fa-fw fa fa-fire"></i>
+        Schadegevallen
+        
+    </a>
+</li>
+
+
+    
+
+
+                        
+                        
+
+
+
+      
+
+
+
+<li  >
+    <a href="/messages"><i class="fa fa-fw fa-envelope"></i>
+        Berichten
+        
+    </a>
+</li>
+
+
+      
+
+
+
+<li  >
+    <a href="/notifications"><i class="fa fa-fw fa-bell"></i>
+        Mededelingen
+        <span class="sidenumber">111</span>
+    </a>
+</li>
+
+
+
+
+
+
+
+<li  >
+    <a href="/profile"><i class="fa fa-fw fa-user"></i>
+        Profiel
+        
+    </a>
+</li>
+
+
+
+
+      
+
+
+
+<li  >
+    <a href="/family/list"><i class="fa fa-fw fa-users"></i>
+        Gezinsleden
+        
+    </a>
+</li>
+
+
+      
+            
+
+
+
+<li  >
+    <a href="/campaign/list"><i class="fa fa-fw fa-bullhorn"></i>
+        Campagnes
+        
+    </a>
+</li>
+
+
+      
+      
+
+
+
+<li  >
+    <a href="/districts/user"><i class="fa fa-fw fa-map-o"></i>
+        Mijn wijk
+        
+    </a>
+</li>
+
+
+      
+
+
+
+<li  >
+    <a href="/volunteers"><i class="fa fa-fw fa fa-hand-paper-o"></i>
+        Vrijwilligers
+        
+    </a>
+</li>
+
+
+      
+
+
+
+<li  >
+    <a href="/promotions"><i class="fa fa-fw fa fa-newspaper-o"></i>
+        Promomateriaal
+        
+    </a>
+</li>
+
+
+
+
+
+
+
+<li  >
+    <a href="/changepass"><i class="fa fa-fw fa-exchange"></i>
+        Wachtwoord wijzigen
+        
+    </a>
+</li>
+
+
+
+
+                        
+                        
+
+
+
+<li  >
+    <a href="/logout"><i class="fa fa-fw fa-sign-out"></i>
+        Uitloggen
+        
+    </a>
+</li>
+
+
+                    </ul>
+                    <!-- /#side-menu -->
+                </div>
+                <!-- /.sidebar-collapse -->
+            </nav>
+            <!-- /.navbar-static-side -->
+            
+    
+
+
+<div id="page-header-wrapper">
+    <ol class="breadcrumb">
+        
+
+
+
+
+<li><a href="/">Welkom</a></li>
+
+
+        
+        
+        
+
+
+
+
+<li class="active">Infosessies</li>
+
+
+    
+    </ol>
+</div>
+
+
+    
+        <div id="page-wrapper" style="margin-top: 0px;">
+            
+
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Infosessies</h3>
+                </div>
+            </div>
+            
+                
+
+
+            
+            
+    
+
+
+
+<div class="panel panel-default">
+    
+    <div class="panel-body">
+        <div class="row">
+            
+        <div class="col-xs-12">
+            Wil je enkel een deelauto gebruiken, volg dan een <strong>sessie voor leners</strong>.<br/>
+            Wil je je auto delen, volg dan een <strong>sessie voor eigenaars</strong>. Hierbij is het handig dat je
+            <a href="/cars/new">een autofiche</a> invult. Zo weten we of je auto in aanmerking komt om gedeeld te worden.
+            Lees hier <a href="/owners">de stapjes om je auto te delen</a> via Dégage.
+        </div>
+    
+        </div>
+    </div>
+</div>
+
+
+    
+
+    
+        
+
+
+
+<div class="panel panel-default">
+    
+        <div class="panel-heading">
+            <i class="fa fa-lighbulb-o"></i> Gekozen infosessie
+        </div>
+    
+    <div class="panel-body">
+        <div class="row">
+            
+            
+<div class="col-lg-4">
+    <dl class="dl-horizontal">
+        <dt>Wanneer?</dt><dd>vr 31 dec 2027 23:55</dd>
+        <dt>Waar?</dt>
+        <dd>
+            
+                Online
+            
+        </dd>
+        <dt>Gastvrouw / gastheer</dt><dd>Host Chosen</dd>
+        <dt>Type</dt><dd>Auto-eigenaar</dd>
+        <dt>Aantal deeln.</dt>
+        <dd>
+            
+                1 / 5
+            
+        </dd>
+        <dt>Opmerkingen</dt><dd>Example remarks for this info session.</dd>
+        <dt>Beschrijving (in geval van type Andere)</dt><dd></dd>
+    </dl>
+</div>
+<div class="col-lg-8">
+    <div class="well map">
+        <div id="map" />
+    </div>
+</div>
+
+            <div class="col-xs-12">
+                
+
+<a class="btn btn-xs btn-warning" href="/infosession/unenroll">Uitschrijven</a>
+
+
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+    
+
+    
+
+
+
+<div class="panel panel-default">
+    
+        <div class="panel-heading">
+            <i class="fa fa-calendar"></i> Geplande infosessies
+        </div>
+    
+    <div class="panel-body">
+        <div class="row">
+            
+        <div id="resultsTable" class="table-responsive">
+            
+
+
+<div id="resultsTable" class="table-responsive col-xs-12">
+    <table class="table table-striped table-bordered table-hover no-footer" id="dataTables-infosessions">
+    <thead>
+        <tr role="row">
+            <th>Tijdstip</th>
+            <th>Wijk</th>
+            <th>Type</th>
+            <th>Inschrijvingen</th>
+            <th>Gastvrouw / gastheer</th>
+            <th>Acties</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 16 jul 2026 20:00</div></td>
+
+    <td>Dégage - Dampoort</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td><strong>Volzet</strong></td>
+    
+
+
+<td>Host Alpha</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 16 jul 2026 20:00</div></td>
+
+    <td>Gent - Stationsbuurt-Sterre-Strop</td>
+
+<td>
+    
+            <span class="fa fa-briefcase"></span>&nbsp;English language for non speakers of Nederlands. 
+        
+
+</td>
+
+    
+        <td><strong>Volzet</strong></td>
+    
+
+
+<td>Host Beta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 16 jul 2026 20:00</div></td>
+
+    <td>Gent - Ledeberg</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    <td>6</td>
+
+
+<td>Host Gamma</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">wo 05 aug 2026 19:00</div></td>
+
+    <td>ONLINE</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    
+        <td>4 / 20</td>
+    
+
+
+<td>Host Delta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">wo 12 aug 2026 12:00</div></td>
+
+    <td>Gent - Oostakker</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>0 / 20</td>
+    
+
+
+<td>Chris  De Clercq </td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 13 aug 2026 20:00</div></td>
+
+    <td>Gent - Ledeberg</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    <td>1</td>
+
+
+<td>Host Gamma</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 20 aug 2026 20:00</div></td>
+
+    <td>Dégage - Dampoort</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>5 / 25</td>
+    
+
+
+<td>Host Alpha</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 27 aug 2026 19:00</div></td>
+
+    <td>Leuven</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    
+        <td>0 / 20</td>
+    
+
+
+<td>Host Epsilon</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 27 aug 2026 19:00</div></td>
+
+    <td>Leuven</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>1 / 20</td>
+    
+
+
+<td>Host Epsilon</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">wo 09 sep 2026 12:00</div></td>
+
+    <td>Gent - Oostakker</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>0 / 20</td>
+    
+
+
+<td>Chris  De Clercq </td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">di 15 sep 2026 20:00</div></td>
+
+    <td>Dégage - Dampoort</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>4 / 25</td>
+    
+
+
+<td>Host Alpha</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 01 okt 2026 19:30</div></td>
+
+    <td>Mechelen</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>1 / 20</td>
+    
+
+
+<td>Host Zeta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 01 okt 2026 19:35</div></td>
+
+    <td>Mechelen</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    
+        <td>0 / 10</td>
+    
+
+
+<td>Host Zeta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">di 17 nov 2026 20:00</div></td>
+
+    <td>Dégage - Dampoort</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>0 / 25</td>
+    
+
+
+<td>Host Alpha</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 26 nov 2026 19:30</div></td>
+
+    <td>Mechelen</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>0 / 20</td>
+    
+
+
+<td>Host Zeta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 26 nov 2026 19:35</div></td>
+
+    <td>Mechelen</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    
+        <td>0 / 10</td>
+    
+
+
+<td>Host Zeta</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">do 17 dec 2026 20:00</div></td>
+
+    <td>Dégage - Dampoort</td>
+
+<td>
+    
+            <span class="fa fa-user"></span>&nbsp;Voor Leners van auto of fiets
+        
+
+</td>
+
+    
+        <td>1 / 25</td>
+    
+
+
+<td>Host Alpha</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                 
+                                    <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button> 
+                                
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+            <tr  class="info" 
+                
+                    
+                
+            >
+                
+
+<td><div style="min-width: 120px; white-space: break-spaces;">vr 31 dec 2027 23:55</div></td>
+
+    <td>ONLINE</td>
+
+<td>
+    
+            <span class="fa fa-group"></span>&nbsp;Voor Auto-eigenaar
+        
+
+</td>
+
+    
+        <td>1 / 5</td>
+    
+
+
+<td>Host Chosen</td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        
+                            
+                                <button type="button" disabled="disabled" class="btn btn-success">inschrijven</button>
+                            
+                        
+                    </div>
+                </td>
+            </tr>
+        
+    </tbody>
+</table>
+</div>
+
+        </div>
+    
+        </div>
+    </div>
+</div>
+
+
+    
+
+<div id="detailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Infosessie wijzigen</h4>
+            </div>
+            <div id="modalBody" class="modal-body">
+        Je hebt je reeds voor een andere infosessie ingeschreven. Ben je zeker dat je deze wilt wijzigen?
+    </div>
+            <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuleren</button>
+        <button class="btn btn-success"  onClick="changeInfoSession()">Ja, schrijf me in voor deze infosessie</button>
+    
+            </div>
+        </div>
+    <div>
+</div>
+
+
+
+
+        </div>
+    
+
+            
+            <div id="resultModal"></div>
+        </div>
+        <!-- /#wrapper -->
+        
+    </body>
+</html>
+
+
+

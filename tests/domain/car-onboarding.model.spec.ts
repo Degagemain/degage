@@ -28,6 +28,7 @@ import {
   isCarStickerSectionComplete,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
+  isInsurerContractStartedWithinLastYear,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isRoadAssistancePlanSectionComplete,
@@ -158,6 +159,15 @@ describe('carOnboardingUserInfoInputSchema', () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it('rejects invalid phone', () => {
+    const result = carOnboardingUserInfoInputSchema.safeParse({
+      street: 'Main Street',
+      town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+      phone: 'invalid',
+    });
+    expect(result.success).toBe(false);
+  });
 });
 
 describe('carOnboardingInfoSessionSchema', () => {
@@ -197,6 +207,7 @@ describe('carOnboardingInsurerSchema', () => {
       insurer: null,
       insurerStatus: CarOnboardingInsurerStatus.TODO,
       insurerContractStartedAt: null,
+      insurerAnnouncedPriceIncrease: false,
     });
   });
 });
@@ -551,6 +562,18 @@ describe('isUserInfoSectionComplete', () => {
       ),
     ).toBe(true);
   });
+
+  it('returns false when phone format is invalid', () => {
+    expect(
+      isUserInfoSectionComplete(
+        carOnboarding({
+          street: 'Main Street',
+          town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+          phone: 'invalid',
+        }),
+      ),
+    ).toBe(false);
+  });
 });
 
 describe('isInsurerSectionComplete', () => {
@@ -598,6 +621,23 @@ describe('canUpdateInsurer', () => {
   });
 });
 
+describe('isInsurerContractStartedWithinLastYear', () => {
+  it('returns false for null or invalid dates', () => {
+    expect(isInsurerContractStartedWithinLastYear(null)).toBe(false);
+    expect(isInsurerContractStartedWithinLastYear('invalid')).toBe(false);
+  });
+
+  it('returns true when contract started within the last year', () => {
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    expect(isInsurerContractStartedWithinLastYear(sixMonthsAgo)).toBe(true);
+  });
+
+  it('returns false when contract started more than a year ago', () => {
+    expect(isInsurerContractStartedWithinLastYear(new Date('2020-01-15'))).toBe(false);
+  });
+});
+
 describe('applyInsurerStatus', () => {
   it('sets not applicable and clears fields when hasInsuranceContract is false', () => {
     const result = applyInsurerStatus(
@@ -612,6 +652,7 @@ describe('applyInsurerStatus', () => {
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.NOT_APPLICABLE);
     expect(result.insurer).toBeNull();
     expect(result.insurerContractStartedAt).toBeNull();
+    expect(result.insurerAnnouncedPriceIncrease).toBe(false);
   });
 
   it('keeps todo for purchased cars until the insurer step is completed', () => {
@@ -659,6 +700,32 @@ describe('applyInsurerStatus', () => {
       ).insurerStatus,
     ).toBe(CarOnboardingInsurerStatus.TODO);
     expect(applyInsurerStatus(carOnboarding({ hasInsuranceContract: true })).insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+  });
+
+  it('clears insurerAnnouncedPriceIncrease when contract is not within the last year', () => {
+    const result = applyInsurerStatus(
+      carOnboarding({
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: new Date('2020-01-15'),
+        insurerAnnouncedPriceIncrease: true,
+      }),
+    );
+    expect(result.insurerAnnouncedPriceIncrease).toBe(false);
+  });
+
+  it('keeps insurerAnnouncedPriceIncrease when contract is within the last year', () => {
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const result = applyInsurerStatus(
+      carOnboarding({
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: sixMonthsAgo,
+        insurerAnnouncedPriceIncrease: true,
+      }),
+    );
+    expect(result.insurerAnnouncedPriceIncrease).toBe(true);
   });
 });
 

@@ -67,11 +67,12 @@ document lorsque le véhicule a été acheté et est neuf.
 Indique si le véhicule a déjà un contrat d'assurance et, le cas échéant, enregistre la compagnie d'assurance actuelle et la date de début du
 contrat.
 
-| Propriété                | Description                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------ |
-| A un contrat d'assurance | Indique si le propriétaire a déjà un contrat d'assurance pour ce véhicule.                 |
-| Assureur                 | Compagnie d'assurance actuelle (affichée lorsque a un contrat d'assurance est activé).     |
-| Début du contrat         | Date de début du contrat d'assurance actuel (lorsque a un contrat d'assurance est activé). |
+| Propriété                | Description                                                                                                       |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| A un contrat d'assurance | Indique si le propriétaire a déjà un contrat d'assurance pour ce véhicule.                                        |
+| Assureur                 | Compagnie d'assurance actuelle (affichée lorsque a un contrat d'assurance est activé).                            |
+| Début du contrat         | Date de début du contrat d'assurance actuel (lorsque a un contrat d'assurance est activé).                        |
+| Hausse de tarif annoncée | Indique si l'assureur a annoncé une hausse de prime (affiché lorsque le contrat a commencé il y a moins d'un an). |
 
 | Statut         | Signification                                                                                                |
 | -------------- | ------------------------------------------------------------------------------------------------------------ |

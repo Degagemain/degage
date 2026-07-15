@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { isInsurerContractStartedWithinLastYear } from '@/domain/car-onboarding.model';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -19,14 +20,6 @@ const addOneYear = (dateStr: string): string => {
   if (Number.isNaN(d.getTime())) return '';
   d.setFullYear(d.getFullYear() + 1);
   return d.toLocaleDateString();
-};
-
-const isLessThanOneYearAgo = (dateStr: string): boolean => {
-  const d = new Date(dateStr);
-  if (Number.isNaN(d.getTime())) return false;
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-  return d > oneYearAgo;
 };
 
 const formatDateInput = (date: Date | string | null): string => {
@@ -45,6 +38,7 @@ export function InsurerStep() {
   const [insurerId, setInsurerId] = useState(carOnboarding.insurer?.id ?? '');
   const [insurerName, setInsurerName] = useState(carOnboarding.insurer?.name ?? '');
   const [contractStartedAt, setContractStartedAt] = useState(formatDateInput(carOnboarding.insurerContractStartedAt));
+  const [insurerAnnouncedPriceIncrease, setInsurerAnnouncedPriceIncrease] = useState(carOnboarding.insurerAnnouncedPriceIncrease);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -52,9 +46,10 @@ export function InsurerStep() {
     setInsurerId(carOnboarding.insurer?.id ?? '');
     setInsurerName(carOnboarding.insurer?.name ?? '');
     setContractStartedAt(formatDateInput(carOnboarding.insurerContractStartedAt));
+    setInsurerAnnouncedPriceIncrease(carOnboarding.insurerAnnouncedPriceIncrease);
   }, [carOnboarding]);
 
-  const showWarning = hasInsuranceContract && contractStartedAt !== '' && isLessThanOneYearAgo(contractStartedAt);
+  const showRecentContract = hasInsuranceContract && contractStartedAt !== '' && isInsurerContractStartedWithinLastYear(contractStartedAt);
 
   const handleSave = async (): Promise<boolean> => {
     if (!carOnboarding.id) return false;
@@ -66,6 +61,7 @@ export function InsurerStep() {
           ? {
               insurer: { id: insurerId, name: insurerName },
               insurerContractStartedAt: contractStartedAt,
+              ...(showRecentContract ? { insurerAnnouncedPriceIncrease } : {}),
             }
           : {}),
       });
@@ -107,11 +103,26 @@ export function InsurerStep() {
             <PublicField label={tAdmin('columns.insurerContractStartedAt')} hint={t('steps.insurer.contractStartedAtHint')}>
               <PublicInput type="date" value={contractStartedAt} onChange={(e) => setContractStartedAt(e.target.value)} />
             </PublicField>
+            {showRecentContract ? (
+              <PublicField
+                label={t('steps.insurer.insurerAnnouncedPriceIncreaseLabel')}
+                hint={t('steps.insurer.insurerAnnouncedPriceIncreaseHint')}
+              >
+                <label className={styles.checkboxLabel}>
+                  <PublicInput
+                    type="checkbox"
+                    checked={insurerAnnouncedPriceIncrease}
+                    onChange={(e) => setInsurerAnnouncedPriceIncrease(e.target.checked)}
+                  />
+                  <span>{t('steps.insurer.insurerAnnouncedPriceIncreaseCheckbox')}</span>
+                </label>
+              </PublicField>
+            ) : null}
           </>
         ) : null}
       </PublicPanel>
 
-      {showWarning ? (
+      {showRecentContract ? (
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
       ) : null}
 
