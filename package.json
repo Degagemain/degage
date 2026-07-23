@@ -63,6 +63,7 @@
     "@opentelemetry/sdk-node": "^0.214.0",
     "@opentelemetry/sdk-trace-base": "^2.7.0",
     "@posthog/ai": "^7.16.2",
+    "@posthog/mcp": "^0.10.0",
     "@prisma/adapter-neon": "^7.3.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.7.0",

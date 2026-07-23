@@ -60,6 +60,9 @@ importers:
       '@posthog/ai':
         specifier: ^7.16.2
         version: 7.16.2(@ai-sdk/provider@3.0.8)(@modelcontextprotocol/sdk@1.26.0(@cfworker/json-schema@4.1.1)(zod@4.1.5))(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.214.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.0))(posthog-node@5.28.11)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(ws@8.18.3)(zod-to-json-schema@3.25.2(zod@4.1.5))
+      '@posthog/mcp':
+        specifier: ^0.10.0
+        version: 0.10.0(@modelcontextprotocol/sdk@1.26.0(@cfworker/json-schema@4.1.1)(zod@4.1.5))(posthog-node@5.28.11)
       '@prisma/adapter-neon':
         specifier: ^7.3.0
         version: 7.3.0
@@ -1895,6 +1898,16 @@ packages:
   '@posthog/core@1.25.3':
     resolution: {integrity: sha512-yE0T2NUwRMsfS/fSh7lK7/mt4JXRDVmTTwq/vLanDVzH2Rw7C9RVlMw7YePlNxRHvW8ef3PrZ0X9zwWa4MRRDg==}
 
+  '@posthog/core@1.45.0':
+    resolution: {integrity: sha512-nP5FGwkIk8Ngy45BHzwN/kBGV6jqNZINn+iSge5CbdjMevZsEYK8OG3QOSyysml3yWn4tsRJroGi76+HrBIJuQ==}
+
+  '@posthog/mcp@0.10.0':
+    resolution: {integrity: sha512-a9izeSMZ5h/dQNra2uW6nPZyXhwRzdxx0jJ5rtWPa/N19C32/sU0cX2X/0ALeaHkokct646woQSsK+PKogTVSQ==}
+    engines: {node: ^20.20.0 || >=22.22.0}
+    peerDependencies:
+      '@modelcontextprotocol/sdk': '>=1.26.0'
+      posthog-node: ^5.0.0
+
   '@posthog/nextjs-config@1.9.2':
     resolution: {integrity: sha512-XBFST0qgdj92pwUTKYCt290qMbmERqLv+cKrT9ZrSZoxBgOvJ13ih5jSSsa5AOdB4qNS9i40jq2gt/rfvVL+3A==}
     engines: {node: ^20.20.0 || >=22.22.0}
@@ -1906,6 +1919,9 @@ packages:
 
   '@posthog/types@1.364.7':
     resolution: {integrity: sha512-Rg6q4wSu8krrn8f3Nv44kGXjor4qh5iG0typt2sB7/SYQFRSbXYE2C46+qDMcBYGxmRMsWBitBcZ9x94DQCnfA==}
+
+  '@posthog/types@1.398.0':
+    resolution: {integrity: sha512-sJMkl4k+u8yS/0fjHsKqE9xTdsAh30a2WvgChiptellnVoE0e8QJKFgqOMD2sk8FaEArPdeFklAhXvmENAt3Sg==}
 
   '@posthog/webpack-plugin@1.4.2':
     resolution: {integrity: sha512-ArITZeNvt5BRQyNEfNt3IKqswiqZo6iLIQuoWTGdf7O8tkeBYUh+J65cjU65Yv/K7SCmd1Hkm6v+xaQitdBjZA==}
@@ -9903,6 +9919,16 @@ snapshots:
 
   '@posthog/core@1.25.3': {}
 
+  '@posthog/core@1.45.0':
+    dependencies:
+      '@posthog/types': 1.398.0
+
+  '@posthog/mcp@0.10.0(@modelcontextprotocol/sdk@1.26.0(@cfworker/json-schema@4.1.1)(zod@4.1.5))(posthog-node@5.28.11)':
+    dependencies:
+      '@modelcontextprotocol/sdk': 1.26.0(@cfworker/json-schema@4.1.1)(zod@4.1.5)
+      '@posthog/core': 1.45.0
+      posthog-node: 5.28.11
+
   '@posthog/nextjs-config@1.9.2(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.60.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(webpack@5.106.1)':
     dependencies:
       '@posthog/cli': 0.7.5
@@ -9919,6 +9945,8 @@ snapshots:
       cross-spawn: 7.0.6
 
   '@posthog/types@1.364.7': {}
+
+  '@posthog/types@1.398.0': {}
 
   '@posthog/webpack-plugin@1.4.2(webpack@5.106.1)':
     dependencies:
