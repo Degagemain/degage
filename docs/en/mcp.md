@@ -80,6 +80,12 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 - Unverified email/password users cannot call tools (OAuth may still complete).
 - `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at runtime.
 
+## Analytics
+
+When PostHog is configured (`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` + `NEXT_PUBLIC_POSTHOG_HOST`), the MCP server is wrapped with
+[`@posthog/mcp`](https://posthog.com/docs/mcp-analytics/installation) (`instrument` in `app/mcp/create-route.ts`). Events are attributed to the
+OAuth user (`distinct_id` = user id) and flushed at the end of each request.
+
 ## Code layout
 
 - Config: `app/mcp/config.ts`

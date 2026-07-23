@@ -1,8 +1,10 @@
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { instrument } from '@posthog/mcp';
+import { getPostHogClient, isPostHogEnabled } from '@/integrations/posthog';
 import { verifyMcpAccessToken } from '@/mcp/verify-token';
 import { betterAuthBaseUrl, isMcpEnabled, mcpAudience, mcpPath, mcpResourceMetadataPath, mcpServerName } from '@/mcp/config';
-import { mcpContextFromAuthExtra, runWithMcpAuthContext } from '@/mcp/request-context';
+import { getMcpAuthContext, mcpContextFromAuthExtra, runWithMcpAuthContext } from '@/mcp/request-context';
 import { registerMcpTools } from '@/mcp/tools/register-tools';
 
 type RouteHandlers = {
@@ -12,6 +14,11 @@ type RouteHandlers = {
 };
 
 const disabledResponse = (): Response => new Response(null, { status: 404 });
+
+const flushPostHogIfEnabled = async (): Promise<void> => {
+  if (!isPostHogEnabled) return;
+  await getPostHogClient().flush();
+};
 
 export const createMcpRouteHandlers = (): RouteHandlers => {
   if (!isMcpEnabled()) {
@@ -24,6 +31,14 @@ export const createMcpRouteHandlers = (): RouteHandlers => {
 
   const baseHandler = createMcpHandler(
     (server: McpServer) => {
+      if (isPostHogEnabled) {
+        instrument(server, getPostHogClient(), {
+          identify: async () => {
+            const ctx = getMcpAuthContext();
+            return ctx ? { distinctId: ctx.userId } : null;
+          },
+        });
+      }
       registerMcpTools(server);
     },
     {
@@ -40,9 +55,13 @@ export const createMcpRouteHandlers = (): RouteHandlers => {
   );
 
   const handler = withMcpAuth(
-    (req: Request) => {
+    async (req: Request) => {
       const context = mcpContextFromAuthExtra(req.auth?.extra);
-      return runWithMcpAuthContext(context, () => baseHandler(req));
+      try {
+        return await runWithMcpAuthContext(context, () => baseHandler(req));
+      } finally {
+        await flushPostHogIfEnabled();
+      }
     },
     (_req, bearerToken) => verifyMcpAccessToken(bearerToken, mcpAudience()),
     {
