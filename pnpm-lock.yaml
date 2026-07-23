@@ -42,6 +42,9 @@ importers:
       '@opentelemetry/exporter-logs-otlp-http':
         specifier: ^0.215.0
         version: 0.215.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/exporter-trace-otlp-proto':
+        specifier: ^0.214.0
+        version: 0.214.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/resources':
         specifier: ^2.6.1
         version: 2.6.1(@opentelemetry/api@1.9.0)
@@ -51,6 +54,9 @@ importers:
       '@opentelemetry/sdk-node':
         specifier: ^0.214.0
         version: 0.214.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base':
+        specifier: ^2.7.0
+        version: 2.7.0(@opentelemetry/api@1.9.0)
       '@posthog/ai':
         specifier: ^7.16.2
         version: 7.16.2(@ai-sdk/provider@3.0.8)(@modelcontextprotocol/sdk@1.26.0(@cfworker/json-schema@4.1.1)(zod@4.1.5))(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.214.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.0))(posthog-node@5.28.11)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(ws@8.18.3)(zod-to-json-schema@3.25.2(zod@4.1.5))

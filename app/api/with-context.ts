@@ -3,6 +3,7 @@ import { cookies, headers } from 'next/headers';
 import { auth } from '@/auth';
 import { withRequestContext } from '@/context/request-context';
 import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+import { flushPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 import { type UILocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
 import { forbiddenResponse, unauthorizedResponse } from '@/api/utils';
 import { isAdmin } from '@/domain/role.utils';
@@ -42,7 +43,7 @@ const runWithContext = async (
       try {
         return await step(session);
       } finally {
-        await flushPostHogOtelLogs();
+        await Promise.all([flushPostHogOtelLogs(), flushPostHogOtelTraces()]);
       }
     },
   );

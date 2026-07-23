@@ -11,10 +11,20 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
 }));
 
+vi.mock('@/lib/posthog-otel-logs', () => ({
+  flushPostHogOtelLogs: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock('@/lib/posthog-otel-traces', () => ({
+  flushPostHogOtelTraces: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { withAdmin, withAuth, withPublic } from '@/api/with-context';
 import { auth } from '@/auth';
 import { cookies } from 'next/headers';
 import { getRequestContentLocale, getRequestLocale, getRequestUserId } from '@/context/request-context';
+import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+import { flushPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 
 const mockAdmin = { id: 'admin-id', name: 'Admin', email: 'admin@example.com', role: 'admin', banned: false };
 const mockUser = { id: 'user-id', name: 'User', email: 'user@example.com', role: 'user', banned: false };
@@ -48,6 +58,28 @@ describe('API auth wrappers', () => {
       await withPublic(handler)(makeRequest(), undefined);
 
       expect(handler.mock.calls[0][2]).toEqual({ user: mockUser });
+    });
+
+    it('flushes PostHog OTLP logs and traces after the handler completes', async () => {
+      vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
+      const handler = publicHandler();
+
+      await withPublic(handler)(makeRequest(), undefined);
+
+      expect(flushPostHogOtelLogs).toHaveBeenCalledTimes(1);
+      expect(flushPostHogOtelTraces).toHaveBeenCalledTimes(1);
+    });
+
+    it('flushes PostHog OTLP logs and traces when the handler throws', async () => {
+      vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
+      const handler = vi.fn<PublicRouteHandler>(async () => {
+        throw new Error('boom');
+      });
+
+      await expect(withPublic(handler)(makeRequest(), undefined)).rejects.toThrow('boom');
+
+      expect(flushPostHogOtelLogs).toHaveBeenCalledTimes(1);
+      expect(flushPostHogOtelTraces).toHaveBeenCalledTimes(1);
     });
   });
 

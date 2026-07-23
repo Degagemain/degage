@@ -1,28 +1,14 @@
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { PostHogTraceExporter } from '@posthog/ai/otel';
 import { NextRequest } from 'next/server';
 import type { RequestErrorContext } from 'next/dist/server/instrumentation/types';
 
 import { initPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+import { initPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 
 const isPostHogEnabled = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
 export async function register() {
   initPostHogOtelLogs();
-
-  if (isPostHogEnabled) {
-    const sdk = new NodeSDK({
-      resource: resourceFromAttributes({
-        'service.name': 'open-cars',
-      }),
-      traceExporter: new PostHogTraceExporter({
-        apiKey: process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!,
-        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      }),
-    });
-    sdk.start();
-  }
+  initPostHogOtelTraces();
 }
 
 export const onRequestError = async (
