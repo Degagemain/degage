@@ -261,7 +261,8 @@ pnpm run docs
 
 - **Node client** — `app/integrations/posthog.ts` uses `posthog-node` for events from API routes (e.g. simulations).
 - **Logs (OTLP)** — `app/lib/posthog-otel-logs.ts` configures OpenTelemetry Logs for PostHog using `LoggerProvider` + `BatchLogRecordProcessor` + `OTLPLogExporter` to `.../i/v1/logs` (initialized from `instrumentation.ts`). Route handlers schedule/force a flush via `with-context` so batched logs are not dropped on short-lived runtimes.
-- **LLM analytics** — `instrumentation.ts` registers OpenTelemetry with `PostHogTraceExporter` from `@posthog/ai/otel`. Support reply generation in `app/actions/support/generate-reply.ts` enables the Vercel AI SDK’s `experimental_telemetry` on both `streamText` and `generateText`, which sends `$ai_generation` events (model, latency, token usage, cost). When the viewer is authenticated, their user id is attached as `posthog_distinct_id`.
+- **Distributed tracing (OTLP)** — `app/lib/posthog-otel-traces.ts` configures OpenTelemetry traces for PostHog using `NodeSDK` + `BatchSpanProcessor` + `OTLPTraceExporter` to `.../i/v1/traces` (initialized from `instrumentation.ts`; [PostHog Tracing](https://posthog.com/docs/distributed-tracing)). Route handlers schedule/force a flush via `with-context` so batched spans are not dropped on short-lived runtimes.
+- **LLM analytics** — same `NodeSDK` also registers `PostHogSpanProcessor` from `@posthog/ai/otel` for generative-AI spans. Support reply generation in `app/actions/support/generate-reply.ts` enables the Vercel AI SDK’s `experimental_telemetry` on both `streamText` and `generateText`, which sends `$ai_generation` events (model, latency, token usage, cost). When the viewer is authenticated, their user id is attached as `posthog_distinct_id`.
 
 For local development, set at least **`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`** and **`NEXT_PUBLIC_POSTHOG_HOST`** in `.env` so analytics, server events, and exception capture work (see `app/integrations/posthog.ts` and `instrumentation-client.ts`).
 
@@ -333,6 +334,7 @@ This log explains why packages were installed.
 | Notion webhooks & page fetch               | @notionhq/client                                                                                       |
 | PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
 | PostHog Logs (OpenTelemetry OTLP)          | @opentelemetry/sdk-logs, @opentelemetry/exporter-logs-otlp-http, @opentelemetry/api-logs               |
+| PostHog Tracing (OpenTelemetry OTLP)       | @opentelemetry/exporter-trace-otlp-proto, @opentelemetry/sdk-trace-base                                |
 | PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
 | ShadCN forms (RHF + Zod)                   | react-hook-form, @hookform/resolvers                                                                   |
 
