@@ -17,6 +17,7 @@ vi.mock('@posthog/mcp', () => ({
 vi.mock('@/integrations/posthog', () => ({
   isPostHogEnabled: true,
   getPostHogClient,
+  flushPostHogEvents: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock('@/mcp/verify-token', () => ({

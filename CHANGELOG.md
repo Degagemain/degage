@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Changed: server-side PostHog uses default batching.
 - Fixed: `simulation` event are now captured after create and include the persisted simulation `id`.
 
 ## [0.0.2] - 2026-07-16
