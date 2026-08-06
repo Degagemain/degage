@@ -2875,7 +2875,7 @@
         "title": "Car stickers",
         "subtitle": "Choose your sticker designs",
         "panelTitle": "Sticker selection",
-        "helper": "Pick at least one extra sticker. Always-included stickers are selected automatically and cannot be removed.",
+        "helper": "Extra stickers are optional. Always-included stickers are selected automatically and cannot be removed.",
         "loading": "Loading stickers…",
         "loadError": "Could not load stickers. Please try again.",
         "alwaysIncluded": "Always included"

@@ -173,9 +173,9 @@ describe('isStepComplete', () => {
     expect(isStepComplete('user-info', carOnboarding())).toBe(false);
   });
 
-  it('returns true for completed car stickers when at least one extra sticker is saved', () => {
+  it('returns true for car stickers whether or not extra stickers are saved', () => {
     expect(isStepComplete('car-stickers', completeCarOnboarding())).toBe(true);
-    expect(isStepComplete('car-stickers', completeCarOnboarding({ carStickers: [] }))).toBe(false);
+    expect(isStepComplete('car-stickers', completeCarOnboarding({ carStickers: [] }))).toBe(true);
   });
 });
 

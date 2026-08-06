@@ -128,14 +128,15 @@ Deze stap is compleet wanneer de waarde-status **Resolved** is.
 
 ### Autostickers
 
-De eigenaar kiest extra stickerontwerpen uit de catalogus tijdens de publieke onboarding-flow. Altijd-inbegrepen stickers worden vooraf
-geselecteerd getoond en kunnen niet worden verwijderd; ze worden niet opgeslagen op het onboarding-record.
+De eigenaar kan extra stickerontwerpen uit de catalogus kiezen tijdens de publieke onboarding-flow. Extra stickers zijn optioneel.
+Altijd-inbegrepen stickers worden vooraf geselecteerd getoond en kunnen niet worden verwijderd; ze worden niet opgeslagen op het
+onboarding-record.
 
 | Eigenschap   | Beschrijving                                                        |
 | ------------ | ------------------------------------------------------------------- |
 | Autostickers | Extra stickerontwerpen geselecteerd en opgeslagen door de eigenaar. |
 
-Deze stap is compleet wanneer minstens één extra sticker is opgeslagen.
+Deze stap is altijd compleet; extra stickers zijn optioneel.
 
 ### Afronden
 
