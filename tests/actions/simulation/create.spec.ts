@@ -29,6 +29,7 @@ vi.mock('@/actions/simulation/engine', () => ({
 import { createSimulation } from '@/actions/simulation/create';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
 import { captureEvent } from '@/integrations/posthog';
+import { AnalyticsEvent } from '@/domain/analytics-event.model';
 import { SimulationStepIcon } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
@@ -54,7 +55,7 @@ describe('createSimulation', () => {
     expect(result.duration).toBe(0);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
     expect(captureEvent).toHaveBeenCalledWith(
-      'simulation',
+      AnalyticsEvent.SIMULATION,
       expect.objectContaining({
         id: 'created-id',
         resultCode: 'manualReview',

@@ -10,6 +10,7 @@ vi.mock('posthog-js', () => ({
 
 import posthog from 'posthog-js';
 import { capture, identifyPostHogUser, resetPostHog } from '@/app/lib/posthog';
+import { AnalyticsEvent } from '@/domain/analytics-event.model';
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -24,12 +25,12 @@ const enablePostHog = () => {
 describe('capture', () => {
   it('delegates to posthog.capture when enabled', () => {
     enablePostHog();
-    capture('test_event', { key: 'value' });
-    expect(posthog.capture).toHaveBeenCalledWith('test_event', { key: 'value' });
+    capture(AnalyticsEvent.SIMULATION, { key: 'value' });
+    expect(posthog.capture).toHaveBeenCalledWith(AnalyticsEvent.SIMULATION, { key: 'value' });
   });
 
   it('does nothing when env vars are missing', () => {
-    capture('test_event');
+    capture(AnalyticsEvent.SIMULATION);
     expect(posthog.capture).not.toHaveBeenCalled();
   });
 });

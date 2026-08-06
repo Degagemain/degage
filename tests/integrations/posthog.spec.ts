@@ -49,8 +49,9 @@ describe('integrations/posthog', () => {
 
   it('flushPostHogEvents flushes an already-created client', async () => {
     const { captureEvent, flushPostHogEvents } = await import('@/integrations/posthog');
+    const { AnalyticsEvent } = await import('@/domain/analytics-event.model');
 
-    captureEvent('test_event');
+    captureEvent(AnalyticsEvent.SIMULATION);
     await flushPostHogEvents();
 
     expect(flush).toHaveBeenCalledTimes(1);
@@ -58,13 +59,40 @@ describe('integrations/posthog', () => {
 
   it('captureImmediate awaits PostHog captureImmediate', async () => {
     const { captureImmediate: captureImmediateEvent } = await import('@/integrations/posthog');
+    const { AnalyticsEvent } = await import('@/domain/analytics-event.model');
 
-    await captureImmediateEvent('user signed up', { method: 'email' });
+    await captureImmediateEvent(AnalyticsEvent.USER_SIGNED_UP, { method: 'email' });
 
     expect(captureImmediate).toHaveBeenCalledWith({
       distinctId: 'user-1',
-      event: 'user signed up',
+      event: AnalyticsEvent.USER_SIGNED_UP,
       properties: { method: 'email', request_id: 'req-1' },
+    });
+  });
+
+  it('captureImmediate uses explicit distinctId when provided', async () => {
+    const { captureImmediate: captureImmediateEvent } = await import('@/integrations/posthog');
+    const { AnalyticsEvent } = await import('@/domain/analytics-event.model');
+
+    await captureImmediateEvent(AnalyticsEvent.USER_LOGGED_IN, { path: '/sign-in/email' }, 'auth-user-42');
+
+    expect(captureImmediate).toHaveBeenCalledWith({
+      distinctId: 'auth-user-42',
+      event: AnalyticsEvent.USER_LOGGED_IN,
+      properties: { path: '/sign-in/email', request_id: 'req-1' },
+    });
+  });
+
+  it('captureEvent uses explicit distinctId when provided', async () => {
+    const { captureEvent } = await import('@/integrations/posthog');
+    const { AnalyticsEvent } = await import('@/domain/analytics-event.model');
+
+    captureEvent(AnalyticsEvent.SIMULATION, { id: 'sim-1' }, 'auth-user-42');
+
+    expect(capture).toHaveBeenCalledWith({
+      distinctId: 'auth-user-42',
+      event: AnalyticsEvent.SIMULATION,
+      properties: { id: 'sim-1', request_id: 'req-1' },
     });
   });
 

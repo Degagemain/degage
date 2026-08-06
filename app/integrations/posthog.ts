@@ -1,4 +1,5 @@
 import { getRequestId, getRequestUserId } from '@/context/request-context';
+import type { AnalyticsEventName } from '@/domain/analytics-event.model';
 import { PostHog } from 'posthog-node';
 
 let posthogClient: PostHog | null = null;
@@ -41,30 +42,32 @@ function buildEventProperties(
 }
 
 export const captureEvent = (
-  event: string,
+  event: AnalyticsEventName,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties?: Record<string, string | number | any>,
+  distinctId?: string,
 ) => {
   if (!isPostHogEnabled) {
     return;
   }
   getPostHogClient().capture({
-    distinctId: getServerDistinctId(),
+    distinctId: distinctId ?? getServerDistinctId(),
     event,
     properties: buildEventProperties(properties),
   });
 };
 
 export const captureImmediate = async (
-  event: string,
+  event: AnalyticsEventName,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties?: Record<string, string | number | any>,
+  distinctId?: string,
 ): Promise<void> => {
   if (!isPostHogEnabled) {
     return;
   }
   await getPostHogClient().captureImmediate({
-    distinctId: getServerDistinctId(),
+    distinctId: distinctId ?? getServerDistinctId(),
     event,
     properties: buildEventProperties(properties),
   });

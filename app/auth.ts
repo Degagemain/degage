@@ -5,6 +5,8 @@ import { admin, jwt } from 'better-auth/plugins';
 import { oauthProvider } from '@better-auth/oauth-provider';
 import { isMcpEnabled, oauthProviderScopes } from '@/mcp/config';
 import { assertUserCanReceiveOAuthToken } from '@/mcp/auth-context';
+import { captureImmediate } from '@/integrations/posthog';
+import { AnalyticsEvent } from '@/domain/analytics-event.model';
 import { getPrismaClient } from './storage/utils';
 import { dbUserGetLocale } from './storage/user/user.read';
 import { TemplatesEnum, sendTemplatedEmail } from './integrations/resend';
@@ -91,6 +93,11 @@ export const auth = betterAuth({
   ],
   databaseHooks: {
     user: {
+      create: {
+        after: async (user) => {
+          await captureImmediate(AnalyticsEvent.USER_SIGNED_UP, undefined, user.id);
+        },
+      },
       update: {
         after: async (user) => {
           if (!user.emailVerified || user.role === 'admin') return;
@@ -113,11 +120,17 @@ export const auth = betterAuth({
       }
     }),
     after: createAuthMiddleware(async (ctx) => {
+      const newSession = ctx.context.newSession;
+      const userId = newSession?.user?.id;
+
+      if (userId && (ctx.path.startsWith('/sign-in') || ctx.path.startsWith('/callback'))) {
+        await captureImmediate(AnalyticsEvent.USER_LOGGED_IN, { path: ctx.path }, userId);
+      }
+
       // Set locale cookie after successful sign-in, sign-up, or OAuth callback
       if (ctx.path.startsWith('/sign-in') || ctx.path.startsWith('/sign-up') || ctx.path.startsWith('/callback')) {
-        const newSession = ctx.context.newSession;
-        if (newSession?.user?.id) {
-          const locale = await dbUserGetLocale(newSession.user.id);
+        if (userId) {
+          const locale = await dbUserGetLocale(userId);
           if (locale) {
             ctx.setCookie('locale', locale, {
               path: '/',
