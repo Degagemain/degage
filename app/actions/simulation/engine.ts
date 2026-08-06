@@ -34,7 +34,6 @@ import { dbTownRead } from '@/storage/town/town.read';
 import { dbProvinceRead } from '@/storage/province/province.read';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import type { Hub } from '@/domain/hub.model';
-import { captureEvent } from '@/integrations/posthog';
 import { logger } from '@/lib/logger';
 
 type AcceptanceResultCode = SimulationResultCode.CATEGORY_A | SimulationResultCode.CATEGORY_B;
@@ -101,7 +100,6 @@ export async function runSimulationEngine(input: SimulationRunInput): Promise<Si
   try {
     const simulationResult = await tryRunSimulationEngine(input, result);
     simulationResult.duration = elapsedWholeSeconds(startedAt);
-    captureEvent('simulation', simulationResult as unknown as Record<string, unknown>);
     return simulationResult;
   } catch (err) {
     result.error = err instanceof Error ? err.message : String(err);

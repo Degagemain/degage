@@ -1,4 +1,5 @@
 import { simulationRunInputParseSchema } from '@/domain/simulation.model';
+import { captureEvent } from '@/integrations/posthog';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
 import { runSimulationEngine } from './engine';
 import type { Simulation, SimulationRunInput } from '@/domain/simulation.model';
@@ -57,5 +58,7 @@ export async function createSimulation(input: SimulationRunInput, options?: { sk
     return simulation;
   }
 
-  return dbSimulationCreate(simulation);
+  const created = await dbSimulationCreate(simulation);
+  captureEvent('simulation', { ...result, id: created.id });
+  return created;
 }

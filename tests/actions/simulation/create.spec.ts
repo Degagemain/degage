@@ -5,6 +5,10 @@ vi.mock('@/storage/simulation/simulation.create', () => ({
   dbSimulationCreate: vi.fn(),
 }));
 
+vi.mock('@/integrations/posthog', () => ({
+  captureEvent: vi.fn(),
+}));
+
 vi.mock('@/actions/simulation/engine', () => ({
   runSimulationEngine: vi.fn().mockResolvedValue({
     resultCode: 'manualReview',
@@ -24,6 +28,7 @@ vi.mock('@/actions/simulation/engine', () => ({
 
 import { createSimulation } from '@/actions/simulation/create';
 import { dbSimulationCreate } from '@/storage/simulation/simulation.create';
+import { captureEvent } from '@/integrations/posthog';
 import { SimulationStepIcon } from '@/domain/simulation.model';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
@@ -48,6 +53,14 @@ describe('createSimulation', () => {
     expect(result.resultAvgSharedKm).toBe(5_000);
     expect(result.duration).toBe(0);
     expect(dbSimulationCreate).toHaveBeenCalledTimes(1);
+    expect(captureEvent).toHaveBeenCalledWith(
+      'simulation',
+      expect.objectContaining({
+        id: 'created-id',
+        resultCode: 'manualReview',
+        duration: 0,
+      }),
+    );
   });
 
   it('throws ZodError when input is invalid', async () => {
@@ -55,6 +68,7 @@ describe('createSimulation', () => {
 
     await expect(createSimulation(invalidInput)).rejects.toBeInstanceOf(ZodError);
     expect(dbSimulationCreate).not.toHaveBeenCalled();
+    expect(captureEvent).not.toHaveBeenCalled();
   });
 
   it('throws ZodError when car type is Other but carTypeOther is empty', async () => {
@@ -62,6 +76,7 @@ describe('createSimulation', () => {
 
     await expect(createSimulation(input)).rejects.toBeInstanceOf(ZodError);
     expect(dbSimulationCreate).not.toHaveBeenCalled();
+    expect(captureEvent).not.toHaveBeenCalled();
   });
 
   it('returns simulation without persisting when skipPersistence is true', async () => {
@@ -75,5 +90,6 @@ describe('createSimulation', () => {
     expect(result.resultCode).toBe('manualReview');
     expect(result.id).toBeNull();
     expect(dbSimulationCreate).not.toHaveBeenCalled();
+    expect(captureEvent).not.toHaveBeenCalled();
   });
 });
