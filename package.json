@@ -42,14 +42,13 @@
   "packageManager": "pnpm@10.15.1",
   "pnpm": {
     "overrides": {
-      "protobufjs": "^7.5.5",
-      "kysely": "0.28.17"
+      "protobufjs": "^7.5.5"
     }
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.53",
     "@ai-sdk/react": "^3.0.140",
-    "@better-auth/oauth-provider": "^1.6.14",
+    "@better-auth/oauth-provider": "^1.6.26",
     "@google-cloud/storage": "^7.21.0",
     "@google/genai": "^1.42.0",
     "@hookform/resolvers": "^5.2.2",
@@ -82,7 +81,7 @@
     "@xyflow/react": "^12.10.1",
     "ai": "^6.0.138",
     "ansi-to-react": "^6.2.6",
-    "better-auth": "^1.6.14",
+    "better-auth": "^1.6.26",
     "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -436,27 +436,3 @@ Example **`.cursor/mcp.json`** (replace placeholder values; do not commit real s
   }
 }
 ```
-
-## Known Issues
-
-### Better Auth + Kysely (Turbopack)
-
-`better-auth@1.6.x` bundles `@better-auth/kysely-adapter`, which breaks Turbopack builds when `kysely@0.29.x` is resolved (migration constants moved to `kysely/migration`). This project uses the Prisma adapter only; `package.json` pins `kysely` to `0.28.17` via `pnpm.overrides` until upstream fixes land. Remove the override after upgrading to a fixed `@better-auth/kysely-adapter`.
-
-### Turbopack
-
-TurboPack and @prisma/pg-adapter don't work well together, for pnpm. The following error is thrown when instantiating the adapter.
-
-```bash
-Package pg can't be external
-The request pg matches serverExternalPackages (or the default list).
-The request could not be resolved by Node.js from the project directory.
-Packages that should be external need to be installed in the project directory, so they can be resolved from the output files.
-Try to install it into the project directory by running npm install pg from the project directory.
-```
-
-A temporary fix was to modify the .npmrc file as mentioned [here](https://github.com/vercel/next.js/discussions/76247).
-
-```.npmrc
-public-hoist-pattern[]=*pg*
-```
