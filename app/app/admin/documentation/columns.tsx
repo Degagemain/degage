@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Check, Eye, MoreHorizontal, Pencil } from 'lucide-react';
 
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
+import { formatDateOrDash } from '@/domain/utils';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/app/components/ui/checkbox';
@@ -143,12 +144,7 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={onSort} />,
-      cell: ({ row }) => {
-        const d = row.original.updatedAt;
-        if (!d) return '—';
-        const date = typeof d === 'string' ? new Date(d) : d;
-        return date.toLocaleDateString();
-      },
+      cell: ({ row }) => formatDateOrDash(row.original.updatedAt),
     },
     {
       id: 'actions',

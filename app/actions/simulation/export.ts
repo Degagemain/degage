@@ -25,10 +25,10 @@ const buildSimulationExportColumns = async (locale: string): Promise<CsvColumn<S
     },
     { label: tAdmin('columns.mileage'), format: (row) => row.mileage.toLocaleString(locale) },
     { label: tAdmin('columns.seats'), format: (row) => String(row.seats) },
-    { label: tAdmin('columns.firstRegisteredAt'), format: (row) => formatDateOrDash(row.firstRegisteredAt, locale, false) },
+    { label: tAdmin('columns.firstRegisteredAt'), format: (row) => formatDateOrDash(row.firstRegisteredAt) },
     { label: tAdmin('columns.carTypeOther'), format: (row) => asTextOrDash(row.carTypeOther) },
     { label: tAdmin('columns.duration'), format: (row) => String(row.duration) },
-    { label: tAdmin('columns.created'), format: (row) => formatDateOrDash(row.createdAt, locale, true) },
+    { label: tAdmin('columns.created'), format: (row) => formatDateOrDash(row.createdAt, true) },
   ];
 };
 

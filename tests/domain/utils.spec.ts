@@ -85,8 +85,18 @@ describe('dash formatters', () => {
   });
 
   it('formatDateOrDash returns dash for invalid date values', () => {
-    expect(formatDateOrDash(null, 'en', false)).toBe(DashPlaceholder);
-    expect(formatDateOrDash('not-a-date', 'en', false)).toBe(DashPlaceholder);
+    expect(formatDateOrDash(null)).toBe(DashPlaceholder);
+    expect(formatDateOrDash('not-a-date')).toBe(DashPlaceholder);
+  });
+
+  it('formatDateOrDash formats with en-GB', () => {
+    const date = new Date('2024-03-15T12:00:00.000Z');
+    expect(formatDateOrDash(date)).toBe(date.toLocaleDateString('en-GB'));
+  });
+
+  it('formatDateOrDash includes time when requested', () => {
+    const date = new Date('2024-03-15T12:00:00.000Z');
+    expect(formatDateOrDash(date, true)).toBe(date.toLocaleString('en-GB'));
   });
 });
 

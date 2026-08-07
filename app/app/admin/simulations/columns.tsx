@@ -8,6 +8,7 @@ import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
 import { Simulation } from '@/domain/simulation.model';
+import { formatDateOrDash } from '@/domain/utils';
 import { useTranslations } from 'next-intl';
 
 interface ColumnOptions {
@@ -152,10 +153,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
     {
       accessorKey: 'firstRegisteredAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.firstRegisteredAt')} onSort={onSort} />,
-      cell: ({ row }) => {
-        const date = row.getValue('firstRegisteredAt') as Date | string;
-        return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleDateString() : '—'}</span>;
-      },
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('firstRegisteredAt'))}</span>,
       enableHiding: true,
     },
     {
@@ -349,19 +347,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={onSort} />,
-      cell: ({ row }) => {
-        const date = row.getValue('createdAt') as Date | string | null;
-        return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleString() : '—'}</span>;
-      },
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={onSort} />,
-      cell: ({ row }) => {
-        const date = row.original.updatedAt;
-        return <span className="text-muted-foreground text-sm">{date ? new Date(date).toLocaleString() : '—'}</span>;
-      },
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.updatedAt)}</span>,
       enableHiding: true,
     },
     {

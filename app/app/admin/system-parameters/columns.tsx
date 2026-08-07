@@ -5,16 +5,12 @@ import { Button } from '@/app/components/ui/button';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Pencil } from 'lucide-react';
 import { SystemParameter, SystemParameterType } from '@/domain/system-parameter.model';
+import { formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   onEdit?: (param: SystemParameter) => void;
   t: (key: string) => string;
-}
-
-function formatDate(value: Date | string | null): string {
-  if (value == null) return '—';
-  return new Date(value).toLocaleDateString();
 }
 
 function formatTextValue(value: string | null): string {
@@ -86,13 +82,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<SystemParameter
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
     },
     ...(onEdit

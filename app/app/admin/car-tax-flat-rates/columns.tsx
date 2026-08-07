@@ -4,15 +4,11 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { CarTaxFlatRate } from '@/domain/car-tax-flat-rate.model';
+import { formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   t: (key: string) => string;
-}
-
-function formatDate(value: Date | string | null): string {
-  if (value == null) return '—';
-  return new Date(value).toLocaleDateString();
 }
 
 function formatRate(value: number): string {
@@ -47,7 +43,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarTaxFlatRate>
     {
       accessorKey: 'start',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.start')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('start'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('start'))}</span>,
       enableHiding: true,
     },
     {
@@ -59,13 +55,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarTaxFlatRate>
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
     },
   ];
