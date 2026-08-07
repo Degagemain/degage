@@ -13,6 +13,7 @@ import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { Button } from '@/app/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/components/ui/table';
 
+import { PublicInfoPanel } from '../public-ui';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
@@ -175,7 +176,7 @@ export function InfoSessionStep() {
 
   return (
     <StepLayout stepId="info-session">
-      <p className="mb-6 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('steps.infoSession.info')}</p>
+      <PublicInfoPanel title={t('steps.infoSession.panelTitle')} body={t('steps.infoSession.panelBody')} />
 
       {hasExternalPlayEnrollment && chosenInfosession ? (
         <div className={`${styles.enrollmentStatusCard} mb-6 border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/30`}>

@@ -10,7 +10,7 @@ import { MaxTake } from '@/domain/utils';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
-import { PublicPanel } from '../public-ui';
+import { PublicInfoPanel, PublicPanel } from '../public-ui';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
@@ -122,7 +122,8 @@ export function CarStickersStep() {
 
   return (
     <StepLayout stepId="car-stickers">
-      <PublicPanel title={t('steps.carStickers.panelTitle')} body={t('steps.carStickers.helper')}>
+      <PublicInfoPanel title={t('steps.carStickers.panelTitle')} body={t('steps.carStickers.panelBody')} />
+      <PublicPanel>
         {loading ? <p className={styles.panelBody}>{t('steps.carStickers.loading')}</p> : null}
         {loadError ? <p className={styles.panelBody}>{t('steps.carStickers.loadError')}</p> : null}
         {!loading && !loadError ? (

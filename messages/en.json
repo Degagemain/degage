@@ -2724,12 +2724,16 @@
       "playConnector": {
         "title": "Connect Dégage",
         "subtitle": "Link your legacy Dégage account",
-        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding."
+        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding.",
+        "panelTitle": "Connect Degapp",
+        "panelBody": "Connect with the email and password you use on the legacy Dégage platform (Degapp). We need this to sync your account during onboarding — including enrolling for an info session and pre-filling your contact details.\n\nThis is not your password for this app. Your Degapp credentials are stored encrypted."
       },
       "infoSession": {
         "title": "Info session",
         "subtitle": "Attend a Degapp info session",
         "info": "Choose an upcoming info session and enroll. After you attend, an admin will confirm your participation.",
+        "panelTitle": "Info session",
+        "panelBody": "Choose an upcoming owner info session and enroll. Enrolling unlocks the next preparation steps.\n\nYou can only be enrolled in one session at a time. After you attend, an admin will confirm your presence — only then is this step fully complete.",
         "loading": "Loading info sessions…",
         "loadError": "Could not load info sessions. Check your Play connector connection and try again.",
         "tableEmpty": "No upcoming info sessions found.",
@@ -2835,6 +2839,7 @@
         "hasInsuranceContractLabel": "I currently have an active insurance contract for this car",
         "contractStartedAtHint": "The original contract start date, not the (yearly) renewal date.",
         "contractWarning": "Your insurance started less than a year ago. You can join Dégage at the earliest on {date}.",
+        "contractWarningCancellable": "Your insurance started more than a year ago. After the first year you can cancel at any time, with a notice period of 2 months. We are happy to help with that cancellation; you can join Dégage at the earliest on {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Did your insurer announce a rate increase?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Yes, a rate increase was announced",
         "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it."
@@ -2843,6 +2848,8 @@
         "title": "Road assistance plan",
         "subtitle": "Your roadside assistance coverage",
         "info": "Tell us whether your car already has road assistance and choose the plan you want with Dégage.",
+        "panelTitle": "Roadside assistance",
+        "panelBody": "Dégage offers roadside assistance free of charge to every owner. By default this is VAB Benelux.\n\nIf as an owner you want VAB roadside assistance in Europe, you can request it 7 days before departure. That cover remains valid until the end of the calendar year. Dégage also pays for this request.",
         "existingPanelTitle": "Existing road assistance",
         "existingPanelBody": "New cars sometimes include a few years of road assistance when purchased.",
         "hasExistingFieldLabel": "Existing road assistance?",
@@ -2860,6 +2867,8 @@
         "title": "Car value",
         "subtitle": "Agreement on depreciation per shared km",
         "info": "Review the proposed car value and depreciation. Agree or submit a counter proposal.",
+        "panelTitle": "Your car's value",
+        "panelBody": "Your car's value is used to set the insurance premium. We estimate that value from the details you entered during the simulation.\n\nBased on that value we also determine the depreciation per shared kilometre. For an existing car we propose a value; you can agree or submit a counter proposal with your reasoning. For a purchased car we use the purchase price.",
         "chartTitle": "Depreciation per shared km",
         "chartBody": "Based on {mileage} km, depreciation is about €{depreciation} per shared kilometre.",
         "waitingForProposal": "Waiting for an admin to propose a car value.",
@@ -2874,8 +2883,8 @@
       "carStickers": {
         "title": "Car stickers",
         "subtitle": "Choose your sticker designs",
-        "panelTitle": "Sticker selection",
-        "helper": "Extra stickers are optional. Always-included stickers are selected automatically and cannot be removed.",
+        "panelTitle": "Make your shared car visible!",
+        "panelBody": "Visibility matters for Dégage. A sticker also helps our members recognise the car quickly. You always get the green sticker. Want extra stickers? Choose which ones you want below.\n\nIf you want a sticker on the side door, one of our volunteers will contact you to apply it. The white slogan sticker is easy to apply yourself.",
         "loading": "Loading stickers…",
         "loadError": "Could not load stickers. Please try again.",
         "alwaysIncluded": "Always included"

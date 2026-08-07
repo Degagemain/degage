@@ -8,7 +8,7 @@ import { isInsurerContractStartedWithinLastYear } from '@/domain/car-onboarding.
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
-import { PublicField, PublicInput, PublicPanel } from '../public-ui';
+import { PublicField, PublicInfoPanel, PublicInput, PublicPanel } from '../public-ui';
 import { PublicSearchableField } from '../public-searchable-field';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
@@ -19,6 +19,12 @@ const addOneYear = (dateStr: string): string => {
   const d = new Date(dateStr);
   if (Number.isNaN(d.getTime())) return '';
   d.setFullYear(d.getFullYear() + 1);
+  return d.toLocaleDateString();
+};
+
+const addTwoMonthsFromToday = (): string => {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 2);
   return d.toLocaleDateString();
 };
 
@@ -49,7 +55,9 @@ export function InsurerStep() {
     setInsurerAnnouncedPriceIncrease(carOnboarding.insurerAnnouncedPriceIncrease);
   }, [carOnboarding]);
 
-  const showRecentContract = hasInsuranceContract && contractStartedAt !== '' && isInsurerContractStartedWithinLastYear(contractStartedAt);
+  const hasContractDate = hasInsuranceContract && contractStartedAt !== '';
+  const showRecentContract = hasContractDate && isInsurerContractStartedWithinLastYear(contractStartedAt);
+  const showCancellableContract = hasContractDate && !isInsurerContractStartedWithinLastYear(contractStartedAt);
 
   const handleSave = async (): Promise<boolean> => {
     if (!carOnboarding.id) return false;
@@ -82,7 +90,8 @@ export function InsurerStep() {
 
   return (
     <StepLayout stepId="insurer">
-      <PublicPanel title={t('steps.insurer.panelTitle')} body={t('steps.insurer.panelBody')}>
+      <PublicInfoPanel title={t('steps.insurer.panelTitle')} body={t('steps.insurer.panelBody')} />
+      <PublicPanel>
         <label className={styles.checkboxLabel}>
           <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />
           <span>{t('steps.insurer.hasInsuranceContractLabel')}</span>
@@ -124,6 +133,10 @@ export function InsurerStep() {
 
       {showRecentContract ? (
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
+      ) : null}
+
+      {showCancellableContract ? (
+        <div className={styles.bannerWarning}>{t('steps.insurer.contractWarningCancellable', { date: addTwoMonthsFromToday() })}</div>
       ) : null}
 
       <StepActions stepId="insurer" onSave={handleSave} saveDisabled={isSaving} />

@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
-import { PublicField, PublicInput, PublicPanel } from '../public-ui';
+import { PublicField, PublicInfoPanel, PublicInput, PublicPanel } from '../public-ui';
 import { RoadAssistancePlanRadioList } from '../road-assistance-plan-radio-list';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
@@ -76,7 +76,15 @@ export function RoadAssistancePlanStep() {
   );
 
   return (
-    <StepLayout stepId="road-assistance-plan" beforeFieldset={existingPlanField}>
+    <StepLayout
+      stepId="road-assistance-plan"
+      beforeFieldset={
+        <>
+          <PublicInfoPanel title={t('steps.roadAssistancePlan.panelTitle')} body={t('steps.roadAssistancePlan.panelBody')} />
+          {existingPlanField}
+        </>
+      }
+    >
       <PublicPanel title={t('steps.roadAssistancePlan.desiredPanelTitle')} body={t('steps.roadAssistancePlan.desiredPanelBody')}>
         <RoadAssistancePlanRadioList
           value={roadAssistancePlanId}

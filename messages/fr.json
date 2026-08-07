@@ -2724,12 +2724,16 @@
       "playConnector": {
         "title": "Connecter Dégage",
         "subtitle": "Liez votre compte Dégage legacy",
-        "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding."
+        "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding.",
+        "panelTitle": "Connexion Degapp",
+        "panelBody": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy (Degapp). Nous en avons besoin pour synchroniser votre compte pendant l'onboarding — notamment pour vous inscrire à une session d'info et préremplir vos coordonnées.\n\nCe n'est pas le mot de passe de cette application. Vos identifiants Degapp sont stockés de manière chiffrée."
       },
       "infoSession": {
         "title": "Session d'info",
         "subtitle": "Participez à une infosession Degapp",
         "info": "Choisissez une infosession à venir et inscrivez-vous. Après votre participation, un administrateur confirmera votre présence.",
+        "panelTitle": "Session d'info",
+        "panelBody": "Choisissez une session d'info pour propriétaires à venir et inscrivez-vous. L'inscription débloque les étapes de préparation suivantes.\n\nVous ne pouvez être inscrit qu'à une seule session à la fois. Après votre participation, un administrateur confirmera votre présence — ce n'est qu'alors que cette étape est pleinement terminée.",
         "loading": "Chargement des infosessions…",
         "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Play connector et réessayez.",
         "tableEmpty": "Aucune infosession à venir trouvée.",
@@ -2835,6 +2839,7 @@
         "hasInsuranceContractLabel": "J'ai encore un contrat d'assurance en cours pour ce véhicule",
         "contractStartedAtHint": "La date de début initiale du contrat, et non la date de renouvellement (annuel).",
         "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez rejoindre Dégage au plus tôt le {date}.",
+        "contractWarningCancellable": "Votre assurance a commencé il y a plus d'un an. Après la première année, vous pouvez résilier à tout moment, avec un préavis de 2 mois. Nous vous aidons volontiers avec cette résiliation ; vous pouvez rejoindre Dégage au plus tôt le {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Votre assureur a-t-il annoncé une hausse de tarif ?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Oui, une hausse de tarif a été annoncée",
         "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation."
@@ -2843,6 +2848,8 @@
         "title": "Assistance routière",
         "subtitle": "Votre couverture d'assistance routière",
         "info": "Indiquez si votre véhicule a déjà une assistance routière et choisissez le plan souhaité avec Dégage.",
+        "panelTitle": "Assistance dépannage",
+        "panelBody": "Dégage offre gratuitement une assistance dépannage à chaque propriétaire. Par défaut, il s'agit de VAB Benelux.\n\nSi en tant que propriétaire vous souhaitez l'assistance dépannage VAB en Europe, vous pouvez la demander 7 jours avant le départ. Cette couverture reste valable jusqu'à la fin de l'année civile. Cette demande est également prise en charge par Dégage.",
         "existingPanelTitle": "Assistance routière existante",
         "existingPanelBody": "Les véhicules neufs incluent parfois plusieurs années d'assistance routière à l'achat.",
         "hasExistingFieldLabel": "Assistance routière existante ?",
@@ -2860,6 +2867,8 @@
         "title": "Valeur",
         "subtitle": "Accord sur l'amortissement par km partagé",
         "info": "Consultez la valeur proposée et l'amortissement. Acceptez ou soumettez une contre-proposition.",
+        "panelTitle": "Valeur de votre véhicule",
+        "panelBody": "La valeur de votre véhicule sert à fixer la prime d'assurance. Nous l'estimons à partir des informations fournies lors de votre simulation.\n\nSur cette base, nous déterminons aussi l'amortissement par kilomètre partagé. Pour un véhicule existant, nous proposons une valeur ; vous pouvez l'accepter ou soumettre une contre-proposition avec votre argumentation. Pour un véhicule acheté, nous utilisons le prix d'achat.",
         "chartTitle": "Amortissement par km partagé",
         "chartBody": "Sur la base de {mileage} km, l'amortissement est d'environ €{depreciation} par kilomètre partagé.",
         "waitingForProposal": "En attente d'une proposition de valeur par l'administrateur.",
@@ -2874,8 +2883,8 @@
       "carStickers": {
         "title": "Autocollants",
         "subtitle": "Choisissez vos designs d'autocollants",
-        "panelTitle": "Sélection des autocollants",
-        "helper": "Les autocollants supplémentaires sont facultatifs. Les autocollants toujours inclus sont sélectionnés automatiquement et ne peuvent pas être retirés.",
+        "panelTitle": "Rendez votre voiture partagée visible !",
+        "panelBody": "La visibilité est importante pour Dégage. Un autocollant aide aussi nos membres à reconnaître rapidement la voiture. Vous recevez toujours l'autocollant vert. Vous voulez des autocollants supplémentaires ? Choisissez-les ci-dessous.\n\nSi vous souhaitez un autocollant sur la portière, un de nos bénévoles vous contactera pour le poser. Le slogan blanc est facile à coller soi-même.",
         "loading": "Chargement des autocollants…",
         "loadError": "Impossible de charger les autocollants. Veuillez réessayer.",
         "alwaysIncluded": "Toujours inclus"
