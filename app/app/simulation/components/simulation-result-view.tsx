@@ -4,6 +4,7 @@ import { capture } from '@/app/lib/posthog';
 import { apiPost } from '@/app/lib/api-client';
 import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
 import type { PublicSimulation } from '@/actions/simulation/read';
+import { analyticsSimulationStepEvent } from '@/domain/analytics-event.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import { cn } from '@/app/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -113,7 +114,7 @@ export function SimulationResultView({ simulation }: Props) {
   }, [screen, costScenarioIndex]);
 
   const goNext = () => {
-    capture(`step_${screen + 3}`, {
+    capture(analyticsSimulationStepEvent(screen + 3), {
       result_code: simulation.resultCode,
     });
     setScreen((s) => Math.min(s + 1, STEP_CONFIRMATION));

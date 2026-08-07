@@ -8,6 +8,7 @@ import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import type { DocumentationGroup } from '@/domain/documentation-group.model';
+import { formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
@@ -59,12 +60,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<DocumentationGr
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        const d = row.original.updatedAt;
-        if (!d) return '—';
-        const date = typeof d === 'string' ? new Date(d) : d;
-        return date.toLocaleDateString();
-      },
+      cell: ({ row }) => formatDateOrDash(row.original.updatedAt),
       enableHiding: true,
     },
     {

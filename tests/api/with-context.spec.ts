@@ -19,10 +19,15 @@ vi.mock('@/lib/posthog-otel-traces', () => ({
   flushPostHogOtelTraces: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock('@/integrations/posthog', () => ({
+  flushPostHogEvents: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { withAdmin, withAuth, withPublic } from '@/api/with-context';
 import { auth } from '@/auth';
 import { cookies } from 'next/headers';
 import { getRequestContentLocale, getRequestLocale, getRequestUserId } from '@/context/request-context';
+import { flushPostHogEvents } from '@/integrations/posthog';
 import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
 import { flushPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 
@@ -60,7 +65,7 @@ describe('API auth wrappers', () => {
       expect(handler.mock.calls[0][2]).toEqual({ user: mockUser });
     });
 
-    it('flushes PostHog OTLP logs and traces after the handler completes', async () => {
+    it('flushes PostHog OTLP logs, traces, and events after the handler completes', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
       const handler = publicHandler();
 
@@ -68,9 +73,10 @@ describe('API auth wrappers', () => {
 
       expect(flushPostHogOtelLogs).toHaveBeenCalledTimes(1);
       expect(flushPostHogOtelTraces).toHaveBeenCalledTimes(1);
+      expect(flushPostHogEvents).toHaveBeenCalledTimes(1);
     });
 
-    it('flushes PostHog OTLP logs and traces when the handler throws', async () => {
+    it('flushes PostHog OTLP logs, traces, and events when the handler throws', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValueOnce(null);
       const handler = vi.fn<PublicRouteHandler>(async () => {
         throw new Error('boom');
@@ -80,6 +86,7 @@ describe('API auth wrappers', () => {
 
       expect(flushPostHogOtelLogs).toHaveBeenCalledTimes(1);
       expect(flushPostHogOtelTraces).toHaveBeenCalledTimes(1);
+      expect(flushPostHogEvents).toHaveBeenCalledTimes(1);
     });
   });
 

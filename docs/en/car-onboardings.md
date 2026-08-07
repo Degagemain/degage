@@ -144,14 +144,14 @@ This step is complete when car value status is **Resolved**.
 
 ### Car stickers
 
-The owner chooses extra sticker designs from the catalog during the public onboarding flow. Always-included stickers are shown as pre-selected
-and cannot be removed; they are not stored on the onboarding record.
+The owner can choose extra sticker designs from the catalog during the public onboarding flow. Extra stickers are optional. Always-included
+stickers are shown as pre-selected and cannot be removed; they are not stored on the onboarding record.
 
 | Property     | Description                                            |
 | ------------ | ------------------------------------------------------ |
 | Car stickers | Extra sticker designs selected by the owner and saved. |
 
-This step is complete when at least one extra sticker is saved.
+This step is always complete; extra stickers are optional.
 
 ### Finalize
 

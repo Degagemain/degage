@@ -8,16 +8,12 @@ import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { CarInfo } from '@/domain/car-info.model';
+import { formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   onDelete?: (item: CarInfo) => void;
   t: (key: string) => string;
-}
-
-function formatDate(value: Date | string | null): string {
-  if (value == null) return '—';
-  return new Date(value).toLocaleDateString();
 }
 
 export const createColumns = (options: ColumnOptions): ColumnDef<CarInfo>[] => {
@@ -115,13 +111,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarInfo>[] => {
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
     },
     {

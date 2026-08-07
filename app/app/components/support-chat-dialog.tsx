@@ -19,6 +19,7 @@ import {
   PromptInputTools,
 } from '@/app/components/ai-elements/prompt-input';
 import { Message, MessageContent, MessageResponse } from '@/app/components/ai-elements/message';
+import { AnalyticsEvent } from '@/domain/analytics-event.model';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
 import { normalizeSupportChatCitationForViewer } from '@/domain/documentation.support-citations';
 import { type DocumentationAudienceRole, documentationAudienceRoleValues } from '@/domain/documentation.model';
@@ -403,7 +404,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
       const text = message.text.trim().slice(0, chatUserMessageMaxLength);
       if (!text) return;
       sendMessage({ text });
-      capture('support_chat_message_sent', {
+      capture(AnalyticsEvent.SUPPORT_CHAT_MESSAGE_SENT, {
         conversation_id: activeConversationId,
         message_length: text.length,
       });

@@ -1,7 +1,7 @@
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { instrument } from '@posthog/mcp';
-import { getPostHogClient, isPostHogEnabled } from '@/integrations/posthog';
+import { flushPostHogEvents, getPostHogClient, isPostHogEnabled } from '@/integrations/posthog';
 import { verifyMcpAccessToken } from '@/mcp/verify-token';
 import { betterAuthBaseUrl, isMcpEnabled, mcpAudience, mcpPath, mcpResourceMetadataPath, mcpServerName } from '@/mcp/config';
 import { getMcpAuthContext, mcpContextFromAuthExtra, runWithMcpAuthContext } from '@/mcp/request-context';
@@ -14,11 +14,6 @@ type RouteHandlers = {
 };
 
 const disabledResponse = (): Response => new Response(null, { status: 404 });
-
-const flushPostHogIfEnabled = async (): Promise<void> => {
-  if (!isPostHogEnabled) return;
-  await getPostHogClient().flush();
-};
 
 export const createMcpRouteHandlers = (): RouteHandlers => {
   if (!isMcpEnabled()) {
@@ -60,7 +55,7 @@ export const createMcpRouteHandlers = (): RouteHandlers => {
       try {
         return await runWithMcpAuthContext(context, () => baseHandler(req));
       } finally {
-        await flushPostHogIfEnabled();
+        await flushPostHogEvents();
       }
     },
     (_req, bearerToken) => verifyMcpAccessToken(bearerToken, mcpAudience()),

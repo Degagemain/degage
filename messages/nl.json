@@ -1597,10 +1597,10 @@
         "pinkForm": "Roze formulier",
         "vin": "Chassis nummer (VIN)",
         "plate": "Nummerplaat",
-        "carValue": "Waarde van de wagen",
+        "carValue": "De waarde van je wagen wordt gebruikt om de hoogte van de verzekeringspremie vast te leggen. We schatten de waarde van je wagen in op basis van de gegevens die je tijdens de simulatie invoerde.",
         "depreciationCostKm": "Afschrijving per km",
-        "carValueCounterProposal": "Tegenvoorstel",
-        "carValueCounterProposalMessage": "Tegenvoorstel bericht",
+        "carValueCounterProposal": "De waarde van je wagen",
+        "carValueCounterProposalMessage": "Jouw argumentatie",
         "carValueStatus": "Waarde-status",
         "insurer": "Verzekeraar",
         "hasInsuranceContract": "Heeft verzekeringscontract",
@@ -1608,8 +1608,8 @@
         "insurerAnnouncedPriceIncrease": "Verzekeraar kondigde tariefverhoging aan",
         "insurerStatus": "Verzekeringsstatus",
         "hasExistingRoadAssistancePlan": "Heeft bestaand pechverhelpingsplan",
-        "existingRoadAssistancePlanEndDate": "Einddatum bestaand pechverhelpingsplan",
-        "roadAssistancePlan": "Pechverhelpingsplan",
+        "existingRoadAssistancePlanEndDate": "Einddatum contract pechverhelping",
+        "roadAssistancePlan": "Pechverhelping",
         "roadAssistancePlanStatus": "Status pechverhelpingsplan",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
@@ -1625,7 +1625,7 @@
         "carInfo": "Wageninfo",
         "insurer": "Verzekering",
         "roadAssistancePlan": "Pechverhelping",
-        "carValue": "Waarde",
+        "carValue": "Waarde van de wagen",
         "finalize": "Afronden"
       },
       "preparationStatus": {
@@ -1703,14 +1703,14 @@
         "overruleAgreementSuccess": "Waarde opgelost.",
         "overruleAgreementError": "Overschrijven mislukt.",
         "startOnboardingSection": "Start auto-onboarding",
-        "startOnboarding": "Start auto-onboarding",
+        "startOnboarding": "Start instap wagen",
         "startOnboardingTitle": "Auto-onboarding starten?",
         "startOnboardingDescription": "Dit rondt de voorbereidingsfase af en vergrendelt het dossier. De eigenaar kan wageninfo, gebruikersinfo, verzekering en waarde niet meer wijzigen tot een beheerder ontgrendelt.",
         "startOnboardingConfirm": "Starten",
         "startOnboardingConfirming": "Bezig…",
         "startOnboardingSuccess": "Auto-onboarding gestart. Voorbereiding is vergrendeld.",
         "startOnboardingError": "Starten mislukt.",
-        "startOnboardingReady": "Voorbereiding is volledig. U kunt de auto-onboarding starten om de voorbereiding te vergrendelen.",
+        "startOnboardingReady": "De voorbereiding is afgewerkt. Je kan de instap van de wagen starten om de voorbereiding af te sluiten.",
         "startOnboardingNotReady": "Voltooi alle voorbereidingsstappen en sla het dossier op voordat u start.",
         "playConnectorHint": "De eigenaar moet het legacy Dégage-account koppelen in de publieke onboardingflow. Deze status is alleen-lezen voor beheerders.",
         "infoSessionHint": "De eigenaar schrijft zich in voor een infosessie in de publieke onboardingflow. Bevestig hier de aanwezigheid zodra de eigenaar heeft deelgenomen.",
@@ -1799,7 +1799,7 @@
       "bulkDelete": {
         "title": "Auto-onboarding verwijderen",
         "description": "De volgende {count} record(s) worden verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
-        "columnName": "Auto-onboarding",
+        "columnName": "Instap wagen",
         "columnStatus": "Status",
         "confirm": "Alles verwijderen",
         "cancel": "Annuleren",
@@ -2505,8 +2505,8 @@
     "hero": {
       "badge": "Community supported mobility",
       "title": "Deel je auto, deel de kosten",
-      "subtitle": "Al meer dan 580 tevreden eigenaars delen hun auto. Geniet mee van al onze Dégage voordelen.",
-      "intro": "Staat je auto vaak stil, maar gaat de auto wegdoen een stap te ver voor jou? Wil je een (elektrische) auto kopen, maar de hoge kosten niet alleen dragen? Autodelen via Dégage is misschien iets voor jou.",
+      "subtitle": "Meer dan 580 tevreden eigenaars delen hun auto al via Dégage. Geniet net als zij van alle voordelen van autodelen.",
+      "intro": "Staat je auto vaak stil? Wil je een (elektrische) auto kopen, maar de hoge kosten niet alleen dragen? Dan is autodelen via Dégage misschien iets voor jou.",
       "cta": "Controleer of je wagen in aanmerking komt",
       "ctaHint": "Gratis en vrijblijvend. Duurt enkele minuten."
     },
@@ -2708,9 +2708,9 @@
     "sessionValidUntil": "Sessie in cache tot {date}"
   },
   "carOnboardingPublic": {
-    "eyebrow": "Auto-onboarding",
-    "title": "Jouw onboarding",
-    "intro": "Doorloop de onderstaande stappen om de voorbereiding af te ronden.",
+    "eyebrow": "Instap wagen",
+    "title": "Jouw auto aan de Dégage-vloot toevoegen",
+    "intro": "Stap per stap voegen we jouw wagen aan onze vloot toe.",
     "preparationTitle": "Voorbereiding",
     "backToOverview": "Terug naar overzicht",
     "stepNotFound": "Stap niet gevonden.",
@@ -2727,17 +2727,17 @@
     "errors": {
       "load": "Auto-onboarding laden mislukt.",
       "save": "Opslaan mislukt.",
-      "forbidden": "Je hebt geen toegang tot deze auto-onboarding."
+      "forbidden": "Je hebt geen toegang tot de instap van deze wagen."
     },
     "steps": {
       "playConnector": {
-        "title": "Dégage koppelen",
-        "subtitle": "Koppel je legacy Dégage-account",
+        "title": "Koppeling met Degapp",
+        "subtitle": "Maak verbinding met je Degapp-account",
         "info": "Verbind met het e-mailadres en wachtwoord dat je gebruikt op het legacy Dégage-platform. We hebben dit nodig om je account te synchroniseren tijdens de onboarding."
       },
       "infoSession": {
         "title": "Infosessie",
-        "subtitle": "Neem deel aan een Degapp-infosessie",
+        "subtitle": "Volg een infosessie voor eigenaars",
         "info": "Kies een komende infosessie en schrijf je in. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid.",
         "loading": "Infosessies laden…",
         "loadError": "Infosessies laden mislukt. Controleer je Play connector-verbinding en probeer opnieuw.",
@@ -2767,7 +2767,7 @@
       "userInfo": {
         "title": "Eigenaarsinfo",
         "subtitle": "Contactgegevens van de eigenaar van de wagen",
-        "info": "Vul je straat, gemeente en telefoonnummer in zodat we je kunnen bereiken tijdens de onboarding.",
+        "info": "Vul je adres en telefoonnummer in zodat we je kunnen bereiken tijdens het instapproces.",
         "panelTitle": "Contactgegevens",
         "phoneInvalid": "Voer een geldig telefoonnummer in."
       },
@@ -2840,27 +2840,27 @@
         "subtitle": "Bestaande autoverzekering opzeggen",
         "info": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Geef dan de gegevens door zodat we die kunnen opzeggen.",
         "panelTitle": "Bestaande verzekering",
-        "panelBody": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Vink dit aan en vul de gegevens in zodat we die kunnen opzeggen.",
+        "panelBody": "Om je auto via Dégage te delen, moet je auto via onze vlootpolis verzekerd worden. Alle auto's op onze vlootpolis, hebben volgende verzekeringen:\n- Burgerlijke aansprakelijkheid (BA): schade aan derden en lichamelijke schade van inzittenden.\n- Rechtsbijstand: juridische ondersteuning bij ongevallen.\n- Bestuurdersverzekering: die dekt lichamelijke schade van de bestuurder zelf.\n\nWij brengen die verzekering voor jou in orde, maar willen daarvoor eerst weten of je nog een lopend verzekeringscontract hebt. Indien dat het geval is, helpen we je graag met het opzeggen van dat contract. Hou er rekening mee dat dat niet altijd meteen kan. De datum waarop je naar onze vlootpolis kan overstappen, is de vroegste datum waarop je met autodelen kan starten.",
         "hasInsuranceContractLabel": "Ik heb nog een lopend verzekeringscontract voor deze wagen",
         "contractStartedAtHint": "De oorspronkelijke startdatum van het contract, niet de (jaarlijkse) verlengingsdatum.",
-        "contractWarning": "Je verzekering is minder dan een jaar geleden gestart. Op zijn vroegst kan je instappen in Dégage op {date}.",
+        "contractWarning": "Je autoverzekering is minder dan 1 jaar geleden gestart. Je kan ten vroegste naar onze vlootpolis overstappen op {date}. Daarvoor stuur je ten laatste 3 maanden op voorhand een opzegbrief naar je verzekeraar. ",
         "insurerAnnouncedPriceIncreaseLabel": "Heeft je verzekeraar een tariefverhoging aangekondigd?",
-        "insurerAnnouncedPriceIncreaseCheckbox": "Ja, er werd een tariefverhoging aangekondigd",
-        "insurerAnnouncedPriceIncreaseHint": "Zo ja, dan kan je je contract mogelijk sneller opzeggen. Aanvaard de nieuwe premie niet tot dan—betalen van de verhoogde premie geldt als instemming."
+        "insurerAnnouncedPriceIncreaseCheckbox": "Ja, er werd een tariefverhoging aangekondigd.",
+        "insurerAnnouncedPriceIncreaseHint": "Bij een aangekondigde tariefverhoging kan je je contract sneller opzeggen. Betaal de nieuwe - hogere - premie niet, want dat geldt als instemming met de tariefverhoging."
       },
       "roadAssistancePlan": {
         "title": "Pechverhelpingsplan",
         "subtitle": "Je pechverhelping",
         "info": "Geef aan of je wagen al pechverhelping heeft en kies het plan dat je met Dégage wilt.",
         "existingPanelTitle": "Bestaande pechverhelping",
-        "existingPanelBody": "Nieuwe wagens hebben soms enkele jaren pechverhelping inbegrepen bij aankoop.",
+        "existingPanelBody": "Nieuwe wagens genieten soms automatisch van pechverhelping de eerste jaren na aankoop.",
         "hasExistingFieldLabel": "Bestaande Pechverhelping?",
         "desiredPanelTitle": "Gewenst pechverhelpingsplan",
         "desiredPanelBody": "Welk type pechverhelpingsplan wil je na je lidmaatschap bij Dégage?",
         "includedPlanLabel": "Inbegrepen plan",
         "includedPlanCheckbox": "De aangekochte wagen heeft een inbegrepen pechverhelpingsplan",
-        "hasExistingLabel": "Ik heb momenteel een pechverhelpingsplan voor deze wagen",
-        "existingRoadAssistancePlanEndDateHint": "Je pechverhelping bij Dégage start automatisch na deze datum.",
+        "hasExistingLabel": "Ik heb pechverhelping voor deze wagen.",
+        "existingRoadAssistancePlanEndDateHint": "Zorg dat je je pechverhelping minstens 2 maanden voor de eerste vervaldatum opzegt. Na het eerste jaar van je contract kan je op elk moment opzeggen, mits een wachttijd van 2 maanden. We zorgen dat je vanaf die datum pechverhelping via Dégage hebt.",
         "loading": "Pechverhelpingsplannen laden…",
         "loadError": "Pechverhelpingsplannen konden niet worden geladen. Probeer het opnieuw.",
         "empty": "Geen pechverhelpingsplannen beschikbaar."
@@ -2872,9 +2872,9 @@
         "chartTitle": "Waardevermindering per gedeelde km",
         "chartBody": "Op basis van {mileage} km is de afschrijving ongeveer €{depreciation} per gedeelde kilometer.",
         "waitingForProposal": "Wachten op een waarde-voorstel van de admin.",
-        "agreeTitle": "Ga je akkoord met deze waarde?",
+        "agreeTitle": "Ga je akkoord met deze waarde van je wagen? ",
         "agreeYes": "Ja, akkoord",
-        "agreeNo": "Nee, tegenvoorstel",
+        "agreeNo": "Nee, ik doe een tegenvoorstel",
         "counterTitle": "Jouw voorstel",
         "agreeConfirmHint": "Je bent akkoord met de voorgestelde waarde. Sla op om te bevestigen.",
         "pendingAdmin": "Je tegenvoorstel van €{value} is ingediend. Wachten op reactie van de admin.",
@@ -2883,8 +2883,8 @@
       "carStickers": {
         "title": "Autostickers",
         "subtitle": "Kies je stickerontwerpen",
-        "panelTitle": "Stickerkeuze",
-        "helper": "Kies minstens één extra sticker. Altijd-inbegrepen stickers zijn automatisch geselecteerd en kunnen niet worden verwijderd.",
+        "panelTitle": "Maak je deelwagen zichtbaar!",
+        "helper": "Zichtbaarheid is belangrijk voor Dégage. Daarnaast is een sticker ook handig voor onze leden om de auto vlug te herkennen. De groene sticker krijg je sowieso. Wil je nog extra stickers? Kies hieronder welke stickers je wil. \n\nAls je een sticker op de zijdeur wil, neemt één van onze vrijwilligers contact met je op om de sticker te bevestigen. De witte zin kan je gemakkelijk zelf op je wagen plakken.",
         "loading": "Stickers laden…",
         "loadError": "Stickers laden mislukt. Probeer opnieuw.",
         "alwaysIncluded": "Altijd inbegrepen"

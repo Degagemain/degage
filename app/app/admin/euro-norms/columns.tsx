@@ -8,16 +8,12 @@ import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { Check, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { EuroNorm } from '@/domain/euro-norm.model';
+import { formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
   onDelete?: (item: EuroNorm) => void;
   t: (key: string) => string;
-}
-
-function formatDate(value: Date | string | null): string {
-  if (value == null) return '—';
-  return new Date(value).toLocaleDateString();
 }
 
 export const createColumns = (options: ColumnOptions): ColumnDef<EuroNorm>[] => {
@@ -81,26 +77,26 @@ export const createColumns = (options: ColumnOptions): ColumnDef<EuroNorm>[] => 
     {
       accessorKey: 'start',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.start')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('start'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('start'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'end',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.end')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('end'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('end'))}</span>,
       enableHiding: true,
       enableSorting: false,
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('createdAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.getValue('updatedAt'))}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
     },
     {

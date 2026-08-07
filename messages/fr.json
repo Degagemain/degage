@@ -2875,7 +2875,7 @@
         "title": "Autocollants",
         "subtitle": "Choisissez vos designs d'autocollants",
         "panelTitle": "Sélection des autocollants",
-        "helper": "Choisissez au moins un autocollant supplémentaire. Les autocollants toujours inclus sont sélectionnés automatiquement et ne peuvent pas être retirés.",
+        "helper": "Les autocollants supplémentaires sont facultatifs. Les autocollants toujours inclus sont sélectionnés automatiquement et ne peuvent pas être retirés.",
         "loading": "Chargement des autocollants…",
         "loadError": "Impossible de charger les autocollants. Veuillez réessayer.",
         "alwaysIncluded": "Toujours inclus"

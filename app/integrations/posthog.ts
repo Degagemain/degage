@@ -1,4 +1,5 @@
 import { getRequestId, getRequestUserId } from '@/context/request-context';
+import type { AnalyticsEventName } from '@/domain/analytics-event.model';
 import { PostHog } from 'posthog-node';
 
 let posthogClient: PostHog | null = null;
@@ -12,11 +13,14 @@ export const getPostHogClient = (): PostHog => {
   if (!posthogClient) {
     posthogClient = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      flushAt: 1,
-      flushInterval: 0,
     });
   }
   return posthogClient;
+};
+
+export const flushPostHogEvents = async (): Promise<void> => {
+  if (!posthogClient) return;
+  await posthogClient.flush();
 };
 
 function getServerDistinctId(): string {
@@ -26,29 +30,49 @@ function getServerDistinctId(): string {
   return rid ? `anon:${rid}` : 'anonymous-server';
 }
 
-/**
- * Capture an event, if posthog is enabled.
- * Adds correlation fields from request context when present.
- */
-export const captureEvent = (
-  event: string,
+function buildEventProperties(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties?: Record<string, string | number | any>,
+): Record<string, unknown> {
+  const requestId = getRequestId();
+  return {
+    ...(properties ?? {}),
+    ...(requestId != null ? { request_id: requestId } : {}),
+  };
+}
+
+export const captureEvent = (
+  event: AnalyticsEventName,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Record<string, string | number | any>,
+  distinctId?: string,
 ) => {
   if (!isPostHogEnabled) {
     return;
   }
-  const requestId = getRequestId();
-  const merged = {
-    ...(properties ?? {}),
-    ...(requestId != null ? { request_id: requestId } : {}),
-  };
-  getPostHogClient().capture({ distinctId: getServerDistinctId(), event, properties: merged });
+  getPostHogClient().capture({
+    distinctId: distinctId ?? getServerDistinctId(),
+    event,
+    properties: buildEventProperties(properties),
+  });
 };
 
-/**
- * Capture an exception, if posthog is enabled.
- */
+export const captureImmediate = async (
+  event: AnalyticsEventName,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Record<string, string | number | any>,
+  distinctId?: string,
+): Promise<void> => {
+  if (!isPostHogEnabled) {
+    return;
+  }
+  await getPostHogClient().captureImmediate({
+    distinctId: distinctId ?? getServerDistinctId(),
+    event,
+    properties: buildEventProperties(properties),
+  });
+};
+
 export const captureException = (error: unknown, additionalProperties?: Record<string, unknown>) => {
   if (!isPostHogEnabled) {
     return;

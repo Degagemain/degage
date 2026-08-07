@@ -133,14 +133,15 @@ Cette étape est complète lorsque le statut de valeur est **Resolved**.
 
 ### Stickers voiture
 
-Le propriétaire choisit des designs de stickers supplémentaires dans le catalogue pendant le flux d'intégration public. Les stickers toujours
-inclus sont affichés comme pré-sélectionnés et ne peuvent pas être retirés ; ils ne sont pas enregistrés sur l'enregistrement d'intégration.
+Le propriétaire peut choisir des designs de stickers supplémentaires dans le catalogue pendant le flux d'intégration public. Les stickers
+supplémentaires sont facultatifs. Les stickers toujours inclus sont affichés comme pré-sélectionnés et ne peuvent pas être retirés ; ils ne sont
+pas enregistrés sur l'enregistrement d'intégration.
 
 | Propriété        | Description                                                                          |
 | ---------------- | ------------------------------------------------------------------------------------ |
 | Stickers voiture | Designs de stickers supplémentaires sélectionnés et enregistrés par le propriétaire. |
 
-Cette étape est complète lorsqu'au moins un sticker supplémentaire est enregistré.
+Cette étape est toujours complète ; les stickers supplémentaires sont facultatifs.
 
 ### Finaliser
 

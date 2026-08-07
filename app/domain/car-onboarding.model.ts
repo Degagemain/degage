@@ -417,8 +417,8 @@ export const isRoadAssistancePlanSectionComplete = (onboarding: Pick<CarOnboardi
   return onboarding.roadAssistancePlanStatus !== CarOnboardingRoadAssistancePlanStatus.TODO;
 };
 
-export const isCarStickerSectionComplete = (onboarding: Pick<CarOnboarding, 'carStickers'>): boolean => {
-  return onboarding.carStickers.length >= 1;
+export const isCarStickerSectionComplete = (_onboarding: Pick<CarOnboarding, 'carStickers'>): boolean => {
+  return true;
 };
 
 export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnboarding => {

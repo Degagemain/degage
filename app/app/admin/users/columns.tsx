@@ -6,6 +6,7 @@ import { Badge } from '@/app/components/ui/badge';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { User } from '@/domain/user.model';
+import { formatDateOrDash } from '@/domain/utils';
 import { type UILocale, localeDisplayNames } from '@/i18n/locales';
 
 interface ColumnOptions {
@@ -127,19 +128,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        const date = row.getValue('createdAt') as Date | string;
-        return <span className="text-muted-foreground text-sm">{new Date(date).toLocaleDateString()}</span>;
-      },
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('createdAt'))}</span>,
       enableHiding: true,
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        const date = row.getValue('updatedAt') as Date | string;
-        return <span className="text-muted-foreground text-sm">{new Date(date).toLocaleDateString()}</span>;
-      },
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
     },
   ];

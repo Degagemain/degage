@@ -95,7 +95,7 @@ export function CarStickersStep() {
   };
 
   const handleSave = async (): Promise<boolean> => {
-    if (!carOnboarding.id || selectedExtraIds.length === 0) return false;
+    if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
       const selectedStickers = stickers
@@ -160,7 +160,7 @@ export function CarStickersStep() {
           </div>
         ) : null}
       </PublicPanel>
-      <StepActions stepId="car-stickers" onSave={handleSave} saveDisabled={isSaving || selectedExtraIds.length === 0} />
+      <StepActions stepId="car-stickers" onSave={handleSave} saveDisabled={isSaving} />
     </StepLayout>
   );
 }

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Changed: during car onboarding, extra stickers are optional; you can continue
+  with only the always-included stickers.
+
+### Technical
+
+- Added: server captures PostHog `user signed up` and `user logged in` events from Better Auth hooks.
+- Changed: server-side PostHog uses default batching.
+- Fixed: `simulation` event are now captured after create and include the persisted simulation `id`.
+
 ## [0.0.2] - 2026-07-16
 
 ### Public features

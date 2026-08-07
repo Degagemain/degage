@@ -1,5 +1,7 @@
 'use client';
 
+import { formatDateOrDash } from '@/domain/utils';
+
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { ExternalLink, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
@@ -31,13 +33,6 @@ const formatDescription = (item: CarOnboarding): string => {
   const town = item.town?.name;
   if (brand && town) return `${brand} · ${town}`;
   return brand ?? town ?? item.id ?? '—';
-};
-
-const formatDate = (value: Date | string | null | undefined): string => {
-  if (value == null) return '—';
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) return '—';
-  return parsed.toLocaleDateString();
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
@@ -264,7 +259,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       id: 'firstRegisteredAt',
       accessorKey: 'firstRegisteredAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.firstRegisteredAt')} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.original.firstRegisteredAt)}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.firstRegisteredAt)}</span>,
       enableSorting: false,
     },
     {
@@ -355,7 +350,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       id: 'insurerContractStartedAt',
       accessorKey: 'insurerContractStartedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.insurerContractStartedAt')} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.original.insurerContractStartedAt)}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.insurerContractStartedAt)}</span>,
       enableSorting: false,
     },
     {
@@ -411,13 +406,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       id: 'createdAt',
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.created')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.original.createdAt)}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.createdAt)}</span>,
     },
     {
       id: 'updatedAt',
       accessorKey: 'updatedAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDate(row.original.updatedAt)}</span>,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.updatedAt)}</span>,
     },
     {
       id: 'actions',

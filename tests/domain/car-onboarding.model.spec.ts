@@ -793,8 +793,8 @@ describe('isCarStickerSectionComplete', () => {
     );
   });
 
-  it('returns false when no extra stickers are saved', () => {
-    expect(isCarStickerSectionComplete(carOnboarding({ carStickers: [] }))).toBe(false);
+  it('returns true when no extra stickers are saved', () => {
+    expect(isCarStickerSectionComplete(carOnboarding({ carStickers: [] }))).toBe(true);
   });
 });
 

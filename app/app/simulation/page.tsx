@@ -1,5 +1,6 @@
 'use client';
 import { capture } from '@/app/lib/posthog';
+import { analyticsSimulationStepEvent } from '@/domain/analytics-event.model';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -220,7 +221,7 @@ export default function SimulationPage() {
   ]);
 
   const goNext = () => {
-    capture(`step_${screen}`, { result_code: null });
+    capture(analyticsSimulationStepEvent(screen), { result_code: null });
     setScreen((s) => Math.min(s + 1, STEP_LOADING));
   };
   const goPrev = () => setScreen((s) => Math.max(s - 1, STEP_SITUATION));

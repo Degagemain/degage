@@ -54,18 +54,18 @@ export const asTextOrDash = (value: string | null | undefined): string => {
   return trimmed.length > 0 ? trimmed : DashPlaceholder;
 };
 
-export const formatDateOrDash = (value: Date | string | null | undefined, locale: string, includeTime: boolean): string => {
+export const formatDateOrDash = (value: Date | string | null | undefined, includeTime = false): string => {
   if (value == null) return DashPlaceholder;
   const d = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(d.getTime())) return DashPlaceholder;
-  return includeTime ? d.toLocaleString(locale) : d.toLocaleDateString(locale);
+  return includeTime ? d.toLocaleString('en-GB') : d.toLocaleDateString('en-GB');
 };
 
 export const formatExportValueByKey = (key: string, value: unknown, locale: string): string => {
   const isDateKey = key === 'createdAt' || key === 'updatedAt' || key === 'start' || key === 'end' || key === 'firstRegisteredAt';
 
   if (isDateKey) {
-    return formatDateOrDash(value as Date | string | null | undefined, locale, false);
+    return formatDateOrDash(value as Date | string | null | undefined);
   }
 
   if (typeof value === 'boolean') {

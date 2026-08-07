@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import type { ChatConversationListItem } from '@/domain/chat.model';
-import { DashPlaceholder } from '@/domain/utils';
+import { DashPlaceholder, formatDateOrDash } from '@/domain/utils';
 
 interface ColumnOptions {
   onSort?: (columnId: string, desc: boolean) => void;
@@ -45,10 +45,6 @@ export const createColumns = ({ onSort, t, anonymousLabel, mediumLabel }: Column
   {
     accessorKey: 'updatedAt',
     header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updatedAt')} onSort={onSort} />,
-    cell: ({ row }) => {
-      const value = row.original.updatedAt;
-      if (!value) return DashPlaceholder;
-      return <span className="text-muted-foreground text-sm">{new Date(value).toLocaleString()}</span>;
-    },
+    cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.original.updatedAt, true)}</span>,
   },
 ];
