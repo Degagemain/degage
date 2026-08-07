@@ -106,7 +106,7 @@ De eigenaar kan pechverhelpingsgegevens bijwerken via een gedeeltelijke update z
 
 Deze stap is compleet wanneer de pechverhelpingsstatus niet **Todo** is.
 
-### Waarde
+### Waarde van de auto
 
 Onderhandelt over de geschatte huidige waarde van het voertuig tussen admin en eigenaar.
 
