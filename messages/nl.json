@@ -2712,6 +2712,70 @@
     "title": "Jouw auto aan de Dégage-vloot toevoegen",
     "intro": "Stap per stap voegen we jouw wagen aan onze vloot toe.",
     "preparationTitle": "Voorbereiding",
+    "journey": {
+      "eyebrow": "Zoom-out · De hele onboarding",
+      "title": "Eén reis, drie hoofdstukken",
+      "intro": "Voorbereiding is maar het eerste deel. Daarna regelen we samen de overstap, en dan ben je klaar om te delen."
+    },
+    "chapterLabel": "Hoofdstuk {num}",
+    "chapterProgress": "{done} / {total}",
+    "chapterStatus": {
+      "open": "Huidige fase",
+      "ready": "Afgerond",
+      "locked": "Nog vergrendeld"
+    },
+    "actors": {
+      "you": "Jij",
+      "degage": "Dégage"
+    },
+    "chapters": {
+      "preparation": {
+        "short": "Voorbereiding",
+        "title": "Voorbereiding",
+        "tagline": "Vrijblijvend — jij deelt je gegevens, in je eigen tempo. Veel kan parallel.",
+        "metaBody": "Vrijblijvend. Jij deelt info, veel parallel."
+      },
+      "transition": {
+        "short": "De overstap",
+        "title": "De overstap",
+        "tagline": "Nu wordt het echt — jij tekent, en wij regelen de overschakeling voor je.",
+        "metaBody": "Nu echt. Jij tekent, wij regelen.",
+        "steps": {
+          "contract": {
+            "title": "Contract",
+            "subtitle": "Teken je eigenaarscontract"
+          },
+          "newInsurance": {
+            "title": "Nieuwe verzekering",
+            "subtitle": "Wij zetten je verzekering over"
+          },
+          "parkingCard": {
+            "title": "Parkeerkaart",
+            "subtitle": "Wij vragen je parkeerkaart aan"
+          },
+          "adminHandoff": {
+            "title": "Administratieve afhandeling",
+            "subtitle": "Wij ronden je onboarding af"
+          }
+        }
+      },
+      "readyToShare": {
+        "short": "Klaar om te delen",
+        "title": "Klaar om te delen",
+        "tagline": "De laatste puntjes — en welkom in de buurt.",
+        "metaBody": "Afronding. Buddy, welkom.",
+        "steps": {
+          "buddy": {
+            "title": "Buddy",
+            "subtitle": "Je lokale contactpersoon"
+          },
+          "survey": {
+            "title": "Enquête",
+            "subtitle": "Korte vragenlijst over je onboarding"
+          }
+        }
+      }
+    },
     "backToOverview": "Terug naar overzicht",
     "stepNotFound": "Stap niet gevonden.",
     "stepBlocked": "Deze stap is nog niet beschikbaar. Rond eerst de vorige stappen af.",
@@ -2722,7 +2786,8 @@
     "states": {
       "todo": "Todo",
       "pending": "In behandeling",
-      "done": "Afgerond"
+      "done": "Afgerond",
+      "blocked": "Vergrendeld"
     },
     "errors": {
       "load": "Auto-onboarding laden mislukt.",
@@ -2841,7 +2906,7 @@
       },
       "insurer": {
         "title": "Bestaande verzekering",
-        "subtitle": "Bestaande autoverzekering opzeggen",
+        "subtitle": "Gegevens van je bestaande autoverzekering doorgeven",
         "info": "Dégage regelt altijd de verzekering voor je wagen. Heb je vandaag nog een eigen autoverzekering? Geef dan de gegevens door zodat we die kunnen opzeggen.",
         "panelTitle": "Bestaande verzekering",
         "panelBody": "Om je auto via Dégage te delen, moet je auto via onze vlootpolis verzekerd worden. Alle auto's op onze vlootpolis, hebben volgende verzekeringen:\n- Burgerlijke aansprakelijkheid (BA): schade aan derden en lichamelijke schade van inzittenden.\n- Rechtsbijstand: juridische ondersteuning bij ongevallen.\n- Bestuurdersverzekering: die dekt lichamelijke schade van de bestuurder zelf.\n\nWij brengen die verzekering voor jou in orde, maar willen daarvoor eerst weten of je nog een lopend verzekeringscontract hebt. Indien dat het geval is, helpen we je graag met het opzeggen van dat contract. Hou er rekening mee dat dat niet altijd meteen kan. De datum waarop je naar onze vlootpolis kan overstappen, is de vroegste datum waarop je met autodelen kan starten.",

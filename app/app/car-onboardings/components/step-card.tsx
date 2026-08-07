@@ -1,50 +1,86 @@
 'use client';
 
 import Link from 'next/link';
+import { Lock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { computeStepState } from '../lib/compute-step-state';
-import { useCarOnboarding } from '../lib/car-onboarding-context';
-import type { StepDefinition } from '../lib/steps-config';
-import { StateIcon } from './public-ui';
+import { cn } from '@/app/lib/utils';
+
+import type { ChapterActor } from '../lib/chapters-config';
+import type { StepState } from '../lib/types';
 import styles from '../car-onboarding-public.module.css';
 
-type StepCardProps = {
-  definition: StepDefinition;
+type OverviewStepCardProps = {
   stepNumber: number;
-  isLast: boolean;
+  title: string;
+  subtitle: string;
+  state: StepState;
+  href?: string;
+  actors?: ChapterActor[];
 };
 
-export function StepCard({ definition, stepNumber, isLast }: StepCardProps) {
+function StepStatusMark({ state }: { state: StepState }) {
+  const t = useTranslations('carOnboardingPublic.states');
+
+  if (state === 'blocked') {
+    return (
+      <span className={styles.stepMarkLocked} title={t('blocked')} aria-label={t('blocked')}>
+        <Lock aria-hidden />
+      </span>
+    );
+  }
+
+  if (state === 'done') {
+    return (
+      <span className={cn(styles.stepMark, styles.stepMarkDone)} title={t('done')} aria-label={t('done')}>
+        ✓
+      </span>
+    );
+  }
+
+  if (state === 'pending') {
+    return (
+      <span className={cn(styles.stepMark, styles.stepMarkPending)} title={t('pending')} aria-label={t('pending')}>
+        …
+      </span>
+    );
+  }
+
+  return <span className={cn(styles.stepMark, styles.stepMarkTodo)} title={t('todo')} aria-label={t('todo')} />;
+}
+
+export function OverviewStepCard({ stepNumber, title, subtitle, state, href, actors = [] }: OverviewStepCardProps) {
   const t = useTranslations('carOnboardingPublic');
-  const { carOnboarding, basePath } = useCarOnboarding();
-  const stepState = computeStepState(definition.id, carOnboarding);
-  const disabled = stepState === 'blocked';
-  const href = `${basePath}/${definition.id}`;
-  const showStatus = !disabled;
+  const disabled = state === 'blocked' || !href;
 
   const content = (
-    <div className={styles.subflowCardInner}>
-      <div className={styles.subflowCardTrack}>
+    <>
+      <div className={styles.subflowCardNumWrap}>
         <span className={styles.subflowCardStep}>{stepNumber}</span>
-        {!isLast ? <span className={styles.subflowCardConnector} aria-hidden /> : null}
       </div>
       <div className={styles.subflowCardBody}>
-        <h3 className={styles.subflowCardTitle}>
-          {t(definition.titleKey)}
-          {showStatus ? <StateIcon state={stepState} /> : null}
-        </h3>
-        <p className={styles.subflowCardSubtitle}>{t(definition.subtitleKey)}</p>
+        <h3 className={styles.subflowCardTitle}>{title}</h3>
+        <p className={styles.subflowCardSubtitle}>{subtitle}</p>
       </div>
-    </div>
+      <div className={styles.subflowCardMeta}>
+        {actors.map((actor) => (
+          <span key={actor} className={cn(styles.actorTag, actor === 'you' ? styles.actorTagYou : styles.actorTagDegage)}>
+            {t(`actors.${actor}`)}
+          </span>
+        ))}
+        <StepStatusMark state={disabled ? 'blocked' : state} />
+      </div>
+    </>
   );
 
+  const className = cn(styles.subflowCard, disabled && styles.subflowCardDisabled);
+
   if (disabled) {
-    return <div className={`${styles.subflowCard} ${styles.subflowCardDisabled}`}>{content}</div>;
+    return <div className={className}>{content}</div>;
   }
 
   return (
-    <Link href={href} className={styles.subflowCard}>
+    <Link href={href} className={className}>
       {content}
     </Link>
   );

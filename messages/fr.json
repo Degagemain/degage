@@ -2703,6 +2703,70 @@
     "title": "Votre intégration",
     "intro": "Complétez les étapes ci-dessous pour terminer la préparation.",
     "preparationTitle": "Préparation",
+    "journey": {
+      "eyebrow": "Vue d'ensemble · Toute l'intégration",
+      "title": "Un parcours, trois chapitres",
+      "intro": "La préparation n'est que la première partie. Ensuite, nous gérons ensemble le passage, puis vous êtes prêt à partager."
+    },
+    "chapterLabel": "Chapitre {num}",
+    "chapterProgress": "{done} / {total}",
+    "chapterStatus": {
+      "open": "Phase actuelle",
+      "ready": "Prêt",
+      "locked": "Encore verrouillé"
+    },
+    "actors": {
+      "you": "Vous",
+      "degage": "Dégage"
+    },
+    "chapters": {
+      "preparation": {
+        "short": "Préparation",
+        "title": "Préparation",
+        "tagline": "Sans engagement — vous partagez vos informations à votre rythme. Beaucoup d'étapes peuvent avancer en parallèle.",
+        "metaBody": "Sans engagement. Vous partagez des infos ; beaucoup peut avancer en parallèle."
+      },
+      "transition": {
+        "short": "Le passage",
+        "title": "Le passage",
+        "tagline": "C'est là que ça devient concret — vous signez, et nous organisons le passage pour vous.",
+        "metaBody": "Maintenant pour de vrai. Vous signez ; nous nous occupons du reste.",
+        "steps": {
+          "contract": {
+            "title": "Contrat",
+            "subtitle": "Signez votre contrat propriétaire"
+          },
+          "newInsurance": {
+            "title": "Nouvelle assurance",
+            "subtitle": "Nous transférons votre assurance"
+          },
+          "parkingCard": {
+            "title": "Carte de stationnement",
+            "subtitle": "Nous demandons votre carte de stationnement"
+          },
+          "adminHandoff": {
+            "title": "Clôture administrative",
+            "subtitle": "Nous finalisons votre intégration"
+          }
+        }
+      },
+      "readyToShare": {
+        "short": "Prêt à partager",
+        "title": "Prêt à partager",
+        "tagline": "Les derniers détails — et bienvenue dans le quartier.",
+        "metaBody": "Finalisation. Buddy, bienvenue.",
+        "steps": {
+          "buddy": {
+            "title": "Buddy",
+            "subtitle": "Votre personne de contact locale"
+          },
+          "survey": {
+            "title": "Enquête",
+            "subtitle": "Un court questionnaire sur votre intégration"
+          }
+        }
+      }
+    },
     "backToOverview": "Retour à l'aperçu",
     "stepNotFound": "Étape introuvable.",
     "stepBlocked": "Cette étape n'est pas encore disponible. Terminez d'abord les étapes précédentes.",
@@ -2713,7 +2777,8 @@
     "states": {
       "todo": "À faire",
       "pending": "En cours",
-      "done": "Terminé"
+      "done": "Terminé",
+      "blocked": "Verrouillé"
     },
     "errors": {
       "load": "Échec du chargement de l'intégration véhicule.",
@@ -2832,7 +2897,7 @@
       },
       "insurer": {
         "title": "Assurance existante",
-        "subtitle": "Résilier votre assurance auto actuelle",
+        "subtitle": "Indiquer les détails de votre assurance auto actuelle",
         "info": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, indiquez les détails pour que nous puissions la résilier.",
         "panelTitle": "Assurance existante",
         "panelBody": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, cochez cette case et indiquez les détails pour que nous puissions la résilier.",

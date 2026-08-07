@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Changed: during car onboarding, extra stickers are optional; you can continue
   with only the always-included stickers.
+- Changed: car onboarding overview now shows the full journey in three chapters
+  (preparation, the switch, ready to share), so you can see what comes after
+  preparation.
 
 ### Technical
 

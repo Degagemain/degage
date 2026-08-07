@@ -2703,6 +2703,70 @@
     "title": "Your onboarding",
     "intro": "Complete the steps below to finish preparation.",
     "preparationTitle": "Preparation",
+    "journey": {
+      "eyebrow": "Zoom out · The full onboarding",
+      "title": "One journey, three chapters",
+      "intro": "Preparation is only the first part. After that we handle the switch together, and then you're ready to share."
+    },
+    "chapterLabel": "Chapter {num}",
+    "chapterProgress": "{done} / {total}",
+    "chapterStatus": {
+      "open": "Current phase",
+      "ready": "Ready",
+      "locked": "Locked"
+    },
+    "actors": {
+      "you": "You",
+      "degage": "Dégage"
+    },
+    "chapters": {
+      "preparation": {
+        "short": "Preparation",
+        "title": "Preparation",
+        "tagline": "No commitment yet — share your details at your own pace. Many steps can run in parallel.",
+        "metaBody": "No commitment. You share info; a lot can happen in parallel."
+      },
+      "transition": {
+        "short": "The switch",
+        "title": "The switch",
+        "tagline": "This is where it gets real — you sign, and we arrange the switch for you.",
+        "metaBody": "Now it counts. You sign; we handle the rest.",
+        "steps": {
+          "contract": {
+            "title": "Contract",
+            "subtitle": "Sign your owner contract"
+          },
+          "newInsurance": {
+            "title": "New insurance",
+            "subtitle": "We transfer your insurance"
+          },
+          "parkingCard": {
+            "title": "Parking card",
+            "subtitle": "We apply for your parking card"
+          },
+          "adminHandoff": {
+            "title": "Admin wrap-up",
+            "subtitle": "We finish your onboarding admin"
+          }
+        }
+      },
+      "readyToShare": {
+        "short": "Ready to share",
+        "title": "Ready to share",
+        "tagline": "The final details — and welcome to the neighbourhood.",
+        "metaBody": "Wrap-up. Buddy, welcome.",
+        "steps": {
+          "buddy": {
+            "title": "Buddy",
+            "subtitle": "Your local contact person"
+          },
+          "survey": {
+            "title": "Survey",
+            "subtitle": "A short questionnaire about your onboarding"
+          }
+        }
+      }
+    },
     "backToOverview": "Back to overview",
     "stepNotFound": "Step not found.",
     "stepBlocked": "This step is not available yet. Complete the previous steps first.",
@@ -2713,7 +2777,8 @@
     "states": {
       "todo": "To do",
       "pending": "In progress",
-      "done": "Complete"
+      "done": "Complete",
+      "blocked": "Locked"
     },
     "errors": {
       "load": "Failed to load car onboarding.",
@@ -2832,7 +2897,7 @@
       },
       "insurer": {
         "title": "Existing Insurance",
-        "subtitle": "Cancel your existing car insurance",
+        "subtitle": "Provide details of your existing car insurance",
         "info": "Dégage always arranges insurance for your car. If you currently have your own car insurance, provide the details so we can cancel it.",
         "panelTitle": "Existing insurance",
         "panelBody": "Dégage always arranges insurance for your car. If you currently have your own car insurance, check this box and enter the details so we can cancel it.",
