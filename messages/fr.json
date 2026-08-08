@@ -1611,6 +1611,7 @@
         "existingRoadAssistancePlanEndDate": "Date de fin du plan d'assistance existant",
         "roadAssistancePlan": "Plan d'assistance routière",
         "roadAssistancePlanStatus": "Statut du plan d'assistance",
+        "shareStartDate": "Date de début du partage",
         "simulation": "Simulation",
         "statusInPreparation": "Statut de préparation",
         "created": "Créé",
@@ -1626,6 +1627,7 @@
         "insurer": "Assurance",
         "roadAssistancePlan": "Assistance routière",
         "carValue": "Valeur",
+        "shareStart": "Date de début",
         "finalize": "Finaliser"
       },
       "preparationStatus": {
@@ -1771,7 +1773,8 @@
           "isPurchasedReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
-          "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante."
+          "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
+          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois."
         }
       },
       "detailPage": {
@@ -2736,6 +2739,10 @@
             "title": "Contrat",
             "subtitle": "Signez votre contrat propriétaire"
           },
+          "cancelInsurance": {
+            "title": "Résilier l'assurance",
+            "subtitle": "Résiliez votre assurance auto existante"
+          },
           "newInsurance": {
             "title": "Nouvelle assurance",
             "subtitle": "Nous transférons votre assurance"
@@ -2747,6 +2754,10 @@
           "adminHandoff": {
             "title": "Clôture administrative",
             "subtitle": "Nous finalisons votre intégration"
+          },
+          "starterKit": {
+            "title": "Kit de démarrage",
+            "subtitle": "Nous vous envoyons les documents de bord et un kit de démarrage"
           }
         }
       },
@@ -2907,7 +2918,21 @@
         "contractWarningCancellable": "Votre assurance a commencé il y a plus d'un an. Après la première année, vous pouvez résilier à tout moment, avec un préavis de 2 mois. Nous vous aidons volontiers avec cette résiliation ; vous pouvez rejoindre Dégage au plus tôt le {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Votre assureur a-t-il annoncé une hausse de tarif ?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Oui, une hausse de tarif a été annoncée",
-        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation."
+        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation.",
+        "shareStartResetWarning": "Vous avez déjà choisi une date de début de partage. Modifier les détails d'assurance effacera cette date afin que vous puissiez la choisir à nouveau.",
+        "shareStartCleared": "Votre date de début de partage a été effacée car les détails d'assurance ont changé."
+      },
+      "shareStart": {
+        "title": "Date de début",
+        "subtitle": "Choisir quand votre véhicule devient disponible au partage",
+        "panelTitle": "Date de début du partage",
+        "panelBody": "Vous commencez toujours le premier du mois. Choisissez quand votre véhicule devient disponible pour les membres.",
+        "legendLocked": "◄ Verrouillé (assurance)",
+        "legendAvailable": "Disponible ►",
+        "earliestBadge": "Plus tôt",
+        "helperWithInsurance": "Selon votre assurance, le partage peut commencer à partir du {date}.",
+        "helperWithoutInsurance": "Sans contrat d'assurance existant, la date de début la plus tôt est le {date}.",
+        "selectedHint": "Provisoire jusqu'à ce que toutes les étapes soient terminées."
       },
       "roadAssistancePlan": {
         "title": "Assistance routière",

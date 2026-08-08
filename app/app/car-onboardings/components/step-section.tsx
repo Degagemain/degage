@@ -69,7 +69,7 @@ function LockedDummyChapter({ chapter }: { chapter: ChapterDefinition }) {
             title={t(step.titleKey)}
             subtitle={t(step.subtitleKey)}
             state="blocked"
-            actors={[step.actor]}
+            actors={step.actors}
           />
         ))}
       </div>

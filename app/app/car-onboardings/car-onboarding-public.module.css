@@ -700,6 +700,121 @@
   margin-bottom: var(--demo-s24);
 }
 
+.shareStartLegend {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--demo-s16);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--demo-light);
+  margin-bottom: var(--demo-s16);
+}
+
+.shareStartTimeline {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 2px 8px;
+  margin: 0 -2px;
+  scrollbar-width: thin;
+}
+
+.shareStartMonth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 0 0 58px;
+  min-height: 70px;
+  border-radius: var(--demo-r12);
+  border: 1px solid var(--demo-border);
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 10px 6px;
+}
+
+.shareStartMonth:hover:not(:disabled) {
+  border-color: var(--demo-brand);
+  background: var(--demo-brand-light);
+}
+
+.shareStartMonthLocked {
+  background: #f3f1ec;
+  color: var(--demo-light);
+  border-color: #ebe6dc;
+  cursor: not-allowed;
+}
+
+.shareStartMonthSelected {
+  background: var(--demo-brand-light);
+  border-color: var(--demo-brand);
+  box-shadow: 0 0 0 1px var(--demo-brand);
+  color: var(--demo-brand-mid);
+  font-weight: 600;
+}
+
+.shareStartMonthEarliest:not(.shareStartMonthSelected) {
+  border-color: var(--demo-brand-border);
+}
+
+.shareStartEarliestBadge {
+  position: absolute;
+  top: -9px;
+  background: var(--demo-brand);
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.shareStartMonthLabel {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.shareStartYearLabel {
+  font-size: 10px;
+  opacity: 0.65;
+}
+
+.shareStartHelper {
+  font-size: 13px;
+  color: var(--demo-mid);
+  line-height: 1.5;
+  margin: var(--demo-s16) 0 0;
+}
+
+.shareStartSummary {
+  margin-top: var(--demo-s24);
+  padding: var(--demo-s16) var(--demo-s24);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+  background: var(--demo-brand-light);
+}
+
+.shareStartSummaryLabel {
+  font-family: var(--demo-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--demo-ink);
+}
+
+.shareStartSummaryHint {
+  font-size: 13px;
+  color: var(--demo-mid);
+  margin-top: 4px;
+}
+
 .infoPanel {
   display: flex;
   gap: var(--demo-s16);

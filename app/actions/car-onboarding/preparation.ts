@@ -12,6 +12,7 @@ import {
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
@@ -36,6 +37,7 @@ export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
     isInsurerSectionComplete(onboarding) &&
+    isShareStartSectionComplete(onboarding) &&
     isRoadAssistancePlanSectionComplete(onboarding) &&
     isCarStickerSectionComplete(onboarding)
   );

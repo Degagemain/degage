@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { isInsurerContractStartedWithinLastYear } from '@/domain/car-onboarding.model';
+import { isInsurerContractStartedWithinLastYear, shouldClearShareStartOnInsurerChange } from '@/domain/car-onboarding.model';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -61,6 +61,11 @@ export function InsurerStep() {
 
   const handleSave = async (): Promise<boolean> => {
     if (!carOnboarding.id) return false;
+    const nextInsurance = {
+      hasInsuranceContract,
+      insurerContractStartedAt: hasInsuranceContract && contractStartedAt ? new Date(contractStartedAt) : null,
+    };
+    const willClearShareStart = shouldClearShareStartOnInsurerChange(carOnboarding, nextInsurance);
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/insurer`, {
@@ -79,6 +84,9 @@ export function InsurerStep() {
       }
       toast.success(t('saveSuccess'));
       await reload();
+      if (willClearShareStart) {
+        toast.message(t('steps.insurer.shareStartCleared'));
+      }
       return true;
     } catch {
       toast.error(t('errors.save'));
@@ -91,6 +99,7 @@ export function InsurerStep() {
   return (
     <StepLayout stepId="insurer">
       <PublicInfoPanel title={t('steps.insurer.panelTitle')} body={t('steps.insurer.panelBody')} />
+      {carOnboarding.shareStartDate != null ? <div className={styles.bannerWarning}>{t('steps.insurer.shareStartResetWarning')}</div> : null}
       <PublicPanel>
         <label className={styles.checkboxLabel}>
           <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />

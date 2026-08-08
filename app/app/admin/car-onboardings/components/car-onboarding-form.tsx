@@ -20,7 +20,9 @@ import {
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
+  startOfMonth,
 } from '@/domain/car-onboarding.model';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
 import { Button } from '@/app/components/ui/button';
@@ -46,6 +48,7 @@ export const CAR_ONBOARDING_TAB_IDS = [
   'insurer',
   'roadAssistancePlan',
   'carValue',
+  'shareStart',
   'finalize',
 ] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
@@ -110,6 +113,7 @@ interface FormValues {
   existingRoadAssistancePlanEndDate: string;
   roadAssistancePlanId: string;
   roadAssistancePlanName: string;
+  shareStartDate: string;
   ownerId: string;
   ownerName: string;
 }
@@ -157,6 +161,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     existingRoadAssistancePlanEndDate: formatDateInput(row.existingRoadAssistancePlanEndDate),
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
+    shareStartDate: formatDateInput(row.shareStartDate),
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
   };
@@ -197,6 +202,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     existingRoadAssistancePlanEndDate: z.string(),
     roadAssistancePlanId: z.string(),
     roadAssistancePlanName: z.string(),
+    shareStartDate: z.string(),
     ownerId: z.string(),
     ownerName: z.string(),
   });
@@ -222,6 +228,7 @@ type CarOnboardingStepTabCompletion = {
   insurer: boolean;
   roadAssistancePlan: boolean;
   carValue: boolean;
+  shareStart: boolean;
   preparationLocked: boolean;
 };
 
@@ -278,6 +285,10 @@ function CarOnboardingStepTabsList({
       <TabsTrigger value="carValue" className="gap-1.5">
         {t('tabs.carValue')}
         {completion.carValue ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
+      <TabsTrigger value="shareStart" className="gap-1.5">
+        {t('tabs.shareStart')}
+        {completion.shareStart ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
       </TabsTrigger>
       <TabsTrigger value="finalize" className="gap-1.5">
         {t('tabs.finalize')}
@@ -378,6 +389,9 @@ export function CarOnboardingForm({
           : CarOnboardingRoadAssistancePlanStatus.READY,
   });
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+  const shareStartComplete = isShareStartSectionComplete({
+    shareStartDate: watchedValues.shareStartDate.trim() === '' ? null : new Date(watchedValues.shareStartDate),
+  });
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
   const stepTabCompletion = useMemo(
@@ -389,6 +403,7 @@ export function CarOnboardingForm({
       insurer: insurerComplete,
       roadAssistancePlan: roadAssistancePlanComplete,
       carValue: carValueComplete,
+      shareStart: shareStartComplete,
       preparationLocked,
     }),
     [
@@ -399,6 +414,7 @@ export function CarOnboardingForm({
       insurerComplete,
       roadAssistancePlanComplete,
       carValueComplete,
+      shareStartComplete,
       preparationLocked,
     ],
   );
@@ -517,6 +533,7 @@ export function CarOnboardingForm({
           ? null
           : new Date(values.existingRoadAssistancePlanEndDate),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
+      shareStartDate: values.shareStartDate === '' ? null : startOfMonth(new Date(values.shareStartDate)),
       owner: toIdName(values.ownerId, values.ownerName),
     };
     await onSubmit(payload);
@@ -1229,6 +1246,28 @@ export function CarOnboardingForm({
                     {t('form.overruleAgreement')}
                   </Button>
                 ) : null}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="shareStart" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('tabs.shareStart')}</FieldLegend>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="shareStartDate"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminDateFieldControl
+                      label={t('columns.shareStartDate')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      description={t('form.help.shareStartDate')}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
               </FieldGroup>
             </FieldSet>
           </TabsContent>

@@ -125,6 +125,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     inspectionCertificate: idNameSchema.nullable().default(null),
     pinkForm: idNameSchema.nullable().default(null),
     carStickers: z.array(idNameSchema).default([]),
+    shareStartDate: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -211,6 +212,14 @@ export const carOnboardingCarStickersInputSchema = z
 
 export type CarOnboardingCarStickersInput = z.infer<typeof carOnboardingCarStickersInputSchema>;
 
+export const carOnboardingShareStartInputSchema = z
+  .object({
+    shareStartDate: z.coerce.date(),
+  })
+  .strict();
+
+export type CarOnboardingShareStartInput = z.infer<typeof carOnboardingShareStartInputSchema>;
+
 export const carOnboardingCreateInputSchema = z
   .object({
     simulation: idNameSchema.optional(),
@@ -274,6 +283,7 @@ export const carOnboardingFromSimulation = (
     inspectionCertificate: null,
     pinkForm: null,
     carStickers: [],
+    shareStartDate: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     infoSessionDate: null,
     infoSessionPcId: null,
@@ -367,6 +377,88 @@ export const isInfoSessionEnrolled = (onboarding: Pick<CarOnboarding, 'infoSessi
 
 export const isInsurerSectionComplete = (onboarding: Pick<CarOnboarding, 'insurerStatus'>): boolean => {
   return onboarding.insurerStatus !== CarOnboardingInsurerStatus.TODO;
+};
+
+const parseDate = (value: Date | string): Date | null => {
+  const parsed = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed;
+};
+
+export const startOfMonth = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), 1);
+
+export const ceilToFirstOfMonth = (date: Date): Date => {
+  if (date.getDate() === 1) return startOfMonth(date);
+  return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+};
+
+const addCalendarMonths = (date: Date, months: number): Date => {
+  return new Date(date.getFullYear(), date.getMonth() + months, date.getDate());
+};
+
+const addCalendarYears = (date: Date, years: number): Date => {
+  return new Date(date.getFullYear() + years, date.getMonth(), date.getDate());
+};
+
+const dateTimeEquals = (a: Date | string | null | undefined, b: Date | string | null | undefined): boolean => {
+  if (a == null && b == null) return true;
+  if (a == null || b == null) return false;
+  const left = parseDate(a);
+  const right = parseDate(b);
+  if (left == null || right == null) return false;
+  return left.getTime() === right.getTime();
+};
+
+type ShareStartInsuranceFields = Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt'>;
+
+export const getEarliestShareStartDate = (onboarding: ShareStartInsuranceFields, today: Date = new Date()): Date => {
+  if (!onboarding.hasInsuranceContract || onboarding.insurerContractStartedAt == null) {
+    return startOfMonth(today);
+  }
+
+  const contractStart = parseDate(onboarding.insurerContractStartedAt);
+  if (contractStart == null) {
+    return startOfMonth(today);
+  }
+
+  const oneYearAgo = addCalendarYears(today, -1);
+  const withinLastYear = contractStart.getTime() > oneYearAgo.getTime();
+  const rawEarliest = withinLastYear ? addCalendarYears(contractStart, 1) : addCalendarMonths(today, 2);
+  return ceilToFirstOfMonth(rawEarliest);
+};
+
+export const getLatestShareStartDate = (today: Date = new Date()): Date => {
+  return startOfMonth(addCalendarMonths(today, 18));
+};
+
+export const isValidShareStartDate = (date: Date | string, onboarding: ShareStartInsuranceFields, today: Date = new Date()): boolean => {
+  const parsed = parseDate(date);
+  if (parsed == null || parsed.getDate() !== 1) return false;
+
+  const earliest = getEarliestShareStartDate(onboarding, today);
+  const latest = getLatestShareStartDate(today);
+  const normalized = startOfMonth(parsed).getTime();
+  return normalized >= earliest.getTime() && normalized <= latest.getTime();
+};
+
+export const isShareStartSectionComplete = (onboarding: Pick<CarOnboarding, 'shareStartDate'>): boolean => {
+  return onboarding.shareStartDate != null;
+};
+
+export const shouldClearShareStartOnInsurerChange = (
+  previous: Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt' | 'shareStartDate'>,
+  next: ShareStartInsuranceFields,
+  today: Date = new Date(),
+): boolean => {
+  if (previous.shareStartDate == null) return false;
+
+  const insuranceChanged =
+    previous.hasInsuranceContract !== next.hasInsuranceContract ||
+    !dateTimeEquals(previous.insurerContractStartedAt, next.insurerContractStartedAt);
+
+  if (insuranceChanged) return true;
+
+  return !isValidShareStartDate(previous.shareStartDate, next, today);
 };
 
 export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus' | 'isPurchased' | 'hasInsuranceContract'>): boolean => {

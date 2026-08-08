@@ -4,6 +4,7 @@ import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboardin
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingInvalidRoadAssistancePlanStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-road-assistance-plan-status.error';
+import { CarOnboardingInvalidShareStartDateError } from '@/actions/car-onboarding/car-onboarding-invalid-share-start-date.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { forbiddenResponse, isPrismaNotFoundError, noContentResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
@@ -37,6 +38,9 @@ export const tryPartialCarOnboardingUpdate = async (
     }
     if (error instanceof CarOnboardingInvalidInsurerStatusError) {
       return Response.json({ code: 'invalid_insurer_status', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
+    }
+    if (error instanceof CarOnboardingInvalidShareStartDateError) {
+      return Response.json({ code: 'invalid_share_start_date', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
     }
     if (error instanceof CarOnboardingInvalidRoadAssistancePlanStatusError) {
       return Response.json(

@@ -1611,6 +1611,7 @@
         "existingRoadAssistancePlanEndDate": "Einddatum contract pechverhelping",
         "roadAssistancePlan": "Pechverhelping",
         "roadAssistancePlanStatus": "Status pechverhelpingsplan",
+        "shareStartDate": "Startdatum autodelen",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
         "created": "Aangemaakt",
@@ -1626,6 +1627,7 @@
         "insurer": "Verzekering",
         "roadAssistancePlan": "Pechverhelping",
         "carValue": "Waarde van de wagen",
+        "shareStart": "Startdatum autodelen",
         "finalize": "Afronden"
       },
       "preparationStatus": {
@@ -1771,7 +1773,8 @@
           "isPurchasedReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "isNewCarReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
-          "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft."
+          "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft.",
+          "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand."
         }
       },
       "detailPage": {
@@ -2745,6 +2748,10 @@
             "title": "Contract",
             "subtitle": "Teken je eigenaarscontract"
           },
+          "cancelInsurance": {
+            "title": "Verzekering opzeggen",
+            "subtitle": "Zeg je bestaande autoverzekering op"
+          },
           "newInsurance": {
             "title": "Nieuwe verzekering",
             "subtitle": "Wij zetten je verzekering over"
@@ -2756,6 +2763,10 @@
           "adminHandoff": {
             "title": "Administratieve afhandeling",
             "subtitle": "Wij ronden je onboarding af"
+          },
+          "starterKit": {
+            "title": "Startbundel",
+            "subtitle": "We sturen je boord documenten op en een starterspakket"
           }
         }
       },
@@ -2916,7 +2927,21 @@
         "contractWarningCancellable": "Je autoverzekering is langer dan 1 jaar geleden gestart. Na het eerste jaar kan je op elk moment opzeggen, met een opzegtermijn van 2 maanden. We helpen je graag met die opzegging; je kan ten vroegste naar onze vlootpolis overstappen op {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Heeft je verzekeraar een tariefverhoging aangekondigd?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Ja, er werd een tariefverhoging aangekondigd.",
-        "insurerAnnouncedPriceIncreaseHint": "Bij een aangekondigde tariefverhoging kan je je contract sneller opzeggen. Betaal de nieuwe - hogere - premie niet, want dat geldt als instemming met de tariefverhoging."
+        "insurerAnnouncedPriceIncreaseHint": "Bij een aangekondigde tariefverhoging kan je je contract sneller opzeggen. Betaal de nieuwe - hogere - premie niet, want dat geldt als instemming met de tariefverhoging.",
+        "shareStartResetWarning": "Je hebt al een startdatum voor autodelen gekozen. Als je je verzekeringsgegevens wijzigt, wordt die startdatum gewist zodat je ze opnieuw kan kiezen.",
+        "shareStartCleared": "Je startdatum voor autodelen is gewist omdat de verzekeringsgegevens gewijzigd zijn."
+      },
+      "shareStart": {
+        "title": "Startdatum autodelen",
+        "subtitle": "Kies wanneer je wagen beschikbaar wordt voor leden",
+        "panelTitle": "Startdatum autodelen",
+        "panelBody": "Je start altijd op de eerste van de maand. Kies wanneer je wagen beschikbaar wordt voor leden.",
+        "legendLocked": "◄ Vergrendeld (verzekering)",
+        "legendAvailable": "Beschikbaar ►",
+        "earliestBadge": "Vroegst",
+        "helperWithInsurance": "Op basis van je verzekering kan autodelen starten vanaf {date}.",
+        "helperWithoutInsurance": "Zonder bestaand verzekeringscontract is de vroegste startdatum {date}.",
+        "selectedHint": "Voorlopig — bevestigd zodra alle stappen in orde zijn."
       },
       "roadAssistancePlan": {
         "title": "Pechverhelpingsplan",

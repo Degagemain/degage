@@ -9,6 +9,7 @@ import { InfoSessionStep } from '../../components/steps/info-session-step';
 import { UserInfoStep } from '../../components/steps/user-info-step';
 import { CarInfoStep } from '../../components/steps/car-info-step';
 import { InsurerStep } from '../../components/steps/insurer-step';
+import { ShareStartStep } from '../../components/steps/share-start-step';
 import { RoadAssistancePlanStep } from '../../components/steps/road-assistance-plan-step';
 import { CarValueStep } from '../../components/steps/car-value-step';
 import { CarStickersStep } from '../../components/steps/car-stickers-step';
@@ -37,6 +38,8 @@ export default function CarOnboardingStepPage({ params }: { params: Promise<{ id
       return <CarValueStep />;
     case 'car-stickers':
       return <CarStickersStep />;
+    case 'share-start':
+      return <ShareStartStep />;
     default:
       notFound();
   }

@@ -1611,6 +1611,7 @@
         "existingRoadAssistancePlanEndDate": "Existing road assistance plan end date",
         "roadAssistancePlan": "Road assistance plan",
         "roadAssistancePlanStatus": "Road assistance plan status",
+        "shareStartDate": "Share start date",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
         "created": "Created",
@@ -1626,6 +1627,7 @@
         "insurer": "Insurer",
         "roadAssistancePlan": "Road assistance plan",
         "carValue": "Car value",
+        "shareStart": "Share start date",
         "finalize": "Finalize"
       },
       "preparationStatus": {
@@ -1771,7 +1773,8 @@
           "isPurchasedReadOnly": "Set when the record is created and cannot be changed here.",
           "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
-          "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance."
+          "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
+          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month."
         }
       },
       "detailPage": {
@@ -2736,6 +2739,10 @@
             "title": "Contract",
             "subtitle": "Sign your owner contract"
           },
+          "cancelInsurance": {
+            "title": "Cancel insurance",
+            "subtitle": "Cancel your existing car insurance"
+          },
           "newInsurance": {
             "title": "New insurance",
             "subtitle": "We transfer your insurance"
@@ -2747,6 +2754,10 @@
           "adminHandoff": {
             "title": "Admin wrap-up",
             "subtitle": "We finish your onboarding admin"
+          },
+          "starterKit": {
+            "title": "Starter kit",
+            "subtitle": "We send you on-board documents and a starter pack"
           }
         }
       },
@@ -2907,7 +2918,21 @@
         "contractWarningCancellable": "Your insurance started more than a year ago. After the first year you can cancel at any time, with a notice period of 2 months. We are happy to help with that cancellation; you can join Dégage at the earliest on {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Did your insurer announce a rate increase?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Yes, a rate increase was announced",
-        "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it."
+        "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it.",
+        "shareStartResetWarning": "You already chose a share start date. Changing your insurance details will clear that start date so you can pick it again.",
+        "shareStartCleared": "Your share start date was cleared because the insurance details changed."
+      },
+      "shareStart": {
+        "title": "Start date",
+        "subtitle": "Choose when your car becomes available for sharing",
+        "panelTitle": "Share start date",
+        "panelBody": "You always start on the first of the month. Choose when your car becomes available for members.",
+        "legendLocked": "◄ Locked (insurance)",
+        "legendAvailable": "Available ►",
+        "earliestBadge": "Earliest",
+        "helperWithInsurance": "Based on your insurance, car sharing can start from {date}.",
+        "helperWithoutInsurance": "Without an existing insurance contract, the earliest start date is {date}.",
+        "selectedHint": "Provisional until all preparation steps are complete."
       },
       "roadAssistancePlan": {
         "title": "Road assistance plan",

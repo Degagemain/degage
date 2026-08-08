@@ -57,6 +57,12 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     subtitleKey: 'steps.carStickers.subtitle',
     actors: ['you'],
   },
+  {
+    id: 'share-start',
+    titleKey: 'steps.shareStart.title',
+    subtitleKey: 'steps.shareStart.subtitle',
+    actors: ['you'],
+  },
 ];
 
 export const getStepDefinition = (id: StepId): StepDefinition | undefined => STEP_DEFINITIONS.find((s) => s.id === id);

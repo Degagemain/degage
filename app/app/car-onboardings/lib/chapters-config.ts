@@ -4,7 +4,7 @@ export type DummyChapterStep = {
   id: string;
   titleKey: string;
   subtitleKey: string;
-  actor: ChapterActor;
+  actors: ChapterActor[];
 };
 
 export type ChapterId = 'preparation' | 'transition' | 'readyToShare';
@@ -44,25 +44,37 @@ export const CHAPTER_DEFINITIONS: ChapterDefinition[] = [
         id: 'contract',
         titleKey: 'chapters.transition.steps.contract.title',
         subtitleKey: 'chapters.transition.steps.contract.subtitle',
-        actor: 'you',
+        actors: ['you', 'degage'],
+      },
+      {
+        id: 'cancel-insurance',
+        titleKey: 'chapters.transition.steps.cancelInsurance.title',
+        subtitleKey: 'chapters.transition.steps.cancelInsurance.subtitle',
+        actors: ['you'],
       },
       {
         id: 'new-insurance',
         titleKey: 'chapters.transition.steps.newInsurance.title',
         subtitleKey: 'chapters.transition.steps.newInsurance.subtitle',
-        actor: 'degage',
+        actors: ['degage'],
       },
       {
         id: 'parking-card',
         titleKey: 'chapters.transition.steps.parkingCard.title',
         subtitleKey: 'chapters.transition.steps.parkingCard.subtitle',
-        actor: 'degage',
+        actors: ['degage'],
+      },
+      {
+        id: 'starter-kit',
+        titleKey: 'chapters.transition.steps.starterKit.title',
+        subtitleKey: 'chapters.transition.steps.starterKit.subtitle',
+        actors: ['degage'],
       },
       {
         id: 'admin-handoff',
         titleKey: 'chapters.transition.steps.adminHandoff.title',
         subtitleKey: 'chapters.transition.steps.adminHandoff.subtitle',
-        actor: 'degage',
+        actors: ['degage'],
       },
     ],
   },
@@ -79,13 +91,13 @@ export const CHAPTER_DEFINITIONS: ChapterDefinition[] = [
         id: 'buddy',
         titleKey: 'chapters.readyToShare.steps.buddy.title',
         subtitleKey: 'chapters.readyToShare.steps.buddy.subtitle',
-        actor: 'degage',
+        actors: ['degage'],
       },
       {
         id: 'survey',
         titleKey: 'chapters.readyToShare.steps.survey.title',
         subtitleKey: 'chapters.readyToShare.steps.survey.subtitle',
-        actor: 'you',
+        actors: ['you'],
       },
     ],
   },

@@ -15,7 +15,7 @@ Tijdens de voorbereiding verzamelt het systeem contactgegevens en voertuigkenmer
 vereiste invoer compleet is en of verdere wijzigingen nog zijn toegestaan.
 
 Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: eigenaar, gebruikersinfo, wageninfo,
-verzekering, pechverhelping, waarde, afronden).
+verzekering, pechverhelping, waarde, startdatum autodelen, afronden).
 
 ### Eigenaar
 
@@ -138,16 +138,31 @@ onboarding-record.
 
 Deze stap is altijd compleet; extra stickers zijn optioneel.
 
+### Startdatum autodelen
+
+Kiest wanneer de wagen beschikbaar wordt voor autodelen. Dit is de laatste voorbereidingsstap. De datum is altijd de eerste van de maand. De
+vroegst toegelaten maand hangt af van de verzekeringsgegevens (of de eerste van de huidige maand wanneer er geen bestaand verzekeringscontract
+is). De laatst toegelaten maand is 18 maanden vanaf vandaag.
+
+| Eigenschap       | Beschrijving                                                    |
+| ---------------- | --------------------------------------------------------------- |
+| Startdatum delen | Eerste dag van de maand waarop autodelen gepland is te starten. |
+
+Deze stap ontgrendelt pas nadat de verzekeringsstap compleet is. Wijzigingen aan verzekeringsgegevens die de vroegste datum beïnvloeden wissen
+de gekozen startdatum, zodat de eigenaar opnieuw moet kiezen.
+
+Deze stap is compleet wanneer een startdatum is ingesteld.
+
 ### Afronden
 
-Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde en autostickers allemaal compleet zijn, zet
-het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het tabblad
-**Afronden**.
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde, autostickers en startdatum allemaal compleet
+zijn, zet het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het
+tabblad **Afronden**.
 
 | Status      | Betekenis                                                                                                                                                                                    |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Open        | Onboarding is bezig; voorbereidingsstappen zijn nog niet allemaal compleet.                                                                                                                  |
-| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost) en autostickers zijn compleet. Het systeem zet dit automatisch.                 |
+| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost), autostickers en startdatum zijn compleet. Het systeem zet dit automatisch.     |
 | Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Gezet door een admin op het tabblad **Afronden** wanneer de voorbereiding **Klaar** is. |
 
 Wanneer de voorbereiding **Vergrendeld** is, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en waarde niet meer bijwerken tot een

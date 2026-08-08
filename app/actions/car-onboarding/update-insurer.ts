@@ -1,4 +1,8 @@
-import { CarOnboardingInsurerStatus, carOnboardingInsurerInputSchema } from '@/domain/car-onboarding.model';
+import {
+  CarOnboardingInsurerStatus,
+  carOnboardingInsurerInputSchema,
+  shouldClearShareStartOnInsurerChange,
+} from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
@@ -20,5 +24,10 @@ export const updateCarOnboardingInsurer = async (id: string, body: unknown, user
           insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
         }
       : merged;
-  await saveCarOnboardingWithPreparationCheck(withInsurerCompletion);
+
+  const withClearedShareStart = shouldClearShareStartOnInsurerChange(existing, withInsurerCompletion)
+    ? { ...withInsurerCompletion, shareStartDate: null }
+    : withInsurerCompletion;
+
+  await saveCarOnboardingWithPreparationCheck(withClearedShareStart);
 };
