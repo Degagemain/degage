@@ -160,18 +160,23 @@ Cette étape est complète lorsqu'une date de début est définie.
 
 ### Finaliser
 
-Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière, valeur, stickers voiture et date de
-début du partage sont toutes complètes, le système définit le statut de préparation sur **Prêt** automatiquement à l'enregistrement. Un admin
-peut ensuite démarrer l'intégration véhicule sur l'onglet **Finaliser**.
+Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière, valeur, stickers voiture, date de
+début du partage et confirmation du propriétaire sont toutes complètes, le système définit le statut de préparation sur **Prêt** automatiquement
+à l'enregistrement. Un admin peut ensuite verrouiller la préparation sur l'onglet **Finaliser**.
 
-| Statut     | Signification                                                                                                                                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ouvert     | L'intégration est en cours ; les étapes de préparation ne sont pas toutes complètes.                                                                                                                                |
-| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo), valeur (Résolu), stickers voiture et date de début sont complètes. Le système définit ce statut automatiquement. |
-| Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Défini par un admin sur l'onglet **Finaliser** lorsque la préparation est **Prête**.                 |
+Le propriétaire peut confirmer la préparation une fois les autres étapes terminées, même si la session d'info est seulement **Inscrit** (pas
+encore confirmée par un admin). Après confirmation, ses données de préparation deviennent en lecture seule. La préparation ne passe à **Prêt**
+qu'après cette confirmation et lorsque la session d'info est **Complet** (avec les autres exigences).
 
-Lorsque la préparation est **Verrouillée**, les utilisateurs ne peuvent plus mettre à jour les infos utilisateur, infos véhicule, assurance ou
-la valeur tant qu'un admin ne l'a pas déverrouillée.
+| Statut     | Signification                                                                                                                                                                                                                                             |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ouvert     | L'intégration est en cours ; les étapes de préparation (y compris la confirmation du propriétaire) ne sont pas toutes complètes.                                                                                                                          |
+| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo), valeur (Résolu), stickers voiture, date de début et confirmation du propriétaire sont complètes. Le système définit ce statut automatiquement.         |
+| Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Verrouiller avec **Verrouiller la préparation** sur **Finaliser** lorsque **Prête** ; déverrouiller avec **Déverrouiller la préparation**. |
+
+Lorsque la préparation est **Verrouillée**, ou après confirmation du propriétaire, les utilisateurs ne peuvent plus mettre à jour les infos
+utilisateur, infos véhicule, assurance ou la valeur. Les admins peuvent effacer la confirmation du propriétaire depuis **Finaliser** lorsque la
+préparation n'est pas verrouillée.
 
 ## Création d'un enregistrement
 
@@ -216,4 +221,5 @@ la valeur tant qu'un admin ne l'a pas déverrouillée.
 | ID PC session d'info                 | Identifiant Play connector de la session d'info inscrite.                                   |
 | Statut session d'info                | Progression du sous-processus session d'info.                                               |
 | Simulation                           | Simulation associée, le cas échéant.                                                        |
+| Préparation confirmée le             | Date et heure auxquelles le propriétaire a confirmé les données de préparation.             |
 | Statut de préparation                | Suit la progression : Ouvert, Prêt ou Verrouillé.                                           |

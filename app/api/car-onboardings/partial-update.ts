@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
@@ -28,6 +29,9 @@ export const tryPartialCarOnboardingUpdate = async (
       return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
     }
     if (error instanceof CarOnboardingLockedError) {
+      return forbiddenResponse(error.message);
+    }
+    if (error instanceof CarOnboardingConfirmedError) {
       return forbiddenResponse(error.message);
     }
     if (error instanceof CarOnboardingForbiddenError) {

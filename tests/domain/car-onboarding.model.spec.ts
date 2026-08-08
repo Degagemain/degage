@@ -34,6 +34,8 @@ import {
   isInsurerContractStartedWithinLastYear,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isPreparationConfirmable,
+  isPreparationConfirmed,
   isRoadAssistancePlanSectionComplete,
   isShareStartSectionComplete,
   isUserInfoSectionComplete,
@@ -41,7 +43,7 @@ import {
   shouldClearShareStartOnInsurerChange,
   startOfMonth,
 } from '@/domain/car-onboarding.model';
-import { carOnboarding } from '../builders/car-onboarding.builder';
+import { carOnboarding, completeCarOnboarding } from '../builders/car-onboarding.builder';
 import { simulation } from '../builders/simulation.builder';
 
 describe('carOnboardingCarInfoSchema', () => {
@@ -545,6 +547,53 @@ describe('isInfoSessionEnrolled', () => {
     expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED }))).toBe(true);
     expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.DONE }))).toBe(true);
     expect(isInfoSessionEnrolled(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isPreparationConfirmed', () => {
+  it('returns true when preparationConfirmedAt is set', () => {
+    expect(isPreparationConfirmed(carOnboarding({ preparationConfirmedAt: new Date('2026-06-21T10:00:00') }))).toBe(true);
+    expect(isPreparationConfirmed(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isPreparationConfirmable', () => {
+  it('returns true when sections are complete with info session enrolled and not yet confirmed', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('returns false when already confirmed', () => {
+    expect(isPreparationConfirmable(completeCarOnboarding())).toBe(false);
+  });
+
+  it('returns false when info session is not enrolled', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('returns false when locked', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+          statusInPreparation: CarOnboardingInPreparationStatus.LOCKED,
+        }),
+      ),
+    ).toBe(false);
   });
 });
 

@@ -126,6 +126,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     pinkForm: idNameSchema.nullable().default(null),
     carStickers: z.array(idNameSchema).default([]),
     shareStartDate: z.coerce.date().nullable().default(null),
+    preparationConfirmedAt: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -511,6 +512,57 @@ export const isRoadAssistancePlanSectionComplete = (onboarding: Pick<CarOnboardi
 
 export const isCarStickerSectionComplete = (_onboarding: Pick<CarOnboarding, 'carStickers'>): boolean => {
   return true;
+};
+
+export const isPreparationConfirmed = (onboarding: Pick<CarOnboarding, 'preparationConfirmedAt'>): boolean => {
+  return onboarding.preparationConfirmedAt != null;
+};
+
+export const isPreparationConfirmable = (
+  onboarding: Pick<
+    CarOnboarding,
+    | 'owner'
+    | 'infoSessionStatus'
+    | 'street'
+    | 'town'
+    | 'phone'
+    | 'brand'
+    | 'fuelType'
+    | 'carType'
+    | 'carTypeOther'
+    | 'isPurchased'
+    | 'isNewCar'
+    | 'firstRegisteredAt'
+    | 'registrationCertificateFront'
+    | 'registrationCertificateBack'
+    | 'inspectionCertificate'
+    | 'pinkForm'
+    | 'carValue'
+    | 'carValueStatus'
+    | 'insurerStatus'
+    | 'roadAssistancePlanStatus'
+    | 'carStickers'
+    | 'shareStartDate'
+    | 'preparationConfirmedAt'
+    | 'statusInPreparation'
+  >,
+): boolean => {
+  if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return false;
+  if (isPreparationConfirmed(onboarding)) return false;
+
+  const carValueComplete = onboarding.isPurchased || onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+
+  return (
+    isPlayConnectorSectionComplete(onboarding) &&
+    isInfoSessionEnrolled(onboarding) &&
+    isUserInfoSectionComplete(onboarding) &&
+    isCarInfoSectionComplete(onboarding) &&
+    isInsurerSectionComplete(onboarding) &&
+    isRoadAssistancePlanSectionComplete(onboarding) &&
+    carValueComplete &&
+    isCarStickerSectionComplete(onboarding) &&
+    isShareStartSectionComplete(onboarding)
+  );
 };
 
 export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnboarding => {

@@ -7,7 +7,11 @@ import {
 import type { UserWithRole } from '@/domain/role.model';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingInvalidShareStartDateError } from '@/actions/car-onboarding/car-onboarding-invalid-share-start-date.error';
-import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
+import {
+  assertCarOnboardingNotConfirmedForOwner,
+  assertCarOnboardingNotLocked,
+  assertCarOnboardingPartialUpdateAllowed,
+} from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
 
@@ -15,6 +19,7 @@ export const updateCarOnboardingShareStart = async (id: string, body: unknown, u
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
 
   if (!isInsurerSectionComplete(existing)) {
     throw new CarOnboardingInvalidInsurerStatusError('Insurer step must be complete before choosing a share start date');

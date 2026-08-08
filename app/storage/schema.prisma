@@ -183,6 +183,7 @@ model CarOnboarding {
   pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
+  preparationConfirmedAt DateTime?
   stickerLinks        CarOnboardingSticker[]
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt

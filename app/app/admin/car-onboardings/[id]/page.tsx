@@ -172,6 +172,42 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleUnlockPreparation = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/unlock-preparation`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.unlockPreparationError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(t('form.unlockPreparationSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.unlockPreparationError'));
+    }
+  };
+
+  const handleClearPreparationConfirmation = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/clear-preparation-confirmation`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.clearPreparationConfirmationError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(t('form.clearPreparationConfirmationSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.clearPreparationConfirmationError'));
+    }
+  };
+
   const handleUploadRegistrationCertificate = async (side: 'front' | 'back', file: File) => {
     if (!id) return;
     const formData = new FormData();
@@ -342,6 +378,8 @@ export default function EditCarOnboardingPage() {
               onOverruleCarValueAgreement={handleOverruleCarValueAgreement}
               onConfirmInfoSession={handleConfirmInfoSession}
               onStartCarOnboarding={handleStartCarOnboarding}
+              onUnlockPreparation={handleUnlockPreparation}
+              onClearPreparationConfirmation={handleClearPreparationConfirmation}
               onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
               onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
               onUploadInspectionCertificate={handleUploadInspectionCertificate}

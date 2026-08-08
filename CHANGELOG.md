@@ -9,11 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: at the end of car onboarding preparation, you confirm your info and
+  commit to car sharing; after that, preparation details are read-only.
+- Added: during car onboarding preparation, a new share start date step lets you
+  choose when your car becomes available for sharing; you always start on the
+  first of a month, and the earliest option depends on your insurance.
 - Changed: during car onboarding, extra stickers are optional; you can continue
   with only the always-included stickers.
 - Changed: car onboarding overview now shows the full journey in three chapters
   (preparation, the switch, ready to share), so you can see what comes after
   preparation.
+
+### Admin features
+
+- Changed: car onboarding preparation is Ready only after the owner confirms;
+  Finalize shows when they confirmed.
+- Changed: Finalize uses Lock / Unlock preparation instead of Start onboarding.
+- Added: admins can clear the owner's preparation confirmation from Finalize.
+- Added: car onboarding records include a share start date tab.
 
 ### Technical
 

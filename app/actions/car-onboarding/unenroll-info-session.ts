@@ -1,6 +1,7 @@
 import { CarOnboardingInfoSessionStatus } from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import {
+  assertCarOnboardingNotConfirmedForOwner,
   assertCarOnboardingNotLocked,
   assertCarOnboardingPartialUpdateAllowed,
   assertInfoSessionStatusIsEnrolled,
@@ -14,6 +15,7 @@ export const unenrollCarOnboardingInfoSession = async (id: string, user: UserWit
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
   assertInfoSessionStatusIsEnrolled(existing);
 
   const ownerId = existing.owner?.id;

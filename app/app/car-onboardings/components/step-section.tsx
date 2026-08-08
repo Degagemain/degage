@@ -10,6 +10,7 @@ import { computeStepState } from '../lib/compute-step-state';
 import { getOrderedSteps } from '../lib/step-navigation';
 import { useCarOnboarding } from '../lib/car-onboarding-context';
 import { OverviewStepCard } from './step-card';
+import { PreparationConfirmCard } from './preparation-confirm-card';
 import styles from '../car-onboarding-public.module.css';
 
 type ChapterDisplayStatus = 'open' | 'ready' | 'locked';
@@ -50,6 +51,7 @@ function PreparationChapter({ chapter }: { chapter: ChapterDefinition }) {
             />
           );
         })}
+        <PreparationConfirmCard />
       </div>
     </ChapterShell>
   );

@@ -72,6 +72,8 @@ interface CarOnboardingFormProps {
   onOverruleCarValueAgreement?: () => Promise<void>;
   onConfirmInfoSession?: () => Promise<void>;
   onStartCarOnboarding?: () => Promise<void>;
+  onUnlockPreparation?: () => Promise<void>;
+  onClearPreparationConfirmation?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
@@ -302,6 +304,8 @@ export function CarOnboardingForm({
   onOverruleCarValueAgreement,
   onConfirmInfoSession,
   onStartCarOnboarding,
+  onUnlockPreparation,
+  onClearPreparationConfirmation,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
@@ -318,6 +322,10 @@ export function CarOnboardingForm({
   const [isConfirmingInfoSession, setIsConfirmingInfoSession] = useState(false);
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
+  const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [isClearConfirmationDialogOpen, setIsClearConfirmationDialogOpen] = useState(false);
+  const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const schema = useMemo(() => createSchema(tCommon), [tCommon]);
   const initialState = useMemo(() => getInitialState(initialCarOnboarding), [initialCarOnboarding]);
@@ -568,6 +576,30 @@ export function CarOnboardingForm({
       setIsStarting(false);
     }
   };
+
+  const handleUnlockConfirm = async () => {
+    if (!onUnlockPreparation) return;
+    setIsUnlocking(true);
+    try {
+      await onUnlockPreparation();
+      setIsUnlockDialogOpen(false);
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
+  const handleClearConfirmationConfirm = async () => {
+    if (!onClearPreparationConfirmation) return;
+    setIsClearingConfirmation(true);
+    try {
+      await onClearPreparationConfirmation();
+      setIsClearConfirmationDialogOpen(false);
+    } finally {
+      setIsClearingConfirmation(false);
+    }
+  };
+
+  const preparationConfirmed = initialCarOnboarding.preparationConfirmedAt != null;
 
   const showOverruleButton =
     onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
@@ -1272,23 +1304,55 @@ export function CarOnboardingForm({
           <TabsContent value="finalize" className="mt-0">
             <FieldSet className="max-w-2xl">
               <FieldLegend>{t('form.startOnboardingSection')}</FieldLegend>
-              {preparationLocked ? (
-                <FieldDescription>{t('form.startOnboardingLocked')}</FieldDescription>
-              ) : (
-                <>
-                  <FieldDescription>{preparationReady ? t('form.startOnboardingReady') : t('form.startOnboardingNotReady')}</FieldDescription>
-                  {onStartCarOnboarding != null ? (
+              <FieldGroup className="gap-6">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.preparationConfirmedAt')}</p>
+                  <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.preparationConfirmedAt)}</p>
+                </div>
+                {preparationConfirmed ? (
+                  preparationLocked ? (
+                    <FieldDescription>{t('form.clearPreparationConfirmationLockedHint')}</FieldDescription>
+                  ) : onClearPreparationConfirmation != null ? (
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setIsStartDialogOpen(true)}
-                      disabled={!preparationReady || isSubmitting || isStarting}
+                      onClick={() => setIsClearConfirmationDialogOpen(true)}
+                      disabled={isSubmitting || isClearingConfirmation}
                     >
-                      {t('form.startOnboarding')}
+                      {t('form.clearPreparationConfirmation')}
                     </Button>
-                  ) : null}
-                </>
-              )}
+                  ) : null
+                ) : null}
+                {preparationLocked ? (
+                  <>
+                    <FieldDescription>{t('form.startOnboardingLocked')}</FieldDescription>
+                    {onUnlockPreparation != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsUnlockDialogOpen(true)}
+                        disabled={isSubmitting || isUnlocking}
+                      >
+                        {t('form.unlockPreparation')}
+                      </Button>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <FieldDescription>{preparationReady ? t('form.startOnboardingReady') : t('form.startOnboardingNotReady')}</FieldDescription>
+                    {onStartCarOnboarding != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsStartDialogOpen(true)}
+                        disabled={!preparationReady || isSubmitting || isStarting}
+                      >
+                        {t('form.startOnboarding')}
+                      </Button>
+                    ) : null}
+                  </>
+                )}
+              </FieldGroup>
             </FieldSet>
           </TabsContent>
         </div>
@@ -1340,6 +1404,40 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleStartConfirm()} disabled={isStarting}>
               {isStarting ? t('form.startOnboardingConfirming') : t('form.startOnboardingConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isUnlockDialogOpen} onOpenChange={isUnlocking ? undefined : setIsUnlockDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.unlockPreparationTitle')}</DialogTitle>
+            <DialogDescription>{t('form.unlockPreparationDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsUnlockDialogOpen(false)} disabled={isUnlocking}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleUnlockConfirm()} disabled={isUnlocking}>
+              {isUnlocking ? t('form.unlockPreparationConfirming') : t('form.unlockPreparationConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isClearConfirmationDialogOpen} onOpenChange={isClearingConfirmation ? undefined : setIsClearConfirmationDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.clearPreparationConfirmationTitle')}</DialogTitle>
+            <DialogDescription>{t('form.clearPreparationConfirmationDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsClearConfirmationDialogOpen(false)} disabled={isClearingConfirmation}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleClearConfirmationConfirm()} disabled={isClearingConfirmation}>
+              {isClearingConfirmation ? t('form.clearPreparationConfirmationConfirming') : t('form.clearPreparationConfirmationConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

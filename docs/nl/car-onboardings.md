@@ -155,18 +155,22 @@ Deze stap is compleet wanneer een startdatum is ingesteld.
 
 ### Afronden
 
-Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde, autostickers en startdatum allemaal compleet
-zijn, zet het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de auto-onboarding starten op het
-tabblad **Afronden**.
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde, autostickers, startdatum en bevestiging door
+de eigenaar allemaal compleet zijn, zet het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de
+auto-onboarding vergrendelen op het tabblad **Afronden**.
 
-| Status      | Betekenis                                                                                                                                                                                    |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Open        | Onboarding is bezig; voorbereidingsstappen zijn nog niet allemaal compleet.                                                                                                                  |
-| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost), autostickers en startdatum zijn compleet. Het systeem zet dit automatisch.     |
-| Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Gezet door een admin op het tabblad **Afronden** wanneer de voorbereiding **Klaar** is. |
+De eigenaar kan de voorbereiding bevestigen zodra de andere stappen klaar zijn, ook als de infosessie alleen **Ingeschreven** is (nog niet door
+een admin bevestigd). Na bevestiging worden de voorbereidingsgegevens alleen-lezen voor de eigenaar. De status wordt pas **Klaar** wanneer die
+bevestiging er is én de infosessie **Compleet** is (samen met de overige vereisten).
 
-Wanneer de voorbereiding **Vergrendeld** is, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en waarde niet meer bijwerken tot een
-admin dit vrijgeeft.
+| Status      | Betekenis                                                                                                                                                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open        | Onboarding is bezig; voorbereidingsstappen (inclusief bevestiging door de eigenaar) zijn nog niet allemaal compleet.                                                                                                                     |
+| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost), autostickers, startdatum en bevestiging door de eigenaar zijn compleet. Het systeem zet dit automatisch.                   |
+| Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Vergrendelen via **Voorbereiding vergrendelen** op **Afronden** wanneer **Klaar**; ontgrendelen via **Voorbereiding ontgrendelen**. |
+
+Wanneer de voorbereiding **Vergrendeld** is, of nadat de eigenaar heeft bevestigd, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en
+waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen op **Afronden** wanneer de voorbereiding niet vergrendeld is.
 
 ## Record aanmaken
 
@@ -212,4 +216,5 @@ admin dit vrijgeeft.
 | Infosessie PC-id                | Play connector-identificatie van de ingeschreven infosessie.                                                                 |
 | Infosessiestatus                | Voortgang van het infosessie-proces.                                                                                         |
 | Simulatie                       | Gekoppelde simulatie-run, indien aanwezig.                                                                                   |
+| Voorbereiding bevestigd op      | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                       |
 | Voorbereidingsstatus            | Volgt de voortgang: Open, Klaar of Vergrendeld.                                                                              |

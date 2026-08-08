@@ -5,6 +5,7 @@ import {
 } from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import {
+  assertCarOnboardingNotConfirmedForOwner,
   assertCarOnboardingNotLocked,
   assertCarOnboardingPartialUpdateAllowed,
   assertInfoSessionStatusIsTodo,
@@ -18,6 +19,7 @@ export const enrollCarOnboardingInfoSession = async (id: string, body: unknown, 
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
   assertInfoSessionStatusIsTodo(existing);
 
   if (!isPlayConnectorSectionComplete(existing)) {

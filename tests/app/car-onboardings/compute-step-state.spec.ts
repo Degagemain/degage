@@ -148,13 +148,39 @@ describe('isStepReadOnly', () => {
     expect(isStepReadOnly('info-session', completeCarOnboarding())).toBe(true);
   });
 
+  it('is read-only when preparation is confirmed by the owner', () => {
+    expect(
+      isStepReadOnly(
+        'insurer',
+        completeCarOnboarding({
+          preparationConfirmedAt: new Date('2026-06-21T10:00:00'),
+          statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
+        }),
+      ),
+    ).toBe(true);
+  });
+
   it('stays editable for insurer when status is ready and preparation is open', () => {
-    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+    expect(
+      isStepReadOnly(
+        'insurer',
+        completeCarOnboarding({
+          insurerStatus: CarOnboardingInsurerStatus.READY,
+          preparationConfirmedAt: null,
+        }),
+      ),
+    ).toBe(false);
   });
 
   it('stays editable for road assistance plan when status is ready and preparation is open', () => {
     expect(
-      isStepReadOnly('road-assistance-plan', completeCarOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY })),
+      isStepReadOnly(
+        'road-assistance-plan',
+        completeCarOnboarding({
+          roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,
+          preparationConfirmedAt: null,
+        }),
+      ),
     ).toBe(false);
   });
 });

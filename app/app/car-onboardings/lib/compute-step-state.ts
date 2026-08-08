@@ -10,6 +10,7 @@ import {
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isPreparationConfirmed,
   isRoadAssistancePlanSectionComplete,
   isShareStartSectionComplete,
   isUserInfoSectionComplete,
@@ -105,6 +106,7 @@ export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): Ste
 
 export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return true;
+  if (isPreparationConfirmed(onboarding)) return true;
 
   if (stepId === 'play-connector' && isPlayConnectorSectionComplete(onboarding)) {
     return true;
