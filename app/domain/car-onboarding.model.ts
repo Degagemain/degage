@@ -268,7 +268,7 @@ export const carOnboardingFromSimulation = (
     existingRoadAssistancePlanEndDate: null,
     roadAssistancePlan: null,
     roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
-    depreciationCostKm: simulation.resultDepreciationCostKm ?? 0,
+    depreciationCostKm: simulation.resultDepreciationCostKm != null ? Math.round(simulation.resultDepreciationCostKm * 10000) / 10000 : 0,
     isNewCar: simulation.isNewCar,
     mileage: simulation.mileage,
     vin: null,

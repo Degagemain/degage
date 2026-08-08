@@ -375,6 +375,16 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.carValue).toBe(0);
     expect(result.depreciationCostKm).toBe(0);
   });
+
+  it('rounds depreciation cost per km to 4 decimal places', () => {
+    const sim = simulation({
+      resultDepreciationCostKm: 0.123456789,
+    });
+
+    const result = carOnboardingFromSimulation(sim, { ownerId: '550e8400-e29b-41d4-a716-446655440099' });
+
+    expect(result.depreciationCostKm).toBe(0.1235);
+  });
 });
 
 describe('isCarInfoSectionComplete', () => {
