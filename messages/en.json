@@ -1611,6 +1611,8 @@
         "existingRoadAssistancePlanEndDate": "Existing road assistance plan end date",
         "roadAssistancePlan": "Road assistance plan",
         "roadAssistancePlanStatus": "Road assistance plan status",
+        "shareStartDate": "Share start date",
+        "preparationConfirmedAt": "Preparation confirmed at",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
         "created": "Created",
@@ -1626,6 +1628,7 @@
         "insurer": "Insurer",
         "roadAssistancePlan": "Road assistance plan",
         "carValue": "Car value",
+        "shareStart": "Share start date",
         "finalize": "Finalize"
       },
       "preparationStatus": {
@@ -1702,16 +1705,16 @@
         "overruleAgreementConfirming": "Overruling…",
         "overruleAgreementSuccess": "Car value marked as resolved.",
         "overruleAgreementError": "Failed to overrule car value agreement.",
-        "startOnboardingSection": "Start car onboarding",
-        "startOnboarding": "Start car onboarding",
-        "startOnboardingTitle": "Start car onboarding?",
-        "startOnboardingDescription": "This finalizes the preparation phase and locks the record. The owner can no longer update car info, user info, insurer, or car value until an admin unlocks it.",
-        "startOnboardingConfirm": "Start",
-        "startOnboardingConfirming": "Starting…",
-        "startOnboardingSuccess": "Car onboarding started. Preparation is locked.",
-        "startOnboardingError": "Failed to start car onboarding.",
-        "startOnboardingReady": "Preparation is complete. You can start the car onboarding to lock preparation.",
-        "startOnboardingNotReady": "Complete all preparation steps and save the record before starting.",
+        "startOnboardingSection": "Lock preparation",
+        "startOnboarding": "Lock preparation",
+        "startOnboardingTitle": "Lock preparation?",
+        "startOnboardingDescription": "This locks the preparation phase. The owner can no longer update preparation details until an admin unlocks it.",
+        "startOnboardingConfirm": "Lock",
+        "startOnboardingConfirming": "Locking…",
+        "startOnboardingSuccess": "Preparation is locked.",
+        "startOnboardingError": "Failed to lock preparation.",
+        "startOnboardingReady": "Preparation is complete. You can lock it to prevent further owner changes.",
+        "startOnboardingNotReady": "Complete all preparation steps (including owner confirmation) and save the record before locking.",
         "playConnectorHint": "The owner must link their legacy Dégage account in the public onboarding flow. This status is read-only for admins.",
         "infoSessionHint": "The owner enrolls in an info session in the public onboarding flow. Confirm attendance here once they have participated.",
         "confirmInfoSession": "Confirm attendance",
@@ -1722,7 +1725,22 @@
         "confirmInfoSessionSuccess": "Info session marked as complete.",
         "confirmInfoSessionError": "Failed to confirm info session attendance.",
         "ownerPlayConnectorPendingSave": "Save the record to refresh the Play connector status for the selected owner.",
-        "startOnboardingLocked": "This car onboarding has already been started. Preparation is locked.",
+        "startOnboardingLocked": "Preparation is locked. Unlock it to allow changes again.",
+        "unlockPreparation": "Unlock preparation",
+        "unlockPreparationTitle": "Unlock preparation?",
+        "unlockPreparationDescription": "This unlocks the preparation phase so details can be edited again. Status returns to Ready or Open based on completeness.",
+        "unlockPreparationConfirm": "Unlock",
+        "unlockPreparationConfirming": "Unlocking…",
+        "unlockPreparationSuccess": "Preparation unlocked.",
+        "unlockPreparationError": "Failed to unlock preparation.",
+        "clearPreparationConfirmation": "Clear owner confirmation",
+        "clearPreparationConfirmationTitle": "Clear owner confirmation?",
+        "clearPreparationConfirmationDescription": "This clears the owner's preparation confirmation. Preparation will no longer be Ready until they confirm again.",
+        "clearPreparationConfirmationConfirm": "Clear confirmation",
+        "clearPreparationConfirmationConfirming": "Clearing…",
+        "clearPreparationConfirmationSuccess": "Owner confirmation cleared.",
+        "clearPreparationConfirmationError": "Failed to clear owner confirmation.",
+        "clearPreparationConfirmationLockedHint": "Unlock preparation before clearing the owner confirmation.",
         "registrationCertificate": {
           "upload": "Upload file",
           "uploading": "Uploading…",
@@ -1771,7 +1789,8 @@
           "isPurchasedReadOnly": "Set when the record is created and cannot be changed here.",
           "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
-          "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance."
+          "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
+          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month."
         }
       },
       "detailPage": {
@@ -2703,17 +2722,104 @@
     "title": "Your onboarding",
     "intro": "Complete the steps below to finish preparation.",
     "preparationTitle": "Preparation",
+    "journey": {
+      "eyebrow": "Zoom out · The full onboarding",
+      "title": "One journey, three chapters",
+      "intro": "Preparation is only the first part. After that we handle the switch together, and then you're ready to share."
+    },
+    "chapterLabel": "Chapter {num}",
+    "chapterProgress": "{done} / {total}",
+    "chapterStatus": {
+      "open": "Current phase",
+      "ready": "Ready",
+      "locked": "Locked"
+    },
+    "actors": {
+      "you": "You",
+      "degage": "Dégage"
+    },
+    "chapters": {
+      "preparation": {
+        "short": "Preparation",
+        "title": "Preparation",
+        "tagline": "No commitment yet — share your details at your own pace. Many steps can run in parallel.",
+        "metaBody": "No commitment. You share info; a lot can happen in parallel."
+      },
+      "transition": {
+        "short": "The switch",
+        "title": "The switch",
+        "tagline": "This is where it gets real — you sign, and we arrange the switch for you.",
+        "metaBody": "Now it counts. You sign; we handle the rest.",
+        "steps": {
+          "contract": {
+            "title": "Contract",
+            "subtitle": "Sign your owner contract"
+          },
+          "cancelInsurance": {
+            "title": "Cancel insurance",
+            "subtitle": "Cancel your existing car insurance"
+          },
+          "newInsurance": {
+            "title": "New insurance",
+            "subtitle": "We transfer your insurance"
+          },
+          "parkingCard": {
+            "title": "Parking card",
+            "subtitle": "We apply for your parking card"
+          },
+          "adminHandoff": {
+            "title": "Admin wrap-up",
+            "subtitle": "We finish your onboarding admin"
+          },
+          "starterKit": {
+            "title": "Starter kit",
+            "subtitle": "We send you on-board documents and a starter pack"
+          }
+        }
+      },
+      "readyToShare": {
+        "short": "Ready to share",
+        "title": "Ready to share",
+        "tagline": "The final details — and welcome to the neighbourhood.",
+        "metaBody": "Wrap-up. Buddy, welcome.",
+        "steps": {
+          "buddy": {
+            "title": "Buddy",
+            "subtitle": "Your local contact person"
+          },
+          "survey": {
+            "title": "Survey",
+            "subtitle": "A short questionnaire about your onboarding"
+          }
+        }
+      }
+    },
     "backToOverview": "Back to overview",
     "stepNotFound": "Step not found.",
     "stepBlocked": "This step is not available yet. Complete the previous steps first.",
-    "stepReadOnly": "This step is read-only. Preparation is locked or this section is already complete.",
+    "stepReadOnly": "This step is read-only. You confirmed your information, preparation is locked, or this section is already complete.",
     "save": "Save",
     "next": "Next",
     "saveSuccess": "Saved successfully.",
+    "confirmInfo": {
+      "title": "Confirm info",
+      "subtitle": "Confirm that all information is correct and commit to car sharing.",
+      "confirmedSubtitle": "You confirmed your preparation details. They can no longer be edited.",
+      "button": "Confirm info",
+      "dialogTitle": "Confirm your preparation?",
+      "dialogDescription": "Please confirm that all information you entered is correct and that you commit to car sharing. After confirmation, your preparation details can no longer be edited.",
+      "checkboxLabel": "I confirm that my information is correct and I commit to car sharing. I understand I can no longer edit these details after confirming.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "confirming": "Confirming…",
+      "confirmSuccess": "Preparation confirmed.",
+      "confirmError": "Failed to confirm preparation."
+    },
     "states": {
       "todo": "To do",
       "pending": "In progress",
-      "done": "Complete"
+      "done": "Complete",
+      "blocked": "Locked"
     },
     "errors": {
       "load": "Failed to load car onboarding.",
@@ -2724,12 +2830,16 @@
       "playConnector": {
         "title": "Connect Dégage",
         "subtitle": "Link your legacy Dégage account",
-        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding."
+        "info": "Connect with the email and password you use on the legacy Dégage platform. We need this to sync your account during onboarding.",
+        "panelTitle": "Connect Degapp",
+        "panelBody": "Connect with the email and password you use on the legacy Dégage platform (Degapp). We need this to sync your account during onboarding — including enrolling for an info session and pre-filling your contact details.\n\nThis is not your password for this app. Your Degapp credentials are stored encrypted."
       },
       "infoSession": {
         "title": "Info session",
         "subtitle": "Attend a Degapp info session",
         "info": "Choose an upcoming info session and enroll. After you attend, an admin will confirm your participation.",
+        "panelTitle": "Info session",
+        "panelBody": "Choose an upcoming owner info session and enroll. Enrolling unlocks the next preparation steps.\n\nYou can only be enrolled in one session at a time. After you attend, an admin will confirm your presence — only then is this step fully complete.",
         "loading": "Loading info sessions…",
         "loadError": "Could not load info sessions. Check your Play connector connection and try again.",
         "tableEmpty": "No upcoming info sessions found.",
@@ -2828,21 +2938,38 @@
       },
       "insurer": {
         "title": "Existing Insurance",
-        "subtitle": "Cancel your existing car insurance",
+        "subtitle": "Provide details of your existing car insurance",
         "info": "Dégage always arranges insurance for your car. If you currently have your own car insurance, provide the details so we can cancel it.",
         "panelTitle": "Existing insurance",
         "panelBody": "Dégage always arranges insurance for your car. If you currently have your own car insurance, check this box and enter the details so we can cancel it.",
         "hasInsuranceContractLabel": "I currently have an active insurance contract for this car",
         "contractStartedAtHint": "The original contract start date, not the (yearly) renewal date.",
         "contractWarning": "Your insurance started less than a year ago. You can join Dégage at the earliest on {date}.",
+        "contractWarningCancellable": "Your insurance started more than a year ago. After the first year you can cancel at any time, with a notice period of 2 months. We are happy to help with that cancellation; you can join Dégage at the earliest on {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Did your insurer announce a rate increase?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Yes, a rate increase was announced",
-        "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it."
+        "insurerAnnouncedPriceIncreaseHint": "If so, you may be able to cancel your contract sooner. Do not accept the new rate until then—paying the increased premium counts as agreeing to it.",
+        "shareStartResetWarning": "You already chose a share start date. Changing your insurance details will clear that start date so you can pick it again.",
+        "shareStartCleared": "Your share start date was cleared because the insurance details changed."
+      },
+      "shareStart": {
+        "title": "Start date",
+        "subtitle": "Choose when your car becomes available for sharing",
+        "panelTitle": "Share start date",
+        "panelBody": "You always start on the first of the month. Choose when your car becomes available for members.",
+        "legendLocked": "◄ Locked (insurance)",
+        "legendAvailable": "Available ►",
+        "earliestBadge": "Earliest",
+        "helperWithInsurance": "Based on your insurance, car sharing can start from {date}.",
+        "helperWithoutInsurance": "Without an existing insurance contract, the earliest start date is {date}.",
+        "selectedHint": "Provisional until all preparation steps are complete."
       },
       "roadAssistancePlan": {
         "title": "Road assistance plan",
         "subtitle": "Your roadside assistance coverage",
         "info": "Tell us whether your car already has road assistance and choose the plan you want with Dégage.",
+        "panelTitle": "Roadside assistance",
+        "panelBody": "Dégage offers roadside assistance free of charge to every owner. By default this is VAB Benelux.\n\nIf as an owner you want VAB roadside assistance in Europe, you can request it 7 days before departure. That cover remains valid until the end of the calendar year. Dégage also pays for this request.",
         "existingPanelTitle": "Existing road assistance",
         "existingPanelBody": "New cars sometimes include a few years of road assistance when purchased.",
         "hasExistingFieldLabel": "Existing road assistance?",
@@ -2860,6 +2987,8 @@
         "title": "Car value",
         "subtitle": "Agreement on depreciation per shared km",
         "info": "Review the proposed car value and depreciation. Agree or submit a counter proposal.",
+        "panelTitle": "Your car's value",
+        "panelBody": "Your car's value is used to set the insurance premium. We estimate that value from the details you entered during the simulation.\n\nBased on that value we also determine the depreciation per shared kilometre. For an existing car we propose a value; you can agree or submit a counter proposal with your reasoning. For a purchased car we use the purchase price.",
         "chartTitle": "Depreciation per shared km",
         "chartBody": "Based on {mileage} km, depreciation is about €{depreciation} per shared kilometre.",
         "waitingForProposal": "Waiting for an admin to propose a car value.",
@@ -2874,8 +3003,8 @@
       "carStickers": {
         "title": "Car stickers",
         "subtitle": "Choose your sticker designs",
-        "panelTitle": "Sticker selection",
-        "helper": "Extra stickers are optional. Always-included stickers are selected automatically and cannot be removed.",
+        "panelTitle": "Make your shared car visible!",
+        "panelBody": "Visibility matters for Dégage. A sticker also helps our members recognise the car quickly. You always get the green sticker. Want extra stickers? Choose which ones you want below.\n\nIf you want a sticker on the side door, one of our volunteers will contact you to apply it. The white slogan sticker is easy to apply yourself.",
         "loading": "Loading stickers…",
         "loadError": "Could not load stickers. Please try again.",
         "alwaysIncluded": "Always included"

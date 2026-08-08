@@ -23,6 +23,9 @@ import {
   carOnboardingSchema,
   carOnboardingUserInfoInputSchema,
   carOnboardingUserInfoSchema,
+  ceilToFirstOfMonth,
+  getEarliestShareStartDate,
+  getLatestShareStartDate,
   isCarInfoSectionComplete,
   isCarOlderThanFourYears,
   isCarStickerSectionComplete,
@@ -31,10 +34,16 @@ import {
   isInsurerContractStartedWithinLastYear,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isPreparationConfirmable,
+  isPreparationConfirmed,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
+  isValidShareStartDate,
+  shouldClearShareStartOnInsurerChange,
+  startOfMonth,
 } from '@/domain/car-onboarding.model';
-import { carOnboarding } from '../builders/car-onboarding.builder';
+import { carOnboarding, completeCarOnboarding } from '../builders/car-onboarding.builder';
 import { simulation } from '../builders/simulation.builder';
 
 describe('carOnboardingCarInfoSchema', () => {
@@ -92,6 +101,7 @@ describe('carOnboardingSchema', () => {
     expect(result.owner).toBeNull();
     expect(result.simulation).toBeNull();
     expect(result.carStickers).toEqual([]);
+    expect(result.shareStartDate).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -367,6 +377,16 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.carValue).toBe(0);
     expect(result.depreciationCostKm).toBe(0);
   });
+
+  it('rounds depreciation cost per km to 4 decimal places', () => {
+    const sim = simulation({
+      resultDepreciationCostKm: 0.123456789,
+    });
+
+    const result = carOnboardingFromSimulation(sim, { ownerId: '550e8400-e29b-41d4-a716-446655440099' });
+
+    expect(result.depreciationCostKm).toBe(0.1235);
+  });
 });
 
 describe('isCarInfoSectionComplete', () => {
@@ -527,6 +547,53 @@ describe('isInfoSessionEnrolled', () => {
     expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED }))).toBe(true);
     expect(isInfoSessionEnrolled(carOnboarding({ infoSessionStatus: CarOnboardingInfoSessionStatus.DONE }))).toBe(true);
     expect(isInfoSessionEnrolled(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isPreparationConfirmed', () => {
+  it('returns true when preparationConfirmedAt is set', () => {
+    expect(isPreparationConfirmed(carOnboarding({ preparationConfirmedAt: new Date('2026-06-21T10:00:00') }))).toBe(true);
+    expect(isPreparationConfirmed(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isPreparationConfirmable', () => {
+  it('returns true when sections are complete with info session enrolled and not yet confirmed', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('returns false when already confirmed', () => {
+    expect(isPreparationConfirmable(completeCarOnboarding())).toBe(false);
+  });
+
+  it('returns false when info session is not enrolled', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('returns false when locked', () => {
+    expect(
+      isPreparationConfirmable(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+          statusInPreparation: CarOnboardingInPreparationStatus.LOCKED,
+        }),
+      ),
+    ).toBe(false);
   });
 });
 
@@ -823,5 +890,82 @@ describe('isCarOlderThanFourYears', () => {
 
   it('returns false for invalid date strings', () => {
     expect(isCarOlderThanFourYears('not-a-date')).toBe(false);
+  });
+});
+
+describe('share start date helpers', () => {
+  const today = new Date(2026, 7, 7); // 7 Aug 2026
+
+  it('ceils to the first of the next month when not already the 1st', () => {
+    expect(ceilToFirstOfMonth(new Date(2026, 2, 15))).toEqual(new Date(2026, 3, 1));
+    expect(ceilToFirstOfMonth(new Date(2026, 2, 1))).toEqual(new Date(2026, 2, 1));
+  });
+
+  it('uses the first of the current month when there is no insurance contract', () => {
+    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toEqual(new Date(2026, 7, 1));
+  });
+
+  it('uses contract start plus one year when the contract is less than a year old', () => {
+    const contractStart = new Date(2026, 0, 15); // 15 Jan 2026
+    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart }, today)).toEqual(
+      new Date(2027, 1, 1),
+    ); // ceil of 15 Jan 2027
+  });
+
+  it('uses today plus two months when the contract is a year or older', () => {
+    const contractStart = new Date(2024, 0, 15);
+    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart }, today)).toEqual(
+      new Date(2026, 10, 1),
+    ); // ceil of 7 Oct 2026 → 1 Nov 2026
+  });
+
+  it('caps the latest share start at the first of the month 18 months out', () => {
+    expect(getLatestShareStartDate(today)).toEqual(new Date(2028, 1, 1)); // Feb 2028
+  });
+
+  it('validates first-of-month dates within earliest and latest', () => {
+    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null };
+    expect(isValidShareStartDate(new Date(2026, 7, 1), onboarding, today)).toBe(true);
+    expect(isValidShareStartDate(new Date(2026, 7, 15), onboarding, today)).toBe(false);
+    expect(isValidShareStartDate(new Date(2026, 6, 1), onboarding, today)).toBe(false);
+    expect(isValidShareStartDate(new Date(2028, 2, 1), onboarding, today)).toBe(false);
+  });
+
+  it('marks the section complete when a share start date is set', () => {
+    expect(isShareStartSectionComplete({ shareStartDate: null })).toBe(false);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today) })).toBe(true);
+  });
+
+  it('clears share start when insurance fields that affect earliest date change', () => {
+    const shareStartDate = new Date(2026, 10, 1);
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: new Date(2020, 0, 15),
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: new Date(2021, 5, 1),
+        },
+        today,
+      ),
+    ).toBe(true);
+
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: new Date(2020, 0, 15),
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: new Date(2020, 0, 15),
+        },
+        today,
+      ),
+    ).toBe(false);
   });
 });

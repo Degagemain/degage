@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
@@ -44,7 +45,11 @@ export const tryCarOnboardingInspectionCertificateUpload = async (
     await upload(id, parsed, user);
     return noContentResponse();
   } catch (error) {
-    if (error instanceof CarOnboardingLockedError || error instanceof CarOnboardingForbiddenError) {
+    if (
+      error instanceof CarOnboardingLockedError ||
+      error instanceof CarOnboardingConfirmedError ||
+      error instanceof CarOnboardingForbiddenError
+    ) {
       return forbiddenResponse(error.message);
     }
     if (error instanceof DocumentNotRecognizedError) {

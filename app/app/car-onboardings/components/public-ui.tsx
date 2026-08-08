@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Info } from 'lucide-react';
 import { type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react';
 import { useTranslations } from 'next-intl';
 
@@ -59,6 +60,18 @@ export function PublicPanel({ title, body, children }: { title?: string; body?: 
       {title ? <h3 className={styles.panelTitle}>{title}</h3> : null}
       {body ? <p className={styles.panelBody}>{body}</p> : null}
       {children}
+    </div>
+  );
+}
+
+export function PublicInfoPanel({ title, body }: { title: string; body: string }) {
+  return (
+    <div className={styles.infoPanel} role="note">
+      <Info className={styles.infoPanelIcon} aria-hidden />
+      <div className={styles.infoPanelContent}>
+        <h3 className={styles.infoPanelTitle}>{title}</h3>
+        <p className={styles.infoPanelBody}>{body}</p>
+      </div>
     </div>
   );
 }

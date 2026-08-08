@@ -10,13 +10,25 @@ import {
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isPreparationConfirmed,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import type { StepId, StepState } from './types';
 
 export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
-  return ['play-connector', 'info-session', 'user-info', 'car-info', 'insurer', 'road-assistance-plan', 'car-value', 'car-stickers'];
+  return [
+    'play-connector',
+    'info-session',
+    'user-info',
+    'car-info',
+    'insurer',
+    'road-assistance-plan',
+    'car-value',
+    'car-stickers',
+    'share-start',
+  ];
 };
 
 const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
@@ -26,6 +38,9 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
+  if (stepId === 'share-start') {
+    return hasInfoSessionPrerequisites(onboarding) && isInsurerSectionComplete(onboarding);
+  }
   if (
     stepId === 'user-info' ||
     stepId === 'car-info' ||
@@ -51,6 +66,8 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
       return isCarInfoSectionComplete(onboarding);
     case 'insurer':
       return isInsurerSectionComplete(onboarding);
+    case 'share-start':
+      return isShareStartSectionComplete(onboarding);
     case 'road-assistance-plan':
       return isRoadAssistancePlanSectionComplete(onboarding);
     case 'car-value':
@@ -89,6 +106,7 @@ export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): Ste
 
 export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boolean => {
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return true;
+  if (isPreparationConfirmed(onboarding)) return true;
 
   if (stepId === 'play-connector' && isPlayConnectorSectionComplete(onboarding)) {
     return true;

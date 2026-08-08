@@ -5,9 +5,10 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { apiPut } from '@/app/lib/api-client';
+import { formatDateForInput } from '@/app/components/form/date-input-helpers';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
-import { PublicField, PublicInput, PublicPanel } from '../public-ui';
+import { PublicField, PublicInfoPanel, PublicInput, PublicPanel } from '../public-ui';
 import { RoadAssistancePlanRadioList } from '../road-assistance-plan-radio-list';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
@@ -15,19 +16,12 @@ import { useStepReadOnly } from '../step-read-only-context';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
 import styles from '../../car-onboarding-public.module.css';
 
-const formatDateInput = (date: Date | string | null): string => {
-  if (date == null) return '';
-  const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return '';
-  return parsed.toISOString().slice(0, 10);
-};
-
 export function RoadAssistancePlanStep() {
   const t = useTranslations('carOnboardingPublic');
   const { carOnboarding, reload } = useCarOnboarding();
 
   const [hasExistingRoadAssistancePlan, setHasExistingRoadAssistancePlan] = useState(carOnboarding.hasExistingRoadAssistancePlan);
-  const [existingEndDate, setExistingEndDate] = useState(formatDateInput(carOnboarding.existingRoadAssistancePlanEndDate));
+  const [existingEndDate, setExistingEndDate] = useState(formatDateForInput(carOnboarding.existingRoadAssistancePlanEndDate));
   const [roadAssistancePlanId, setRoadAssistancePlanId] = useState(carOnboarding.roadAssistancePlan?.id ?? '');
   const [roadAssistancePlanName, setRoadAssistancePlanName] = useState(carOnboarding.roadAssistancePlan?.name ?? '');
   const [isSaving, setIsSaving] = useState(false);
@@ -36,7 +30,7 @@ export function RoadAssistancePlanStep() {
 
   useEffect(() => {
     setHasExistingRoadAssistancePlan(carOnboarding.hasExistingRoadAssistancePlan);
-    setExistingEndDate(formatDateInput(carOnboarding.existingRoadAssistancePlanEndDate));
+    setExistingEndDate(formatDateForInput(carOnboarding.existingRoadAssistancePlanEndDate));
     setRoadAssistancePlanId(carOnboarding.roadAssistancePlan?.id ?? '');
     setRoadAssistancePlanName(carOnboarding.roadAssistancePlan?.name ?? '');
   }, [carOnboarding]);
@@ -76,7 +70,15 @@ export function RoadAssistancePlanStep() {
   );
 
   return (
-    <StepLayout stepId="road-assistance-plan" beforeFieldset={existingPlanField}>
+    <StepLayout
+      stepId="road-assistance-plan"
+      beforeFieldset={
+        <>
+          <PublicInfoPanel title={t('steps.roadAssistancePlan.panelTitle')} body={t('steps.roadAssistancePlan.panelBody')} />
+          {existingPlanField}
+        </>
+      }
+    >
       <PublicPanel title={t('steps.roadAssistancePlan.desiredPanelTitle')} body={t('steps.roadAssistancePlan.desiredPanelBody')}>
         <RoadAssistancePlanRadioList
           value={roadAssistancePlanId}

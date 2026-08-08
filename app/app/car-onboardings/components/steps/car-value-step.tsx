@@ -8,7 +8,7 @@ import { CarOnboardingCarValueStatus } from '@/domain/car-onboarding.model';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
-import { PublicField, PublicInput, PublicPanel, PublicReadOnlyValue } from '../public-ui';
+import { PublicField, PublicInfoPanel, PublicInput, PublicPanel } from '../public-ui';
 import { StepActions } from '../step-actions';
 import { StepLayout } from '../step-layout';
 import { useCarOnboarding } from '../../lib/car-onboarding-context';
@@ -74,6 +74,8 @@ export function CarValueStep() {
 
   return (
     <StepLayout stepId="car-value">
+      <PublicInfoPanel title={t('steps.carValue.panelTitle')} body={t('steps.carValue.panelBody')} />
+
       {showWaiting ? <p className={styles.pageIntro}>{t('steps.carValue.waitingForProposal')}</p> : null}
 
       {!showWaiting ? (

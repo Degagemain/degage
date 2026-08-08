@@ -20,7 +20,9 @@ import {
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
+  startOfMonth,
 } from '@/domain/car-onboarding.model';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
 import { Button } from '@/app/components/ui/button';
@@ -28,6 +30,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-control';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
 import { AdminSearchableSelectField } from '@/app/components/form/admin-searchable-select-field';
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
@@ -46,6 +49,7 @@ export const CAR_ONBOARDING_TAB_IDS = [
   'insurer',
   'roadAssistancePlan',
   'carValue',
+  'shareStart',
   'finalize',
 ] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
@@ -68,6 +72,8 @@ interface CarOnboardingFormProps {
   onOverruleCarValueAgreement?: () => Promise<void>;
   onConfirmInfoSession?: () => Promise<void>;
   onStartCarOnboarding?: () => Promise<void>;
+  onUnlockPreparation?: () => Promise<void>;
+  onClearPreparationConfirmation?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
@@ -110,16 +116,10 @@ interface FormValues {
   existingRoadAssistancePlanEndDate: string;
   roadAssistancePlanId: string;
   roadAssistancePlanName: string;
+  shareStartDate: string;
   ownerId: string;
   ownerName: string;
 }
-
-const formatDateInput = (date: Date | string | null): string => {
-  if (date == null) return '';
-  const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return '';
-  return parsed.toISOString().slice(0, 10);
-};
 
 const getInitialState = (row: CarOnboarding): FormValues => {
   const hasOtherCarType = Boolean(row.carTypeOther?.trim()) && row.carType == null;
@@ -139,7 +139,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     plate: row.plate ?? '',
     mileage: String(row.mileage),
     seats: String(row.seats),
-    firstRegisteredAt: formatDateInput(row.firstRegisteredAt),
+    firstRegisteredAt: formatDateForInput(row.firstRegisteredAt),
     isVan: row.isVan,
     isPurchased: row.isPurchased,
     isNewCar: row.isNewCar,
@@ -150,13 +150,14 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     carValueCounterProposalMessage: row.carValueCounterProposalMessage ?? '',
     insurerId: row.insurer?.id ?? NONE,
     insurerName: row.insurer?.name ?? '',
-    insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
+    insurerContractStartedAt: formatDateForInput(row.insurerContractStartedAt),
     insurerAnnouncedPriceIncrease: row.insurerAnnouncedPriceIncrease,
     hasInsuranceContract: row.hasInsuranceContract,
     hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
-    existingRoadAssistancePlanEndDate: formatDateInput(row.existingRoadAssistancePlanEndDate),
+    existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
+    shareStartDate: formatDateForInput(row.shareStartDate),
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
   };
@@ -197,6 +198,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     existingRoadAssistancePlanEndDate: z.string(),
     roadAssistancePlanId: z.string(),
     roadAssistancePlanName: z.string(),
+    shareStartDate: z.string(),
     ownerId: z.string(),
     ownerName: z.string(),
   });
@@ -222,6 +224,7 @@ type CarOnboardingStepTabCompletion = {
   insurer: boolean;
   roadAssistancePlan: boolean;
   carValue: boolean;
+  shareStart: boolean;
   preparationLocked: boolean;
 };
 
@@ -279,6 +282,10 @@ function CarOnboardingStepTabsList({
         {t('tabs.carValue')}
         {completion.carValue ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
       </TabsTrigger>
+      <TabsTrigger value="shareStart" className="gap-1.5">
+        {t('tabs.shareStart')}
+        {completion.shareStart ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
+      </TabsTrigger>
       <TabsTrigger value="finalize" className="gap-1.5">
         {t('tabs.finalize')}
         {completion.preparationLocked ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
@@ -297,6 +304,8 @@ export function CarOnboardingForm({
   onOverruleCarValueAgreement,
   onConfirmInfoSession,
   onStartCarOnboarding,
+  onUnlockPreparation,
+  onClearPreparationConfirmation,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
@@ -313,6 +322,10 @@ export function CarOnboardingForm({
   const [isConfirmingInfoSession, setIsConfirmingInfoSession] = useState(false);
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
+  const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [isClearConfirmationDialogOpen, setIsClearConfirmationDialogOpen] = useState(false);
+  const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const schema = useMemo(() => createSchema(tCommon), [tCommon]);
   const initialState = useMemo(() => getInitialState(initialCarOnboarding), [initialCarOnboarding]);
@@ -356,7 +369,7 @@ export function CarOnboardingForm({
     carTypeOther: hasOtherCarType || watchedValues.carTypeId === CAR_TYPE_OTHER ? watchedValues.carTypeOther.trim() || null : null,
     isPurchased: watchedValues.isPurchased,
     isNewCar: watchedValues.isNewCar,
-    firstRegisteredAt: watchedValues.firstRegisteredAt ? new Date(watchedValues.firstRegisteredAt) : null,
+    firstRegisteredAt: watchedValues.firstRegisteredAt ? parseDateInput(watchedValues.firstRegisteredAt) : null,
     registrationCertificateFront: initialCarOnboarding.registrationCertificateFront,
     registrationCertificateBack: initialCarOnboarding.registrationCertificateBack,
     inspectionCertificate: initialCarOnboarding.inspectionCertificate,
@@ -378,6 +391,9 @@ export function CarOnboardingForm({
           : CarOnboardingRoadAssistancePlanStatus.READY,
   });
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
+  const shareStartComplete = isShareStartSectionComplete({
+    shareStartDate: watchedValues.shareStartDate.trim() === '' ? null : parseDateInput(watchedValues.shareStartDate),
+  });
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
   const stepTabCompletion = useMemo(
@@ -389,6 +405,7 @@ export function CarOnboardingForm({
       insurer: insurerComplete,
       roadAssistancePlan: roadAssistancePlanComplete,
       carValue: carValueComplete,
+      shareStart: shareStartComplete,
       preparationLocked,
     }),
     [
@@ -399,6 +416,7 @@ export function CarOnboardingForm({
       insurerComplete,
       roadAssistancePlanComplete,
       carValueComplete,
+      shareStartComplete,
       preparationLocked,
     ],
   );
@@ -497,7 +515,7 @@ export function CarOnboardingForm({
       plate: values.plate.trim() || null,
       mileage: values.mileage === '' ? 0 : Number(values.mileage),
       seats: values.seats === '' ? 0 : Number(values.seats),
-      firstRegisteredAt: values.firstRegisteredAt ? new Date(values.firstRegisteredAt) : null,
+      firstRegisteredAt: values.firstRegisteredAt ? parseDateInput(values.firstRegisteredAt) : null,
       isVan: values.isVan,
       isPurchased: values.isPurchased,
       isNewCar: values.isNewCar,
@@ -508,15 +526,19 @@ export function CarOnboardingForm({
       carValueCounterProposalMessage: initialCarOnboarding.carValueCounterProposalMessage,
       insurer: !values.hasInsuranceContract ? null : toIdName(values.insurerId, values.insurerName),
       insurerContractStartedAt:
-        !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+        !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : parseDateInput(values.insurerContractStartedAt),
       insurerAnnouncedPriceIncrease: values.insurerAnnouncedPriceIncrease,
       hasInsuranceContract: values.hasInsuranceContract,
       hasExistingRoadAssistancePlan: values.hasExistingRoadAssistancePlan,
       existingRoadAssistancePlanEndDate:
         !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
           ? null
-          : new Date(values.existingRoadAssistancePlanEndDate),
+          : parseDateInput(values.existingRoadAssistancePlanEndDate),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
+      shareStartDate: (() => {
+        const parsed = values.shareStartDate === '' ? null : parseDateInput(values.shareStartDate);
+        return parsed == null ? null : startOfMonth(parsed);
+      })(),
       owner: toIdName(values.ownerId, values.ownerName),
     };
     await onSubmit(payload);
@@ -554,6 +576,30 @@ export function CarOnboardingForm({
       setIsStarting(false);
     }
   };
+
+  const handleUnlockConfirm = async () => {
+    if (!onUnlockPreparation) return;
+    setIsUnlocking(true);
+    try {
+      await onUnlockPreparation();
+      setIsUnlockDialogOpen(false);
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
+  const handleClearConfirmationConfirm = async () => {
+    if (!onClearPreparationConfirmation) return;
+    setIsClearingConfirmation(true);
+    try {
+      await onClearPreparationConfirmation();
+      setIsClearConfirmationDialogOpen(false);
+    } finally {
+      setIsClearingConfirmation(false);
+    }
+  };
+
+  const preparationConfirmed = initialCarOnboarding.preparationConfirmedAt != null;
 
   const showOverruleButton =
     onOverruleCarValueAgreement != null && initialCarOnboarding.carValueStatus !== CarOnboardingCarValueStatus.RESOLVED;
@@ -1233,26 +1279,80 @@ export function CarOnboardingForm({
             </FieldSet>
           </TabsContent>
 
+          <TabsContent value="shareStart" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('tabs.shareStart')}</FieldLegend>
+              <FieldGroup className="gap-6">
+                <Controller
+                  name="shareStartDate"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminDateFieldControl
+                      label={t('columns.shareStartDate')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      description={t('form.help.shareStartDate')}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
           <TabsContent value="finalize" className="mt-0">
             <FieldSet className="max-w-2xl">
               <FieldLegend>{t('form.startOnboardingSection')}</FieldLegend>
-              {preparationLocked ? (
-                <FieldDescription>{t('form.startOnboardingLocked')}</FieldDescription>
-              ) : (
-                <>
-                  <FieldDescription>{preparationReady ? t('form.startOnboardingReady') : t('form.startOnboardingNotReady')}</FieldDescription>
-                  {onStartCarOnboarding != null ? (
+              <FieldGroup className="gap-6">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.preparationConfirmedAt')}</p>
+                  <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.preparationConfirmedAt)}</p>
+                </div>
+                {preparationConfirmed ? (
+                  preparationLocked ? (
+                    <FieldDescription>{t('form.clearPreparationConfirmationLockedHint')}</FieldDescription>
+                  ) : onClearPreparationConfirmation != null ? (
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setIsStartDialogOpen(true)}
-                      disabled={!preparationReady || isSubmitting || isStarting}
+                      onClick={() => setIsClearConfirmationDialogOpen(true)}
+                      disabled={isSubmitting || isClearingConfirmation}
                     >
-                      {t('form.startOnboarding')}
+                      {t('form.clearPreparationConfirmation')}
                     </Button>
-                  ) : null}
-                </>
-              )}
+                  ) : null
+                ) : null}
+                {preparationLocked ? (
+                  <>
+                    <FieldDescription>{t('form.startOnboardingLocked')}</FieldDescription>
+                    {onUnlockPreparation != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsUnlockDialogOpen(true)}
+                        disabled={isSubmitting || isUnlocking}
+                      >
+                        {t('form.unlockPreparation')}
+                      </Button>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <FieldDescription>{preparationReady ? t('form.startOnboardingReady') : t('form.startOnboardingNotReady')}</FieldDescription>
+                    {onStartCarOnboarding != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsStartDialogOpen(true)}
+                        disabled={!preparationReady || isSubmitting || isStarting}
+                      >
+                        {t('form.startOnboarding')}
+                      </Button>
+                    ) : null}
+                  </>
+                )}
+              </FieldGroup>
             </FieldSet>
           </TabsContent>
         </div>
@@ -1304,6 +1404,40 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleStartConfirm()} disabled={isStarting}>
               {isStarting ? t('form.startOnboardingConfirming') : t('form.startOnboardingConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isUnlockDialogOpen} onOpenChange={isUnlocking ? undefined : setIsUnlockDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.unlockPreparationTitle')}</DialogTitle>
+            <DialogDescription>{t('form.unlockPreparationDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsUnlockDialogOpen(false)} disabled={isUnlocking}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleUnlockConfirm()} disabled={isUnlocking}>
+              {isUnlocking ? t('form.unlockPreparationConfirming') : t('form.unlockPreparationConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isClearConfirmationDialogOpen} onOpenChange={isClearingConfirmation ? undefined : setIsClearConfirmationDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.clearPreparationConfirmationTitle')}</DialogTitle>
+            <DialogDescription>{t('form.clearPreparationConfirmationDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsClearConfirmationDialogOpen(false)} disabled={isClearingConfirmation}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleClearConfirmationConfirm()} disabled={isClearingConfirmation}>
+              {isClearingConfirmation ? t('form.clearPreparationConfirmationConfirming') : t('form.clearPreparationConfirmationConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

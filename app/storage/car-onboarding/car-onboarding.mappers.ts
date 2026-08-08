@@ -113,6 +113,8 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
     pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
     carStickers: [],
+    shareStartDate: db.shareStartDate,
+    preparationConfirmedAt: db.preparationConfirmedAt,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -245,6 +247,8 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
       onboarding.registrationCertificateBack != null ? { connect: { id: onboarding.registrationCertificateBack.id } } : undefined,
     inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
     pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
+    shareStartDate: onboarding.shareStartDate ?? undefined,
+    preparationConfirmedAt: onboarding.preparationConfirmedAt ?? undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };
@@ -296,6 +300,8 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
         carSticker: { connect: { id: sticker.id } },
       })),
     },
+    shareStartDate: onboarding.shareStartDate,
+    preparationConfirmedAt: onboarding.preparationConfirmedAt,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

@@ -1,6 +1,7 @@
 import { type IdRouteParams, forbiddenResponse, getIdFromRoute, isPrismaNotFoundError, noContentResponse, notFoundResponse } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { unenrollCarOnboardingInfoSession } from '@/actions/car-onboarding/unenroll-info-session';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
@@ -14,7 +15,7 @@ export const PUT = withAuth(async (_request, context, session) => {
     await unenrollCarOnboardingInfoSession(id, session.user);
     return noContentResponse();
   } catch (error) {
-    if (error instanceof CarOnboardingLockedError) {
+    if (error instanceof CarOnboardingLockedError || error instanceof CarOnboardingConfirmedError) {
       return forbiddenResponse(error.message);
     }
     if (error instanceof CarOnboardingForbiddenError) {

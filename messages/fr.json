@@ -1611,6 +1611,8 @@
         "existingRoadAssistancePlanEndDate": "Date de fin du plan d'assistance existant",
         "roadAssistancePlan": "Plan d'assistance routière",
         "roadAssistancePlanStatus": "Statut du plan d'assistance",
+        "shareStartDate": "Date de début du partage",
+        "preparationConfirmedAt": "Préparation confirmée le",
         "simulation": "Simulation",
         "statusInPreparation": "Statut de préparation",
         "created": "Créé",
@@ -1626,6 +1628,7 @@
         "insurer": "Assurance",
         "roadAssistancePlan": "Assistance routière",
         "carValue": "Valeur",
+        "shareStart": "Date de début",
         "finalize": "Finaliser"
       },
       "preparationStatus": {
@@ -1702,16 +1705,16 @@
         "overruleAgreementConfirming": "Outrepassement…",
         "overruleAgreementSuccess": "Valeur marquée comme résolue.",
         "overruleAgreementError": "Échec de l'outrepassement de l'accord sur la valeur.",
-        "startOnboardingSection": "Démarrer l'onboarding véhicule",
-        "startOnboarding": "Démarrer l'onboarding véhicule",
-        "startOnboardingTitle": "Démarrer l'onboarding véhicule ?",
-        "startOnboardingDescription": "Cela finalise la phase de préparation et verrouille le dossier. Le propriétaire ne peut plus modifier les infos véhicule, utilisateur, assurance ou valeur tant qu'un administrateur ne déverrouille pas.",
-        "startOnboardingConfirm": "Démarrer",
-        "startOnboardingConfirming": "Démarrage…",
-        "startOnboardingSuccess": "Onboarding véhicule démarré. La préparation est verrouillée.",
-        "startOnboardingError": "Échec du démarrage de l'onboarding véhicule.",
-        "startOnboardingReady": "La préparation est complète. Vous pouvez démarrer l'onboarding pour verrouiller la préparation.",
-        "startOnboardingNotReady": "Complétez toutes les étapes de préparation et enregistrez le dossier avant de démarrer.",
+        "startOnboardingSection": "Verrouiller la préparation",
+        "startOnboarding": "Verrouiller la préparation",
+        "startOnboardingTitle": "Verrouiller la préparation ?",
+        "startOnboardingDescription": "Cela verrouille la phase de préparation. Le propriétaire ne peut plus modifier les détails de préparation tant qu'un administrateur ne déverrouille pas.",
+        "startOnboardingConfirm": "Verrouiller",
+        "startOnboardingConfirming": "Verrouillage…",
+        "startOnboardingSuccess": "La préparation est verrouillée.",
+        "startOnboardingError": "Échec du verrouillage de la préparation.",
+        "startOnboardingReady": "La préparation est complète. Vous pouvez la verrouiller pour empêcher d'autres modifications par le propriétaire.",
+        "startOnboardingNotReady": "Complétez toutes les étapes de préparation (y compris la confirmation du propriétaire) et enregistrez le dossier avant de verrouiller.",
         "playConnectorHint": "Le propriétaire doit lier son compte Dégage legacy dans le parcours d'onboarding public. Ce statut est en lecture seule pour les administrateurs.",
         "infoSessionHint": "Le propriétaire s'inscrit à une session d'info dans le parcours public. Confirmez ici la présence une fois qu'il a participé.",
         "confirmInfoSession": "Confirmer la présence",
@@ -1722,7 +1725,22 @@
         "confirmInfoSessionSuccess": "Session d'info marquée comme complète.",
         "confirmInfoSessionError": "Échec de la confirmation de présence à la session d'info.",
         "ownerPlayConnectorPendingSave": "Enregistrez la fiche pour actualiser le statut Play connector du propriétaire sélectionné.",
-        "startOnboardingLocked": "Cet onboarding véhicule a déjà été démarré. La préparation est verrouillée.",
+        "startOnboardingLocked": "La préparation est verrouillée. Déverrouillez-la pour autoriser à nouveau les modifications.",
+        "unlockPreparation": "Déverrouiller la préparation",
+        "unlockPreparationTitle": "Déverrouiller la préparation ?",
+        "unlockPreparationDescription": "Cela déverrouille la phase de préparation afin que les détails puissent à nouveau être modifiés. Le statut redevient Prêt ou Ouvert selon la complétude.",
+        "unlockPreparationConfirm": "Déverrouiller",
+        "unlockPreparationConfirming": "Déverrouillage…",
+        "unlockPreparationSuccess": "Préparation déverrouillée.",
+        "unlockPreparationError": "Échec du déverrouillage de la préparation.",
+        "clearPreparationConfirmation": "Effacer la confirmation du propriétaire",
+        "clearPreparationConfirmationTitle": "Effacer la confirmation du propriétaire ?",
+        "clearPreparationConfirmationDescription": "Cela efface la confirmation de préparation du propriétaire. La préparation ne sera plus Prête tant qu'il n'aura pas confirmé à nouveau.",
+        "clearPreparationConfirmationConfirm": "Effacer la confirmation",
+        "clearPreparationConfirmationConfirming": "Effacement…",
+        "clearPreparationConfirmationSuccess": "Confirmation du propriétaire effacée.",
+        "clearPreparationConfirmationError": "Échec de l'effacement de la confirmation du propriétaire.",
+        "clearPreparationConfirmationLockedHint": "Déverrouillez la préparation avant d'effacer la confirmation du propriétaire.",
         "registrationCertificate": {
           "upload": "Téléverser un fichier",
           "uploading": "Téléversement…",
@@ -1771,7 +1789,8 @@
           "isPurchasedReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
-          "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante."
+          "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
+          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois."
         }
       },
       "detailPage": {
@@ -2703,17 +2722,104 @@
     "title": "Votre intégration",
     "intro": "Complétez les étapes ci-dessous pour terminer la préparation.",
     "preparationTitle": "Préparation",
+    "journey": {
+      "eyebrow": "Vue d'ensemble · Toute l'intégration",
+      "title": "Un parcours, trois chapitres",
+      "intro": "La préparation n'est que la première partie. Ensuite, nous gérons ensemble le passage, puis vous êtes prêt à partager."
+    },
+    "chapterLabel": "Chapitre {num}",
+    "chapterProgress": "{done} / {total}",
+    "chapterStatus": {
+      "open": "Phase actuelle",
+      "ready": "Prêt",
+      "locked": "Encore verrouillé"
+    },
+    "actors": {
+      "you": "Vous",
+      "degage": "Dégage"
+    },
+    "chapters": {
+      "preparation": {
+        "short": "Préparation",
+        "title": "Préparation",
+        "tagline": "Sans engagement — vous partagez vos informations à votre rythme. Beaucoup d'étapes peuvent avancer en parallèle.",
+        "metaBody": "Sans engagement. Vous partagez des infos ; beaucoup peut avancer en parallèle."
+      },
+      "transition": {
+        "short": "Le passage",
+        "title": "Le passage",
+        "tagline": "C'est là que ça devient concret — vous signez, et nous organisons le passage pour vous.",
+        "metaBody": "Maintenant pour de vrai. Vous signez ; nous nous occupons du reste.",
+        "steps": {
+          "contract": {
+            "title": "Contrat",
+            "subtitle": "Signez votre contrat propriétaire"
+          },
+          "cancelInsurance": {
+            "title": "Résilier l'assurance",
+            "subtitle": "Résiliez votre assurance auto existante"
+          },
+          "newInsurance": {
+            "title": "Nouvelle assurance",
+            "subtitle": "Nous transférons votre assurance"
+          },
+          "parkingCard": {
+            "title": "Carte de stationnement",
+            "subtitle": "Nous demandons votre carte de stationnement"
+          },
+          "adminHandoff": {
+            "title": "Clôture administrative",
+            "subtitle": "Nous finalisons votre intégration"
+          },
+          "starterKit": {
+            "title": "Kit de démarrage",
+            "subtitle": "Nous vous envoyons les documents de bord et un kit de démarrage"
+          }
+        }
+      },
+      "readyToShare": {
+        "short": "Prêt à partager",
+        "title": "Prêt à partager",
+        "tagline": "Les derniers détails — et bienvenue dans le quartier.",
+        "metaBody": "Finalisation. Buddy, bienvenue.",
+        "steps": {
+          "buddy": {
+            "title": "Buddy",
+            "subtitle": "Votre personne de contact locale"
+          },
+          "survey": {
+            "title": "Enquête",
+            "subtitle": "Un court questionnaire sur votre intégration"
+          }
+        }
+      }
+    },
     "backToOverview": "Retour à l'aperçu",
     "stepNotFound": "Étape introuvable.",
     "stepBlocked": "Cette étape n'est pas encore disponible. Terminez d'abord les étapes précédentes.",
-    "stepReadOnly": "Cette étape est en lecture seule. La préparation est verrouillée ou cette section est déjà complète.",
+    "stepReadOnly": "Cette étape est en lecture seule. Vous avez confirmé vos informations, la préparation est verrouillée, ou cette section est déjà complète.",
     "save": "Enregistrer",
     "next": "Suivant",
     "saveSuccess": "Enregistré avec succès.",
+    "confirmInfo": {
+      "title": "Confirmer les infos",
+      "subtitle": "Confirmez que toutes les informations sont correctes et engagez-vous au partage de voiture.",
+      "confirmedSubtitle": "Vous avez confirmé vos données de préparation. Elles ne sont plus modifiables.",
+      "button": "Confirmer les infos",
+      "dialogTitle": "Confirmer votre préparation ?",
+      "dialogDescription": "Veuillez confirmer que toutes les informations saisies sont correctes et que vous vous engagez au partage de voiture. Après confirmation, vos données de préparation ne pourront plus être modifiées.",
+      "checkboxLabel": "Je confirme que mes informations sont correctes et je m'engage au partage de voiture. Je comprends que je ne pourrai plus modifier ces détails après confirmation.",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "confirming": "Confirmation…",
+      "confirmSuccess": "Préparation confirmée.",
+      "confirmError": "Échec de la confirmation de la préparation."
+    },
     "states": {
       "todo": "À faire",
       "pending": "En cours",
-      "done": "Terminé"
+      "done": "Terminé",
+      "blocked": "Verrouillé"
     },
     "errors": {
       "load": "Échec du chargement de l'intégration véhicule.",
@@ -2724,12 +2830,16 @@
       "playConnector": {
         "title": "Connecter Dégage",
         "subtitle": "Liez votre compte Dégage legacy",
-        "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding."
+        "info": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy. Nous en avons besoin pour synchroniser votre compte pendant l'onboarding.",
+        "panelTitle": "Connexion Degapp",
+        "panelBody": "Connectez-vous avec l'e-mail et le mot de passe que vous utilisez sur la plateforme Dégage legacy (Degapp). Nous en avons besoin pour synchroniser votre compte pendant l'onboarding — notamment pour vous inscrire à une session d'info et préremplir vos coordonnées.\n\nCe n'est pas le mot de passe de cette application. Vos identifiants Degapp sont stockés de manière chiffrée."
       },
       "infoSession": {
         "title": "Session d'info",
         "subtitle": "Participez à une infosession Degapp",
         "info": "Choisissez une infosession à venir et inscrivez-vous. Après votre participation, un administrateur confirmera votre présence.",
+        "panelTitle": "Session d'info",
+        "panelBody": "Choisissez une session d'info pour propriétaires à venir et inscrivez-vous. L'inscription débloque les étapes de préparation suivantes.\n\nVous ne pouvez être inscrit qu'à une seule session à la fois. Après votre participation, un administrateur confirmera votre présence — ce n'est qu'alors que cette étape est pleinement terminée.",
         "loading": "Chargement des infosessions…",
         "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Play connector et réessayez.",
         "tableEmpty": "Aucune infosession à venir trouvée.",
@@ -2828,21 +2938,38 @@
       },
       "insurer": {
         "title": "Assurance existante",
-        "subtitle": "Résilier votre assurance auto actuelle",
+        "subtitle": "Indiquer les détails de votre assurance auto actuelle",
         "info": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, indiquez les détails pour que nous puissions la résilier.",
         "panelTitle": "Assurance existante",
         "panelBody": "Dégage organise toujours l'assurance pour votre véhicule. Si vous avez encore une assurance auto personnelle, cochez cette case et indiquez les détails pour que nous puissions la résilier.",
         "hasInsuranceContractLabel": "J'ai encore un contrat d'assurance en cours pour ce véhicule",
         "contractStartedAtHint": "La date de début initiale du contrat, et non la date de renouvellement (annuel).",
         "contractWarning": "Votre assurance a commencé il y a moins d'un an. Vous pouvez rejoindre Dégage au plus tôt le {date}.",
+        "contractWarningCancellable": "Votre assurance a commencé il y a plus d'un an. Après la première année, vous pouvez résilier à tout moment, avec un préavis de 2 mois. Nous vous aidons volontiers avec cette résiliation ; vous pouvez rejoindre Dégage au plus tôt le {date}.",
         "insurerAnnouncedPriceIncreaseLabel": "Votre assureur a-t-il annoncé une hausse de tarif ?",
         "insurerAnnouncedPriceIncreaseCheckbox": "Oui, une hausse de tarif a été annoncée",
-        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation."
+        "insurerAnnouncedPriceIncreaseHint": "Si oui, vous pourrez peut-être résilier votre contrat plus tôt. N'acceptez pas le nouveau tarif d'ici là—payer la prime majorée vaut acceptation.",
+        "shareStartResetWarning": "Vous avez déjà choisi une date de début de partage. Modifier les détails d'assurance effacera cette date afin que vous puissiez la choisir à nouveau.",
+        "shareStartCleared": "Votre date de début de partage a été effacée car les détails d'assurance ont changé."
+      },
+      "shareStart": {
+        "title": "Date de début",
+        "subtitle": "Choisir quand votre véhicule devient disponible au partage",
+        "panelTitle": "Date de début du partage",
+        "panelBody": "Vous commencez toujours le premier du mois. Choisissez quand votre véhicule devient disponible pour les membres.",
+        "legendLocked": "◄ Verrouillé (assurance)",
+        "legendAvailable": "Disponible ►",
+        "earliestBadge": "Plus tôt",
+        "helperWithInsurance": "Selon votre assurance, le partage peut commencer à partir du {date}.",
+        "helperWithoutInsurance": "Sans contrat d'assurance existant, la date de début la plus tôt est le {date}.",
+        "selectedHint": "Provisoire jusqu'à ce que toutes les étapes soient terminées."
       },
       "roadAssistancePlan": {
         "title": "Assistance routière",
         "subtitle": "Votre couverture d'assistance routière",
         "info": "Indiquez si votre véhicule a déjà une assistance routière et choisissez le plan souhaité avec Dégage.",
+        "panelTitle": "Assistance dépannage",
+        "panelBody": "Dégage offre gratuitement une assistance dépannage à chaque propriétaire. Par défaut, il s'agit de VAB Benelux.\n\nSi en tant que propriétaire vous souhaitez l'assistance dépannage VAB en Europe, vous pouvez la demander 7 jours avant le départ. Cette couverture reste valable jusqu'à la fin de l'année civile. Cette demande est également prise en charge par Dégage.",
         "existingPanelTitle": "Assistance routière existante",
         "existingPanelBody": "Les véhicules neufs incluent parfois plusieurs années d'assistance routière à l'achat.",
         "hasExistingFieldLabel": "Assistance routière existante ?",
@@ -2860,6 +2987,8 @@
         "title": "Valeur",
         "subtitle": "Accord sur l'amortissement par km partagé",
         "info": "Consultez la valeur proposée et l'amortissement. Acceptez ou soumettez une contre-proposition.",
+        "panelTitle": "Valeur de votre véhicule",
+        "panelBody": "La valeur de votre véhicule sert à fixer la prime d'assurance. Nous l'estimons à partir des informations fournies lors de votre simulation.\n\nSur cette base, nous déterminons aussi l'amortissement par kilomètre partagé. Pour un véhicule existant, nous proposons une valeur ; vous pouvez l'accepter ou soumettre une contre-proposition avec votre argumentation. Pour un véhicule acheté, nous utilisons le prix d'achat.",
         "chartTitle": "Amortissement par km partagé",
         "chartBody": "Sur la base de {mileage} km, l'amortissement est d'environ €{depreciation} par kilomètre partagé.",
         "waitingForProposal": "En attente d'une proposition de valeur par l'administrateur.",
@@ -2874,8 +3003,8 @@
       "carStickers": {
         "title": "Autocollants",
         "subtitle": "Choisissez vos designs d'autocollants",
-        "panelTitle": "Sélection des autocollants",
-        "helper": "Les autocollants supplémentaires sont facultatifs. Les autocollants toujours inclus sont sélectionnés automatiquement et ne peuvent pas être retirés.",
+        "panelTitle": "Rendez votre voiture partagée visible !",
+        "panelBody": "La visibilité est importante pour Dégage. Un autocollant aide aussi nos membres à reconnaître rapidement la voiture. Vous recevez toujours l'autocollant vert. Vous voulez des autocollants supplémentaires ? Choisissez-les ci-dessous.\n\nSi vous souhaitez un autocollant sur la portière, un de nos bénévoles vous contactera pour le poser. Le slogan blanc est facile à coller soi-même.",
         "loading": "Chargement des autocollants…",
         "loadError": "Impossible de charger les autocollants. Veuillez réessayer.",
         "alwaysIncluded": "Toujours inclus"

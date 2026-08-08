@@ -4,7 +4,11 @@ import { analyzePinkForm } from '@/actions/document/analyze-pink-form';
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
 import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
-import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
+import {
+  assertCarOnboardingNotConfirmedForOwner,
+  assertCarOnboardingNotLocked,
+  assertCarOnboardingPartialUpdateAllowed,
+} from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
 
@@ -19,6 +23,7 @@ export const uploadCarOnboardingPinkForm = async (id: string, file: PinkFormUplo
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
   assertRegistrationCertificateUpload(file.contentType, file.sizeBytes);
 
   const analysis = await analyzePinkForm({ body: file.body, contentType: file.contentType });

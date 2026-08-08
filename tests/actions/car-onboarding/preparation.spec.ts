@@ -10,9 +10,11 @@ import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboar
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import {
   applyCarValueProposalTransition,
   applyPreparationStatus,
+  assertCarOnboardingNotConfirmedForOwner,
   assertCarOnboardingNotLocked,
   assertCarOnboardingPartialUpdateAllowed,
   assertCarOnboardingPreparationReady,
@@ -32,7 +34,7 @@ describe('isCarValueSectionComplete', () => {
 });
 
 describe('isPreparationReady', () => {
-  it('returns true only when play connector, info session, car-info, user-info, car value, insurer, and road assistance plan are complete', () => {
+  it('returns true only when all required preparation sections are complete', () => {
     expect(isPreparationReady(completeCarOnboarding())).toBe(true);
     expect(isPreparationReady(carOnboarding({ street: 'Main Street' }))).toBe(false);
     expect(isPreparationReady(completeCarOnboarding({ owner: { id: 'owner-1', hasPlayConnector: false } }))).toBe(false);
@@ -67,10 +69,24 @@ describe('isPreparationReady', () => {
     expect(
       isPreparationReady(
         completeCarOnboarding({
+          shareStartDate: null,
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isPreparationReady(
+        completeCarOnboarding({
           carStickers: [],
         }),
       ),
     ).toBe(true);
+    expect(
+      isPreparationReady(
+        completeCarOnboarding({
+          preparationConfirmedAt: null,
+        }),
+      ),
+    ).toBe(false);
   });
 });
 
@@ -94,6 +110,27 @@ describe('assertCarOnboardingNotLocked', () => {
         }),
       ),
     ).not.toThrow();
+  });
+});
+
+describe('assertCarOnboardingNotConfirmedForOwner', () => {
+  const owner = { id: 'user-1', role: 'user', banned: false };
+  const admin = { id: 'admin-1', role: 'admin', banned: false };
+
+  it('throws for owner when preparation is confirmed', () => {
+    expect(() =>
+      assertCarOnboardingNotConfirmedForOwner(carOnboarding({ preparationConfirmedAt: new Date('2026-06-21T10:00:00') }), owner),
+    ).toThrow(CarOnboardingConfirmedError);
+  });
+
+  it('allows admin when preparation is confirmed', () => {
+    expect(() =>
+      assertCarOnboardingNotConfirmedForOwner(carOnboarding({ preparationConfirmedAt: new Date('2026-06-21T10:00:00') }), admin),
+    ).not.toThrow();
+  });
+
+  it('does not throw when not confirmed', () => {
+    expect(() => assertCarOnboardingNotConfirmedForOwner(carOnboarding(), owner)).not.toThrow();
   });
 });
 

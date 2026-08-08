@@ -1,6 +1,7 @@
 import { CarOnboardingCarValueStatus, carOnboardingCarValueCounterInputSchema } from '@/domain/car-onboarding.model';
 import type { UserWithRole } from '@/domain/role.model';
 import {
+  assertCarOnboardingNotConfirmedForOwner,
   assertCarOnboardingNotLocked,
   assertCarOnboardingPartialUpdateAllowed,
   assertCarValueStatusIsProposal,
@@ -12,6 +13,7 @@ export const updateCarOnboardingCarValue = async (id: string, body: unknown, use
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
   assertCarValueStatusIsProposal(existing);
   const parsed = carOnboardingCarValueCounterInputSchema.parse(body);
   const merged = {

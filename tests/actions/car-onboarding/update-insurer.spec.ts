@@ -225,4 +225,37 @@ describe('updateCarOnboardingInsurer', () => {
       }),
     );
   });
+
+  it('clears shareStartDate when insurance contract start date changes', async () => {
+    const shareStartDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerStatus: CarOnboardingInsurerStatus.READY,
+        insurerContractStartedAt: new Date('2020-01-15'),
+        shareStartDate,
+      }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingInsurer(
+      onboardingId,
+      {
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurerContractStartedAt: '2021-06-01',
+      },
+      owner,
+    );
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shareStartDate: null,
+        insurerContractStartedAt: new Date('2021-06-01'),
+      }),
+    );
+  });
 });

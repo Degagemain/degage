@@ -14,7 +14,7 @@ During preparation, the system gathers contact information and car characteristi
 required input is complete and whether further edits are allowed.
 
 Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, road assistance
-plan, car value, finalize).
+plan, car value, share start date, finalize).
 
 ### Owner
 
@@ -153,18 +153,40 @@ stickers are shown as pre-selected and cannot be removed; they are not stored on
 
 This step is always complete; extra stickers are optional.
 
+### Share start date
+
+Chooses when the car becomes available for sharing. This is the last preparation step. The date is always the first of a month. The earliest
+allowed month depends on the insurance details (or the first of the current month when there is no existing insurance contract). The latest
+allowed month is 18 months from today.
+
+| Property         | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| Share start date | First day of the month when car sharing is planned to start. |
+
+This step unlocks only after the insurer step is complete. Changing insurance details that affect the earliest date clears the chosen share
+start date so the owner must pick again.
+
+This step is complete when a share start date is set.
+
 ### Finalize
 
-When play connector, info session, user info, car info, insurer, road assistance plan, car value, and car stickers are all complete, the system
-sets preparation status to **Ready** automatically on save. An admin can then start the car onboarding on the **Finalize** tab.
+When play connector, info session, user info, car info, insurer, road assistance plan, car value, car stickers, share start date, and owner
+preparation confirmation are all complete, the system sets preparation status to **Ready** automatically on save. An admin can then lock
+preparation on the **Finalize** tab.
 
-| Status | Meaning                                                                                                                                                                    |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Open   | Onboarding is in progress; car-info, user-info, insurer, and car value negotiation are not all complete yet.                                                               |
-| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), car value (Resolved), and car stickers are all complete. The system sets this automatically. |
-| Locked | No further user updates are allowed. Admins can still change the full record. Set by an admin on the **Finalize** tab when preparation is **Ready**.                       |
+The owner can confirm preparation once the other steps are complete, even if the info session is only **Enrolled** (not yet admin-confirmed).
+After the owner confirms, their preparation details become read-only. Preparation becomes **Ready** only after that confirmation and once the
+info session is **Done** (along with the other requirements).
 
-When preparation is **Locked**, users cannot update car-info, user-info, insurer, or car value until an admin unlocks it.
+| Status | Meaning                                                                                                                                                                                                                      |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open   | Onboarding is in progress; preparation sections (including owner confirmation) are not all complete yet.                                                                                                                     |
+| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), car value (Resolved), car stickers, share start date, and owner preparation confirmation are all complete. The system sets this automatically. |
+| Locked | No further user updates are allowed. Admins can still change the full record. Locked with **Lock preparation** on **Finalize** when **Ready**; unlock with **Unlock preparation**.                                           |
+
+When preparation is **Locked**, or after the owner has confirmed preparation, users cannot update car-info, user-info, insurer, or car value
+until an admin unlocks it (for locked) or while confirmation stands. Admins can clear the owner confirmation from **Finalize** when preparation
+is not locked.
 
 ## Creating a record
 
@@ -205,4 +227,5 @@ When preparation is **Locked**, users cannot update car-info, user-info, insurer
 | Info session PC id       | Play connector identifier for the enrolled info session.             |
 | Info session status      | Progress of the info session subprocess.                             |
 | Simulation               | Linked simulation run, if any.                                       |
+| Preparation confirmed at | Date and time when the owner confirmed preparation details.          |
 | Preparation status       | Tracks preparation progress: Open, Ready, or Locked.                 |

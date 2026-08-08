@@ -6,7 +6,11 @@ import { analyzeRegistrationCertificate } from '@/actions/document/analyze-regis
 import { createDocumentWithUpload } from '@/actions/document/create-with-upload';
 import { DocumentNotRecognizedError } from '@/actions/document/document-not-recognized.error';
 import { updateDocumentWithUpload } from '@/actions/document/update-with-upload';
-import { assertCarOnboardingNotLocked, assertCarOnboardingPartialUpdateAllowed } from '@/actions/car-onboarding/preparation';
+import {
+  assertCarOnboardingNotConfirmedForOwner,
+  assertCarOnboardingNotLocked,
+  assertCarOnboardingPartialUpdateAllowed,
+} from '@/actions/car-onboarding/preparation';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
 import type { RegistrationCertificateSide } from '@/actions/car-onboarding/registration-certificate-side';
@@ -86,6 +90,7 @@ export const uploadCarOnboardingRegistrationCertificate = async (
   const existing = await readCarOnboarding(id);
   assertCarOnboardingPartialUpdateAllowed(existing, user);
   assertCarOnboardingNotLocked(existing);
+  assertCarOnboardingNotConfirmedForOwner(existing, user);
   assertRegistrationCertificateUpload(file.contentType, file.sizeBytes);
 
   const linkedDocument = getExistingDocument(existing, side);

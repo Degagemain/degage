@@ -10,6 +10,7 @@ import { CalendarIcon, Check, Info, X } from 'lucide-react';
 import type { Simulation, SimulationStep } from '@/domain/simulation.model';
 import { SimulationStepIcon } from '@/domain/simulation.model';
 import { calculateOwnerKmPerYear } from '@/domain/utils';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPost } from '@/app/lib/api-client';
 import { Button } from '@/app/components/ui/button';
 import { Calendar } from '@/app/components/ui/calendar';
@@ -58,12 +59,6 @@ const defaultFormState: SimulationFormState = {
   ownerKmPerYear: '',
 };
 
-function firstRegistrationDateToDate(value: string): Date | undefined {
-  if (!value.trim()) return undefined;
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? undefined : d;
-}
-
 function FirstRegistrationDatePicker({
   value,
   onChange,
@@ -74,7 +69,7 @@ function FirstRegistrationDatePicker({
   placeholder: string;
 }) {
   const [open, setOpen] = useState(false);
-  const date = firstRegistrationDateToDate(value);
+  const date = parseDateInput(value) ?? undefined;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -89,7 +84,7 @@ function FirstRegistrationDatePicker({
           selected={date}
           onSelect={(selectedDate) => {
             if (selectedDate) {
-              onChange(format(selectedDate, 'yyyy-MM-dd'));
+              onChange(formatDateForInput(selectedDate));
               setOpen(false);
             }
           }}
@@ -130,8 +125,8 @@ function isFormValidForPreview(form: SimulationFormState): boolean {
   if (!Number.isInteger(mileage) || mileage < 0) return false;
   if (!Number.isInteger(seats) || seats < 1) return false;
   if (!firstRegisteredAt) return false;
-  const date = new Date(firstRegisteredAt);
-  if (Number.isNaN(date.getTime())) return false;
+  const date = parseDateInput(firstRegisteredAt);
+  if (date == null) return false;
   const computed = calculateOwnerKmPerYear(mileage, date);
   const ownerKmPerYear = form.ownerKmPerYear.trim() ? parseInt(form.ownerKmPerYear, 10) : computed;
   return Number.isInteger(ownerKmPerYear) && ownerKmPerYear >= 0;
@@ -140,7 +135,10 @@ function isFormValidForPreview(form: SimulationFormState): boolean {
 function buildRequestBody(form: SimulationFormState): Record<string, unknown> {
   const mileage = parseInt(form.mileage, 10);
   const seats = parseInt(form.seats, 10);
-  const firstRegisteredAt = new Date(form.firstRegisteredAt);
+  const firstRegisteredAt = parseDateInput(form.firstRegisteredAt);
+  if (firstRegisteredAt == null) {
+    throw new Error('firstRegisteredAt is required');
+  }
   const computedOwnerKmPerYear = calculateOwnerKmPerYear(mileage, firstRegisteredAt);
   const ownerKmPerYear = form.ownerKmPerYear.trim() ? parseInt(form.ownerKmPerYear, 10) : computedOwnerKmPerYear;
   return {
@@ -152,7 +150,7 @@ function buildRequestBody(form: SimulationFormState): Record<string, unknown> {
     mileage,
     ownerKmPerYear,
     seats,
-    firstRegisteredAt: firstRegisteredAt.toISOString(),
+    firstRegisteredAt: formatDateForInput(firstRegisteredAt),
     isVan: form.isVan,
   };
 }
@@ -180,7 +178,7 @@ export default function NewSimulationPage() {
 
   const computedOwnerKmPerYear = useMemo(() => {
     const mileage = form.mileage.trim() ? parseInt(form.mileage, 10) : NaN;
-    const date = firstRegistrationDateToDate(form.firstRegisteredAt);
+    const date = parseDateInput(form.firstRegisteredAt);
     if (!Number.isInteger(mileage) || mileage < 0 || !date) return null;
     return calculateOwnerKmPerYear(mileage, date);
   }, [form.mileage, form.firstRegisteredAt]);

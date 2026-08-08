@@ -15,6 +15,7 @@ import {
 } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withAuth } from '@/api/with-context';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 
@@ -35,7 +36,11 @@ export const PUT = withAuth(async (request: NextRequest, context, session) => {
     if (error instanceof ZodError) {
       return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
     }
-    if (error instanceof CarOnboardingLockedError || error instanceof CarOnboardingForbiddenError) {
+    if (
+      error instanceof CarOnboardingLockedError ||
+      error instanceof CarOnboardingConfirmedError ||
+      error instanceof CarOnboardingForbiddenError
+    ) {
       return forbiddenResponse(error.message);
     }
     if (error instanceof PlayConnectorActionError) {

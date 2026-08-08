@@ -11,9 +11,12 @@ import {
   isInfoSessionSectionComplete,
   isInsurerSectionComplete,
   isPlayConnectorSectionComplete,
+  isPreparationConfirmed,
   isRoadAssistancePlanSectionComplete,
+  isShareStartSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
+import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
@@ -36,14 +39,23 @@ export const isPreparationReady = (onboarding: CarOnboarding): boolean => {
     isUserInfoSectionComplete(onboarding) &&
     isCarValueSectionComplete(onboarding) &&
     isInsurerSectionComplete(onboarding) &&
+    isShareStartSectionComplete(onboarding) &&
     isRoadAssistancePlanSectionComplete(onboarding) &&
-    isCarStickerSectionComplete(onboarding)
+    isCarStickerSectionComplete(onboarding) &&
+    isPreparationConfirmed(onboarding)
   );
 };
 
 export const assertCarOnboardingNotLocked = (onboarding: CarOnboarding): void => {
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) {
     throw new CarOnboardingLockedError();
+  }
+};
+
+export const assertCarOnboardingNotConfirmedForOwner = (onboarding: CarOnboarding, user: UserWithRole): void => {
+  if (isAdmin(user)) return;
+  if (isPreparationConfirmed(onboarding)) {
+    throw new CarOnboardingConfirmedError();
   }
 };
 

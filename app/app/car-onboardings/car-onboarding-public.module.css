@@ -64,20 +64,140 @@
 .sectionTitle {
   font-family: var(--demo-serif);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
+  color: var(--demo-ink);
+  margin: 0;
+}
+
+.journeyMeta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: var(--demo-s32);
+}
+
+.journeyMetaCard {
+  background: var(--demo-surface);
+  border: 1px solid var(--demo-border);
+  border-left-width: 3px;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.journeyMetaCardGreen {
+  border-left-color: #6b9a4b;
+}
+
+.journeyMetaCardAmber {
+  border-left-color: #c17a2b;
+}
+
+.journeyMetaCardPurple {
+  border-left-color: #7a6ad0;
+}
+
+.journeyMetaLabel {
+  font-family: var(--demo-serif);
+  font-weight: 600;
+  font-size: 15px;
   color: var(--demo-ink);
 }
 
-.stageSection {
-  margin-bottom: var(--demo-s8);
+.journeyMetaBody {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--demo-mid);
+}
+
+.journeyChapters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chapterBlock {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding-bottom: 26px;
+}
+
+.chapterSpine {
+  position: relative;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.chapterDot {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--chapter-accent, #6b9a4b);
+  box-shadow: 0 0 0 4px var(--demo-bg);
+}
+
+.chapterLine {
+  position: absolute;
+  top: 28px;
+  bottom: -26px;
+  left: 9px;
+  width: 2px;
+  background: #e6e1d8;
+}
+
+.chapterBlock:last-child .chapterLine {
+  display: none;
+}
+
+.chapterBlockGreen {
+  --chapter-accent: #6b9a4b;
+}
+
+.chapterBlockAmber {
+  --chapter-accent: #c17a2b;
+}
+
+.chapterBlockPurple {
+  --chapter-accent: #7a6ad0;
+}
+
+.chapterContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.chapterHeading {
+  min-width: 0;
+}
+
+.chapterLabel {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--chapter-accent, #6b9a4b);
+}
+
+.chapterTagline {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--demo-mid);
+  max-width: 420px;
 }
 
 .stageHeader {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--demo-s16);
   margin-bottom: var(--demo-s16);
+  flex-wrap: wrap;
 }
 
 .stageDivider {
@@ -89,85 +209,298 @@
 .stageCards {
   display: flex;
   flex-direction: column;
-  gap: var(--demo-s8);
+  gap: 10px;
+}
+
+.chapterStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.chapterStatusOpen {
+  background: #fbe4cf;
+  color: #a6631b;
+  border-color: #f0d0a8;
+}
+
+.chapterStatusReady {
+  background: #eef4e6;
+  color: #3f5a2a;
+  border-color: #cfe0bc;
+}
+
+.chapterStatusLocked {
+  background: #eeeaf8;
+  color: #5a4d8a;
+  border-color: #d7d0ec;
 }
 
 .subflowCard {
-  display: block;
+  display: flex;
+  align-items: stretch;
   text-align: left;
-  padding: var(--demo-s16) var(--demo-s24);
-  border: 1.5px solid var(--demo-border);
-  border-radius: var(--demo-r12);
+  border: 1px solid #ececec;
+  border-radius: 14px;
   background: var(--demo-surface);
+  overflow: hidden;
   transition:
     border-color 0.15s,
-    background 0.15s;
+    background 0.15s,
+    box-shadow 0.15s;
   text-decoration: none;
   color: inherit;
 }
 
-.subflowCardInner {
+.subflowCardNumWrap {
   display: flex;
-  gap: var(--demo-s16);
-  align-items: stretch;
-}
-
-.subflowCardTrack {
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  padding: 0 0 0 16px;
   flex-shrink: 0;
-  width: 28px;
 }
 
 .subflowCardStep {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: var(--demo-surface);
-  border: 1.5px solid var(--demo-border);
-  color: var(--demo-mid);
-  font-size: 12px;
-  font-weight: 700;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  color: #666;
+  font-size: 13px;
+  font-weight: 600;
   flex-shrink: 0;
-}
-
-.subflowCardConnector {
-  flex: 1;
-  width: 2px;
-  min-height: var(--demo-s16);
-  margin: var(--demo-s8) 0;
-  background: var(--demo-border);
 }
 
 .subflowCardBody {
   flex: 1;
   min-width: 0;
-  padding: var(--demo-s8) 0;
+  padding: 14px 16px;
+  margin-left: 14px;
+  border-left: 2px solid #e6e6e6;
+}
+
+.subflowCardMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 16px;
+  flex-shrink: 0;
+}
+
+.actorTag {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.actorTagYou {
+  background: #f5f2ed;
+  color: #5a5248;
+  border-color: #ddd6cb;
+}
+
+.actorTagDegage {
+  background: #eef1fb;
+  color: #4a5bd0;
+  border-color: #dfe4fb;
 }
 
 .subflowCard:hover:not(.subflowCardDisabled) {
   border-color: var(--demo-brand-border);
-  background: var(--demo-brand-light);
+  background: #f8fbf6;
 }
 
 .subflowCardDisabled {
-  opacity: 0.55;
+  background: #fafaf8;
+  border-color: #ececec;
+  opacity: 0.72;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.subflowCardTitle {
+.subflowCardDisabled .subflowCardStep {
+  border-color: #e0e0dc;
+  color: #9a9a94;
+  background: #f7f7f4;
+}
+
+.subflowCardDisabled .subflowCardBody {
+  border-left-color: #e8e8e4;
+}
+
+.subflowCardDisabled .subflowCardTitle {
+  color: #8a8a84;
+}
+
+.subflowCardDisabled .subflowCardSubtitle {
+  color: #a3a39c;
+}
+
+.confirmCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  border: 1px dashed #c8d6c4;
+  border-radius: 14px;
+  background: #f6faf4;
+  padding: 16px 18px;
+}
+
+.confirmCardReady {
+  border-style: solid;
+  border-color: var(--demo-brand-border, #8fbf88);
+  background: #f0f7ed;
+  box-shadow: 0 1px 0 rgba(56, 142, 60, 0.08);
+}
+
+.confirmCardDone {
+  border-style: solid;
+  border-color: #cfe0cb;
+  background: #f7faf6;
+}
+
+.confirmCardDisabled {
+  background: #fafaf8;
+  border-color: #e4e4e0;
+  border-style: dashed;
+  opacity: 0.72;
+}
+
+.confirmCardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.confirmCardTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  color: #2f3a2e;
+}
+
+.confirmCardSubtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #66705f;
+}
+
+.confirmCardDisabled .confirmCardTitle,
+.confirmCardDisabled .confirmCardSubtitle {
+  color: #9a9a94;
+}
+
+.confirmCardActions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.confirmDialogOverlay {
+  background: rgba(24, 21, 16, 0.45);
+}
+
+.confirmDialog {
+  gap: var(--demo-s24);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-r20);
+  background: var(--demo-surface);
+  padding: var(--demo-s32);
+  box-shadow: 0 18px 48px rgba(24, 21, 16, 0.14);
+  color: var(--demo-ink);
+}
+
+.confirmDialogHeader {
+  gap: var(--demo-s8);
+  text-align: left;
+}
+
+.confirmDialogTitle {
   font-family: var(--demo-serif);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 22px;
+  line-height: 1.25;
   color: var(--demo-ink);
-  margin-bottom: var(--demo-s8);
-  padding-right: 36px;
-  position: relative;
+}
+
+.confirmDialogDescription {
+  font-family: var(--demo-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--demo-mid);
+}
+
+.confirmDialogFooter {
+  margin-top: var(--demo-s8);
+  gap: var(--demo-s8);
+}
+
+.subflowCardTitle {
+  font-family: var(--demo-serif);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--demo-ink);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.stepMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid transparent;
+}
+
+.stepMarkDone {
+  background: #eef4e6;
+  border-color: #bcd6a3;
+  color: #4f7a33;
+}
+
+.stepMarkPending {
+  background: var(--demo-amber-bg);
+  border-color: var(--demo-amber-border);
+  color: var(--demo-amber);
+}
+
+.stepMarkTodo {
+  background: #fff;
+  border-color: #e2e2e2;
+  color: #bbb;
+}
+
+.stepMarkLocked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: #9a9a94;
+}
+
+.stepMarkLocked svg {
+  width: 15px;
+  height: 15px;
 }
 
 .subflowTitleRow {
@@ -189,9 +522,10 @@
 }
 
 .subflowCardSubtitle {
-  font-size: 15px;
-  color: var(--demo-mid);
-  line-height: 1.5;
+  font-size: 13px;
+  color: #9a9a9a;
+  line-height: 1.45;
+  margin: 3px 0 0;
 }
 
 .stateIcon {
@@ -466,6 +800,160 @@
   margin-bottom: var(--demo-s24);
 }
 
+.shareStartLegend {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--demo-s16);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--demo-light);
+  margin-bottom: var(--demo-s16);
+}
+
+.shareStartTimeline {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 2px 8px;
+  margin: 0 -2px;
+  scrollbar-width: thin;
+}
+
+.shareStartMonth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 0 0 58px;
+  min-height: 70px;
+  border-radius: var(--demo-r12);
+  border: 1px solid var(--demo-border);
+  background: var(--demo-surface);
+  color: var(--demo-ink);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 10px 6px;
+}
+
+.shareStartMonth:hover:not(:disabled) {
+  border-color: var(--demo-brand);
+  background: var(--demo-brand-light);
+}
+
+.shareStartMonthLocked {
+  background: #f3f1ec;
+  color: var(--demo-light);
+  border-color: #ebe6dc;
+  cursor: not-allowed;
+}
+
+.shareStartMonthSelected {
+  background: var(--demo-brand-light);
+  border-color: var(--demo-brand);
+  box-shadow: 0 0 0 1px var(--demo-brand);
+  color: var(--demo-brand-mid);
+  font-weight: 600;
+}
+
+.shareStartMonthEarliest:not(.shareStartMonthSelected) {
+  border-color: var(--demo-brand-border);
+}
+
+.shareStartEarliestBadge {
+  position: absolute;
+  top: -9px;
+  background: var(--demo-brand);
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.shareStartMonthLabel {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.shareStartYearLabel {
+  font-size: 10px;
+  opacity: 0.65;
+}
+
+.shareStartHelper {
+  font-size: 13px;
+  color: var(--demo-mid);
+  line-height: 1.5;
+  margin: var(--demo-s16) 0 0;
+}
+
+.shareStartSummary {
+  margin-top: var(--demo-s24);
+  padding: var(--demo-s16) var(--demo-s24);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+  background: var(--demo-brand-light);
+}
+
+.shareStartSummaryLabel {
+  font-family: var(--demo-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--demo-ink);
+}
+
+.shareStartSummaryHint {
+  font-size: 13px;
+  color: var(--demo-mid);
+  margin-top: 4px;
+}
+
+.infoPanel {
+  display: flex;
+  gap: var(--demo-s16);
+  background: var(--demo-blue-bg);
+  border: 1px solid var(--demo-blue-border);
+  border-radius: var(--demo-r12);
+  padding: var(--demo-s24);
+  margin-bottom: var(--demo-s24);
+}
+
+.infoPanelIcon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  color: var(--demo-blue);
+}
+
+.infoPanelContent {
+  min-width: 0;
+  flex: 1;
+}
+
+.infoPanelTitle {
+  font-family: var(--demo-serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--demo-ink);
+  margin: 0 0 var(--demo-s8);
+}
+
+.infoPanelBody {
+  margin: 0;
+  font-size: 15px;
+  color: var(--demo-mid);
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
 .bannerSuccess {
   background: var(--demo-green-bg);
   border-radius: var(--demo-r12);
@@ -731,6 +1219,28 @@
   .tileGrid,
   .stickerGrid {
     grid-template-columns: 1fr;
+  }
+
+  .journeyMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .chapterBlock {
+    gap: 12px;
+  }
+
+  .subflowCardNumWrap {
+    padding-left: 12px;
+  }
+
+  .subflowCardBody {
+    margin-left: 10px;
+    padding: 12px;
+  }
+
+  .subflowCardMeta {
+    gap: 8px;
+    padding-right: 12px;
   }
 }
 

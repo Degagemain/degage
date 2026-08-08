@@ -32,6 +32,7 @@ describe('getStepsForRecord', () => {
       'road-assistance-plan',
       'car-value',
       'car-stickers',
+      'share-start',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
       'play-connector',
@@ -42,6 +43,7 @@ describe('getStepsForRecord', () => {
       'road-assistance-plan',
       'car-value',
       'car-stickers',
+      'share-start',
     ]);
   });
 });
@@ -146,13 +148,39 @@ describe('isStepReadOnly', () => {
     expect(isStepReadOnly('info-session', completeCarOnboarding())).toBe(true);
   });
 
+  it('is read-only when preparation is confirmed by the owner', () => {
+    expect(
+      isStepReadOnly(
+        'insurer',
+        completeCarOnboarding({
+          preparationConfirmedAt: new Date('2026-06-21T10:00:00'),
+          statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
+        }),
+      ),
+    ).toBe(true);
+  });
+
   it('stays editable for insurer when status is ready and preparation is open', () => {
-    expect(isStepReadOnly('insurer', completeCarOnboarding({ insurerStatus: CarOnboardingInsurerStatus.READY }))).toBe(false);
+    expect(
+      isStepReadOnly(
+        'insurer',
+        completeCarOnboarding({
+          insurerStatus: CarOnboardingInsurerStatus.READY,
+          preparationConfirmedAt: null,
+        }),
+      ),
+    ).toBe(false);
   });
 
   it('stays editable for road assistance plan when status is ready and preparation is open', () => {
     expect(
-      isStepReadOnly('road-assistance-plan', completeCarOnboarding({ roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY })),
+      isStepReadOnly(
+        'road-assistance-plan',
+        completeCarOnboarding({
+          roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,
+          preparationConfirmedAt: null,
+        }),
+      ),
     ).toBe(false);
   });
 });
@@ -210,5 +238,49 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('insurer', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-value', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-stickers', enrolled)).toBe(true);
+  });
+
+  it('requires insurer complete before share start', () => {
+    const enrolled = withPlayConnector({
+      infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+      infoSessionPcId: '1359',
+      insurerStatus: CarOnboardingInsurerStatus.TODO,
+    });
+    expect(arePrerequisitesMet('share-start', enrolled)).toBe(false);
+    expect(
+      arePrerequisitesMet(
+        'share-start',
+        withPlayConnector({
+          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+          infoSessionPcId: '1359',
+          insurerStatus: CarOnboardingInsurerStatus.READY,
+        }),
+      ),
+    ).toBe(true);
+    expect(arePrerequisitesMet('share-start', completeCarOnboarding())).toBe(true);
+  });
+});
+
+describe('share-start step', () => {
+  it('is blocked until insurer is complete, then todo until a date is set', () => {
+    const enrolled = withPlayConnector({
+      infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
+      infoSessionPcId: '1359',
+      insurerStatus: CarOnboardingInsurerStatus.TODO,
+      shareStartDate: null,
+    });
+    expect(computeStepState('share-start', enrolled)).toBe('blocked');
+
+    const insurerReady = {
+      ...enrolled,
+      insurerStatus: CarOnboardingInsurerStatus.READY,
+      hasInsuranceContract: true,
+      insurerContractStartedAt: new Date('2020-01-15'),
+    };
+    expect(computeStepState('share-start', insurerReady)).toBe('todo');
+    expect(isStepComplete('share-start', insurerReady)).toBe(false);
+
+    expect(computeStepState('share-start', completeCarOnboarding())).toBe('done');
+    expect(isStepComplete('share-start', completeCarOnboarding())).toBe(true);
   });
 });
