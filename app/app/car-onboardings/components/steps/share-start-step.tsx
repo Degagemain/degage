@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getEarliestShareStartDate, getLatestShareStartDate, startOfMonth } from '@/domain/car-onboarding.model';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -50,20 +51,22 @@ export function ShareStartStep() {
   const latest = useMemo(() => getLatestShareStartDate(), []);
   const months = useMemo(() => buildMonthCells(earliest, latest), [earliest, latest]);
 
-  const [selected, setSelected] = useState<Date | null>(
-    carOnboarding.shareStartDate != null ? startOfMonth(new Date(carOnboarding.shareStartDate)) : null,
-  );
+  const [selected, setSelected] = useState<Date | null>(() => {
+    const date = parseDateInput(formatDateForInput(carOnboarding.shareStartDate));
+    return date ? startOfMonth(date) : null;
+  });
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    setSelected(carOnboarding.shareStartDate != null ? startOfMonth(new Date(carOnboarding.shareStartDate)) : null);
+    const date = parseDateInput(formatDateForInput(carOnboarding.shareStartDate));
+    setSelected(date ? startOfMonth(date) : null);
   }, [carOnboarding.shareStartDate]);
 
   const handleSave = async (): Promise<boolean> => {
     if (!carOnboarding.id || selected == null) return false;
     setIsSaving(true);
     try {
-      const iso = `${selected.getFullYear()}-${String(selected.getMonth() + 1).padStart(2, '0')}-01`;
+      const iso = formatDateForInput(startOfMonth(selected));
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/share-start`, {
         shareStartDate: iso,
       });

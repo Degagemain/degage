@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { isInsurerContractStartedWithinLastYear, shouldClearShareStartOnInsurerChange } from '@/domain/car-onboarding.model';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -16,8 +17,8 @@ import { useCarOnboarding } from '../../lib/car-onboarding-context';
 import styles from '../../car-onboarding-public.module.css';
 
 const addOneYear = (dateStr: string): string => {
-  const d = new Date(dateStr);
-  if (Number.isNaN(d.getTime())) return '';
+  const d = parseDateInput(dateStr);
+  if (d == null) return '';
   d.setFullYear(d.getFullYear() + 1);
   return d.toLocaleDateString();
 };
@@ -28,13 +29,6 @@ const addTwoMonthsFromToday = (): string => {
   return d.toLocaleDateString();
 };
 
-const formatDateInput = (date: Date | string | null): string => {
-  if (date == null) return '';
-  const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return '';
-  return parsed.toISOString().slice(0, 10);
-};
-
 export function InsurerStep() {
   const t = useTranslations('carOnboardingPublic');
   const tAdmin = useTranslations('admin.carOnboardings');
@@ -43,7 +37,7 @@ export function InsurerStep() {
   const [hasInsuranceContract, setHasInsuranceContract] = useState(carOnboarding.hasInsuranceContract);
   const [insurerId, setInsurerId] = useState(carOnboarding.insurer?.id ?? '');
   const [insurerName, setInsurerName] = useState(carOnboarding.insurer?.name ?? '');
-  const [contractStartedAt, setContractStartedAt] = useState(formatDateInput(carOnboarding.insurerContractStartedAt));
+  const [contractStartedAt, setContractStartedAt] = useState(formatDateForInput(carOnboarding.insurerContractStartedAt));
   const [insurerAnnouncedPriceIncrease, setInsurerAnnouncedPriceIncrease] = useState(carOnboarding.insurerAnnouncedPriceIncrease);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -51,7 +45,7 @@ export function InsurerStep() {
     setHasInsuranceContract(carOnboarding.hasInsuranceContract);
     setInsurerId(carOnboarding.insurer?.id ?? '');
     setInsurerName(carOnboarding.insurer?.name ?? '');
-    setContractStartedAt(formatDateInput(carOnboarding.insurerContractStartedAt));
+    setContractStartedAt(formatDateForInput(carOnboarding.insurerContractStartedAt));
     setInsurerAnnouncedPriceIncrease(carOnboarding.insurerAnnouncedPriceIncrease);
   }, [carOnboarding]);
 
@@ -63,7 +57,7 @@ export function InsurerStep() {
     if (!carOnboarding.id) return false;
     const nextInsurance = {
       hasInsuranceContract,
-      insurerContractStartedAt: hasInsuranceContract && contractStartedAt ? new Date(contractStartedAt) : null,
+      insurerContractStartedAt: hasInsuranceContract && contractStartedAt ? parseDateInput(contractStartedAt) : null,
     };
     const willClearShareStart = shouldClearShareStartOnInsurerChange(carOnboarding, nextInsurance);
     setIsSaving(true);

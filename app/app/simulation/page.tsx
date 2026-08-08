@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { SearchDropdown } from './components/search-dropdown';
@@ -78,14 +79,12 @@ export default function SimulationPage() {
     };
   }, []);
 
-  function firstRegistrationDateToDate(value: string): Date | undefined {
-    if (!value.trim()) return undefined;
-    const d = new Date(value);
-    return Number.isNaN(d.getTime()) ? undefined : d;
+  function firstRegistrationDateToDate(value: string): Date | null {
+    return parseDateInput(value);
   }
 
   function todayIsoDate(): string {
-    return new Date().toISOString().slice(0, 10);
+    return formatDateForInput(new Date());
   }
 
   function setIsNewCarChecked(checked: boolean) {

@@ -30,6 +30,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-control';
+import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
 import { AdminSearchableSelectField } from '@/app/components/form/admin-searchable-select-field';
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
@@ -118,13 +119,6 @@ interface FormValues {
   ownerName: string;
 }
 
-const formatDateInput = (date: Date | string | null): string => {
-  if (date == null) return '';
-  const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return '';
-  return parsed.toISOString().slice(0, 10);
-};
-
 const getInitialState = (row: CarOnboarding): FormValues => {
   const hasOtherCarType = Boolean(row.carTypeOther?.trim()) && row.carType == null;
   return {
@@ -143,7 +137,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     plate: row.plate ?? '',
     mileage: String(row.mileage),
     seats: String(row.seats),
-    firstRegisteredAt: formatDateInput(row.firstRegisteredAt),
+    firstRegisteredAt: formatDateForInput(row.firstRegisteredAt),
     isVan: row.isVan,
     isPurchased: row.isPurchased,
     isNewCar: row.isNewCar,
@@ -154,14 +148,14 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     carValueCounterProposalMessage: row.carValueCounterProposalMessage ?? '',
     insurerId: row.insurer?.id ?? NONE,
     insurerName: row.insurer?.name ?? '',
-    insurerContractStartedAt: formatDateInput(row.insurerContractStartedAt),
+    insurerContractStartedAt: formatDateForInput(row.insurerContractStartedAt),
     insurerAnnouncedPriceIncrease: row.insurerAnnouncedPriceIncrease,
     hasInsuranceContract: row.hasInsuranceContract,
     hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
-    existingRoadAssistancePlanEndDate: formatDateInput(row.existingRoadAssistancePlanEndDate),
+    existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
-    shareStartDate: formatDateInput(row.shareStartDate),
+    shareStartDate: formatDateForInput(row.shareStartDate),
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
   };
@@ -367,7 +361,7 @@ export function CarOnboardingForm({
     carTypeOther: hasOtherCarType || watchedValues.carTypeId === CAR_TYPE_OTHER ? watchedValues.carTypeOther.trim() || null : null,
     isPurchased: watchedValues.isPurchased,
     isNewCar: watchedValues.isNewCar,
-    firstRegisteredAt: watchedValues.firstRegisteredAt ? new Date(watchedValues.firstRegisteredAt) : null,
+    firstRegisteredAt: watchedValues.firstRegisteredAt ? parseDateInput(watchedValues.firstRegisteredAt) : null,
     registrationCertificateFront: initialCarOnboarding.registrationCertificateFront,
     registrationCertificateBack: initialCarOnboarding.registrationCertificateBack,
     inspectionCertificate: initialCarOnboarding.inspectionCertificate,
@@ -390,7 +384,7 @@ export function CarOnboardingForm({
   });
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const shareStartComplete = isShareStartSectionComplete({
-    shareStartDate: watchedValues.shareStartDate.trim() === '' ? null : new Date(watchedValues.shareStartDate),
+    shareStartDate: watchedValues.shareStartDate.trim() === '' ? null : parseDateInput(watchedValues.shareStartDate),
   });
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
@@ -513,7 +507,7 @@ export function CarOnboardingForm({
       plate: values.plate.trim() || null,
       mileage: values.mileage === '' ? 0 : Number(values.mileage),
       seats: values.seats === '' ? 0 : Number(values.seats),
-      firstRegisteredAt: values.firstRegisteredAt ? new Date(values.firstRegisteredAt) : null,
+      firstRegisteredAt: values.firstRegisteredAt ? parseDateInput(values.firstRegisteredAt) : null,
       isVan: values.isVan,
       isPurchased: values.isPurchased,
       isNewCar: values.isNewCar,
@@ -524,16 +518,19 @@ export function CarOnboardingForm({
       carValueCounterProposalMessage: initialCarOnboarding.carValueCounterProposalMessage,
       insurer: !values.hasInsuranceContract ? null : toIdName(values.insurerId, values.insurerName),
       insurerContractStartedAt:
-        !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : new Date(values.insurerContractStartedAt),
+        !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : parseDateInput(values.insurerContractStartedAt),
       insurerAnnouncedPriceIncrease: values.insurerAnnouncedPriceIncrease,
       hasInsuranceContract: values.hasInsuranceContract,
       hasExistingRoadAssistancePlan: values.hasExistingRoadAssistancePlan,
       existingRoadAssistancePlanEndDate:
         !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
           ? null
-          : new Date(values.existingRoadAssistancePlanEndDate),
+          : parseDateInput(values.existingRoadAssistancePlanEndDate),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
-      shareStartDate: values.shareStartDate === '' ? null : startOfMonth(new Date(values.shareStartDate)),
+      shareStartDate: (() => {
+        const parsed = values.shareStartDate === '' ? null : parseDateInput(values.shareStartDate);
+        return parsed == null ? null : startOfMonth(parsed);
+      })(),
       owner: toIdName(values.ownerId, values.ownerName),
     };
     await onSubmit(payload);
