@@ -286,6 +286,7 @@ export const carOnboardingFromSimulation = (
     carStickers: [],
     shareStartDate: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
+    preparationConfirmedAt: null,
     infoSessionDate: null,
     infoSessionPcId: null,
     infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,

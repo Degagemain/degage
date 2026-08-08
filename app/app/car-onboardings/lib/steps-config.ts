@@ -19,7 +19,7 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     id: 'info-session',
     titleKey: 'steps.infoSession.title',
     subtitleKey: 'steps.infoSession.subtitle',
-    actors: ['you'],
+    actors: ['you', 'degage'],
   },
   {
     id: 'user-info',
