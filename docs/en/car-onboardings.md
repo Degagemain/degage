@@ -155,15 +155,15 @@ This step is always complete; extra stickers are optional.
 
 ### Car name and share start date
 
-Chooses a unique name for the car and when it becomes available for sharing. This is the last preparation step. The car name uses letters and
-digits only and must not already exist in the legacy Play fleet or on another car onboarding. The share start date is always the first of a
-month. The earliest allowed month depends on the insurance details (or the first of the current month when there is no existing insurance
-contract). The latest allowed month is 18 months from today.
+Chooses a unique name for the car and when it becomes available for sharing. This is the last preparation step. The car name is 3–13 characters,
+uses letters and digits only (no special characters or dashes), and must not already exist in the legacy Play fleet or on another car
+onboarding. The share start date is always the first of a month. The earliest allowed month depends on the insurance details (or the first of
+the current month when there is no existing insurance contract). The latest allowed month is 18 months from today.
 
-| Property         | Description                                                  |
-| ---------------- | ------------------------------------------------------------ |
-| Car name         | Unique name for the car (letters and digits only).           |
-| Share start date | First day of the month when car sharing is planned to start. |
+| Property         | Description                                                         |
+| ---------------- | ------------------------------------------------------------------- |
+| Car name         | Unique name for the car (3–13 characters, letters and digits only). |
+| Share start date | First day of the month when car sharing is planned to start.        |
 
 This step unlocks only after the insurer step is complete. Changing insurance details that affect the earliest date clears the chosen share
 start date so the owner must pick again.

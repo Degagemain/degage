@@ -20,9 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added: at the end of car onboarding preparation, you confirm your info and
   commit to car sharing; after that, preparation details are read-only.
 - Added: during car onboarding preparation, the last step lets you pick a unique
-  name for your car and choose when sharing starts; names use letters and digits
-  only, and sharing always begins on the first of a month (earliest option depends
-  on your insurance).
+  name for your car and choose when sharing starts; names are 3–13 characters
+  (letters and digits only, no special characters or dashes), and sharing always
+  begins on the first of a month (earliest option depends on your insurance).
 - Changed: during car onboarding, extra stickers are optional; you can continue
   with only the always-included stickers.
 - Changed: car onboarding overview now shows the full journey in three chapters

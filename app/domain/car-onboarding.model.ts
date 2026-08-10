@@ -137,8 +137,8 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
 
 export type CarOnboarding = z.infer<typeof carOnboardingSchema>;
 
-export const CAR_ONBOARDING_CAR_NAME_MIN_LENGTH = 2;
-export const CAR_ONBOARDING_CAR_NAME_MAX_LENGTH = 50;
+export const CAR_ONBOARDING_CAR_NAME_MIN_LENGTH = 3;
+export const CAR_ONBOARDING_CAR_NAME_MAX_LENGTH = 13;
 export const carOnboardingCarNamePattern = /^[A-Za-z0-9]+$/;
 
 export const carOnboardingCarNameSchema = z

@@ -4,7 +4,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { carOnboardingCarNameSchema, getEarliestShareStartDate, getLatestShareStartDate, startOfMonth } from '@/domain/car-onboarding.model';
+import {
+  CAR_ONBOARDING_CAR_NAME_MAX_LENGTH,
+  carOnboardingCarNameSchema,
+  getEarliestShareStartDate,
+  getLatestShareStartDate,
+  startOfMonth,
+} from '@/domain/car-onboarding.model';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiGet, apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
@@ -46,7 +52,7 @@ const formatYearShort = (date: Date): string => String(date.getFullYear()).slice
 const formatShareStartLabel = (date: Date, locale: string): string =>
   date.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
 
-const sanitizeCarNameInput = (value: string): string => value.replace(/[^A-Za-z0-9]/g, '');
+const sanitizeCarNameInput = (value: string): string => value.replace(/[^A-Za-z0-9]/g, '').slice(0, CAR_ONBOARDING_CAR_NAME_MAX_LENGTH);
 
 export function ShareStartStep() {
   const t = useTranslations('carOnboardingPublic');
@@ -183,59 +189,61 @@ export function ShareStartStep() {
             type="text"
             value={carName}
             autoComplete="off"
-            maxLength={50}
+            maxLength={CAR_ONBOARDING_CAR_NAME_MAX_LENGTH}
             onChange={(e) => setCarName(sanitizeCarNameInput(e.target.value))}
           />
         </PublicField>
       </PublicPanel>
       <PublicPanel>
-        <div className={styles.shareStartLegend}>
-          <span>{t('steps.shareStart.legendLocked')}</span>
-          <span>{t('steps.shareStart.legendAvailable')}</span>
-        </div>
-        <div className={styles.shareStartTimeline} role="listbox" aria-label={t('steps.shareStart.title')}>
-          {months.map((cell) => {
-            const isSelected = selected != null && monthKey(selected) === monthKey(cell.date);
-            const className = [
-              styles.shareStartMonth,
-              cell.locked ? styles.shareStartMonthLocked : '',
-              cell.earliest ? styles.shareStartMonthEarliest : '',
-              isSelected ? styles.shareStartMonthSelected : '',
-            ]
-              .filter(Boolean)
-              .join(' ');
-
-            return (
-              <button
-                key={monthKey(cell.date)}
-                type="button"
-                role="option"
-                aria-selected={isSelected}
-                aria-disabled={cell.locked}
-                disabled={cell.locked}
-                className={className}
-                onClick={() => {
-                  if (!cell.locked) setSelected(cell.date);
-                }}
-              >
-                {cell.earliest ? <span className={styles.shareStartEarliestBadge}>{t('steps.shareStart.earliestBadge')}</span> : null}
-                <span className={styles.shareStartMonthLabel}>{formatMonthShort(cell.date, locale)}</span>
-                <span className={styles.shareStartYearLabel}>&apos;{formatYearShort(cell.date)}</span>
-              </button>
-            );
-          })}
-        </div>
-        <p className={styles.shareStartHelper}>
-          {carOnboarding.hasInsuranceContract
-            ? t('steps.shareStart.helperWithInsurance', { date: formatShareStartLabel(earliest, locale) })
-            : t('steps.shareStart.helperWithoutInsurance', { date: formatShareStartLabel(earliest, locale) })}
-        </p>
-        {selected != null ? (
-          <div className={styles.shareStartSummary}>
-            <div className={styles.shareStartSummaryLabel}>{formatShareStartLabel(selected, locale)}</div>
-            <div className={styles.shareStartSummaryHint}>{t('steps.shareStart.selectedHint')}</div>
+        <PublicField label={t('steps.shareStart.shareStartDateLabel')}>
+          <div className={styles.shareStartLegend}>
+            <span>{t('steps.shareStart.legendLocked')}</span>
+            <span>{t('steps.shareStart.legendAvailable')}</span>
           </div>
-        ) : null}
+          <div className={styles.shareStartTimeline} role="listbox" aria-label={t('steps.shareStart.shareStartDateLabel')}>
+            {months.map((cell) => {
+              const isSelected = selected != null && monthKey(selected) === monthKey(cell.date);
+              const className = [
+                styles.shareStartMonth,
+                cell.locked ? styles.shareStartMonthLocked : '',
+                cell.earliest ? styles.shareStartMonthEarliest : '',
+                isSelected ? styles.shareStartMonthSelected : '',
+              ]
+                .filter(Boolean)
+                .join(' ');
+
+              return (
+                <button
+                  key={monthKey(cell.date)}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  aria-disabled={cell.locked}
+                  disabled={cell.locked}
+                  className={className}
+                  onClick={() => {
+                    if (!cell.locked) setSelected(cell.date);
+                  }}
+                >
+                  {cell.earliest ? <span className={styles.shareStartEarliestBadge}>{t('steps.shareStart.earliestBadge')}</span> : null}
+                  <span className={styles.shareStartMonthLabel}>{formatMonthShort(cell.date, locale)}</span>
+                  <span className={styles.shareStartYearLabel}>&apos;{formatYearShort(cell.date)}</span>
+                </button>
+              );
+            })}
+          </div>
+          <p className={styles.shareStartHelper}>
+            {carOnboarding.hasInsuranceContract
+              ? t('steps.shareStart.helperWithInsurance', { date: formatShareStartLabel(earliest, locale) })
+              : t('steps.shareStart.helperWithoutInsurance', { date: formatShareStartLabel(earliest, locale) })}
+          </p>
+          {selected != null ? (
+            <div className={styles.shareStartSummary}>
+              <div className={styles.shareStartSummaryLabel}>{formatShareStartLabel(selected, locale)}</div>
+              <div className={styles.shareStartSummaryHint}>{t('steps.shareStart.selectedHint')}</div>
+            </div>
+          ) : null}
+        </PublicField>
       </PublicPanel>
       <StepActions stepId="share-start" onSave={handleSave} saveDisabled={!canSave} />
     </StepLayout>

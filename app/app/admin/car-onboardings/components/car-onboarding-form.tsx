@@ -8,6 +8,7 @@ import { Check, CheckCircle2, ChevronDown, CircleDashed, Lock } from 'lucide-rea
 import * as z from 'zod';
 
 import {
+  CAR_ONBOARDING_CAR_NAME_MAX_LENGTH,
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
@@ -1362,7 +1363,7 @@ export function CarOnboardingForm({
                     <AdminTextFieldControl
                       label={t('columns.carName')}
                       value={field.value}
-                      onChange={(value) => field.onChange(value.replace(/[^A-Za-z0-9]/g, ''))}
+                      onChange={(value) => field.onChange(value.replace(/[^A-Za-z0-9]/g, '').slice(0, CAR_ONBOARDING_CAR_NAME_MAX_LENGTH))}
                       error={
                         fieldState.error?.message ??
                         (carNameAvailability === 'invalid'

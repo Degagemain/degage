@@ -952,7 +952,8 @@ describe('share start date helpers', () => {
   it('marks the section complete when share start date and valid car name are set', () => {
     expect(isShareStartSectionComplete({ shareStartDate: null, carName: null })).toBe(false);
     expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: null })).toBe(false);
-    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'ab' })).toBe(true);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'ab' })).toBe(false);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'abc' })).toBe(true);
     expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'a!' })).toBe(false);
   });
 
