@@ -8,6 +8,10 @@ import { carOnboardingRelationsInclude, dbCarOnboardingToDomainWithRelations } f
 
 export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboardingWhereInput => {
   return {
+    ...(filter.excludeId != null ? { id: { not: filter.excludeId } } : {}),
+    ...(filter.carName != null && filter.carName.trim() !== ''
+      ? { carName: { equals: filter.carName.trim(), mode: 'insensitive' as const } }
+      : {}),
     ...(filter.statusInPreparation.length > 0 ? { statusInPreparation: { in: filter.statusInPreparation } } : {}),
     ...(filter.carValueStatuses.length > 0 ? { carValueStatus: { in: filter.carValueStatuses } } : {}),
     ...(filter.insurerStatuses.length > 0 ? { insurerStatus: { in: filter.insurerStatuses } } : {}),
@@ -17,6 +21,7 @@ export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboarding
             { street: { contains: filter.query.trim(), mode: 'insensitive' as const } },
             { phone: { contains: filter.query.trim(), mode: 'insensitive' as const } },
             { carTypeOther: { contains: filter.query.trim(), mode: 'insensitive' as const } },
+            { carName: { contains: filter.query.trim(), mode: 'insensitive' as const } },
           ],
         }
       : {}),

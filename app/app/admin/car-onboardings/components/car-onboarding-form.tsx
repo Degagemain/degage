@@ -14,6 +14,7 @@ import {
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   CarOnboardingRoadAssistancePlanStatus,
+  carOnboardingCarNameSchema,
   isCarInfoSectionComplete,
   isInfoSessionSectionComplete,
   isInsurerContractStartedWithinLastYear,
@@ -24,6 +25,7 @@ import {
   isUserInfoSectionComplete,
   startOfMonth,
 } from '@/domain/car-onboarding.model';
+import { apiGet } from '@/app/lib/api-client';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
 import { Button } from '@/app/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
@@ -116,6 +118,7 @@ interface FormValues {
   existingRoadAssistancePlanEndDate: string;
   roadAssistancePlanId: string;
   roadAssistancePlanName: string;
+  carName: string;
   shareStartDate: string;
   ownerId: string;
   ownerName: string;
@@ -157,6 +160,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
+    carName: row.carName ?? '',
     shareStartDate: formatDateForInput(row.shareStartDate),
     ownerId: row.owner?.id ?? NONE,
     ownerName: row.owner?.name ?? '',
@@ -198,6 +202,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     existingRoadAssistancePlanEndDate: z.string(),
     roadAssistancePlanId: z.string(),
     roadAssistancePlanName: z.string(),
+    carName: z.string(),
     shareStartDate: z.string(),
     ownerId: z.string(),
     ownerName: z.string(),
@@ -327,6 +332,8 @@ export function CarOnboardingForm({
   const [isClearConfirmationDialogOpen, setIsClearConfirmationDialogOpen] = useState(false);
   const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [carNameAvailability, setCarNameAvailability] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
+  const carNameRequestIdRef = useRef(0);
   const schema = useMemo(() => createSchema(tCommon), [tCommon]);
   const initialState = useMemo(() => getInitialState(initialCarOnboarding), [initialCarOnboarding]);
   const initialStateKey = useMemo(() => JSON.stringify(initialState), [initialState]);
@@ -351,6 +358,51 @@ export function CarOnboardingForm({
   };
 
   const watchedValues = form.watch();
+
+  useEffect(() => {
+    const carName = watchedValues.carName ?? '';
+    const onboardingId = initialCarOnboarding.id;
+    if (!onboardingId) return;
+
+    const parsed = carOnboardingCarNameSchema.safeParse(carName);
+    if (!parsed.success) {
+      setCarNameAvailability(carName.trim() === '' ? 'idle' : 'invalid');
+      return;
+    }
+
+    if (initialCarOnboarding.carName != null && initialCarOnboarding.carName.toLowerCase() === parsed.data.toLowerCase()) {
+      setCarNameAvailability('available');
+      return;
+    }
+
+    setCarNameAvailability('checking');
+    const requestId = ++carNameRequestIdRef.current;
+    const timeoutId = window.setTimeout(() => {
+      void (async () => {
+        try {
+          const response = await apiGet(
+            `/api/car-onboardings/${onboardingId}/car-name-availability?carName=${encodeURIComponent(parsed.data)}`,
+          );
+          if (requestId !== carNameRequestIdRef.current) return;
+          if (!response.ok) {
+            setCarNameAvailability('idle');
+            return;
+          }
+          const body = (await response.json()) as { available?: boolean };
+          if (requestId !== carNameRequestIdRef.current) return;
+          setCarNameAvailability(body.available === true ? 'available' : 'taken');
+        } catch {
+          if (requestId !== carNameRequestIdRef.current) return;
+          setCarNameAvailability('idle');
+        }
+      })();
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [watchedValues.carName, initialCarOnboarding.carName, initialCarOnboarding.id]);
+
   const savedOwnerId = initialCarOnboarding.owner?.id ?? NONE;
   const playConnectorComplete = isPlayConnectorSectionComplete(initialCarOnboarding);
   const infoSessionComplete = isInfoSessionSectionComplete(initialCarOnboarding);
@@ -393,6 +445,7 @@ export function CarOnboardingForm({
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const shareStartComplete = isShareStartSectionComplete({
     shareStartDate: watchedValues.shareStartDate.trim() === '' ? null : parseDateInput(watchedValues.shareStartDate),
+    carName: watchedValues.carName.trim() === '' ? null : watchedValues.carName,
   });
   const preparationReady = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY;
   const preparationLocked = initialCarOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED;
@@ -535,6 +588,7 @@ export function CarOnboardingForm({
           ? null
           : parseDateInput(values.existingRoadAssistancePlanEndDate),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
+      carName: values.carName.trim() === '' ? null : values.carName.trim(),
       shareStartDate: (() => {
         const parsed = values.shareStartDate === '' ? null : parseDateInput(values.shareStartDate);
         return parsed == null ? null : startOfMonth(parsed);
@@ -1283,6 +1337,33 @@ export function CarOnboardingForm({
             <FieldSet className="max-w-2xl">
               <FieldLegend>{t('tabs.shareStart')}</FieldLegend>
               <FieldGroup className="gap-6">
+                <Controller
+                  name="carName"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.carName')}
+                      value={field.value}
+                      onChange={(value) => field.onChange(value.replace(/[^A-Za-z0-9]/g, ''))}
+                      error={
+                        fieldState.error?.message ??
+                        (carNameAvailability === 'invalid'
+                          ? t('form.help.carName')
+                          : carNameAvailability === 'taken'
+                            ? t('form.help.carNameTaken')
+                            : undefined)
+                      }
+                      description={
+                        carNameAvailability === 'checking'
+                          ? t('form.help.carNameChecking')
+                          : carNameAvailability === 'available'
+                            ? t('form.help.carNameAvailable')
+                            : t('form.help.carName')
+                      }
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
                 <Controller
                   name="shareStartDate"
                   control={form.control}

@@ -143,20 +143,22 @@ pas enregistrés sur l'enregistrement d'intégration.
 
 Cette étape est toujours complète ; les stickers supplémentaires sont facultatifs.
 
-### Date de début du partage
+### Nom du véhicule et date de début du partage
 
-Choisit quand le véhicule devient disponible pour le partage. C'est la dernière étape de préparation. La date est toujours le premier du mois.
-Le mois le plus tôt autorisé dépend des détails d'assurance (ou du premier du mois en cours lorsqu'il n'y a pas de contrat d'assurance
-existant). Le mois le plus tard autorisé est 18 mois à partir d'aujourd'hui.
+Choisit un nom unique pour le véhicule et quand il devient disponible pour le partage. C'est la dernière étape de préparation. Le nom utilise
+uniquement des lettres et des chiffres et ne doit pas déjà exister dans la flotte Play legacy ni sur un autre onboarding. La date de début est
+toujours le premier du mois. Le mois le plus tôt autorisé dépend des détails d'assurance (ou du premier du mois en cours lorsqu'il n'y a pas de
+contrat d'assurance existant). Le mois le plus tard autorisé est 18 mois à partir d'aujourd'hui.
 
 | Propriété             | Description                                                    |
 | --------------------- | -------------------------------------------------------------- |
+| Nom du véhicule       | Nom unique du véhicule (lettres et chiffres uniquement).       |
 | Date de début partage | Premier jour du mois auquel le partage est prévu de commencer. |
 
 Cette étape ne se déverrouille qu'après que l'étape assurance est complète. Modifier les détails d'assurance qui affectent la date la plus tôt
 efface la date de début choisie afin que le propriétaire doive la choisir à nouveau.
 
-Cette étape est complète lorsqu'une date de début est définie.
+Cette étape est complète lorsqu'un nom de véhicule valide et une date de début sont définis.
 
 ### Finaliser
 

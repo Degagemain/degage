@@ -76,6 +76,10 @@ Mock endpoints:
 3. It loads `/` and requires an `a[href="/admin/clear"]` link. If enable fails or that link is missing, it throws `unauthorized`.
 4. Admin-mode-only Play actions (e.g. car name availability) should use this helper instead of `getPlaySessionCookie`.
 
+Car onboarding car-name availability uses admin mode via the oldest Code1 admin user (temporary).
+
+`// TODO: replace oldest-admin lookup with a dedicated admin-mode play connector account.`
+
 ## API
 
 | Method   | Path                                       | Description                                                                                                                                                 |

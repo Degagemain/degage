@@ -1612,6 +1612,7 @@
         "roadAssistancePlan": "Pechverhelping",
         "roadAssistancePlanStatus": "Status pechverhelpingsplan",
         "shareStartDate": "Startdatum autodelen",
+        "carName": "Naam van de wagen",
         "preparationConfirmedAt": "Voorbereiding bevestigd op",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
@@ -1628,7 +1629,7 @@
         "insurer": "Verzekering",
         "roadAssistancePlan": "Pechverhelping",
         "carValue": "Waarde van de wagen",
-        "shareStart": "Startdatum autodelen",
+        "shareStart": "Naam & startdatum",
         "finalize": "Afronden"
       },
       "preparationStatus": {
@@ -1790,7 +1791,11 @@
           "isNewCarReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
           "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft.",
-          "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand."
+          "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand.",
+          "carName": "Alleen letters en cijfers. Moet uniek zijn onder Dégage-wagens en andere onboardings.",
+          "carNameTaken": "Deze naam is al in gebruik.",
+          "carNameChecking": "Beschikbaarheid controleren…",
+          "carNameAvailable": "Deze naam is beschikbaar."
         }
       },
       "detailPage": {
@@ -2962,10 +2967,16 @@
         "shareStartCleared": "Je startdatum voor autodelen is gewist omdat de verzekeringsgegevens gewijzigd zijn."
       },
       "shareStart": {
-        "title": "Startdatum autodelen",
-        "subtitle": "Kies wanneer je wagen beschikbaar wordt voor leden",
-        "panelTitle": "Startdatum autodelen",
-        "panelBody": "Je start altijd op de eerste van de maand. Kies wanneer je wagen beschikbaar wordt voor leden.",
+        "title": "Naam & startdatum",
+        "subtitle": "Kies een unieke naam voor je wagen en wanneer autodelen start",
+        "panelTitle": "Naam van de wagen en startdatum",
+        "panelBody": "Kies een unieke naam voor je wagen (alleen letters en cijfers). Autodelen start altijd op de eerste van de maand—kies wanneer je wagen beschikbaar wordt voor leden.",
+        "carNameLabel": "Naam van de wagen",
+        "carNameHint": "Alleen letters en cijfers, minstens 2 tekens.",
+        "carNameInvalid": "Gebruik alleen letters en cijfers (2–50 tekens).",
+        "carNameTaken": "Deze naam is al in gebruik. Kies een andere.",
+        "carNameChecking": "Beschikbaarheid controleren…",
+        "carNameAvailable": "Deze naam is beschikbaar.",
         "legendLocked": "◄ Vergrendeld (verzekering)",
         "legendAvailable": "Beschikbaar ►",
         "earliestBadge": "Vroegst",

@@ -1,3 +1,4 @@
+import { assertCarOnboardingCarNameAvailable } from '@/actions/car-onboarding/assert-car-name-available';
 import {
   carOnboardingShareStartInputSchema,
   isInsurerSectionComplete,
@@ -36,8 +37,14 @@ export const updateCarOnboardingShareStart = async (id: string, body: unknown, u
     throw new CarOnboardingInvalidShareStartDateError();
   }
 
+  const carNameUnchanged = existing.carName != null && existing.carName.toLowerCase() === parsed.carName.toLowerCase();
+  if (!carNameUnchanged) {
+    await assertCarOnboardingCarNameAvailable(parsed.carName, { excludeOnboardingId: id });
+  }
+
   await saveCarOnboardingWithPreparationCheck({
     ...existing,
     shareStartDate,
+    carName: parsed.carName,
   });
 };

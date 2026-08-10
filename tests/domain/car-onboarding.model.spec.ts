@@ -931,9 +931,11 @@ describe('share start date helpers', () => {
     expect(isValidShareStartDate(new Date(2028, 2, 1), onboarding, today)).toBe(false);
   });
 
-  it('marks the section complete when a share start date is set', () => {
-    expect(isShareStartSectionComplete({ shareStartDate: null })).toBe(false);
-    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today) })).toBe(true);
+  it('marks the section complete when share start date and valid car name are set', () => {
+    expect(isShareStartSectionComplete({ shareStartDate: null, carName: null })).toBe(false);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: null })).toBe(false);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'ab' })).toBe(true);
+    expect(isShareStartSectionComplete({ shareStartDate: startOfMonth(today), carName: 'a!' })).toBe(false);
   });
 
   it('clears share start when insurance fields that affect earliest date change', () => {
