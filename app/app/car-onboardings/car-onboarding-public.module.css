@@ -540,21 +540,10 @@
   line-height: 1;
 }
 
-.stateIconTodo {
-  background: var(--demo-blue-bg);
-  color: var(--demo-blue);
-  border: 1.5px solid var(--demo-blue-border);
-}
-
-.stateIconPending {
-  background: var(--demo-amber-bg);
-  color: var(--demo-amber);
-  border: 1.5px solid var(--demo-amber-border);
-}
-
 .stateIconDone {
   background: var(--demo-green-bg);
   color: var(--demo-green);
+  border: 1.5px solid var(--demo-green);
 }
 
 .stateIconAbsolute {

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: during car onboarding, a green check next to the step title appears
+  only when that step is done.
 - Added: during car onboarding user info, you enter a house number next to the
   street.
 - Changed: during car onboarding, steps with a save action now offer Save & Next

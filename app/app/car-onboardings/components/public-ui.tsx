@@ -79,20 +79,13 @@ export function PublicInfoPanel({ title, body }: { title: string; body: string }
 export function StateIcon({ state, inline }: { state: StepState; inline?: boolean }) {
   const t = useTranslations('carOnboardingPublic.states');
 
-  if (state === 'blocked') return null;
+  if (state !== 'done') return null;
 
-  const classMap = {
-    todo: styles.stateIconTodo,
-    pending: styles.stateIconPending,
-    done: styles.stateIconDone,
-  };
-
-  const glyph = state === 'done' ? '✓' : state === 'pending' ? '…' : '○';
-  const label = t(state);
+  const label = t('done');
 
   return (
-    <span className={cn(styles.stateIcon, !inline && styles.stateIconAbsolute, classMap[state])} title={label} aria-label={label}>
-      {glyph}
+    <span className={cn(styles.stateIcon, styles.stateIconDone, !inline && styles.stateIconAbsolute)} title={label} aria-label={label}>
+      ✓
     </span>
   );
 }
