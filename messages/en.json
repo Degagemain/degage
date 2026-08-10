@@ -63,7 +63,7 @@
       "clearSearch": "Clear search"
     },
     "viewOptions": {
-      "view": "View",
+      "columns": "Columns",
       "toggleColumns": "Toggle columns"
     },
     "facetedFilter": {

@@ -63,7 +63,7 @@
       "clearSearch": "Effacer la recherche"
     },
     "viewOptions": {
-      "view": "Affichage",
+      "columns": "Colonnes",
       "toggleColumns": "Afficher/masquer les colonnes"
     },
     "facetedFilter": {

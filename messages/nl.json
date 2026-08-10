@@ -63,7 +63,7 @@
       "clearSearch": "Zoekopdracht wissen"
     },
     "viewOptions": {
-      "view": "Weergave",
+      "columns": "Kolommen",
       "toggleColumns": "Kolommen tonen/verbergen"
     },
     "facetedFilter": {

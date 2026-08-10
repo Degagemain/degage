@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Changed: the Columns control on admin tables can be searched, with matches
+  highlighted in the list.
 - Added: car onboarding records include a house number on user info.
 - Changed: car onboarding preparation is Ready only after the owner confirms;
   Finalize shows when they confirmed.

@@ -69,7 +69,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
         const id = row.original.id;
         if (id) {
           return (
-            <Link href={`/app/admin/simulations/${id}`} className="text-sm text-primary hover:underline focus-visible:underline">
+            <Link href={`/app/admin/simulations/${id}`} className="text-primary text-sm hover:underline focus-visible:underline">
               {label}
             </Link>
           );
