@@ -12,11 +12,16 @@ describe('createPlayCar', () => {
     vi.clearAllMocks();
   });
 
-  it('creates a car with no fields and returns the id', async () => {
+  it('validates input and creates a car', async () => {
     vi.mocked(playConnectorCreateCar).mockResolvedValueOnce({ id: 3961 });
 
-    await expect(createPlayCar('user-1')).resolves.toEqual({ id: 3961 });
+    await expect(createPlayCar('user-1', { brand: 'Opel', fuel: 'PETROL' })).resolves.toEqual({ id: 3961 });
 
-    expect(playConnectorCreateCar).toHaveBeenCalledWith('user-1');
+    expect(playConnectorCreateCar).toHaveBeenCalledWith('user-1', { brand: 'Opel', fuel: 'PETROL' });
+  });
+
+  it('rejects invalid fuel before calling play connector', async () => {
+    await expect(createPlayCar('user-1', { fuel: 'BIODIESEL' } as never)).rejects.toThrow();
+    expect(playConnectorCreateCar).not.toHaveBeenCalled();
   });
 });
