@@ -16,10 +16,11 @@ type StepActionsProps = {
   stepId: StepId;
   onSave?: () => Promise<boolean>;
   saveDisabled?: boolean;
+  disabled?: boolean;
   showSave?: boolean;
 };
 
-export function StepActions({ stepId, onSave, saveDisabled, showSave = true }: StepActionsProps) {
+export function StepActions({ stepId, onSave, saveDisabled, disabled = false, showSave = true }: StepActionsProps) {
   const t = useTranslations('carOnboardingPublic');
   const readOnly = useStepReadOnly();
   const router = useRouter();
@@ -28,6 +29,7 @@ export function StepActions({ stepId, onSave, saveDisabled, showSave = true }: S
   const nextHref = next ? `${basePath}/${next.id}` : null;
   const canSave = showSave && Boolean(onSave) && !readOnly;
   const [isNavigatingNext, setIsNavigatingNext] = useState(false);
+  const actionsDisabled = disabled || Boolean(saveDisabled);
 
   if (!canSave && !nextHref) return null;
 
@@ -38,7 +40,7 @@ export function StepActions({ stepId, onSave, saveDisabled, showSave = true }: S
           onClick={() => {
             void onSave();
           }}
-          disabled={saveDisabled}
+          disabled={actionsDisabled}
         >
           {t('save')}
         </PublicBtn>
@@ -46,7 +48,7 @@ export function StepActions({ stepId, onSave, saveDisabled, showSave = true }: S
       {nextHref ? (
         canSave && onSave ? (
           <PublicBtn
-            disabled={saveDisabled || isNavigatingNext}
+            disabled={actionsDisabled || isNavigatingNext}
             onClick={() => {
               void (async () => {
                 setIsNavigatingNext(true);
@@ -60,6 +62,10 @@ export function StepActions({ stepId, onSave, saveDisabled, showSave = true }: S
               })();
             }}
           >
+            {t('saveAndNext')} →
+          </PublicBtn>
+        ) : disabled ? (
+          <PublicBtn variant="secondary" disabled>
             {t('next')} →
           </PublicBtn>
         ) : (

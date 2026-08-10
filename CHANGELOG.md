@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: during car onboarding, steps with a save action now offer Save & Next
+  instead of Next alone.
+- Fixed: during car onboarding, you cannot upload another document or continue
+  while a file upload is still in progress.
 - Added: at the end of car onboarding preparation, you confirm your info and
   commit to car sharing; after that, preparation details are read-only.
 - Added: during car onboarding preparation, the last step lets you pick a unique

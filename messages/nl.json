@@ -2814,6 +2814,7 @@
     "stepReadOnly": "Deze stap is alleen-lezen. Je hebt je gegevens bevestigd, de voorbereiding is vergrendeld, of deze sectie is al afgerond.",
     "save": "Opslaan",
     "next": "Volgende",
+    "saveAndNext": "Opslaan & Volgende",
     "saveSuccess": "Succesvol opgeslagen.",
     "confirmInfo": {
       "title": "Gegevens bevestigen",

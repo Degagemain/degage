@@ -2805,6 +2805,7 @@
     "stepReadOnly": "This step is read-only. You confirmed your information, preparation is locked, or this section is already complete.",
     "save": "Save",
     "next": "Next",
+    "saveAndNext": "Save & Next",
     "saveSuccess": "Saved successfully.",
     "confirmInfo": {
       "title": "Confirm info",

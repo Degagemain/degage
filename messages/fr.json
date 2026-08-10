@@ -2805,6 +2805,7 @@
     "stepReadOnly": "Cette étape est en lecture seule. Vous avez confirmé vos informations, la préparation est verrouillée, ou cette section est déjà complète.",
     "save": "Enregistrer",
     "next": "Suivant",
+    "saveAndNext": "Enregistrer & Suivant",
     "saveSuccess": "Enregistré avec succès.",
     "confirmInfo": {
       "title": "Confirmer les infos",
