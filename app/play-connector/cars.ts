@@ -2,7 +2,9 @@ import { getPlayAdminModeSessionCookie } from '@/actions/play-connector/get-admi
 import { getPlaySessionCookie } from '@/actions/play-connector/get-session-cookie';
 import { fetchPlay, postPlayJson } from '@/play-connector/client';
 import { PlayConnectorError } from '@/play-connector/errors';
-import { parseCarsPageTotal } from '@/play-connector/parsers/cars-page.parser';
+import { parseCarsPageNames } from '@/play-connector/parsers/cars-page.parser';
+
+const CARS_PAGE_SIZE = 50;
 
 const buildCarsNameFilter = (name: string): string => `name=${name},brand=,license_plate=,owner=,zipCode=,city=,district=`;
 
@@ -13,15 +15,24 @@ export const playConnectorIsCarNameAvailable = async (adminModeUserId: string, n
 
   const { cookieHeader } = await getPlayAdminModeSessionCookie(adminModeUserId);
   const filter = encodeURIComponent(buildCarsNameFilter(name));
-  const path = `/cars/page?page=1&pageSize=50&asc=1&orderBy=&filter=${filter}`;
-  const { html } = await fetchPlay(path, cookieHeader);
-  const total = parseCarsPageTotal(html);
+  const needle = name.toLowerCase();
 
-  if (total === null) {
-    throw new PlayConnectorError('fetch_failed', 'Play cars page pagination missing');
+  let page = 1;
+  while (true) {
+    const path = `/cars/page?page=${page}&pageSize=${CARS_PAGE_SIZE}&asc=1&orderBy=&filter=${filter}`;
+    const { html } = await fetchPlay(path, cookieHeader);
+    const names = parseCarsPageNames(html);
+
+    if (names.some((candidate) => candidate.toLowerCase() === needle)) {
+      return false;
+    }
+
+    if (names.length < CARS_PAGE_SIZE) {
+      return true;
+    }
+
+    page += 1;
   }
-
-  return total === 0;
 };
 
 const emptyPlayCarCreatePayload = () => ({

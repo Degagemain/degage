@@ -26,10 +26,10 @@ describe('playConnectorIsCarNameAvailable', () => {
     vi.clearAllMocks();
   });
 
-  it('returns true when pagination total is 0', async () => {
+  it('returns true when no car names match', async () => {
     vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
     vi.mocked(fetchPlay).mockResolvedValueOnce({
-      html: '<p id="pagination" name="0,0"></p>',
+      html: '<td class="empty-row">Geen enkele auto</td>',
       status: 200,
     });
 
@@ -39,14 +39,24 @@ describe('playConnectorIsCarNameAvailable', () => {
     expect(fetchPlay).toHaveBeenCalledWith(`/cars/page?page=1&pageSize=50&asc=1&orderBy=&filter=${expectedFilter}`, cookieHeader);
   });
 
-  it('returns false when pagination total is greater than 0', async () => {
+  it('returns false when a result name matches case-insensitively', async () => {
     vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
     vi.mocked(fetchPlay).mockResolvedValueOnce({
-      html: '<p id="pagination" name="1,1"></p>',
+      html: '<a href="/cars/view?id=3493">2BAB</a>',
       status: 200,
     });
 
     await expect(playConnectorIsCarNameAvailable(userId, '2Bab')).resolves.toBe(false);
+  });
+
+  it('returns true when results are substring hits without an exact name match', async () => {
+    vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
+    vi.mocked(fetchPlay).mockResolvedValueOnce({
+      html: '<a href="/cars/view?id=3493">2BAB</a>',
+      status: 200,
+    });
+
+    await expect(playConnectorIsCarNameAvailable(userId, 'Bab')).resolves.toBe(true);
   });
 
   it('rejects names containing comma or equals', async () => {
