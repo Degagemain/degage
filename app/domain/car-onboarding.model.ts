@@ -125,6 +125,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     inspectionCertificate: idNameSchema.nullable().default(null),
     pinkForm: idNameSchema.nullable().default(null),
     carStickers: z.array(idNameSchema).default([]),
+    carName: z.string().nullable().default(null),
     shareStartDate: z.coerce.date().nullable().default(null),
     preparationConfirmedAt: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
@@ -134,6 +135,16 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
   .strict();
 
 export type CarOnboarding = z.infer<typeof carOnboardingSchema>;
+
+export const CAR_ONBOARDING_CAR_NAME_MIN_LENGTH = 2;
+export const CAR_ONBOARDING_CAR_NAME_MAX_LENGTH = 50;
+export const carOnboardingCarNamePattern = /^[A-Za-z0-9]+$/;
+
+export const carOnboardingCarNameSchema = z
+  .string()
+  .min(CAR_ONBOARDING_CAR_NAME_MIN_LENGTH)
+  .max(CAR_ONBOARDING_CAR_NAME_MAX_LENGTH)
+  .regex(carOnboardingCarNamePattern);
 
 export const carOnboardingCarInfoInputSchema = carOnboardingCarInfoSchema
   .pick({ brand: true, fuelType: true, carType: true })
@@ -216,6 +227,7 @@ export type CarOnboardingCarStickersInput = z.infer<typeof carOnboardingCarStick
 export const carOnboardingShareStartInputSchema = z
   .object({
     shareStartDate: z.coerce.date(),
+    carName: carOnboardingCarNameSchema,
   })
   .strict();
 
@@ -284,6 +296,7 @@ export const carOnboardingFromSimulation = (
     inspectionCertificate: null,
     pinkForm: null,
     carStickers: [],
+    carName: null,
     shareStartDate: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     preparationConfirmedAt: null,
@@ -443,8 +456,12 @@ export const isValidShareStartDate = (date: Date | string, onboarding: ShareStar
   return normalized >= earliest.getTime() && normalized <= latest.getTime();
 };
 
-export const isShareStartSectionComplete = (onboarding: Pick<CarOnboarding, 'shareStartDate'>): boolean => {
-  return onboarding.shareStartDate != null;
+export const isShareStartSectionComplete = (onboarding: Pick<CarOnboarding, 'shareStartDate' | 'carName'>): boolean => {
+  return (
+    onboarding.shareStartDate != null &&
+    isNonEmptyString(onboarding.carName) &&
+    carOnboardingCarNameSchema.safeParse(onboarding.carName).success
+  );
 };
 
 export const shouldClearShareStartOnInsurerChange = (
@@ -544,6 +561,7 @@ export const isPreparationConfirmable = (
     | 'roadAssistancePlanStatus'
     | 'carStickers'
     | 'shareStartDate'
+    | 'carName'
     | 'preparationConfirmedAt'
     | 'statusInPreparation'
   >,

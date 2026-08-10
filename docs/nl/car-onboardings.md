@@ -138,20 +138,22 @@ onboarding-record.
 
 Deze stap is altijd compleet; extra stickers zijn optioneel.
 
-### Startdatum autodelen
+### Naam van de wagen en startdatum autodelen
 
-Kiest wanneer de wagen beschikbaar wordt voor autodelen. Dit is de laatste voorbereidingsstap. De datum is altijd de eerste van de maand. De
-vroegst toegelaten maand hangt af van de verzekeringsgegevens (of de eerste van de huidige maand wanneer er geen bestaand verzekeringscontract
-is). De laatst toegelaten maand is 18 maanden vanaf vandaag.
+Kiest een unieke naam voor de wagen en wanneer die beschikbaar wordt voor autodelen. Dit is de laatste voorbereidingsstap. De naam gebruikt
+alleen letters en cijfers en mag nog niet bestaan in het legacy Play-wagenpark of bij een andere auto-onboarding. De startdatum is altijd de
+eerste van de maand. De vroegst toegelaten maand hangt af van de verzekeringsgegevens (of de eerste van de huidige maand wanneer er geen
+bestaand verzekeringscontract is). De laatst toegelaten maand is 18 maanden vanaf vandaag.
 
-| Eigenschap       | Beschrijving                                                    |
-| ---------------- | --------------------------------------------------------------- |
-| Startdatum delen | Eerste dag van de maand waarop autodelen gepland is te starten. |
+| Eigenschap        | Beschrijving                                                    |
+| ----------------- | --------------------------------------------------------------- |
+| Naam van de wagen | Unieke naam voor de wagen (alleen letters en cijfers).          |
+| Startdatum delen  | Eerste dag van de maand waarop autodelen gepland is te starten. |
 
 Deze stap ontgrendelt pas nadat de verzekeringsstap compleet is. Wijzigingen aan verzekeringsgegevens die de vroegste datum beïnvloeden wissen
 de gekozen startdatum, zodat de eigenaar opnieuw moet kiezen.
 
-Deze stap is compleet wanneer een startdatum is ingesteld.
+Deze stap is compleet wanneer een geldige wagennaam en een startdatum zijn ingesteld.
 
 ### Afronden
 

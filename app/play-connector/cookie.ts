@@ -47,6 +47,35 @@ export const parseSetCookieHeaders = (headers: string[]): ParsedPlayCookie[] => 
 
 export const buildCookieHeader = (cookies: ParsedPlayCookie[]): string => cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ');
 
+export const parseCookieHeader = (cookieHeader: string): ParsedPlayCookie[] => {
+  if (!cookieHeader.trim()) {
+    return [];
+  }
+
+  return cookieHeader.split(';').map((part) => {
+    const trimmed = part.trim();
+    const eqIndex = trimmed.indexOf('=');
+    if (eqIndex === -1) {
+      return { name: trimmed, value: '' };
+    }
+    return {
+      name: trimmed.slice(0, eqIndex).trim(),
+      value: trimmed.slice(eqIndex + 1).trim(),
+    };
+  });
+};
+
+export const mergeSetCookiesIntoHeader = (cookieHeader: string, setCookieHeaders: string[]): string => {
+  const byName = new Map<string, string>();
+  for (const cookie of parseCookieHeader(cookieHeader)) {
+    byName.set(cookie.name, cookie.value);
+  }
+  for (const cookie of parseSetCookieHeaders(setCookieHeaders)) {
+    byName.set(cookie.name, cookie.value);
+  }
+  return buildCookieHeader([...byName.entries()].map(([name, value]) => ({ name, value })));
+};
+
 export const computeSessionExpiry = (cookies: ParsedPlayCookie[]): Date | null => {
   const expiries = cookies
     .map((cookie) => {

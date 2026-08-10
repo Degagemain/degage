@@ -23,6 +23,10 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
   saveCarOnboardingWithPreparationCheck: vi.fn(),
 }));
 
+vi.mock('@/actions/car-onboarding/assert-car-name-available', () => ({
+  assertCarOnboardingCarNameAvailable: vi.fn(),
+}));
+
 vi.mock('next/headers', () => ({
   headers: vi.fn().mockResolvedValue(new Headers()),
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
@@ -33,6 +37,7 @@ import { auth } from '@/auth';
 import { updateCarOnboardingShareStart } from '@/actions/car-onboarding/update-share-start';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { assertCarOnboardingCarNameAvailable } from '@/actions/car-onboarding/assert-car-name-available';
 import { CarOnboardingInsurerStatus, startOfMonth } from '@/domain/car-onboarding.model';
 import { carOnboarding } from '../../../builders/car-onboarding.builder';
 
@@ -47,6 +52,7 @@ describe('PUT /api/car-onboardings/[id]/share-start', () => {
   const shareStartDate = startOfMonth(new Date());
   const body = {
     shareStartDate: `${shareStartDate.getFullYear()}-${String(shareStartDate.getMonth() + 1).padStart(2, '0')}-01`,
+    carName: 'MyCar',
   };
 
   it('returns 401 when unauthenticated', async () => {
@@ -67,6 +73,7 @@ describe('PUT /api/car-onboardings/[id]/share-start', () => {
         insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
       }),
     );
+    vi.mocked(assertCarOnboardingCarNameAvailable).mockResolvedValueOnce(undefined);
     vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(carOnboarding({ id: validId }));
     const request = { json: vi.fn().mockResolvedValue(body) } as any;
     const response = await PUT(request, { params: Promise.resolve({ id: validId }) });
@@ -88,6 +95,7 @@ describe('PUT /api/car-onboardings/[id]/share-start', () => {
     const request = {
       json: vi.fn().mockResolvedValue({
         shareStartDate: `${midMonth.getFullYear()}-${String(midMonth.getMonth() + 1).padStart(2, '0')}-15`,
+        carName: 'MyCar',
       }),
     } as any;
     const response = await PUT(request, { params: Promise.resolve({ id: validId }) });

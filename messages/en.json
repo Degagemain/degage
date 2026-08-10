@@ -1612,6 +1612,7 @@
         "roadAssistancePlan": "Road assistance plan",
         "roadAssistancePlanStatus": "Road assistance plan status",
         "shareStartDate": "Share start date",
+        "carName": "Car name",
         "preparationConfirmedAt": "Preparation confirmed at",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
@@ -1628,7 +1629,7 @@
         "insurer": "Insurer",
         "roadAssistancePlan": "Road assistance plan",
         "carValue": "Car value",
-        "shareStart": "Share start date",
+        "shareStart": "Car name & start date",
         "finalize": "Finalize"
       },
       "preparationStatus": {
@@ -1790,7 +1791,11 @@
           "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
           "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
-          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month."
+          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month.",
+          "carName": "Letters and digits only. Must be unique across Dégage cars and other onboardings.",
+          "carNameTaken": "This name is already taken.",
+          "carNameChecking": "Checking availability…",
+          "carNameAvailable": "This name is available."
         }
       },
       "detailPage": {
@@ -2953,10 +2958,16 @@
         "shareStartCleared": "Your share start date was cleared because the insurance details changed."
       },
       "shareStart": {
-        "title": "Start date",
-        "subtitle": "Choose when your car becomes available for sharing",
-        "panelTitle": "Share start date",
-        "panelBody": "You always start on the first of the month. Choose when your car becomes available for members.",
+        "title": "Name & start date",
+        "subtitle": "Choose a unique name for your car and when sharing starts",
+        "panelTitle": "Car name and share start",
+        "panelBody": "Pick a unique name for your car (letters and digits only). Sharing always starts on the first of the month—choose when your car becomes available for members.",
+        "carNameLabel": "Car name",
+        "carNameHint": "Letters and digits only, at least 2 characters.",
+        "carNameInvalid": "Use only letters and digits (2–50 characters).",
+        "carNameTaken": "This name is already taken. Please choose another.",
+        "carNameChecking": "Checking availability…",
+        "carNameAvailable": "This name is available.",
         "legendLocked": "◄ Locked (insurance)",
         "legendAvailable": "Available ►",
         "earliestBadge": "Earliest",

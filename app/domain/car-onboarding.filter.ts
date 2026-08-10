@@ -12,6 +12,8 @@ export enum CarOnboardingSortColumns {
 export const carOnboardingFilterSchema = z
   .object({
     query: z.string().nullable().default(null),
+    carName: z.string().nullable().default(null),
+    excludeId: z.uuid().nullable().default(null),
     statusInPreparation: z.array(z.enum(CarOnboardingInPreparationStatus)).default([]),
     carValueStatuses: z.array(z.enum(CarOnboardingCarValueStatus)).default([]),
     insurerStatuses: z.array(z.enum(CarOnboardingInsurerStatus)).default([]),

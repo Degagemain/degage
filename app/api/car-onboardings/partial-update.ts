@@ -1,6 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { CarOnboardingConfirmedError } from '@/actions/car-onboarding/car-onboarding-confirmed.error';
+import { CarOnboardingAdminModeUnavailableError } from '@/actions/car-onboarding/car-onboarding-admin-mode-unavailable.error';
+import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
 import { CarOnboardingInvalidCarValueStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-car-value-status.error';
 import { CarOnboardingInvalidInfoSessionStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-info-session-status.error';
 import { CarOnboardingInvalidInsurerStatusError } from '@/actions/car-onboarding/car-onboarding-invalid-insurer-status.error';
@@ -45,6 +47,15 @@ export const tryPartialCarOnboardingUpdate = async (
     }
     if (error instanceof CarOnboardingInvalidShareStartDateError) {
       return Response.json({ code: 'invalid_share_start_date', errors: [{ message: error.message }] }, { status: statusCodes.BAD_REQUEST });
+    }
+    if (error instanceof CarOnboardingCarNameTakenError) {
+      return Response.json({ code: 'car_name_taken', errors: [{ message: error.message }] }, { status: statusCodes.CONFLICT });
+    }
+    if (error instanceof CarOnboardingAdminModeUnavailableError) {
+      return Response.json(
+        { code: 'admin_mode_unavailable', errors: [{ message: error.message }] },
+        { status: statusCodes.SERVICE_UNAVAILABLE },
+      );
     }
     if (error instanceof CarOnboardingInvalidRoadAssistancePlanStatusError) {
       return Response.json(

@@ -6,6 +6,8 @@ const jsonRequest = (method: 'POST' | 'PUT' | 'PATCH', url: string, body?: unkno
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
+export const apiGet = (url: string, init?: RequestInit): Promise<Response> => fetch(url, { ...init, method: 'GET' });
+
 export const apiPost = (url: string, body?: unknown, init?: RequestInit): Promise<Response> => jsonRequest('POST', url, body, init);
 
 export const apiPut = (url: string, body?: unknown, init?: RequestInit): Promise<Response> => jsonRequest('PUT', url, body, init);

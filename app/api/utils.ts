@@ -1,6 +1,10 @@
 import z, { ZodError, ZodSafeParseResult } from 'zod';
-import { statusCodes } from './status-codes';
 import { NextRequest } from 'next/server';
+
+import { CarOnboardingAdminModeUnavailableError } from '@/actions/car-onboarding/car-onboarding-admin-mode-unavailable.error';
+import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
+
+import { statusCodes } from './status-codes';
 
 export class NotFoundError extends Error {
   constructor(message: string = 'Resource not found') {
@@ -167,13 +171,22 @@ export const tryUpdateResource = async <T>(
   } catch (error) {
     if (error instanceof ZodError) {
       return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
-    } else if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
-      return notFoundResponse();
-    } else {
+    }
+    if (error instanceof CarOnboardingCarNameTakenError) {
+      return Response.json({ code: 'car_name_taken', errors: [{ message: error.message }] }, { status: statusCodes.CONFLICT });
+    }
+    if (error instanceof CarOnboardingAdminModeUnavailableError) {
       return Response.json(
-        { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
-        { status: statusCodes.INTERNAL_SERVER_ERROR },
+        { code: 'admin_mode_unavailable', errors: [{ message: error.message }] },
+        { status: statusCodes.SERVICE_UNAVAILABLE },
       );
     }
+    if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
+      return notFoundResponse();
+    }
+    return Response.json(
+      { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
+      { status: statusCodes.INTERNAL_SERVER_ERROR },
+    );
   }
 };

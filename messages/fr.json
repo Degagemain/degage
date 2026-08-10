@@ -1612,6 +1612,7 @@
         "roadAssistancePlan": "Plan d'assistance routière",
         "roadAssistancePlanStatus": "Statut du plan d'assistance",
         "shareStartDate": "Date de début du partage",
+        "carName": "Nom du véhicule",
         "preparationConfirmedAt": "Préparation confirmée le",
         "simulation": "Simulation",
         "statusInPreparation": "Statut de préparation",
@@ -1628,7 +1629,7 @@
         "insurer": "Assurance",
         "roadAssistancePlan": "Assistance routière",
         "carValue": "Valeur",
-        "shareStart": "Date de début",
+        "shareStart": "Nom & date de début",
         "finalize": "Finaliser"
       },
       "preparationStatus": {
@@ -1790,7 +1791,11 @@
           "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
           "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
-          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois."
+          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois.",
+          "carName": "Lettres et chiffres uniquement. Doit être unique parmi les véhicules Dégage et les autres onboardings.",
+          "carNameTaken": "Ce nom est déjà pris.",
+          "carNameChecking": "Vérification de la disponibilité…",
+          "carNameAvailable": "Ce nom est disponible."
         }
       },
       "detailPage": {
@@ -2953,10 +2958,16 @@
         "shareStartCleared": "Votre date de début de partage a été effacée car les détails d'assurance ont changé."
       },
       "shareStart": {
-        "title": "Date de début",
-        "subtitle": "Choisir quand votre véhicule devient disponible au partage",
-        "panelTitle": "Date de début du partage",
-        "panelBody": "Vous commencez toujours le premier du mois. Choisissez quand votre véhicule devient disponible pour les membres.",
+        "title": "Nom et date de début",
+        "subtitle": "Choisissez un nom unique pour votre véhicule et quand le partage commence",
+        "panelTitle": "Nom du véhicule et date de début",
+        "panelBody": "Choisissez un nom unique pour votre véhicule (lettres et chiffres uniquement). Le partage commence toujours le premier du mois—choisissez quand votre véhicule devient disponible pour les membres.",
+        "carNameLabel": "Nom du véhicule",
+        "carNameHint": "Lettres et chiffres uniquement, au moins 2 caractères.",
+        "carNameInvalid": "Utilisez uniquement des lettres et des chiffres (2–50 caractères).",
+        "carNameTaken": "Ce nom est déjà pris. Veuillez en choisir un autre.",
+        "carNameChecking": "Vérification de la disponibilité…",
+        "carNameAvailable": "Ce nom est disponible.",
         "legendLocked": "◄ Verrouillé (assurance)",
         "legendAvailable": "Disponible ►",
         "earliestBadge": "Plus tôt",
