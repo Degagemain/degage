@@ -11,9 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Added: at the end of car onboarding preparation, you confirm your info and
   commit to car sharing; after that, preparation details are read-only.
-- Added: during car onboarding preparation, a new share start date step lets you
-  choose when your car becomes available for sharing; you always start on the
-  first of a month, and the earliest option depends on your insurance.
+- Added: during car onboarding preparation, the last step lets you pick a unique
+  name for your car and choose when sharing starts; names use letters and digits
+  only, and sharing always begins on the first of a month (earliest option depends
+  on your insurance).
 - Changed: during car onboarding, extra stickers are optional; you can continue
   with only the always-included stickers.
 - Changed: car onboarding overview now shows the full journey in three chapters
@@ -26,10 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   Finalize shows when they confirmed.
 - Changed: Finalize uses Lock / Unlock preparation instead of Start onboarding.
 - Added: admins can clear the owner's preparation confirmation from Finalize.
-- Added: car onboarding records include a share start date tab.
+- Added: car onboarding records include a tab for car name and share start date.
 
 ### Technical
 
+- Added: play connector can now perform admin-only actions.
 - Added: server captures PostHog `user signed up` and `user logged in` events from Better Auth hooks.
 - Changed: server-side PostHog uses default batching.
 - Fixed: `simulation` event are now captured after create and include the persisted simulation `id`.

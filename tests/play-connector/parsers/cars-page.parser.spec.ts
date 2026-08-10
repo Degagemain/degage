@@ -2,22 +2,22 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { parseCarsPageTotal } from '@/play-connector/parsers/cars-page.parser';
+import { parseCarsPageNames } from '@/play-connector/parsers/cars-page.parser';
 
 const fixtures = join(process.cwd(), 'tests/fixtures/play-connector');
 
-describe('parseCarsPageTotal', () => {
-  it('returns 0 for an empty search result fixture', () => {
+describe('parseCarsPageNames', () => {
+  it('returns no names for an empty search result fixture', () => {
     const html = readFileSync(join(fixtures, 'cars-page-empty.html'), 'utf8');
-    expect(parseCarsPageTotal(html)).toBe(0);
+    expect(parseCarsPageNames(html)).toEqual([]);
   });
 
-  it('returns the total for a hit search result fixture', () => {
+  it('returns car names from view links', () => {
     const html = readFileSync(join(fixtures, 'cars-page-hit.html'), 'utf8');
-    expect(parseCarsPageTotal(html)).toBe(1);
+    expect(parseCarsPageNames(html)).toEqual(['TestCar']);
   });
 
-  it('returns null when pagination is missing', () => {
-    expect(parseCarsPageTotal('<div>no pager</div>')).toBeNull();
+  it('returns an empty list when there are no car view links', () => {
+    expect(parseCarsPageNames('<div>no cars</div>')).toEqual([]);
   });
 });
