@@ -74,6 +74,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
   return {
     id: db.id,
     street: db.street,
+    houseNumber: db.houseNumber,
     town: db.townId != null ? { id: db.townId } : null,
     phone: db.phone,
     brand: db.brandId != null ? { id: db.brandId } : null,
@@ -208,6 +209,7 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
 export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOnboardingCreateInput => {
   return {
     street: onboarding.street ?? undefined,
+    houseNumber: onboarding.houseNumber ?? undefined,
     town: onboarding.town != null ? { connect: { id: onboarding.town.id } } : undefined,
     phone: onboarding.phone ?? undefined,
     brand: onboarding.brand != null ? { connect: { id: onboarding.brand.id } } : undefined,
@@ -258,6 +260,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
 export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOnboardingUpdateInput => {
   return {
     street: onboarding.street ?? undefined,
+    houseNumber: onboarding.houseNumber ?? undefined,
     town: optionalRelationConnect(onboarding.town),
     phone: onboarding.phone ?? undefined,
     brand: optionalRelationConnect(onboarding.brand),

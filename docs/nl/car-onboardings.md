@@ -42,9 +42,9 @@ Deze stap is compleet wanneer de infosessiestatus **Compleet** is.
 
 ### Eigenaarsinfo
 
-Verzamelt de contactgegevens van de eigenaar: straat, gemeente en telefoon.
+Verzamelt de contactgegevens van de eigenaar: straat, huisnummer, gemeente en telefoon.
 
-Deze stap is compleet wanneer straat, gemeente en telefoon zijn ingevuld.
+Deze stap is compleet wanneer straat, huisnummer, gemeente en telefoon zijn ingevuld.
 
 ### Wageninfo
 
@@ -186,6 +186,7 @@ waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen 
 | Eigenschap                      | Beschrijving                                                                                                                 |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | Straat                          | Straatadres van de gebruiker.                                                                                                |
+| Huisnummer                      | Huisnummer van de gebruiker.                                                                                                 |
 | Gemeente                        | Gemeente van de gebruiker (postcode en plaats).                                                                              |
 | Telefoon                        | Telefoonnummer van de gebruiker.                                                                                             |
 | Merk                            | Voertuigmerk.                                                                                                                |

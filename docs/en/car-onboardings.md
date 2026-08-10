@@ -41,9 +41,9 @@ This step is complete when info session status is **Done**.
 
 ### User info
 
-Collects the owner's contact details: street, town, and phone.
+Collects the owner's contact details: street, house number, town, and phone.
 
-This step is complete when street, town, and phone are all filled in.
+This step is complete when street, house number, town, and phone are all filled in.
 
 ### Car info
 
@@ -202,6 +202,7 @@ is not locked.
 | Property                 | Description                                                          |
 | ------------------------ | -------------------------------------------------------------------- |
 | Street                   | User's street address.                                               |
+| House number             | User's house number.                                                 |
 | Town                     | User's town (postal code and locality).                              |
 | Phone                    | User's phone number.                                                 |
 | Brand                    | Vehicle brand.                                                       |

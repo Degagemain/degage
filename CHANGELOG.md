@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: during car onboarding user info, you enter a house number next to the
+  street.
 - Changed: during car onboarding, steps with a save action now offer Save & Next
   instead of Next alone.
 - Fixed: during car onboarding, you cannot upload another document or continue
@@ -27,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: car onboarding records include a house number on user info.
 - Changed: car onboarding preparation is Ready only after the owner confirms;
   Finalize shows when they confirmed.
 - Changed: Finalize uses Lock / Unlock preparation instead of Start onboarding.

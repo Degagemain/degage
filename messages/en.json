@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "Info session PC id",
         "infoSessionStatus": "Info session status",
         "street": "Street",
+        "houseNumber": "House number",
         "town": "Town",
         "phone": "Phone",
         "brand": "Brand",
@@ -2874,7 +2875,7 @@
       "userInfo": {
         "title": "User info",
         "subtitle": "Your contact details",
-        "info": "Enter your street, town, and phone number so we can reach you during onboarding.",
+        "info": "Enter your street, house number, town, and phone number so we can reach you during onboarding.",
         "panelTitle": "Contact details",
         "phoneInvalid": "Enter a valid phone number."
       },

@@ -131,6 +131,7 @@ model Document {
 model CarOnboarding {
   id                  String                           @id @default(uuid())
   street              String?
+  houseNumber         String?
   townId              String?
   town                Town?                            @relation(fields: [townId], references: [id])
   phone               String?

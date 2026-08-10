@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "ID PC session d'info",
         "infoSessionStatus": "Statut session d'info",
         "street": "Rue",
+        "houseNumber": "Numéro",
         "town": "Commune",
         "phone": "Téléphone",
         "brand": "Marque",
@@ -2874,7 +2875,7 @@
       "userInfo": {
         "title": "Infos utilisateur",
         "subtitle": "Vos coordonnées",
-        "info": "Indiquez votre rue, commune et numéro de téléphone pour que nous puissions vous joindre.",
+        "info": "Indiquez votre rue, numéro, commune et numéro de téléphone pour que nous puissions vous joindre.",
         "panelTitle": "Coordonnées",
         "phoneInvalid": "Entrez un numéro de téléphone valide."
       },

@@ -19,6 +19,7 @@ export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboarding
       ? {
           OR: [
             { street: { contains: filter.query.trim(), mode: 'insensitive' as const } },
+            { houseNumber: { contains: filter.query.trim(), mode: 'insensitive' as const } },
             { phone: { contains: filter.query.trim(), mode: 'insensitive' as const } },
             { carTypeOther: { contains: filter.query.trim(), mode: 'insensitive' as const } },
             { carName: { contains: filter.query.trim(), mode: 'insensitive' as const } },

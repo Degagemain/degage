@@ -86,6 +86,7 @@ interface CarOnboardingFormProps {
 
 interface FormValues {
   street: string;
+  houseNumber: string;
   townId: string;
   townName: string;
   phone: string;
@@ -128,6 +129,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
   const hasOtherCarType = Boolean(row.carTypeOther?.trim()) && row.carType == null;
   return {
     street: row.street ?? '',
+    houseNumber: row.houseNumber ?? '',
     townId: row.town?.id ?? NONE,
     townName: row.town?.name ?? '',
     phone: row.phone ?? '',
@@ -170,6 +172,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
 const createSchema = (tCommon: (key: string) => string) =>
   z.object({
     street: z.string(),
+    houseNumber: z.string(),
     townId: z.string(),
     townName: z.string(),
     phone: z.string(),
@@ -408,6 +411,7 @@ export function CarOnboardingForm({
   const infoSessionComplete = isInfoSessionSectionComplete(initialCarOnboarding);
   const userInfoComplete = isUserInfoSectionComplete({
     street: watchedValues.street.trim() || null,
+    houseNumber: watchedValues.houseNumber.trim() || null,
     town: watchedValues.townId !== NONE ? { id: watchedValues.townId } : null,
     phone: watchedValues.phone.trim() || null,
   });
@@ -555,6 +559,7 @@ export function CarOnboardingForm({
     const payload: CarOnboarding = {
       ...initialCarOnboarding,
       street: values.street.trim() || null,
+      houseNumber: values.houseNumber.trim() || null,
       town: toIdName(values.townId, values.townName),
       phone: values.phone.trim() || null,
       brand: toIdName(values.brandId, values.brandName),
@@ -791,6 +796,19 @@ export function CarOnboardingForm({
                   render={({ field, fieldState }) => (
                     <AdminTextFieldControl
                       label={t('columns.street')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <Controller
+                  name="houseNumber"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminTextFieldControl
+                      label={t('columns.houseNumber')}
                       value={field.value}
                       onChange={field.onChange}
                       error={fieldState.error?.message}

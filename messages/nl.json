@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "Infosessie PC-id",
         "infoSessionStatus": "Infosessiestatus",
         "street": "Straat",
+        "houseNumber": "Huisnummer",
         "town": "Gemeente",
         "phone": "Telefoon",
         "brand": "Merk",
@@ -2883,7 +2884,7 @@
       "userInfo": {
         "title": "Eigenaarsinfo",
         "subtitle": "Contactgegevens van de eigenaar van de wagen",
-        "info": "Vul je adres en telefoonnummer in zodat we je kunnen bereiken tijdens het instapproces.",
+        "info": "Vul je straat, huisnummer, gemeente en telefoonnummer in zodat we je kunnen bereiken tijdens het instapproces.",
         "panelTitle": "Contactgegevens",
         "phoneInvalid": "Voer een geldig telefoonnummer in."
       },

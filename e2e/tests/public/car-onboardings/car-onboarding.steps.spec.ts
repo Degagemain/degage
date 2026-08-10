@@ -14,6 +14,7 @@ test.describe('public car onboarding steps', () => {
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/user-info`);
 
     await field(page, 'Street').getByRole('textbox').fill(E2E_CAR_ONBOARDING.userInfo.street);
+    await field(page, 'House number').getByRole('textbox').fill(E2E_CAR_ONBOARDING.userInfo.houseNumber);
 
     const townField = field(page, 'Town');
     await townField.getByRole('combobox').click();
@@ -28,6 +29,7 @@ test.describe('public car onboarding steps', () => {
     // revisit and verify persisted
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/user-info`);
     await expect(field(page, 'Street').getByRole('textbox')).toHaveValue(E2E_CAR_ONBOARDING.userInfo.street);
+    await expect(field(page, 'House number').getByRole('textbox')).toHaveValue(E2E_CAR_ONBOARDING.userInfo.houseNumber);
     await expect(field(page, 'Phone').getByRole('textbox')).toHaveValue(E2E_CAR_ONBOARDING.userInfo.phone);
     await expect(field(page, 'Town').getByRole('combobox')).toContainText(E2E_CAR_ONBOARDING.userInfo.townOption);
   });

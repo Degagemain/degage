@@ -624,6 +624,23 @@
   margin-bottom: var(--demo-s24);
 }
 
+.fieldRow {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: var(--demo-s16);
+  margin-bottom: var(--demo-s24);
+}
+
+.fieldRow .field {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+}
+
 .checkboxLabel + .field {
   margin-top: var(--demo-s16);
 }

@@ -42,9 +42,9 @@ Cette étape est complète lorsque le statut de session d'info est **Complet**.
 
 ### Infos utilisateur
 
-Recueille les coordonnées du propriétaire : rue, commune et téléphone.
+Recueille les coordonnées du propriétaire : rue, numéro, commune et téléphone.
 
-Cette étape est complète lorsque la rue, la commune et le téléphone sont tous renseignés.
+Cette étape est complète lorsque la rue, le numéro, la commune et le téléphone sont tous renseignés.
 
 ### Infos véhicule
 
@@ -192,6 +192,7 @@ préparation n'est pas verrouillée.
 | Propriété                            | Description                                                                                 |
 | ------------------------------------ | ------------------------------------------------------------------------------------------- |
 | Rue                                  | Adresse (rue) de l'utilisateur.                                                             |
+| Numéro                               | Numéro de maison de l'utilisateur.                                                          |
 | Commune                              | Commune de l'utilisateur (code postal et localité).                                         |
 | Téléphone                            | Numéro de téléphone de l'utilisateur.                                                       |
 | Marque                               | Marque du véhicule.                                                                         |

@@ -62,6 +62,7 @@ describe('carOnboardingUserInfoSchema', () => {
     const result = carOnboardingUserInfoSchema.parse({});
     expect(result).toEqual({
       street: null,
+      houseNumber: null,
       town: null,
       phone: null,
     });
@@ -78,6 +79,7 @@ describe('carOnboardingSchema', () => {
     expect(result.fuelType).toBeNull();
     expect(result.carType).toBeNull();
     expect(result.street).toBeNull();
+    expect(result.houseNumber).toBeNull();
     expect(result.town).toBeNull();
     expect(result.phone).toBeNull();
     expect(result.mileage).toBe(0);
@@ -153,9 +155,10 @@ describe('carOnboardingCarInfoInputSchema', () => {
 });
 
 describe('carOnboardingUserInfoInputSchema', () => {
-  it('requires town and allows nullable street and phone', () => {
+  it('requires town and allows nullable street, houseNumber and phone', () => {
     const result = carOnboardingUserInfoInputSchema.safeParse({
       street: null,
+      houseNumber: null,
       town: { id: '550e8400-e29b-41d4-a716-446655440099' },
       phone: null,
     });
@@ -165,6 +168,7 @@ describe('carOnboardingUserInfoInputSchema', () => {
   it('rejects missing town', () => {
     const result = carOnboardingUserInfoInputSchema.safeParse({
       street: 'Main Street',
+      houseNumber: '1',
       phone: '+32 470 00 00 00',
     });
     expect(result.success).toBe(false);
@@ -173,6 +177,7 @@ describe('carOnboardingUserInfoInputSchema', () => {
   it('rejects invalid phone', () => {
     const result = carOnboardingUserInfoInputSchema.safeParse({
       street: 'Main Street',
+      houseNumber: '1',
       town: { id: '550e8400-e29b-41d4-a716-446655440099' },
       phone: 'invalid',
     });
@@ -353,6 +358,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.owner).toEqual({ id: '550e8400-e29b-41d4-a716-446655440099' });
     expect(result.simulation).toEqual({ id: sim.id });
     expect(result.street).toBeNull();
+    expect(result.houseNumber).toBeNull();
     expect(result.phone).toBeNull();
     expect(result.carValueStatus).toBe(CarOnboardingCarValueStatus.TODO);
     expect(result.insurer).toBeNull();
@@ -606,23 +612,34 @@ describe('isPlayConnectorSectionComplete', () => {
 });
 
 describe('isUserInfoSectionComplete', () => {
-  it('returns false when street, town, or phone is missing', () => {
+  it('returns false when street, houseNumber, town, or phone is missing', () => {
     expect(isUserInfoSectionComplete(carOnboarding())).toBe(false);
     expect(
       isUserInfoSectionComplete(
         carOnboarding({
           street: 'Main Street',
+          houseNumber: '1',
           town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isUserInfoSectionComplete(
+        carOnboarding({
+          street: 'Main Street',
+          town: { id: '550e8400-e29b-41d4-a716-446655440099' },
+          phone: '+32 470 00 00 00',
         }),
       ),
     ).toBe(false);
   });
 
-  it('returns true when street, town, and phone are set', () => {
+  it('returns true when street, houseNumber, town, and phone are set', () => {
     expect(
       isUserInfoSectionComplete(
         carOnboarding({
           street: 'Main Street',
+          houseNumber: '1',
           town: { id: '550e8400-e29b-41d4-a716-446655440099' },
           phone: '+32 470 00 00 00',
         }),
@@ -635,6 +652,7 @@ describe('isUserInfoSectionComplete', () => {
       isUserInfoSectionComplete(
         carOnboarding({
           street: 'Main Street',
+          houseNumber: '1',
           town: { id: '550e8400-e29b-41d4-a716-446655440099' },
           phone: 'invalid',
         }),
