@@ -3,6 +3,7 @@ export const playConnectorActionErrorCodes = {
   credentialsInvalid: 'credentials_invalid',
   loginFailed: 'login_failed',
   linkFailed: 'link_failed',
+  unauthorized: 'unauthorized',
 } as const;
 
 export type PlayConnectorActionErrorCode = (typeof playConnectorActionErrorCodes)[keyof typeof playConnectorActionErrorCodes];

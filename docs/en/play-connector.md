@@ -51,11 +51,14 @@ Mock endpoints:
 ## Layers
 
 - `app/play-connector/` — HTTP client, login, cookie parsing, HTML parsers (no database)
+  - `admin-mode.ts` — enable admin mode via `GET /admin/set` and merge the upgraded session cookie
+  - `cars.ts` — car name availability search against `/cars/page` (requires admin mode session)
   - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
   - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/zip/city), GSM from `/profile` HTML
+  - `parsers/cars-page.parser.ts` — total result count from `/cars/page` `#pagination` attribute
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
-- `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration
+- `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode)
 - `app/actions/play-infosession/` — first consumer use case
 
 ## Session cookie flow
@@ -65,6 +68,13 @@ Mock endpoints:
 3. Otherwise decrypt the stored password, log in to Play (up to 2 attempts, ~2s apart).
 4. On success, encrypt and persist the new cookie and expiry; on failure, set `credentialsInvalid` and a short `loginBlockedUntil` backoff
    (~5s).
+
+### Admin mode session
+
+1. `getPlayAdminModeSessionCookie(userId)` first obtains a normal session via `getPlaySessionCookie`.
+2. It calls `GET /admin/set` (no redirect follow) and merges the returned `PLAY_SESSION` into an in-memory cookie header (not persisted).
+3. It loads `/` and requires an `a[href="/admin/clear"]` link. If enable fails or that link is missing, it throws `unauthorized`.
+4. Admin-mode-only Play actions (e.g. car name availability) should use this helper instead of `getPlaySessionCookie`.
 
 ## API
 

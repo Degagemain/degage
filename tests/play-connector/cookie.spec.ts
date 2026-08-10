@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildCookieHeader, computeSessionExpiry, parseSetCookieHeader, parseSetCookieHeaders } from '@/play-connector/cookie';
+import {
+  buildCookieHeader,
+  computeSessionExpiry,
+  mergeSetCookiesIntoHeader,
+  parseCookieHeader,
+  parseSetCookieHeader,
+  parseSetCookieHeaders,
+} from '@/play-connector/cookie';
 
 describe('play-connector cookie', () => {
   it('parses a Set-Cookie header', () => {
@@ -19,6 +26,18 @@ describe('play-connector cookie', () => {
   it('builds a cookie header from parsed cookies', () => {
     const cookies = parseSetCookieHeaders(['PLAY_SESSION=a; Path=/', 'JSESSIONID=b; Path=/']);
     expect(buildCookieHeader(cookies)).toBe('PLAY_SESSION=a; JSESSIONID=b');
+  });
+
+  it('parses a Cookie request header', () => {
+    expect(parseCookieHeader('PLAY_LANG=nl; PLAY_SESSION=old')).toEqual([
+      { name: 'PLAY_LANG', value: 'nl' },
+      { name: 'PLAY_SESSION', value: 'old' },
+    ]);
+  });
+
+  it('merges Set-Cookie values into an existing Cookie header', () => {
+    const merged = mergeSetCookiesIntoHeader('PLAY_LANG=nl; PLAY_SESSION=old', ['PLAY_SESSION=new; Path=/; HttpOnly']);
+    expect(merged).toBe('PLAY_LANG=nl; PLAY_SESSION=new');
   });
 
   it('computes earliest session expiry from max-age', () => {
