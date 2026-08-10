@@ -65,7 +65,16 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Simulation>[] =
           row.original.fuelType?.name,
           row.original.carType?.name ?? (row.original.carTypeOther ? row.original.carTypeOther : undefined),
         ].filter(Boolean);
-        return <span className="text-sm">{parts.join(' · ') || '—'}</span>;
+        const label = parts.join(' · ') || '—';
+        const id = row.original.id;
+        if (id) {
+          return (
+            <Link href={`/app/admin/simulations/${id}`} className="text-sm text-primary hover:underline focus-visible:underline">
+              {label}
+            </Link>
+          );
+        }
+        return <span className="text-sm">{label}</span>;
       },
       enableHiding: true,
       enableSorting: false,
