@@ -52,6 +52,7 @@ Mock endpoints:
 
 - `app/play-connector/` — HTTP client, login, cookie parsing, HTML parsers (no database)
   - `admin-mode.ts` — enable admin mode via `GET /admin/set` and merge the upgraded session cookie
+  - `cars.model.ts` — optional create-car input schema and Play dropdown enums (`fuel`, `purchaseDate`)
   - `cars.ts` — car name availability (`/cars/page`, admin mode) and create car (`POST /api/cars/new`, regular session)
   - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
@@ -63,8 +64,18 @@ Mock endpoints:
 
 ### Create car
 
-`createPlayCar(userId)` (regular session via `getPlaySessionCookie`) POSTs Play’s empty create-car skeleton to `POST /api/cars/new` and returns
-`{ id }` from the JSON response. No caller fields are accepted; a later update will fill details using that id.
+`createPlayCar(userId, input)` (regular session via `getPlaySessionCookie`) POSTs to Play `POST /api/cars/new` and returns `{ id }` from the
+JSON response.
+
+All input fields are optional. Dropdown enums (Play create form):
+
+| Field          | Values                                                                 |
+| -------------- | ---------------------------------------------------------------------- |
+| `fuel`         | `ELECTRIC`, `DIESEL`, `PETROL`, `HYBRID`, `PLUGINHYBRID`, `LPG`, `CNG` |
+| `purchaseDate` | `STILLTOBEPURCHASED`, `LESSTHAN`, `OVERTHAN`                           |
+
+Unset fields are filled with Play defaults (e.g. `fuel: ELECTRIC`, `purchaseDate: STILLTOBEPURCHASED`, `status: REGISTERED`, reservation
+defaults `INFINITE` / `THREEMONTHS` / `NONE`).
 
 ## Session cookie flow
 

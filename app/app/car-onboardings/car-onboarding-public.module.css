@@ -540,21 +540,10 @@
   line-height: 1;
 }
 
-.stateIconTodo {
-  background: var(--demo-blue-bg);
-  color: var(--demo-blue);
-  border: 1.5px solid var(--demo-blue-border);
-}
-
-.stateIconPending {
-  background: var(--demo-amber-bg);
-  color: var(--demo-amber);
-  border: 1.5px solid var(--demo-amber-border);
-}
-
 .stateIconDone {
   background: var(--demo-green-bg);
   color: var(--demo-green);
+  border: 1.5px solid var(--demo-green);
 }
 
 .stateIconAbsolute {
@@ -622,6 +611,23 @@
 
 .field {
   margin-bottom: var(--demo-s24);
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: var(--demo-s16);
+  margin-bottom: var(--demo-s24);
+}
+
+.fieldRow .field {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
 }
 
 .checkboxLabel + .field {

@@ -3,7 +3,8 @@ export const E2E_CAR_ONBOARDING = {
   infoSessionPcId: '1359',
   infoSessionDateIso: '2026-06-20T09:25:00.000Z',
   userInfo: {
-    street: 'Main Street 1',
+    street: 'Main Street',
+    houseNumber: '1',
     townQuery: '9000',
     townOption: '9000 Gent',
     phone: '+32 470 00 00 00',

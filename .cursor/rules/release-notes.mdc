@@ -38,7 +38,7 @@ Each version is split into three fixed sections, always in this order:
 - ...
 
 ### Technical
-<!-- Developer-facing changes: refactors, dependencies, migrations, internal APIs. -->
+<!-- Developer-facing changes: noteworthy refactors, dependencies, breaking APIs. -->
 - ...
 ```
 
@@ -63,9 +63,14 @@ Avoid:
 
 ### Technical
 
-- Here detail is welcome: refactors, new domain models, migrations, new
-  dependencies, breaking internal changes.
-- Call out **breaking changes** and **migrations** explicitly.
+- Here detail is welcome: noteworthy refactors, new dependencies, breaking
+  internal changes.
+- Call out **breaking changes** explicitly.
+- **Do not** add entries that only announce a routine schema/Prisma migration
+  (e.g. “migration for nullable `foo` on bar”). If the change already has a
+  Public or Admin entry, that is enough. Mention a migration only when it is
+  itself noteworthy: breaking, destructive, requires a data backfill, or
+  needs operator action beyond a normal deploy.
 
 ## Versioning
 

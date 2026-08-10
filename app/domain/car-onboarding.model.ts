@@ -51,6 +51,7 @@ export const carOnboardingCarInfoSchema = z
 export const carOnboardingUserInfoSchema = z
   .object({
     street: z.string().nullable().default(null),
+    houseNumber: z.string().nullable().default(null),
     town: idNameSchema.nullable().default(null),
     phone: z.string().nullable().default(null),
   })
@@ -136,8 +137,8 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
 
 export type CarOnboarding = z.infer<typeof carOnboardingSchema>;
 
-export const CAR_ONBOARDING_CAR_NAME_MIN_LENGTH = 2;
-export const CAR_ONBOARDING_CAR_NAME_MAX_LENGTH = 50;
+export const CAR_ONBOARDING_CAR_NAME_MIN_LENGTH = 3;
+export const CAR_ONBOARDING_CAR_NAME_MAX_LENGTH = 13;
 export const carOnboardingCarNamePattern = /^[A-Za-z0-9]+$/;
 
 export const carOnboardingCarNameSchema = z
@@ -158,7 +159,7 @@ export const carOnboardingCarInfoInputSchema = carOnboardingCarInfoSchema
 export type CarOnboardingCarInfoInput = z.infer<typeof carOnboardingCarInfoInputSchema>;
 
 export const carOnboardingUserInfoInputSchema = carOnboardingUserInfoSchema
-  .pick({ street: true, town: true, phone: true })
+  .pick({ street: true, houseNumber: true, town: true, phone: true })
   .extend({
     town: idNameSchema,
     phone: nullablePhoneNumberSchema,
@@ -260,6 +261,7 @@ export const carOnboardingFromSimulation = (
 ): Omit<CarOnboarding, 'id' | 'createdAt' | 'updatedAt'> => {
   return {
     street: null,
+    houseNumber: null,
     town: { id: simulation.town.id },
     phone: null,
     brand: { id: simulation.brand.id },
@@ -372,7 +374,13 @@ export const isCarValueProposedToOwner = (onboarding: Pick<CarOnboarding, 'carVa
 };
 
 export const isUserInfoSectionComplete = (onboarding: CarOnboardingUserInfo): boolean => {
-  return isNonEmptyString(onboarding.street) && onboarding.town != null && onboarding.phone != null && isValidPhoneNumber(onboarding.phone);
+  return (
+    isNonEmptyString(onboarding.street) &&
+    isNonEmptyString(onboarding.houseNumber) &&
+    onboarding.town != null &&
+    onboarding.phone != null &&
+    isValidPhoneNumber(onboarding.phone)
+  );
 };
 
 export const isPlayConnectorSectionComplete = (onboarding: Pick<CarOnboarding, 'owner'>): boolean => {
@@ -542,6 +550,7 @@ export const isPreparationConfirmable = (
     | 'owner'
     | 'infoSessionStatus'
     | 'street'
+    | 'houseNumber'
     | 'town'
     | 'phone'
     | 'brand'

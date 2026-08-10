@@ -30,7 +30,8 @@ describe('updateCarOnboardingUserInfo', () => {
     vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
 
     const body = {
-      street: 'Main Street 1',
+      street: 'Main Street',
+      houseNumber: '1',
       town: { id: '550e8400-e29b-41d4-a716-446655440099' },
       phone: '+32 470 00 00 00',
     };
@@ -41,6 +42,7 @@ describe('updateCarOnboardingUserInfo', () => {
       expect.objectContaining({
         id: onboardingId,
         street: body.street,
+        houseNumber: body.houseNumber,
         town: body.town,
         phone: body.phone,
       }),
@@ -54,7 +56,8 @@ describe('updateCarOnboardingUserInfo', () => {
       updateCarOnboardingUserInfo(
         onboardingId,
         {
-          street: 'Main Street 1',
+          street: 'Main Street',
+          houseNumber: '1',
           town: { id: '550e8400-e29b-41d4-a716-446655440099' },
           phone: '+32 470 00 00 00',
         },
@@ -78,7 +81,8 @@ describe('updateCarOnboardingUserInfo', () => {
       updateCarOnboardingUserInfo(
         onboardingId,
         {
-          street: 'Main Street 1',
+          street: 'Main Street',
+          houseNumber: '1',
           town: { id: '550e8400-e29b-41d4-a716-446655440099' },
           phone: '+32 470 00 00 00',
         },

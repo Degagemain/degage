@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
@@ -33,10 +34,20 @@ export function CarInfoStep() {
   const tAdmin = useTranslations('admin.carOnboardings');
   const readOnly = useStepReadOnly();
   const { carOnboarding, reload, isLocked } = useCarOnboarding();
+  const [isUploading, setIsUploading] = useState(false);
   const hasOtherCarType = Boolean(carOnboarding.carTypeOther?.trim()) && carOnboarding.carType == null;
-  const uploadDisabled = readOnly || isLocked;
+  const uploadDisabled = readOnly || isLocked || isUploading;
   const inspectionRequired = isCarOlderThanFourYears(carOnboarding.firstRegisteredAt);
   const inspectionUploadDisabled = uploadDisabled || !inspectionRequired;
+
+  const runUpload = async (upload: () => Promise<void>) => {
+    setIsUploading(true);
+    try {
+      await upload();
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleUpload = async (side: 'front' | 'back', file: File) => {
     if (!carOnboarding.id) return;
@@ -152,7 +163,7 @@ export function CarInfoStep() {
               fileName={carOnboarding.pinkForm?.name}
               disabled={uploadDisabled}
               namespace="pinkForm"
-              onUpload={handleUploadPink}
+              onUpload={(file) => runUpload(() => handleUploadPink(file))}
               onDownload={carOnboarding.pinkForm ? handleDownloadPink : undefined}
             />
           ) : null}
@@ -164,7 +175,7 @@ export function CarInfoStep() {
             hint={tCert('frontHint')}
             fileName={carOnboarding.registrationCertificateFront?.name}
             disabled={uploadDisabled}
-            onUpload={(file) => handleUpload('front', file)}
+            onUpload={(file) => runUpload(() => handleUpload('front', file))}
             onDownload={carOnboarding.registrationCertificateFront ? () => handleDownload('front') : undefined}
           />
           <PublicRegistrationCertificateField
@@ -172,7 +183,7 @@ export function CarInfoStep() {
             hint={tCert('backHint')}
             fileName={carOnboarding.registrationCertificateBack?.name}
             disabled={uploadDisabled}
-            onUpload={(file) => handleUpload('back', file)}
+            onUpload={(file) => runUpload(() => handleUpload('back', file))}
             onDownload={carOnboarding.registrationCertificateBack ? () => handleDownload('back') : undefined}
           />
           <PublicReadOnlyValue label={tCert('vinLabel')} value={carOnboarding.vin ?? ''} />
@@ -190,14 +201,14 @@ export function CarInfoStep() {
               fileName={carOnboarding.inspectionCertificate?.name}
               disabled={inspectionUploadDisabled}
               namespace="inspectionCertificate"
-              onUpload={handleUploadInspection}
+              onUpload={(file) => runUpload(() => handleUploadInspection(file))}
               onDownload={carOnboarding.inspectionCertificate ? handleDownloadInspection : undefined}
             />
           </PublicPanel>
         </div>
       ) : null}
 
-      <StepActions stepId="car-info" showSave={false} />
+      <StepActions stepId="car-info" showSave={false} disabled={isUploading} />
     </StepLayout>
   );
 }

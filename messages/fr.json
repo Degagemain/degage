@@ -63,7 +63,7 @@
       "clearSearch": "Effacer la recherche"
     },
     "viewOptions": {
-      "view": "Affichage",
+      "columns": "Colonnes",
       "toggleColumns": "Afficher/masquer les colonnes"
     },
     "facetedFilter": {
@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "ID PC session d'info",
         "infoSessionStatus": "Statut session d'info",
         "street": "Rue",
+        "houseNumber": "Numéro",
         "town": "Commune",
         "phone": "Téléphone",
         "brand": "Marque",
@@ -1613,7 +1614,7 @@
         "roadAssistancePlanStatus": "Statut du plan d'assistance",
         "shareStartDate": "Date de début du partage",
         "carName": "Nom du véhicule",
-        "preparationConfirmedAt": "Préparation confirmée le",
+        "preparationConfirmedAt": "Préparation confirmée par le propriétaire le",
         "simulation": "Simulation",
         "statusInPreparation": "Statut de préparation",
         "created": "Créé",
@@ -1792,7 +1793,7 @@
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
           "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
           "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois.",
-          "carName": "Lettres et chiffres uniquement. Doit être unique parmi les véhicules Dégage et les autres onboardings.",
+          "carName": "Lettres et chiffres uniquement (3–13 caractères), sans caractères spéciaux ni tirets. Doit être unique parmi les véhicules Dégage et les autres onboardings.",
           "carNameTaken": "Ce nom est déjà pris.",
           "carNameChecking": "Vérification de la disponibilité…",
           "carNameAvailable": "Ce nom est disponible."
@@ -2805,6 +2806,7 @@
     "stepReadOnly": "Cette étape est en lecture seule. Vous avez confirmé vos informations, la préparation est verrouillée, ou cette section est déjà complète.",
     "save": "Enregistrer",
     "next": "Suivant",
+    "saveAndNext": "Enregistrer & Suivant",
     "saveSuccess": "Enregistré avec succès.",
     "confirmInfo": {
       "title": "Confirmer les infos",
@@ -2873,7 +2875,7 @@
       "userInfo": {
         "title": "Infos utilisateur",
         "subtitle": "Vos coordonnées",
-        "info": "Indiquez votre rue, commune et numéro de téléphone pour que nous puissions vous joindre.",
+        "info": "Indiquez votre rue, numéro, commune et numéro de téléphone pour que nous puissions vous joindre.",
         "panelTitle": "Coordonnées",
         "phoneInvalid": "Entrez un numéro de téléphone valide."
       },
@@ -2961,13 +2963,14 @@
         "title": "Nom et date de début",
         "subtitle": "Choisissez un nom unique pour votre véhicule et quand le partage commence",
         "panelTitle": "Nom du véhicule et date de début",
-        "panelBody": "Choisissez un nom unique pour votre véhicule (lettres et chiffres uniquement). Le partage commence toujours le premier du mois—choisissez quand votre véhicule devient disponible pour les membres.",
+        "panelBody": "Choisissez un nom unique pour votre véhicule. Un nom compte entre 3 et 13 caractères, sans caractères spéciaux ni tirets. Points pour la créativité. Le partage commence toujours le premier du mois—choisissez quand votre véhicule devient disponible pour les membres.",
         "carNameLabel": "Nom du véhicule",
-        "carNameHint": "Lettres et chiffres uniquement, au moins 2 caractères.",
-        "carNameInvalid": "Utilisez uniquement des lettres et des chiffres (2–50 caractères).",
+        "carNameHint": "Entre 3 et 13 caractères, sans caractères spéciaux ni tirets.",
+        "carNameInvalid": "Utilisez uniquement des lettres et des chiffres (3–13 caractères).",
         "carNameTaken": "Ce nom est déjà pris. Veuillez en choisir un autre.",
         "carNameChecking": "Vérification de la disponibilité…",
         "carNameAvailable": "Ce nom est disponible.",
+        "shareStartDateLabel": "Date de début du partage",
         "legendLocked": "◄ Verrouillé (assurance)",
         "legendAvailable": "Disponible ►",
         "earliestBadge": "Plus tôt",

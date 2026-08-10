@@ -63,7 +63,7 @@
       "clearSearch": "Clear search"
     },
     "viewOptions": {
-      "view": "View",
+      "columns": "Columns",
       "toggleColumns": "Toggle columns"
     },
     "facetedFilter": {
@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "Info session PC id",
         "infoSessionStatus": "Info session status",
         "street": "Street",
+        "houseNumber": "House number",
         "town": "Town",
         "phone": "Phone",
         "brand": "Brand",
@@ -1613,7 +1614,7 @@
         "roadAssistancePlanStatus": "Road assistance plan status",
         "shareStartDate": "Share start date",
         "carName": "Car name",
-        "preparationConfirmedAt": "Preparation confirmed at",
+        "preparationConfirmedAt": "Preparation confirmed by owner at",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
         "created": "Created",
@@ -1792,7 +1793,7 @@
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
           "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
           "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month.",
-          "carName": "Letters and digits only. Must be unique across Dégage cars and other onboardings.",
+          "carName": "Letters and digits only (3–13 characters), no special characters or dashes. Must be unique across Dégage cars and other onboardings.",
           "carNameTaken": "This name is already taken.",
           "carNameChecking": "Checking availability…",
           "carNameAvailable": "This name is available."
@@ -2805,6 +2806,7 @@
     "stepReadOnly": "This step is read-only. You confirmed your information, preparation is locked, or this section is already complete.",
     "save": "Save",
     "next": "Next",
+    "saveAndNext": "Save & Next",
     "saveSuccess": "Saved successfully.",
     "confirmInfo": {
       "title": "Confirm info",
@@ -2873,7 +2875,7 @@
       "userInfo": {
         "title": "User info",
         "subtitle": "Your contact details",
-        "info": "Enter your street, town, and phone number so we can reach you during onboarding.",
+        "info": "Enter your street, house number, town, and phone number so we can reach you during onboarding.",
         "panelTitle": "Contact details",
         "phoneInvalid": "Enter a valid phone number."
       },
@@ -2961,13 +2963,14 @@
         "title": "Name & start date",
         "subtitle": "Choose a unique name for your car and when sharing starts",
         "panelTitle": "Car name and share start",
-        "panelBody": "Pick a unique name for your car (letters and digits only). Sharing always starts on the first of the month—choose when your car becomes available for members.",
+        "panelBody": "Pick a unique name for your car. A car name is 3–13 characters and contains no special characters or dashes. Points for creativity. Sharing always starts on the first of the month—choose when your car becomes available for members.",
         "carNameLabel": "Car name",
-        "carNameHint": "Letters and digits only, at least 2 characters.",
-        "carNameInvalid": "Use only letters and digits (2–50 characters).",
+        "carNameHint": "3–13 characters, no special characters or dashes.",
+        "carNameInvalid": "Use only letters and digits (3–13 characters).",
         "carNameTaken": "This name is already taken. Please choose another.",
         "carNameChecking": "Checking availability…",
         "carNameAvailable": "This name is available.",
+        "shareStartDateLabel": "Share start date",
         "legendLocked": "◄ Locked (insurance)",
         "legendAvailable": "Available ►",
         "earliestBadge": "Earliest",

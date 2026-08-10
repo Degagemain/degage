@@ -11,6 +11,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
   return {
     id: data.id ?? '550e8400-e29b-41d4-a716-446655440000',
     street: data.street !== undefined ? data.street : null,
+    houseNumber: data.houseNumber !== undefined ? data.houseNumber : null,
     town: data.town !== undefined ? data.town : null,
     phone: data.phone !== undefined ? data.phone : null,
     brand: data.brand !== undefined ? data.brand : null,
@@ -61,7 +62,8 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
 
 export const completeCarOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding => {
   return carOnboarding({
-    street: 'Main Street 1',
+    street: 'Main Street',
+    houseNumber: '1',
     town: { id: '550e8400-e29b-41d4-a716-446655440099', name: '1000 Brussels' },
     phone: '+32 470 00 00 00',
     brand: { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Audi' },

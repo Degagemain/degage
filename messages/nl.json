@@ -63,7 +63,7 @@
       "clearSearch": "Zoekopdracht wissen"
     },
     "viewOptions": {
-      "view": "Weergave",
+      "columns": "Kolommen",
       "toggleColumns": "Kolommen tonen/verbergen"
     },
     "facetedFilter": {
@@ -1578,6 +1578,7 @@
         "infoSessionPcId": "Infosessie PC-id",
         "infoSessionStatus": "Infosessiestatus",
         "street": "Straat",
+        "houseNumber": "Huisnummer",
         "town": "Gemeente",
         "phone": "Telefoon",
         "brand": "Merk",
@@ -1613,7 +1614,7 @@
         "roadAssistancePlanStatus": "Status pechverhelpingsplan",
         "shareStartDate": "Startdatum autodelen",
         "carName": "Naam van de wagen",
-        "preparationConfirmedAt": "Voorbereiding bevestigd op",
+        "preparationConfirmedAt": "Voorbereiding door eigenaar bevestigd op",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
         "created": "Aangemaakt",
@@ -1792,7 +1793,7 @@
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
           "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft.",
           "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand.",
-          "carName": "Alleen letters en cijfers. Moet uniek zijn onder Dégage-wagens en andere onboardings.",
+          "carName": "Alleen letters en cijfers (3–13 tekens), geen speciale tekens of streepjes. Moet uniek zijn onder Dégage-wagens en andere onboardings.",
           "carNameTaken": "Deze naam is al in gebruik.",
           "carNameChecking": "Beschikbaarheid controleren…",
           "carNameAvailable": "Deze naam is beschikbaar."
@@ -2814,6 +2815,7 @@
     "stepReadOnly": "Deze stap is alleen-lezen. Je hebt je gegevens bevestigd, de voorbereiding is vergrendeld, of deze sectie is al afgerond.",
     "save": "Opslaan",
     "next": "Volgende",
+    "saveAndNext": "Opslaan & Volgende",
     "saveSuccess": "Succesvol opgeslagen.",
     "confirmInfo": {
       "title": "Gegevens bevestigen",
@@ -2882,7 +2884,7 @@
       "userInfo": {
         "title": "Eigenaarsinfo",
         "subtitle": "Contactgegevens van de eigenaar van de wagen",
-        "info": "Vul je adres en telefoonnummer in zodat we je kunnen bereiken tijdens het instapproces.",
+        "info": "Vul je straat, huisnummer, gemeente en telefoonnummer in zodat we je kunnen bereiken tijdens het instapproces.",
         "panelTitle": "Contactgegevens",
         "phoneInvalid": "Voer een geldig telefoonnummer in."
       },
@@ -2970,13 +2972,14 @@
         "title": "Naam & startdatum",
         "subtitle": "Kies een unieke naam voor je wagen en wanneer autodelen start",
         "panelTitle": "Naam van de wagen en startdatum",
-        "panelBody": "Kies een unieke naam voor je wagen (alleen letters en cijfers). Autodelen start altijd op de eerste van de maand—kies wanneer je wagen beschikbaar wordt voor leden.",
+        "panelBody": "Kies een unieke naam voor je wagen. Een autonaam telt tussen de 3 en de 13 karakters, en bevat geen speciale tekens of streepjes. Punten voor creativiteit. Autodelen start altijd op de eerste van de maand—kies wanneer je wagen beschikbaar wordt voor leden.",
         "carNameLabel": "Naam van de wagen",
-        "carNameHint": "Alleen letters en cijfers, minstens 2 tekens.",
-        "carNameInvalid": "Gebruik alleen letters en cijfers (2–50 tekens).",
+        "carNameHint": "Tussen 3 en 13 tekens, geen speciale tekens of streepjes.",
+        "carNameInvalid": "Gebruik alleen letters en cijfers (3–13 tekens).",
         "carNameTaken": "Deze naam is al in gebruik. Kies een andere.",
         "carNameChecking": "Beschikbaarheid controleren…",
         "carNameAvailable": "Deze naam is beschikbaar.",
+        "shareStartDateLabel": "Startdatum autodelen",
         "legendLocked": "◄ Vergrendeld (verzekering)",
         "legendAvailable": "Beschikbaar ►",
         "earliestBadge": "Vroegst",

@@ -9,12 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: during car onboarding, a green check next to the step title appears
+  only when that step is done.
+- Added: during car onboarding user info, you enter a house number next to the
+  street.
+- Changed: during car onboarding, steps with a save action now offer Save & Next
+  instead of Next alone.
+- Fixed: during car onboarding, you cannot upload another document or continue
+  while a file upload is still in progress.
 - Added: at the end of car onboarding preparation, you confirm your info and
   commit to car sharing; after that, preparation details are read-only.
 - Added: during car onboarding preparation, the last step lets you pick a unique
-  name for your car and choose when sharing starts; names use letters and digits
-  only, and sharing always begins on the first of a month (earliest option depends
-  on your insurance).
+  name for your car and choose when sharing starts; names are 3–13 characters
+  (letters and digits only, no special characters or dashes), and sharing always
+  begins on the first of a month (earliest option depends on your insurance).
 - Changed: during car onboarding, extra stickers are optional; you can continue
   with only the always-included stickers.
 - Changed: car onboarding overview now shows the full journey in three chapters
@@ -23,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Changed: the Columns control on admin tables can be searched, with matches
+  highlighted in the list.
+- Added: car onboarding records include a house number on user info.
 - Changed: car onboarding preparation is Ready only after the owner confirms;
   Finalize shows when they confirmed.
 - Changed: Finalize uses Lock / Unlock preparation instead of Start onboarding.

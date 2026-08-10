@@ -192,6 +192,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       enableSorting: false,
     },
     {
+      id: 'houseNumber',
+      accessorKey: 'houseNumber',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.houseNumber')} />,
+      cell: ({ row }) => <span className="text-muted-foreground text-sm">{row.original.houseNumber?.trim() || '—'}</span>,
+      enableSorting: false,
+    },
+    {
       id: 'town',
       accessorFn: (row) => row.town?.name ?? '',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.town')} />,

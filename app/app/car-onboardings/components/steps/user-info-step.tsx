@@ -20,6 +20,7 @@ export function UserInfoStep() {
   const tAdmin = useTranslations('admin.carOnboardings');
   const { carOnboarding, reload } = useCarOnboarding();
   const [street, setStreet] = useState(carOnboarding.street ?? '');
+  const [houseNumber, setHouseNumber] = useState(carOnboarding.houseNumber ?? '');
   const [townId, setTownId] = useState(carOnboarding.town?.id ?? '');
   const [townName, setTownName] = useState(carOnboarding.town?.name ?? '');
   const [phone, setPhone] = useState(carOnboarding.phone ?? '');
@@ -28,6 +29,7 @@ export function UserInfoStep() {
 
   useEffect(() => {
     setStreet(carOnboarding.street ?? '');
+    setHouseNumber(carOnboarding.houseNumber ?? '');
     setTownId(carOnboarding.town?.id ?? '');
     setTownName(carOnboarding.town?.name ?? '');
     setPhone(carOnboarding.phone ?? '');
@@ -58,6 +60,7 @@ export function UserInfoStep() {
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/user-info`, {
         street: street.trim() || null,
+        houseNumber: houseNumber.trim() || null,
         town: { id: townId, name: townName },
         phone: phone.trim() || null,
       });
@@ -79,9 +82,14 @@ export function UserInfoStep() {
   return (
     <StepLayout stepId="user-info">
       <PublicPanel title={t('steps.userInfo.panelTitle')}>
-        <PublicField label={tAdmin('columns.street')}>
-          <PublicInput value={street} onChange={(e) => setStreet(e.target.value)} />
-        </PublicField>
+        <div className={styles.fieldRow}>
+          <PublicField label={tAdmin('columns.street')}>
+            <PublicInput value={street} onChange={(e) => setStreet(e.target.value)} />
+          </PublicField>
+          <PublicField label={tAdmin('columns.houseNumber')}>
+            <PublicInput value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)} />
+          </PublicField>
+        </div>
         <PublicSearchableField
           label={tAdmin('columns.town')}
           value={townId}

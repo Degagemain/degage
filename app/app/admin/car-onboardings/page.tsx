@@ -65,6 +65,7 @@ export default function CarOnboardingsPage() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     updatedAt: false,
     street: false,
+    houseNumber: false,
     town: false,
     phone: false,
     brand: false,
@@ -113,6 +114,7 @@ export default function CarOnboardingsPage() {
       ownerHasPlayConnector: t('columns.ownerHasPlayConnector'),
       infoSessionStatus: t('columns.infoSessionStatus'),
       street: t('columns.street'),
+      houseNumber: t('columns.houseNumber'),
       town: t('columns.town'),
       phone: t('columns.phone'),
       brand: t('columns.brand'),

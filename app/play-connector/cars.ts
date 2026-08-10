@@ -1,5 +1,6 @@
 import { getPlayAdminModeSessionCookie } from '@/actions/play-connector/get-admin-mode-session-cookie';
 import { getPlaySessionCookie } from '@/actions/play-connector/get-session-cookie';
+import { type PlayCarCreateInput } from '@/play-connector/cars.model';
 import { fetchPlay, postPlayJson } from '@/play-connector/client';
 import { PlayConnectorError } from '@/play-connector/errors';
 import { parseCarsPageNames } from '@/play-connector/parsers/cars-page.parser';
@@ -35,7 +36,59 @@ export const playConnectorIsCarNameAvailable = async (adminModeUserId: string, n
   }
 };
 
-const emptyPlayCarCreatePayload = () => ({
+type PlayCarCreatePayload = {
+  id: number;
+  status: string;
+  name: string;
+  brand: string;
+  type: string;
+  fuel: string;
+  seats: number;
+  manual: boolean;
+  year: number | string;
+  doors: number;
+  fuelEconomy: number;
+  estimatedValue: number;
+  ownerAnnualKm: number;
+  comments: string;
+  imagesId: string;
+  locationId: string;
+  location: {
+    city: string;
+    street: string;
+    num: string;
+    zip: string;
+  };
+  insurance: {
+    name: string;
+    expiration: string;
+    bonusMalus: string;
+    annualDueDate: string;
+  };
+  carInitialMileage: number;
+  technicalCarDetails: {
+    kiloWatt: number;
+    licensePlate: string;
+    imageFrontId: string;
+    imageBackId: string;
+  };
+  petsOK: boolean;
+  studentOK: boolean;
+  trailerAvailable: boolean;
+  kidseatAvailable: boolean;
+  bicycleRackAvailable: boolean;
+  hasBed: boolean;
+  trunkVolume: number;
+  trunkWidth: number;
+  trunkHeight: number;
+  trunkDepth: number;
+  maxReservationDuration: string;
+  maxTimeBeforeReservation: string;
+  minTimeBeforeReservation: string;
+  purchaseDate: string;
+};
+
+const defaultPlayCarCreatePayload = (): PlayCarCreatePayload => ({
   id: -1,
   status: 'REGISTERED',
   name: 'temporary',
@@ -87,13 +140,58 @@ const emptyPlayCarCreatePayload = () => ({
   purchaseDate: 'STILLTOBEPURCHASED',
 });
 
+export const buildPlayCarCreatePayload = (input: PlayCarCreateInput): PlayCarCreatePayload => {
+  const payload = defaultPlayCarCreatePayload();
+
+  if (input.name !== undefined) payload.name = input.name;
+  if (input.brand !== undefined) payload.brand = input.brand;
+  if (input.type !== undefined) payload.type = input.type;
+  if (input.fuel !== undefined) payload.fuel = input.fuel;
+  if (input.purchaseDate !== undefined) payload.purchaseDate = input.purchaseDate;
+  if (input.manual !== undefined) payload.manual = input.manual;
+  if (input.seats !== undefined) payload.seats = input.seats;
+  if (input.doors !== undefined) payload.doors = input.doors;
+  if (input.year !== undefined) payload.year = input.year;
+  if (input.fuelEconomy !== undefined) payload.fuelEconomy = input.fuelEconomy;
+  if (input.estimatedValue !== undefined) payload.estimatedValue = input.estimatedValue;
+  if (input.ownerAnnualKm !== undefined) payload.ownerAnnualKm = input.ownerAnnualKm;
+  if (input.carInitialMileage !== undefined) payload.carInitialMileage = input.carInitialMileage;
+  if (input.comments !== undefined) payload.comments = input.comments;
+
+  if (input.location) {
+    if (input.location.city !== undefined) payload.location.city = input.location.city;
+    if (input.location.street !== undefined) payload.location.street = input.location.street;
+    if (input.location.num !== undefined) payload.location.num = input.location.num;
+    if (input.location.zip !== undefined) payload.location.zip = input.location.zip;
+  }
+
+  if (input.insurance) {
+    if (input.insurance.name !== undefined) payload.insurance.name = input.insurance.name;
+    if (input.insurance.expiration !== undefined) payload.insurance.expiration = input.insurance.expiration;
+    if (input.insurance.bonusMalus !== undefined) payload.insurance.bonusMalus = input.insurance.bonusMalus;
+    if (input.insurance.annualDueDate !== undefined) payload.insurance.annualDueDate = input.insurance.annualDueDate;
+  }
+
+  if (input.technicalCarDetails) {
+    if (input.technicalCarDetails.licensePlate !== undefined) {
+      payload.technicalCarDetails.licensePlate = input.technicalCarDetails.licensePlate;
+    }
+    if (input.technicalCarDetails.kiloWatt !== undefined) {
+      payload.technicalCarDetails.kiloWatt = input.technicalCarDetails.kiloWatt;
+    }
+  }
+
+  return payload;
+};
+
 export type PlayCarCreateResult = {
   id: number;
 };
 
-export const playConnectorCreateCar = async (userId: string): Promise<PlayCarCreateResult> => {
+export const playConnectorCreateCar = async (userId: string, input: PlayCarCreateInput = {}): Promise<PlayCarCreateResult> => {
   const { cookieHeader } = await getPlaySessionCookie(userId);
-  const { text } = await postPlayJson('/api/cars/new', cookieHeader, emptyPlayCarCreatePayload());
+  const payload = buildPlayCarCreatePayload(input);
+  const { text } = await postPlayJson('/api/cars/new', cookieHeader, payload);
 
   let parsed: unknown;
   try {
