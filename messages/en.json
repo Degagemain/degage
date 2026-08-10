@@ -1613,7 +1613,7 @@
         "roadAssistancePlanStatus": "Road assistance plan status",
         "shareStartDate": "Share start date",
         "carName": "Car name",
-        "preparationConfirmedAt": "Preparation confirmed at",
+        "preparationConfirmedAt": "Preparation confirmed by owner at",
         "simulation": "Simulation",
         "statusInPreparation": "Preparation status",
         "created": "Created",

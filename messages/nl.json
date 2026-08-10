@@ -1613,7 +1613,7 @@
         "roadAssistancePlanStatus": "Status pechverhelpingsplan",
         "shareStartDate": "Startdatum autodelen",
         "carName": "Naam van de wagen",
-        "preparationConfirmedAt": "Voorbereiding bevestigd op",
+        "preparationConfirmedAt": "Voorbereiding door eigenaar bevestigd op",
         "simulation": "Simulatie",
         "statusInPreparation": "Voorbereidingsstatus",
         "created": "Aangemaakt",
