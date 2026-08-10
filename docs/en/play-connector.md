@@ -52,14 +52,19 @@ Mock endpoints:
 
 - `app/play-connector/` — HTTP client, login, cookie parsing, HTML parsers (no database)
   - `admin-mode.ts` — enable admin mode via `GET /admin/set` and merge the upgraded session cookie
-  - `cars.ts` — car name availability search against `/cars/page` (requires admin mode session)
+  - `cars.ts` — car name availability (`/cars/page`, admin mode) and create car (`POST /api/cars/new`, regular session)
   - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
   - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/zip/city), GSM from `/profile` HTML
   - `parsers/cars-page.parser.ts` — total result count from `/cars/page` `#pagination` attribute
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
-- `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode)
+- `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode), create car
 - `app/actions/play-infosession/` — first consumer use case
+
+### Create car
+
+`createPlayCar(userId)` (regular session via `getPlaySessionCookie`) POSTs Play’s empty create-car skeleton to `POST /api/cars/new` and returns
+`{ id }` from the JSON response. No caller fields are accepted; a later update will fill details using that id.
 
 ## Session cookie flow
 
