@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-08-12
+
 ### Public features
 
 - Changed: during car onboarding, a green check next to the step title appears
