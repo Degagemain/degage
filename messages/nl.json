@@ -1616,7 +1616,7 @@
         "carName": "Naam van de wagen",
         "preparationConfirmedAt": "Voorbereiding door eigenaar bevestigd op",
         "simulation": "Simulatie",
-        "statusInPreparation": "Voorbereidingsstatus",
+        "preparationProgress": "Voorbereiding",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },

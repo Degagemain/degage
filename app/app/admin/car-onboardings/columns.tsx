@@ -12,12 +12,17 @@ import {
   CarOnboardingInPreparationStatus,
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
+  CarOnboardingRoadAssistancePlanStatus,
+  isCarInfoSectionComplete,
+  isShareStartSectionComplete,
+  isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip';
 import { cn } from '@/app/lib/utils';
 import type { CarOnboardingTabId } from './components/car-onboarding-form';
 
@@ -66,42 +71,120 @@ function ColoredStatusBadge({ label, className, href }: { label: string; classNa
   );
 }
 
-const statusColors = {
+type StatusTone = 'todo' | 'inProgress' | 'done' | 'notApplicable';
+
+const statusColors: Record<StatusTone, string> = {
   todo: 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300',
   inProgress: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
   done: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
   notApplicable: 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
-} as const;
-
-const preparationStatusClass: Record<CarOnboardingInPreparationStatus, string> = {
-  [CarOnboardingInPreparationStatus.OPEN]: statusColors.todo,
-  [CarOnboardingInPreparationStatus.READY]: statusColors.done,
-  [CarOnboardingInPreparationStatus.LOCKED]: statusColors.done,
 };
 
-const carValueStatusClass: Record<CarOnboardingCarValueStatus, string> = {
-  [CarOnboardingCarValueStatus.TODO]: statusColors.todo,
-  [CarOnboardingCarValueStatus.PROPOSAL]: statusColors.inProgress,
-  [CarOnboardingCarValueStatus.COUNTER]: statusColors.inProgress,
-  [CarOnboardingCarValueStatus.RESOLVED]: statusColors.done,
+const progressBlockColors: Record<StatusTone, string> = {
+  todo: 'bg-orange-300 dark:bg-orange-700',
+  inProgress: 'bg-blue-300 dark:bg-blue-700',
+  done: 'bg-emerald-300 dark:bg-emerald-700',
+  notApplicable: 'bg-slate-300 dark:bg-slate-600',
 };
 
-const insurerStatusClass: Record<CarOnboardingInsurerStatus, string> = {
-  [CarOnboardingInsurerStatus.NOT_APPLICABLE]: statusColors.notApplicable,
-  [CarOnboardingInsurerStatus.TODO]: statusColors.todo,
-  [CarOnboardingInsurerStatus.READY]: statusColors.done,
+const preparationStatusTone: Record<CarOnboardingInPreparationStatus, StatusTone> = {
+  [CarOnboardingInPreparationStatus.OPEN]: 'todo',
+  [CarOnboardingInPreparationStatus.READY]: 'done',
+  [CarOnboardingInPreparationStatus.LOCKED]: 'done',
 };
 
-const infoSessionStatusClass: Record<CarOnboardingInfoSessionStatus, string> = {
-  [CarOnboardingInfoSessionStatus.TODO]: statusColors.todo,
-  [CarOnboardingInfoSessionStatus.ENROLLED]: statusColors.inProgress,
-  [CarOnboardingInfoSessionStatus.DONE]: statusColors.done,
+const carValueStatusTone: Record<CarOnboardingCarValueStatus, StatusTone> = {
+  [CarOnboardingCarValueStatus.TODO]: 'todo',
+  [CarOnboardingCarValueStatus.PROPOSAL]: 'inProgress',
+  [CarOnboardingCarValueStatus.COUNTER]: 'inProgress',
+  [CarOnboardingCarValueStatus.RESOLVED]: 'done',
 };
 
-const playConnectorStatusClass = {
-  todo: statusColors.todo,
-  ready: statusColors.done,
-} as const;
+const insurerStatusTone: Record<CarOnboardingInsurerStatus, StatusTone> = {
+  [CarOnboardingInsurerStatus.NOT_APPLICABLE]: 'notApplicable',
+  [CarOnboardingInsurerStatus.TODO]: 'todo',
+  [CarOnboardingInsurerStatus.READY]: 'done',
+};
+
+const infoSessionStatusTone: Record<CarOnboardingInfoSessionStatus, StatusTone> = {
+  [CarOnboardingInfoSessionStatus.TODO]: 'todo',
+  [CarOnboardingInfoSessionStatus.ENROLLED]: 'inProgress',
+  [CarOnboardingInfoSessionStatus.DONE]: 'done',
+};
+
+const roadAssistancePlanStatusTone: Record<CarOnboardingRoadAssistancePlanStatus, StatusTone> = {
+  [CarOnboardingRoadAssistancePlanStatus.TODO]: 'todo',
+  [CarOnboardingRoadAssistancePlanStatus.READY]: 'done',
+};
+
+const playConnectorStatusTone = {
+  todo: 'todo' as const,
+  ready: 'done' as const,
+};
+
+type PreparationProgressStep = {
+  tab: CarOnboardingTabId;
+  labelKey: string;
+  tone: StatusTone;
+};
+
+function getPreparationProgressSteps(item: CarOnboarding): PreparationProgressStep[] {
+  const playConnectorStatus = item.owner?.hasPlayConnector ? 'ready' : 'todo';
+  const userInfoComplete = isUserInfoSectionComplete(item);
+  const carInfoComplete = isCarInfoSectionComplete(item);
+  const shareStartComplete = isShareStartSectionComplete(item);
+
+  return [
+    { tab: 'owner', labelKey: 'tabs.owner', tone: playConnectorStatusTone[playConnectorStatus] },
+    { tab: 'infoSession', labelKey: 'tabs.infoSession', tone: infoSessionStatusTone[item.infoSessionStatus] },
+    { tab: 'userInfo', labelKey: 'tabs.userInfo', tone: userInfoComplete ? 'done' : 'todo' },
+    { tab: 'carInfo', labelKey: 'tabs.carInfo', tone: carInfoComplete ? 'done' : 'todo' },
+    { tab: 'insurer', labelKey: 'tabs.insurer', tone: insurerStatusTone[item.insurerStatus] },
+    {
+      tab: 'roadAssistancePlan',
+      labelKey: 'tabs.roadAssistancePlan',
+      tone: roadAssistancePlanStatusTone[item.roadAssistancePlanStatus],
+    },
+    { tab: 'carValue', labelKey: 'tabs.carValue', tone: carValueStatusTone[item.carValueStatus] },
+    { tab: 'shareStart', labelKey: 'tabs.shareStart', tone: shareStartComplete ? 'done' : 'todo' },
+    { tab: 'finalize', labelKey: 'tabs.finalize', tone: preparationStatusTone[item.statusInPreparation] },
+  ];
+}
+
+function PreparationProgressBar({ item, t }: { item: CarOnboarding; t: (key: string) => string }) {
+  const steps = getPreparationProgressSteps(item);
+
+  return (
+    <TooltipProvider delayDuration={200}>
+      <div className="inline-flex h-5 w-[7.5rem] gap-0.5" role="group" aria-label={t('columns.preparationProgress')}>
+        {steps.map((step, index) => {
+          const label = t(step.labelKey);
+          const isFirst = index === 0;
+          const isLast = index === steps.length - 1;
+          const blockClass = cn('min-w-0 flex-1', progressBlockColors[step.tone], isFirst && 'rounded-l-sm', isLast && 'rounded-r-sm');
+          const href = carOnboardingDetailTabHref(item.id, step.tab);
+
+          if (!href) {
+            return <div key={step.tab} className={blockClass} title={label} aria-label={label} />;
+          }
+
+          return (
+            <Tooltip key={step.tab}>
+              <TooltipTrigger asChild>
+                <Link
+                  href={href}
+                  className={cn(blockClass, 'focus-visible:ring-ring hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none')}
+                  aria-label={label}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top">{label}</TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </div>
+    </TooltipProvider>
+  );
+}
 
 export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[] => {
   const { t, tShared } = options;
@@ -160,7 +243,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
         return (
           <ColoredStatusBadge
             label={t(`subprocess.playConnector.${status}`)}
-            className={playConnectorStatusClass[status]}
+            className={statusColors[playConnectorStatusTone[status]]}
             href={carOnboardingDetailTabHref(item.id, 'owner')}
           />
         );
@@ -177,7 +260,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
         return (
           <ColoredStatusBadge
             label={t(`subprocess.infoSession.${status}`)}
-            className={infoSessionStatusClass[status]}
+            className={statusColors[infoSessionStatusTone[status]]}
             href={carOnboardingDetailTabHref(item.id, 'infoSession')}
           />
         );
@@ -339,7 +422,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
         return (
           <ColoredStatusBadge
             label={t(`subprocess.carValue.${status}`)}
-            className={carValueStatusClass[status]}
+            className={statusColors[carValueStatusTone[status]]}
             href={carOnboardingDetailTabHref(item.id, 'carValue')}
           />
         );
@@ -370,7 +453,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
         return (
           <ColoredStatusBadge
             label={t(`subprocess.insurer.${status}`)}
-            className={insurerStatusClass[status]}
+            className={statusColors[insurerStatusTone[status]]}
             href={carOnboardingDetailTabHref(item.id, 'insurer')}
           />
         );
@@ -393,20 +476,10 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       enableSorting: false,
     },
     {
-      id: 'statusInPreparation',
-      accessorKey: 'statusInPreparation',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.statusInPreparation')} />,
-      cell: ({ row }) => {
-        const item = row.original;
-        const status = item.statusInPreparation;
-        return (
-          <ColoredStatusBadge
-            label={t(`preparationStatus.${status}`)}
-            className={preparationStatusClass[status]}
-            href={carOnboardingDetailTabHref(item.id, 'finalize')}
-          />
-        );
-      },
+      id: 'preparationProgress',
+      accessorFn: (row) => getPreparationProgressSteps(row).filter((step) => step.tone === 'done').length,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.preparationProgress')} />,
+      cell: ({ row }) => <PreparationProgressBar item={row.original} t={t} />,
       enableSorting: false,
     },
     {

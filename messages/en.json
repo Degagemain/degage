@@ -1616,7 +1616,7 @@
         "carName": "Car name",
         "preparationConfirmedAt": "Preparation confirmed by owner at",
         "simulation": "Simulation",
-        "statusInPreparation": "Preparation status",
+        "preparationProgress": "Preparation",
         "created": "Created",
         "updated": "Updated"
       },

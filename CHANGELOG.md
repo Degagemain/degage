@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Admin features
+
+- Added: the onboardings list shows preparation as a colored step bar; hover a
+  block for the step name, click to open that tab. Individual status columns are
+  hidden by default.
+
 ## [0.0.3] - 2026-08-12
 
 ### Public features
