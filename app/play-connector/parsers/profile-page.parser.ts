@@ -2,6 +2,9 @@ import * as cheerio from 'cheerio';
 
 const PROFILE_NAME_PATTERN = /^([^,]+),\s*(.+)$/;
 const RESIDENCE_ADDRESS_PATTERN = /^(.+?),\s*(\d{4})\s+(.+?)(?:\s+\([^)]+\))?\s*$/;
+const HOUSE_NUMBER = String.raw`\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?`;
+const STREET_AND_HOUSE_NUMBER_WITH_BOX_PATTERN = new RegExp(String.raw`^(.+)\s+(${HOUSE_NUMBER}\s+(?:bus|bte|boîte|box|bt)\.?\s+\S+)$`, 'i');
+const STREET_AND_HOUSE_NUMBER_PATTERN = new RegExp(String.raw`^(.+)\s+(${HOUSE_NUMBER})$`);
 
 export type PlayProfileName = {
   firstName: string;
@@ -10,6 +13,7 @@ export type PlayProfileName = {
 
 export type PlayResidenceAddress = {
   street: string;
+  houseNumber: string;
   zip: string;
   city: string;
 };
@@ -39,8 +43,12 @@ export const parsePlayResidenceAddress = (raw: string): PlayResidenceAddress | n
     return null;
   }
 
+  const streetLine = match[1].trim();
+  const streetAndNumber = streetLine.match(STREET_AND_HOUSE_NUMBER_WITH_BOX_PATTERN) ?? streetLine.match(STREET_AND_HOUSE_NUMBER_PATTERN);
+
   return {
-    street: match[1].trim(),
+    street: streetAndNumber ? streetAndNumber[1].trim() : streetLine,
+    houseNumber: streetAndNumber ? streetAndNumber[2].trim() : '',
     zip: match[2].trim(),
     city: match[3].trim(),
   };
@@ -110,6 +118,7 @@ export const parsePlayProfileBasicInfo = (html: string): PlayProfileBasicInfo | 
     degageId,
     residenceAddress,
     street: parsedAddress.street,
+    houseNumber: parsedAddress.houseNumber,
     zip: parsedAddress.zip,
     city: parsedAddress.city,
     mobilePhone,
