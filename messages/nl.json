@@ -1622,7 +1622,8 @@
       },
       "tabs": {
         "preparationTitle": "Voorbereiding",
-        "mobileNavToggle": "Voorbereidingsstappen: {step}",
+        "onboardingTitle": "De instap",
+        "mobileNavToggle": "{section}: {step}",
         "owner": "Eigenaar",
         "infoSession": "Infosessie",
         "userInfo": "Eigenaarsinfo",
@@ -1631,7 +1632,8 @@
         "roadAssistancePlan": "Pechverhelping",
         "carValue": "Waarde van de wagen",
         "shareStart": "Naam & startdatum",
-        "finalize": "Afronden"
+        "finalize": "Afronden",
+        "adminHandoff": "Administratieve afhandeling"
       },
       "preparationStatus": {
         "open": "Open",

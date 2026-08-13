@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -44,7 +44,7 @@ import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onbo
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
 
-export const CAR_ONBOARDING_TAB_IDS = [
+export const CAR_ONBOARDING_PREPARATION_TAB_IDS = [
   'owner',
   'infoSession',
   'userInfo',
@@ -55,11 +55,20 @@ export const CAR_ONBOARDING_TAB_IDS = [
   'shareStart',
   'finalize',
 ] as const;
+
+export const CAR_ONBOARDING_ONBOARDING_TAB_IDS = ['adminHandoff'] as const;
+
+export const CAR_ONBOARDING_TAB_IDS = [...CAR_ONBOARDING_PREPARATION_TAB_IDS, ...CAR_ONBOARDING_ONBOARDING_TAB_IDS] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
+export type CarOnboardingOnboardingTabId = (typeof CAR_ONBOARDING_ONBOARDING_TAB_IDS)[number];
 
 export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId => {
   if (tab === 'playConnector') return 'owner';
   return CAR_ONBOARDING_TAB_IDS.includes(tab as CarOnboardingTabId) ? (tab as CarOnboardingTabId) : 'owner';
+};
+
+const isOnboardingPhaseTab = (tab: CarOnboardingTabId): tab is CarOnboardingOnboardingTabId => {
+  return (CAR_ONBOARDING_ONBOARDING_TAB_IDS as readonly string[]).includes(tab);
 };
 
 const NONE = 'none';
@@ -237,6 +246,10 @@ type CarOnboardingStepTabCompletion = {
   preparationLocked: boolean;
 };
 
+function CarOnboardingPhaseTitle({ children }: { children: ReactNode }) {
+  return <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">{children}</p>;
+}
+
 function CarOnboardingPreparationTitle({
   preparationStatus,
   t,
@@ -245,16 +258,16 @@ function CarOnboardingPreparationTitle({
   t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
 }) {
   return (
-    <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">
+    <CarOnboardingPhaseTitle>
       <span>{t('tabs.preparationTitle')}</span>
       <span className="inline-flex shrink-0" title={t(`preparationStatus.${preparationStatus}`)}>
         <PreparationStatusIcon status={preparationStatus} />
       </span>
-    </p>
+    </CarOnboardingPhaseTitle>
   );
 }
 
-function CarOnboardingStepTabsList({
+function CarOnboardingPreparationTabsList({
   completion,
   t,
 }: {
@@ -300,6 +313,41 @@ function CarOnboardingStepTabsList({
         {completion.preparationLocked ? <Check className="text-primary size-3.5 shrink-0" aria-hidden /> : null}
       </TabsTrigger>
     </TabsList>
+  );
+}
+
+function CarOnboardingOnboardingTabsList({ t }: { t: ReturnType<typeof useTranslations<'admin.carOnboardings'>> }) {
+  return (
+    <TabsList variant="line" className="h-fit w-full">
+      <TabsTrigger value="adminHandoff" className="gap-1.5">
+        {t('tabs.adminHandoff')}
+      </TabsTrigger>
+    </TabsList>
+  );
+}
+
+function CarOnboardingPhaseNav({
+  completion,
+  preparationStatus,
+  t,
+}: {
+  completion: CarOnboardingStepTabCompletion;
+  preparationStatus: CarOnboardingInPreparationStatus;
+  t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
+}) {
+  return (
+    <>
+      <div className="flex flex-col gap-2">
+        <CarOnboardingPreparationTitle preparationStatus={preparationStatus} t={t} />
+        <CarOnboardingPreparationTabsList completion={completion} t={t} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <CarOnboardingPhaseTitle>
+          <span>{t('tabs.onboardingTitle')}</span>
+        </CarOnboardingPhaseTitle>
+        <CarOnboardingOnboardingTabsList t={t} />
+      </div>
+    </>
   );
 }
 
@@ -683,32 +731,38 @@ export function CarOnboardingForm({
         orientation="vertical"
         className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8"
       >
-        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-48">
+        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-64">
           <Collapsible open={mobileNavOpen} onOpenChange={setMobileNavOpen} className="group/mobile-nav sm:hidden">
             <CollapsibleTrigger
               className="border-border bg-muted/40 hover:bg-muted/60 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-left text-sm font-medium"
-              aria-label={t('tabs.mobileNavToggle', { step: t(`tabs.${activeTab}`) })}
+              aria-label={t('tabs.mobileNavToggle', {
+                section: t(isOnboardingPhaseTab(activeTab) ? 'tabs.onboardingTitle' : 'tabs.preparationTitle'),
+                step: t(`tabs.${activeTab}`),
+              })}
             >
               <span className="flex min-w-0 items-center gap-1.5">
-                <span className="text-muted-foreground shrink-0">{t('tabs.preparationTitle')}</span>
+                <span className="text-muted-foreground shrink-0">
+                  {t(isOnboardingPhaseTab(activeTab) ? 'tabs.onboardingTitle' : 'tabs.preparationTitle')}
+                </span>
                 <span className="text-muted-foreground shrink-0" aria-hidden>
                   ·
                 </span>
                 <span className="truncate">{t(`tabs.${activeTab}`)}</span>
-                <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
-                  <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
-                </span>
+                {isOnboardingPhaseTab(activeTab) ? null : (
+                  <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
+                    <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
+                  </span>
+                )}
               </span>
               <ChevronDown className="text-muted-foreground size-4 shrink-0 transition-transform group-data-[state=open]/mobile-nav:rotate-180" />
             </CollapsibleTrigger>
-            <CollapsibleContent className="flex flex-col gap-2 pt-2">
-              <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+            <CollapsibleContent className="flex flex-col gap-6 pt-2">
+              <CarOnboardingPhaseNav completion={stepTabCompletion} preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
             </CollapsibleContent>
           </Collapsible>
 
-          <div className="hidden flex-col gap-2 sm:flex">
-            <CarOnboardingPreparationTitle preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
-            <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+          <div className="hidden flex-col gap-6 sm:flex">
+            <CarOnboardingPhaseNav completion={stepTabCompletion} preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
           </div>
         </div>
 
@@ -1453,6 +1507,12 @@ export function CarOnboardingForm({
                   </>
                 )}
               </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="adminHandoff" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('tabs.adminHandoff')}</FieldLegend>
             </FieldSet>
           </TabsContent>
         </div>

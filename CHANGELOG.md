@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added: the onboardings list shows preparation as a colored step bar; hover a
   block for the step name, click to open that tab. Individual status columns are
   hidden by default.
+- Added: car onboarding detail has an Onboarding menu with an empty Admin wrap-up
+  tab.
 
 ## [0.0.3] - 2026-08-12
 

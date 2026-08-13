@@ -15,7 +15,8 @@ Tijdens de voorbereiding verzamelt het systeem contactgegevens en voertuigkenmer
 vereiste invoer compleet is en of verdere wijzigingen nog zijn toegestaan.
 
 Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: eigenaar, gebruikersinfo, wageninfo,
-verzekering, pechverhelping, waarde, startdatum autodelen, afronden).
+verzekering, pechverhelping, waarde, startdatum autodelen, afronden). Na de voorbereiding staat een tweede menu **De instap** voor latere
+stappen.
 
 ### Eigenaar
 
@@ -174,6 +175,11 @@ bevestiging er is én de infosessie **Compleet** is (samen met de overige vereis
 
 Wanneer de voorbereiding **Vergrendeld** is, of nadat de eigenaar heeft bevestigd, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en
 waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen op **Afronden** wanneer de voorbereiding niet vergrendeld is.
+
+## De instap
+
+Na de voorbereiding beheren admins de instap zelf in een tweede menu. Dat menu heeft voorlopig één tabblad: **Administratieve afhandeling**. Dat
+tabblad is nog leeg tot verdere instapstappen worden toegevoegd.
 
 ## Record aanmaken
 

@@ -15,7 +15,8 @@ Pendant la préparation, le système recueille les coordonnées et les caractér
 indique si les informations requises sont complètes et si de nouvelles modifications sont autorisées.
 
 Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et détail avec onglets : propriétaire, infos utilisateur, infos
-véhicule, assurance, assistance routière, valeur, date de début du partage, finaliser).
+véhicule, assurance, assistance routière, valeur, date de début du partage, finaliser). Après la préparation, un second menu **Intégration**
+regroupe les étapes suivantes.
 
 ### Propriétaire
 
@@ -180,6 +181,11 @@ qu'après cette confirmation et lorsque la session d'info est **Complet** (avec 
 Lorsque la préparation est **Verrouillée**, ou après confirmation du propriétaire, les utilisateurs ne peuvent plus mettre à jour les infos
 utilisateur, infos véhicule, assurance ou la valeur. Les admins peuvent effacer la confirmation du propriétaire depuis **Finaliser** lorsque la
 préparation n'est pas verrouillée.
+
+## Intégration
+
+Après la préparation, les admins gèrent l'intégration elle-même dans un second menu. Pour l'instant, ce menu a un onglet : **Clôture
+administrative**. Cet onglet est vide jusqu'à l'ajout des autres étapes d'intégration.
 
 ## Création d'un enregistrement
 

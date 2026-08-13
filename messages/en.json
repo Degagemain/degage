@@ -1622,7 +1622,8 @@
       },
       "tabs": {
         "preparationTitle": "Preparation",
-        "mobileNavToggle": "Preparation steps: {step}",
+        "onboardingTitle": "Onboarding",
+        "mobileNavToggle": "{section}: {step}",
         "owner": "Owner",
         "infoSession": "Info session",
         "userInfo": "User info",
@@ -1631,7 +1632,8 @@
         "roadAssistancePlan": "Road assistance plan",
         "carValue": "Car value",
         "shareStart": "Car name & start date",
-        "finalize": "Finalize"
+        "finalize": "Finalize",
+        "adminHandoff": "Admin wrap-up"
       },
       "preparationStatus": {
         "open": "Open",

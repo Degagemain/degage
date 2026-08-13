@@ -14,7 +14,7 @@ During preparation, the system gathers contact information and car characteristi
 required input is complete and whether further edits are allowed.
 
 Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, road assistance
-plan, car value, car name & start date, finalize).
+plan, car value, car name & start date, finalize). After preparation, a second menu **Onboarding** holds later steps.
 
 ### Owner
 
@@ -189,6 +189,11 @@ info session is **Done** (along with the other requirements).
 When preparation is **Locked**, or after the owner has confirmed preparation, users cannot update car-info, user-info, insurer, or car value
 until an admin unlocks it (for locked) or while confirmation stands. Admins can clear the owner confirmation from **Finalize** when preparation
 is not locked.
+
+## Onboarding
+
+After preparation, admins manage the onboarding itself under a second menu. For now that menu has one tab: **Admin wrap-up**. The tab is empty
+until further onboarding steps are added.
 
 ## Creating a record
 
