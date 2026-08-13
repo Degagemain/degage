@@ -88,18 +88,17 @@ Deze stap is compleet wanneer de verzekeringsstatus niet **Todo** is.
 
 ### Pechverhelpingsplan
 
-Legt vast of de wagen al pechverhelping heeft en welk plan de eigenaar met Dégage wil.
+Legt vast of de wagen al pechverhelping heeft. Een gewenst plan kiezen uit de catalogus is momenteel niet verplicht.
 
 | Eigenschap                             | Beschrijving                                                                                          |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Heeft bestaand pechverhelpingsplan     | Of de wagen al pechverhelping heeft (bij een nieuwe aangekochte wagen kan dit inbegrepen zijn).       |
 | Einddatum bestaand pechverhelpingsplan | Einddatum van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat). |
-| Pechverhelpingsplan                    | Gewenst pechverhelpingsplan uit de catalogus.                                                         |
 
-| Status | Betekenis                                                                               |
-| ------ | --------------------------------------------------------------------------------------- |
-| Todo   | Verplichte velden ontbreken (gewenst plan en/of einddatum bestaand plan).               |
-| Klaar  | Gewenst plan is gekozen en bestaande plangegevens zijn compleet wanneer van toepassing. |
+| Status | Betekenis                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------- |
+| Todo   | Heeft bestaand pechverhelpingsplan staat aan, maar de einddatum van het bestaande plan ontbreekt. |
+| Klaar  | Bestaande plangegevens zijn compleet wanneer van toepassing. Een gewenst plan is niet verplicht.  |
 
 Het systeem zet de status automatisch bij opslaan. Wanneer **Heeft bestaand pechverhelpingsplan** uit staat, wordt de einddatum gewist.
 

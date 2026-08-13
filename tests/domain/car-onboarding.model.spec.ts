@@ -827,18 +827,16 @@ describe('applyRoadAssistancePlanStatus', () => {
     expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
   });
 
-  it('sets ready when desired plan is set and existing details are complete', () => {
-    const result = applyRoadAssistancePlanStatus(
-      carOnboarding({
-        hasExistingRoadAssistancePlan: true,
-        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
-        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
-      }),
-    );
-    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
-  });
+  it('sets ready when existing details are complete even without a desired plan', () => {
+    expect(
+      applyRoadAssistancePlanStatus(
+        carOnboarding({
+          hasExistingRoadAssistancePlan: false,
+          roadAssistancePlan: null,
+        }),
+      ).roadAssistancePlanStatus,
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
 
-  it('sets todo when desired plan or existing end date is missing', () => {
     expect(
       applyRoadAssistancePlanStatus(
         carOnboarding({
@@ -846,8 +844,10 @@ describe('applyRoadAssistancePlanStatus', () => {
           existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
         }),
       ).roadAssistancePlanStatus,
-    ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
+  });
 
+  it('sets todo when existing end date is missing', () => {
     expect(
       applyRoadAssistancePlanStatus(
         carOnboarding({

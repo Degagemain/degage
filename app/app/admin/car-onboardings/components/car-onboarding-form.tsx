@@ -489,11 +489,9 @@ export function CarOnboardingForm({
   });
   const roadAssistancePlanComplete = isRoadAssistancePlanSectionComplete({
     roadAssistancePlanStatus:
-      watchedValues.roadAssistancePlanId === NONE
+      watchedValues.hasExistingRoadAssistancePlan && watchedValues.existingRoadAssistancePlanEndDate.trim() === ''
         ? CarOnboardingRoadAssistancePlanStatus.TODO
-        : watchedValues.hasExistingRoadAssistancePlan && watchedValues.existingRoadAssistancePlanEndDate.trim() === ''
-          ? CarOnboardingRoadAssistancePlanStatus.TODO
-          : CarOnboardingRoadAssistancePlanStatus.READY,
+        : CarOnboardingRoadAssistancePlanStatus.READY,
   });
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const shareStartComplete = isShareStartSectionComplete({
@@ -1302,28 +1300,6 @@ export function CarOnboardingForm({
                     )}
                   />
                 ) : null}
-                <Controller
-                  name="roadAssistancePlanId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <AdminSearchableSelectField
-                      label={t('columns.roadAssistancePlan')}
-                      value={field.value}
-                      selectedLabel={field.value === NONE ? undefined : form.watch('roadAssistancePlanName') || undefined}
-                      onValueChange={(id, option) => {
-                        field.onChange(id);
-                        form.setValue('roadAssistancePlanName', id === NONE ? '' : option.name, { shouldValidate: true });
-                      }}
-                      apiPath="road-assistance-plans"
-                      queryParams={{ isActive: 'true' }}
-                      descriptionKey="description"
-                      appendOptions={[{ id: NONE, name: t('form.none') }]}
-                      placeholder={t('form.placeholders.roadAssistancePlan')}
-                      error={fieldState.error?.message}
-                      disabled={isSubmitting}
-                    />
-                  )}
-                />
               </FieldGroup>
             </FieldSet>
           </TabsContent>

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Changed: during car onboarding, you no longer choose a road assistance plan
+  from a list; you only say whether you already have coverage (and until when).
+
 ### Admin features
 
 - Added: the onboardings list shows preparation as a colored step bar; hover a
@@ -14,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   hidden by default.
 - Added: car onboarding detail has an Onboarding menu with an empty Admin wrap-up
   tab.
+- Changed: car onboarding no longer requires a desired road assistance plan; the
+  plan picker is hidden.
 
 ## [0.0.3] - 2026-08-12
 

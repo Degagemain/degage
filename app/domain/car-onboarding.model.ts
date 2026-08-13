@@ -602,9 +602,8 @@ export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnb
   }
 
   const hasRequiredExistingFields = !onboarding.hasExistingRoadAssistancePlan || onboarding.existingRoadAssistancePlanEndDate != null;
-  const hasDesiredPlan = onboarding.roadAssistancePlan != null;
 
-  if (hasRequiredExistingFields && hasDesiredPlan) {
+  if (hasRequiredExistingFields) {
     return {
       ...onboarding,
       roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,

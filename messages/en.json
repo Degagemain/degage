@@ -2983,7 +2983,7 @@
       "roadAssistancePlan": {
         "title": "Road assistance plan",
         "subtitle": "Your roadside assistance coverage",
-        "info": "Tell us whether your car already has road assistance and choose the plan you want with Dégage.",
+        "info": "Tell us whether your car already has road assistance.",
         "panelTitle": "Roadside assistance",
         "panelBody": "Dégage offers roadside assistance free of charge to every owner. By default this is VAB Benelux.\n\nIf as an owner you want VAB roadside assistance in Europe, you can request it 7 days before departure. That cover remains valid until the end of the calendar year. Dégage also pays for this request.",
         "existingPanelTitle": "Existing road assistance",

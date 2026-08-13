@@ -2983,7 +2983,7 @@
       "roadAssistancePlan": {
         "title": "Assistance routière",
         "subtitle": "Votre couverture d'assistance routière",
-        "info": "Indiquez si votre véhicule a déjà une assistance routière et choisissez le plan souhaité avec Dégage.",
+        "info": "Indiquez si votre véhicule a déjà une assistance routière.",
         "panelTitle": "Assistance dépannage",
         "panelBody": "Dégage offre gratuitement une assistance dépannage à chaque propriétaire. Par défaut, il s'agit de VAB Benelux.\n\nSi en tant que propriétaire vous souhaitez l'assistance dépannage VAB en Europe, vous pouvez la demander 7 jours avant le départ. Cette couverture reste valable jusqu'à la fin de l'année civile. Cette demande est également prise en charge par Dégage.",
         "existingPanelTitle": "Assistance routière existante",

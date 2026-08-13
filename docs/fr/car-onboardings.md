@@ -91,18 +91,17 @@ Cette étape est complète lorsque le statut d'assurance n'est pas **Todo**.
 
 ### Assistance routière
 
-Indique si le véhicule a déjà une assistance routière et quel plan le propriétaire souhaite avec Dégage.
+Indique si le véhicule a déjà une assistance routière. Choisir un plan souhaité dans le catalogue n'est actuellement pas requis.
 
 | Propriété                                 | Description                                                                                                  |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A un plan d'assistance existant           | Indique si le véhicule a déjà une assistance routière (pour un véhicule neuf acheté, cela peut être inclus). |
 | Date de fin du plan d'assistance existant | Date de fin du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                |
-| Plan d'assistance routière                | Plan d'assistance souhaité issu du catalogue.                                                                |
 
-| Statut | Signification                                                                  |
-| ------ | ------------------------------------------------------------------------------ |
-| Todo   | Champs requis manquants (plan souhaité et/ou date de fin du plan existant).    |
-| Prêt   | Plan souhaité sélectionné et détails du plan existant complets le cas échéant. |
+| Statut | Signification                                                                                      |
+| ------ | -------------------------------------------------------------------------------------------------- |
+| Todo   | A un plan d'assistance existant est activé, mais la date de fin du plan existant est manquante.    |
+| Prêt   | Les détails du plan existant sont complets le cas échéant. Un plan souhaité n'est pas obligatoire. |
 
 Le système définit le statut automatiquement à l'enregistrement. Lorsque **A un plan d'assistance existant** est désactivé, la date de fin est
 effacée.

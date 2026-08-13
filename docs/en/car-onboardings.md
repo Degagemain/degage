@@ -103,18 +103,17 @@ This step is complete when insurer status is not **Todo**.
 
 ### Road assistance plan
 
-Records whether the car already has road assistance coverage and which plan the owner wants with Dégage.
+Records whether the car already has road assistance coverage. Choosing a desired plan from the catalog is currently not required.
 
 | Property                               | Description                                                                                                           |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | Has existing road assistance plan      | Whether the car already has road assistance coverage (for new purchased cars, this may be included with the vehicle). |
 | Existing road assistance plan end date | End date of the current road assistance plan (when has existing road assistance plan is enabled).                     |
-| Road assistance plan                   | Desired road assistance plan from the catalog.                                                                        |
 
-| Status | Meaning                                                                          |
-| ------ | -------------------------------------------------------------------------------- |
-| Todo   | Required fields are missing (desired plan and/or existing plan end date).        |
-| Ready  | Desired plan is selected and existing plan details are complete when applicable. |
+| Status | Meaning                                                                                  |
+| ------ | ---------------------------------------------------------------------------------------- |
+| Todo   | Has existing road assistance plan is enabled, but the existing plan end date is missing. |
+| Ready  | Existing plan details are complete when applicable. A desired plan is not required.      |
 
 The system sets road assistance plan status automatically on save. When **Has existing road assistance plan** is off, the end date is cleared.
 
