@@ -179,8 +179,9 @@ waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen 
 
 ## De instap
 
-Na de voorbereiding beheren admins de instap zelf in een tweede menu. Dat menu heeft voorlopig één tabblad: **Administratieve afhandeling**. Dat
-tabblad is nog leeg tot verdere instapstappen worden toegevoegd.
+Na de voorbereiding beheren admins de instap zelf in een tweede menu. Dat menu heeft een tabblad **Administratieve afhandeling** waar admins de
+**Autofiche** (het wagenrecord in Play) kunnen synchroniseren. Synchroniseren is niet beschikbaar tot de eigenaar het Play-account heeft
+gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de admin eerst bevestiging.
 
 ## Record aanmaken
 
@@ -226,6 +227,7 @@ tabblad is nog leeg tot verdere instapstappen worden toegevoegd.
 | Eigenaar Play connector           | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).                                                                 |
 | Infosessie datum                  | Geplande datum van de ingeschreven infosessie.                                                                                      |
 | Infosessie PC-id                  | Play connector-identificatie van de ingeschreven infosessie.                                                                        |
+| Autofiche                         | Play-identificatie van de gesynchroniseerde autofiche. Admins synchroniseren die vanuit Administratieve afhandeling.                |
 | Infosessiestatus                  | Voortgang van het infosessie-proces.                                                                                                |
 | Simulatie                         | Gekoppelde simulatie-run, indien aanwezig.                                                                                          |
 | Voorbereiding bevestigd op        | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                              |

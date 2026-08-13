@@ -186,6 +186,7 @@ model CarOnboarding {
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
   carName             String?
+  carPcId             Int?
   preparationConfirmedAt DateTime?
   stickerLinks        CarOnboardingSticker[]
   createdAt           DateTime                         @default(now())

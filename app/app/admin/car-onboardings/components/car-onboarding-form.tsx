@@ -87,6 +87,7 @@ interface CarOnboardingFormProps {
   onStartCarOnboarding?: () => Promise<void>;
   onUnlockPreparation?: () => Promise<void>;
   onClearPreparationConfirmation?: () => Promise<void>;
+  onSyncAutofiche?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
@@ -367,6 +368,7 @@ export function CarOnboardingForm({
   onStartCarOnboarding,
   onUnlockPreparation,
   onClearPreparationConfirmation,
+  onSyncAutofiche,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
@@ -387,6 +389,8 @@ export function CarOnboardingForm({
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isClearConfirmationDialogOpen, setIsClearConfirmationDialogOpen] = useState(false);
   const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
+  const [isSyncAutoficheDialogOpen, setIsSyncAutoficheDialogOpen] = useState(false);
+  const [isSyncingAutofiche, setIsSyncingAutofiche] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [carNameAvailability, setCarNameAvailability] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
   const carNameRequestIdRef = useRef(0);
@@ -711,6 +715,17 @@ export function CarOnboardingForm({
       setIsClearConfirmationDialogOpen(false);
     } finally {
       setIsClearingConfirmation(false);
+    }
+  };
+
+  const handleSyncAutofiche = async () => {
+    if (!onSyncAutofiche) return;
+    setIsSyncingAutofiche(true);
+    try {
+      await onSyncAutofiche();
+      setIsSyncAutoficheDialogOpen(false);
+    } finally {
+      setIsSyncingAutofiche(false);
     }
   };
 
@@ -1513,6 +1528,30 @@ export function CarOnboardingForm({
           <TabsContent value="adminHandoff" className="mt-0">
             <FieldSet className="max-w-2xl">
               <FieldLegend>{t('tabs.adminHandoff')}</FieldLegend>
+              <FieldGroup className="gap-6">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.carPcId')}</p>
+                  <p className="text-muted-foreground text-sm">{initialCarOnboarding.carPcId ?? '—'}</p>
+                </div>
+                {!playConnectorComplete ? <FieldDescription>{t('form.syncAutofichePlayConnectorMissing')}</FieldDescription> : null}
+                {onSyncAutofiche != null ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      if (!preparationLocked) {
+                        setIsSyncAutoficheDialogOpen(true);
+                        return;
+                      }
+                      void handleSyncAutofiche();
+                    }}
+                    disabled={!playConnectorComplete || isSubmitting || isSyncingAutofiche}
+                  >
+                    {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutofiche')}
+                  </Button>
+                ) : null}
+              </FieldGroup>
             </FieldSet>
           </TabsContent>
         </div>
@@ -1598,6 +1637,23 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleClearConfirmationConfirm()} disabled={isClearingConfirmation}>
               {isClearingConfirmation ? t('form.clearPreparationConfirmationConfirming') : t('form.clearPreparationConfirmationConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isSyncAutoficheDialogOpen} onOpenChange={isSyncingAutofiche ? undefined : setIsSyncAutoficheDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.syncAutoficheTitle')}</DialogTitle>
+            <DialogDescription>{t('form.syncAutoficheDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsSyncAutoficheDialogOpen(false)} disabled={isSyncingAutofiche}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleSyncAutofiche()} disabled={isSyncingAutofiche}>
+              {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutoficheConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

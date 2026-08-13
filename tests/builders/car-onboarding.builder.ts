@@ -54,6 +54,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     carStickers: data.carStickers ?? [],
     carName: data.carName !== undefined ? data.carName : null,
     shareStartDate: data.shareStartDate !== undefined ? data.shareStartDate : null,
+    carPcId: data.carPcId !== undefined ? data.carPcId : null,
     preparationConfirmedAt: data.preparationConfirmedAt !== undefined ? data.preparationConfirmedAt : null,
     statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,
     createdAt: data.createdAt ?? new Date(),

@@ -208,6 +208,24 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleSyncAutofiche = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/autofiche/sync`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.syncAutoficheError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(t('form.syncAutoficheSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.syncAutoficheError'));
+    }
+  };
+
   const handleUploadRegistrationCertificate = async (side: 'front' | 'back', file: File) => {
     if (!id) return;
     const formData = new FormData();
@@ -380,6 +398,7 @@ export default function EditCarOnboardingPage() {
               onStartCarOnboarding={handleStartCarOnboarding}
               onUnlockPreparation={handleUnlockPreparation}
               onClearPreparationConfirmation={handleClearPreparationConfirmation}
+              onSyncAutofiche={handleSyncAutofiche}
               onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
               onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
               onUploadInspectionCertificate={handleUploadInspectionCertificate}

@@ -105,6 +105,7 @@ describe('carOnboardingSchema', () => {
     expect(result.simulation).toBeNull();
     expect(result.carStickers).toEqual([]);
     expect(result.shareStartDate).toBeNull();
+    expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -133,6 +134,12 @@ describe('carOnboardingSchema', () => {
     if (result.success) {
       expect(result.data.owner?.hasPlayConnector).toBe(true);
     }
+  });
+
+  it('accepts a positive carPcId and rejects zero', () => {
+    const id = '550e8400-e29b-41d4-a716-446655440000';
+    expect(carOnboardingSchema.parse({ id, carPcId: 3961 }).carPcId).toBe(3961);
+    expect(carOnboardingSchema.safeParse({ id, carPcId: 0 }).success).toBe(false);
   });
 });
 
@@ -368,6 +375,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.infoSessionDate).toBeNull();
     expect(result.infoSessionPcId).toBeNull();
     expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
+    expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 

@@ -117,6 +117,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     carStickers: [],
     carName: db.carName,
     shareStartDate: db.shareStartDate,
+    carPcId: db.carPcId,
     preparationConfirmedAt: db.preparationConfirmedAt,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
@@ -254,6 +255,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
     carName: onboarding.carName ?? undefined,
     shareStartDate: onboarding.shareStartDate ?? undefined,
+    carPcId: onboarding.carPcId ?? undefined,
     preparationConfirmedAt: onboarding.preparationConfirmedAt ?? undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
@@ -310,6 +312,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     },
     shareStartDate: onboarding.shareStartDate,
     carName: onboarding.carName,
+    carPcId: onboarding.carPcId,
     preparationConfirmedAt: onboarding.preparationConfirmedAt,
     statusInPreparation: onboarding.statusInPreparation,
   };

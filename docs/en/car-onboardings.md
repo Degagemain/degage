@@ -193,8 +193,9 @@ is not locked.
 
 ## Onboarding
 
-After preparation, admins manage the onboarding itself under a second menu. For now that menu has one tab: **Admin wrap-up**. The tab is empty
-until further onboarding steps are added.
+After preparation, admins manage the onboarding itself under a second menu. That menu has an **Admin wrap-up** tab where admins can sync the
+**Autofiche** (the car record in Play). Sync is unavailable until the owner has attached their Play account. If preparation is not locked yet,
+the admin is asked to confirm before syncing.
 
 ## Creating a record
 
@@ -235,6 +236,7 @@ until further onboarding steps are added.
 | Owner Play connector               | Whether the owner has a Play connector account linked (Yes/No).                                                                 |
 | Info session date                  | Scheduled date of the enrolled info session.                                                                                    |
 | Info session PC id                 | Play connector identifier for the enrolled info session.                                                                        |
+| Autofiche                          | Play identifier of the synced car fiche. Admins sync it from Admin wrap-up.                                                     |
 | Info session status                | Progress of the info session subprocess.                                                                                        |
 | Simulation                         | Linked simulation run, if any.                                                                                                  |
 | Preparation confirmed at           | Date and time when the owner confirmed preparation details.                                                                     |

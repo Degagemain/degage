@@ -131,6 +131,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     carStickers: z.array(idNameSchema).default([]),
     carName: z.string().nullable().default(null),
     shareStartDate: z.coerce.date().nullable().default(null),
+    carPcId: z.number().int().positive().nullable().default(null),
     preparationConfirmedAt: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
@@ -305,6 +306,7 @@ export const carOnboardingFromSimulation = (
     carStickers: [],
     carName: null,
     shareStartDate: null,
+    carPcId: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     preparationConfirmedAt: null,
     infoSessionDate: null,
@@ -313,7 +315,7 @@ export const carOnboardingFromSimulation = (
   };
 };
 
-const isNonEmptyString = (value: string | null | undefined): boolean => {
+const isNonEmptyString = (value: string | null | undefined): value is string => {
   return value != null && value.trim().length > 0;
 };
 

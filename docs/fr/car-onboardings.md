@@ -184,8 +184,9 @@ préparation n'est pas verrouillée.
 
 ## Intégration
 
-Après la préparation, les admins gèrent l'intégration elle-même dans un second menu. Pour l'instant, ce menu a un onglet : **Clôture
-administrative**. Cet onglet est vide jusqu'à l'ajout des autres étapes d'intégration.
+Après la préparation, les admins gèrent l'intégration elle-même dans un second menu. Cet onglet **Clôture administrative** permet de
+synchroniser l'**Autofiche** (la fiche voiture dans Play). La synchronisation n'est pas disponible tant que le propriétaire n'a pas lié son
+compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'abord confirmer.
 
 ## Création d'un enregistrement
 
@@ -230,6 +231,7 @@ administrative**. Cet onglet est vide jusqu'à l'ajout des autres étapes d'int�
 | Propriétaire Play connector          | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                                                                   |
 | Date session d'info                  | Date prévue de la session d'info inscrite.                                                                                             |
 | ID PC session d'info                 | Identifiant Play connector de la session d'info inscrite.                                                                              |
+| Autofiche                            | Identifiant Play de la fiche voiture synchronisée. Les admins la synchronisent depuis Clôture administrative.                          |
 | Statut session d'info                | Progression du sous-processus session d'info.                                                                                          |
 | Simulation                           | Simulation associée, le cas échéant.                                                                                                   |
 | Préparation confirmée le             | Date et heure auxquelles le propriétaire a confirmé les données de préparation.                                                        |
