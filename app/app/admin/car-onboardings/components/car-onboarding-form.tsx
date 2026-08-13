@@ -9,6 +9,7 @@ import * as z from 'zod';
 
 import {
   CAR_ONBOARDING_CAR_NAME_MAX_LENGTH,
+  CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH,
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
@@ -127,6 +128,7 @@ interface FormValues {
   hasInsuranceContract: boolean;
   hasExistingRoadAssistancePlan: boolean;
   existingRoadAssistancePlanEndDate: string;
+  roadAssistancePlanDescription: string;
   roadAssistancePlanId: string;
   roadAssistancePlanName: string;
   carName: string;
@@ -170,6 +172,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     hasInsuranceContract: row.hasInsuranceContract,
     hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
     existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
+    roadAssistancePlanDescription: row.roadAssistancePlanDescription ?? '',
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
     carName: row.carName ?? '',
@@ -213,6 +216,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     hasInsuranceContract: z.boolean(),
     hasExistingRoadAssistancePlan: z.boolean(),
     existingRoadAssistancePlanEndDate: z.string(),
+    roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH),
     roadAssistancePlanId: z.string(),
     roadAssistancePlanName: z.string(),
     carName: z.string(),
@@ -489,7 +493,8 @@ export function CarOnboardingForm({
   });
   const roadAssistancePlanComplete = isRoadAssistancePlanSectionComplete({
     roadAssistancePlanStatus:
-      watchedValues.hasExistingRoadAssistancePlan && watchedValues.existingRoadAssistancePlanEndDate.trim() === ''
+      watchedValues.hasExistingRoadAssistancePlan &&
+      (watchedValues.existingRoadAssistancePlanEndDate.trim() === '' || watchedValues.roadAssistancePlanDescription.trim() === '')
         ? CarOnboardingRoadAssistancePlanStatus.TODO
         : CarOnboardingRoadAssistancePlanStatus.READY,
   });
@@ -639,6 +644,10 @@ export function CarOnboardingForm({
         !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
           ? null
           : parseDateInput(values.existingRoadAssistancePlanEndDate),
+      roadAssistancePlanDescription:
+        !values.hasExistingRoadAssistancePlan || values.roadAssistancePlanDescription.trim() === ''
+          ? null
+          : values.roadAssistancePlanDescription.trim(),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
       carName: values.carName.trim() === '' ? null : values.carName.trim(),
       shareStartDate: (() => {
@@ -1286,19 +1295,34 @@ export function CarOnboardingForm({
                   )}
                 />
                 {watchedValues.hasExistingRoadAssistancePlan ? (
-                  <Controller
-                    name="existingRoadAssistancePlanEndDate"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <AdminDateFieldControl
-                        label={t('columns.existingRoadAssistancePlanEndDate')}
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={fieldState.error?.message}
-                        disabled={isSubmitting}
-                      />
-                    )}
-                  />
+                  <>
+                    <Controller
+                      name="roadAssistancePlanDescription"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminTextFieldControl
+                          label={t('columns.roadAssistancePlanDescription')}
+                          value={field.value}
+                          onChange={(value) => field.onChange(value.slice(0, CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH))}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="existingRoadAssistancePlanEndDate"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminDateFieldControl
+                          label={t('columns.existingRoadAssistancePlanEndDate')}
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
+                    />
+                  </>
                 ) : null}
               </FieldGroup>
             </FieldSet>

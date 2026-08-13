@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH } from '@/domain/car-onboarding.model';
 import { apiPut } from '@/app/lib/api-client';
 import { formatDateForInput } from '@/app/components/form/date-input-helpers';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
@@ -20,6 +21,7 @@ export function RoadAssistancePlanStep() {
   const { carOnboarding, reload } = useCarOnboarding();
 
   const [hasExistingRoadAssistancePlan, setHasExistingRoadAssistancePlan] = useState(carOnboarding.hasExistingRoadAssistancePlan);
+  const [roadAssistancePlanDescription, setRoadAssistancePlanDescription] = useState(carOnboarding.roadAssistancePlanDescription ?? '');
   const [existingEndDate, setExistingEndDate] = useState(formatDateForInput(carOnboarding.existingRoadAssistancePlanEndDate));
   const [isSaving, setIsSaving] = useState(false);
 
@@ -27,6 +29,7 @@ export function RoadAssistancePlanStep() {
 
   useEffect(() => {
     setHasExistingRoadAssistancePlan(carOnboarding.hasExistingRoadAssistancePlan);
+    setRoadAssistancePlanDescription(carOnboarding.roadAssistancePlanDescription ?? '');
     setExistingEndDate(formatDateForInput(carOnboarding.existingRoadAssistancePlanEndDate));
   }, [carOnboarding]);
 
@@ -34,8 +37,10 @@ export function RoadAssistancePlanStep() {
     if (!carOnboarding.id) return false;
     setIsSaving(true);
     try {
+      const trimmedDescription = roadAssistancePlanDescription.trim();
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/road-assistance-plan`, {
         hasExistingRoadAssistancePlan,
+        ...(hasExistingRoadAssistancePlan ? { roadAssistancePlanDescription: trimmedDescription || null } : {}),
         ...(hasExistingRoadAssistancePlan && existingEndDate ? { existingRoadAssistancePlanEndDate: existingEndDate } : {}),
       });
       if (!response.ok) {
@@ -62,6 +67,8 @@ export function RoadAssistancePlanStep() {
         isPurchasedNew={isPurchasedNew}
         hasExistingRoadAssistancePlan={hasExistingRoadAssistancePlan}
         onHasExistingChange={setHasExistingRoadAssistancePlan}
+        roadAssistancePlanDescription={roadAssistancePlanDescription}
+        onRoadAssistancePlanDescriptionChange={setRoadAssistancePlanDescription}
         existingEndDate={existingEndDate}
         onExistingEndDateChange={setExistingEndDate}
       />
@@ -75,12 +82,16 @@ function ExistingRoadAssistancePlanPanel({
   isPurchasedNew,
   hasExistingRoadAssistancePlan,
   onHasExistingChange,
+  roadAssistancePlanDescription,
+  onRoadAssistancePlanDescriptionChange,
   existingEndDate,
   onExistingEndDateChange,
 }: {
   isPurchasedNew: boolean;
   hasExistingRoadAssistancePlan: boolean;
   onHasExistingChange: (value: boolean) => void;
+  roadAssistancePlanDescription: string;
+  onRoadAssistancePlanDescriptionChange: (value: string) => void;
   existingEndDate: string;
   onExistingEndDateChange: (value: string) => void;
 }) {
@@ -116,12 +127,29 @@ function ExistingRoadAssistancePlanPanel({
         </PublicField>
       )}
       {hasExistingRoadAssistancePlan ? (
-        <PublicField
-          label={tAdmin('columns.existingRoadAssistancePlanEndDate')}
-          hint={t('steps.roadAssistancePlan.existingRoadAssistancePlanEndDateHint')}
-        >
-          <PublicInput type="date" value={existingEndDate} disabled={readOnly} onChange={(e) => onExistingEndDateChange(e.target.value)} />
-        </PublicField>
+        <>
+          <PublicField
+            label={tAdmin('columns.roadAssistancePlanDescription')}
+            hint={t('steps.roadAssistancePlan.roadAssistancePlanDescriptionHint')}
+          >
+            <PublicInput
+              type="text"
+              value={roadAssistancePlanDescription}
+              disabled={readOnly}
+              required
+              maxLength={CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH}
+              onChange={(e) =>
+                onRoadAssistancePlanDescriptionChange(e.target.value.slice(0, CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH))
+              }
+            />
+          </PublicField>
+          <PublicField
+            label={tAdmin('columns.existingRoadAssistancePlanEndDate')}
+            hint={t('steps.roadAssistancePlan.existingRoadAssistancePlanEndDateHint')}
+          >
+            <PublicInput type="date" value={existingEndDate} disabled={readOnly} onChange={(e) => onExistingEndDateChange(e.target.value)} />
+          </PublicField>
+        </>
       ) : null}
     </PublicPanel>
   );

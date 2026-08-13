@@ -96,15 +96,16 @@ Indique si le véhicule a déjà une assistance routière. Choisir un plan souha
 | Propriété                                 | Description                                                                                                  |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A un plan d'assistance existant           | Indique si le véhicule a déjà une assistance routière (pour un véhicule neuf acheté, cela peut être inclus). |
+| Nom du plan d'assistance existant         | Nom du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                        |
 | Date de fin du plan d'assistance existant | Date de fin du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                |
 
 | Statut | Signification                                                                                      |
 | ------ | -------------------------------------------------------------------------------------------------- |
-| Todo   | A un plan d'assistance existant est activé, mais la date de fin du plan existant est manquante.    |
+| Todo   | A un plan d'assistance existant est activé, mais le nom ou la date de fin du plan existant manque. |
 | Prêt   | Les détails du plan existant sont complets le cas échéant. Un plan souhaité n'est pas obligatoire. |
 
-Le système définit le statut automatiquement à l'enregistrement. Lorsque **A un plan d'assistance existant** est désactivé, la date de fin est
-effacée.
+Le système définit le statut automatiquement à l'enregistrement. Lorsque **A un plan d'assistance existant** est désactivé, le nom et la date de
+fin du plan existant sont effacés.
 
 Le propriétaire peut mettre à jour les détails via une mise à jour partielle tant que le statut est **Todo**.
 
@@ -218,6 +219,7 @@ administrative**. Cet onglet est vide jusqu'à l'ajout des autres étapes d'int�
 | Assureur                             | Compagnie d'assurance actuelle du véhicule.                                                                                            |
 | Début du contrat d'assurance         | Date de début du contrat d'assurance.                                                                                                  |
 | Statut d'assurance                   | Progression du sous-processus assurance.                                                                                               |
+| Nom du plan d'assistance existant    | Nom du plan d'assistance actuel, lorsque le propriétaire a déjà une couverture.                                                        |
 | Amortissement par km                 | Coût d'amortissement estimé par kilomètre parcouru.                                                                                    |
 | Véhicule neuf                        | Indique si le véhicule est neuf.                                                                                                       |
 | Kilométrage                          | Kilométrage actuel.                                                                                                                    |

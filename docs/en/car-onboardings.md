@@ -108,14 +108,16 @@ Records whether the car already has road assistance coverage. Choosing a desired
 | Property                               | Description                                                                                                           |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | Has existing road assistance plan      | Whether the car already has road assistance coverage (for new purchased cars, this may be included with the vehicle). |
+| Existing road assistance plan name     | Name of the current road assistance plan (when has existing road assistance plan is enabled).                         |
 | Existing road assistance plan end date | End date of the current road assistance plan (when has existing road assistance plan is enabled).                     |
 
-| Status | Meaning                                                                                  |
-| ------ | ---------------------------------------------------------------------------------------- |
-| Todo   | Has existing road assistance plan is enabled, but the existing plan end date is missing. |
-| Ready  | Existing plan details are complete when applicable. A desired plan is not required.      |
+| Status | Meaning                                                                                          |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| Todo   | Has existing road assistance plan is enabled, but the existing plan name or end date is missing. |
+| Ready  | Existing plan details are complete when applicable. A desired plan is not required.              |
 
-The system sets road assistance plan status automatically on save. When **Has existing road assistance plan** is off, the end date is cleared.
+The system sets road assistance plan status automatically on save. When **Has existing road assistance plan** is off, the existing plan name and
+end date are cleared.
 
 The owner can update road assistance plan details via a partial update while status is **Todo**.
 
@@ -203,37 +205,38 @@ until further onboarding steps are added.
 
 ## Properties
 
-| Property                 | Description                                                                                                                     |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| Street                   | User's street address.                                                                                                          |
-| House number             | User's house number.                                                                                                            |
-| Town                     | User's town (postal code and locality).                                                                                         |
-| Phone                    | User's phone number.                                                                                                            |
-| Brand                    | Vehicle brand.                                                                                                                  |
-| Fuel type                | Vehicle fuel type.                                                                                                              |
-| Car type                 | Vehicle model/type from the catalog.                                                                                            |
-| Car type (other)         | Free-text car type when the catalog entry does not apply.                                                                       |
-| Purchased car            | Whether the vehicle was purchased (as opposed to other acquisition).                                                            |
-| Purchase price           | Purchase price of the vehicle.                                                                                                  |
-| Car value                | Estimated current value of the vehicle (proposed by admin).                                                                     |
-| Counter proposal         | Owner's proposed alternative car value.                                                                                         |
-| Counter message          | Optional explanation for the counter proposal.                                                                                  |
-| Car value status         | Progress of the car value negotiation subprocess.                                                                               |
-| Insurer                  | Current insurance company for the vehicle.                                                                                      |
-| Insurer contract started | Date when the insurance contract started.                                                                                       |
-| Insurer status           | Progress of the insurer subprocess.                                                                                             |
-| Depreciation per km      | Estimated depreciation cost per driven kilometre.                                                                               |
-| New car                  | Whether the vehicle is new.                                                                                                     |
-| Mileage                  | Current mileage (odometer reading).                                                                                             |
-| First registered         | Date of first registration.                                                                                                     |
-| Seats                    | Number of seats.                                                                                                                |
-| Van                      | Whether the vehicle is classified as a van.                                                                                     |
-| Owner                    | Platform user who owns this onboarding record (optional for now).                                                               |
-| Owner Play connector     | Whether the owner has a Play connector account linked (Yes/No).                                                                 |
-| Info session date        | Scheduled date of the enrolled info session.                                                                                    |
-| Info session PC id       | Play connector identifier for the enrolled info session.                                                                        |
-| Info session status      | Progress of the info session subprocess.                                                                                        |
-| Simulation               | Linked simulation run, if any.                                                                                                  |
-| Preparation confirmed at | Date and time when the owner confirmed preparation details.                                                                     |
-| Preparation              | Discrete progress of preparation steps; each block is colored by step status, shows the step name on hover, and opens that tab. |
-| Preparation status       | Tracks preparation progress: Open, Ready, or Locked.                                                                            |
+| Property                           | Description                                                                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Street                             | User's street address.                                                                                                          |
+| House number                       | User's house number.                                                                                                            |
+| Town                               | User's town (postal code and locality).                                                                                         |
+| Phone                              | User's phone number.                                                                                                            |
+| Brand                              | Vehicle brand.                                                                                                                  |
+| Fuel type                          | Vehicle fuel type.                                                                                                              |
+| Car type                           | Vehicle model/type from the catalog.                                                                                            |
+| Car type (other)                   | Free-text car type when the catalog entry does not apply.                                                                       |
+| Purchased car                      | Whether the vehicle was purchased (as opposed to other acquisition).                                                            |
+| Purchase price                     | Purchase price of the vehicle.                                                                                                  |
+| Car value                          | Estimated current value of the vehicle (proposed by admin).                                                                     |
+| Counter proposal                   | Owner's proposed alternative car value.                                                                                         |
+| Counter message                    | Optional explanation for the counter proposal.                                                                                  |
+| Car value status                   | Progress of the car value negotiation subprocess.                                                                               |
+| Insurer                            | Current insurance company for the vehicle.                                                                                      |
+| Insurer contract started           | Date when the insurance contract started.                                                                                       |
+| Insurer status                     | Progress of the insurer subprocess.                                                                                             |
+| Existing road assistance plan name | Name of the current road assistance plan, when the owner already has coverage.                                                  |
+| Depreciation per km                | Estimated depreciation cost per driven kilometre.                                                                               |
+| New car                            | Whether the vehicle is new.                                                                                                     |
+| Mileage                            | Current mileage (odometer reading).                                                                                             |
+| First registered                   | Date of first registration.                                                                                                     |
+| Seats                              | Number of seats.                                                                                                                |
+| Van                                | Whether the vehicle is classified as a van.                                                                                     |
+| Owner                              | Platform user who owns this onboarding record (optional for now).                                                               |
+| Owner Play connector               | Whether the owner has a Play connector account linked (Yes/No).                                                                 |
+| Info session date                  | Scheduled date of the enrolled info session.                                                                                    |
+| Info session PC id                 | Play connector identifier for the enrolled info session.                                                                        |
+| Info session status                | Progress of the info session subprocess.                                                                                        |
+| Simulation                         | Linked simulation run, if any.                                                                                                  |
+| Preparation confirmed at           | Date and time when the owner confirmed preparation details.                                                                     |
+| Preparation                        | Discrete progress of preparation steps; each block is colored by step status, shows the step name on hover, and opens that tab. |
+| Preparation status                 | Tracks preparation progress: Open, Ready, or Locked.                                                                            |
