@@ -18,14 +18,17 @@ import { dbTownFindByZipAndCity } from '@/storage/town/town.read';
 const isNonEmptyString = (value: string | null | undefined): boolean => value != null && value.trim().length > 0;
 
 export const mergeProfileIntoCarOnboardingUserInfo = (
-  existing: Pick<CarOnboarding, 'street' | 'town' | 'phone'>,
+  existing: Pick<CarOnboarding, 'street' | 'houseNumber' | 'town' | 'phone'>,
   profile: PlayProfileBasicInfo,
   town: { id: string } | null,
-): Partial<Pick<CarOnboarding, 'street' | 'town' | 'phone'>> => {
-  const updates: Partial<Pick<CarOnboarding, 'street' | 'town' | 'phone'>> = {};
+): Partial<Pick<CarOnboarding, 'street' | 'houseNumber' | 'town' | 'phone'>> => {
+  const updates: Partial<Pick<CarOnboarding, 'street' | 'houseNumber' | 'town' | 'phone'>> = {};
 
   if (!isNonEmptyString(existing.street) && isNonEmptyString(profile.street)) {
     updates.street = profile.street;
+  }
+  if (!isNonEmptyString(existing.houseNumber) && isNonEmptyString(profile.houseNumber)) {
+    updates.houseNumber = profile.houseNumber;
   }
   if (!isNonEmptyString(existing.phone) && isNonEmptyString(profile.mobilePhone)) {
     updates.phone = profile.mobilePhone;

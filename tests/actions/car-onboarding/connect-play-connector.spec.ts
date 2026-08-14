@@ -44,18 +44,22 @@ const mockProfile = {
   lastName: 'Doe',
   degageId: '123456',
   residenceAddress: 'Teststraat 1, 9000 Gent (België)',
-  street: 'Teststraat 1',
+  street: 'Teststraat',
+  houseNumber: '1',
   zip: '9000',
   city: 'Gent',
   mobilePhone: '0470000001',
 };
 
 describe('mergeProfileIntoCarOnboardingUserInfo', () => {
-  it('fills only empty street, town, and phone fields', () => {
-    const result = mergeProfileIntoCarOnboardingUserInfo({ street: null, town: null, phone: null }, mockProfile, { id: 'town-1' });
+  it('fills only empty street, houseNumber, town, and phone fields', () => {
+    const result = mergeProfileIntoCarOnboardingUserInfo({ street: null, houseNumber: null, town: null, phone: null }, mockProfile, {
+      id: 'town-1',
+    });
 
     expect(result).toEqual({
-      street: 'Teststraat 1',
+      street: 'Teststraat',
+      houseNumber: '1',
       town: { id: 'town-1' },
       phone: '0470000001',
     });
@@ -65,6 +69,7 @@ describe('mergeProfileIntoCarOnboardingUserInfo', () => {
     const result = mergeProfileIntoCarOnboardingUserInfo(
       {
         street: 'Existing Street 5',
+        houseNumber: '5',
         town: { id: 'existing-town' },
         phone: '0471111111',
       },
@@ -87,6 +92,7 @@ describe('connectCarOnboardingPlayConnector', () => {
         id: onboardingId,
         owner: { id: 'owner-1' },
         street: null,
+        houseNumber: null,
         town: null,
         phone: null,
       }),
@@ -101,7 +107,8 @@ describe('connectCarOnboardingPlayConnector', () => {
     expect(linkPlayConnector).toHaveBeenCalledWith('owner-1', { email: 'user@example.com', password: 'secret' });
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
-        street: 'Teststraat 1',
+        street: 'Teststraat',
+        houseNumber: '1',
         town: { id: 'town-1' },
         phone: '0470000001',
       }),
@@ -115,6 +122,7 @@ describe('connectCarOnboardingPlayConnector', () => {
         id: onboardingId,
         owner: { id: 'owner-1' },
         street: null,
+        houseNumber: null,
         town: { id: 'simulation-town' },
         phone: null,
       }),
@@ -127,7 +135,8 @@ describe('connectCarOnboardingPlayConnector', () => {
     expect(dbTownFindByZipAndCity).not.toHaveBeenCalled();
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
-        street: 'Teststraat 1',
+        street: 'Teststraat',
+        houseNumber: '1',
         town: { id: 'simulation-town' },
         phone: '0470000001',
       }),

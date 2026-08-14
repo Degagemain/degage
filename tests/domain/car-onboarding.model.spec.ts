@@ -93,6 +93,7 @@ describe('carOnboardingSchema', () => {
     expect(result.insurerContractStartedAt).toBeNull();
     expect(result.hasExistingRoadAssistancePlan).toBe(false);
     expect(result.existingRoadAssistancePlanEndDate).toBeNull();
+    expect(result.roadAssistancePlanDescription).toBeNull();
     expect(result.roadAssistancePlan).toBeNull();
     expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
     expect(result.infoSessionDate).toBeNull();
@@ -104,6 +105,7 @@ describe('carOnboardingSchema', () => {
     expect(result.simulation).toBeNull();
     expect(result.carStickers).toEqual([]);
     expect(result.shareStartDate).toBeNull();
+    expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -132,6 +134,12 @@ describe('carOnboardingSchema', () => {
     if (result.success) {
       expect(result.data.owner?.hasPlayConnector).toBe(true);
     }
+  });
+
+  it('accepts a positive carPcId and rejects zero', () => {
+    const id = '550e8400-e29b-41d4-a716-446655440000';
+    expect(carOnboardingSchema.parse({ id, carPcId: 3961 }).carPcId).toBe(3961);
+    expect(carOnboardingSchema.safeParse({ id, carPcId: 0 }).success).toBe(false);
   });
 });
 
@@ -367,6 +375,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.infoSessionDate).toBeNull();
     expect(result.infoSessionPcId).toBeNull();
     expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
+    expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
   });
 
@@ -815,47 +824,75 @@ describe('applyInsurerStatus', () => {
 });
 
 describe('applyRoadAssistancePlanStatus', () => {
-  it('clears end date when hasExistingRoadAssistancePlan is false', () => {
+  it('clears existing plan details when hasExistingRoadAssistancePlan is false', () => {
     const result = applyRoadAssistancePlanStatus(
       carOnboarding({
         hasExistingRoadAssistancePlan: false,
         existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        roadAssistancePlanDescription: 'VAB Europa',
         roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
       }),
     );
     expect(result.existingRoadAssistancePlanEndDate).toBeNull();
+    expect(result.roadAssistancePlanDescription).toBeNull();
     expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
   });
 
-  it('sets ready when desired plan is set and existing details are complete', () => {
-    const result = applyRoadAssistancePlanStatus(
-      carOnboarding({
-        hasExistingRoadAssistancePlan: true,
-        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
-        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
-      }),
-    );
-    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
-  });
+  it('sets ready when existing details are complete even without a desired plan', () => {
+    expect(
+      applyRoadAssistancePlanStatus(
+        carOnboarding({
+          hasExistingRoadAssistancePlan: false,
+          roadAssistancePlan: null,
+        }),
+      ).roadAssistancePlanStatus,
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
 
-  it('sets todo when desired plan or existing end date is missing', () => {
     expect(
       applyRoadAssistancePlanStatus(
         carOnboarding({
           hasExistingRoadAssistancePlan: true,
           existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+          roadAssistancePlanDescription: 'VAB Europa',
         }),
       ).roadAssistancePlanStatus,
-    ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
+  });
 
+  it('sets todo when existing end date is missing', () => {
     expect(
       applyRoadAssistancePlanStatus(
         carOnboarding({
           hasExistingRoadAssistancePlan: true,
+          roadAssistancePlanDescription: 'VAB Europa',
           roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
         }),
       ).roadAssistancePlanStatus,
     ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+  });
+
+  it('sets todo when existing plan name is missing', () => {
+    expect(
+      applyRoadAssistancePlanStatus(
+        carOnboarding({
+          hasExistingRoadAssistancePlan: true,
+          existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+          roadAssistancePlanDescription: '   ',
+        }),
+      ).roadAssistancePlanStatus,
+    ).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+  });
+
+  it('trims the existing plan name when present', () => {
+    const result = applyRoadAssistancePlanStatus(
+      carOnboarding({
+        hasExistingRoadAssistancePlan: true,
+        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        roadAssistancePlanDescription: '  VAB Europa  ',
+      }),
+    );
+    expect(result.roadAssistancePlanDescription).toBe('VAB Europa');
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.READY);
   });
 });
 

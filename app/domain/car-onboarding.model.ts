@@ -76,10 +76,13 @@ export const carOnboardingInsurerSchema = z
   })
   .strict();
 
+export const CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH = 100;
+
 export const carOnboardingRoadAssistancePlanSchema = z
   .object({
     hasExistingRoadAssistancePlan: z.boolean().default(false),
     existingRoadAssistancePlanEndDate: z.coerce.date().nullable().default(null),
+    roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH).nullable().default(null),
     roadAssistancePlan: idNameSchema.nullable().default(null),
     roadAssistancePlanStatus: z.enum(CarOnboardingRoadAssistancePlanStatus).default(CarOnboardingRoadAssistancePlanStatus.TODO),
   })
@@ -128,6 +131,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     carStickers: z.array(idNameSchema).default([]),
     carName: z.string().nullable().default(null),
     shareStartDate: z.coerce.date().nullable().default(null),
+    carPcId: z.number().int().positive().nullable().default(null),
     preparationConfirmedAt: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
@@ -201,6 +205,7 @@ export const carOnboardingRoadAssistancePlanInputSchema = z
   .object({
     hasExistingRoadAssistancePlan: z.boolean(),
     existingRoadAssistancePlanEndDate: z.coerce.date().nullable().optional(),
+    roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH).nullable().optional(),
     roadAssistancePlan: idNameSchema.nullable().optional(),
   })
   .strict();
@@ -281,6 +286,7 @@ export const carOnboardingFromSimulation = (
     insurerStatus: CarOnboardingInsurerStatus.TODO,
     hasExistingRoadAssistancePlan: false,
     existingRoadAssistancePlanEndDate: null,
+    roadAssistancePlanDescription: null,
     roadAssistancePlan: null,
     roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
     depreciationCostKm: simulation.resultDepreciationCostKm != null ? Math.round(simulation.resultDepreciationCostKm * 10000) / 10000 : 0,
@@ -300,6 +306,7 @@ export const carOnboardingFromSimulation = (
     carStickers: [],
     carName: null,
     shareStartDate: null,
+    carPcId: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     preparationConfirmedAt: null,
     infoSessionDate: null,
@@ -308,7 +315,7 @@ export const carOnboardingFromSimulation = (
   };
 };
 
-const isNonEmptyString = (value: string | null | undefined): boolean => {
+const isNonEmptyString = (value: string | null | undefined): value is string => {
   return value != null && value.trim().length > 0;
 };
 
@@ -594,17 +601,28 @@ export const isPreparationConfirmable = (
 };
 
 export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnboarding => {
+  const roadAssistancePlanDescription = isNonEmptyString(onboarding.roadAssistancePlanDescription)
+    ? onboarding.roadAssistancePlanDescription.trim()
+    : null;
+
   if (!onboarding.hasExistingRoadAssistancePlan) {
     onboarding = {
       ...onboarding,
       existingRoadAssistancePlanEndDate: null,
+      roadAssistancePlanDescription: null,
+    };
+  } else {
+    onboarding = {
+      ...onboarding,
+      roadAssistancePlanDescription,
     };
   }
 
-  const hasRequiredExistingFields = !onboarding.hasExistingRoadAssistancePlan || onboarding.existingRoadAssistancePlanEndDate != null;
-  const hasDesiredPlan = onboarding.roadAssistancePlan != null;
+  const hasRequiredExistingFields =
+    !onboarding.hasExistingRoadAssistancePlan ||
+    (onboarding.existingRoadAssistancePlanEndDate != null && isNonEmptyString(onboarding.roadAssistancePlanDescription));
 
-  if (hasRequiredExistingFields && hasDesiredPlan) {
+  if (hasRequiredExistingFields) {
     return {
       ...onboarding,
       roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.READY,

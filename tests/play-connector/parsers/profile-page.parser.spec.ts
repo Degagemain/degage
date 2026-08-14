@@ -20,9 +20,34 @@ describe('parsePlayProfileName', () => {
 });
 
 describe('parsePlayResidenceAddress', () => {
-  it('parses street, zip, and city from a Belgian address', () => {
+  it('parses street, house number, zip, and city from a Belgian address', () => {
     expect(parsePlayResidenceAddress('Teststraat 1, 9000 Gent (België)')).toEqual({
-      street: 'Teststraat 1',
+      street: 'Teststraat',
+      houseNumber: '1',
+      zip: '9000',
+      city: 'Gent',
+    });
+  });
+
+  it('parses house numbers with a letter suffix or bus box', () => {
+    expect(parsePlayResidenceAddress('Teststraat 12A, 9000 Gent (België)')).toEqual({
+      street: 'Teststraat',
+      houseNumber: '12A',
+      zip: '9000',
+      city: 'Gent',
+    });
+    expect(parsePlayResidenceAddress('Teststraat 1 bus 2, 9000 Gent (België)')).toEqual({
+      street: 'Teststraat',
+      houseNumber: '1 bus 2',
+      zip: '9000',
+      city: 'Gent',
+    });
+  });
+
+  it('keeps the full street when no house number is present', () => {
+    expect(parsePlayResidenceAddress('Teststraat, 9000 Gent (België)')).toEqual({
+      street: 'Teststraat',
+      houseNumber: '',
       zip: '9000',
       city: 'Gent',
     });
@@ -44,7 +69,8 @@ describe('parsePlayProfileBasicInfo', () => {
       lastName: 'Doe',
       degageId: '123456',
       residenceAddress: 'Teststraat 1, 9000 Gent (België)',
-      street: 'Teststraat 1',
+      street: 'Teststraat',
+      houseNumber: '1',
       zip: '9000',
       city: 'Gent',
       mobilePhone: '0470000001',

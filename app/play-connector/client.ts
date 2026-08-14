@@ -52,3 +52,30 @@ export const postPlayJson = async (path: string, cookieHeader: string, body: unk
 
   return { text, status: response.status };
 };
+
+export type PlayPostFormResult = {
+  status: number;
+  location: string | null;
+};
+
+export const postPlayForm = async (path: string, cookieHeader: string, fields: Record<string, string>): Promise<PlayPostFormResult> => {
+  const body = new FormData();
+  for (const [name, value] of Object.entries(fields)) {
+    body.append(name, value);
+  }
+
+  const response = await fetch(resolvePlayUrl(path), {
+    method: 'POST',
+    headers: { Cookie: cookieHeader },
+    body,
+    redirect: 'manual',
+  });
+
+  const isRedirect = response.status >= 300 && response.status < 400;
+  if (!isRedirect) {
+    logger.error('[play-connector] post failed', { code: 'fetch_failed', path, status: response.status });
+    throw new PlayConnectorError('fetch_failed', `Play post failed with status ${response.status}`);
+  }
+
+  return { status: response.status, location: response.headers.get('location') };
+};

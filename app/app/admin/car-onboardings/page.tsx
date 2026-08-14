@@ -63,6 +63,10 @@ export default function CarOnboardingsPage() {
   });
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    ownerHasPlayConnector: false,
+    infoSessionStatus: false,
+    carValueStatus: false,
+    insurerStatus: false,
     updatedAt: false,
     street: false,
     houseNumber: false,
@@ -137,7 +141,7 @@ export default function CarOnboardingsPage() {
       insurerContractStartedAt: t('columns.insurerContractStartedAt'),
       insurerStatus: t('columns.insurerStatus'),
       simulation: t('columns.simulation'),
-      statusInPreparation: t('columns.statusInPreparation'),
+      preparationProgress: t('columns.preparationProgress'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import * as z from 'zod';
 
 import {
   CAR_ONBOARDING_CAR_NAME_MAX_LENGTH,
+  CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH,
   CarOnboarding,
   CarOnboardingCarValueStatus,
   CarOnboardingInPreparationStatus,
@@ -44,7 +45,7 @@ import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onbo
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
 
-export const CAR_ONBOARDING_TAB_IDS = [
+export const CAR_ONBOARDING_PREPARATION_TAB_IDS = [
   'owner',
   'infoSession',
   'userInfo',
@@ -55,11 +56,20 @@ export const CAR_ONBOARDING_TAB_IDS = [
   'shareStart',
   'finalize',
 ] as const;
+
+export const CAR_ONBOARDING_ONBOARDING_TAB_IDS = ['adminHandoff'] as const;
+
+export const CAR_ONBOARDING_TAB_IDS = [...CAR_ONBOARDING_PREPARATION_TAB_IDS, ...CAR_ONBOARDING_ONBOARDING_TAB_IDS] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
+export type CarOnboardingOnboardingTabId = (typeof CAR_ONBOARDING_ONBOARDING_TAB_IDS)[number];
 
 export const parseCarOnboardingTab = (tab: string | null): CarOnboardingTabId => {
   if (tab === 'playConnector') return 'owner';
   return CAR_ONBOARDING_TAB_IDS.includes(tab as CarOnboardingTabId) ? (tab as CarOnboardingTabId) : 'owner';
+};
+
+const isOnboardingPhaseTab = (tab: CarOnboardingTabId): tab is CarOnboardingOnboardingTabId => {
+  return (CAR_ONBOARDING_ONBOARDING_TAB_IDS as readonly string[]).includes(tab);
 };
 
 const NONE = 'none';
@@ -77,6 +87,7 @@ interface CarOnboardingFormProps {
   onStartCarOnboarding?: () => Promise<void>;
   onUnlockPreparation?: () => Promise<void>;
   onClearPreparationConfirmation?: () => Promise<void>;
+  onSyncAutofiche?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
@@ -118,6 +129,7 @@ interface FormValues {
   hasInsuranceContract: boolean;
   hasExistingRoadAssistancePlan: boolean;
   existingRoadAssistancePlanEndDate: string;
+  roadAssistancePlanDescription: string;
   roadAssistancePlanId: string;
   roadAssistancePlanName: string;
   carName: string;
@@ -161,6 +173,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     hasInsuranceContract: row.hasInsuranceContract,
     hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
     existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
+    roadAssistancePlanDescription: row.roadAssistancePlanDescription ?? '',
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
     roadAssistancePlanName: row.roadAssistancePlan?.name ?? '',
     carName: row.carName ?? '',
@@ -204,6 +217,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     hasInsuranceContract: z.boolean(),
     hasExistingRoadAssistancePlan: z.boolean(),
     existingRoadAssistancePlanEndDate: z.string(),
+    roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH),
     roadAssistancePlanId: z.string(),
     roadAssistancePlanName: z.string(),
     carName: z.string(),
@@ -237,6 +251,10 @@ type CarOnboardingStepTabCompletion = {
   preparationLocked: boolean;
 };
 
+function CarOnboardingPhaseTitle({ children }: { children: ReactNode }) {
+  return <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">{children}</p>;
+}
+
 function CarOnboardingPreparationTitle({
   preparationStatus,
   t,
@@ -245,16 +263,16 @@ function CarOnboardingPreparationTitle({
   t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
 }) {
   return (
-    <p className="text-foreground flex items-center gap-1.5 px-1 text-sm font-semibold">
+    <CarOnboardingPhaseTitle>
       <span>{t('tabs.preparationTitle')}</span>
       <span className="inline-flex shrink-0" title={t(`preparationStatus.${preparationStatus}`)}>
         <PreparationStatusIcon status={preparationStatus} />
       </span>
-    </p>
+    </CarOnboardingPhaseTitle>
   );
 }
 
-function CarOnboardingStepTabsList({
+function CarOnboardingPreparationTabsList({
   completion,
   t,
 }: {
@@ -303,6 +321,41 @@ function CarOnboardingStepTabsList({
   );
 }
 
+function CarOnboardingOnboardingTabsList({ t }: { t: ReturnType<typeof useTranslations<'admin.carOnboardings'>> }) {
+  return (
+    <TabsList variant="line" className="h-fit w-full">
+      <TabsTrigger value="adminHandoff" className="gap-1.5">
+        {t('tabs.adminHandoff')}
+      </TabsTrigger>
+    </TabsList>
+  );
+}
+
+function CarOnboardingPhaseNav({
+  completion,
+  preparationStatus,
+  t,
+}: {
+  completion: CarOnboardingStepTabCompletion;
+  preparationStatus: CarOnboardingInPreparationStatus;
+  t: ReturnType<typeof useTranslations<'admin.carOnboardings'>>;
+}) {
+  return (
+    <>
+      <div className="flex flex-col gap-2">
+        <CarOnboardingPreparationTitle preparationStatus={preparationStatus} t={t} />
+        <CarOnboardingPreparationTabsList completion={completion} t={t} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <CarOnboardingPhaseTitle>
+          <span>{t('tabs.onboardingTitle')}</span>
+        </CarOnboardingPhaseTitle>
+        <CarOnboardingOnboardingTabsList t={t} />
+      </div>
+    </>
+  );
+}
+
 export function CarOnboardingForm({
   initialCarOnboarding,
   formId = CAR_ONBOARDING_FORM_ID,
@@ -315,6 +368,7 @@ export function CarOnboardingForm({
   onStartCarOnboarding,
   onUnlockPreparation,
   onClearPreparationConfirmation,
+  onSyncAutofiche,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
@@ -335,6 +389,8 @@ export function CarOnboardingForm({
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isClearConfirmationDialogOpen, setIsClearConfirmationDialogOpen] = useState(false);
   const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
+  const [isSyncAutoficheDialogOpen, setIsSyncAutoficheDialogOpen] = useState(false);
+  const [isSyncingAutofiche, setIsSyncingAutofiche] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [carNameAvailability, setCarNameAvailability] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
   const carNameRequestIdRef = useRef(0);
@@ -441,11 +497,10 @@ export function CarOnboardingForm({
   });
   const roadAssistancePlanComplete = isRoadAssistancePlanSectionComplete({
     roadAssistancePlanStatus:
-      watchedValues.roadAssistancePlanId === NONE
+      watchedValues.hasExistingRoadAssistancePlan &&
+      (watchedValues.existingRoadAssistancePlanEndDate.trim() === '' || watchedValues.roadAssistancePlanDescription.trim() === '')
         ? CarOnboardingRoadAssistancePlanStatus.TODO
-        : watchedValues.hasExistingRoadAssistancePlan && watchedValues.existingRoadAssistancePlanEndDate.trim() === ''
-          ? CarOnboardingRoadAssistancePlanStatus.TODO
-          : CarOnboardingRoadAssistancePlanStatus.READY,
+        : CarOnboardingRoadAssistancePlanStatus.READY,
   });
   const carValueComplete = initialCarOnboarding.isPurchased || initialCarOnboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
   const shareStartComplete = isShareStartSectionComplete({
@@ -593,6 +648,10 @@ export function CarOnboardingForm({
         !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
           ? null
           : parseDateInput(values.existingRoadAssistancePlanEndDate),
+      roadAssistancePlanDescription:
+        !values.hasExistingRoadAssistancePlan || values.roadAssistancePlanDescription.trim() === ''
+          ? null
+          : values.roadAssistancePlanDescription.trim(),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
       carName: values.carName.trim() === '' ? null : values.carName.trim(),
       shareStartDate: (() => {
@@ -659,6 +718,17 @@ export function CarOnboardingForm({
     }
   };
 
+  const handleSyncAutofiche = async () => {
+    if (!onSyncAutofiche) return;
+    setIsSyncingAutofiche(true);
+    try {
+      await onSyncAutofiche();
+      setIsSyncAutoficheDialogOpen(false);
+    } finally {
+      setIsSyncingAutofiche(false);
+    }
+  };
+
   const preparationConfirmed = initialCarOnboarding.preparationConfirmedAt != null;
 
   const showOverruleButton =
@@ -683,32 +753,38 @@ export function CarOnboardingForm({
         orientation="vertical"
         className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8"
       >
-        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-48">
+        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-64">
           <Collapsible open={mobileNavOpen} onOpenChange={setMobileNavOpen} className="group/mobile-nav sm:hidden">
             <CollapsibleTrigger
               className="border-border bg-muted/40 hover:bg-muted/60 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-left text-sm font-medium"
-              aria-label={t('tabs.mobileNavToggle', { step: t(`tabs.${activeTab}`) })}
+              aria-label={t('tabs.mobileNavToggle', {
+                section: t(isOnboardingPhaseTab(activeTab) ? 'tabs.onboardingTitle' : 'tabs.preparationTitle'),
+                step: t(`tabs.${activeTab}`),
+              })}
             >
               <span className="flex min-w-0 items-center gap-1.5">
-                <span className="text-muted-foreground shrink-0">{t('tabs.preparationTitle')}</span>
+                <span className="text-muted-foreground shrink-0">
+                  {t(isOnboardingPhaseTab(activeTab) ? 'tabs.onboardingTitle' : 'tabs.preparationTitle')}
+                </span>
                 <span className="text-muted-foreground shrink-0" aria-hidden>
                   ·
                 </span>
                 <span className="truncate">{t(`tabs.${activeTab}`)}</span>
-                <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
-                  <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
-                </span>
+                {isOnboardingPhaseTab(activeTab) ? null : (
+                  <span className="inline-flex shrink-0" title={t(`preparationStatus.${initialCarOnboarding.statusInPreparation}`)}>
+                    <PreparationStatusIcon status={initialCarOnboarding.statusInPreparation} />
+                  </span>
+                )}
               </span>
               <ChevronDown className="text-muted-foreground size-4 shrink-0 transition-transform group-data-[state=open]/mobile-nav:rotate-180" />
             </CollapsibleTrigger>
-            <CollapsibleContent className="flex flex-col gap-2 pt-2">
-              <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+            <CollapsibleContent className="flex flex-col gap-6 pt-2">
+              <CarOnboardingPhaseNav completion={stepTabCompletion} preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
             </CollapsibleContent>
           </Collapsible>
 
-          <div className="hidden flex-col gap-2 sm:flex">
-            <CarOnboardingPreparationTitle preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
-            <CarOnboardingStepTabsList completion={stepTabCompletion} t={t} />
+          <div className="hidden flex-col gap-6 sm:flex">
+            <CarOnboardingPhaseNav completion={stepTabCompletion} preparationStatus={initialCarOnboarding.statusInPreparation} t={t} />
           </div>
         </div>
 
@@ -1234,42 +1310,35 @@ export function CarOnboardingForm({
                   )}
                 />
                 {watchedValues.hasExistingRoadAssistancePlan ? (
-                  <Controller
-                    name="existingRoadAssistancePlanEndDate"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <AdminDateFieldControl
-                        label={t('columns.existingRoadAssistancePlanEndDate')}
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={fieldState.error?.message}
-                        disabled={isSubmitting}
-                      />
-                    )}
-                  />
-                ) : null}
-                <Controller
-                  name="roadAssistancePlanId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <AdminSearchableSelectField
-                      label={t('columns.roadAssistancePlan')}
-                      value={field.value}
-                      selectedLabel={field.value === NONE ? undefined : form.watch('roadAssistancePlanName') || undefined}
-                      onValueChange={(id, option) => {
-                        field.onChange(id);
-                        form.setValue('roadAssistancePlanName', id === NONE ? '' : option.name, { shouldValidate: true });
-                      }}
-                      apiPath="road-assistance-plans"
-                      queryParams={{ isActive: 'true' }}
-                      descriptionKey="description"
-                      appendOptions={[{ id: NONE, name: t('form.none') }]}
-                      placeholder={t('form.placeholders.roadAssistancePlan')}
-                      error={fieldState.error?.message}
-                      disabled={isSubmitting}
+                  <>
+                    <Controller
+                      name="roadAssistancePlanDescription"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminTextFieldControl
+                          label={t('columns.roadAssistancePlanDescription')}
+                          value={field.value}
+                          onChange={(value) => field.onChange(value.slice(0, CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH))}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
                     />
-                  )}
-                />
+                    <Controller
+                      name="existingRoadAssistancePlanEndDate"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <AdminDateFieldControl
+                          label={t('columns.existingRoadAssistancePlanEndDate')}
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={fieldState.error?.message}
+                          disabled={isSubmitting}
+                        />
+                      )}
+                    />
+                  </>
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>
@@ -1455,6 +1524,36 @@ export function CarOnboardingForm({
               </FieldGroup>
             </FieldSet>
           </TabsContent>
+
+          <TabsContent value="adminHandoff" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('tabs.adminHandoff')}</FieldLegend>
+              <FieldGroup className="gap-6">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.carPcId')}</p>
+                  <p className="text-muted-foreground text-sm">{initialCarOnboarding.carPcId ?? '—'}</p>
+                </div>
+                {!playConnectorComplete ? <FieldDescription>{t('form.syncAutofichePlayConnectorMissing')}</FieldDescription> : null}
+                {onSyncAutofiche != null ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      if (!preparationLocked) {
+                        setIsSyncAutoficheDialogOpen(true);
+                        return;
+                      }
+                      void handleSyncAutofiche();
+                    }}
+                    disabled={!playConnectorComplete || isSubmitting || isSyncingAutofiche}
+                  >
+                    {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutofiche')}
+                  </Button>
+                ) : null}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
         </div>
       </Tabs>
 
@@ -1538,6 +1637,23 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleClearConfirmationConfirm()} disabled={isClearingConfirmation}>
               {isClearingConfirmation ? t('form.clearPreparationConfirmationConfirming') : t('form.clearPreparationConfirmationConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isSyncAutoficheDialogOpen} onOpenChange={isSyncingAutofiche ? undefined : setIsSyncAutoficheDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.syncAutoficheTitle')}</DialogTitle>
+            <DialogDescription>{t('form.syncAutoficheDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsSyncAutoficheDialogOpen(false)} disabled={isSyncingAutofiche}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleSyncAutofiche()} disabled={isSyncingAutofiche}>
+              {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutoficheConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

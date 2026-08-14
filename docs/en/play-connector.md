@@ -56,7 +56,7 @@ Mock endpoints:
   - `cars.ts` — car name availability (`/cars/page`, admin mode) and create car (`POST /api/cars/new`, regular session)
   - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
-  - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/zip/city), GSM from `/profile` HTML
+  - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/house number/zip/city), GSM from `/profile` HTML
   - `parsers/cars-page.parser.ts` — car names from `/cars/page` `/cars/view` links (exact match for availability)
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode), create car

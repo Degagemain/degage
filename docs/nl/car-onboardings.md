@@ -15,7 +15,8 @@ Tijdens de voorbereiding verzamelt het systeem contactgegevens en voertuigkenmer
 vereiste invoer compleet is en of verdere wijzigingen nog zijn toegestaan.
 
 Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en detail met tabbladen: eigenaar, gebruikersinfo, wageninfo,
-verzekering, pechverhelping, waarde, startdatum autodelen, afronden).
+verzekering, pechverhelping, waarde, startdatum autodelen, afronden). Na de voorbereiding staat een tweede menu **De instap** voor latere
+stappen.
 
 ### Eigenaar
 
@@ -87,20 +88,21 @@ Deze stap is compleet wanneer de verzekeringsstatus niet **Todo** is.
 
 ### Pechverhelpingsplan
 
-Legt vast of de wagen al pechverhelping heeft en welk plan de eigenaar met Dégage wil.
+Legt vast of de wagen al pechverhelping heeft. Een gewenst plan kiezen uit de catalogus is momenteel niet verplicht.
 
 | Eigenschap                             | Beschrijving                                                                                          |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Heeft bestaand pechverhelpingsplan     | Of de wagen al pechverhelping heeft (bij een nieuwe aangekochte wagen kan dit inbegrepen zijn).       |
+| Naam bestaand pechverhelpingsplan      | Naam van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat).      |
 | Einddatum bestaand pechverhelpingsplan | Einddatum van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat). |
-| Pechverhelpingsplan                    | Gewenst pechverhelpingsplan uit de catalogus.                                                         |
 
-| Status | Betekenis                                                                               |
-| ------ | --------------------------------------------------------------------------------------- |
-| Todo   | Verplichte velden ontbreken (gewenst plan en/of einddatum bestaand plan).               |
-| Klaar  | Gewenst plan is gekozen en bestaande plangegevens zijn compleet wanneer van toepassing. |
+| Status | Betekenis                                                                                                 |
+| ------ | --------------------------------------------------------------------------------------------------------- |
+| Todo   | Heeft bestaand pechverhelpingsplan staat aan, maar de naam of einddatum van het bestaande plan ontbreekt. |
+| Klaar  | Bestaande plangegevens zijn compleet wanneer van toepassing. Een gewenst plan is niet verplicht.          |
 
-Het systeem zet de status automatisch bij opslaan. Wanneer **Heeft bestaand pechverhelpingsplan** uit staat, wordt de einddatum gewist.
+Het systeem zet de status automatisch bij opslaan. Wanneer **Heeft bestaand pechverhelpingsplan** uit staat, worden de naam en einddatum van het
+bestaande plan gewist.
 
 De eigenaar kan pechverhelpingsgegevens bijwerken via een gedeeltelijke update zolang de status **Todo** is.
 
@@ -175,6 +177,12 @@ bevestiging er is én de infosessie **Compleet** is (samen met de overige vereis
 Wanneer de voorbereiding **Vergrendeld** is, of nadat de eigenaar heeft bevestigd, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en
 waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen op **Afronden** wanneer de voorbereiding niet vergrendeld is.
 
+## De instap
+
+Na de voorbereiding beheren admins de instap zelf in een tweede menu. Dat menu heeft een tabblad **Administratieve afhandeling** waar admins de
+**Autofiche** (het wagenrecord in Play) kunnen synchroniseren. Synchroniseren is niet beschikbaar tot de eigenaar het Play-account heeft
+gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de admin eerst bevestiging.
+
 ## Record aanmaken
 
 | Scenario         | Wie mag aanmaken         | Body                                                                                                  |
@@ -184,41 +192,44 @@ waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen 
 
 ## Eigenschappen
 
-| Eigenschap                      | Beschrijving                                                                                                                 |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Straat                          | Straatadres van de gebruiker.                                                                                                |
-| Huisnummer                      | Huisnummer van de gebruiker.                                                                                                 |
-| Gemeente                        | Gemeente van de gebruiker (postcode en plaats).                                                                              |
-| Telefoon                        | Telefoonnummer van de gebruiker.                                                                                             |
-| Merk                            | Voertuigmerk.                                                                                                                |
-| Brandstoftype                   | Brandstoftype van het voertuig.                                                                                              |
-| Voertuigtype                    | Voertuigmodel/type uit de catalogus.                                                                                         |
-| Voertuigtype (overig)           | Vrije tekst wanneer geen catalogusitem van toepassing is.                                                                    |
-| Aangekochte wagen               | Of het voertuig is aangekocht.                                                                                               |
-| Aankoopprijs                    | Aankoopprijs van het voertuig.                                                                                               |
-| Inschrijvingsbewijs voorzijde   | Scan of foto van de voorzijde van het inschrijvingsbewijs.                                                                   |
-| Inschrijvingsbewijs achterzijde | Scan of foto van de achterzijde van het inschrijvingsbewijs.                                                                 |
-| Keuringsbewijs                  | Geldig keuringsrapport (verplicht voor wagens ouder dan 4 jaar).                                                             |
-| Roze formulier                  | Overdrachtsformulier (roze formulier) voor aangekochte tweedehandswagens.                                                    |
-| Waarde van de wagen             | Geschatte huidige waarde van het voertuig (voorgesteld door admin).                                                          |
-| Tegenvoorstel                   | Alternatieve waarde voorgesteld door de eigenaar.                                                                            |
-| Tegenvoorstel bericht           | Optionele toelichting bij het tegenvoorstel.                                                                                 |
-| Waarde-status                   | Voortgang van het waarde-onderhandelingsproces.                                                                              |
-| Verzekeraar                     | Huidige verzekeringsmaatschappij van het voertuig.                                                                           |
-| Verzekeringscontract gestart    | Datum waarop het verzekeringscontract startte.                                                                               |
-| Tariefverhoging aangekondigd    | Of de verzekeraar een premieverhoging heeft aangekondigd (getoond wanneer het contract minder dan een jaar geleden startte). |
-| Verzekeringsstatus              | Voortgang van het verzekeringsproces.                                                                                        |
-| Afschrijving per km             | Geschatte afschrijvingskost per gereden kilometer.                                                                           |
-| Nieuwe wagen                    | Of het voertuig nieuw is.                                                                                                    |
-| Kilometerstand                  | Huidige kilometerstand.                                                                                                      |
-| Eerste inschrijving             | Datum van eerste inschrijving.                                                                                               |
-| Zitplaatsen                     | Aantal zitplaatsen.                                                                                                          |
-| Bestelwagen                     | Of het voertuig als bestelwagen wordt geclassificeerd.                                                                       |
-| Eigenaar                        | Platformgebruiker die dit onboardingrecord bezit (optioneel voorlopig).                                                      |
-| Eigenaar Play connector         | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).                                                          |
-| Infosessie datum                | Geplande datum van de ingeschreven infosessie.                                                                               |
-| Infosessie PC-id                | Play connector-identificatie van de ingeschreven infosessie.                                                                 |
-| Infosessiestatus                | Voortgang van het infosessie-proces.                                                                                         |
-| Simulatie                       | Gekoppelde simulatie-run, indien aanwezig.                                                                                   |
-| Voorbereiding bevestigd op      | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                       |
-| Voorbereidingsstatus            | Volgt de voortgang: Open, Klaar of Vergrendeld.                                                                              |
+| Eigenschap                        | Beschrijving                                                                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Straat                            | Straatadres van de gebruiker.                                                                                                       |
+| Huisnummer                        | Huisnummer van de gebruiker.                                                                                                        |
+| Gemeente                          | Gemeente van de gebruiker (postcode en plaats).                                                                                     |
+| Telefoon                          | Telefoonnummer van de gebruiker.                                                                                                    |
+| Merk                              | Voertuigmerk.                                                                                                                       |
+| Brandstoftype                     | Brandstoftype van het voertuig.                                                                                                     |
+| Voertuigtype                      | Voertuigmodel/type uit de catalogus.                                                                                                |
+| Voertuigtype (overig)             | Vrije tekst wanneer geen catalogusitem van toepassing is.                                                                           |
+| Aangekochte wagen                 | Of het voertuig is aangekocht.                                                                                                      |
+| Aankoopprijs                      | Aankoopprijs van het voertuig.                                                                                                      |
+| Inschrijvingsbewijs voorzijde     | Scan of foto van de voorzijde van het inschrijvingsbewijs.                                                                          |
+| Inschrijvingsbewijs achterzijde   | Scan of foto van de achterzijde van het inschrijvingsbewijs.                                                                        |
+| Keuringsbewijs                    | Geldig keuringsrapport (verplicht voor wagens ouder dan 4 jaar).                                                                    |
+| Roze formulier                    | Overdrachtsformulier (roze formulier) voor aangekochte tweedehandswagens.                                                           |
+| Waarde van de wagen               | Geschatte huidige waarde van het voertuig (voorgesteld door admin).                                                                 |
+| Tegenvoorstel                     | Alternatieve waarde voorgesteld door de eigenaar.                                                                                   |
+| Tegenvoorstel bericht             | Optionele toelichting bij het tegenvoorstel.                                                                                        |
+| Waarde-status                     | Voortgang van het waarde-onderhandelingsproces.                                                                                     |
+| Verzekeraar                       | Huidige verzekeringsmaatschappij van het voertuig.                                                                                  |
+| Verzekeringscontract gestart      | Datum waarop het verzekeringscontract startte.                                                                                      |
+| Tariefverhoging aangekondigd      | Of de verzekeraar een premieverhoging heeft aangekondigd (getoond wanneer het contract minder dan een jaar geleden startte).        |
+| Verzekeringsstatus                | Voortgang van het verzekeringsproces.                                                                                               |
+| Naam bestaand pechverhelpingsplan | Naam van het huidige pechverhelpingsplan, wanneer de eigenaar al pechverhelping heeft.                                              |
+| Afschrijving per km               | Geschatte afschrijvingskost per gereden kilometer.                                                                                  |
+| Nieuwe wagen                      | Of het voertuig nieuw is.                                                                                                           |
+| Kilometerstand                    | Huidige kilometerstand.                                                                                                             |
+| Eerste inschrijving               | Datum van eerste inschrijving.                                                                                                      |
+| Zitplaatsen                       | Aantal zitplaatsen.                                                                                                                 |
+| Bestelwagen                       | Of het voertuig als bestelwagen wordt geclassificeerd.                                                                              |
+| Eigenaar                          | Platformgebruiker die dit onboardingrecord bezit (optioneel voorlopig).                                                             |
+| Eigenaar Play connector           | Of de eigenaar een Play connector-account heeft gekoppeld (Ja/Nee).                                                                 |
+| Infosessie datum                  | Geplande datum van de ingeschreven infosessie.                                                                                      |
+| Infosessie PC-id                  | Play connector-identificatie van de ingeschreven infosessie.                                                                        |
+| Autofiche                         | Play-identificatie van de gesynchroniseerde autofiche. Admins synchroniseren die vanuit Administratieve afhandeling.                |
+| Infosessiestatus                  | Voortgang van het infosessie-proces.                                                                                                |
+| Simulatie                         | Gekoppelde simulatie-run, indien aanwezig.                                                                                          |
+| Voorbereiding bevestigd op        | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                              |
+| Voorbereiding                     | Discrete voortgang van de voorbereidingsstappen; elk blok heeft een kleur per status, toont de stapnaam bij hover en opent die tab. |
+| Voorbereidingsstatus              | Volgt de voortgang: Open, Klaar of Vergrendeld.                                                                                     |

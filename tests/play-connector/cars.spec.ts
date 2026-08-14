@@ -11,12 +11,19 @@ vi.mock('@/actions/play-connector/get-session-cookie', () => ({
 vi.mock('@/play-connector/client', () => ({
   fetchPlay: vi.fn(),
   postPlayJson: vi.fn(),
+  postPlayForm: vi.fn(),
 }));
 
 import { getPlayAdminModeSessionCookie } from '@/actions/play-connector/get-admin-mode-session-cookie';
 import { getPlaySessionCookie } from '@/actions/play-connector/get-session-cookie';
-import { buildPlayCarCreatePayload, playConnectorCreateCar, playConnectorIsCarNameAvailable } from '@/play-connector/cars';
-import { fetchPlay, postPlayJson } from '@/play-connector/client';
+import {
+  buildPlayCarCreatePayload,
+  playCarUpdateInputToFormFields,
+  playConnectorCreateCar,
+  playConnectorIsCarNameAvailable,
+  playConnectorUpdateCar,
+} from '@/play-connector/cars';
+import { fetchPlay, postPlayForm, postPlayJson } from '@/play-connector/client';
 
 const userId = 'admin-user';
 const cookieHeader = 'PLAY_SESSION=upgraded';
@@ -138,5 +145,85 @@ describe('playConnectorCreateCar', () => {
     });
 
     await expect(playConnectorCreateCar(userId, {})).rejects.toMatchObject({ code: 'fetch_failed' });
+  });
+});
+
+describe('playCarUpdateInputToFormFields', () => {
+  it('maps nested create fields onto the edit form names', () => {
+    expect(
+      playCarUpdateInputToFormFields({
+        brand: 'Opel',
+        fuel: 'PETROL',
+        purchaseDate: 'LESSTHAN',
+        location: { city: 'Gent', zip: '9000' },
+        insurance: { name: 'KBC', expiration: '2025-08-09' },
+        technicalCarDetails: { licensePlate: '2gmm226' },
+        carType: 'LIGHT_FREIGHT',
+        email: 'owner@example.com',
+      }),
+    ).toEqual({
+      brand: 'Opel',
+      fuel: 'PETROL',
+      PurchaseDate: 'LESSTHAN',
+      'address.city': 'Gent',
+      'address.zipCode': '9000',
+      insuranceName: 'KBC',
+      expiration: '2025-08-09',
+      licensePlate: '2gmm226',
+      carType: 'LIGHT_FREIGHT',
+      email: 'owner@example.com',
+    });
+  });
+
+  it('omits empty strings', () => {
+    expect(playCarUpdateInputToFormFields({ brand: '', comments: 'note' })).toEqual({ comments: 'note' });
+  });
+
+  it('formats deprec with a period decimal separator', () => {
+    expect(playCarUpdateInputToFormFields({ deprec: 0.07 })).toEqual({ deprec: '0.07' });
+    expect(playCarUpdateInputToFormFields({ deprec: 0.07000000000000001 })).toEqual({ deprec: '0.07' });
+  });
+});
+
+describe('playConnectorUpdateCar', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('loads the edit form as admin, overlays mapped fields, and posts multipart', async () => {
+    vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
+    vi.mocked(fetchPlay).mockResolvedValueOnce({
+      html: `
+        <form action="/cars/edit?id=3961" method="POST">
+          <input type="text" name="name" value="temporary" />
+          <input type="text" name="brand" value="Opel" />
+          <input type="text" name="address.lat" value="51.0" />
+          <input type="text" name="address.lng" value="3.7" />
+        </form>
+      `,
+      status: 200,
+    });
+    vi.mocked(postPlayForm).mockResolvedValueOnce({ status: 303, location: '/cars/view?id=3961' });
+
+    await playConnectorUpdateCar(userId, 3961, { brand: 'Volkswagen', type: 'Golf' });
+
+    expect(getPlayAdminModeSessionCookie).toHaveBeenCalledWith(userId);
+    expect(fetchPlay).toHaveBeenCalledWith('/cars/edit?id=3961', cookieHeader);
+    expect(postPlayForm).toHaveBeenCalledWith(
+      '/cars/edit?id=3961',
+      cookieHeader,
+      expect.objectContaining({
+        name: 'temporary',
+        brand: 'Volkswagen',
+        type: 'Golf',
+        'address.lat': '51.0',
+        'address.lng': '3.7',
+      }),
+    );
+  });
+
+  it('rejects a non-positive car id before calling play', async () => {
+    await expect(playConnectorUpdateCar(userId, 0, {})).rejects.toMatchObject({ code: 'fetch_failed' });
+    expect(getPlayAdminModeSessionCookie).not.toHaveBeenCalled();
   });
 });

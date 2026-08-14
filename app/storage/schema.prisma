@@ -156,6 +156,7 @@ model CarOnboarding {
   insurerAnnouncedPriceIncrease    Boolean                          @default(false)
   hasExistingRoadAssistancePlan           Boolean                                @default(false)
   existingRoadAssistancePlanEndDate       DateTime?
+  roadAssistancePlanDescription           String?
   roadAssistancePlanId                    String?
   roadAssistancePlan                      RoadAssistancePlan?                    @relation(fields: [roadAssistancePlanId], references: [id], onDelete: Restrict)
   roadAssistancePlanStatus                CarOnboardingRoadAssistancePlanStatus  @default(todo)
@@ -185,6 +186,7 @@ model CarOnboarding {
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
   carName             String?
+  carPcId             Int?
   preparationConfirmedAt DateTime?
   stickerLinks        CarOnboardingSticker[]
   createdAt           DateTime                         @default(now())

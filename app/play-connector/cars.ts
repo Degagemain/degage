@@ -1,8 +1,9 @@
 import { getPlayAdminModeSessionCookie } from '@/actions/play-connector/get-admin-mode-session-cookie';
 import { getPlaySessionCookie } from '@/actions/play-connector/get-session-cookie';
-import { type PlayCarCreateInput } from '@/play-connector/cars.model';
-import { fetchPlay, postPlayJson } from '@/play-connector/client';
+import { type PlayCarCreateInput, type PlayCarUpdateInput } from '@/play-connector/cars.model';
+import { fetchPlay, postPlayForm, postPlayJson } from '@/play-connector/client';
 import { PlayConnectorError } from '@/play-connector/errors';
+import { parsePlayCarEditFormFields } from '@/play-connector/parsers/car-edit-form.parser';
 import { parseCarsPageNames } from '@/play-connector/parsers/cars-page.parser';
 
 const CARS_PAGE_SIZE = 50;
@@ -206,4 +207,82 @@ export const playConnectorCreateCar = async (userId: string, input: PlayCarCreat
   }
 
   return { id };
+};
+
+const formatPlayFormNumber = (value: number): string => {
+  if (!Number.isFinite(value)) return '';
+  if (Number.isInteger(value)) return String(value);
+  const [whole, fraction = ''] = (Math.round(value * 10000) / 10000).toFixed(4).split('.');
+  const decimals = fraction.replace(/0+$/, '');
+  return decimals ? `${whole}.${decimals}` : whole;
+};
+
+const setFormField = (fields: Record<string, string>, name: string, value: string | number | undefined): void => {
+  if (value === undefined) return;
+  const serialized = typeof value === 'number' ? formatPlayFormNumber(value) : value;
+  if (serialized === '') return;
+  fields[name] = serialized;
+};
+
+export const playCarUpdateInputToFormFields = (input: PlayCarUpdateInput): Record<string, string> => {
+  const fields: Record<string, string> = {};
+
+  setFormField(fields, 'name', input.name);
+  setFormField(fields, 'brand', input.brand);
+  setFormField(fields, 'type', input.type);
+  setFormField(fields, 'fuel', input.fuel);
+  setFormField(fields, 'PurchaseDate', input.purchaseDate);
+  setFormField(fields, 'seats', input.seats);
+  setFormField(fields, 'doors', input.doors);
+  setFormField(fields, 'year', input.year);
+  setFormField(fields, 'fuelEconomy', input.fuelEconomy);
+  setFormField(fields, 'estimatedValue', input.estimatedValue);
+  setFormField(fields, 'ownerAnnualKm', input.ownerAnnualKm);
+  setFormField(fields, 'carInitialMileage', input.carInitialMileage);
+  setFormField(fields, 'comments', input.comments);
+  setFormField(fields, 'email', input.email);
+  setFormField(fields, 'startSharing', input.startSharing);
+  setFormField(fields, 'carAgreedValue', input.carAgreedValue);
+  setFormField(fields, 'deprec', input.deprec);
+  setFormField(fields, 'chassisNumber', input.chassisNumber);
+  setFormField(fields, 'carType', input.carType);
+  setFormField(fields, 'assistanceName', input.assistanceName);
+  setFormField(fields, 'assistanceExpiration', input.assistanceExpiration);
+  setFormField(fields, 'address.country', input.country);
+
+  if (input.location) {
+    setFormField(fields, 'address.city', input.location.city);
+    setFormField(fields, 'address.street', input.location.street);
+    setFormField(fields, 'address.num', input.location.num);
+    setFormField(fields, 'address.zipCode', input.location.zip);
+  }
+
+  if (input.insurance) {
+    setFormField(fields, 'insuranceName', input.insurance.name);
+    setFormField(fields, 'expiration', input.insurance.expiration);
+    setFormField(fields, 'bonusMalus', input.insurance.bonusMalus);
+  }
+
+  if (input.technicalCarDetails) {
+    setFormField(fields, 'licensePlate', input.technicalCarDetails.licensePlate);
+    setFormField(fields, 'kiloWatt', input.technicalCarDetails.kiloWatt);
+  }
+
+  return fields;
+};
+
+export const playConnectorUpdateCar = async (adminModeUserId: string, carId: number, input: PlayCarUpdateInput = {}): Promise<void> => {
+  if (!Number.isInteger(carId) || carId <= 0) {
+    throw new PlayConnectorError('fetch_failed', 'Play car id must be a positive integer');
+  }
+
+  const { cookieHeader } = await getPlayAdminModeSessionCookie(adminModeUserId);
+  const path = `/cars/edit?id=${carId}`;
+  const { html } = await fetchPlay(path, cookieHeader);
+  const fields = {
+    ...parsePlayCarEditFormFields(html),
+    ...playCarUpdateInputToFormFields(input),
+  };
+
+  await postPlayForm(path, cookieHeader, fields);
 };

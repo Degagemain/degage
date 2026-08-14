@@ -34,7 +34,7 @@ describe('updateCarOnboardingRoadAssistancePlan', () => {
     const body = {
       hasExistingRoadAssistancePlan: true,
       existingRoadAssistancePlanEndDate: '2026-12-31',
-      roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+      roadAssistancePlanDescription: 'VAB Europa',
     };
 
     await updateCarOnboardingRoadAssistancePlan(onboardingId, body, owner);
@@ -44,7 +44,7 @@ describe('updateCarOnboardingRoadAssistancePlan', () => {
         id: onboardingId,
         hasExistingRoadAssistancePlan: true,
         existingRoadAssistancePlanEndDate: new Date(body.existingRoadAssistancePlanEndDate),
-        roadAssistancePlan: body.roadAssistancePlan,
+        roadAssistancePlanDescription: 'VAB Europa',
       }),
     );
   });
