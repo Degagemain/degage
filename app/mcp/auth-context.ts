@@ -1,7 +1,7 @@
 import { APIError } from 'better-auth/api';
 import { Role, type Role as RoleType } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
-import { getPrismaClient } from '@/storage/utils';
+import { dbUserReadAuthContext } from '@/storage/user/user.read-auth';
 
 export type McpAuthContext = {
   userId: string;
@@ -46,11 +46,7 @@ export const mcpToolGateErrorMessage = (reason: Exclude<McpToolGateResult, { ok:
 };
 
 export const assertUserCanReceiveOAuthToken = async (userId: string): Promise<void> => {
-  const prisma = getPrismaClient();
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { banned: true },
-  });
+  const user = await dbUserReadAuthContext(userId);
 
   if (user?.banned) {
     throw new APIError('FORBIDDEN', { message: 'Account banned' });
@@ -62,16 +58,7 @@ export const loadMcpAuthContext = async (params: {
   scopes: string | string[] | undefined;
   clientId?: string;
 }): Promise<McpAuthContext | null> => {
-  const prisma = getPrismaClient();
-  const user = await prisma.user.findUnique({
-    where: { id: params.userId },
-    select: {
-      id: true,
-      role: true,
-      emailVerified: true,
-      banned: true,
-    },
-  });
+  const user = await dbUserReadAuthContext(params.userId);
 
   if (!user) return null;
 
