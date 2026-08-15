@@ -76,7 +76,7 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
       await onSave(parameter.id, payload);
       onOpenChange(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save');
+      setError(err instanceof Error ? err.message : t('saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -130,10 +130,10 @@ export function EditParameterDialog({ parameter, open, onOpenChange, onSave, t }
 
           {parameter.type === SystemParameterType.EURONORM && (
             <div className="space-y-2">
-              <Label htmlFor="valueEuronormId">Euro norm</Label>
+              <Label htmlFor="valueEuronormId">{t('valueEuronorm')}</Label>
               <Select value={valueEuronormId || '__none__'} onValueChange={(v) => setValueEuronormId(v === '__none__' ? '' : v)}>
                 <SelectTrigger id="valueEuronormId">
-                  <SelectValue placeholder="Select euro norm" />
+                  <SelectValue placeholder={t('valueEuronormPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="__none__">—</SelectItem>

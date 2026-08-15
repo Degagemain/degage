@@ -1437,8 +1437,11 @@
       "valueNumberMin": "Min",
       "valueNumberMax": "Max",
       "valueString": "Texte",
+      "valueEuronorm": "Norme Euro",
+      "valueEuronormPlaceholder": "Sélectionner une norme Euro",
       "save": "Enregistrer",
       "cancel": "Annuler",
+      "saveFailed": "Échec de l'enregistrement",
       "searchPlaceholder": "Rechercher des paramètres...",
       "tryAgain": "Réessayer"
     },
