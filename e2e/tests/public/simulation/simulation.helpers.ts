@@ -69,7 +69,7 @@ function fieldByLabel(page: Page, labelText: string) {
 async function selectSearchDropdown(page: Page, fieldLabel: string, query: string, optionName: string) {
   const field = fieldByLabel(page, fieldLabel);
   await field.getByRole('button').first().click();
-  await page.getByPlaceholder('Zoeken…').fill(query);
+  await page.getByPlaceholder(messages.searchPlaceholder).fill(query);
   await page.getByRole('option', { name: optionName, exact: true }).click();
 }
 

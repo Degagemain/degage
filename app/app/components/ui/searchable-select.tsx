@@ -38,6 +38,7 @@ export interface SearchableOption {
   id: string;
   name: string;
   description?: string;
+  [key: string]: string | boolean | number | undefined;
 }
 
 export interface SearchableSelectProps {
@@ -52,6 +53,8 @@ export interface SearchableSelectProps {
   labelKey?: string;
   /** Key on API record to use as option description (e.g. "description"). */
   descriptionKey?: string;
+  /** Extra API fields copied onto each option (e.g. highDemand for towns). */
+  passThroughKeys?: readonly string[];
   /** Options appended to the end of the list (e.g. "Other" fallback). */
   appendOptions?: SearchableOption[];
   placeholder?: string;
@@ -69,6 +72,7 @@ export function SearchableSelect({
   queryParams,
   labelKey = 'name',
   descriptionKey,
+  passThroughKeys = [],
   appendOptions = [],
   placeholder = 'Select…',
   disabled,
@@ -84,6 +88,8 @@ export function SearchableSelect({
   const [loading, setLoading] = React.useState(false);
   const [loadingMore, setLoadingMore] = React.useState(false);
   const [localSelectedDescription, setLocalSelectedDescription] = React.useState<string | undefined>(selectedDescription);
+  const passThroughKeysRef = React.useRef(passThroughKeys);
+  passThroughKeysRef.current = passThroughKeys;
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
@@ -104,11 +110,20 @@ export function SearchableSelect({
       const res = await fetch(`/api/${apiPath}?${params.toString()}`);
       if (!res.ok) return;
       const data = await res.json();
-      const records = (data.records ?? []).map((r: Record<string, unknown>) => ({
-        id: String(r.id),
-        name: (r[labelKey] as string) ?? (r.name as string) ?? '',
-        ...(descriptionKey ? { description: ((r[descriptionKey] as string) ?? '').trim() || undefined } : {}),
-      }));
+      const records = (data.records ?? []).map((r: Record<string, unknown>) => {
+        const option: SearchableOption = {
+          id: String(r.id),
+          name: (r[labelKey] as string) ?? (r.name as string) ?? '',
+          ...(descriptionKey ? { description: ((r[descriptionKey] as string) ?? '').trim() || undefined } : {}),
+        };
+        for (const key of passThroughKeysRef.current) {
+          const val = r[key];
+          if (typeof val === 'boolean' || typeof val === 'string' || typeof val === 'number') {
+            option[key] = val;
+          }
+        }
+        return option;
+      });
       if (append) {
         setOptions((prev) => (skip === 0 ? records : [...prev, ...records]));
       } else {
