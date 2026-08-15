@@ -2,6 +2,7 @@ import z, { ZodError, ZodSafeParseResult } from 'zod';
 import { NextRequest } from 'next/server';
 
 import { AppError } from '@/actions/app.error';
+import { logger } from '@/lib/logger';
 
 import { statusCodes } from './status-codes';
 
@@ -24,6 +25,11 @@ const internalErrorResponse = (): Response => {
     { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
     { status: statusCodes.INTERNAL_SERVER_ERROR },
   );
+};
+
+const unexpectedErrorResponse = (error: unknown, helper: string): Response => {
+  logger.exception(error, { helper });
+  return internalErrorResponse();
 };
 
 export const appErrorResponse = (error: AppError): Response => {
@@ -65,7 +71,7 @@ export const tryCreateResource = async <T>(createResource: (resource: T) => Prom
     const createdResource = await createResource(resource as T);
     return Response.json(createdResource, { status: statusCodes.CREATED });
   } catch (error) {
-    return responseFromCaughtError(error) ?? internalErrorResponse();
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryCreateResource');
   }
 };
 
@@ -129,7 +135,7 @@ export const tryReadResource = async <T>(readResource: (id: string) => Promise<T
     const resource = await readResource(id);
     return Response.json(resource);
   } catch (error) {
-    return responseFromCaughtError(error) ?? internalErrorResponse();
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryReadResource');
   }
 };
 
@@ -141,7 +147,7 @@ export const tryDeleteResource = async (deleteResource: (id: string) => Promise<
     if (isPrismaForeignKeyError(error)) {
       return conflictResponse('Resource is linked to other records and cannot be deleted');
     }
-    return responseFromCaughtError(error) ?? internalErrorResponse();
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryDeleteResource');
   }
 };
 
@@ -168,6 +174,6 @@ export const tryUpdateResource = async <T>(
     await updateResource(body);
     return noContentResponse();
   } catch (error) {
-    return responseFromCaughtError(error) ?? internalErrorResponse();
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryUpdateResource');
   }
 };

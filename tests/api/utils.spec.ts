@@ -1,4 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/logger', () => ({
+  logger: { exception: vi.fn() },
+}));
+
 import { AppError } from '@/actions/app.error';
 import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
 import {
@@ -17,9 +22,14 @@ import {
   tryReadResource,
   tryUpdateResource,
 } from '@/api/utils';
+import { logger } from '@/lib/logger';
 import { ZodError } from 'zod';
 
 describe('API Utils', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('attachmentDownloadJsonResponse', () => {
     it('returns 200 with JSON Content-Type and attachment filename', async () => {
       const res = attachmentDownloadJsonResponse('{"a":1}', 'out.json');
@@ -124,11 +134,13 @@ describe('API Utils', () => {
       expect(response.status).toBe(400);
       expect(responseData.code).toBe('validation_error');
       expect(responseData.errors).toBeDefined();
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return a 500 response with structured error for non-validation errors', async () => {
+      const unexpected = new Error('Non-validation error');
       const mockCreateResource = async () => {
-        throw new Error('Non-validation error');
+        throw unexpected;
       };
 
       const resource = { name: 'Valid Resource' };
@@ -137,8 +149,11 @@ describe('API Utils', () => {
       const responseData = await response.json();
 
       expect(response.status).toBe(500);
-      expect(responseData.code).toBe('internal_error');
-      expect(responseData.errors).toBeDefined();
+      expect(responseData).toEqual({
+        code: 'internal_error',
+        errors: [{ message: 'An unexpected error occurred' }],
+      });
+      expect(logger.exception).toHaveBeenCalledWith(unexpected, { helper: 'tryCreateResource' });
     });
 
     it('maps AppError to its code and HTTP status', async () => {
@@ -154,6 +169,7 @@ describe('API Utils', () => {
         code: 'conflict',
         errors: [{ message: 'already exists' }],
       });
+      expect(logger.exception).not.toHaveBeenCalled();
     });
   });
 
@@ -296,6 +312,7 @@ describe('API Utils', () => {
       const response = await tryReadResource(mockReadResource, '123');
 
       expect(response.status).toBe(404);
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return 404 response for NotFoundError', async () => {
@@ -306,11 +323,13 @@ describe('API Utils', () => {
       const response = await tryReadResource(mockReadResource, '123');
 
       expect(response.status).toBe(404);
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return 500 response with structured error for unexpected errors', async () => {
+      const unexpected = new Error('Unexpected error');
       const mockReadResource = async () => {
-        throw new Error('Unexpected error');
+        throw unexpected;
       };
 
       const response = await tryReadResource(mockReadResource, '123');
@@ -321,6 +340,7 @@ describe('API Utils', () => {
         code: 'internal_error',
         errors: [{ message: 'An unexpected error occurred' }],
       });
+      expect(logger.exception).toHaveBeenCalledWith(unexpected, { helper: 'tryReadResource' });
     });
   });
 
@@ -342,6 +362,7 @@ describe('API Utils', () => {
       const response = await tryDeleteResource(mockDeleteResource, '123');
 
       expect(response.status).toBe(404);
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return 404 response for NotFoundError', async () => {
@@ -352,11 +373,13 @@ describe('API Utils', () => {
       const response = await tryDeleteResource(mockDeleteResource, '123');
 
       expect(response.status).toBe(404);
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return 500 response with structured error for unexpected errors', async () => {
+      const unexpected = new Error('Unexpected error');
       const mockDeleteResource = async () => {
-        throw new Error('Unexpected error');
+        throw unexpected;
       };
 
       const response = await tryDeleteResource(mockDeleteResource, '123');
@@ -367,6 +390,7 @@ describe('API Utils', () => {
         code: 'internal_error',
         errors: [{ message: 'An unexpected error occurred' }],
       });
+      expect(logger.exception).toHaveBeenCalledWith(unexpected, { helper: 'tryDeleteResource' });
     });
   });
 
@@ -455,9 +479,11 @@ describe('API Utils', () => {
       const response = await tryUpdateResource(mockRequest, mockRoute, mockUpdateResource);
 
       expect(response.status).toBe(404);
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should return 500 response with structured error for non-validation errors', async () => {
+      const unexpected = new Error('Non-validation error');
       const mockRequest = {
         json: async () => ({ id: '123e4567-e89b-12d3-a456-426614174000', name: 'Updated Name' }),
       } as any;
@@ -465,14 +491,18 @@ describe('API Utils', () => {
         params: Promise.resolve({ id: '123e4567-e89b-12d3-a456-426614174000' }),
       };
       const mockUpdateResource = async () => {
-        throw new Error('Non-validation error');
+        throw unexpected;
       };
 
       const response = await tryUpdateResource(mockRequest, mockRoute, mockUpdateResource);
       const responseData = await response.json();
 
       expect(response.status).toBe(500);
-      expect(responseData.code).toBe('internal_error');
+      expect(responseData).toEqual({
+        code: 'internal_error',
+        errors: [{ message: 'An unexpected error occurred' }],
+      });
+      expect(logger.exception).toHaveBeenCalledWith(unexpected, { helper: 'tryUpdateResource' });
     });
 
     it('maps AppError subclasses without onboarding-specific instanceof checks', async () => {
@@ -494,6 +524,7 @@ describe('API Utils', () => {
         code: 'car_name_taken',
         errors: [{ message: 'Car name is already taken' }],
       });
+      expect(logger.exception).not.toHaveBeenCalled();
     });
 
     it('should throw error for invalid UUID in route params', async () => {
