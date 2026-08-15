@@ -1,6 +1,7 @@
-export class CarOnboardingPlayConnectorMissingError extends Error {
+import { AppError } from '@/actions/app.error';
+
+export class CarOnboardingPlayConnectorMissingError extends AppError {
   constructor(message = 'Owner play connector is not attached') {
-    super(message);
-    this.name = 'CarOnboardingPlayConnectorMissingError';
+    super('play_connector_missing', message, 400);
   }
 }

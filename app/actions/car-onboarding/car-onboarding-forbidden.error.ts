@@ -1,6 +1,7 @@
-export class CarOnboardingForbiddenError extends Error {
+import { AppError } from '@/actions/app.error';
+
+export class CarOnboardingForbiddenError extends AppError {
   constructor(message: string = 'Access denied') {
-    super(message);
-    this.name = 'CarOnboardingForbiddenError';
+    super('forbidden', message, 403);
   }
 }

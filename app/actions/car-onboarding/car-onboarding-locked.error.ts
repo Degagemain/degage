@@ -1,6 +1,7 @@
-export class CarOnboardingLockedError extends Error {
+import { AppError } from '@/actions/app.error';
+
+export class CarOnboardingLockedError extends AppError {
   constructor(message: string = 'Car onboarding is locked and cannot be updated') {
-    super(message);
-    this.name = 'CarOnboardingLockedError';
+    super('forbidden', message, 403);
   }
 }

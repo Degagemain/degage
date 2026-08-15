@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { AppError } from '@/actions/app.error';
+import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
 import {
   NotFoundError,
   attachmentDownloadCsvResponse,
@@ -8,6 +10,7 @@ import {
   isPrismaNotFoundError,
   noContentResponse,
   notFoundResponse,
+  responseFromCaughtError,
   safeParseRequestJson,
   tryCreateResource,
   tryDeleteResource,
@@ -34,6 +37,39 @@ describe('API Utils', () => {
       expect(res.headers.get('Content-Type')).toBe('text/csv; charset=utf-8');
       expect(res.headers.get('Content-Disposition')).toBe('attachment; filename="out.csv"');
       expect(await res.text()).toBe('a,b');
+    });
+  });
+
+  describe('responseFromCaughtError', () => {
+    it('maps ZodError to validation_error', async () => {
+      const response = responseFromCaughtError(new ZodError([]));
+      expect(response).not.toBeNull();
+      expect(response!.status).toBe(400);
+      expect((await response!.json()).code).toBe('validation_error');
+    });
+
+    it('maps AppError to its code and status', async () => {
+      const response = responseFromCaughtError(new AppError('forbidden', 'nope', 403));
+      expect(response).not.toBeNull();
+      expect(response!.status).toBe(403);
+      expect(await response!.json()).toEqual({
+        code: 'forbidden',
+        errors: [{ message: 'nope' }],
+      });
+    });
+
+    it('maps NotFoundError as AppError', async () => {
+      const response = responseFromCaughtError(new NotFoundError('gone'));
+      expect(response).not.toBeNull();
+      expect(response!.status).toBe(404);
+      expect(await response!.json()).toEqual({
+        code: 'not_found',
+        errors: [{ message: 'gone' }],
+      });
+    });
+
+    it('returns null for unexpected errors', () => {
+      expect(responseFromCaughtError(new Error('boom'))).toBeNull();
     });
   });
 
@@ -103,6 +139,21 @@ describe('API Utils', () => {
       expect(response.status).toBe(500);
       expect(responseData.code).toBe('internal_error');
       expect(responseData.errors).toBeDefined();
+    });
+
+    it('maps AppError to its code and HTTP status', async () => {
+      const mockCreateResource = async () => {
+        throw new AppError('conflict', 'already exists', 409);
+      };
+
+      const response = await tryCreateResource(mockCreateResource, { name: 'x' });
+      const responseData = await response.json();
+
+      expect(response.status).toBe(409);
+      expect(responseData).toEqual({
+        code: 'conflict',
+        errors: [{ message: 'already exists' }],
+      });
     });
   });
 
@@ -422,6 +473,27 @@ describe('API Utils', () => {
 
       expect(response.status).toBe(500);
       expect(responseData.code).toBe('internal_error');
+    });
+
+    it('maps AppError subclasses without onboarding-specific instanceof checks', async () => {
+      const mockRequest = {
+        json: async () => ({ id: '123e4567-e89b-12d3-a456-426614174000', name: 'Updated Name' }),
+      } as any;
+      const mockRoute = {
+        params: Promise.resolve({ id: '123e4567-e89b-12d3-a456-426614174000' }),
+      };
+      const mockUpdateResource = async () => {
+        throw new CarOnboardingCarNameTakenError();
+      };
+
+      const response = await tryUpdateResource(mockRequest, mockRoute, mockUpdateResource);
+      const responseData = await response.json();
+
+      expect(response.status).toBe(409);
+      expect(responseData).toEqual({
+        code: 'car_name_taken',
+        errors: [{ message: 'Car name is already taken' }],
+      });
     });
 
     it('should throw error for invalid UUID in route params', async () => {
