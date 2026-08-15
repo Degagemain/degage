@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { uiLocales } from '@/i18n/locales';
 import { DEFAULT_LOCALE } from './locale.model';
 import { roleSchema } from './role.model';
 
@@ -18,3 +19,11 @@ export const userSchema = z.object({
 });
 
 export type User = z.infer<typeof userSchema>;
+
+export const userLocaleUpdateSchema = z
+  .object({
+    locale: z.enum(uiLocales),
+  })
+  .strict();
+
+export type UserLocaleUpdate = z.infer<typeof userLocaleUpdateSchema>;
