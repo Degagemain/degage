@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/app/lib/utils';
 import { Button } from '@/app/components/ui/button';
@@ -74,6 +75,7 @@ export function SearchableSelect({
   className,
   triggerClassName,
 }: SearchableSelectProps) {
+  const t = useTranslations('common');
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
@@ -172,7 +174,7 @@ export function SearchableSelect({
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
           <Command shouldFilter={false}>
-            <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
+            <CommandInput placeholder={t('search')} value={search} onValueChange={setSearch} />
             <div ref={setScrollRoot} className="max-h-[300px] overflow-y-auto">
               <CommandList className="max-h-none">
                 {loading ? (
@@ -183,7 +185,7 @@ export function SearchableSelect({
                   </div>
                 ) : (
                   <>
-                    <CommandEmpty>No results.</CommandEmpty>
+                    <CommandEmpty>{t('noResults')}</CommandEmpty>
                     <CommandGroup>
                       {allOptions.map((option) => (
                         <CommandItem
@@ -202,7 +204,7 @@ export function SearchableSelect({
                     {canLoadMore && <div ref={sentinelRef} className="h-2 flex-shrink-0" aria-hidden />}
                     {loadingMore && (
                       <div className="flex justify-center py-2">
-                        <span className="text-muted-foreground text-xs">Loading…</span>
+                        <span className="text-muted-foreground text-xs">{t('loading')}</span>
                       </div>
                     )}
                   </>

@@ -12,7 +12,10 @@
   },
   "common": {
     "yes": "Ja",
-    "no": "Nee"
+    "no": "Nee",
+    "search": "Zoeken…",
+    "noResults": "Geen resultaten.",
+    "loading": "Laden…"
   },
   "notFound": {
     "eyebrow": "Pagina niet gevonden",

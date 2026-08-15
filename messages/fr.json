@@ -12,7 +12,10 @@
   },
   "common": {
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "search": "Rechercher…",
+    "noResults": "Aucun résultat.",
+    "loading": "Chargement…"
   },
   "notFound": {
     "eyebrow": "Page introuvable",
