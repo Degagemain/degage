@@ -46,6 +46,8 @@ Follow this order:
    - Create REST endpoints following existing patterns
    - Always validate input with Zod schemas
    - Use `app/api/utils.ts` helpers for responses
+   - Routes call actions, never `@/storage`
+   - Map `AppError` in `app/api/utils.ts`
 
 5. **Frontend** (`app/app/`)
    - Feature code goes in `app/app/{entity}/`

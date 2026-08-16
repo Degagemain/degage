@@ -12,7 +12,10 @@
   },
   "common": {
     "yes": "Ja",
-    "no": "Nee"
+    "no": "Nee",
+    "search": "Zoeken…",
+    "noResults": "Geen resultaten.",
+    "loading": "Laden…"
   },
   "notFound": {
     "eyebrow": "Pagina niet gevonden",
@@ -1434,8 +1437,11 @@
       "valueNumberMin": "Min",
       "valueNumberMax": "Max",
       "valueString": "Tekst",
+      "valueEuronorm": "Euronorm",
+      "valueEuronormPlaceholder": "Selecteer euronorm",
       "save": "Opslaan",
       "cancel": "Annuleren",
+      "saveFailed": "Opslaan mislukt",
       "searchPlaceholder": "Zoek parameters...",
       "tryAgain": "Opnieuw proberen"
     },

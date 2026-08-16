@@ -1,6 +1,7 @@
-export class CarOnboardingAdminModeUnavailableError extends Error {
+import { AppError } from '@/actions/app.error';
+
+export class CarOnboardingAdminModeUnavailableError extends AppError {
   constructor(message = 'Admin mode play connector is unavailable') {
-    super(message);
-    this.name = 'CarOnboardingAdminModeUnavailableError';
+    super('admin_mode_unavailable', message, 503);
   }
 }

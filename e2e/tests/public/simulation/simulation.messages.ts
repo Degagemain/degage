@@ -11,6 +11,7 @@ export type SimulationMessages = {
   newCarTile: string;
   startSimulationCta: string;
   submitSimulationCta: string;
+  searchPlaceholder: string;
   townLabel: string;
   brandLabel: string;
   fuelTypeLabel: string;
@@ -35,6 +36,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     newCarTile: "A car I'm planning to buy",
     startSimulationCta: 'Start the simulation →',
     submitSimulationCta: 'Simulate my car →',
+    searchPlaceholder: 'Search…',
     townLabel: 'Town',
     brandLabel: 'Brand',
     fuelTypeLabel: 'Fuel type',
@@ -57,6 +59,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     newCarTile: 'Een wagen die ik wil kopen/net gekocht heb',
     startSimulationCta: 'Start de simulatie →',
     submitSimulationCta: 'Simuleer mijn wagen →',
+    searchPlaceholder: 'Zoeken…',
     townLabel: 'Gemeente',
     brandLabel: 'Merk',
     fuelTypeLabel: 'Brandstoftype',
@@ -79,6 +82,7 @@ export const simulationMessages: Record<SimulationLocale, SimulationMessages> = 
     newCarTile: 'Une voiture que je compte acheter',
     startSimulationCta: 'Lancer la simulation →',
     submitSimulationCta: 'Simuler ma voiture →',
+    searchPlaceholder: 'Rechercher…',
     townLabel: 'Commune',
     brandLabel: 'Marque',
     fuelTypeLabel: 'Type de carburant',

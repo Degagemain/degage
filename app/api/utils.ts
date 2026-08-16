@@ -1,17 +1,12 @@
 import z, { ZodError, ZodSafeParseResult } from 'zod';
 import { NextRequest } from 'next/server';
 
-import { CarOnboardingAdminModeUnavailableError } from '@/actions/car-onboarding/car-onboarding-admin-mode-unavailable.error';
-import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
+import { AppError } from '@/actions/app.error';
+import { logger } from '@/lib/logger';
 
 import { statusCodes } from './status-codes';
 
-export class NotFoundError extends Error {
-  constructor(message: string = 'Resource not found') {
-    super(message);
-    this.name = 'NotFoundError';
-  }
-}
+export { NotFoundError } from '@/actions/app.error';
 
 export const isPrismaNotFoundError = (error: unknown): boolean => {
   return error !== null && typeof error === 'object' && 'code' in error && error.code === 'P2025';
@@ -23,6 +18,35 @@ export const isPrismaForeignKeyError = (error: unknown): boolean => {
 
 export const conflictResponse = (message: string = 'Resource is in use and cannot be deleted'): Response => {
   return Response.json({ code: 'conflict', errors: [{ message }] }, { status: statusCodes.CONFLICT });
+};
+
+const internalErrorResponse = (): Response => {
+  return Response.json(
+    { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
+    { status: statusCodes.INTERNAL_SERVER_ERROR },
+  );
+};
+
+const unexpectedErrorResponse = (error: unknown, helper: string): Response => {
+  logger.exception(error, { helper });
+  return internalErrorResponse();
+};
+
+export const appErrorResponse = (error: AppError): Response => {
+  return Response.json({ code: error.code, errors: [{ message: error.message }] }, { status: error.httpStatus });
+};
+
+export const responseFromCaughtError = (error: unknown): Response | null => {
+  if (error instanceof ZodError) {
+    return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
+  }
+  if (error instanceof AppError) {
+    return appErrorResponse(error);
+  }
+  if (isPrismaNotFoundError(error)) {
+    return notFoundResponse();
+  }
+  return null;
 };
 
 export type SafeRequestJsonResult = { data: unknown; errorResponse: null } | { data: null; errorResponse: Response };
@@ -47,14 +71,7 @@ export const tryCreateResource = async <T>(createResource: (resource: T) => Prom
     const createdResource = await createResource(resource as T);
     return Response.json(createdResource, { status: statusCodes.CREATED });
   } catch (error) {
-    if (error instanceof ZodError) {
-      return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
-    } else {
-      return Response.json(
-        { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
-        { status: statusCodes.INTERNAL_SERVER_ERROR },
-      );
-    }
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryCreateResource');
   }
 };
 
@@ -118,13 +135,7 @@ export const tryReadResource = async <T>(readResource: (id: string) => Promise<T
     const resource = await readResource(id);
     return Response.json(resource);
   } catch (error) {
-    if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
-      return notFoundResponse();
-    }
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryReadResource');
   }
 };
 
@@ -133,16 +144,10 @@ export const tryDeleteResource = async (deleteResource: (id: string) => Promise<
     await deleteResource(id);
     return noContentResponse();
   } catch (error) {
-    if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
-      return notFoundResponse();
-    }
     if (isPrismaForeignKeyError(error)) {
       return conflictResponse('Resource is linked to other records and cannot be deleted');
     }
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryDeleteResource');
   }
 };
 
@@ -169,24 +174,6 @@ export const tryUpdateResource = async <T>(
     await updateResource(body);
     return noContentResponse();
   } catch (error) {
-    if (error instanceof ZodError) {
-      return Response.json({ code: 'validation_error', errors: error.issues }, { status: statusCodes.BAD_REQUEST });
-    }
-    if (error instanceof CarOnboardingCarNameTakenError) {
-      return Response.json({ code: 'car_name_taken', errors: [{ message: error.message }] }, { status: statusCodes.CONFLICT });
-    }
-    if (error instanceof CarOnboardingAdminModeUnavailableError) {
-      return Response.json(
-        { code: 'admin_mode_unavailable', errors: [{ message: error.message }] },
-        { status: statusCodes.SERVICE_UNAVAILABLE },
-      );
-    }
-    if (isPrismaNotFoundError(error) || error instanceof NotFoundError) {
-      return notFoundResponse();
-    }
-    return Response.json(
-      { code: 'internal_error', errors: [{ message: 'An unexpected error occurred' }] },
-      { status: statusCodes.INTERNAL_SERVER_ERROR },
-    );
+    return responseFromCaughtError(error) ?? unexpectedErrorResponse(error, 'tryUpdateResource');
   }
 };

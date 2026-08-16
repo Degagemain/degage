@@ -10,7 +10,7 @@ import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
-import { SearchDropdown } from './components/search-dropdown';
+import { SearchableSelect } from '@/app/components/ui/searchable-select';
 import { NUMBERED_STEP_TOTAL, SIMULATION_FAQ_TAGS, SIM_FAQ_PANEL } from './simulation-public.constants';
 import styles from './simulation.module.css';
 
@@ -363,7 +363,9 @@ export default function SimulationPage() {
           <div className={styles.field}>
             <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
             <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
-            <SearchDropdown
+            <SearchableSelect
+              unstyledTrigger
+              triggerClassName={styles.searchDropdownTrigger}
               value={townId}
               selectedLabel={townLabel || undefined}
               onValueChange={(id, opt) => {
@@ -387,7 +389,9 @@ export default function SimulationPage() {
           <div className={styles.formGridTwoCol}>
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.merkLabel')}</label>
-              <SearchDropdown
+              <SearchableSelect
+                unstyledTrigger
+                triggerClassName={styles.searchDropdownTrigger}
                 value={brandId}
                 selectedLabel={brandLabel || undefined}
                 onValueChange={(id, opt) => {
@@ -435,7 +439,9 @@ export default function SimulationPage() {
 
           <div className={styles.field}>
             <label className={styles.fieldLabel}>{t('wageninfo.carTypeLabel')}</label>
-            <SearchDropdown
+            <SearchableSelect
+              unstyledTrigger
+              triggerClassName={styles.searchDropdownTrigger}
               value={carTypeId}
               selectedLabel={carTypeId === CAR_TYPE_OTHER ? tWizard('carDetails.carTypeOtherOption') : carTypeName || undefined}
               onValueChange={(id, opt) => {

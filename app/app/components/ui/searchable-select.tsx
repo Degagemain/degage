@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/app/lib/utils';
 import { Button } from '@/app/components/ui/button';
@@ -37,6 +38,7 @@ export interface SearchableOption {
   id: string;
   name: string;
   description?: string;
+  [key: string]: string | boolean | number | undefined;
 }
 
 export interface SearchableSelectProps {
@@ -51,12 +53,15 @@ export interface SearchableSelectProps {
   labelKey?: string;
   /** Key on API record to use as option description (e.g. "description"). */
   descriptionKey?: string;
+  /** Extra API fields copied onto each option (e.g. highDemand for towns). */
+  passThroughKeys?: readonly string[];
   /** Options appended to the end of the list (e.g. "Other" fallback). */
   appendOptions?: SearchableOption[];
   placeholder?: string;
   disabled?: boolean;
   className?: string;
   triggerClassName?: string;
+  unstyledTrigger?: boolean;
 }
 
 export function SearchableSelect({
@@ -68,12 +73,15 @@ export function SearchableSelect({
   queryParams,
   labelKey = 'name',
   descriptionKey,
+  passThroughKeys = [],
   appendOptions = [],
   placeholder = 'Select…',
   disabled,
   className,
   triggerClassName,
+  unstyledTrigger = false,
 }: SearchableSelectProps) {
+  const t = useTranslations('common');
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
@@ -82,6 +90,8 @@ export function SearchableSelect({
   const [loading, setLoading] = React.useState(false);
   const [loadingMore, setLoadingMore] = React.useState(false);
   const [localSelectedDescription, setLocalSelectedDescription] = React.useState<string | undefined>(selectedDescription);
+  const passThroughKeysRef = React.useRef(passThroughKeys);
+  passThroughKeysRef.current = passThroughKeys;
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
@@ -102,11 +112,20 @@ export function SearchableSelect({
       const res = await fetch(`/api/${apiPath}?${params.toString()}`);
       if (!res.ok) return;
       const data = await res.json();
-      const records = (data.records ?? []).map((r: Record<string, unknown>) => ({
-        id: String(r.id),
-        name: (r[labelKey] as string) ?? (r.name as string) ?? '',
-        ...(descriptionKey ? { description: ((r[descriptionKey] as string) ?? '').trim() || undefined } : {}),
-      }));
+      const records = (data.records ?? []).map((r: Record<string, unknown>) => {
+        const option: SearchableOption = {
+          id: String(r.id),
+          name: (r[labelKey] as string) ?? (r.name as string) ?? '',
+          ...(descriptionKey ? { description: ((r[descriptionKey] as string) ?? '').trim() || undefined } : {}),
+        };
+        for (const key of passThroughKeysRef.current) {
+          const val = r[key];
+          if (typeof val === 'boolean' || typeof val === 'string' || typeof val === 'number') {
+            option[key] = val;
+          }
+        }
+        return option;
+      });
       if (append) {
         setOptions((prev) => (skip === 0 ? records : [...prev, ...records]));
       } else {
@@ -155,24 +174,44 @@ export function SearchableSelect({
   const displayLabel = selectedLabel ?? (value ? (allOptions.find((o) => o.id === value)?.name ?? value) : null);
   const displayDescription = localSelectedDescription ?? (value ? allOptions.find((o) => o.id === value)?.description : undefined);
 
+  const triggerClassNameResolved = cn(
+    unstyledTrigger
+      ? 'flex w-full items-center justify-between gap-2 text-left'
+      : 'data-[placeholder]:text-muted-foreground w-full justify-between font-normal',
+    triggerClassName,
+    className,
+  );
+  const triggerInner = (
+    <>
+      <span className={cn(!unstyledTrigger && !displayLabel && 'text-muted-foreground')}>{displayLabel ?? placeholder}</span>
+      <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
+    </>
+  );
+
   return (
     <div className="flex flex-col gap-2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            disabled={disabled}
-            className={cn('data-[placeholder]:text-muted-foreground w-full justify-between font-normal', triggerClassName, className)}
-          >
-            <span className={cn(!displayLabel && 'text-muted-foreground')}>{displayLabel ?? placeholder}</span>
-            <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
-          </Button>
+          {unstyledTrigger ? (
+            <button
+              type="button"
+              role="combobox"
+              aria-expanded={open}
+              disabled={disabled}
+              data-empty={displayLabel ? undefined : 'true'}
+              className={triggerClassNameResolved}
+            >
+              {triggerInner}
+            </button>
+          ) : (
+            <Button variant="outline" role="combobox" aria-expanded={open} disabled={disabled} className={triggerClassNameResolved}>
+              {triggerInner}
+            </Button>
+          )}
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
           <Command shouldFilter={false}>
-            <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
+            <CommandInput placeholder={t('search')} value={search} onValueChange={setSearch} />
             <div ref={setScrollRoot} className="max-h-[300px] overflow-y-auto">
               <CommandList className="max-h-none">
                 {loading ? (
@@ -183,7 +222,7 @@ export function SearchableSelect({
                   </div>
                 ) : (
                   <>
-                    <CommandEmpty>No results.</CommandEmpty>
+                    <CommandEmpty>{t('noResults')}</CommandEmpty>
                     <CommandGroup>
                       {allOptions.map((option) => (
                         <CommandItem
@@ -202,7 +241,7 @@ export function SearchableSelect({
                     {canLoadMore && <div ref={sentinelRef} className="h-2 flex-shrink-0" aria-hidden />}
                     {loadingMore && (
                       <div className="flex justify-center py-2">
-                        <span className="text-muted-foreground text-xs">Loading…</span>
+                        <span className="text-muted-foreground text-xs">{t('loading')}</span>
                       </div>
                     )}
                   </>

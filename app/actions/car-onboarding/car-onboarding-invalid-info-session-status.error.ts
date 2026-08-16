@@ -1,6 +1,7 @@
-export class CarOnboardingInvalidInfoSessionStatusError extends Error {
+import { AppError } from '@/actions/app.error';
+
+export class CarOnboardingInvalidInfoSessionStatusError extends AppError {
   constructor(message: string = 'Info session status does not allow this action') {
-    super(message);
-    this.name = 'CarOnboardingInvalidInfoSessionStatusError';
+    super('invalid_info_session_status', message, 400);
   }
 }

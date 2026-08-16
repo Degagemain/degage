@@ -1,18 +1,20 @@
 import type { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import { dbUserUpdateLocale } from '@/storage/user/user.update';
-import { type UILocale, uiLocales } from '@/i18n/locales';
-import { safeParseRequestJson } from '@/api/utils';
+import { updateUserLocale } from '@/actions/user/update-locale';
+import { userLocaleUpdateSchema } from '@/domain/user.model';
+import { badRequestResponseFromZod, safeParseRequestJson } from '@/api/utils';
 import { withPublic } from '@/api/with-context';
 
 export const PATCH = withPublic(async (request: NextRequest, _context, session) => {
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;
-  const { locale } = data as { locale: string };
 
-  if (!uiLocales.includes(locale as UILocale)) {
-    return Response.json({ error: 'Invalid locale' }, { status: 400 });
+  const parsed = userLocaleUpdateSchema.safeParse(data);
+  if (!parsed.success) {
+    return badRequestResponseFromZod(parsed);
   }
+
+  const { locale } = parsed.data;
 
   const cookieStore = await cookies();
   cookieStore.set('locale', locale, {
@@ -22,7 +24,7 @@ export const PATCH = withPublic(async (request: NextRequest, _context, session) 
   });
 
   if (session?.user?.id) {
-    await dbUserUpdateLocale(session.user.id, locale);
+    await updateUserLocale(session.user.id, locale);
   }
 
   return Response.json({ success: true });

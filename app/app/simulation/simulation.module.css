@@ -2225,6 +2225,11 @@
 }
 
 .searchDropdownTrigger {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   width: 100%;
   font-family: var(--sim-sans);
   font-size: 15px;
@@ -2235,12 +2240,8 @@
   background: var(--sim-surface);
   outline: none;
   box-sizing: border-box;
-  text-align: left;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  text-align: left;
 }
 
 .searchDropdownTrigger:focus {
@@ -2253,82 +2254,7 @@
   cursor: not-allowed;
 }
 
-.searchDropdownPlaceholder {
-  color: var(--sim-light);
-}
-
-.searchDropdownList {
-  position: absolute;
-  z-index: 50;
-  top: calc(100% + var(--sim-s8));
-  left: 0;
-  right: 0;
-  max-height: 300px;
-  overflow: hidden;
-  background: var(--sim-surface);
-  border: 1.5px solid var(--sim-border);
-  border-radius: var(--sim-r8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.searchDropdownInput {
-  width: 100%;
-  font-family: var(--sim-sans);
-  font-size: 15px;
-  padding: var(--sim-s8) var(--sim-s16);
-  border: none;
-  border-bottom: 1px solid var(--sim-sand);
-  border-radius: var(--sim-r8) var(--sim-r8) 0 0;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.searchDropdownItem {
-  display: block;
-  width: 100%;
-  padding: 10px 16px;
-  font-family: var(--sim-sans);
-  font-size: 15px;
-  color: var(--sim-ink);
-  cursor: pointer;
-  transition: background 0.1s;
-  text-align: left;
-  border: none;
-  background: none;
-}
-
-.searchDropdownItem:hover {
-  background: var(--sim-brand-light);
-}
-
-.searchDropdownItemSelected {
-  background: var(--sim-brand-light);
-  color: var(--sim-brand-mid);
-  font-weight: 600;
-}
-
-.searchDropdownChevron {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--sim-light);
-  flex-shrink: 0;
-}
-
-.searchDropdownScroll {
-  max-height: min(260px, 60vh);
-  overflow-y: auto;
-}
-
-.searchDropdownSentinel {
-  height: 8px;
-  flex-shrink: 0;
-}
-
-.searchDropdownStatus {
-  padding: var(--sim-s16) var(--sim-s24);
-  font-family: var(--sim-sans);
-  font-size: 12px;
+.searchDropdownTrigger[data-empty='true'] {
   color: var(--sim-light);
 }
 
@@ -2425,16 +2351,9 @@
   }
 
   .input,
-  .select {
-    min-height: 44px;
-  }
-
+  .select,
   .searchDropdownTrigger {
     min-height: 44px;
-  }
-
-  .searchDropdownList {
-    max-height: min(300px, 60vh);
   }
 
   .tileGrid {
