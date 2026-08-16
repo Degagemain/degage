@@ -2,6 +2,7 @@
 
 import { SearchableSelect, type SearchableSelectProps } from '@/app/components/ui/searchable-select';
 
+import styles from '../car-onboarding-public.module.css';
 import { PublicField } from './public-ui';
 
 type PublicSearchableFieldProps = SearchableSelectProps & {
@@ -12,7 +13,7 @@ type PublicSearchableFieldProps = SearchableSelectProps & {
 export function PublicSearchableField({ label, hint, ...selectProps }: PublicSearchableFieldProps) {
   return (
     <PublicField label={label} hint={hint}>
-      <SearchableSelect {...selectProps} triggerClassName="w-full" />
+      <SearchableSelect {...selectProps} unstyledTrigger triggerClassName={styles.searchableTrigger} />
     </PublicField>
   );
 }

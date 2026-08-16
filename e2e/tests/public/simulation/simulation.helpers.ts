@@ -66,18 +66,20 @@ function fieldByLabel(page: Page, labelText: string) {
   return page.getByText(labelText, { exact: true }).locator('xpath=ancestor::div[.//button or .//input or .//select][1]');
 }
 
-async function selectSearchDropdown(page: Page, fieldLabel: string, query: string, optionName: string) {
+async function selectSearchDropdown(page: Page, messages: SimulationMessages, fieldLabel: string, query: string, optionName: string) {
   const field = fieldByLabel(page, fieldLabel);
-  await field.getByRole('button').first().click();
-  await page.getByPlaceholder(messages.searchPlaceholder).fill(query);
-  await page.getByRole('option', { name: optionName, exact: true }).click();
+  await field.getByRole('combobox').click();
+  const search = page.getByPlaceholder(messages.searchPlaceholder);
+  await search.last().fill(query);
+  await page.getByRole('option', { name: optionName, exact: true }).last().click();
+  await expect(search).toHaveCount(0);
 }
 
 async function fillSharedCarFields(page: Page, messages: SimulationMessages, data: CarFormData) {
-  await selectSearchDropdown(page, messages.townLabel, data.townQuery!, data.townOption!);
-  await selectSearchDropdown(page, messages.brandLabel, data.brandQuery!, data.brandOption!);
+  await selectSearchDropdown(page, messages, messages.townLabel, data.townQuery!, data.townOption!);
+  await selectSearchDropdown(page, messages, messages.brandLabel, data.brandQuery!, data.brandOption!);
   await fieldByLabel(page, messages.fuelTypeLabel).locator('select').selectOption({ label: data.fuelTypeName! });
-  await selectSearchDropdown(page, messages.carTypeLabel, data.carTypeQuery!, data.carTypeOption!);
+  await selectSearchDropdown(page, messages, messages.carTypeLabel, data.carTypeQuery!, data.carTypeOption!);
   await fieldByLabel(page, messages.ownerKmLabel).locator('input').fill(String(data.ownerKmPerYear));
 }
 

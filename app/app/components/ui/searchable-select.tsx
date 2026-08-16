@@ -61,6 +61,7 @@ export interface SearchableSelectProps {
   disabled?: boolean;
   className?: string;
   triggerClassName?: string;
+  unstyledTrigger?: boolean;
 }
 
 export function SearchableSelect({
@@ -78,6 +79,7 @@ export function SearchableSelect({
   disabled,
   className,
   triggerClassName,
+  unstyledTrigger = false,
 }: SearchableSelectProps) {
   const t = useTranslations('common');
   const [open, setOpen] = React.useState(false);
@@ -172,20 +174,40 @@ export function SearchableSelect({
   const displayLabel = selectedLabel ?? (value ? (allOptions.find((o) => o.id === value)?.name ?? value) : null);
   const displayDescription = localSelectedDescription ?? (value ? allOptions.find((o) => o.id === value)?.description : undefined);
 
+  const triggerClassNameResolved = cn(
+    unstyledTrigger
+      ? 'flex w-full items-center justify-between gap-2 text-left'
+      : 'data-[placeholder]:text-muted-foreground w-full justify-between font-normal',
+    triggerClassName,
+    className,
+  );
+  const triggerInner = (
+    <>
+      <span className={cn(!unstyledTrigger && !displayLabel && 'text-muted-foreground')}>{displayLabel ?? placeholder}</span>
+      <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
+    </>
+  );
+
   return (
     <div className="flex flex-col gap-2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            disabled={disabled}
-            className={cn('data-[placeholder]:text-muted-foreground w-full justify-between font-normal', triggerClassName, className)}
-          >
-            <span className={cn(!displayLabel && 'text-muted-foreground')}>{displayLabel ?? placeholder}</span>
-            <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
-          </Button>
+          {unstyledTrigger ? (
+            <button
+              type="button"
+              role="combobox"
+              aria-expanded={open}
+              disabled={disabled}
+              data-empty={displayLabel ? undefined : 'true'}
+              className={triggerClassNameResolved}
+            >
+              {triggerInner}
+            </button>
+          ) : (
+            <Button variant="outline" role="combobox" aria-expanded={open} disabled={disabled} className={triggerClassNameResolved}>
+              {triggerInner}
+            </Button>
+          )}
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
           <Command shouldFilter={false}>

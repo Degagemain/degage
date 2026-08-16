@@ -364,6 +364,8 @@ export default function SimulationPage() {
             <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
             <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
             <SearchableSelect
+              unstyledTrigger
+              triggerClassName={styles.searchDropdownTrigger}
               value={townId}
               selectedLabel={townLabel || undefined}
               onValueChange={(id, opt) => {
@@ -388,6 +390,8 @@ export default function SimulationPage() {
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.merkLabel')}</label>
               <SearchableSelect
+                unstyledTrigger
+                triggerClassName={styles.searchDropdownTrigger}
                 value={brandId}
                 selectedLabel={brandLabel || undefined}
                 onValueChange={(id, opt) => {
@@ -436,6 +440,8 @@ export default function SimulationPage() {
           <div className={styles.field}>
             <label className={styles.fieldLabel}>{t('wageninfo.carTypeLabel')}</label>
             <SearchableSelect
+              unstyledTrigger
+              triggerClassName={styles.searchDropdownTrigger}
               value={carTypeId}
               selectedLabel={carTypeId === CAR_TYPE_OTHER ? tWizard('carDetails.carTypeOtherOption') : carTypeName || undefined}
               onValueChange={(id, opt) => {

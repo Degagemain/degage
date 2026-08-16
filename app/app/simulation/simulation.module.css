@@ -2224,6 +2224,40 @@
   color: var(--sim-amber);
 }
 
+.searchDropdownTrigger {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font-family: var(--sim-sans);
+  font-size: 15px;
+  color: var(--sim-ink);
+  border: 1.5px solid var(--sim-border);
+  border-radius: var(--sim-r8);
+  padding: 10px 16px;
+  background: var(--sim-surface);
+  outline: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-align: left;
+}
+
+.searchDropdownTrigger:focus {
+  border-color: var(--sim-brand);
+}
+
+.searchDropdownTrigger:disabled {
+  background: var(--sim-sand);
+  color: var(--sim-light);
+  cursor: not-allowed;
+}
+
+.searchDropdownTrigger[data-empty='true'] {
+  color: var(--sim-light);
+}
+
 .formGridTwoCol {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2317,7 +2351,8 @@
   }
 
   .input,
-  .select {
+  .select,
+  .searchDropdownTrigger {
     min-height: 44px;
   }
 

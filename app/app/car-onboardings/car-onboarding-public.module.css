@@ -752,9 +752,39 @@
 }
 
 .input:focus,
-.select:focus {
+.select:focus,
+.searchableTrigger:focus {
   outline: none;
   border-color: var(--demo-brand);
+}
+
+.searchableTrigger {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font-family: var(--demo-sans);
+  font-size: 15px;
+  color: var(--demo-ink);
+  background: var(--demo-surface);
+  border: 1.5px solid var(--demo-border);
+  border-radius: var(--demo-r8);
+  padding: 10px 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-align: left;
+}
+
+.searchableTrigger:disabled {
+  background: var(--demo-sand);
+  color: var(--demo-light);
+  cursor: not-allowed;
+}
+
+.searchableTrigger[data-empty='true'] {
+  color: var(--demo-light);
 }
 
 .panel {
