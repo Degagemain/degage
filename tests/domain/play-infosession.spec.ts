@@ -4,21 +4,19 @@ import { parsePlayInfosessionRegistrations, parsePlayInfosessionScheduledAt } fr
 import { playInfosessionSchema } from '@/domain/play-infosession.model';
 
 describe('parsePlayInfosessionScheduledAt', () => {
-  it('parses Dutch Play backend datetime strings', () => {
+  it('parses Dutch Play backend datetime strings as Europe/Brussels in summer (CEST)', () => {
     const parsed = parsePlayInfosessionScheduledAt('za 20 jun 2026 09:25');
-    expect(parsed.getFullYear()).toBe(2026);
-    expect(parsed.getMonth()).toBe(5);
-    expect(parsed.getDate()).toBe(20);
-    expect(parsed.getHours()).toBe(9);
-    expect(parsed.getMinutes()).toBe(25);
+    expect(parsed.toISOString()).toBe('2026-06-20T07:25:00.000Z');
   });
 
-  it('parses July dates', () => {
+  it('parses Play backend datetime strings as Europe/Brussels in winter (CET)', () => {
+    const parsed = parsePlayInfosessionScheduledAt('do 15 jan 2026 19:30');
+    expect(parsed.toISOString()).toBe('2026-01-15T18:30:00.000Z');
+  });
+
+  it('parses July dates as Europe/Brussels', () => {
     const parsed = parsePlayInfosessionScheduledAt('wo 01 jul 2026 19:30');
-    expect(parsed.getMonth()).toBe(6);
-    expect(parsed.getDate()).toBe(1);
-    expect(parsed.getHours()).toBe(19);
-    expect(parsed.getMinutes()).toBe(30);
+    expect(parsed.toISOString()).toBe('2026-07-01T17:30:00.000Z');
   });
 });
 
@@ -69,6 +67,6 @@ describe('playInfosessionSchema', () => {
     expect(result.maxRegistrations).toBe(20);
     expect(result.isFull).toBe(false);
     expect(result.scheduledAt).toBeInstanceOf(Date);
-    expect(result.scheduledAt.getFullYear()).toBe(2026);
+    expect(result.scheduledAt.toISOString()).toBe('2026-06-20T07:25:00.000Z');
   });
 });

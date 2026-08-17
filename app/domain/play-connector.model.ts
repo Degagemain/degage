@@ -2,6 +2,8 @@ import * as z from 'zod';
 
 import { credentialsSchema } from '@/domain/credentials.model';
 
+export const PLAY_TIME_ZONE = 'Europe/Brussels';
+
 export const playConnectorStatusValues = ['missing', 'success', 'failing'] as const;
 
 export const playConnectorStatusEnum = z.enum(playConnectorStatusValues);
