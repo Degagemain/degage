@@ -454,6 +454,7 @@
       "columns": {
         "code": "Code",
         "name": "Naam",
+        "order": "Volgorde",
         "active": "Actief",
         "pricePer": "Prijs per l/kWh",
         "co2Contribution": "CO₂-bijdrage",
@@ -473,6 +474,7 @@
         "help": {
           "code": "Korte unieke identificatie die het systeem gebruikt.",
           "active": "Inactieve brandstoftypes worden niet getoond in selecties.",
+          "order": "Lagere nummers verschijnen eerst in selectielijsten, inclusief de simulatie.",
           "pricePer": "Huidige prijs per liter of kWh gebruikt in berekeningen.",
           "co2Contribution": "CO2-bijdrage gebruikt in berekeningen.",
           "translations": "Vul een naam in voor elke taal-tab."

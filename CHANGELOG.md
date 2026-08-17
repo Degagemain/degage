@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: fuel types on the simulation page follow the order set by admins.
 - Fixed: during car onboarding, info session times now show the correct Belgium
   time.
 - Removed: during car onboarding, after connecting Degapp you no longer see a
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: admins can set a display order for fuel types; the simulation uses that order.
 - Added: insurers can be marked as supporting instant onboarding.
 - Added: the documentation list row menu includes Delete for manual entries.
 - Added: the onboardings list shows preparation as a colored step bar; hover a

@@ -38,6 +38,7 @@ interface FuelTypesState {
 }
 
 const SORT_COLUMN_MAP: Record<string, string> = {
+  order: 'order',
   code: 'code',
   pricePer: 'pricePer',
   co2Contribution: 'co2Contribution',
@@ -58,7 +59,7 @@ export default function FuelTypesPage() {
   const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
     useAdminListUrlSync({
       defaultPageSize: DEFAULT_PAGE_SIZE,
-      defaultSort: { id: 'code', desc: false },
+      defaultSort: { id: 'order', desc: false },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
       csvParamNames: ['isActive'],
     });
@@ -107,6 +108,7 @@ export default function FuelTypesPage() {
     () => ({
       code: t('columns.code'),
       name: t('columns.name'),
+      order: t('columns.order'),
       isActive: t('columns.active'),
       pricePer: t('columns.pricePer'),
       co2Contribution: t('columns.co2Contribution'),

@@ -27,6 +27,7 @@ interface FuelTypeFormProps {
 interface FuelTypeFormValues {
   code: string;
   isActive: boolean;
+  order: string;
   pricePer: string;
   co2Contribution: string;
   translations: Record<ContentLocale, string>;
@@ -46,6 +47,7 @@ const getInitialState = (fuelType?: FuelType): FuelTypeFormValues => {
   return {
     code: fuelType?.code ?? '',
     isActive: fuelType?.isActive ?? true,
+    order: fuelType?.order != null ? String(fuelType.order) : '0',
     pricePer: fuelType?.pricePer != null ? String(fuelType.pricePer) : '0',
     co2Contribution: fuelType?.co2Contribution != null ? String(fuelType.co2Contribution) : '0',
     translations,
@@ -56,6 +58,14 @@ const createFuelTypeFormSchema = (tCommon: (key: string) => string) =>
   z.object({
     code: z.string().trim().min(1, tCommon('validation.required')),
     isActive: z.boolean(),
+    order: z
+      .string()
+      .trim()
+      .min(1, tCommon('validation.required'))
+      .refine(
+        (value) => Number.isFinite(Number(value)) && Number.isInteger(Number(value)) && Number(value) >= 0,
+        tCommon('validation.nonNegativeInteger'),
+      ),
     pricePer: z
       .string()
       .trim()
@@ -102,6 +112,7 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
       code: values.code.trim(),
       name: values.translations[activeLocale].trim(),
       isActive: values.isActive,
+      order: Number.parseInt(values.order, 10),
       pricePer: Number(values.pricePer),
       co2Contribution: Number(values.co2Contribution),
       translations: contentLocales.map((locale) => ({
@@ -144,6 +155,23 @@ export function FuelTypeForm({ initialFuelType, formId = FUEL_TYPE_FORM_ID, isSu
               checked={field.value}
               onChange={field.onChange}
               description={t('form.help.active')}
+              disabled={isSubmitting}
+            />
+          )}
+        />
+
+        <Controller
+          name="order"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <AdminNumberFieldControl
+              label={t('columns.order')}
+              value={field.value}
+              onChange={field.onChange}
+              min={0}
+              step={1}
+              description={t('form.help.order')}
+              error={fieldState.error?.message}
               disabled={isSubmitting}
             />
           )}

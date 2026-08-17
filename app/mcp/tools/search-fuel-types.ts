@@ -11,7 +11,7 @@ export const registerSearchFuelTypesTool = (server: McpServer, getContext: () =>
     'search_fuel_types',
     {
       description:
-        'List and search fuel types (e.g. petrol, diesel, electric) with code, price, and CO₂ contribution. ' +
+        'List and search fuel types (e.g. petrol, diesel, electric) with code, price, CO₂ contribution, and display order. ' +
         'Returns { records, total } with pagination and optional text query on names.',
       inputSchema: fuelTypeSearchMcpInputSchema,
     },

@@ -67,6 +67,12 @@ describe('API Route - GET /api/fuel-types', () => {
       expect(json.records).toHaveLength(1);
       expect(json.total).toBe(1);
       expect(searchFuelTypes).toHaveBeenCalledTimes(1);
+      expect(searchFuelTypes).toHaveBeenCalledWith(
+        expect.objectContaining({
+          sortBy: 'order',
+          sortOrder: 'asc',
+        }),
+      );
     });
   });
 

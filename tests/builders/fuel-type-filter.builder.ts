@@ -6,7 +6,7 @@ export const fuelTypeFilter = (data: Partial<FuelTypeFilter> = {}): FuelTypeFilt
     isActive: data.isActive ?? null,
     skip: data.skip ?? 0,
     take: data.take ?? 24,
-    sortBy: data.sortBy ?? 'code',
+    sortBy: data.sortBy ?? 'order',
     sortOrder: data.sortOrder ?? 'asc',
   };
 };

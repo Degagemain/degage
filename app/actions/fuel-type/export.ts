@@ -16,6 +16,7 @@ const buildFuelTypeExportColumns = async (locale: string): Promise<CsvColumn<Fue
   return [
     { label: t('columns.code'), format: (row) => formatExportValueByKey('code', row.code, locale) },
     { label: t('columns.name'), format: (row) => formatExportValueByKey('name', row.name, locale) },
+    { label: t('columns.order'), format: (row) => formatExportValueByKey('order', row.order, locale) },
     { label: t('columns.active'), format: (row) => formatExportValueByKey('isActive', row.isActive, locale) },
     { label: t('columns.pricePer'), format: (row) => formatExportValueByKey('pricePer', row.pricePer, locale) },
     { label: t('columns.co2Contribution'), format: (row) => formatExportValueByKey('co2Contribution', row.co2Contribution, locale) },

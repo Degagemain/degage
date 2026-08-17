@@ -6,6 +6,7 @@ export const fuelType = (data: Partial<FuelType> = {}): FuelType => {
     code: data.code || 'electric',
     name: data.name || 'Electric',
     isActive: data.isActive ?? true,
+    order: data.order ?? 0,
     pricePer: data.pricePer ?? 0,
     co2Contribution: data.co2Contribution ?? 0,
     translations: data.translations || [

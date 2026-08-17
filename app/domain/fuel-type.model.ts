@@ -13,6 +13,7 @@ export const fuelTypeSchema = z
     code: z.string().min(1).max(50),
     name: z.string().min(1).max(100),
     isActive: z.boolean().default(true),
+    order: z.number().int().default(0),
     pricePer: z.number().min(0).default(0),
     co2Contribution: z.number().int().min(0).default(0),
     translations: z.array(fuelTypeTranslationSchema).default([]),

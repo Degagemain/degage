@@ -8,6 +8,7 @@ export type FuelTypeFormData = {
   nameNl: string;
   nameEn: string;
   nameFr: string;
+  order?: string;
   pricePer?: string;
   co2Contribution?: string;
 };
@@ -33,8 +34,9 @@ export const fillFuelTypeForm = async (page: Page, data: FuelTypeFormData) => {
   await form.getByPlaceholder('e.g. petrol').fill(data.code);
 
   const spinbuttons = form.getByRole('spinbutton');
-  await spinbuttons.nth(0).fill(data.pricePer ?? '0');
-  await spinbuttons.nth(1).fill(data.co2Contribution ?? '0');
+  await spinbuttons.nth(0).fill(data.order ?? '0');
+  await spinbuttons.nth(1).fill(data.pricePer ?? '0');
+  await spinbuttons.nth(2).fill(data.co2Contribution ?? '0');
 
   await fillTranslation(page, 'nl', data.nameNl);
   await fillTranslation(page, 'en', data.nameEn);

@@ -454,6 +454,7 @@
       "columns": {
         "code": "Code",
         "name": "Name",
+        "order": "Order",
         "active": "Active",
         "pricePer": "Price per L/kWh",
         "co2Contribution": "CO₂ contribution",
@@ -473,6 +474,7 @@
         "help": {
           "code": "Short unique identifier used by the system.",
           "active": "Inactive fuel types are hidden in selection lists.",
+          "order": "Lower numbers appear first in selection lists, including the simulation.",
           "pricePer": "Current price per liter or kWh used in calculations.",
           "co2Contribution": "CO2 contribution used in calculations.",
           "translations": "Provide a name for each locale tab."
