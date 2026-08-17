@@ -15,6 +15,10 @@ const buildInsurerExportColumns = async (locale: string): Promise<CsvColumn<Insu
 
   return [
     { label: t('columns.name'), format: (row) => formatExportValueByKey('name', row.name, locale) },
+    {
+      label: t('columns.supportsInstantOnboarding'),
+      format: (row) => formatExportValueByKey('supportsInstantOnboarding', row.supportsInstantOnboarding, locale),
+    },
     { label: t('columns.created'), format: (row) => formatExportValueByKey('createdAt', row.createdAt, locale) },
     { label: t('columns.updated'), format: (row) => formatExportValueByKey('updatedAt', row.updatedAt, locale) },
   ];

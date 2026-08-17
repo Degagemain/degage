@@ -364,11 +364,12 @@ model Hub {
 }
 
 model Insurer {
-  id             String          @id @default(uuid())
-  name           String          @unique
-  carOnboardings CarOnboarding[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id                          String          @id @default(uuid())
+  name                        String          @unique
+  supportsInstantOnboarding   Boolean         @default(false)
+  carOnboardings              CarOnboarding[]
+  createdAt                   DateTime        @default(now())
+  updatedAt                   DateTime        @updatedAt
 }
 
 model CarSticker {

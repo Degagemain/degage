@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: during car onboarding, insurers that support instant onboarding let
+  you start sharing from the first of this or next month, without the usual
+  insurance waiting period.
 - Changed: during car onboarding, Save & Next on the last available step takes
   you back to the overview.
 - Changed: during car onboarding, you no longer choose a road assistance plan
@@ -18,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: insurers can be marked as supporting instant onboarding.
 - Added: the documentation list row menu includes Delete for manual entries.
 - Added: the onboardings list shows preparation as a colored step bar; hover a
   block for the step name, click to open that tab. Individual status columns are

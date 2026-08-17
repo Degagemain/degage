@@ -23,6 +23,10 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
   saveCarOnboardingWithPreparationCheck: vi.fn(),
 }));
 
+vi.mock('@/storage/insurer/insurer.read', () => ({
+  dbInsurerRead: vi.fn(),
+}));
+
 vi.mock('next/headers', () => ({
   headers: vi.fn().mockResolvedValue(new Headers()),
   cookies: vi.fn().mockResolvedValue({ get: () => undefined }),
@@ -33,8 +37,10 @@ import { auth } from '@/auth';
 import { updateCarOnboardingInsurer } from '@/actions/car-onboarding/update-insurer';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { dbInsurerRead } from '@/storage/insurer/insurer.read';
 import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
 import { carOnboarding } from '../../../builders/car-onboarding.builder';
+import { insurer } from '../../../builders/insurer.builder';
 
 const validId = '550e8400-e29b-41d4-a716-446655440000';
 
@@ -63,6 +69,7 @@ describe('PUT /api/car-onboardings/[id]/insurer', () => {
 
   it('returns 204 when owner updates', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
+    vi.mocked(dbInsurerRead).mockResolvedValueOnce(insurer({ id: body.insurer.id }));
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: validId, owner: { id: mockUser.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
     );
@@ -101,6 +108,7 @@ describe('PUT /api/car-onboardings/[id]/insurer', () => {
 
   it('returns 204 when insurer status is ready', async () => {
     vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockUser } as any);
+    vi.mocked(dbInsurerRead).mockResolvedValueOnce(insurer({ id: body.insurer.id }));
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: validId, owner: { id: mockUser.id }, insurerStatus: CarOnboardingInsurerStatus.READY }),
     );

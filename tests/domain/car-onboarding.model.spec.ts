@@ -974,6 +974,34 @@ describe('share start date helpers', () => {
     ); // ceil of 7 Oct 2026 → 1 Nov 2026
   });
 
+  it('uses the first of this or next month when the insurer supports instant onboarding', () => {
+    const contractStart = new Date(2026, 0, 15);
+    expect(
+      getEarliestShareStartDate(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        },
+        today,
+      ),
+    ).toEqual(new Date(2026, 8, 1));
+  });
+
+  it('keeps insurance wait rules when the insurer does not support instant onboarding', () => {
+    const contractStart = new Date(2026, 0, 15);
+    expect(
+      getEarliestShareStartDate(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: false },
+        },
+        today,
+      ),
+    ).toEqual(new Date(2027, 1, 1));
+  });
+
   it('caps the latest share start at the first of the month 18 months out', () => {
     expect(getLatestShareStartDate(today)).toEqual(new Date(2028, 1, 1)); // Feb 2028
   });
@@ -1021,6 +1049,44 @@ describe('share start date helpers', () => {
         {
           hasInsuranceContract: true,
           insurerContractStartedAt: new Date(2020, 0, 15),
+        },
+        today,
+      ),
+    ).toBe(false);
+  });
+
+  it('clears share start when switching to or from instant onboarding', () => {
+    const shareStartDate = new Date(2026, 10, 1);
+    const contractStart = new Date(2020, 0, 15);
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: false },
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        },
+        today,
+      ),
+    ).toBe(true);
+
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
         },
         today,
       ),

@@ -8,15 +8,22 @@ vi.mock('@/actions/car-onboarding/save-with-preparation', () => ({
   saveCarOnboardingWithPreparationCheck: vi.fn(),
 }));
 
+vi.mock('@/storage/insurer/insurer.read', () => ({
+  dbInsurerRead: vi.fn(),
+}));
+
 import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus } from '@/domain/car-onboarding.model';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { CarOnboardingLockedError } from '@/actions/car-onboarding/car-onboarding-locked.error';
 import { updateCarOnboardingInsurer } from '@/actions/car-onboarding/update-insurer';
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
+import { dbInsurerRead } from '@/storage/insurer/insurer.read';
 import { carOnboarding, completeCarOnboarding } from '../../builders/car-onboarding.builder';
+import { insurer } from '../../builders/insurer.builder';
 
 const onboardingId = '550e8400-e29b-41d4-a716-446655440000';
+const insurerId = '550e8400-e29b-41d4-a716-446655440010';
 const owner = { id: 'user-1', role: 'user', banned: false };
 const otherUser = { id: 'user-2', role: 'user', banned: false };
 
@@ -25,7 +32,12 @@ describe('updateCarOnboardingInsurer', () => {
     vi.clearAllMocks();
   });
 
+  const mockInsurerRead = (supportsInstantOnboarding = false) => {
+    vi.mocked(dbInsurerRead).mockResolvedValueOnce(insurer({ id: insurerId, supportsInstantOnboarding }));
+  };
+
   it('merges insurer info and saves with preparation check', async () => {
+    mockInsurerRead();
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
     );
@@ -33,7 +45,7 @@ describe('updateCarOnboardingInsurer', () => {
 
     const body = {
       hasInsuranceContract: true,
-      insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+      insurer: { id: insurerId },
       insurerContractStartedAt: '2020-01-15',
     };
 
@@ -43,7 +55,10 @@ describe('updateCarOnboardingInsurer', () => {
       expect.objectContaining({
         id: onboardingId,
         hasInsuranceContract: true,
-        insurer: body.insurer,
+        insurer: expect.objectContaining({
+          id: insurerId,
+          supportsInstantOnboarding: false,
+        }),
         insurerContractStartedAt: new Date(body.insurerContractStartedAt),
       }),
     );
@@ -115,7 +130,7 @@ describe('updateCarOnboardingInsurer', () => {
         onboardingId,
         {
           hasInsuranceContract: true,
-          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurer: { id: insurerId },
           insurerContractStartedAt: '2020-01-15',
         },
         otherUser,
@@ -140,7 +155,7 @@ describe('updateCarOnboardingInsurer', () => {
         onboardingId,
         {
           hasInsuranceContract: true,
-          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurer: { id: insurerId },
           insurerContractStartedAt: '2020-01-15',
         },
         owner,
@@ -151,6 +166,7 @@ describe('updateCarOnboardingInsurer', () => {
   });
 
   it('allows update when insurer status is ready', async () => {
+    mockInsurerRead();
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.READY }),
     );
@@ -160,7 +176,7 @@ describe('updateCarOnboardingInsurer', () => {
       onboardingId,
       {
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: { id: insurerId },
         insurerContractStartedAt: '2020-01-15',
       },
       owner,
@@ -170,6 +186,7 @@ describe('updateCarOnboardingInsurer', () => {
   });
 
   it('allows purchased cars without insurance to opt into existing insurance', async () => {
+    mockInsurerRead();
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -184,7 +201,7 @@ describe('updateCarOnboardingInsurer', () => {
       onboardingId,
       {
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: { id: insurerId },
         insurerContractStartedAt: '2020-01-15',
       },
       owner,
@@ -193,13 +210,14 @@ describe('updateCarOnboardingInsurer', () => {
     expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
       expect.objectContaining({
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: expect.objectContaining({ id: insurerId, supportsInstantOnboarding: false }),
         insurerContractStartedAt: new Date('2020-01-15'),
       }),
     );
   });
 
   it('persists insurerAnnouncedPriceIncrease for recent contracts', async () => {
+    mockInsurerRead();
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
     );
@@ -212,7 +230,7 @@ describe('updateCarOnboardingInsurer', () => {
       onboardingId,
       {
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: { id: insurerId },
         insurerContractStartedAt: sixMonthsAgo.toISOString().slice(0, 10),
         insurerAnnouncedPriceIncrease: true,
       },
@@ -227,13 +245,14 @@ describe('updateCarOnboardingInsurer', () => {
   });
 
   it('clears shareStartDate when insurance contract start date changes', async () => {
+    mockInsurerRead();
     const shareStartDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
         owner: { id: owner.id },
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: { id: insurerId },
         insurerStatus: CarOnboardingInsurerStatus.READY,
         insurerContractStartedAt: new Date('2020-01-15'),
         shareStartDate,
@@ -245,7 +264,7 @@ describe('updateCarOnboardingInsurer', () => {
       onboardingId,
       {
         hasInsuranceContract: true,
-        insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+        insurer: { id: insurerId },
         insurerContractStartedAt: '2021-06-01',
       },
       owner,
@@ -255,6 +274,34 @@ describe('updateCarOnboardingInsurer', () => {
       expect.objectContaining({
         shareStartDate: null,
         insurerContractStartedAt: new Date('2021-06-01'),
+      }),
+    );
+  });
+
+  it('hydrates supportsInstantOnboarding from the insurer record', async () => {
+    mockInsurerRead(true);
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({ id: onboardingId, owner: { id: owner.id }, insurerStatus: CarOnboardingInsurerStatus.TODO }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingInsurer(
+      onboardingId,
+      {
+        hasInsuranceContract: true,
+        insurer: { id: insurerId },
+        insurerContractStartedAt: '2026-01-15',
+      },
+      owner,
+    );
+
+    expect(dbInsurerRead).toHaveBeenCalledWith(insurerId);
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        insurer: expect.objectContaining({
+          id: insurerId,
+          supportsInstantOnboarding: true,
+        }),
       }),
     );
   });

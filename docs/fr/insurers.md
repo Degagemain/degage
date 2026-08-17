@@ -8,9 +8,10 @@ roles:
 
 Liste de référence des compagnies d'assurance utilisées dans l'application.
 
-| Propriété | Description                |
-| --------- | -------------------------- |
-| Nom       | Nom affiché de l'assureur. |
+| Propriété          | Description                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Nom                | Nom affiché de l'assureur.                                                                                                |
+| Démarrage immédiat | Si activé, les propriétaires avec cet assureur peuvent commencer le partage dès le premier de ce mois ou du mois suivant. |
 
 ## Export
 

@@ -1128,6 +1128,7 @@
       "title": "Assureurs",
       "columns": {
         "name": "Nom",
+        "supportsInstantOnboarding": "Démarrage immédiat",
         "created": "Créé",
         "updated": "Mis à jour"
       },
@@ -1143,7 +1144,8 @@
           "name": "Nom de l'assureur"
         },
         "help": {
-          "name": "Nom de la compagnie d'assurance."
+          "name": "Nom de la compagnie d'assurance.",
+          "supportsInstantOnboarding": "Si activé, la date de début la plus tôt est le premier de ce mois ou du mois suivant, sans délai de préavis d'assurance."
         }
       },
       "delete": {

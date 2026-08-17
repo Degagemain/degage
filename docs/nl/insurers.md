@@ -8,9 +8,10 @@ roles:
 
 Referentielijst van verzekeringsmaatschappijen die in de applicatie worden gebruikt.
 
-| Eigenschap | Beschrijving                     |
-| ---------- | -------------------------------- |
-| Naam       | Weergavenaam van de verzekeraar. |
+| Eigenschap    | Beschrijving                                                                                                  |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| Naam          | Weergavenaam van de verzekeraar.                                                                              |
+| Directe start | Indien ingeschakeld kunnen eigenaars met deze verzekeraar starten vanaf de eerste van deze of volgende maand. |
 
 ## Exporteren
 

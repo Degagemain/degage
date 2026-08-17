@@ -8,9 +8,10 @@ roles:
 
 Reference list of insurance companies used in the application.
 
-| Property | Description                  |
-| -------- | ---------------------------- |
-| Name     | Display name of the insurer. |
+| Property           | Description                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| Name               | Display name of the insurer.                                                                   |
+| Instant onboarding | When enabled, owners with this insurer can start sharing from the first of this or next month. |
 
 ## Export
 

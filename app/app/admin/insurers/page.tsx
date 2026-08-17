@@ -77,6 +77,7 @@ export default function InsurersPage() {
   const columnLabels = useMemo(
     () => ({
       name: t('columns.name'),
+      supportsInstantOnboarding: t('columns.supportsInstantOnboarding'),
       createdAt: t('columns.created'),
       updatedAt: t('columns.updated'),
     }),
