@@ -26,7 +26,8 @@ Cette étape est complète lorsque le propriétaire a configuré un enregistreme
 
 ### Session d'info
 
-Le propriétaire s'inscrit à une infosession Degapp à venir dans le parcours d'onboarding public.
+Le propriétaire s'inscrit à une infosession Degapp pour propriétaires à venir dans le parcours d'onboarding public. Seules les sessions pour
+propriétaires sont listées.
 
 | Statut  | Signification                                                            |
 | ------- | ------------------------------------------------------------------------ |

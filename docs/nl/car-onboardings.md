@@ -26,7 +26,8 @@ Deze stap is compleet wanneer de eigenaar een Play connector-record heeft geconf
 
 ### Infosessie
 
-De eigenaar schrijft zich in voor een komende Degapp-infosessie in de publieke onboardingflow.
+De eigenaar schrijft zich in voor een komende Degapp-infosessie voor auto-eigenaars in de publieke onboardingflow. Alleen eigenaarsessies worden
+getoond.
 
 | Status       | Betekenis                                                                     |
 | ------------ | ----------------------------------------------------------------------------- |

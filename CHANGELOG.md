@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   insurance waiting period.
 - Changed: during car onboarding, Save & Next on the last available step takes
   you back to the overview.
+- Changed: during car onboarding, the info session list only shows owner
+  sessions and no longer includes a type column.
 - Changed: during car onboarding, you no longer choose a road assistance plan
   from a list; you only say whether you already have coverage (and until when).
 - Added: during car onboarding road assistance, if you already have a plan you

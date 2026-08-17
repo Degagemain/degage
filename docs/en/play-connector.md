@@ -60,7 +60,7 @@ Mock endpoints:
   - `parsers/cars-page.parser.ts` — car names from `/cars/page` `/cars/view` links (exact match for availability)
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode), create car
-- `app/actions/play-infosession/` — first consumer use case
+- `app/actions/play-infosession/` — list owner infosessions (type contains `eigenaar`) and unenroll
 
 ### Create car
 
@@ -103,7 +103,7 @@ Car onboarding car-name availability uses admin mode via the oldest Code1 admin 
 | `GET`    | `/api/play-connector`                      | Current user's connector status: `missing`, `success`, or `failing`                                                                                         |
 | `PUT`    | `/api/play-connector`                      | Link credentials (`email`, `password`); validates login before storing                                                                                      |
 | `DELETE` | `/api/play-connector`                      | Remove linked credentials                                                                                                                                   |
-| `GET`    | `/api/play-infosessions`                   | List parsed infosessions from the Play backend (upcoming table + chosen session when enrolled)                                                              |
+| `GET`    | `/api/play-infosessions`                   | List parsed owner infosessions from the Play backend (upcoming table filtered to type containing `eigenaar` + chosen session when enrolled)                 |
 | `PUT`    | `/api/play-infosessions/unenroll`          | Unenroll from the current Play infosession (legacy platform only; does not update car onboarding)                                                           |
 | `PUT`    | `/api/car-onboardings/{id}/play-connector` | Link credentials during car onboarding; on success fetches Play profile and pre-fills empty `street`, `town` (by zip + city), and `phone` on the onboarding |
 
