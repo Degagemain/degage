@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { REGISTRATION_CERTIFICATE_ALLOWED_CONTENT_TYPES } from '@/domain/document.model';
 import { getMaxUploadFileSizeBytes, getMaxUploadFileSizeMb } from '@/lib/max-upload-file-size';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 
 import { PublicBtn, PublicField } from './public-ui';
@@ -134,7 +135,7 @@ export function PublicRegistrationCertificateField({
         </PublicBtn>
       </div>
       <p className={styles.fieldHint}>
-        {tUpload('help', { maxSizeMb })}{' '}
+        <InlineCopy>{tUpload('help', { maxSizeMb })}</InlineCopy>{' '}
         <button type="button" className={styles.fieldHelpLink} onClick={() => setTipsOpen(true)}>
           {tUpload('tipsLink')}
         </button>
@@ -143,7 +144,9 @@ export function PublicRegistrationCertificateField({
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{tUpload('tipsTitle')}</DialogTitle>
-            <DialogDescription>{tUpload('tipsBody', { maxSizeMb })}</DialogDescription>
+            <DialogDescription>
+              <InlineCopy>{tUpload('tipsBody', { maxSizeMb })}</InlineCopy>
+            </DialogDescription>
           </DialogHeader>
         </DialogContent>
       </Dialog>

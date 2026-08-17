@@ -5,6 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
 import { getSocialProviders } from '@/app/components/auth/lib/auth-features';
 import { Button } from '@/app/components/ui/button';
@@ -83,7 +84,9 @@ export function ConnectedProvidersCard() {
     <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('signInMethods')}</CardTitle>
-        <CardDescription>{t('signInMethodsDescription')}</CardDescription>
+        <CardDescription>
+          <InlineCopy>{t('signInMethodsDescription')}</InlineCopy>
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {accounts === null ? (
@@ -141,7 +144,9 @@ function ProviderRow({
     <div className="border-border flex items-center justify-between gap-4 rounded-lg border px-4 py-3">
       <div className="min-w-0 space-y-0.5">
         <p className="font-medium">{name}</p>
-        <p className="text-muted-foreground text-sm">{linked ? connectedLabel : description}</p>
+        <p className="text-muted-foreground text-sm">
+          <InlineCopy>{linked ? connectedLabel : description}</InlineCopy>
+        </p>
       </div>
       <Button
         type="button"

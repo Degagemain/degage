@@ -10,6 +10,7 @@ import type { PlayInfosession } from '@/domain/play-infosession.model';
 import { apiPut } from '@/app/lib/api-client';
 import { formatInfosessionRegistrations, formatInfosessionScheduledAt } from '@/app/lib/play-infosession-format';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { Button } from '@/app/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/components/ui/table';
 
@@ -181,7 +182,9 @@ export function InfoSessionStep() {
       {hasExternalPlayEnrollment && chosenInfosession ? (
         <div className={`${styles.enrollmentStatusCard} mb-6 border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/30`}>
           <p className="text-sm font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.externalEnrollmentTitle')}</p>
-          <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{t('steps.infoSession.externalEnrollmentWarning')}</p>
+          <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+            <InlineCopy>{t('steps.infoSession.externalEnrollmentWarning')}</InlineCopy>
+          </p>
           <EnrolledSessionDetails session={chosenInfosession} t={t} />
           <Button
             type="button"
@@ -213,8 +216,12 @@ export function InfoSessionStep() {
           ) : null}
           {isEnrolled ? (
             <>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{t('steps.infoSession.waitingForConfirmation')}</p>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{t('steps.infoSession.unenrollToSwitch')}</p>
+              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+                <InlineCopy>{t('steps.infoSession.waitingForConfirmation')}</InlineCopy>
+              </p>
+              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+                <InlineCopy>{t('steps.infoSession.unenrollToSwitch')}</InlineCopy>
+              </p>
               <Button
                 type="button"
                 variant="outline"
@@ -227,7 +234,9 @@ export function InfoSessionStep() {
               </Button>
             </>
           ) : (
-            <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{t('steps.infoSession.confirmed')}</p>
+            <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+              <InlineCopy>{t('steps.infoSession.confirmed')}</InlineCopy>
+            </p>
           )}
         </div>
       ) : null}
@@ -238,7 +247,9 @@ export function InfoSessionStep() {
           {t('steps.infoSession.loading')}
         </div>
       ) : canPickSession && infosessionsError ? (
-        <p className="text-sm text-stone-600 dark:text-stone-400">{t('steps.infoSession.loadError')}</p>
+        <p className="text-sm text-stone-600 dark:text-stone-400">
+          <InlineCopy>{t('steps.infoSession.loadError')}</InlineCopy>
+        </p>
       ) : canPickSession ? (
         <div className="overflow-x-auto rounded-lg border border-stone-200 dark:border-stone-700">
           <Table>

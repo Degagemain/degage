@@ -11,6 +11,7 @@ import {
   getLatestShareStartDate,
   startOfMonth,
 } from '@/domain/car-onboarding.model';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiGet, apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
@@ -233,14 +234,18 @@ export function ShareStartStep() {
             })}
           </div>
           <p className={styles.shareStartHelper}>
-            {carOnboarding.hasInsuranceContract
-              ? t('steps.shareStart.helperWithInsurance', { date: formatShareStartLabel(earliest, locale) })
-              : t('steps.shareStart.helperWithoutInsurance', { date: formatShareStartLabel(earliest, locale) })}
+            <InlineCopy>
+              {carOnboarding.hasInsuranceContract
+                ? t('steps.shareStart.helperWithInsurance', { date: formatShareStartLabel(earliest, locale) })
+                : t('steps.shareStart.helperWithoutInsurance', { date: formatShareStartLabel(earliest, locale) })}
+            </InlineCopy>
           </p>
           {selected != null ? (
             <div className={styles.shareStartSummary}>
               <div className={styles.shareStartSummaryLabel}>{formatShareStartLabel(selected, locale)}</div>
-              <div className={styles.shareStartSummaryHint}>{t('steps.shareStart.selectedHint')}</div>
+              <div className={styles.shareStartSummaryHint}>
+                <InlineCopy>{t('steps.shareStart.selectedHint')}</InlineCopy>
+              </div>
             </div>
           ) : null}
         </PublicField>

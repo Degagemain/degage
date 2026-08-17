@@ -290,7 +290,7 @@
       "notFound": "Vertaalsleutel niet gevonden.",
       "backToList": "Terug naar vertalingen",
       "detailEyebrow": "Vertaalsleutel",
-      "detailHelp": "Gebruik de taaltabs om overrides te bewerken. Maak een opgeslagen waarde leeg en sla opnieuw op om die override te verwijderen.",
+      "detailHelp": "Gebruik de taaltabs om overrides te bewerken. Maak een opgeslagen waarde leeg en sla opnieuw op om die override te verwijderen. Op publieke pagina's kun je een link toevoegen als [onze website](https://www.example.com) of [mail ons](mailto:hello@example.com).",
       "columns": {
         "key": "Sleutel",
         "value": "Waarde",

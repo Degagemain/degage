@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { AuthPrimaryButton } from '@/app/components/auth/auth-primary-button';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -44,7 +45,9 @@ export function UpdateNameCard() {
     <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('name')}</CardTitle>
-        <CardDescription>{t('nameDescription')}</CardDescription>
+        <CardDescription>
+          <InlineCopy>{t('nameDescription')}</InlineCopy>
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">

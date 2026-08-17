@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { SimulationResultView } from '../components/simulation-result-view';
 import styles from '../simulation.module.css';
 
@@ -73,7 +74,9 @@ export default function SimulationResultPage() {
       <div className={styles.root}>
         <div className={styles.page}>
           <h1 className={styles.title}>{t('resultPage.notFoundTitle')}</h1>
-          <p className={styles.body}>{t('resultPage.notFoundBody')}</p>
+          <p className={styles.body}>
+            <InlineCopy>{t('resultPage.notFoundBody')}</InlineCopy>
+          </p>
           <div className={styles.buttonRow}>
             <Link href="/app/simulation" className={`${styles.btn} ${styles.btnPrimary}`}>
               {t('resultPage.startNewCta')}

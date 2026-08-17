@@ -19,3 +19,8 @@ changements temporaires en base de données.
 La recherche porte sur les valeurs des textes, pas sur les chemins. Utilisez **Télécharger le patch** lorsque les surcharges sont prêtes à être
 traitées par les développeurs. La liste affiche la valeur dans votre langue actuelle. Ouvrez une clé pour consulter le texte original et
 modifier les surcharges avec les onglets de langue.
+
+Sur les pages publiques (accueil, simulation, onboarding, tableau de bord, aide, compte), vous pouvez ajouter un lien web ou e-mail dans une
+phrase. Mettez les mots visibles entre crochets, puis l'adresse entre parenthèses juste après. Les adresses web commencent par http ou https ;
+les adresses e-mail commencent par mailto. L'éditeur de surcharge montre un exemple. Cela ne s'applique pas aux libellés courts comme les noms
+de boutons.

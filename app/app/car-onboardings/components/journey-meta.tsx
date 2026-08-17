@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { cn } from '@/app/lib/utils';
 
 import { CHAPTER_DEFINITIONS } from '../lib/chapters-config';
@@ -23,7 +24,9 @@ export function JourneyMeta() {
           <div className={styles.journeyMetaLabel}>
             {chapter.num} · {t(chapter.shortKey)}
           </div>
-          <p className={styles.journeyMetaBody}>{t(chapter.metaBodyKey)}</p>
+          <p className={styles.journeyMetaBody}>
+            <InlineCopy>{t(chapter.metaBodyKey)}</InlineCopy>
+          </p>
         </div>
       ))}
     </div>
