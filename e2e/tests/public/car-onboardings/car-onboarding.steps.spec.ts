@@ -2,11 +2,22 @@ import { expect, test } from '../../../fixtures';
 import type { Page } from '@playwright/test';
 
 import { E2E_CAR_ONBOARDING } from '../../../car-onboarding-fixtures';
+import { E2E_USER_EMAIL } from '../../../constants';
+import { playConnectorMessages } from '../../account/play-connector.messages';
 
 const field = (page: Page, label: string) => page.getByText(label, { exact: true }).locator('..');
 
 test.describe('public car onboarding steps', () => {
   test.use({ locale: 'en' });
+
+  test('step 1 (play connector) hides disconnect after connecting', async ({ page, appServer, asUser }) => {
+    await asUser;
+
+    await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/play-connector`);
+
+    await expect(page.getByText(playConnectorMessages.connectedAs(E2E_USER_EMAIL))).toBeVisible();
+    await expect(page.getByRole('button', { name: playConnectorMessages.disconnect, exact: true })).toHaveCount(0);
+  });
 
   test('step 3 (user info) saves and persists', async ({ page, appServer, asUser }) => {
     await asUser;

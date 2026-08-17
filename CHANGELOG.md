@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Removed: during car onboarding, after connecting Degapp you no longer see a
+  disconnect button; disconnect from profile settings instead.
 - Changed: when you type a custom car type as Other, the simulation loading
   title uses only the brand (not "Other").
 - Changed: during car onboarding, insurers that support instant onboarding let
