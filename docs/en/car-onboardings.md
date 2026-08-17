@@ -48,33 +48,35 @@ This step is complete when street, house number, town, and phone are all filled 
 ### Car info
 
 Collects vehicle characteristics: brand, fuel type, car type (or free-text other), mileage, seats, first registration date, van flag, purchased
-car flag, new car flag, purchase price, depreciation per km, registration certificate scans (front and back), inspection certificate, and pink
-form.
+car flag, new car flag, purchase price, depreciation per km, registration certificate scans (front and back), inspection certificate, pink form,
+and proof of purchase.
 
-| Property                       | Description                                                             |
-| ------------------------------ | ----------------------------------------------------------------------- |
-| Brand                          | Vehicle brand.                                                          |
-| Fuel type                      | Fuel or powertrain type.                                                |
-| Car type                       | Catalog car type, or free-text other if not in catalog.                 |
-| Mileage                        | Odometer reading in km.                                                 |
-| Seats                          | Number of seats.                                                        |
-| First registered               | Date of first registration.                                             |
-| Van                            | Whether the vehicle is a van.                                           |
-| Purchased car                  | Whether the vehicle was purchased (set at creation).                    |
-| New car                        | Whether the vehicle is new (set at creation).                           |
-| Purchase price                 | Purchase price.                                                         |
-| Registration certificate front | Scan or photo of the front of the registration document.                |
-| Registration certificate back  | Scan or photo of the back of the registration document.                 |
-| Inspection certificate         | Valid vehicle inspection report (required for cars older than 4 years). |
-| Pink form                      | Vehicle transfer form (pink form) for purchased used cars.              |
+| Property                       | Description                                                                                            |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Brand                          | Vehicle brand.                                                                                         |
+| Fuel type                      | Fuel or powertrain type.                                                                               |
+| Car type                       | Catalog car type, or free-text other if not in catalog.                                                |
+| Mileage                        | Odometer reading in km.                                                                                |
+| Seats                          | Number of seats.                                                                                       |
+| First registered               | Date of first registration.                                                                            |
+| Van                            | Whether the vehicle is a van.                                                                          |
+| Purchased car                  | Whether the vehicle was purchased (set at creation).                                                   |
+| New car                        | Whether the vehicle is new (set at creation).                                                          |
+| Purchase price                 | Purchase price.                                                                                        |
+| Registration certificate front | Scan or photo of the front of the registration document.                                               |
+| Registration certificate back  | Scan or photo of the back of the registration document.                                                |
+| Inspection certificate         | Valid vehicle inspection report (required for cars older than 4 years).                                |
+| Pink form                      | Vehicle transfer form (pink form) for purchased used cars.                                             |
+| Proof of purchase              | Invoice or purchase document for new purchased cars. The purchase price including VAT must be visible. |
+| Proof of purchase price        | Purchase amount including VAT read from the proof of purchase.                                         |
 
 Uploaded document images are checked automatically before they are saved. If a photo is unclear or does not match the expected document type,
 the upload is rejected and the user is asked to upload a clear photo. The registration certificate front can also prefill VIN, licence plate,
-and first registration date when those fields are still empty.
+and first registration date when those fields are still empty. A proof of purchase must show the purchase price including VAT.
 
 This step is complete when brand, fuel type, and car type are all set, and all required documents for the car situation are uploaded:
 registration certificate front and back when the car was not purchased; inspection certificate additionally when the car is older than four
-years; pink form when the car was purchased and is not new; no documents when the car was purchased and is new.
+years; pink form when the car was purchased and is not new; proof of purchase when the car was purchased and is new.
 
 ### Insurer
 
@@ -219,6 +221,8 @@ the admin is asked to confirm before syncing.
 | Car type (other)                   | Free-text car type when the catalog entry does not apply.                                                                       |
 | Purchased car                      | Whether the vehicle was purchased (as opposed to other acquisition).                                                            |
 | Purchase price                     | Purchase price of the vehicle.                                                                                                  |
+| Proof of purchase                  | Invoice or purchase document for new purchased cars. The purchase price including VAT must be visible.                          |
+| Proof of purchase price            | Purchase amount including VAT read from the proof of purchase.                                                                  |
 | Car value                          | Estimated current value of the vehicle (proposed by admin).                                                                     |
 | Counter proposal                   | Owner's proposed alternative car value.                                                                                         |
 | Counter message                    | Optional explanation for the counter proposal.                                                                                  |

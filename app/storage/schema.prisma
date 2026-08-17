@@ -108,6 +108,7 @@ enum DocumentType {
   registrationCertificate
   inspectionCertificate
   pinkForm
+  proofOfPurchase
   carSticker
   other
 }
@@ -126,6 +127,7 @@ model Document {
   carOnboardingsRegistrationCertificateBack  CarOnboarding[] @relation("RegistrationCertificateBack")
   carOnboardingsInspectionCertificate        CarOnboarding[] @relation("InspectionCertificate")
   carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
+  carOnboardingsProofOfPurchase              CarOnboarding[] @relation("ProofOfPurchase")
   carStickersImage                           CarSticker[]    @relation("CarStickerImage")
 }
 
@@ -145,6 +147,7 @@ model CarOnboarding {
   carTypeOther        String?
   isPurchased      Boolean                          @default(false)
   purchasePrice       Decimal                          @default(0)
+  proofOfPurchasePrice Decimal                          @default(0)
   carValue                       Decimal                          @default(0)
   carValueCounterProposal        Decimal                          @default(0)
   carValueCounterProposalMessage String?
@@ -184,6 +187,8 @@ model CarOnboarding {
   inspectionCertificate          Document?                        @relation("InspectionCertificate", fields: [inspectionCertificateId], references: [id], onDelete: SetNull)
   pinkFormId                     String?
   pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
+  proofOfPurchaseId              String?
+  proofOfPurchase                Document?                        @relation("ProofOfPurchase", fields: [proofOfPurchaseId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
   carName             String?

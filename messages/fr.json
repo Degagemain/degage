@@ -1602,6 +1602,8 @@
         "isNewCar": "Véhicule neuf",
         "isVan": "Utilitaire",
         "purchasePrice": "Prix d'achat",
+        "proofOfPurchase": "Preuve d'achat",
+        "proofOfPurchasePrice": "Prix sur la preuve d'achat",
         "registrationCertificateFront": "Certificat d'immatriculation (recto)",
         "registrationCertificateBack": "Certificat d'immatriculation (verso)",
         "inspectionCertificate": "Certificat de contrôle technique",
@@ -1807,11 +1809,26 @@
           "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
           "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
         },
+        "proofOfPurchase": {
+          "upload": "Téléverser un fichier",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Preuve d'achat téléversée.",
+          "uploadError": "Échec du téléversement de la preuve d'achat.",
+          "notRecognizedError": "Nous n'avons pas pu lire votre preuve d'achat. Veuillez téléverser une photo nette du document complet, avec le prix d'achat TTC (TVA comprise) visible.",
+          "download": "Télécharger",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir la preuve d'achat.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucun fichier téléversé.",
+          "help": "JPEG ou PNG. Maximum {maxSizeMb} Mo.",
+          "fileTooLarge": "Ce fichier est trop volumineux. Maximum {maxSizeMb} Mo autorisé."
+        },
         "help": {
           "counterReadOnly": "Défini par le propriétaire lors de la négociation.",
           "carTypeOtherReadOnly": "Défini par l'utilisateur lorsque le type de véhicule n'est pas dans le catalogue.",
           "isPurchasedReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
           "isNewCarReadOnly": "Défini à la création de l'enregistrement et non modifiable ici.",
+          "proofOfPurchasePrice": "Montant lu sur la preuve d'achat, TVA comprise.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
           "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
           "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois.",
@@ -2961,6 +2978,21 @@
           "download": "Voir",
           "downloading": "Ouverture…",
           "downloadError": "Impossible d'ouvrir le formulaire rose.",
+          "currentFile": "Fichier actuel",
+          "noFile": "Aucun fichier téléversé pour l'instant."
+        },
+        "proofOfPurchase": {
+          "panelTitle": "Preuve d'achat",
+          "label": "Preuve d'achat",
+          "hint": "Facture ou document d'achat. Le prix d'achat TTC (TVA comprise) doit être visible.",
+          "upload": "Téléverser un fichier",
+          "uploading": "Téléversement…",
+          "uploadSuccess": "Preuve d'achat téléversée.",
+          "uploadError": "Échec du téléversement de la preuve d'achat.",
+          "notRecognizedError": "Nous n'avons pas pu lire votre preuve d'achat. Veuillez téléverser une photo nette du document complet, avec le prix d'achat TTC (TVA comprise) visible.",
+          "download": "Voir",
+          "downloading": "Ouverture…",
+          "downloadError": "Impossible d'ouvrir la preuve d'achat.",
           "currentFile": "Fichier actuel",
           "noFile": "Aucun fichier téléversé pour l'instant."
         }

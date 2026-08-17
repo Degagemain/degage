@@ -30,6 +30,7 @@ export function CarInfoStep() {
   const tCert = useTranslations('carOnboardingPublic.steps.carInfo.registrationCertificate');
   const tInspection = useTranslations('carOnboardingPublic.steps.carInfo.inspectionCertificate');
   const tPink = useTranslations('carOnboardingPublic.steps.carInfo.pinkForm');
+  const tProof = useTranslations('carOnboardingPublic.steps.carInfo.proofOfPurchase');
   const tShared = useTranslations('common');
   const tAdmin = useTranslations('admin.carOnboardings');
   const readOnly = useStepReadOnly();
@@ -133,6 +134,34 @@ export function CarInfoStep() {
     window.open(data.url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleUploadProofOfPurchase = async (file: File) => {
+    if (!carOnboarding.id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${carOnboarding.id}/proof-of-purchase`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tProof('uploadError'), {
+        document_not_recognized: tProof('notRecognizedError'),
+      });
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(tProof('uploadSuccess'));
+    await reload();
+  };
+
+  const handleDownloadProofOfPurchase = async () => {
+    if (!carOnboarding.id) return;
+    const response = await fetch(`/api/car-onboardings/${carOnboarding.id}/proof-of-purchase/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, tProof('downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <StepLayout stepId="car-info">
       <PublicPanel title={t('steps.carInfo.panelTitle')} body={t('steps.carInfo.panelSubtitle')}>
@@ -166,7 +195,22 @@ export function CarInfoStep() {
               onUpload={(file) => runUpload(() => handleUploadPink(file))}
               onDownload={carOnboarding.pinkForm ? handleDownloadPink : undefined}
             />
-          ) : null}
+          ) : (
+            <>
+              <PublicRegistrationCertificateField
+                label={tProof('label')}
+                hint={tProof('hint')}
+                fileName={carOnboarding.proofOfPurchase?.name}
+                disabled={uploadDisabled}
+                namespace="proofOfPurchase"
+                onUpload={(file) => runUpload(() => handleUploadProofOfPurchase(file))}
+                onDownload={carOnboarding.proofOfPurchase ? handleDownloadProofOfPurchase : undefined}
+              />
+              {carOnboarding.proofOfPurchase ? (
+                <PublicReadOnlyValue label={tAdmin('columns.proofOfPurchasePrice')} value={String(carOnboarding.proofOfPurchasePrice)} />
+              ) : null}
+            </>
+          )}
         </PublicPanel>
       ) : (
         <PublicPanel title={tCert('panelTitle')}>

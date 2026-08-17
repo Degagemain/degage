@@ -94,6 +94,8 @@ interface CarOnboardingFormProps {
   onDownloadInspectionCertificate?: () => Promise<void>;
   onUploadPinkForm?: (file: File) => Promise<void>;
   onDownloadPinkForm?: () => Promise<void>;
+  onUploadProofOfPurchase?: (file: File) => Promise<void>;
+  onDownloadProofOfPurchase?: () => Promise<void>;
 }
 
 interface FormValues {
@@ -118,6 +120,7 @@ interface FormValues {
   isPurchased: boolean;
   isNewCar: boolean;
   purchasePrice: string;
+  proofOfPurchasePrice: string;
   depreciationCostKm: string;
   carValue: string;
   carValueCounterProposal: string;
@@ -162,6 +165,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     isPurchased: row.isPurchased,
     isNewCar: row.isNewCar,
     purchasePrice: String(row.purchasePrice),
+    proofOfPurchasePrice: String(row.proofOfPurchasePrice),
     depreciationCostKm: String(row.depreciationCostKm),
     carValue: String(row.carValue),
     carValueCounterProposal: String(row.carValueCounterProposal),
@@ -206,6 +210,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     isPurchased: z.boolean(),
     isNewCar: z.boolean(),
     purchasePrice: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
+    proofOfPurchasePrice: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
     depreciationCostKm: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
     carValue: z.string().refine((v) => v === '' || Number(v) >= 0, tCommon('validation.nonNegativeNumber')),
     carValueCounterProposal: z.string(),
@@ -375,6 +380,8 @@ export function CarOnboardingForm({
   onDownloadInspectionCertificate,
   onUploadPinkForm,
   onDownloadPinkForm,
+  onUploadProofOfPurchase,
+  onDownloadProofOfPurchase,
 }: CarOnboardingFormProps) {
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
@@ -487,6 +494,7 @@ export function CarOnboardingForm({
     registrationCertificateBack: initialCarOnboarding.registrationCertificateBack,
     inspectionCertificate: initialCarOnboarding.inspectionCertificate,
     pinkForm: initialCarOnboarding.pinkForm,
+    proofOfPurchase: initialCarOnboarding.proofOfPurchase,
   });
   const insurerComplete = isInsurerSectionComplete({
     insurerStatus: !watchedValues.hasInsuranceContract
@@ -634,6 +642,7 @@ export function CarOnboardingForm({
       isPurchased: values.isPurchased,
       isNewCar: values.isNewCar,
       purchasePrice: values.purchasePrice === '' ? 0 : Number(values.purchasePrice),
+      proofOfPurchasePrice: values.proofOfPurchasePrice === '' ? 0 : Number(values.proofOfPurchasePrice),
       depreciationCostKm: values.depreciationCostKm === '' ? 0 : Number(values.depreciationCostKm),
       carValue: values.carValue === '' ? 0 : Number(values.carValue),
       carValueCounterProposal: initialCarOnboarding.carValueCounterProposal,
@@ -1115,6 +1124,22 @@ export function CarOnboardingForm({
                   )}
                 />
                 <Controller
+                  name="proofOfPurchasePrice"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <AdminNumberFieldControl
+                      label={t('columns.proofOfPurchasePrice')}
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      disabled={isSubmitting}
+                      min={0}
+                      step={0.01}
+                      description={t('form.help.proofOfPurchasePrice')}
+                    />
+                  )}
+                />
+                <Controller
                   name="isVan"
                   control={form.control}
                   render={({ field }) => (
@@ -1201,6 +1226,16 @@ export function CarOnboardingForm({
                     namespace="pinkForm"
                     onUpload={onUploadPinkForm}
                     onDownload={onDownloadPinkForm && initialCarOnboarding.pinkForm ? onDownloadPinkForm : undefined}
+                  />
+                ) : null}
+                {onUploadProofOfPurchase ? (
+                  <AdminRegistrationCertificateField
+                    label={t('columns.proofOfPurchase')}
+                    fileName={initialCarOnboarding.proofOfPurchase?.name}
+                    disabled={isSubmitting || preparationLocked}
+                    namespace="proofOfPurchase"
+                    onUpload={onUploadProofOfPurchase}
+                    onDownload={onDownloadProofOfPurchase && initialCarOnboarding.proofOfPurchase ? onDownloadProofOfPurchase : undefined}
                   />
                 ) : null}
               </FieldGroup>

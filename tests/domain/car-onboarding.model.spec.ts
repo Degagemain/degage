@@ -84,6 +84,7 @@ describe('carOnboardingSchema', () => {
     expect(result.phone).toBeNull();
     expect(result.mileage).toBe(0);
     expect(result.purchasePrice).toBe(0);
+    expect(result.proofOfPurchasePrice).toBe(0);
     expect(result.carValue).toBe(0);
     expect(result.carValueCounterProposal).toBe(0);
     expect(result.carValueCounterProposalMessage).toBeNull();
@@ -361,6 +362,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.hasInsuranceContract).toBe(false);
     expect(result.isNewCar).toBe(true);
     expect(result.purchasePrice).toBe(25_000);
+    expect(result.proofOfPurchasePrice).toBe(0);
     expect(result.carValue).toBe(18_000);
     expect(result.depreciationCostKm).toBe(0.12);
     expect(result.owner).toEqual({ id: '550e8400-e29b-41d4-a716-446655440099' });
@@ -543,8 +545,20 @@ describe('areCarInfoDocumentsComplete', () => {
   });
 
   describe('purchased and new', () => {
-    it('returns true without documents', () => {
-      expect(areCarInfoDocumentsComplete(carOnboarding({ isPurchased: true, isNewCar: true }))).toBe(true);
+    it('returns false when proof of purchase is missing', () => {
+      expect(areCarInfoDocumentsComplete(carOnboarding({ isPurchased: true, isNewCar: true }))).toBe(false);
+    });
+
+    it('returns true when proof of purchase is present', () => {
+      expect(
+        areCarInfoDocumentsComplete(
+          carOnboarding({
+            isPurchased: true,
+            isNewCar: true,
+            proofOfPurchase: { id: '550e8400-e29b-41d4-a716-446655440024' },
+          }),
+        ),
+      ).toBe(true);
     });
   });
 });

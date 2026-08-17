@@ -381,6 +381,13 @@ export const createColumns = (options: ColumnOptions): ColumnDef<CarOnboarding>[
       enableSorting: false,
     },
     {
+      id: 'proofOfPurchasePrice',
+      accessorKey: 'proofOfPurchasePrice',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.proofOfPurchasePrice')} />,
+      cell: ({ row }) => <span className="font-mono text-sm">{formatCurrency(row.original.proofOfPurchasePrice)}</span>,
+      enableSorting: false,
+    },
+    {
       id: 'depreciationCostKm',
       accessorKey: 'depreciationCostKm',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.depreciationCostKm')} />,
