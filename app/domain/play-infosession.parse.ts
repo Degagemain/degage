@@ -1,5 +1,8 @@
+import { tz } from '@date-fns/tz';
 import { parse } from 'date-fns';
 import { enGB } from 'date-fns/locale';
+
+export const PLAY_INFOSESSION_TIME_ZONE = 'Europe/Brussels';
 
 const DUTCH_MONTH_TO_ENGLISH: Record<string, string> = {
   jan: 'Jan',
@@ -41,12 +44,15 @@ export const parsePlayInfosessionScheduledAt = (value: string): Date => {
   }
 
   const parseInput = `${day} ${monthEnglish} ${year} ${hour}:${minute}`;
-  const parsed = parse(parseInput, 'd MMM yyyy HH:mm', new Date(), { locale: enGB });
+  const parsed = parse(parseInput, 'd MMM yyyy HH:mm', new Date(), {
+    locale: enGB,
+    in: tz(PLAY_INFOSESSION_TIME_ZONE),
+  });
   if (Number.isNaN(parsed.getTime())) {
     throw new Error(`Invalid infosession scheduledAt: ${value}`);
   }
 
-  return parsed;
+  return new Date(parsed.getTime());
 };
 
 export const parsePlayInfosessionRegistrations = (value: string): PlayInfosessionRegistrations => {

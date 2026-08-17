@@ -35,6 +35,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/app/compo
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-control';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
+import { formatInfosessionScheduledAt } from '@/app/lib/play-infosession-format';
 import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
 import { AdminSearchableSelectField } from '@/app/components/form/admin-searchable-select-field';
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
@@ -839,7 +840,9 @@ export function CarOnboardingForm({
               <FieldGroup className="gap-6">
                 <div className="space-y-1">
                   <p className="text-sm font-medium">{t('columns.infoSessionDate')}</p>
-                  <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.infoSessionDate)}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {initialCarOnboarding.infoSessionDate ? formatInfosessionScheduledAt(initialCarOnboarding.infoSessionDate) : '—'}
+                  </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">{t('columns.infoSessionPcId')}</p>

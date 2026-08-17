@@ -1,7 +1,7 @@
 export const E2E_CAR_ONBOARDING = {
   id: '7b5b8f4c-9a1a-4d40-b0db-0c8e6e6f6b6b',
   infoSessionPcId: '1359',
-  infoSessionDateIso: '2026-06-20T09:25:00.000Z',
+  infoSessionDateIso: '2026-06-20T07:25:00.000Z',
   userInfo: {
     street: 'Main Street',
     houseNumber: '1',
