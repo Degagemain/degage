@@ -12,6 +12,7 @@ import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { SearchableSelect } from '@/app/components/ui/searchable-select';
 import { NUMBERED_STEP_TOTAL, SIMULATION_FAQ_TAGS, SIM_FAQ_PANEL } from './simulation-public.constants';
+import { simulationLoadingVehicleName } from './simulation-loading-title';
 import styles from './simulation.module.css';
 
 const STEP_SITUATION = 1;
@@ -218,6 +219,12 @@ export default function SimulationPage() {
     purchaseAmountInclVat,
     router,
   ]);
+
+  const loadingVehicleName = simulationLoadingVehicleName({
+    brandLabel,
+    carTypeName,
+    isOtherCarType: carTypeId === CAR_TYPE_OTHER,
+  });
 
   const goNext = () => {
     capture(analyticsSimulationStepEvent(screen), { result_code: null });
@@ -670,9 +677,7 @@ export default function SimulationPage() {
             <>
               <div className={styles.simLoadingSection} aria-busy="true">
                 <h1 className={styles.loadingHeaderTitle}>
-                  {brandLabel && carTypeName
-                    ? t('loading.headerTitleWithName', { name: `${brandLabel} ${carTypeName}` })
-                    : t('loading.headerTitle')}
+                  {loadingVehicleName ? t('loading.headerTitleWithName', { name: loadingVehicleName }) : t('loading.headerTitle')}
                 </h1>
                 <div
                   className={styles.simLoadingBarTrack}
