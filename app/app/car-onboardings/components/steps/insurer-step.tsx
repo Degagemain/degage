@@ -68,9 +68,9 @@ export function InsurerStep() {
     try {
       const response = await apiPut(`/api/car-onboardings/${carOnboarding.id}/insurer`, {
         hasInsuranceContract,
-        ...(hasInsuranceContract && insurerId && contractStartedAt
+        ...(hasInsuranceContract && insurerId ? { insurer: { id: insurerId, name: insurerName, supportsInstantOnboarding } } : {}),
+        ...(hasInsuranceContract && contractStartedAt
           ? {
-              insurer: { id: insurerId, name: insurerName, supportsInstantOnboarding },
               insurerContractStartedAt: contractStartedAt,
               ...(showRecentContract ? { insurerAnnouncedPriceIncrease } : {}),
             }
