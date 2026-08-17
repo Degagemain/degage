@@ -8,6 +8,7 @@ import * as z from 'zod';
 
 import { Insurer } from '@/domain/insurer.model';
 import { FieldGroup } from '@/app/components/ui/field';
+import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
 import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
 
 export const INSURER_FORM_ID = 'insurer-editor-form';
@@ -21,15 +22,18 @@ interface InsurerFormProps {
 
 interface InsurerFormValues {
   name: string;
+  supportsInstantOnboarding: boolean;
 }
 
 const getInitialState = (insurer?: Insurer): InsurerFormValues => ({
   name: insurer?.name ?? '',
+  supportsInstantOnboarding: insurer?.supportsInstantOnboarding ?? false,
 });
 
 const createInsurerFormSchema = (tCommon: (key: string) => string) =>
   z.object({
     name: z.string().trim().min(1, tCommon('validation.required')).max(100),
+    supportsInstantOnboarding: z.boolean(),
   });
 
 export function InsurerForm({ initialInsurer, formId = INSURER_FORM_ID, isSubmitting = false, onSubmit }: InsurerFormProps) {
@@ -55,6 +59,7 @@ export function InsurerForm({ initialInsurer, formId = INSURER_FORM_ID, isSubmit
     const payload: Insurer = {
       id: initialInsurer?.id ?? null,
       name: values.name.trim(),
+      supportsInstantOnboarding: values.supportsInstantOnboarding,
       createdAt: initialInsurer?.createdAt ?? null,
       updatedAt: initialInsurer?.updatedAt ?? null,
     };
@@ -75,6 +80,20 @@ export function InsurerForm({ initialInsurer, formId = INSURER_FORM_ID, isSubmit
               placeholder={t('form.placeholders.name')}
               description={t('form.help.name')}
               error={fieldState.error?.message}
+              disabled={isSubmitting}
+            />
+          )}
+        />
+        <Controller
+          name="supportsInstantOnboarding"
+          control={form.control}
+          render={({ field }) => (
+            <AdminSwitchFieldControl
+              id="insurer-supports-instant-onboarding"
+              label={t('columns.supportsInstantOnboarding')}
+              checked={field.value}
+              onChange={field.onChange}
+              description={t('form.help.supportsInstantOnboarding')}
               disabled={isSubmitting}
             />
           )}

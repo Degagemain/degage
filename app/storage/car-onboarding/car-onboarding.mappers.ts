@@ -156,6 +156,7 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
       ? {
           id: db.insurerId!,
           name: db.insurer.name,
+          supportsInstantOnboarding: db.insurer.supportsInstantOnboarding,
         }
       : null,
     roadAssistancePlan: db.roadAssistancePlan

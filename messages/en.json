@@ -1128,6 +1128,7 @@
       "title": "Insurers",
       "columns": {
         "name": "Name",
+        "supportsInstantOnboarding": "Instant onboarding",
         "created": "Created",
         "updated": "Updated"
       },
@@ -1143,7 +1144,8 @@
           "name": "Insurer name"
         },
         "help": {
-          "name": "Name of the insurance company."
+          "name": "Name of the insurance company.",
+          "supportsInstantOnboarding": "When enabled, the earliest share start date is the first of this or next month, without insurance notice periods."
         }
       },
       "delete": {

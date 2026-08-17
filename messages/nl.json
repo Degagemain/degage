@@ -1128,6 +1128,7 @@
       "title": "Verzekeraars",
       "columns": {
         "name": "Naam",
+        "supportsInstantOnboarding": "Directe start",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
       },
@@ -1143,7 +1144,8 @@
           "name": "Naam verzekeraar"
         },
         "help": {
-          "name": "Naam van de verzekeringsmaatschappij."
+          "name": "Naam van de verzekeringsmaatschappij.",
+          "supportsInstantOnboarding": "Indien ingeschakeld is de vroegste startdatum de eerste van deze of volgende maand, zonder opzegtermijnen van de verzekering."
         }
       },
       "delete": {
