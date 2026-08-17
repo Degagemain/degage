@@ -84,4 +84,13 @@ test.describe('public car onboarding steps', () => {
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/car-value`);
     await expect(page.getByLabel('Complete')).toBeVisible();
   });
+
+  test('step 8 (car stickers) saves and continues to the next step or overview', async ({ page, appServer, asUser }) => {
+    await asUser;
+
+    await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/car-stickers`);
+
+    await page.getByRole('button', { name: /Save & Next/i }).click();
+    await expect(page).toHaveURL(new RegExp(`/app/car-onboardings/${E2E_CAR_ONBOARDING.id}(/share-start)?$`));
+  });
 });
