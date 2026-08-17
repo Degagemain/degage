@@ -7,14 +7,15 @@ import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel,
 import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import type { Documentation } from '@/domain/documentation.model';
-import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import {
+  type Documentation,
+  canDeleteDocumentation,
   documentationAudienceRoleValues,
   documentationFormatValues,
   documentationSourceValues,
   documentationTagValues,
 } from '@/domain/documentation.model';
+import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
@@ -252,7 +253,7 @@ export default function DocumentationAdminPage() {
     () =>
       Object.keys(rowSelection)
         .map((index) => state.data[parseInt(index)])
-        .filter((doc): doc is Documentation => Boolean(doc?.id) && doc?.source === 'manual')
+        .filter((doc): doc is Documentation => Boolean(doc) && canDeleteDocumentation(doc))
         .map((doc) => ({ id: doc.id!, label: getTitle(doc) })),
     [getTitle, rowSelection, state.data],
   );
@@ -270,12 +271,12 @@ export default function DocumentationAdminPage() {
   }, [fetchDocs]);
 
   const handleDeleteRequest = useCallback((doc: Documentation) => {
-    if (doc.source !== 'manual' || !doc.id) return;
+    if (!canDeleteDocumentation(doc)) return;
     setItemToDelete(doc);
   }, []);
 
   const handleDeleteConfirm = useCallback(async () => {
-    if (!itemToDelete?.id || itemToDelete.source !== 'manual') return;
+    if (!itemToDelete?.id || !canDeleteDocumentation(itemToDelete)) return;
     const response = await apiDelete(`/api/documentation/${itemToDelete.id}`);
     if (response.ok) {
       toast.success(t('delete.success'));

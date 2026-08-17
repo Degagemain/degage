@@ -53,3 +53,5 @@ export const documentationSchema = z
   .strict();
 
 export type Documentation = z.infer<typeof documentationSchema>;
+
+export const canDeleteDocumentation = (doc: Pick<Documentation, 'id' | 'source'>): boolean => doc.source === 'manual' && Boolean(doc.id);

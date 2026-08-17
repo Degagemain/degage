@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { documentationFilterSchema } from '@/domain/documentation.filter';
-import { documentationSchema } from '@/domain/documentation.model';
+import { canDeleteDocumentation, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
 describe('documentationSchema', () => {
@@ -15,6 +15,21 @@ describe('documentationSchema', () => {
     const doc = documentation();
     const result = documentationSchema.safeParse({ ...doc, extra: 1 });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('canDeleteDocumentation', () => {
+  it('allows delete for persisted manual documentation', () => {
+    expect(canDeleteDocumentation(documentation({ source: 'manual' }))).toBe(true);
+  });
+
+  it('rejects repository and notion documentation', () => {
+    expect(canDeleteDocumentation(documentation({ source: 'repository' }))).toBe(false);
+    expect(canDeleteDocumentation(documentation({ source: 'notion' }))).toBe(false);
+  });
+
+  it('rejects unsaved manual documentation', () => {
+    expect(canDeleteDocumentation(documentation({ source: 'manual', id: null }))).toBe(false);
   });
 });
 

@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Check, Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
-import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
+import { type Documentation, type DocumentationAudienceRole, canDeleteDocumentation } from '@/domain/documentation.model';
 import { formatDateOrDash } from '@/domain/utils';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
@@ -174,7 +174,7 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
                   {t('actions.edit')}
                 </Link>
               </DropdownMenuItem>
-              {doc.source === 'manual' && doc.id ? (
+              {canDeleteDocumentation(doc) ? (
                 <DropdownMenuItem variant="destructive" onClick={() => ctx.onDelete?.(doc)}>
                   <Trash2 />
                   {t('actions.delete')}
