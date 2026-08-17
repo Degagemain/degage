@@ -60,6 +60,12 @@ export const createColumns = (options: ColumnOptions): ColumnDef<FuelType>[] => 
       enableSorting: false,
     },
     {
+      accessorKey: 'order',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.order')} onSort={options.onSort} />,
+      cell: ({ row }) => <span className="font-mono text-sm tabular-nums">{row.getValue('order')}</span>,
+      enableHiding: true,
+    },
+    {
       accessorKey: 'isActive',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.active')} onSort={options.onSort} />,
       cell: ({ row }) => {

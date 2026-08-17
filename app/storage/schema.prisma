@@ -14,6 +14,7 @@ model FuelType {
   id              String                @id @default(uuid())
   code            String                @unique
   isActive        Boolean               @default(true)
+  order           Int                   @default(0)
   pricePer        Decimal               @default(0)
   co2Contribution Int                   @default(0)
   translations    FuelTypeTranslation[]

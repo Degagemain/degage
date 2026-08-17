@@ -4,6 +4,7 @@ const fuelTypes = [
   {
     code: 'electric',
     isActive: true,
+    order: 0,
     pricePer: 0.39,
     co2Contribution: 4,
     translations: [
@@ -15,6 +16,7 @@ const fuelTypes = [
   {
     code: 'diesel',
     isActive: true,
+    order: 10,
     pricePer: 2,
     co2Contribution: 1,
     translations: [
@@ -26,6 +28,7 @@ const fuelTypes = [
   {
     code: 'gasoline',
     isActive: true,
+    order: 20,
     pricePer: 1.9,
     co2Contribution: 2,
     translations: [
@@ -37,6 +40,7 @@ const fuelTypes = [
   {
     code: 'hybrid',
     isActive: true,
+    order: 30,
     pricePer: 1.2,
     co2Contribution: 2,
     translations: [
@@ -48,6 +52,7 @@ const fuelTypes = [
   {
     code: 'plugin-hybrid',
     isActive: true,
+    order: 40,
     pricePer: 0.9,
     co2Contribution: 2,
     translations: [
@@ -59,6 +64,7 @@ const fuelTypes = [
   {
     code: 'lpg',
     isActive: true,
+    order: 50,
     pricePer: 1,
     co2Contribution: 3,
     translations: [
@@ -70,6 +76,7 @@ const fuelTypes = [
   {
     code: 'cng',
     isActive: true,
+    order: 60,
     pricePer: 1.75,
     co2Contribution: 3,
     translations: [
@@ -81,6 +88,7 @@ const fuelTypes = [
   {
     code: 'hydrogen',
     isActive: true,
+    order: 70,
     pricePer: 0,
     co2Contribution: 0,
     translations: [
@@ -99,6 +107,7 @@ export async function seedFuelTypes(prisma: PrismaClient) {
       where: { code: ft.code },
       update: {
         isActive: ft.isActive,
+        order: ft.order,
         pricePer: ft.pricePer,
         co2Contribution: ft.co2Contribution,
         translations: {
@@ -109,6 +118,7 @@ export async function seedFuelTypes(prisma: PrismaClient) {
       create: {
         code: ft.code,
         isActive: ft.isActive,
+        order: ft.order,
         pricePer: ft.pricePer,
         co2Contribution: ft.co2Contribution,
         translations: {

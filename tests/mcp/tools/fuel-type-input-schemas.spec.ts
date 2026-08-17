@@ -9,6 +9,8 @@ describe('fuel type MCP input schemas', () => {
       expect(parsed.data.query).toBe('electric');
       expect(parsed.data.take).toBe(10);
       expect(parsed.data.skip).toBe(0);
+      expect(parsed.data.sortBy).toBe('order');
+      expect(parsed.data.sortOrder).toBe('asc');
     }
   });
 
