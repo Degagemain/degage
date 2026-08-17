@@ -1,30 +1,21 @@
 import Link from 'next/link';
-import { DM_Sans, Fraunces } from 'next/font/google';
 import { getTranslations } from 'next-intl/server';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['800'],
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-});
+import styles from './not-found.module.css';
 
 export default async function NotFound() {
   const t = await getTranslations('notFound');
 
   return (
     <main
-      className={`${dmSans.className} dark:bg-background dark:text-foreground flex min-h-screen items-center bg-[#F6F3EE] px-4 py-8 text-[#5A5248]`}
+      className={`${styles.root} dark:bg-background dark:text-foreground flex min-h-screen items-center bg-[#F6F3EE] px-4 py-8 text-[#5A5248]`}
     >
       <div className="mx-auto w-full max-w-[700px]">
         <div className="dark:border-border dark:bg-card rounded-[12px] border border-[#DDD6CB] bg-white p-8 shadow-sm" role="status">
           <p className="dark:text-muted-foreground mb-2 text-center text-[12px] font-semibold tracking-[0.06em] text-[#5A5248] uppercase">
             {t('eyebrow')}
           </p>
-          <h1 className={`${fraunces.className} dark:text-foreground mb-4 text-center text-[28px] leading-tight font-extrabold text-[#181510]`}>
+          <h1 className={`${styles.title} dark:text-foreground mb-4 text-center text-[28px] leading-tight font-extrabold text-[#181510]`}>
             {t('title')}
           </h1>
           <p className="dark:text-muted-foreground mb-8 text-center text-[15px] leading-relaxed text-[#5A5248]">{t('description')}</p>
