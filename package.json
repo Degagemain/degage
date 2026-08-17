@@ -44,7 +44,6 @@
     "@ai-sdk/google": "^3.0.53",
     "@ai-sdk/react": "^3.0.140",
     "@better-auth/oauth-provider": "^1.6.26",
-    "@date-fns/tz": "^1.5.0",
     "@google-cloud/storage": "^7.21.0",
     "@google/genai": "^1.42.0",
     "@hookform/resolvers": "^5.2.2",

@@ -62,8 +62,8 @@ Mock endpoints:
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode), create car
 - `app/actions/play-infosession/` — list owner infosessions (type contains `eigenaar`) and unenroll
 
-Play infosession `scheduledAt` strings from the legacy backend have no timezone. They are Belgium local time (`Europe/Brussels`, CET UTC+1 /
-CEST UTC+2) and are converted to UTC instants when parsed so onboarding shows the same wall-clock time as Play.
+Play backend datetimes have no timezone. They are Belgium local time (`Europe/Brussels`, CET UTC+1 / CEST UTC+2) and are converted to UTC
+instants when parsed.
 
 ### Create car
 

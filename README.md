@@ -316,7 +316,6 @@ This log explains why packages were installed.
 | Faceted Filter                             | cmdk (shadcn command component)                                                                        |
 | Internationalization                       | next-intl                                                                                              |
 | ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
-| Play infosession Belgium timezone parsing  | @date-fns/tz                                                                                           |
 | Gemini AI integration                      | @google/genai                                                                                          |
 | GCS object storage for documents           | @google-cloud/storage                                                                                  |
 | Temporary transitive vuln mitigation       | pnpm override: protobufjs@^7.5.5 (remove once upstream deps use a safe version)                        |
