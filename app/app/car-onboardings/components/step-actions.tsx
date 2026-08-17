@@ -26,12 +26,12 @@ export function StepActions({ stepId, onSave, saveDisabled, disabled = false, sh
   const router = useRouter();
   const { carOnboarding, basePath } = useCarOnboarding();
   const next = getNextAccessibleStep(carOnboarding, stepId);
-  const nextHref = next ? `${basePath}/${next.id}` : null;
+  const continueHref = next ? `${basePath}/${next.id}` : basePath;
   const canSave = showSave && Boolean(onSave) && !readOnly;
   const [isNavigatingNext, setIsNavigatingNext] = useState(false);
   const actionsDisabled = disabled || Boolean(saveDisabled);
 
-  if (!canSave && !nextHref) return null;
+  if (!canSave && !next) return null;
 
   return (
     <div className={styles.subflowActions}>
@@ -45,31 +45,31 @@ export function StepActions({ stepId, onSave, saveDisabled, disabled = false, sh
           {t('save')}
         </PublicBtn>
       ) : null}
-      {nextHref ? (
-        canSave && onSave ? (
-          <PublicBtn
-            disabled={actionsDisabled || isNavigatingNext}
-            onClick={() => {
-              void (async () => {
-                setIsNavigatingNext(true);
-                try {
-                  const ok = await onSave();
-                  if (!ok) return;
-                  router.push(nextHref);
-                } finally {
-                  setIsNavigatingNext(false);
-                }
-              })();
-            }}
-          >
-            {t('saveAndNext')} →
-          </PublicBtn>
-        ) : disabled ? (
+      {canSave && onSave ? (
+        <PublicBtn
+          disabled={actionsDisabled || isNavigatingNext}
+          onClick={() => {
+            void (async () => {
+              setIsNavigatingNext(true);
+              try {
+                const ok = await onSave();
+                if (!ok) return;
+                router.push(continueHref);
+              } finally {
+                setIsNavigatingNext(false);
+              }
+            })();
+          }}
+        >
+          {t('saveAndNext')} →
+        </PublicBtn>
+      ) : next ? (
+        disabled ? (
           <PublicBtn variant="secondary" disabled>
             {t('next')} →
           </PublicBtn>
         ) : (
-          <Link href={nextHref} className={`${styles.btn} ${styles.btnSecondary}`}>
+          <Link href={continueHref} className={`${styles.btn} ${styles.btnSecondary}`}>
             {t('next')} →
           </Link>
         )
