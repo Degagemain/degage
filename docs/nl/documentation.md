@@ -7,9 +7,10 @@ roles:
 # Documentatie
 
 Centrale plek voor hulpteksten uit de codebase, Notion of handmatige items die u in de beheerzone of via de API toevoegt. De lijst toont alle
-items: open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. **Nieuw** opent een formulier om
-handmatige documentatie te maken (titel en inhoud per taal, formaat, doelpubliek, tags, groepen). Voor repository- of Notion-bronnen kunt u in
-het bewerkingsscherm alleen FAQ, zichtbaarheid en groepen wijzigen — titel en inhoud blijven met de bron gesynchroniseerd.
+items: open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. Voor **handmatige** items bevat het
+rijmenu ook **Verwijderen**. **Nieuw** opent een formulier om handmatige documentatie te maken (titel en inhoud per taal, formaat, doelpubliek,
+tags, groepen). Voor repository- of Notion-bronnen kunt u in het bewerkingsscherm alleen FAQ, zichtbaarheid en groepen wijzigen — titel en
+inhoud blijven met de bron gesynchroniseerd. Die items kunt u niet uit de lijst verwijderen; ze volgen de externe bron.
 
 Gebruik de knop **Sync** om zoek-embeddings opnieuw op te bouwen na grotere documentatie-updates. De sync toont totalen voor bijgewerkt,
 overgeslagen en mislukt.

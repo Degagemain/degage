@@ -7,14 +7,15 @@ import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel,
 import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import type { Documentation } from '@/domain/documentation.model';
-import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import {
+  type Documentation,
+  canDeleteDocumentation,
   documentationAudienceRoleValues,
   documentationFormatValues,
   documentationSourceValues,
   documentationTagValues,
 } from '@/domain/documentation.model';
+import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { MaxTake } from '@/domain/utils';
 import { Page } from '@/domain/page.model';
 import { type UILocale, defaultContentLocale, defaultUILocale, getContentLocale, uiLocales } from '@/i18n/locales';
@@ -33,6 +34,7 @@ import {
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
 import { BulkImportDialog } from '@/app/components/bulk-import-dialog';
+import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { DropdownMenuItem } from '@/app/components/ui/dropdown-menu';
 import { BulkUpdateDocumentationDialog, type BulkUpdateDocumentationItem } from './components/bulk-update-documentation-dialog';
 import { createColumns } from './columns';
@@ -106,6 +108,7 @@ export default function DocumentationAdminPage() {
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
   const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Documentation | null>(null);
 
   const handleSort = useCallback(
     (columnId: string, desc: boolean) => {
@@ -250,7 +253,7 @@ export default function DocumentationAdminPage() {
     () =>
       Object.keys(rowSelection)
         .map((index) => state.data[parseInt(index)])
-        .filter((doc): doc is Documentation => Boolean(doc?.id) && doc?.source === 'manual')
+        .filter((doc): doc is Documentation => Boolean(doc) && canDeleteDocumentation(doc))
         .map((doc) => ({ id: doc.id!, label: getTitle(doc) })),
     [getTitle, rowSelection, state.data],
   );
@@ -266,6 +269,23 @@ export default function DocumentationAdminPage() {
     setRowSelection({});
     void fetchDocs();
   }, [fetchDocs]);
+
+  const handleDeleteRequest = useCallback((doc: Documentation) => {
+    if (!canDeleteDocumentation(doc)) return;
+    setItemToDelete(doc);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete?.id || !canDeleteDocumentation(itemToDelete)) return;
+    const response = await apiDelete(`/api/documentation/${itemToDelete.id}`);
+    if (response.ok) {
+      toast.success(t('delete.success'));
+      setItemToDelete(null);
+      void fetchDocs();
+    } else {
+      toast.error(t('delete.error'));
+    }
+  }, [itemToDelete, fetchDocs, t]);
 
   const handleEmbeddingSync = useCallback(async () => {
     setIsSyncingEmbeddings(true);
@@ -311,8 +331,9 @@ export default function DocumentationAdminPage() {
         tShared,
         getTitle,
         onSort: handleSort,
+        onDelete: handleDeleteRequest,
       }),
-    [t, tShared, getTitle, handleSort],
+    [t, tShared, getTitle, handleSort, handleDeleteRequest],
   );
 
   const columnLabels = useMemo(
@@ -572,6 +593,16 @@ export default function DocumentationAdminPage() {
           statusSuccess: t('bulkUpdate.statusSuccess'),
           statusError: t('bulkUpdate.statusError'),
         }}
+      />
+
+      <DeleteConfirmationDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => !open && setItemToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title={t('delete.title')}
+        description={t('delete.description', { name: itemToDelete ? getTitle(itemToDelete) : '' })}
+        confirmLabel={t('delete.confirm')}
+        cancelLabel={t('delete.cancel')}
       />
 
       <BulkDeleteDialog

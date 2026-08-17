@@ -7,9 +7,10 @@ roles:
 # Documentation
 
 Central place for help content from the repository, Notion, or manual entries you add in the admin zone or via the API. The list shows all
-entries: open a title or **View** to read, and use **Edit** on the detail page or in the row menu. **New** opens a form to create manual
-documentation (title and content per language, format, audience, tags, and groups). For repository- and Notion-backed pages, the edit form only
-lets you change FAQ visibility, public visibility, and groups—the headline and body stay synced from the external source.
+entries: open a title or **View** to read, and use **Edit** on the detail page or in the row menu. For **manual** entries, the row menu also
+includes **Delete**. **New** opens a form to create manual documentation (title and content per language, format, audience, tags, and groups).
+For repository- and Notion-backed pages, the edit form only lets you change FAQ visibility, public visibility, and groups—the headline and body
+stay synced from the external source. You cannot delete those from the list; they follow the external source.
 
 Use the **Sync** button to refresh search embeddings after major documentation updates. Sync reports totals for updated, skipped, and failed
 records.
