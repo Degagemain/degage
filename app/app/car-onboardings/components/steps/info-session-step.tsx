@@ -247,7 +247,6 @@ export function InfoSessionStep() {
                 <TableHead className="w-[7rem]" />
                 <TableHead>{t('steps.infoSession.columns.scheduledAt')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.district')}</TableHead>
-                <TableHead>{t('steps.infoSession.columns.type')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.registrations')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.host')}</TableHead>
               </TableRow>
@@ -278,7 +277,6 @@ export function InfoSessionStep() {
                       </TableCell>
                       <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt)}</TableCell>
                       <TableCell>{row.district}</TableCell>
-                      <TableCell className="min-w-[12rem]">{row.type}</TableCell>
                       <TableCell className="whitespace-nowrap">
                         {formatInfosessionRegistrations(row, t('steps.infoSession.registrationsFull'))}
                       </TableCell>
@@ -288,7 +286,7 @@ export function InfoSessionStep() {
                 })
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-muted-foreground py-8 text-center text-sm">
+                  <TableCell colSpan={5} className="text-muted-foreground py-8 text-center text-sm">
                     {t('steps.infoSession.tableEmpty')}
                   </TableCell>
                 </TableRow>

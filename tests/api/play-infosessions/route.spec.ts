@@ -53,7 +53,7 @@ describe('API Route - GET /api/play-infosessions', () => {
         playInfosessionSchema.parse({
           scheduledAt: 'za 20 jun 2026 09:25',
           district: 'Gent - Wondelgem',
-          type: 'Voor Leners van auto of fiets',
+          type: 'Voor Auto-eigenaar',
           registrations: '14 / 20',
           host: 'Host Alpha',
           enrollId: '1359',

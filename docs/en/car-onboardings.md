@@ -24,7 +24,7 @@ This step is complete when the owner has a Play connector record configured.
 
 ### Info session
 
-The owner enrolls in an upcoming Degapp info session during the public onboarding flow.
+The owner enrolls in an upcoming Degapp info session for car owners during the public onboarding flow. Only owner sessions are listed.
 
 | Status   | Meaning                                                                |
 | -------- | ---------------------------------------------------------------------- |

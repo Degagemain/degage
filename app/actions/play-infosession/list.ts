@@ -10,10 +10,14 @@ export type PlayInfosessionList = {
   chosenInfosession: PlayInfosession | null;
 };
 
+const OWNER_INFOSESSION_TYPE_KEYWORD = 'eigenaar';
+
+export const isOwnerInfosessionType = (type: string): boolean => type.toLowerCase().includes(OWNER_INFOSESSION_TYPE_KEYWORD);
+
 export const listPlayInfosessions = async (userId: string): Promise<PlayInfosessionList> => {
   const { cookieHeader } = await getPlaySessionCookie(userId);
   const { html } = await fetchPlay('/infosession', cookieHeader);
-  const rows = parseInfosessionTable(html);
+  const rows = parseInfosessionTable(html).filter((row) => isOwnerInfosessionType(row.type));
   const chosenRow = parseChosenInfosession(html);
 
   return {
