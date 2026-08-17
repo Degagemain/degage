@@ -19,6 +19,7 @@ export function PlayConnectorStep() {
       <PlayConnectorCard
         connectPath={carOnboarding.id ? `/api/car-onboardings/${carOnboarding.id}/play-connector` : undefined}
         onStatusChange={() => void reload()}
+        allowDisconnect={false}
       />
       <StepActions stepId="play-connector" showSave={false} />
     </StepLayout>

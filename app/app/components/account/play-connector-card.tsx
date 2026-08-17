@@ -16,9 +16,11 @@ import type { PlayConnectorStatus } from '@/domain/play-connector.model';
 export function PlayConnectorCard({
   connectPath = '/api/play-connector',
   onStatusChange,
+  allowDisconnect = true,
 }: {
   connectPath?: string;
   onStatusChange?: (status: PlayConnectorStatus) => void;
+  allowDisconnect?: boolean;
 }) {
   const t = useTranslations('playConnector');
   const { data: session } = authClient.useSession();
@@ -112,6 +114,18 @@ export function PlayConnectorCard({
   }
 
   const showForm = status?.status === 'missing' || status?.status === 'failing';
+  const disconnectButton = allowDisconnect ? (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      disabled={loading === 'disconnect'}
+      onClick={() => void handleDisconnect()}
+      className="rounded-full"
+    >
+      {loading === 'disconnect' ? <Loader2 className="size-4 animate-spin" /> : t('disconnect')}
+    </Button>
+  ) : null;
 
   return (
     <Card className="border-border bg-card">
@@ -143,16 +157,7 @@ export function PlayConnectorCard({
                 })}
               </p>
             ) : null}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={loading === 'disconnect'}
-              onClick={() => void handleDisconnect()}
-              className="rounded-full"
-            >
-              {loading === 'disconnect' ? <Loader2 className="size-4 animate-spin" /> : t('disconnect')}
-            </Button>
+            {disconnectButton}
           </div>
         ) : null}
 
@@ -162,16 +167,7 @@ export function PlayConnectorCard({
               <p className="font-medium">{t('failingTitle')}</p>
               <p className="text-muted-foreground mt-1 text-sm">{t('failingDescription')}</p>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={loading === 'disconnect'}
-              onClick={() => void handleDisconnect()}
-              className="rounded-full"
-            >
-              {loading === 'disconnect' ? <Loader2 className="size-4 animate-spin" /> : t('disconnect')}
-            </Button>
+            {disconnectButton}
           </div>
         ) : null}
 

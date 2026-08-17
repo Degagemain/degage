@@ -109,5 +109,5 @@ Car onboarding car-name availability uses admin mode via the oldest Code1 admin 
 
 ## UI
 
-Account settings → **Play connector** tab (`/app/account/settings`). Car onboarding → **Play connector** step uses the onboarding-specific
-connect endpoint above.
+Account settings → **Play connector** tab (`/app/account/settings`) is where users connect and disconnect. Car onboarding → **Play connector**
+step uses the onboarding-specific connect endpoint above and does not offer disconnect (use account settings).
