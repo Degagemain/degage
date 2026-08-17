@@ -259,6 +259,21 @@ describe('carOnboardingInsurerInputSchema', () => {
     });
     expect(result.success).toBe(true);
   });
+
+  it('accepts a selected insurer without a contract start date', () => {
+    const result = carOnboardingInsurerInputSchema.safeParse({
+      hasInsuranceContract: true,
+      insurer: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'Ethias', supportsInstantOnboarding: false },
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.insurer).toEqual({
+        id: '550e8400-e29b-41d4-a716-446655440010',
+        name: 'Ethias',
+        supportsInstantOnboarding: false,
+      });
+    }
+  });
 });
 
 describe('carOnboardingCarValueSchema', () => {

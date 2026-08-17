@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added: during car onboarding, new purchased cars require a proof of purchase
   with the purchase price including VAT visible.
 - Changed: fuel types on the simulation page follow the order set by admins.
+- Fixed: during car onboarding, the insurer you save is shown again when you
+  return to the step.
 - Fixed: during car onboarding, info session times now show the correct Belgium
   time.
 - Removed: during car onboarding, after connecting Degapp you no longer see a
