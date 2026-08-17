@@ -66,10 +66,14 @@ export const carOnboardingCarValueSchema = z
   })
   .strict();
 
+export const carOnboardingInsurerRefSchema = idNameSchema.extend({
+  supportsInstantOnboarding: z.boolean().optional(),
+});
+
 export const carOnboardingInsurerSchema = z
   .object({
     hasInsuranceContract: z.boolean().default(false),
-    insurer: idNameSchema.nullable().default(null),
+    insurer: carOnboardingInsurerRefSchema.nullable().default(null),
     insurerStatus: z.enum(CarOnboardingInsurerStatus).default(CarOnboardingInsurerStatus.TODO),
     insurerContractStartedAt: z.coerce.date().nullable().default(null),
     insurerAnnouncedPriceIncrease: z.boolean().default(false),
@@ -193,7 +197,7 @@ export type CarOnboardingCarValueResolveInput = z.infer<typeof carOnboardingCarV
 export const carOnboardingInsurerInputSchema = z
   .object({
     hasInsuranceContract: z.boolean(),
-    insurer: idNameSchema.nullable().optional(),
+    insurer: carOnboardingInsurerRefSchema.nullable().optional(),
     insurerContractStartedAt: z.coerce.date().nullable().optional(),
     insurerAnnouncedPriceIncrease: z.boolean().optional(),
   })
@@ -439,9 +443,14 @@ const dateTimeEquals = (a: Date | string | null | undefined, b: Date | string | 
   return left.getTime() === right.getTime();
 };
 
-type ShareStartInsuranceFields = Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt'>;
+type ShareStartInsuranceFields = Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt'> &
+  Partial<Pick<CarOnboarding, 'insurer'>>;
 
 export const getEarliestShareStartDate = (onboarding: ShareStartInsuranceFields, today: Date = new Date()): Date => {
+  if (onboarding.hasInsuranceContract && onboarding.insurer?.supportsInstantOnboarding) {
+    return ceilToFirstOfMonth(today);
+  }
+
   if (!onboarding.hasInsuranceContract || onboarding.insurerContractStartedAt == null) {
     return startOfMonth(today);
   }
@@ -480,7 +489,8 @@ export const isShareStartSectionComplete = (onboarding: Pick<CarOnboarding, 'sha
 };
 
 export const shouldClearShareStartOnInsurerChange = (
-  previous: Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt' | 'shareStartDate'>,
+  previous: Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt' | 'shareStartDate'> &
+    Partial<Pick<CarOnboarding, 'insurer'>>,
   next: ShareStartInsuranceFields,
   today: Date = new Date(),
 ): boolean => {
@@ -488,11 +498,12 @@ export const shouldClearShareStartOnInsurerChange = (
 
   const insuranceChanged =
     previous.hasInsuranceContract !== next.hasInsuranceContract ||
-    !dateTimeEquals(previous.insurerContractStartedAt, next.insurerContractStartedAt);
+    !dateTimeEquals(previous.insurerContractStartedAt, next.insurerContractStartedAt) ||
+    previous.insurer?.id !== next.insurer?.id;
 
   if (insuranceChanged) return true;
 
-  return !isValidShareStartDate(previous.shareStartDate, next, today);
+  return !isValidShareStartDate(previous.shareStartDate, previous, today);
 };
 
 export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus' | 'isPurchased' | 'hasInsuranceContract'>): boolean => {

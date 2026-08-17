@@ -37,6 +37,7 @@ export function InsurerStep() {
   const [hasInsuranceContract, setHasInsuranceContract] = useState(carOnboarding.hasInsuranceContract);
   const [insurerId, setInsurerId] = useState(carOnboarding.insurer?.id ?? '');
   const [insurerName, setInsurerName] = useState(carOnboarding.insurer?.name ?? '');
+  const [supportsInstantOnboarding, setSupportsInstantOnboarding] = useState(carOnboarding.insurer?.supportsInstantOnboarding === true);
   const [contractStartedAt, setContractStartedAt] = useState(formatDateForInput(carOnboarding.insurerContractStartedAt));
   const [insurerAnnouncedPriceIncrease, setInsurerAnnouncedPriceIncrease] = useState(carOnboarding.insurerAnnouncedPriceIncrease);
   const [isSaving, setIsSaving] = useState(false);
@@ -45,6 +46,7 @@ export function InsurerStep() {
     setHasInsuranceContract(carOnboarding.hasInsuranceContract);
     setInsurerId(carOnboarding.insurer?.id ?? '');
     setInsurerName(carOnboarding.insurer?.name ?? '');
+    setSupportsInstantOnboarding(carOnboarding.insurer?.supportsInstantOnboarding === true);
     setContractStartedAt(formatDateForInput(carOnboarding.insurerContractStartedAt));
     setInsurerAnnouncedPriceIncrease(carOnboarding.insurerAnnouncedPriceIncrease);
   }, [carOnboarding]);
@@ -52,12 +54,14 @@ export function InsurerStep() {
   const hasContractDate = hasInsuranceContract && contractStartedAt !== '';
   const showRecentContract = hasContractDate && isInsurerContractStartedWithinLastYear(contractStartedAt);
   const showCancellableContract = hasContractDate && !isInsurerContractStartedWithinLastYear(contractStartedAt);
+  const showDelayedStartWarning = !supportsInstantOnboarding;
 
   const handleSave = async (): Promise<boolean> => {
     if (!carOnboarding.id) return false;
     const nextInsurance = {
       hasInsuranceContract,
       insurerContractStartedAt: hasInsuranceContract && contractStartedAt ? parseDateInput(contractStartedAt) : null,
+      insurer: hasInsuranceContract && insurerId ? { id: insurerId, name: insurerName, supportsInstantOnboarding } : null,
     };
     const willClearShareStart = shouldClearShareStartOnInsurerChange(carOnboarding, nextInsurance);
     setIsSaving(true);
@@ -108,8 +112,10 @@ export function InsurerStep() {
               onValueChange={(id, option) => {
                 setInsurerId(id);
                 setInsurerName(option.name);
+                setSupportsInstantOnboarding(option.supportsInstantOnboarding === true);
               }}
               apiPath="insurers"
+              passThroughKeys={['supportsInstantOnboarding']}
               placeholder={tAdmin('form.placeholders.insurer')}
             />
             <PublicField label={tAdmin('columns.insurerContractStartedAt')} hint={t('steps.insurer.contractStartedAtHint')}>
@@ -134,11 +140,11 @@ export function InsurerStep() {
         ) : null}
       </PublicPanel>
 
-      {showRecentContract ? (
+      {showRecentContract && showDelayedStartWarning ? (
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
       ) : null}
 
-      {showCancellableContract ? (
+      {showCancellableContract && showDelayedStartWarning ? (
         <div className={styles.bannerWarning}>{t('steps.insurer.contractWarningCancellable', { date: addTwoMonthsFromToday() })}</div>
       ) : null}
 

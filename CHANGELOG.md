@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   from a list; you only say whether you already have coverage (and until when).
 - Added: during car onboarding road assistance, if you already have a plan you
   enter its name.
+- Changed: during car onboarding, some insurers let you start sharing from the
+  next first of the month instead of waiting out your current insurance period.
 
 ### Admin features
 
@@ -28,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   plan.
 - Changed: car onboarding no longer requires a desired road assistance plan; the
   plan picker is hidden.
+- Added: insurers can be marked as supporting instant onboarding, so owners who
+  pick them can start sharing sooner.
 
 ## [0.0.3] - 2026-08-12
 

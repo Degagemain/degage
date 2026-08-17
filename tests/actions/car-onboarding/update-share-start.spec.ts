@@ -12,7 +12,7 @@ vi.mock('@/actions/car-onboarding/assert-car-name-available', () => ({
   assertCarOnboardingCarNameAvailable: vi.fn(),
 }));
 
-import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus, startOfMonth } from '@/domain/car-onboarding.model';
+import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus, ceilToFirstOfMonth, startOfMonth } from '@/domain/car-onboarding.model';
 import { assertCarOnboardingCarNameAvailable } from '@/actions/car-onboarding/assert-car-name-available';
 import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
@@ -175,5 +175,36 @@ describe('updateCarOnboardingShareStart', () => {
     );
 
     expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
+  });
+
+  it('allows the next first of the month when the insurer supports instant onboarding', async () => {
+    const today = new Date();
+    const nextMonth = ceilToFirstOfMonth(today);
+    const iso = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}-01`;
+    const recentContractStart = new Date(today.getFullYear(), today.getMonth() - 3, 15);
+
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        hasInsuranceContract: true,
+        insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        insurerStatus: CarOnboardingInsurerStatus.READY,
+        insurerContractStartedAt: recentContractStart,
+        shareStartDate: null,
+        carName: null,
+      }),
+    );
+    vi.mocked(assertCarOnboardingCarNameAvailable).mockResolvedValueOnce(undefined);
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingShareStart(onboardingId, { shareStartDate: iso, carName: 'MyCar' }, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shareStartDate: nextMonth,
+        carName: 'MyCar',
+      }),
+    );
   });
 });

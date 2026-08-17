@@ -6,7 +6,7 @@ import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
 import { Button } from '@/app/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { Check, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Insurer } from '@/domain/insurer.model';
 import { formatDateOrDash } from '@/domain/utils';
 
@@ -46,6 +46,20 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Insurer>[] => {
           <Link href={`/app/admin/insurers/${item.id}`} className="font-medium hover:underline">
             {row.getValue('name')}
           </Link>
+        );
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'supportsInstantOnboarding',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.supportsInstantOnboarding')} onSort={options.onSort} />,
+      cell: ({ row }) => {
+        const supportsInstantOnboarding = row.getValue('supportsInstantOnboarding') as boolean;
+        return supportsInstantOnboarding ? (
+          <Check className="text-primary size-4" aria-label={t('supportsInstantOnboarding')} />
+        ) : (
+          <span className="text-muted-foreground">—</span>
         );
       },
       enableHiding: true,

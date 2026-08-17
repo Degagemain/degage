@@ -149,8 +149,9 @@ Cette étape est toujours complète ; les stickers supplémentaires sont faculta
 Choisit un nom unique pour le véhicule et quand il devient disponible pour le partage. C'est la dernière étape de préparation. Le nom compte
 entre 3 et 13 caractères, utilise uniquement des lettres et des chiffres (sans caractères spéciaux ni tirets) et ne doit pas déjà exister dans
 la flotte Play legacy ni sur un autre onboarding. La date de début est toujours le premier du mois. Le mois le plus tôt autorisé dépend des
-détails d'assurance (ou du premier du mois en cours lorsqu'il n'y a pas de contrat d'assurance existant). Le mois le plus tard autorisé est 18
-mois à partir d'aujourd'hui.
+détails d'assurance (ou du premier du mois en cours lorsqu'il n'y a pas de contrat d'assurance existant). Lorsque l'assureur choisi prend en
+charge l'intégration instantanée, le partage peut commencer dès le prochain premier du mois, sans le délai d'attente habituel de l'assurance. Le
+mois le plus tard autorisé est 18 mois à partir d'aujourd'hui.
 
 | Propriété             | Description                                                               |
 | --------------------- | ------------------------------------------------------------------------- |

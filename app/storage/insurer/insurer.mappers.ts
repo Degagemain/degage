@@ -5,6 +5,7 @@ export const dbInsurerToDomain = (insurer: Prisma.InsurerGetPayload<object>): In
   return {
     id: insurer.id,
     name: insurer.name,
+    supportsInstantOnboarding: insurer.supportsInstantOnboarding,
     createdAt: insurer.createdAt,
     updatedAt: insurer.updatedAt,
   };
@@ -13,11 +14,13 @@ export const dbInsurerToDomain = (insurer: Prisma.InsurerGetPayload<object>): In
 export const insurerToDbCreate = (insurer: Insurer): Prisma.InsurerCreateInput => {
   return {
     name: insurer.name,
+    supportsInstantOnboarding: insurer.supportsInstantOnboarding,
   };
 };
 
 export const insurerToDbUpdate = (insurer: Insurer): Prisma.InsurerUpdateInput => {
   return {
     name: insurer.name,
+    supportsInstantOnboarding: insurer.supportsInstantOnboarding,
   };
 };

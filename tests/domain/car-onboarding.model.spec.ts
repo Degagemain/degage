@@ -974,6 +974,34 @@ describe('share start date helpers', () => {
     ); // ceil of 7 Oct 2026 → 1 Nov 2026
   });
 
+  it('uses today ceiled to the first of the month when the insurer supports instant onboarding', () => {
+    const contractStart = new Date(2026, 0, 15); // 15 Jan 2026
+    expect(
+      getEarliestShareStartDate(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: contractStart,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        },
+        today,
+      ),
+    ).toEqual(new Date(2026, 8, 1)); // ceil of 7 Aug 2026 → 1 Sep 2026
+  });
+
+  it('uses today when the insurer supports instant onboarding and today is the first of the month', () => {
+    const firstOfMonth = new Date(2026, 7, 1);
+    expect(
+      getEarliestShareStartDate(
+        {
+          hasInsuranceContract: true,
+          insurerContractStartedAt: new Date(2026, 0, 15),
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        },
+        firstOfMonth,
+      ),
+    ).toEqual(new Date(2026, 7, 1));
+  });
+
   it('caps the latest share start at the first of the month 18 months out', () => {
     expect(getLatestShareStartDate(today)).toEqual(new Date(2028, 1, 1)); // Feb 2028
   });
@@ -1025,5 +1053,25 @@ describe('share start date helpers', () => {
         today,
       ),
     ).toBe(false);
+  });
+
+  it('clears share start when the selected insurer changes', () => {
+    const shareStartDate = new Date(2026, 10, 1);
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: true,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440010' },
+          insurerContractStartedAt: new Date(2020, 0, 15),
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: true,
+          insurer: { id: '550e8400-e29b-41d4-a716-446655440011', supportsInstantOnboarding: true },
+          insurerContractStartedAt: new Date(2020, 0, 15),
+        },
+        today,
+      ),
+    ).toBe(true);
   });
 });

@@ -1128,9 +1128,11 @@
       "title": "Insurers",
       "columns": {
         "name": "Name",
+        "supportsInstantOnboarding": "Supports instant onboarding",
         "created": "Created",
         "updated": "Updated"
       },
+      "supportsInstantOnboarding": "Supports instant onboarding",
       "searchPlaceholder": "Search insurers...",
       "tryAgain": "Try again",
       "actions": {
@@ -1143,7 +1145,8 @@
           "name": "Insurer name"
         },
         "help": {
-          "name": "Name of the insurance company."
+          "name": "Name of the insurance company.",
+          "supportsInstantOnboarding": "When enabled, owners who pick this insurer can start sharing from the next first of the month, without the usual insurance waiting period."
         }
       },
       "delete": {

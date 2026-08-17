@@ -8,9 +8,10 @@ roles:
 
 Liste de référence des compagnies d'assurance utilisées dans l'application.
 
-| Propriété | Description                |
-| --------- | -------------------------- |
-| Nom       | Nom affiché de l'assureur. |
+| Propriété                                 | Description                                                                                                                                                            |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nom                                       | Nom affiché de l'assureur.                                                                                                                                             |
+| Prend en charge l'intégration instantanée | Lorsque cette option est activée, les propriétaires qui choisissent cet assureur peuvent commencer le partage dès le prochain premier du mois, sans le délai habituel. |
 
 ## Export
 

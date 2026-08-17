@@ -8,9 +8,10 @@ roles:
 
 Referentielijst van verzekeringsmaatschappijen die in de applicatie worden gebruikt.
 
-| Eigenschap | Beschrijving                     |
-| ---------- | -------------------------------- |
-| Naam       | Weergavenaam van de verzekeraar. |
+| Eigenschap                     | Beschrijving                                                                                                                                                      |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Naam                           | Weergavenaam van de verzekeraar.                                                                                                                                  |
+| Ondersteunt directe onboarding | Indien ingeschakeld kunnen eigenaars die deze verzekeraar kiezen autodelen starten vanaf de eerstvolgende eerste van de maand, zonder de gebruikelijke wachttijd. |
 
 ## Exporteren
 
