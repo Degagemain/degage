@@ -8,9 +8,9 @@ roles:
 
 Central place for help content from the repository, Notion, or manual entries you add in the admin zone or via the API. The list shows all
 entries: open a title or **View** to read, and use **Edit** on the detail page or in the row menu. For **manual** entries, the row menu also
-includes **Delete**. **New** opens a form to create manual documentation (title and content per language, format, audience, tags, and groups).
-For repository- and Notion-backed pages, the edit form only lets you change FAQ visibility, public visibility, and groups—the headline and body
-stay synced from the external source. You cannot delete those from the list; they follow the external source.
+includes **Delete**. **New** opens a form to create manual documentation (title and content in one or more languages, format, audience, tags,
+and groups). For repository- and Notion-backed pages, the edit form only lets you change FAQ visibility, public visibility, and groups—the
+headline and body stay synced from the external source. You cannot delete those from the list; they follow the external source.
 
 Use the **Sync** button to refresh search embeddings after major documentation updates. Sync reports totals for updated, skipped, and failed
 records.
@@ -25,8 +25,8 @@ records.
 | Audience    | Who may view the page in the app: technical, admin, user, public (technical/admin pages are only visible to administrators). In the documentation list, each assigned role appears as its own label in the Roles column. |
 | Tags        | Labels such as `simulation_step_1`; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (result step); `simulation_step_3`; `simulation_step_4` for targeting FAQ lists.              |
 | Groups      | Optional labels used to organise articles in the list and filters (managed under Documentation groups). Each group name is shown in your chosen admin language.                                                          |
-| Title       | Per language (English, Dutch, French).                                                                                                                                                                                   |
-| Content     | Per language; Markdown is supported when format is markdown.                                                                                                                                                             |
+| Title       | Per language (English, Dutch, French). At least one language is required; the others can be left empty.                                                                                                                  |
+| Content     | Per language; Markdown is supported when format is markdown. Languages without a title are not saved.                                                                                                                    |
 | Embeddings  | Admin action to regenerate AI-search embeddings per content language; support chat RAG retrieves vector chunks then loads **full** page text for the top matching documents for generation.                              |
 
 ## Export

@@ -16,6 +16,20 @@ describe('documentationSchema', () => {
     const result = documentationSchema.safeParse({ ...doc, extra: 1 });
     expect(result.success).toBe(false);
   });
+
+  it('accepts a document with a single locale translation', () => {
+    const doc = documentation({
+      translations: [{ locale: 'nl', title: 'Alleen Nederlands', content: 'Inhoud' }],
+    });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects a document with no translations', () => {
+    const doc = documentation({ translations: [] });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(false);
+  });
 });
 
 describe('canDeleteDocumentation', () => {

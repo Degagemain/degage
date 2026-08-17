@@ -33,6 +33,7 @@ import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { Page } from '@/domain/page.model';
 import { MaxTake } from '@/domain/utils';
 import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
+import { documentationTranslationsFromLocaleRecords } from './documentation-translations-from-locale-records';
 
 export const DOCUMENTATION_EDIT_FORM_ID = 'documentation-edit-form';
 
@@ -142,15 +143,6 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!isContentLocked) {
-      for (const locale of contentLocales) {
-        if (!titleByLocale[locale]?.trim()) {
-          toast.error(tCommon('validation.required'));
-          return;
-        }
-      }
-    }
-
     const groups = groupIds
       .map((id) => ({
         id,
@@ -160,11 +152,12 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
 
     const translations = isContentLocked
       ? initialDocumentation.translations
-      : contentLocales.map((locale) => ({
-          locale,
-          title: titleByLocale[locale].trim(),
-          content: contentByLocale[locale] ?? '',
-        }));
+      : documentationTranslationsFromLocaleRecords(titleByLocale, contentByLocale);
+
+    if (!isContentLocked && translations.length === 0) {
+      toast.error(tCommon('validation.required'));
+      return;
+    }
 
     if (isCreate) {
       const payload = documentationSchema.parse({
