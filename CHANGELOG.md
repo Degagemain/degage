@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Fixed: during car onboarding, info session times now show the correct Belgium
+  time.
 - Removed: during car onboarding, after connecting Degapp you no longer see a
   disconnect button; disconnect from profile settings instead.
 - Changed: when you type a custom car type as Other, the simulation loading
