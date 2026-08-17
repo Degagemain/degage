@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: the documentation list row menu includes Delete for manual entries.
 - Added: the onboardings list shows preparation as a colored step bar; hover a
   block for the step name, click to open that tab. Individual status columns are
   hidden by default.

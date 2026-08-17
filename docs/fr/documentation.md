@@ -7,10 +7,11 @@ roles:
 # Documentation
 
 Point central pour les textes d’aide issus du dépôt, de Notion ou des pages manuelles créées dans la zone admin ou via l’API. La liste affiche
-toutes les entrées : ouvrez un titre ou **Voir** pour lire, et **Modifier** depuis la page détail ou le menu de ligne. **Nouveau** ouvre un
-formulaire pour créer une documentation manuelle (titre et contenu par langue, format, public, tags, groupes). Pour les contenus dépôt ou
-Notion, l’édition ne permet que la FAQ, la visibilité publique et les groupes — le titre et le texte restent synchronisés avec la source
-externe.
+toutes les entrées : ouvrez un titre ou **Voir** pour lire, et **Modifier** depuis la page détail ou le menu de ligne. Pour les entrées
+**manuelles**, le menu de ligne propose aussi **Supprimer**. **Nouveau** ouvre un formulaire pour créer une documentation manuelle (titre et
+contenu par langue, format, public, tags, groupes). Pour les contenus dépôt ou Notion, l’édition ne permet que la FAQ, la visibilité publique et
+les groupes — le titre et le texte restent synchronisés avec la source externe. Vous ne pouvez pas les supprimer depuis la liste ; ils suivent
+la source externe.
 
 Utilisez le bouton **Sync** pour relancer les embeddings de recherche après des mises à jour importantes de la documentation. La synchronisation
 affiche les compteurs total/mis à jour/ignorés/en échec.

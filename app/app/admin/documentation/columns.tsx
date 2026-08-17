@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Check, Eye, MoreHorizontal, Pencil } from 'lucide-react';
+import { Check, Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
 import type { Documentation, DocumentationAudienceRole } from '@/domain/documentation.model';
 import { formatDateOrDash } from '@/domain/utils';
@@ -18,6 +18,7 @@ export type DocumentationColumnsCtx = {
   tShared: (key: string) => string;
   getTitle: (doc: Documentation) => string;
   onSort: (columnId: string, desc: boolean) => void;
+  onDelete?: (doc: Documentation) => void;
 };
 
 export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documentation>[] => {
@@ -173,6 +174,12 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
                   {t('actions.edit')}
                 </Link>
               </DropdownMenuItem>
+              {doc.source === 'manual' && doc.id ? (
+                <DropdownMenuItem variant="destructive" onClick={() => ctx.onDelete?.(doc)}>
+                  <Trash2 />
+                  {t('actions.delete')}
+                </DropdownMenuItem>
+              ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
         );
