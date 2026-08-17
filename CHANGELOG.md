@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: when you type a custom car type as Other, the simulation loading
+  title uses only the brand (not "Other").
 - Changed: during car onboarding, insurers that support instant onboarding let
   you start sharing from the first of this or next month, without the usual
   insurance waiting period.
