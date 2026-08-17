@@ -118,6 +118,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     carTypeOther: z.string().nullable().default(null),
     isPurchased: z.boolean().default(false),
     purchasePrice: z.number().min(0).default(0),
+    proofOfPurchasePrice: z.number().min(0).default(0),
     depreciationCostKm: z.number().min(0).default(0),
     isNewCar: z.boolean().default(false),
     mileage: z.number().int().min(0).default(0),
@@ -132,6 +133,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     registrationCertificateBack: idNameSchema.nullable().default(null),
     inspectionCertificate: idNameSchema.nullable().default(null),
     pinkForm: idNameSchema.nullable().default(null),
+    proofOfPurchase: idNameSchema.nullable().default(null),
     carStickers: z.array(idNameSchema).default([]),
     carName: z.string().nullable().default(null),
     shareStartDate: z.coerce.date().nullable().default(null),
@@ -279,6 +281,7 @@ export const carOnboardingFromSimulation = (
     carTypeOther: simulation.carTypeOther,
     isPurchased: simulation.isPurchased,
     purchasePrice: simulation.purchasePrice ?? 0,
+    proofOfPurchasePrice: 0,
     carValue: simulation.resultEstimatedCarValue ?? 0,
     carValueCounterProposal: 0,
     carValueCounterProposalMessage: null,
@@ -307,6 +310,7 @@ export const carOnboardingFromSimulation = (
     registrationCertificateBack: null,
     inspectionCertificate: null,
     pinkForm: null,
+    proofOfPurchase: null,
     carStickers: [],
     carName: null,
     shareStartDate: null,
@@ -350,12 +354,13 @@ type CarInfoDocumentsFields = Pick<
   | 'registrationCertificateBack'
   | 'inspectionCertificate'
   | 'pinkForm'
+  | 'proofOfPurchase'
 >;
 
 export const areCarInfoDocumentsComplete = (onboarding: CarInfoDocumentsFields): boolean => {
   if (onboarding.isPurchased) {
     if (onboarding.isNewCar) {
-      return true;
+      return onboarding.proofOfPurchase != null;
     }
     return onboarding.pinkForm != null;
   }
@@ -583,6 +588,7 @@ export const isPreparationConfirmable = (
     | 'registrationCertificateBack'
     | 'inspectionCertificate'
     | 'pinkForm'
+    | 'proofOfPurchase'
     | 'carValue'
     | 'carValueStatus'
     | 'insurerStatus'

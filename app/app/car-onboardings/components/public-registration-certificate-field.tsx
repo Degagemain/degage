@@ -18,7 +18,7 @@ type PublicRegistrationCertificateFieldProps = {
   hint: string;
   fileName?: string | null;
   disabled?: boolean;
-  namespace?: 'registrationCertificate' | 'inspectionCertificate' | 'pinkForm';
+  namespace?: 'registrationCertificate' | 'inspectionCertificate' | 'pinkForm' | 'proofOfPurchase';
   onUpload: (file: File) => Promise<void>;
   onDownload?: () => Promise<void>;
 };

@@ -9,6 +9,7 @@ export const deleteCarOnboarding = async (id: string): Promise<void> => {
     onboarding.registrationCertificateBack?.id,
     onboarding.inspectionCertificate?.id,
     onboarding.pinkForm?.id,
+    onboarding.proofOfPurchase?.id,
   ].filter((documentId): documentId is string => documentId != null);
 
   for (const documentId of documentIds) {

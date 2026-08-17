@@ -30,6 +30,7 @@ export const carOnboardingRelationsInclude = {
   registrationCertificateBack: true,
   inspectionCertificate: true,
   pinkForm: true,
+  proofOfPurchase: true,
   stickerLinks: { include: { carSticker: true } },
 } as const satisfies Prisma.CarOnboardingInclude;
 
@@ -83,6 +84,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     carTypeOther: db.carTypeOther,
     isPurchased: db.isPurchased,
     purchasePrice: Number(db.purchasePrice),
+    proofOfPurchasePrice: Number(db.proofOfPurchasePrice),
     carValue: Number(db.carValue),
     carValueCounterProposal: Number(db.carValueCounterProposal),
     carValueCounterProposalMessage: db.carValueCounterProposalMessage,
@@ -114,6 +116,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     registrationCertificateBack: db.registrationCertificateBackId != null ? { id: db.registrationCertificateBackId } : null,
     inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
     pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
+    proofOfPurchase: db.proofOfPurchaseId != null ? { id: db.proofOfPurchaseId } : null,
     carStickers: [],
     carName: db.carName,
     shareStartDate: db.shareStartDate,
@@ -202,6 +205,12 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.pinkForm.fileName,
         }
       : null,
+    proofOfPurchase: db.proofOfPurchase
+      ? {
+          id: db.proofOfPurchaseId!,
+          name: db.proofOfPurchase.fileName,
+        }
+      : null,
     carStickers: db.stickerLinks.map((link) => ({
       id: link.carStickerId,
       name: link.carSticker.name,
@@ -221,6 +230,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     carTypeOther: onboarding.carTypeOther ?? undefined,
     isPurchased: onboarding.isPurchased,
     purchasePrice: onboarding.purchasePrice,
+    proofOfPurchasePrice: onboarding.proofOfPurchasePrice,
     carValue: onboarding.carValue,
     carValueCounterProposal: onboarding.carValueCounterProposal,
     carValueCounterProposalMessage: onboarding.carValueCounterProposalMessage ?? undefined,
@@ -254,6 +264,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
       onboarding.registrationCertificateBack != null ? { connect: { id: onboarding.registrationCertificateBack.id } } : undefined,
     inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
     pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
+    proofOfPurchase: onboarding.proofOfPurchase != null ? { connect: { id: onboarding.proofOfPurchase.id } } : undefined,
     carName: onboarding.carName ?? undefined,
     shareStartDate: onboarding.shareStartDate ?? undefined,
     carPcId: onboarding.carPcId ?? undefined,
@@ -274,6 +285,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     carTypeOther: onboarding.carTypeOther ?? undefined,
     isPurchased: onboarding.isPurchased,
     purchasePrice: onboarding.purchasePrice,
+    proofOfPurchasePrice: onboarding.proofOfPurchasePrice,
     carValue: onboarding.carValue,
     carValueCounterProposal: onboarding.carValueCounterProposal,
     carValueCounterProposalMessage: onboarding.carValueCounterProposalMessage ?? undefined,
@@ -305,6 +317,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     registrationCertificateBack: optionalRelationConnect(onboarding.registrationCertificateBack),
     inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
     pinkForm: optionalRelationConnect(onboarding.pinkForm),
+    proofOfPurchase: optionalRelationConnect(onboarding.proofOfPurchase),
     stickerLinks: {
       deleteMany: {},
       create: onboarding.carStickers.map((sticker) => ({

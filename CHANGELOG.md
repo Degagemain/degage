@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: during car onboarding, new purchased cars require a proof of purchase
+  with the purchase price including VAT visible.
 - Changed: fuel types on the simulation page follow the order set by admins.
 - Fixed: during car onboarding, info session times now show the correct Belgium
   time.
@@ -30,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: car onboarding records include a proof of purchase and the price read
+  from it for new purchased cars.
 - Added: admins can set a display order for fuel types; the simulation uses that order.
 - Added: insurers can be marked as supporting instant onboarding.
 - Added: the documentation list row menu includes Delete for manual entries.

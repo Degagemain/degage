@@ -1602,6 +1602,8 @@
         "isNewCar": "New car",
         "isVan": "Van",
         "purchasePrice": "Purchase price",
+        "proofOfPurchase": "Proof of purchase",
+        "proofOfPurchasePrice": "Proof of purchase price",
         "registrationCertificateFront": "Registration certificate (front)",
         "registrationCertificateBack": "Registration certificate (back)",
         "inspectionCertificate": "Inspection certificate",
@@ -1807,11 +1809,26 @@
           "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
           "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
         },
+        "proofOfPurchase": {
+          "upload": "Upload file",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Proof of purchase uploaded.",
+          "uploadError": "Failed to upload proof of purchase.",
+          "notRecognizedError": "We could not read your proof of purchase. Please upload a clear photo of the full document, with the purchase price including VAT visible.",
+          "download": "Download",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open proof of purchase.",
+          "currentFile": "Current file",
+          "noFile": "No file uploaded yet.",
+          "help": "JPEG or PNG. Maximum {maxSizeMb} MB.",
+          "fileTooLarge": "This file is too large. Maximum {maxSizeMb} MB allowed."
+        },
         "help": {
           "counterReadOnly": "Set by the owner during negotiation.",
           "carTypeOtherReadOnly": "Set by the user when their car type is not in the catalog.",
           "isPurchasedReadOnly": "Set when the record is created and cannot be changed here.",
           "isNewCarReadOnly": "Set when the record is created and cannot be changed here.",
+          "proofOfPurchasePrice": "Amount read from the proof of purchase, including VAT.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
           "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
           "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month.",
@@ -2961,6 +2978,21 @@
           "download": "View",
           "downloading": "Opening…",
           "downloadError": "Failed to open pink form.",
+          "currentFile": "Current file",
+          "noFile": "No file uploaded yet."
+        },
+        "proofOfPurchase": {
+          "panelTitle": "Proof of purchase",
+          "label": "Proof of purchase",
+          "hint": "Invoice or purchase document. The purchase price including VAT must be visible.",
+          "upload": "Upload file",
+          "uploading": "Uploading…",
+          "uploadSuccess": "Proof of purchase uploaded.",
+          "uploadError": "Failed to upload proof of purchase.",
+          "notRecognizedError": "We could not read your proof of purchase. Please upload a clear photo of the full document, with the purchase price including VAT visible.",
+          "download": "View",
+          "downloading": "Opening…",
+          "downloadError": "Failed to open proof of purchase.",
           "currentFile": "Current file",
           "noFile": "No file uploaded yet."
         }

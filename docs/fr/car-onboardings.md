@@ -52,7 +52,7 @@ Cette étape est complète lorsque la rue, le numéro, la commune et le téléph
 
 Recueille les caractéristiques du véhicule : marque, type de carburant, type de véhicule (ou texte libre), kilométrage, places, date de première
 immatriculation, utilitaire, véhicule acheté, véhicule neuf, prix d'achat, amortissement par km, scans du certificat d'immatriculation (recto et
-verso), certificat de contrôle technique et formulaire rose.
+verso), certificat de contrôle technique, formulaire rose et preuve d'achat.
 
 Les images de documents téléversées sont vérifiées automatiquement avant d'être enregistrées. Si une photo est floue ou ne correspond pas au
 type de document attendu, le téléversement est refusé et l'utilisateur est invité à téléverser une photo nette. Le recto du certificat
@@ -61,8 +61,8 @@ encore vides.
 
 Cette étape est complète lorsque la marque, le type de carburant et le type de véhicule sont tous définis, et que tous les documents requis pour
 la situation du véhicule sont téléversés : certificat d'immatriculation recto et verso lorsque le véhicule n'a pas été acheté ; certificat de
-contrôle technique en plus lorsque le véhicule a plus de quatre ans ; formulaire rose lorsque le véhicule a été acheté et n'est pas neuf ; aucun
-document lorsque le véhicule a été acheté et est neuf.
+contrôle technique en plus lorsque le véhicule a plus de quatre ans ; formulaire rose lorsque le véhicule a été acheté et n'est pas neuf ;
+preuve d'achat lorsque le véhicule a été acheté et est neuf. Le prix d'achat TTC (TVA comprise) doit être visible sur la preuve d'achat.
 
 ### Assurance
 
@@ -215,6 +215,8 @@ compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'ab
 | Certificat d'immatriculation (verso) | Scan ou photo du verso du certificat d'immatriculation.                                                                                |
 | Certificat de contrôle technique     | Rapport de contrôle technique valide (requis pour les véhicules de plus de 4 ans).                                                     |
 | Formulaire rose                      | Formulaire de cession du véhicule (formulaire rose) pour les véhicules achetés d'occasion.                                             |
+| Preuve d'achat                       | Facture ou document d'achat pour les véhicules neufs achetés. Le prix d'achat TTC (TVA comprise) doit être visible.                    |
+| Prix sur la preuve d'achat           | Montant d'achat TTC (TVA comprise) lu sur la preuve d'achat.                                                                           |
 | Valeur du véhicule                   | Valeur actuelle estimée du véhicule (proposée par l'admin).                                                                            |
 | Contre-proposition                   | Valeur alternative proposée par le propriétaire.                                                                                       |
 | Message de contre-proposition        | Explication optionnelle de la contre-proposition.                                                                                      |

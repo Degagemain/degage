@@ -1602,6 +1602,8 @@
         "isNewCar": "Nieuwe wagen",
         "isVan": "Bestelwagen",
         "purchasePrice": "Aankoopprijs",
+        "proofOfPurchase": "Aankoopbewijs",
+        "proofOfPurchasePrice": "Prijs op aankoopbewijs",
         "registrationCertificateFront": "Inschrijvingsbewijs (voorzijde)",
         "registrationCertificateBack": "Inschrijvingsbewijs (achterzijde)",
         "inspectionCertificate": "Keuringsbewijs",
@@ -1807,11 +1809,26 @@
           "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
           "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
         },
+        "proofOfPurchase": {
+          "upload": "Bestand uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Aankoopbewijs geüpload.",
+          "uploadError": "Uploaden van aankoopbewijs mislukt.",
+          "notRecognizedError": "We konden je aankoopbewijs niet lezen. Upload een duidelijke foto van het volledige document, met de aankoopprijs inclusief btw zichtbaar.",
+          "download": "Downloaden",
+          "downloading": "Openen…",
+          "downloadError": "Aankoopbewijs openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen bestand geüpload.",
+          "help": "JPEG of PNG. Maximaal {maxSizeMb} MB.",
+          "fileTooLarge": "Dit bestand is te groot. Maximaal {maxSizeMb} MB toegestaan."
+        },
         "help": {
           "counterReadOnly": "Ingesteld door de eigenaar tijdens onderhandeling.",
           "carTypeOtherReadOnly": "Ingesteld door de gebruiker wanneer het voertuigtype niet in de catalogus staat.",
           "isPurchasedReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
           "isNewCarReadOnly": "Ingesteld bij het aanmaken van het record en hier niet wijzigbaar.",
+          "proofOfPurchasePrice": "Bedrag gelezen van het aankoopbewijs, inclusief btw.",
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
           "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft.",
           "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand.",
@@ -2970,6 +2987,21 @@
           "download": "Bekijken",
           "downloading": "Openen…",
           "downloadError": "Roze formulier openen mislukt.",
+          "currentFile": "Huidig bestand",
+          "noFile": "Nog geen bestand geüpload."
+        },
+        "proofOfPurchase": {
+          "panelTitle": "Aankoopbewijs",
+          "label": "Aankoopbewijs",
+          "hint": "Factuur of aankoopdocument. De aankoopprijs inclusief btw moet zichtbaar zijn.",
+          "upload": "Bestand uploaden",
+          "uploading": "Uploaden…",
+          "uploadSuccess": "Aankoopbewijs geüpload.",
+          "uploadError": "Uploaden van aankoopbewijs mislukt.",
+          "notRecognizedError": "We konden je aankoopbewijs niet lezen. Upload een duidelijke foto van het volledige document, met de aankoopprijs inclusief btw zichtbaar.",
+          "download": "Bekijken",
+          "downloading": "Openen…",
+          "downloadError": "Aankoopbewijs openen mislukt.",
           "currentFile": "Huidig bestand",
           "noFile": "Nog geen bestand geüpload."
         }

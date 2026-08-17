@@ -311,6 +311,34 @@ export default function EditCarOnboardingPage() {
     await downloadFileFromUrl(data.url, carOnboarding?.pinkForm?.name);
   };
 
+  const handleUploadProofOfPurchase = async (file: File) => {
+    if (!id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiPutForm(`/api/car-onboardings/${id}/proof-of-purchase`, formData);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.proofOfPurchase.uploadError'), {
+        document_not_recognized: t('form.proofOfPurchase.notRecognizedError'),
+      });
+      toast.error(message);
+      throw new Error(message);
+    }
+    toast.success(t('form.proofOfPurchase.uploadSuccess'));
+    await loadCarOnboarding({ silent: true });
+  };
+
+  const handleDownloadProofOfPurchase = async () => {
+    if (!id) return;
+    const response = await fetch(`/api/car-onboardings/${id}/proof-of-purchase/view-url`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.proofOfPurchase.downloadError'));
+      toast.error(message);
+      throw new Error(message);
+    }
+    const data: { url: string } = await response.json();
+    await downloadFileFromUrl(data.url, carOnboarding?.proofOfPurchase?.name);
+  };
+
   const handleDelete = async () => {
     if (!id) return;
     const response = await apiDelete(`/api/car-onboardings/${id}`);
@@ -405,6 +433,8 @@ export default function EditCarOnboardingPage() {
               onDownloadInspectionCertificate={handleDownloadInspectionCertificate}
               onUploadPinkForm={handleUploadPinkForm}
               onDownloadPinkForm={handleDownloadPinkForm}
+              onUploadProofOfPurchase={handleUploadProofOfPurchase}
+              onDownloadProofOfPurchase={handleDownloadProofOfPurchase}
             />
           )
         )}

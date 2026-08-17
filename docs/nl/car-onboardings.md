@@ -52,7 +52,7 @@ Deze stap is compleet wanneer straat, huisnummer, gemeente en telefoon zijn inge
 
 Verzamelt voertuigkenmerken: merk, brandstoftype, voertuigtype (of vrije tekst), kilometerstand, zitplaatsen, datum eerste inschrijving,
 bestelwagen, aangekochte wagen, nieuwe wagen, aankoopprijs, afschrijving per km, scans van het inschrijvingsbewijs (voor- en achterzijde),
-keuringsbewijs en roze formulier.
+keuringsbewijs, roze formulier en aankoopbewijs.
 
 Geüploade documentfoto's worden automatisch gecontroleerd voordat ze worden opgeslagen. Als een foto onduidelijk is of niet overeenkomt met het
 verwachte documenttype, wordt de upload geweigerd en wordt de gebruiker gevraagd een duidelijke foto te uploaden. De voorzijde van het
@@ -60,7 +60,8 @@ inschrijvingsbewijs kan ook VIN, nummerplaat en datum eerste inschrijving invull
 
 Deze stap is compleet wanneer merk, brandstoftype en voertuigtype zijn ingesteld, en alle vereiste documenten voor de voertuigsituatie zijn
 geüpload: voor- en achterkant van het inschrijvingsbewijs wanneer de wagen niet gekocht is; keuringsattest bovendien wanneer de wagen ouder is
-dan vier jaar; roze formulier wanneer de wagen gekocht is en niet nieuw; geen documenten wanneer de wagen gekocht is en nieuw.
+dan vier jaar; roze formulier wanneer de wagen gekocht is en niet nieuw; aankoopbewijs wanneer de wagen gekocht is en nieuw. De aankoopprijs
+inclusief btw moet zichtbaar zijn op het aankoopbewijs.
 
 ### Verzekering
 
@@ -210,6 +211,8 @@ gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de admin eerst b
 | Inschrijvingsbewijs achterzijde   | Scan of foto van de achterzijde van het inschrijvingsbewijs.                                                                        |
 | Keuringsbewijs                    | Geldig keuringsrapport (verplicht voor wagens ouder dan 4 jaar).                                                                    |
 | Roze formulier                    | Overdrachtsformulier (roze formulier) voor aangekochte tweedehandswagens.                                                           |
+| Aankoopbewijs                     | Factuur of aankoopdocument voor nieuwe aangekochte wagens. De aankoopprijs inclusief btw moet zichtbaar zijn.                       |
+| Prijs op aankoopbewijs            | Aankoopbedrag inclusief btw, gelezen van het aankoopbewijs.                                                                         |
 | Waarde van de wagen               | Geschatte huidige waarde van het voertuig (voorgesteld door admin).                                                                 |
 | Tegenvoorstel                     | Alternatieve waarde voorgesteld door de eigenaar.                                                                                   |
 | Tegenvoorstel bericht             | Optionele toelichting bij het tegenvoorstel.                                                                                        |
