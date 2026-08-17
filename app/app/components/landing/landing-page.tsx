@@ -20,6 +20,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { LandingHeader } from '@/app/components/landing/landing-header';
 import { PublicHeroGlow } from '@/app/components/public/public-hero-glow';
 import {
@@ -130,10 +131,14 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                 <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">{t('hero.title')}</h1>
               </Reveal>
               <Reveal delayMs={90}>
-                <p className={cn(landingTitleToBody, 'text-lg leading-relaxed sm:text-xl', styles.textMuted)}>{t('hero.subtitle')}</p>
+                <p className={cn(landingTitleToBody, 'text-lg leading-relaxed sm:text-xl', styles.textMuted)}>
+                  <InlineCopy>{t('hero.subtitle')}</InlineCopy>
+                </p>
               </Reveal>
               <Reveal delayMs={160}>
-                <p className={cn('mx-auto mt-4 max-w-2xl text-base leading-relaxed', styles.textSubtle)}>{t('hero.intro')}</p>
+                <p className={cn('mx-auto mt-4 max-w-2xl text-base leading-relaxed', styles.textSubtle)}>
+                  <InlineCopy>{t('hero.intro')}</InlineCopy>
+                </p>
               </Reveal>
               <Reveal delayMs={220}>
                 <div className={cn(landingSectionBlockGap, 'flex flex-col items-center gap-2')}>
@@ -143,7 +148,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                       <ArrowRight className="size-4 transition-transform duration-300" aria-hidden />
                     </Link>
                   </Button>
-                  <p className={cn('text-sm', styles.textSubtle)}>{t('hero.ctaHint')}</p>
+                  <p className={cn('text-sm', styles.textSubtle)}>
+                    <InlineCopy>{t('hero.ctaHint')}</InlineCopy>
+                  </p>
                 </div>
               </Reveal>
             </div>
@@ -165,7 +172,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                         <Icon className="size-5" aria-hidden />
                       </div>
                       <h2 className="text-base font-semibold">{t(`benefits.${key}.title`)}</h2>
-                      <p className={cn('mt-2 text-sm leading-relaxed', styles.textMuted)}>{t(`benefits.${key}.desc`)}</p>
+                      <p className={cn('mt-2 text-sm leading-relaxed', styles.textMuted)}>
+                        <InlineCopy>{t(`benefits.${key}.desc`)}</InlineCopy>
+                      </p>
                     </article>
                   </Reveal>
                 );
@@ -182,10 +191,18 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                     {t('about.eyebrow')}
                   </div>
                   <h2 className={cn(landingEyebrowToTitle, 'text-3xl font-semibold tracking-tight sm:text-4xl')}>{t('about.title')}</h2>
-                  <p className={cn(landingTitleToBody, 'text-lg leading-relaxed italic', styles.textBody)}>{t('about.lead')}</p>
-                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph1')}</p>
-                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph2')}</p>
-                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>{t('about.paragraph3')}</p>
+                  <p className={cn(landingTitleToBody, 'text-lg leading-relaxed italic', styles.textBody)}>
+                    <InlineCopy>{t('about.lead')}</InlineCopy>
+                  </p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>
+                    <InlineCopy>{t('about.paragraph1')}</InlineCopy>
+                  </p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>
+                    <InlineCopy>{t('about.paragraph2')}</InlineCopy>
+                  </p>
+                  <p className={cn('mt-4 text-base leading-relaxed', styles.textMuted)}>
+                    <InlineCopy>{t('about.paragraph3')}</InlineCopy>
+                  </p>
 
                   <dl className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
                     {ABOUT_STATS.map((key) => (
@@ -226,7 +243,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
               <div className="mx-auto max-w-2xl text-center">
                 <p className="text-sm font-semibold tracking-wide text-[var(--public-accent)] uppercase">{t('eligibility.eyebrow')}</p>
                 <h2 className={cn(landingEyebrowToTitle, 'text-3xl font-semibold tracking-tight sm:text-4xl')}>{t('eligibility.title')}</h2>
-                <p className={cn(landingTitleToBody, 'text-base leading-relaxed', styles.textMuted)}>{t('eligibility.body')}</p>
+                <p className={cn(landingTitleToBody, 'text-base leading-relaxed', styles.textMuted)}>
+                  <InlineCopy>{t('eligibility.body')}</InlineCopy>
+                </p>
               </div>
 
               <div className={cn(landingSectionBlockGap, 'grid gap-5 sm:gap-6 lg:grid-cols-2')}>
@@ -241,7 +260,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                         >
                           !
                         </span>
-                        {tSim(key)}
+                        <InlineCopy>{tSim(key)}</InlineCopy>
                       </li>
                     ))}
                   </ul>
@@ -258,7 +277,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                         >
                           ✓
                         </span>
-                        {tSim(key)}
+                        <InlineCopy>{tSim(key)}</InlineCopy>
                       </li>
                     ))}
                   </ul>
@@ -325,7 +344,9 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
                       <AccordionTrigger className={cn('py-3 text-base font-medium hover:no-underline', styles.textHeading)}>
                         {t(`faq.${key}.q`)}
                       </AccordionTrigger>
-                      <AccordionContent className={cn('text-sm leading-relaxed', styles.textMuted)}>{t(`faq.${key}.a`)}</AccordionContent>
+                      <AccordionContent className={cn('text-sm leading-relaxed', styles.textMuted)}>
+                        <InlineCopy>{t(`faq.${key}.a`)}</InlineCopy>
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -376,7 +397,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             <div className="rounded-3xl bg-[var(--public-brand)] px-6 py-12 text-center text-white sm:px-10 sm:py-14 lg:px-12 lg:py-16">
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t('finalCta.title')}</h2>
               <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[var(--public-on-brand-muted)]/90 sm:mt-5">
-                {t('finalCta.body')}
+                <InlineCopy>{t('finalCta.body')}</InlineCopy>
               </p>
               <Button
                 asChild

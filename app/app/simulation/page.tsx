@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
@@ -237,7 +238,9 @@ export default function SimulationPage() {
       {screen === STEP_SITUATION && (
         <div className={styles.page}>
           <h1 className={styles.title}>{t('situatie.title')}</h1>
-          <p className={`${styles.body} ${styles.bodyAfterTitle}`}>{t('situatie.body')}</p>
+          <p className={`${styles.body} ${styles.bodyAfterTitle}`}>
+            <InlineCopy>{t('situatie.body')}</InlineCopy>
+          </p>
           <div className={styles.tileGrid}>
             {[
               {
@@ -273,7 +276,9 @@ export default function SimulationPage() {
           </div>
           {carChoice === 'newCar' && (
             <div className={styles.amberBanner}>
-              <p className={styles.amberBannerText}>{t('situatie.kooptBanner')}</p>
+              <p className={styles.amberBannerText}>
+                <InlineCopy>{t('situatie.kooptBanner')}</InlineCopy>
+              </p>
             </div>
           )}
           <div className={styles.buttonRow}>
@@ -285,7 +290,9 @@ export default function SimulationPage() {
           <section className={styles.koopgidsSection} aria-label={t('situatie.koopgidsEyebrow')}>
             <p className={styles.koopgidsEyebrow}>{t('situatie.koopgidsEyebrow')}</p>
             <h2 className={styles.koopgidsTitle}>{t('situatie.koopgidsTitle')}</h2>
-            <p className={`${styles.body} ${styles.koopgidsBody}`}>{t('situatie.koopgidsBody')}</p>
+            <p className={`${styles.body} ${styles.koopgidsBody}`}>
+              <InlineCopy>{t('situatie.koopgidsBody')}</InlineCopy>
+            </p>
 
             <div className={styles.koopgidsCard}>
               <div className={styles.koopgidsCardTitleKnockout}>{t('situatie.koopgidsKnockoutTitle')}</div>
@@ -301,7 +308,9 @@ export default function SimulationPage() {
                   <span className={styles.koopgidsIconKnockout} aria-hidden>
                     !
                   </span>
-                  <span className={styles.koopgidsCriterionText}>{t(key)}</span>
+                  <span className={styles.koopgidsCriterionText}>
+                    <InlineCopy>{t(key)}</InlineCopy>
+                  </span>
                 </div>
               ))}
             </div>
@@ -313,14 +322,16 @@ export default function SimulationPage() {
                   <span className={styles.koopgidsIconIdeal} aria-hidden>
                     ✓
                   </span>
-                  <span className={styles.koopgidsCriterionText}>{t(key)}</span>
+                  <span className={styles.koopgidsCriterionText}>
+                    <InlineCopy>{t(key)}</InlineCopy>
+                  </span>
                 </div>
               ))}
             </div>
 
             <div className={styles.koopgidsTip}>
               <p className={styles.koopgidsTipText}>
-                <strong>{t('situatie.koopgidsTipLead')}</strong> {t('situatie.koopgidsTipBody')}
+                <strong>{t('situatie.koopgidsTipLead')}</strong> <InlineCopy>{t('situatie.koopgidsTipBody')}</InlineCopy>
               </p>
             </div>
           </section>
@@ -335,7 +346,7 @@ export default function SimulationPage() {
           <p className={styles.eyebrow}>{t('stepOf', { current: 1, total: NUMBERED_STEP_TOTAL })}</p>
           <h1 className={styles.title}>{t('wageninfo.title')}</h1>
           <p className={`${styles.body} ${styles.bodyAfterTitle}`}>
-            {t('wageninfo.body')}
+            <InlineCopy>{t('wageninfo.body')}</InlineCopy>
             {process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL && (
               <>
                 {' '}
@@ -348,7 +359,9 @@ export default function SimulationPage() {
 
           <div className={styles.field}>
             <label className={styles.fieldLabel}>{t('wageninfo.bedrijfswagenLabel')}</label>
-            <p className={styles.fieldHint}>{t('wageninfo.bedrijfswagenHint')}</p>
+            <p className={styles.fieldHint}>
+              <InlineCopy>{t('wageninfo.bedrijfswagenHint')}</InlineCopy>
+            </p>
             <div className={styles.toggleRow}>
               <button
                 type="button"
@@ -362,14 +375,18 @@ export default function SimulationPage() {
             </div>
             {isCommercialVehicle && (
               <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="alert">
-                <p className={styles.amberBannerText}>{t('wageninfo.bedrijfswagenWarning')}</p>
+                <p className={styles.amberBannerText}>
+                  <InlineCopy>{t('wageninfo.bedrijfswagenWarning')}</InlineCopy>
+                </p>
               </div>
             )}
           </div>
 
           <div className={styles.field}>
             <label className={styles.fieldLabel}>{t('wageninfo.gemeenteLabel')}</label>
-            <p className={styles.fieldHint}>{t('wageninfo.gemeenteHint')}</p>
+            <p className={styles.fieldHint}>
+              <InlineCopy>{t('wageninfo.gemeenteHint')}</InlineCopy>
+            </p>
             <SearchableSelect
               unstyledTrigger
               triggerClassName={styles.searchDropdownTrigger}
@@ -558,7 +575,9 @@ export default function SimulationPage() {
                           </button>
                         </PopoverTrigger>
                         <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
-                          <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                          <p className="text-muted-foreground m-0 leading-relaxed">
+                            <InlineCopy>{t('wageninfo.firstRegistrationHint')}</InlineCopy>
+                          </p>
                         </PopoverContent>
                       </Popover>
                     </div>
@@ -600,7 +619,9 @@ export default function SimulationPage() {
                       </button>
                     </PopoverTrigger>
                     <PopoverContent align="start" side="top" className="max-w-[min(18rem,calc(100vw-2rem))] text-sm">
-                      <p className="text-muted-foreground m-0 leading-relaxed">{t('wageninfo.firstRegistrationHint')}</p>
+                      <p className="text-muted-foreground m-0 leading-relaxed">
+                        <InlineCopy>{t('wageninfo.firstRegistrationHint')}</InlineCopy>
+                      </p>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -626,7 +647,9 @@ export default function SimulationPage() {
               placeholder={t('wageninfo.ownerKmPlaceholder')}
               className={styles.input}
             />
-            <p className={styles.fieldHint}>{t('wageninfo.ownerKmHint')}</p>
+            <p className={styles.fieldHint}>
+              <InlineCopy>{t('wageninfo.ownerKmHint')}</InlineCopy>
+            </p>
           </div>
 
           <div className={styles.buttonRow}>

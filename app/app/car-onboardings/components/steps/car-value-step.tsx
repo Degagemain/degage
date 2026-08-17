@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { CarOnboardingCarValueStatus } from '@/domain/car-onboarding.model';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
@@ -76,7 +77,11 @@ export function CarValueStep() {
     <StepLayout stepId="car-value">
       <PublicInfoPanel title={t('steps.carValue.panelTitle')} body={t('steps.carValue.panelBody')} />
 
-      {showWaiting ? <p className={styles.pageIntro}>{t('steps.carValue.waitingForProposal')}</p> : null}
+      {showWaiting ? (
+        <p className={styles.pageIntro}>
+          <InlineCopy>{t('steps.carValue.waitingForProposal')}</InlineCopy>
+        </p>
+      ) : null}
 
       {!showWaiting ? (
         <>
@@ -123,7 +128,11 @@ export function CarValueStep() {
                 </PublicPanel>
               ) : null}
 
-              {agreed === true ? <div className={styles.bannerSuccess}>{t('steps.carValue.agreeConfirmHint')}</div> : null}
+              {agreed === true ? (
+                <div className={styles.bannerSuccess}>
+                  <InlineCopy>{t('steps.carValue.agreeConfirmHint')}</InlineCopy>
+                </div>
+              ) : null}
             </>
           ) : null}
 

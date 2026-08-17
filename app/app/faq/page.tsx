@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { PublicPage } from '@/app/components/public/public-shell';
 
 import { FaqArticleHero } from './components/faq-article-hero';
@@ -14,7 +15,9 @@ export default function FaqHubPage() {
   return (
     <PublicPage>
       <h1 className="text-foreground mb-2 text-[28px] leading-tight font-extrabold tracking-tight">{t('title')}</h1>
-      <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed">{t('intro')}</p>
+      <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed">
+        <InlineCopy>{t('intro')}</InlineCopy>
+      </p>
       <div className="mt-8 w-full">
         <FaqSearch />
       </div>

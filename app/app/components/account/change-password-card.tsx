@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { AuthPasswordInput } from '@/app/components/auth/auth-password-input';
 import { AuthPrimaryButton } from '@/app/components/auth/auth-primary-button';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
@@ -66,7 +67,9 @@ export function ChangePasswordCard() {
       <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle>{t('changePassword')}</CardTitle>
-          <CardDescription>{t('noPasswordSignIn')}</CardDescription>
+          <CardDescription>
+            <InlineCopy>{t('noPasswordSignIn')}</InlineCopy>
+          </CardDescription>
         </CardHeader>
       </Card>
     );
@@ -91,7 +94,9 @@ export function ChangePasswordCard() {
     <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('changePassword')}</CardTitle>
-        <CardDescription>{t('changePasswordDescription')}</CardDescription>
+        <CardDescription>
+          <InlineCopy>{t('changePasswordDescription')}</InlineCopy>
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -102,7 +107,9 @@ export function ChangePasswordCard() {
           <div className="space-y-2">
             <Label htmlFor="new-password-account">{t('newPassword')}</Label>
             <AuthPasswordInput id="new-password-account" autoComplete="new-password" disabled={loading} {...form.register('newPassword')} />
-            <p className="text-muted-foreground text-xs">{t('changePasswordInstructions')}</p>
+            <p className="text-muted-foreground text-xs">
+              <InlineCopy>{t('changePasswordInstructions')}</InlineCopy>
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirm-password-account">{t('confirmPassword')}</Label>

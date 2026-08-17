@@ -5,6 +5,7 @@ import { Lock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { isPreparationConfirmable, isPreparationConfirmed } from '@/domain/car-onboarding.model';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { apiPut } from '@/app/lib/api-client';
@@ -64,7 +65,9 @@ export function PreparationConfirmCard() {
       >
         <div className={styles.confirmCardBody}>
           <h3 className={styles.confirmCardTitle}>{t('confirmInfo.title')}</h3>
-          <p className={styles.confirmCardSubtitle}>{confirmed ? t('confirmInfo.confirmedSubtitle') : t('confirmInfo.subtitle')}</p>
+          <p className={styles.confirmCardSubtitle}>
+            <InlineCopy>{confirmed ? t('confirmInfo.confirmedSubtitle') : t('confirmInfo.subtitle')}</InlineCopy>
+          </p>
         </div>
         <div className={styles.confirmCardActions}>
           {confirmed ? (
@@ -87,7 +90,9 @@ export function PreparationConfirmCard() {
         <DialogContent showCloseButton={false} className={cn(styles.root, styles.confirmDialog)} overlayClassName={styles.confirmDialogOverlay}>
           <DialogHeader className={styles.confirmDialogHeader}>
             <DialogTitle className={styles.confirmDialogTitle}>{t('confirmInfo.dialogTitle')}</DialogTitle>
-            <DialogDescription className={styles.confirmDialogDescription}>{t('confirmInfo.dialogDescription')}</DialogDescription>
+            <DialogDescription className={styles.confirmDialogDescription}>
+              <InlineCopy>{t('confirmInfo.dialogDescription')}</InlineCopy>
+            </DialogDescription>
           </DialogHeader>
 
           <label className={styles.checkboxLabel}>

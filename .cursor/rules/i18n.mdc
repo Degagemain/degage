@@ -68,6 +68,30 @@ export function MyComponent() {
 t('welcome', { name: user.name })
 ```
 
+### Links in translated prose
+
+Use `InlineCopy` (`app/app/components/inline-copy.tsx`) for **sentence-level copy** on public and owner screens (landing, simulation, onboarding, dashboard, FAQ intro, auth/account). Admins and translators can embed links in the message string:
+
+```json
+"contactSupport": "Questions? Email [support](mailto:hello@example.com) or visit our [website](https://www.example.com)."
+```
+
+```tsx
+<p>
+  <InlineCopy>{t('contactSupport')}</InlineCopy>
+</p>
+```
+
+Supported syntax: `[label](https://…)`, `[label](http://…)`, `[label](mailto:…)`. Interpolate with `t()` first, then pass the result to `InlineCopy`.
+
+**Use `InlineCopy` for:** paragraphs, banners, field hints, info panels, card descriptions, help text.
+
+**Do not use `InlineCopy` for:** buttons, links, `placeholder`, `aria-label`, `title`, `alt`, CSV/export labels, email subjects, or any other string-typed API. Nested `<a>` inside a button or link is invalid HTML.
+
+For **known destinations owned by the app** (privacy policy, Degapp URL in code), prefer `t.rich` with a mapped tag so the `href` stays in code. `InlineCopy` is for ad-hoc URLs in the copy itself, including translation overrides.
+
+FAQ article bodies are documentation markdown, not `InlineCopy`.
+
 ## API Request Context
 
 API routes can access locale via `withContext` wrapper:
@@ -158,6 +182,7 @@ When adding new auth strings, update all three message files and use them in `ap
 | `app/i18n/request.ts` | Server-side message loading |
 | `proxy.ts` | Locale detection from headers |
 | `messages/*.json` | Translation files |
+| `app/app/components/inline-copy.tsx` | Renders `[label](url)` links in public/owner prose |
 | `app/context/request-context.ts` | AsyncLocalStorage for API context |
 | `app/api/with-context.ts` | API route wrapper |
 | `app/api/user/locale/route.ts` | Locale update endpoint |

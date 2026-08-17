@@ -290,7 +290,7 @@
       "notFound": "Clé de traduction introuvable.",
       "backToList": "Retour aux traductions",
       "detailEyebrow": "Clé de traduction",
-      "detailHelp": "Utilisez les onglets de langue pour modifier les surcharges. Effacez une valeur enregistrée puis sauvegardez pour supprimer cette surcharge.",
+      "detailHelp": "Utilisez les onglets de langue pour modifier les surcharges. Effacez une valeur enregistrée puis sauvegardez pour supprimer cette surcharge. Sur les pages publiques, vous pouvez ajouter un lien comme [notre site](https://www.example.com) ou [nous écrire](mailto:hello@example.com).",
       "columns": {
         "key": "Clé",
         "value": "Valeur",

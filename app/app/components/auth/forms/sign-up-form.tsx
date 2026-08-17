@@ -17,6 +17,7 @@ import { authPath, authViewPaths } from '@/app/components/auth/auth-view-paths';
 import { usePostAuthRedirect } from '@/app/components/auth/hooks/use-post-auth-redirect';
 import { getAuthErrorMessage } from '@/app/components/auth/lib/auth-errors';
 import { isSocialAuthEnabled } from '@/app/components/auth/lib/auth-features';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { authClient } from '@/app/lib/auth';
@@ -104,7 +105,9 @@ export function SignUpForm({ redirectTo, search }: SignUpFormProps) {
               disabled={loading}
               {...form.register('password')}
             />
-            <p className="text-muted-foreground text-xs">{t('changePasswordInstructions')}</p>
+            <p className="text-muted-foreground text-xs">
+              <InlineCopy>{t('changePasswordInstructions')}</InlineCopy>
+            </p>
             {form.formState.errors.password ? <p className="text-sm text-red-600">{form.formState.errors.password.message}</p> : null}
           </div>
 

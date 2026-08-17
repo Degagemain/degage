@@ -18,3 +18,7 @@ database.
 
 Zoeken gebeurt in tekstwaarden, niet in paden. Gebruik **Patch downloaden** wanneer de overrides klaar zijn voor verwerking door ontwikkelaars.
 De lijst toont de waarde voor je huidige taal. Open een sleutel om de originele tekst te bekijken en overrides via de taaltabs te bewerken.
+
+Op publieke pagina's (landing, simulatie, onboarding, dashboard, help, account) kun je een website- of e-maillink in een zin zetten. Zet de
+zichtbare woorden tussen vierkante haken, gevolgd door het adres tussen ronde haken. Websiteadressen beginnen met http of https; e-mailadressen
+beginnen met mailto. De override-editor toont een voorbeeld. Dit geldt niet voor korte labels zoals knopnamen.

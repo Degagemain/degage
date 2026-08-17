@@ -5,6 +5,7 @@ import { Info } from 'lucide-react';
 import { type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { cn } from '@/app/lib/utils';
 
 import type { StepState } from '../lib/types';
@@ -26,7 +27,11 @@ export function PublicField({ label, hint, children }: { label: string; hint?: s
   return (
     <div className={styles.field}>
       <label className={styles.fieldLabel}>{label}</label>
-      {hint ? <p className={styles.fieldHint}>{hint}</p> : null}
+      {hint ? (
+        <p className={styles.fieldHint}>
+          <InlineCopy>{hint}</InlineCopy>
+        </p>
+      ) : null}
       {children}
     </div>
   );
@@ -58,7 +63,11 @@ export function PublicPanel({ title, body, children }: { title?: string; body?: 
   return (
     <div className={styles.panel}>
       {title ? <h3 className={styles.panelTitle}>{title}</h3> : null}
-      {body ? <p className={styles.panelBody}>{body}</p> : null}
+      {body ? (
+        <p className={styles.panelBody}>
+          <InlineCopy>{body}</InlineCopy>
+        </p>
+      ) : null}
       {children}
     </div>
   );
@@ -70,7 +79,9 @@ export function PublicInfoPanel({ title, body }: { title: string; body: string }
       <Info className={styles.infoPanelIcon} aria-hidden />
       <div className={styles.infoPanelContent}>
         <h3 className={styles.infoPanelTitle}>{title}</h3>
-        <p className={styles.infoPanelBody}>{body}</p>
+        <p className={styles.infoPanelBody}>
+          <InlineCopy>{body}</InlineCopy>
+        </p>
       </div>
     </div>
   );

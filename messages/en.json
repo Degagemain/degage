@@ -290,7 +290,7 @@
       "notFound": "Translation key not found.",
       "backToList": "Back to translations",
       "detailEyebrow": "Translation key",
-      "detailHelp": "Use the language tabs to edit overrides. Clear a saved value and save again to remove that override.",
+      "detailHelp": "Use the language tabs to edit overrides. Clear a saved value and save again to remove that override. On public pages you can add a link as [our website](https://www.example.com) or [email us](mailto:hello@example.com).",
       "columns": {
         "key": "Key",
         "value": "Value",

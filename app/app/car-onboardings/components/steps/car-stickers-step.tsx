@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import type { CarSticker } from '@/domain/car-sticker.model';
 import type { Page } from '@/domain/page.model';
 import { MaxTake } from '@/domain/utils';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 
@@ -124,8 +125,16 @@ export function CarStickersStep() {
     <StepLayout stepId="car-stickers">
       <PublicInfoPanel title={t('steps.carStickers.panelTitle')} body={t('steps.carStickers.panelBody')} />
       <PublicPanel>
-        {loading ? <p className={styles.panelBody}>{t('steps.carStickers.loading')}</p> : null}
-        {loadError ? <p className={styles.panelBody}>{t('steps.carStickers.loadError')}</p> : null}
+        {loading ? (
+          <p className={styles.panelBody}>
+            <InlineCopy>{t('steps.carStickers.loading')}</InlineCopy>
+          </p>
+        ) : null}
+        {loadError ? (
+          <p className={styles.panelBody}>
+            <InlineCopy>{t('steps.carStickers.loadError')}</InlineCopy>
+          </p>
+        ) : null}
         {!loading && !loadError ? (
           <div className={styles.stickerGrid}>
             {stickers.map((sticker) => {

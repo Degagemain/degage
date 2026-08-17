@@ -3,6 +3,7 @@
 import { capture } from '@/app/lib/posthog';
 import { apiPost } from '@/app/lib/api-client';
 import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
+import { InlineCopy } from '@/app/components/inline-copy';
 import type { PublicSimulation } from '@/actions/simulation/read';
 import { analyticsSimulationStepEvent } from '@/domain/analytics-event.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
@@ -242,7 +243,11 @@ export function SimulationResultView({ simulation }: Props) {
                     </div>
                   )}
                 </div>
-                {resultHeroAutoState === 'gone' && <div className={styles.resultHeroGoneMessage}>{t('result.goneMessage')}</div>}
+                {resultHeroAutoState === 'gone' && (
+                  <div className={styles.resultHeroGoneMessage}>
+                    <InlineCopy>{t('result.goneMessage')}</InlineCopy>
+                  </div>
+                )}
               </div>
               <div className={styles.resultHeroInner}>
                 <h2 className={`${styles.resultHeroTitle} ${styles.resultHeroTitleLight}`}>{t('result.successTitle')}</h2>
@@ -309,7 +314,9 @@ export function SimulationResultView({ simulation }: Props) {
                   <div className={`${styles.loadingCircle} ${styles.loadingCirclePast}`}>✓</div>
                   <div>
                     <div className={`${styles.body} ${styles.resultCheckRowLead}`}>{t(row.labelKey)}</div>
-                    <div className={styles.resultCheckRowSub}>{t(row.subKey)}</div>
+                    <div className={styles.resultCheckRowSub}>
+                      <InlineCopy>{t(row.subKey)}</InlineCopy>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -341,12 +348,16 @@ export function SimulationResultView({ simulation }: Props) {
                     </span>
                   </div>
                   <h2 className={styles.noGoHeroTitle}>{t('result.notOkTitle')}</h2>
-                  <p className={styles.noGoHeroIntro}>{t('result.notOkIntro')}</p>
+                  <p className={styles.noGoHeroIntro}>
+                    <InlineCopy>{t('result.notOkIntro')}</InlineCopy>
+                  </p>
                 </div>
                 <div className={styles.noGoReason}>
                   <div className={styles.noGoReasonEyebrow}>{t('result.notOkReasonEyebrow')}</div>
                   <div className={styles.noGoReasonTitle}>{simulation.rejectionReason?.trim() || t('result.notOkReasonTitleFallback')}</div>
-                  <p className={styles.noGoReasonBody}>{t('result.notOkReasonDetail')}</p>
+                  <p className={styles.noGoReasonBody}>
+                    <InlineCopy>{t('result.notOkReasonDetail')}</InlineCopy>
+                  </p>
                 </div>
               </div>
               <div className={styles.noGoWhatNow}>
@@ -356,7 +367,9 @@ export function SimulationResultView({ simulation }: Props) {
                     →
                   </span>
                   <div>
-                    <p className={styles.noGoWhatNowText}>{t('result.whatNextOtherCar')}</p>
+                    <p className={styles.noGoWhatNowText}>
+                      <InlineCopy>{t('result.whatNextOtherCar')}</InlineCopy>
+                    </p>
                     <button type="button" className={styles.noGoRestartBtn} onClick={startNewSimulation}>
                       {t('result.newSimulationCta')}
                     </button>
@@ -366,7 +379,9 @@ export function SimulationResultView({ simulation }: Props) {
                   <span className={styles.noGoWhatNowArrow} aria-hidden>
                     →
                   </span>
-                  <p className={styles.noGoWhatNowText}>{t('result.whatNextContact')}</p>
+                  <p className={styles.noGoWhatNowText}>
+                    <InlineCopy>{t('result.whatNextContact')}</InlineCopy>
+                  </p>
                 </div>
               </div>
             </>
@@ -382,12 +397,16 @@ export function SimulationResultView({ simulation }: Props) {
                     </span>
                   </div>
                   <h2 className={styles.resultOutcomeTitle}>{t('result.unclearTitle')}</h2>
-                  <p className={`${styles.body} ${styles.resultOutcomeBody}`}>{tWizard('results.unclearBody')}</p>
+                  <p className={`${styles.body} ${styles.resultOutcomeBody}`}>
+                    <InlineCopy>{tWizard('results.unclearBody')}</InlineCopy>
+                  </p>
                 </div>
               </div>
               <div className={`${styles.bevestigingFormCard} ${styles.marginBottom24}`}>
                 {manualReviewStatus === 'success' ? (
-                  <p className={`${styles.body} ${styles.marginBottom0}`}>{t('result.manualReviewSent')}</p>
+                  <p className={`${styles.body} ${styles.marginBottom0}`}>
+                    <InlineCopy>{t('result.manualReviewSent')}</InlineCopy>
+                  </p>
                 ) : (
                   <>
                     <div className={styles.field}>
@@ -408,11 +427,17 @@ export function SimulationResultView({ simulation }: Props) {
                         disabled={manualReviewStatus === 'loading' || !simulationId}
                       />
                     </div>
-                    <p className={styles.fieldHint}>{t('result.manualReviewHint')}</p>
-                    {!simulationId && <p className={styles.manualReviewMuted}>{t('result.manualReviewUnavailable')}</p>}
+                    <p className={styles.fieldHint}>
+                      <InlineCopy>{t('result.manualReviewHint')}</InlineCopy>
+                    </p>
+                    {!simulationId && (
+                      <p className={styles.manualReviewMuted}>
+                        <InlineCopy>{t('result.manualReviewUnavailable')}</InlineCopy>
+                      </p>
+                    )}
                     {manualReviewStatus === 'error' && (
                       <p className={styles.manualReviewAlert} role="alert">
-                        {t('result.manualReviewError')}
+                        <InlineCopy>{t('result.manualReviewError')}</InlineCopy>
                       </p>
                     )}
                     <button
@@ -451,7 +476,9 @@ export function SimulationResultView({ simulation }: Props) {
             />
           </div>
 
-          <p className={styles.footnote}>{t('result.disclaimer')}</p>
+          <p className={styles.footnote}>
+            <InlineCopy>{t('result.disclaimer')}</InlineCopy>
+          </p>
         </div>
       )}
 
@@ -488,19 +515,23 @@ export function SimulationResultView({ simulation }: Props) {
               {hasCosts ? (
                 <div className={styles.kostenIntroBox}>
                   <p>
-                    {t('kosten.introPart1')}
+                    <InlineCopy>{t('kosten.introPart1')}</InlineCopy>
                     <strong className={styles.kostenIntroStrong}>
                       {fmtEuro(totalCost)}
                       {t('kosten.perYear')}
                     </strong>
-                    {t('kosten.introPart2')}
+                    <InlineCopy>{t('kosten.introPart2')}</InlineCopy>
                   </p>
                 </div>
               ) : (
-                <p className={`${styles.body} ${styles.kostenBodySpacing}`}>{t('kosten.body')}</p>
+                <p className={`${styles.body} ${styles.kostenBodySpacing}`}>
+                  <InlineCopy>{t('kosten.body')}</InlineCopy>
+                </p>
               )}
 
-              <p className={styles.kostenScenarioHint}>{t('kosten.scenarioHint')}</p>
+              <p className={styles.kostenScenarioHint}>
+                <InlineCopy>{t('kosten.scenarioHint')}</InlineCopy>
+              </p>
 
               <div className={`${styles.scenarioGrid} ${styles.kostenScenarioBlock}`}>
                 {[
@@ -544,7 +575,9 @@ export function SimulationResultView({ simulation }: Props) {
                       <div className={styles.kostenDetailLabel}>{t('kosten.burenBetalingLabel')}</div>
                       <div className={styles.kostenDetailGedekt}>{neighbourCostSharePercent}%</div>
                       <div className={styles.kostenDetailSub}>
-                        {t('kosten.burenBetalingOf', { total: `${fmtEuro(scenarioTotalPerYear)}${t('kosten.perYear')}` })}
+                        <InlineCopy>
+                          {t('kosten.burenBetalingOf', { total: `${fmtEuro(scenarioTotalPerYear)}${t('kosten.perYear')}` })}
+                        </InlineCopy>
                       </div>
                       <div className={styles.kostenProgressTrack}>
                         <div className={styles.kostenProgressFill} style={{ width: `${neighbourCostSharePercent}%` }} />
@@ -559,14 +592,18 @@ export function SimulationResultView({ simulation }: Props) {
                         <div className={styles.kostenDetailBreakdownRow}>
                           <div>
                             <span className={styles.kostenDetailRowLabel}>{t('kosten.vasteKostenLabel')}</span>
-                            <div className={styles.kostenDetailNote}>{t('kosten.vasteKostenNote')}</div>
+                            <div className={styles.kostenDetailNote}>
+                              <InlineCopy>{t('kosten.vasteKostenNote')}</InlineCopy>
+                            </div>
                           </div>
                           <span className={styles.kostenDetailRowVal}>{fmtEuro(totalCost)}</span>
                         </div>
                         <div className={styles.kostenDetailBreakdownRow}>
                           <div>
                             <span className={styles.kostenDetailRowLabel}>{t('kosten.slijtageBreakdownLabel')}</span>
-                            <div className={styles.kostenDetailNote}>{t('kosten.slijtageNote')}</div>
+                            <div className={styles.kostenDetailNote}>
+                              <InlineCopy>{t('kosten.slijtageNote')}</InlineCopy>
+                            </div>
                           </div>
                           <span className={styles.kostenDetailRowVal}>{fmtEuro(depAnnualEuro)}</span>
                         </div>
@@ -617,16 +654,24 @@ export function SimulationResultView({ simulation }: Props) {
                           </div>
                         ))}
                       </div>
-                      <p className={styles.kostenMensenFootnote}>{t('kosten.mensenHelpBody')}</p>
+                      <p className={styles.kostenMensenFootnote}>
+                        <InlineCopy>{t('kosten.mensenHelpBody')}</InlineCopy>
+                      </p>
                     </div>
                     <div className={styles.kostenWagensCard}>
-                      <p className={styles.kostenWagensBody}>{t('kosten.wagensReplaceBody', { n: 11 })}</p>
+                      <p className={styles.kostenWagensBody}>
+                        <InlineCopy>{t('kosten.wagensReplaceBody', { n: 11 })}</InlineCopy>
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              {!hasCosts && <p className={styles.kostenPlaceholderText}>{t('kosten.placeholder')}</p>}
+              {!hasCosts && (
+                <p className={styles.kostenPlaceholderText}>
+                  <InlineCopy>{t('kosten.placeholder')}</InlineCopy>
+                </p>
+              )}
 
               <div className={styles.buttonRow}>
                 <button type="button" onClick={goPrev} className={`${styles.btn} ${styles.btnSecondary}`}>
@@ -639,7 +684,9 @@ export function SimulationResultView({ simulation }: Props) {
               <div className={styles.marginTop32}>
                 <FaqByTags tags={SIMULATION_FAQ_TAGS.step3} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
               </div>
-              <p className={styles.kostenBillingDisclaimer}>{t('kosten.billingDataDisclaimer')}</p>
+              <p className={styles.kostenBillingDisclaimer}>
+                <InlineCopy>{t('kosten.billingDataDisclaimer')}</InlineCopy>
+              </p>
             </div>
           );
         })()}
@@ -649,7 +696,9 @@ export function SimulationResultView({ simulation }: Props) {
           <div className={styles.bevestigingHeader}>
             <div className={styles.bevestigingIcon}>🎉</div>
             <h1 className={styles.title}>{t('bevestiging.title')}</h1>
-            <p className={styles.body}>{t('bevestiging.body')}</p>
+            <p className={styles.body}>
+              <InlineCopy>{t('bevestiging.body')}</InlineCopy>
+            </p>
           </div>
 
           {showNewRegionWarning && (
@@ -714,10 +763,14 @@ export function SimulationResultView({ simulation }: Props) {
                     })}
                   </div>
                 </div>
-                {!simulationId && <p className={styles.manualReviewMuted}>{t('bevestiging.submitUnavailable')}</p>}
+                {!simulationId && (
+                  <p className={styles.manualReviewMuted}>
+                    <InlineCopy>{t('bevestiging.submitUnavailable')}</InlineCopy>
+                  </p>
+                )}
                 {confirmationStatus === 'error' && (
                   <p className={styles.manualReviewAlert} role="alert">
-                    {t('bevestiging.submitError')}
+                    <InlineCopy>{t('bevestiging.submitError')}</InlineCopy>
                   </p>
                 )}
                 <button
@@ -737,15 +790,17 @@ export function SimulationResultView({ simulation }: Props) {
                 <div>
                   <div className={styles.bevestigingSentTitle}>{t('bevestiging.sentTitle', { email: confirmationEmail.trim() })}</div>
                   <div className={styles.bevestigingSentSub}>
-                    {!isPurchasedCar
-                      ? t('bevestiging.sentSubRegularCar')
-                      : confirmationMemberPath === 'infosessie'
-                        ? t('bevestiging.sentSubInfosessie')
-                        : confirmationMemberPath === 'lid'
-                          ? t('bevestiging.sentSubLid')
-                          : confirmationMemberPath === 'nieuw'
-                            ? t('bevestiging.sentSubNieuw')
-                            : null}
+                    <InlineCopy>
+                      {!isPurchasedCar
+                        ? t('bevestiging.sentSubRegularCar')
+                        : confirmationMemberPath === 'infosessie'
+                          ? t('bevestiging.sentSubInfosessie')
+                          : confirmationMemberPath === 'lid'
+                            ? t('bevestiging.sentSubLid')
+                            : confirmationMemberPath === 'nieuw'
+                              ? t('bevestiging.sentSubNieuw')
+                              : ''}
+                    </InlineCopy>
                   </div>
                 </div>
               </div>
@@ -755,7 +810,9 @@ export function SimulationResultView({ simulation }: Props) {
           {confirmationStatus === 'success' && !isPurchasedCar && (
             <div className={styles.bevestigingNextCard}>
               <div className={styles.bevestigingNextEyebrow}>{t('bevestiging.whatNext')}</div>
-              <p className={`${styles.body} ${styles.bevestigingNextRegularBody}`}>{t('bevestiging.whatNextRegularBody')}</p>
+              <p className={`${styles.body} ${styles.bevestigingNextRegularBody}`}>
+                <InlineCopy>{t('bevestiging.whatNextRegularBody')}</InlineCopy>
+              </p>
             </div>
           )}
 
@@ -765,7 +822,7 @@ export function SimulationResultView({ simulation }: Props) {
               {confirmationMemberPath === 'nieuw' && (
                 <div className={styles.bevestigingNextBlue}>
                   <p className={styles.bevestigingNextBlueText}>
-                    <strong>{t('bevestiging.nieuwMemberHintBold')}</strong> {t('bevestiging.nieuwMemberHintRest')}
+                    <strong>{t('bevestiging.nieuwMemberHintBold')}</strong> <InlineCopy>{t('bevestiging.nieuwMemberHintRest')}</InlineCopy>
                   </p>
                 </div>
               )}
@@ -788,7 +845,9 @@ export function SimulationResultView({ simulation }: Props) {
                     >
                       {t(`bevestiging.${s.labelKey}`)}
                     </div>
-                    <div className={styles.bevestigingNextStepMeta}>{t(`bevestiging.${s.metaKey}`)}</div>
+                    <div className={styles.bevestigingNextStepMeta}>
+                      <InlineCopy>{t(`bevestiging.${s.metaKey}`)}</InlineCopy>
+                    </div>
                     {s.cta && (
                       <a
                         href={t('bevestiging.infosessiePlanHref')}
@@ -808,7 +867,9 @@ export function SimulationResultView({ simulation }: Props) {
           {isPurchasedCar && (
             <div className={styles.bevestigingKoopCard}>
               <div className={styles.bevestigingKoopTitle}>{t('bevestiging.koopBannerTitle')}</div>
-              <p className={styles.bevestigingKoopBody}>{t('bevestiging.koopBannerBody')}</p>
+              <p className={styles.bevestigingKoopBody}>
+                <InlineCopy>{t('bevestiging.koopBannerBody')}</InlineCopy>
+              </p>
             </div>
           )}
 

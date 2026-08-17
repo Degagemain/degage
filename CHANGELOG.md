@@ -48,6 +48,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   plan.
 - Changed: car onboarding no longer requires a desired road assistance plan; the
   plan picker is hidden.
+- Added: translation overrides can include clickable website and email links,
+  written as [label](https://www.example.com) or [label](mailto:hello@example.com).
+
+### Technical
+
+- Added: `InlineCopy` renders `[label](https://…)`, `[label](http://…)`, and
+  `[label](mailto:…)` in public and owner prose translations.
 
 ## [0.0.3] - 2026-08-12
 

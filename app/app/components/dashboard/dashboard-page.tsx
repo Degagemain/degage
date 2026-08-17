@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Car, CircleHelp, Shield } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { PublicPage } from '@/app/components/public/public-shell';
 import { Button } from '@/app/components/ui/button';
 import { useIsAdmin } from '@/app/lib/role';
@@ -27,7 +28,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
   return (
     <PublicPage>
       <h1 className="text-[28px] leading-tight font-extrabold tracking-tight text-stone-900 dark:text-stone-50">{t('title', { name })}</h1>
-      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('intro')}</p>
+      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">
+        <InlineCopy>{t('intro')}</InlineCopy>
+      </p>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <article className={cardClassName}>
@@ -35,7 +38,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
             <Car className={iconClassName} />
           </span>
           <h2 className="mt-4 text-lg font-bold text-stone-900 dark:text-stone-50">{t('cards.simulation.title')}</h2>
-          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('cards.simulation.description')}</p>
+          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">
+            <InlineCopy>{t('cards.simulation.description')}</InlineCopy>
+          </p>
           <Button className="mt-6 h-11 rounded-lg bg-[var(--public-brand)] px-6 text-white hover:bg-[var(--public-brand-hover)]" asChild>
             <Link href="/app/simulation">{t('cards.simulation.cta')}</Link>
           </Button>
@@ -46,7 +51,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
             <CircleHelp className={iconClassName} />
           </span>
           <h2 className="mt-4 text-lg font-bold text-stone-900 dark:text-stone-50">{t('cards.faq.title')}</h2>
-          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('cards.faq.description')}</p>
+          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">
+            <InlineCopy>{t('cards.faq.description')}</InlineCopy>
+          </p>
           <Button
             variant="outline"
             className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50 dark:border-stone-600 dark:text-stone-200 dark:hover:bg-stone-800"
@@ -62,7 +69,9 @@ export function DashboardPage({ name }: DashboardPageProps) {
               <Shield className={iconClassName} />
             </span>
             <h2 className="mt-4 text-lg font-bold text-stone-900 dark:text-stone-50">{t('cards.admin.title')}</h2>
-            <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">{t('cards.admin.description')}</p>
+            <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">
+              <InlineCopy>{t('cards.admin.description')}</InlineCopy>
+            </p>
             <Button
               variant="outline"
               className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50 dark:border-stone-600 dark:text-stone-200 dark:hover:bg-stone-800"

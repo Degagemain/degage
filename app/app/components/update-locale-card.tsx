@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { apiPatch } from '@/app/lib/api-client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -27,7 +28,9 @@ export function UpdateLocaleCard() {
     <Card>
       <CardHeader>
         <CardTitle>{t('language')}</CardTitle>
-        <CardDescription>{t('languageDescription')}</CardDescription>
+        <CardDescription>
+          <InlineCopy>{t('languageDescription')}</InlineCopy>
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Select value={locale} onValueChange={handleLocaleChange}>

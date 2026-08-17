@@ -5,6 +5,7 @@ import { Loader2, TriangleAlertIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
@@ -131,7 +132,9 @@ export function PlayConnectorCard({
     <Card className="border-border bg-card">
       <CardHeader>
         <CardTitle>{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
+        <CardDescription>
+          <InlineCopy>{t('description')}</InlineCopy>
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div
@@ -142,7 +145,9 @@ export function PlayConnectorCard({
             <TriangleAlertIcon className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden />
             <div>
               <p className="font-medium dark:text-amber-50">{t('credentialsNoticeTitle')}</p>
-              <p className="text-muted-foreground mt-1 leading-relaxed dark:text-amber-100/90">{t('credentialsNoticeBody')}</p>
+              <p className="text-muted-foreground mt-1 leading-relaxed dark:text-amber-100/90">
+                <InlineCopy>{t('credentialsNoticeBody')}</InlineCopy>
+              </p>
             </div>
           </div>
         </div>
@@ -165,7 +170,9 @@ export function PlayConnectorCard({
           <div className="space-y-3">
             <div className="border-destructive/30 bg-destructive/5 rounded-lg border px-4 py-3">
               <p className="font-medium">{t('failingTitle')}</p>
-              <p className="text-muted-foreground mt-1 text-sm">{t('failingDescription')}</p>
+              <p className="text-muted-foreground mt-1 text-sm">
+                <InlineCopy>{t('failingDescription')}</InlineCopy>
+              </p>
             </div>
             {disconnectButton}
           </div>

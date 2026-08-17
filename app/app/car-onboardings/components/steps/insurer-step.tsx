@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { isInsurerContractStartedWithinLastYear, shouldClearShareStartOnInsurerChange } from '@/domain/car-onboarding.model';
+import { InlineCopy } from '@/app/components/inline-copy';
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
@@ -97,7 +98,11 @@ export function InsurerStep() {
   return (
     <StepLayout stepId="insurer">
       <PublicInfoPanel title={t('steps.insurer.panelTitle')} body={t('steps.insurer.panelBody')} />
-      {carOnboarding.shareStartDate != null ? <div className={styles.bannerWarning}>{t('steps.insurer.shareStartResetWarning')}</div> : null}
+      {carOnboarding.shareStartDate != null ? (
+        <div className={styles.bannerWarning}>
+          <InlineCopy>{t('steps.insurer.shareStartResetWarning')}</InlineCopy>
+        </div>
+      ) : null}
       <PublicPanel>
         <label className={styles.checkboxLabel}>
           <PublicInput type="checkbox" checked={hasInsuranceContract} onChange={(e) => setHasInsuranceContract(e.target.checked)} />
@@ -141,11 +146,15 @@ export function InsurerStep() {
       </PublicPanel>
 
       {showWaitPeriodBanners && showRecentContract ? (
-        <div className={styles.bannerWarning}>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</div>
+        <div className={styles.bannerWarning}>
+          <InlineCopy>{t('steps.insurer.contractWarning', { date: addOneYear(contractStartedAt) })}</InlineCopy>
+        </div>
       ) : null}
 
       {showCancellableContract ? (
-        <div className={styles.bannerWarning}>{t('steps.insurer.contractWarningCancellable', { date: addTwoMonthsFromToday() })}</div>
+        <div className={styles.bannerWarning}>
+          <InlineCopy>{t('steps.insurer.contractWarningCancellable', { date: addTwoMonthsFromToday() })}</InlineCopy>
+        </div>
       ) : null}
 
       <StepActions stepId="insurer" onSave={handleSave} saveDisabled={isSaving} />

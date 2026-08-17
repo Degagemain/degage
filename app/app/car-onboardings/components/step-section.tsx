@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { InlineCopy } from '@/app/components/inline-copy';
 import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model';
 import { cn } from '@/app/lib/utils';
 
@@ -110,7 +111,9 @@ function ChapterShell({
           <div className={styles.chapterHeading}>
             <p className={styles.chapterLabel}>{t('chapterLabel', { num: chapter.num })}</p>
             <h2 className={styles.sectionTitle}>{t(chapter.titleKey)}</h2>
-            <p className={styles.chapterTagline}>{t(chapter.taglineKey)}</p>
+            <p className={styles.chapterTagline}>
+              <InlineCopy>{t(chapter.taglineKey)}</InlineCopy>
+            </p>
           </div>
           <span className={cn(styles.chapterStatus, chapterStatusClass(status))}>
             {progressLabel}
