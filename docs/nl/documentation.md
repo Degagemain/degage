@@ -8,9 +8,9 @@ roles:
 
 Centrale plek voor hulpteksten uit de codebase, Notion of handmatige items die u in de beheerzone of via de API toevoegt. De lijst toont alle
 items: open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. Voor **handmatige** items bevat het
-rijmenu ook **Verwijderen**. **Nieuw** opent een formulier om handmatige documentatie te maken (titel en inhoud per taal, formaat, doelpubliek,
-tags, groepen). Voor repository- of Notion-bronnen kunt u in het bewerkingsscherm alleen FAQ, zichtbaarheid en groepen wijzigen — titel en
-inhoud blijven met de bron gesynchroniseerd. Die items kunt u niet uit de lijst verwijderen; ze volgen de externe bron.
+rijmenu ook **Verwijderen**. **Nieuw** opent een formulier om handmatige documentatie te maken (titel en inhoud in één of meer talen, formaat,
+doelpubliek, tags, groepen). Voor repository- of Notion-bronnen kunt u in het bewerkingsscherm alleen FAQ, zichtbaarheid en groepen wijzigen —
+titel en inhoud blijven met de bron gesynchroniseerd. Die items kunt u niet uit de lijst verwijderen; ze volgen de externe bron.
 
 Gebruik de knop **Sync** om zoek-embeddings opnieuw op te bouwen na grotere documentatie-updates. De sync toont totalen voor bijgewerkt,
 overgeslagen en mislukt.
@@ -25,8 +25,8 @@ overgeslagen en mislukt.
 | Doelpubliek | Wie de pagina ziet: technical, admin, user, public (technical/admin alleen voor beheerders). In de documentatielijst verschijnt elke toegewezen rol als een apart label in de kolom Rollen.      |
 | Tags        | O.a. `simulation_step_1`; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (resultaatstap); `simulation_step_3`; `simulation_step_4` om FAQ’s te filteren. |
 | Groepen     | Optionele labels om artikelen te ordenen in lijsten en filters (beheerd onder Documentatiegroepen). De getoonde naam volgt je gekozen admin-taal.                                                |
-| Titel       | Per taal (EN, NL, FR).                                                                                                                                                                           |
-| Inhoud      | Per taal; bij markdown-formaat wordt Markdown ondersteund.                                                                                                                                       |
+| Titel       | Per taal (EN, NL, FR). Minstens één taal is verplicht; de andere mogen leeg blijven.                                                                                                             |
+| Inhoud      | Per taal; bij markdown-formaat wordt Markdown ondersteund. Talen zonder titel worden niet opgeslagen.                                                                                            |
 | Embeddings  | Beheeractie om AI-zoekembeddings opnieuw te genereren op basis van de huidige content en de aantallen bijgewerkt/overgeslagen/mislukt te controleren.                                            |
 
 ## Export

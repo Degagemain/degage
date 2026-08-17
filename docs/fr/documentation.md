@@ -9,9 +9,9 @@ roles:
 Point central pour les textes d’aide issus du dépôt, de Notion ou des pages manuelles créées dans la zone admin ou via l’API. La liste affiche
 toutes les entrées : ouvrez un titre ou **Voir** pour lire, et **Modifier** depuis la page détail ou le menu de ligne. Pour les entrées
 **manuelles**, le menu de ligne propose aussi **Supprimer**. **Nouveau** ouvre un formulaire pour créer une documentation manuelle (titre et
-contenu par langue, format, public, tags, groupes). Pour les contenus dépôt ou Notion, l’édition ne permet que la FAQ, la visibilité publique et
-les groupes — le titre et le texte restent synchronisés avec la source externe. Vous ne pouvez pas les supprimer depuis la liste ; ils suivent
-la source externe.
+contenu dans une ou plusieurs langues, format, public, tags, groupes). Pour les contenus dépôt ou Notion, l’édition ne permet que la FAQ, la
+visibilité publique et les groupes — le titre et le texte restent synchronisés avec la source externe. Vous ne pouvez pas les supprimer depuis
+la liste ; ils suivent la source externe.
 
 Utilisez le bouton **Sync** pour relancer les embeddings de recherche après des mises à jour importantes de la documentation. La synchronisation
 affiche les compteurs total/mis à jour/ignorés/en échec.
@@ -26,8 +26,8 @@ affiche les compteurs total/mis à jour/ignorés/en échec.
 | Public cible   | Qui peut voir la page : technical, admin, user, public (technical/admin réservés aux administrateurs). Dans la liste documentation, chaque rôle attribué apparaît comme un libellé distinct dans la colonne Rôles. |
 | Tags           | Notamment `simulation_step_1` ; `simulation_step_2_approved`, `simulation_step_2_rejected`, `simulation_step_2_review` (étape résultat) ; `simulation_step_3` ; `simulation_step_4` pour cibler les FAQ.           |
 | Groupes        | Libellés facultatifs pour classer les articles dans les listes et filtres (gérés dans Groupes de documentation). Le nom affiché suit la langue d’admin choisie.                                                    |
-| Titre          | Par langue (anglais, néerlandais, français).                                                                                                                                                                       |
-| Contenu        | Par langue ; le Markdown est pris en charge si le format est markdown.                                                                                                                                             |
+| Titre          | Par langue (anglais, néerlandais, français). Au moins une langue est obligatoire ; les autres peuvent rester vides.                                                                                                |
+| Contenu        | Par langue ; le Markdown est pris en charge si le format est markdown. Les langues sans titre ne sont pas enregistrées.                                                                                            |
 | Embeddings     | Action admin pour régénérer les embeddings de recherche IA selon le contenu actuel et suivre les compteurs mis à jour/ignorés/en échec.                                                                            |
 
 ## Export
