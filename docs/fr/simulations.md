@@ -188,8 +188,8 @@ Les colonnes marquées _(masquées par défaut)_ sont disponibles via le sélect
 
 Sur l'**écran détail** d'une simulation, vous pouvez saisir ou modifier cette adresse. L'e-mail au destinataire utilise la **langue de
 l'interface courante**. Pour les simulations réussies (pas **Pas OK**, sans erreur moteur), un **nouvel** ou **modifié** adresse envoie le
-résultat à ce destinataire et notifie le support avec un résumé et un lien admin. Les e-mails utilisateur incluent aussi un **lien public vers
-le résultat** (`SIMULATION_URL` → `/app/simulation/{id}`).
+résultat à ce destinataire et notifie le support avec un lien admin. Les e-mails utilisateur incluent aussi un **lien public vers le résultat**
+(`SIMULATION_URL` → `/app/simulation/{id}`).
 
 ## Flux simulation publique
 

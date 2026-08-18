@@ -16,6 +16,7 @@ import { seedTowns } from './seed-towns';
 import { seedDocumentationFromRepo } from './seed-documentation-from-repo';
 import { seedDocumentationFromCsv } from './seed-documentation-from-csv';
 import { seedSupportAssistantPrompts } from './seed-support-assistant-prompts';
+import { seedEmailTemplates } from './seed-email-templates';
 import { getPrismaClient } from '@/storage/utils';
 
 const prisma = getPrismaClient();
@@ -39,6 +40,7 @@ async function seed() {
   await seedDocumentationFromRepo(prisma);
   await seedDocumentationFromCsv(prisma);
   await seedSupportAssistantPrompts(prisma);
+  await seedEmailTemplates(prisma);
 }
 
 seed()

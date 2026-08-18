@@ -14,22 +14,23 @@ implementations.
 These are the API resources that support **create** (`POST` on the collection) and **replace** (`PUT` on `/{id}`), aligned with the admin table
 entities that will get matching **new** and **`[id]`** pages.
 
-| Admin area (folder under `app/app/admin/`) | Collection `POST`                    | Item `PUT`                 | Translations in domain      | Create/edit UI status        |
-| ------------------------------------------ | ------------------------------------ | -------------------------- | --------------------------- | ---------------------------- |
-| `fuel-types`                               | `/api/fuel-types`                    | `/api/fuel-types/{id}`     | Yes (`translations[]`)      | Done                         |
-| `car-brands`                               | `/api/car-brands`                    | `/api/car-brands/{id}`     | Yes                         | Done                         |
-| `car-types`                                | `/api/car-types`                     | `/api/car-types/{id}`      | No (single `name`)          | Done                         |
-| `euro-norms`                               | `/api/euro-norms`                    | `/api/euro-norms/{id}`     | No                          | Done                         |
-| `provinces`                                | `/api/provinces`                     | `/api/provinces/{id}`      | No                          | Done                         |
-| `towns`                                    | `/api/towns`                         | `/api/towns/{id}`          | No                          | Done                         |
-| `fiscal-regions`                           | `/api/fiscal-regions`                | `/api/fiscal-regions/{id}` | No                          | Done                         |
-| `hubs`                                     | `/api/hubs`                          | `/api/hubs/{id}`           | No                          | Done                         |
-| `car-tax-euro-norm-adjustments`            | `/api/car-tax-euro-norm-adjustments` | `…/{id}`                   | No                          | Done                         |
-| `car-price-estimates`                      | `/api/car-price-estimates`           | `…/{id}`                   | No                          | Done                         |
-| `car-infos`                                | `/api/car-infos`                     | `/api/car-infos/{id}`      | No                          | Done                         |
-| `insurance-price-benchmarks`               | `/api/insurance-price-benchmarks`    | `…/{id}`                   | No                          | Done                         |
-| `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`  | Per-locale content (custom) | Separate flow                |
-| `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)       | N/A                         | Has `new` + read-only `[id]` |
+| Admin area (folder under `app/app/admin/`) | Collection `POST`                    | Item `PUT`                  | Translations in domain                | Create/edit UI status        |
+| ------------------------------------------ | ------------------------------------ | --------------------------- | ------------------------------------- | ---------------------------- |
+| `fuel-types`                               | `/api/fuel-types`                    | `/api/fuel-types/{id}`      | Yes (`translations[]`)                | Done                         |
+| `car-brands`                               | `/api/car-brands`                    | `/api/car-brands/{id}`      | Yes                                   | Done                         |
+| `car-types`                                | `/api/car-types`                     | `/api/car-types/{id}`       | No (single `name`)                    | Done                         |
+| `euro-norms`                               | `/api/euro-norms`                    | `/api/euro-norms/{id}`      | No                                    | Done                         |
+| `provinces`                                | `/api/provinces`                     | `/api/provinces/{id}`       | No                                    | Done                         |
+| `towns`                                    | `/api/towns`                         | `/api/towns/{id}`           | No                                    | Done                         |
+| `fiscal-regions`                           | `/api/fiscal-regions`                | `/api/fiscal-regions/{id}`  | No                                    | Done                         |
+| `hubs`                                     | `/api/hubs`                          | `/api/hubs/{id}`            | No                                    | Done                         |
+| `car-tax-euro-norm-adjustments`            | `/api/car-tax-euro-norm-adjustments` | `…/{id}`                    | No                                    | Done                         |
+| `car-price-estimates`                      | `/api/car-price-estimates`           | `…/{id}`                    | No                                    | Done                         |
+| `car-infos`                                | `/api/car-infos`                     | `/api/car-infos/{id}`       | No                                    | Done                         |
+| `insurance-price-benchmarks`               | `/api/insurance-price-benchmarks`    | `…/{id}`                    | No                                    | Done                         |
+| `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`   | Per-locale content (custom)           | Separate flow                |
+| `email-templates`                          | `/api/email-templates`               | `/api/email-templates/{id}` | Yes (`translations[]` with variables) | Done                         |
+| `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)        | N/A                                   | Has `new` + read-only `[id]` |
 
 **Not in this table:** `car-tax-base-rates` and `car-tax-flat-rates` admin lists have **GET-only** collection routes (no `POST`). **System
 parameters** use **`PATCH`** on `/api/system-parameters/{id}` (values only), not full `PUT` body replace. **Users** has no admin `POST`/`PUT` in

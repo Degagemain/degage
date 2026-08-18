@@ -118,7 +118,8 @@ Docs: [Notion pricing](https://www.notion.com/pricing) · [API reference](https:
 
 ### Resend
 
-Outbound Better-Auth verification/reset mails and the inbound support webhook. Templates keyed per locale.
+Outbound Better-Auth verification/reset mails, simulation result mails, and the inbound support webhook. Copy is stored in-app; Resend designs
+are not locale-suffixed.
 
 - Free: 3,000 emails/mo, **100/day** — the daily cap is usually what breaks first, not the monthly. 1 verified domain, broadcast audiences
   capped, no custom return-path.

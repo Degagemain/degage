@@ -187,7 +187,7 @@ Kolommen gemarkeerd met _(standaard verborgen)_ zijn beschikbaar via de kolomkie
 
 Op het **detailscherm** van een simulatie kun je dit adres invoeren of wijzigen. De e-mail naar de ontvanger gebruikt je **huidige
 interfacetaal**. Bij succesvolle simulaties (niet **Niet OK**, zonder enginefout) stuurt een **nieuw of gewijzigd** adres het resultaat naar die
-persoon en krijgt support een samenvatting met adminlink. Gebruikers-e-mails bevatten ook een **publieke resultaatlink** (`SIMULATION_URL` →
+persoon en krijgt support een e-mail met een adminlink. Gebruikers-e-mails bevatten ook een **publieke resultaatlink** (`SIMULATION_URL` →
 `/app/simulation/{id}`).
 
 ## Publieke simulatieflow

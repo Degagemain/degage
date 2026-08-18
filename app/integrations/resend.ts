@@ -1,33 +1,9 @@
 import { Resend } from 'resend';
 
-import { type UILocale, defaultUILocale, uiLocales } from '@/i18n/locales';
-
 const apiKey = process.env.RESEND_API_KEY;
 const from = process.env.RESEND_FROM ?? 'Neurotic <onboarding@resend.dev>';
 
 const resend = apiKey ? new Resend(apiKey) : null;
-
-export enum TemplatesEnum {
-  VerificationEmail = 'verification-email',
-  ResetPasswordEmail = 'reset-password-email',
-  SimulationResultsEmail = 'simulation-results-email',
-  SimulationResultsSupportEmail = 'simulation-results-support',
-  SimulationManualReviewEmail = 'simulation-manual-review-email',
-  SimulationManualReviewSupportEmail = 'simulation-manual-review-support',
-}
-
-const nonLocalizedTemplateIds: ReadonlySet<string> = new Set([
-  TemplatesEnum.SimulationResultsSupportEmail,
-  TemplatesEnum.SimulationManualReviewSupportEmail,
-]);
-
-export function getTemplate(template: TemplatesEnum, locale: string | null | undefined): string {
-  if (nonLocalizedTemplateIds.has(template)) {
-    return template;
-  }
-  const code = locale && uiLocales.includes(locale as UILocale) ? locale : defaultUILocale;
-  return `${template}-${code}`;
-}
 
 export type SendEmailOptions = {
   to: string;
@@ -38,10 +14,9 @@ export type SendEmailOptions = {
   replyTo?: string | string[];
 };
 
-export type SendTemplatedEmailOptions = {
+export type SendResendTemplateEmailOptions = {
   to: string;
-  template: TemplatesEnum;
-  locale: string | null | undefined;
+  templateId: string;
   variables: Record<string, string | number>;
   /** If set, overrides the template’s default subject. Omit to use the subject configured in Resend. */
   subject?: string;
@@ -70,9 +45,8 @@ export async function sendEmail(options: SendEmailOptions): Promise<{ id: string
   return { id };
 }
 
-export async function sendTemplatedEmail(options: SendTemplatedEmailOptions): Promise<{ id: string | null }> {
+export async function sendResendTemplateEmail(options: SendResendTemplateEmailOptions): Promise<{ id: string | null }> {
   if (!resend) return { id: null };
-  const templateId = getTemplate(options.template, options.locale);
   const result = await resend.emails.send({
     from,
     to: options.to,
@@ -80,7 +54,7 @@ export async function sendTemplatedEmail(options: SendTemplatedEmailOptions): Pr
     headers: options.headers,
     ...(options.subject !== undefined ? { subject: options.subject } : {}),
     template: {
-      id: templateId,
+      id: options.templateId,
       variables: options.variables,
     },
   });

@@ -1,12 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/integrations/resend', async (importOriginal) => {
-  const m = await importOriginal<typeof import('@/integrations/resend')>();
-  return {
-    ...m,
-    sendTemplatedEmail: vi.fn().mockResolvedValue({ id: 'sent' }),
-  };
-});
+vi.mock('@/actions/email-template/send', () => ({
+  sendEmailByCode: vi.fn().mockResolvedValue({ id: 'sent' }),
+}));
 
 vi.mock('@/actions/utils', () => ({
   getSupportReplyToEmail: () => 'support@example.com',
@@ -20,10 +16,15 @@ vi.mock('@/context/request-context', () => ({
   getRequestLocale: () => getRequestLocaleMock(),
 }));
 
-import { buildPublicSimulationUrl, notifySimulationResultEmails } from '@/actions/simulation/notify-simulation-result-emails';
+import { sendEmailByCode } from '@/actions/email-template/send';
+import {
+  buildAdminSimulationUrl,
+  buildPublicSimulationUrl,
+  notifySimulationResultEmails,
+} from '@/actions/simulation/notify-simulation-result-emails';
+import { TemplatesEnum } from '@/domain/email-template.model';
 import type { Simulation } from '@/domain/simulation.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
-import { TemplatesEnum, sendTemplatedEmail } from '@/integrations/resend';
 import { simulation } from '../../builders/simulation.builder';
 
 const simId = '550e8400-e29b-41d4-a716-446655440000';
@@ -45,18 +46,27 @@ describe('notifySimulationResultEmails', () => {
     });
     await notifySimulationResultEmails(s, { recipientEmail: 'u@x.co' });
 
-    expect(sendTemplatedEmail).toHaveBeenCalledTimes(2);
-    expect(sendTemplatedEmail).toHaveBeenNthCalledWith(
+    expect(sendEmailByCode).toHaveBeenCalledTimes(2);
+    expect(sendEmailByCode).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        template: TemplatesEnum.SimulationResultsEmail,
+        code: TemplatesEnum.SimulationResultsEmail,
         locale: 'en',
         variables: expect.objectContaining({
           SIMULATION_URL: buildPublicSimulationUrl(simId),
         }),
       }),
     );
-    expect(sendTemplatedEmail).toHaveBeenNthCalledWith(2, expect.objectContaining({ template: TemplatesEnum.SimulationResultsSupportEmail }));
+    expect(sendEmailByCode).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        code: TemplatesEnum.SimulationResultsSupportEmail,
+        variables: expect.objectContaining({
+          BUTTON_URL: buildAdminSimulationUrl(simId),
+          RECIPIENT_EMAIL: 'u@x.co',
+        }),
+      }),
+    );
   });
 
   it('uses manual-review templates for manual review', async () => {
@@ -70,20 +80,20 @@ describe('notifySimulationResultEmails', () => {
     getRequestLocaleMock.mockReturnValue('nl');
     await notifySimulationResultEmails(s, { recipientEmail: 'u@x.co' });
 
-    expect(sendTemplatedEmail).toHaveBeenCalledTimes(2);
-    expect(sendTemplatedEmail).toHaveBeenNthCalledWith(
+    expect(sendEmailByCode).toHaveBeenCalledTimes(2);
+    expect(sendEmailByCode).toHaveBeenNthCalledWith(
       1,
-      expect.objectContaining({ template: TemplatesEnum.SimulationManualReviewEmail, locale: 'nl' }),
+      expect.objectContaining({ code: TemplatesEnum.SimulationManualReviewEmail, locale: 'nl' }),
     );
-    expect(sendTemplatedEmail).toHaveBeenNthCalledWith(
+    expect(sendEmailByCode).toHaveBeenNthCalledWith(
       2,
-      expect.objectContaining({ template: TemplatesEnum.SimulationManualReviewSupportEmail }),
+      expect.objectContaining({ code: TemplatesEnum.SimulationManualReviewSupportEmail, locale: 'nl' }),
     );
   });
 
   it('no-ops without simulation id', async () => {
     const s: Simulation = { ...simulation({ resultCode: SimulationResultCode.CATEGORY_A, error: null }), id: null };
     await notifySimulationResultEmails(s, { recipientEmail: 'u@x.co' });
-    expect(sendTemplatedEmail).not.toHaveBeenCalled();
+    expect(sendEmailByCode).not.toHaveBeenCalled();
   });
 });

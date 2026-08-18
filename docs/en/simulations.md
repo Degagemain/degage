@@ -186,8 +186,8 @@ Columns marked _(hidden by default)_ are available via the column picker but not
 
 On the simulation **detail** screen you can enter or change this address. The e-mail to the recipient uses your **current interface language**.
 For simulations that finished successfully (not **Not OK**, and without an engine error), saving a **new or changed** address sends the result
-to that address and notifies support with a summary and an admin link. User-facing result emails include a **public result link**
-(`SIMULATION_URL` → `/app/simulation/{id}`).
+to that address and notifies support with an admin link. User-facing result emails include a **public result link** (`SIMULATION_URL` →
+`/app/simulation/{id}`).
 
 You can download the rows that match the current filters and sort order using **More**, then **Export**. Choose a spreadsheet-friendly download
 or a structured data download. Column labels match what you see in the list (including columns you may have hidden). Only administrators can

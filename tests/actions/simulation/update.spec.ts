@@ -8,13 +8,9 @@ vi.mock('@/storage/simulation/simulation.update', () => ({
   dbSimulationUpdate: vi.fn(),
 }));
 
-vi.mock('@/integrations/resend', async (importOriginal) => {
-  const m = await importOriginal<typeof import('@/integrations/resend')>();
-  return {
-    ...m,
-    sendTemplatedEmail: vi.fn().mockResolvedValue({ id: 'sent' }),
-  };
-});
+vi.mock('@/actions/email-template/send', () => ({
+  sendEmailByCode: vi.fn().mockResolvedValue({ id: 'sent' }),
+}));
 
 vi.mock('@/actions/utils', () => ({
   getSupportReplyToEmail: () => 'support@example.com',
@@ -27,7 +23,7 @@ vi.mock('@/context/request-context', () => ({
 import { updateSimulation } from '@/actions/simulation/update';
 import { readSimulation } from '@/actions/simulation/read';
 import { dbSimulationUpdate } from '@/storage/simulation/simulation.update';
-import { sendTemplatedEmail } from '@/integrations/resend';
+import { sendEmailByCode } from '@/actions/email-template/send';
 import { SimulationResultCode } from '@/domain/simulation.model';
 import { simulation } from '../../builders/simulation.builder';
 
@@ -54,7 +50,7 @@ describe('updateSimulation', () => {
     await updateSimulation({ id: simId, email: 'user@example.com' });
 
     expect(dbSimulationUpdate).toHaveBeenCalledWith(expect.objectContaining({ id: simId, email: 'user@example.com' }));
-    expect(sendTemplatedEmail).toHaveBeenCalledTimes(2);
+    expect(sendEmailByCode).toHaveBeenCalledTimes(2);
   });
 
   it('does not send when result is Not OK', async () => {
@@ -69,7 +65,7 @@ describe('updateSimulation', () => {
 
     await updateSimulation({ id: simId, email: 'user@example.com' });
 
-    expect(sendTemplatedEmail).not.toHaveBeenCalled();
+    expect(sendEmailByCode).not.toHaveBeenCalled();
   });
 
   it('does not send when simulation has engine error', async () => {
@@ -84,7 +80,7 @@ describe('updateSimulation', () => {
 
     await updateSimulation({ id: simId, email: 'user@example.com' });
 
-    expect(sendTemplatedEmail).not.toHaveBeenCalled();
+    expect(sendEmailByCode).not.toHaveBeenCalled();
   });
 
   it('does not send when email unchanged', async () => {
@@ -99,7 +95,7 @@ describe('updateSimulation', () => {
 
     await updateSimulation({ id: simId, email: 'same@example.com' });
 
-    expect(sendTemplatedEmail).not.toHaveBeenCalled();
+    expect(sendEmailByCode).not.toHaveBeenCalled();
   });
 
   it('does not send when email cleared', async () => {
@@ -114,6 +110,6 @@ describe('updateSimulation', () => {
 
     await updateSimulation({ id: simId, email: null });
 
-    expect(sendTemplatedEmail).not.toHaveBeenCalled();
+    expect(sendEmailByCode).not.toHaveBeenCalled();
   });
 });

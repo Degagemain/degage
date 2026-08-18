@@ -9,7 +9,8 @@ import { captureImmediate } from '@/integrations/posthog';
 import { AnalyticsEvent } from '@/domain/analytics-event.model';
 import { getPrismaClient } from './storage/utils';
 import { dbUserGetLocale } from './storage/user/user.read';
-import { TemplatesEnum, sendTemplatedEmail } from './integrations/resend';
+import { TemplatesEnum } from './domain/email-template.model';
+import { sendEmailByCode } from './actions/email-template/send';
 
 const prisma = getPrismaClient();
 
@@ -28,11 +29,11 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     sendResetPassword: async ({ user, url }, _request) => {
       const locale = await dbUserGetLocale(user.id);
-      await sendTemplatedEmail({
+      await sendEmailByCode({
         to: user.email,
-        template: TemplatesEnum.ResetPasswordEmail,
+        code: TemplatesEnum.ResetPasswordEmail,
         locale,
-        variables: { PASSWORD_RESET_URL: url },
+        variables: { BUTTON_URL: url },
       });
     },
   },
@@ -42,11 +43,11 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }, _request) => {
       const locale = await dbUserGetLocale(user.id);
-      await sendTemplatedEmail({
+      await sendEmailByCode({
         to: user.email,
-        template: TemplatesEnum.VerificationEmail,
+        code: TemplatesEnum.VerificationEmail,
         locale,
-        variables: { VERIFICATION_URL: url },
+        variables: { BUTTON_URL: url },
       });
     },
   },

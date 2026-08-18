@@ -307,6 +307,51 @@
       "saveOverride": "Save",
       "removeOverride": "Remove"
     },
+    "emailTemplates": {
+      "title": "Email templates",
+      "searchPlaceholder": "Search email templates...",
+      "tryAgain": "Try again",
+      "columns": {
+        "code": "Code",
+        "design": "Design",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "codes": {
+        "verification-email": "Email verification",
+        "reset-password-email": "Password reset",
+        "simulation-results-email": "Simulation results",
+        "simulation-results-support": "Simulation results (support)",
+        "simulation-manual-review-email": "Simulation manual review",
+        "simulation-manual-review-support": "Simulation manual review (support)"
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "variables": "Copy variables",
+        "designsLoadError": "Could not load email designs from Resend.",
+        "help": {
+          "code": "Logical email type used when sending.",
+          "design": "Resend layout that provides the variable slots.",
+          "variables": "Fill the design variables per language. Runtime values such as BUTTON_URL can be left empty."
+        },
+        "placeholders": {
+          "code": "Select a code",
+          "design": "Select a design"
+        }
+      },
+      "delete": {
+        "title": "Delete email template",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Email template deleted successfully.",
+        "error": "Failed to delete email template."
+      }
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {

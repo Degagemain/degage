@@ -38,11 +38,12 @@ export const CAR_SETTINGS_ITEMS: {
 ];
 
 export const CORE_SETTINGS_ITEMS: {
-  translationKey: 'systemParameters' | 'translationOverrides';
+  translationKey: 'systemParameters' | 'translationOverrides' | 'emailTemplates';
   href: string;
 }[] = [
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides' },
+  { translationKey: 'emailTemplates', href: '/app/admin/email-templates' },
 ];
 
 export const SIMULATION_ITEMS: {
