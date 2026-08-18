@@ -307,6 +307,51 @@
       "saveOverride": "Opslaan",
       "removeOverride": "Verwijderen"
     },
+    "emailTemplates": {
+      "title": "E-mailtemplates",
+      "searchPlaceholder": "Zoek e-mailtemplates...",
+      "tryAgain": "Opnieuw proberen",
+      "columns": {
+        "code": "Code",
+        "design": "Ontwerp",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "codes": {
+        "verification-email": "E-mailverificatie",
+        "reset-password-email": "Wachtwoord resetten",
+        "simulation-results-email": "Simulatieresultaten",
+        "simulation-results-support": "Simulatieresultaten (support)",
+        "simulation-manual-review-email": "Simulatie manuele review",
+        "simulation-manual-review-support": "Simulatie manuele review (support)"
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "variables": "Tekstvariabelen",
+        "designsLoadError": "E-mailontwerpen laden vanuit Resend is mislukt.",
+        "help": {
+          "code": "Logisch e-mailtype dat bij het versturen wordt gebruikt.",
+          "design": "Resend-layout met de variabelen.",
+          "variables": "Vul de ontwerpvariabelen per taal in. Runtime-waarden zoals BUTTON_URL mag je leeg laten."
+        },
+        "placeholders": {
+          "code": "Kies een code",
+          "design": "Kies een ontwerp"
+        }
+      },
+      "delete": {
+        "title": "E-mailtemplate verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "E-mailtemplate verwijderd.",
+        "error": "E-mailtemplate verwijderen mislukt."
+      }
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {

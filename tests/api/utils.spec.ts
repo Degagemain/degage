@@ -13,6 +13,7 @@ import {
   badRequestResponseFromZod,
   getIdFromRoute,
   isPrismaNotFoundError,
+  isPrismaUniqueError,
   noContentResponse,
   notFoundResponse,
   responseFromCaughtError,
@@ -81,6 +82,13 @@ describe('API Utils', () => {
     it('returns null for unexpected errors', () => {
       expect(responseFromCaughtError(new Error('boom'))).toBeNull();
     });
+
+    it('maps Prisma unique errors to conflict', async () => {
+      const response = responseFromCaughtError({ code: 'P2002' });
+      expect(response).not.toBeNull();
+      expect(response!.status).toBe(409);
+      expect((await response!.json()).code).toBe('conflict');
+    });
   });
 
   describe('isPrismaNotFoundError', () => {
@@ -102,6 +110,16 @@ describe('API Utils', () => {
     it('returns false for non-object errors', () => {
       expect(isPrismaNotFoundError(null)).toBe(false);
       expect(isPrismaNotFoundError('error')).toBe(false);
+    });
+  });
+
+  describe('isPrismaUniqueError', () => {
+    it('returns true for P2002 error code', () => {
+      expect(isPrismaUniqueError({ code: 'P2002' })).toBe(true);
+    });
+
+    it('returns false for other codes', () => {
+      expect(isPrismaUniqueError({ code: 'P2025' })).toBe(false);
     });
   });
 

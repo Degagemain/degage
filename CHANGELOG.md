@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: email templates are now managed in app.
 - Added: car onboarding records include a proof of purchase and the price read
   from it for new purchased cars.
 - Added: admins can set a display order for fuel types; the simulation uses that order.

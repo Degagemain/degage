@@ -30,37 +30,18 @@ Authentication uses [better-auth](https://www.better-auth.com/) on the server. S
 Verification and password-reset emails are sent via [Resend](https://resend.com). Configure `RESEND_API_KEY` (and optionally `RESEND_FROM` for a
 custom sender).
 
-### Email verification templates (Resend)
+Copy is edited in **Admin → Email templates**. Both flows share the published Resend design alias **`button-email`**. The in-app template
+supplies translated variables (`SUBJECT`, `PREHEADER`, `HEADER`, `HEADING`, `BODY`, `BUTTON_TEXT`, `FALLBACK_HINT`, `FOOTER`). The send path
+adds **`BUTTON_URL`** at runtime (the Better Auth link) and uses the user’s saved locale.
 
-Verification uses **published** Resend templates so copy and layout can be edited in the [Resend dashboard](https://resend.com/templates)
-without deploying code.
+| In-app template code   | When used          | Runtime variable |
+| ---------------------- | ------------------ | ---------------- |
+| `verification-email`   | Email verification | `BUTTON_URL`     |
+| `reset-password-email` | Password reset     | `BUTTON_URL`     |
 
-The app picks the template from the user’s saved **locale** (`en`, `nl`, `fr`):
-
-| Resend alias            | When used                                    |
-| ----------------------- | -------------------------------------------- |
-| `verification-email-en` | User locale is `en`                          |
-| `verification-email-nl` | User locale is `nl` or unsupported / missing |
-| `verification-email-fr` | User locale is `fr`                          |
-
-Each template must expose the string variable **`VERIFICATION_URL`** (the Better Auth verification link). No other variables are sent.
-
-For a new Resend workspace, create and publish three templates with those aliases and the same variable name, or duplicate an existing template
-per language.
+The `button-email` design must exist as a **published** Resend template (alias `button-email`). Seed the in-app rows with `pnpm db:seed`.
 
 Resend reserves some variable names (e.g. `EMAIL`, `FIRST_NAME`); do not use those for custom placeholders.
-
-### Password reset templates (Resend)
-
-Password reset uses the same locale rules as verification. Published aliases:
-
-| Resend alias              | When used                                    |
-| ------------------------- | -------------------------------------------- |
-| `reset-password-email-en` | User locale is `en`                          |
-| `reset-password-email-nl` | User locale is `nl` or unsupported / missing |
-| `reset-password-email-fr` | User locale is `fr`                          |
-
-Each template must expose **`PASSWORD_RESET_URL`** (the Better Auth reset link).
 
 - **Email verification**: Sent on sign-up (`sendOnSignUp`) and on sign-in when the user is not yet verified (`sendOnSignIn`). Login with
   email/password requires a verified email (`requireEmailVerification`). After the user clicks the verification link, they are signed in

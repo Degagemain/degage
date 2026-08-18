@@ -381,12 +381,17 @@ After deploying this sync shape, remove the old production variables `NOTION_DOC
 
 #### Outbound (transactional)
 
-Auth flows send mail using **published** templates. In the dashboard, each row below is implemented as three aliases with a locale suffix (`-en`, `-nl`, `-fr`); the app picks the variant from the user’s saved locale (`TemplatesEnum` / `getTemplate` in `app/integrations/resend.ts`).
+Auth flows and simulation result emails send mail using a **published** Resend design plus in-app copy. Translated variables live in
+**Admin → Core → Email templates**.
 
-| Template (base alias)  | Purpose                        |
-| ---------------------- | ------------------------------ |
-| `verification-email`   | Better Auth email verification |
-| `reset-password-email` | Better Auth password reset     |
+| Template code                      | Purpose                        | Resend design                    |
+| ---------------------------------- | ------------------------------ | -------------------------------- |
+| `verification-email`               | Better Auth email verification | `button-email`                   |
+| `reset-password-email`             | Better Auth password reset     | `button-email`                   |
+| `simulation-results-email`         | User simulation result         | `simulation-results-email`       |
+| `simulation-results-support`       | Support: result sent           | `button-email`                   |
+| `simulation-manual-review-email`   | User manual-review result      | `simulation-manual-review-email` |
+| `simulation-manual-review-support` | Support: manual review         | `button-email`                   |
 
 Variables and setup: [docs/en/authentication.md](docs/en/authentication.md).
 

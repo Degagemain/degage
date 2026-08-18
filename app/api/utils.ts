@@ -16,6 +16,10 @@ export const isPrismaForeignKeyError = (error: unknown): boolean => {
   return error !== null && typeof error === 'object' && 'code' in error && error.code === 'P2003';
 };
 
+export const isPrismaUniqueError = (error: unknown): boolean => {
+  return error !== null && typeof error === 'object' && 'code' in error && error.code === 'P2002';
+};
+
 export const conflictResponse = (message: string = 'Resource is in use and cannot be deleted'): Response => {
   return Response.json({ code: 'conflict', errors: [{ message }] }, { status: statusCodes.CONFLICT });
 };
@@ -45,6 +49,9 @@ export const responseFromCaughtError = (error: unknown): Response | null => {
   }
   if (isPrismaNotFoundError(error)) {
     return notFoundResponse();
+  }
+  if (isPrismaUniqueError(error)) {
+    return conflictResponse('A resource with this value already exists');
   }
   return null;
 };

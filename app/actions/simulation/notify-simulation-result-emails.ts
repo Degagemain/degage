@@ -1,8 +1,9 @@
+import { sendEmailByCode } from '@/actions/email-template/send';
 import { getSupportReplyToEmail } from '@/actions/utils';
 import { getRequestLocale } from '@/context/request-context';
+import { TemplatesEnum } from '@/domain/email-template.model';
 import type { Simulation } from '@/domain/simulation.model';
 import { SimulationResultCode } from '@/domain/simulation.model';
-import { TemplatesEnum, sendTemplatedEmail } from '@/integrations/resend';
 import { type UILocale, defaultUILocale, uiLocales } from '@/i18n/locales';
 import en from '../../../messages/en.json';
 import fr from '../../../messages/fr.json';
@@ -13,10 +14,6 @@ const messagesByLocale: Record<UILocale, typeof en> = { en, nl, fr };
 function simulationResultLabel(locale: UILocale, code: SimulationResultCode): string {
   const entry = messagesByLocale[locale].simulation.resultCode as Record<string, string>;
   return entry[code] ?? code;
-}
-
-function nlResultLabel(code: SimulationResultCode): string {
-  return simulationResultLabel('nl', code);
 }
 
 function localizedYesNo(locale: UILocale, value: boolean): string {
@@ -47,61 +44,6 @@ export function buildPublicSimulationUrl(simulationId: string): string {
   return `${appBaseUrl()}/app/simulation/${simulationId}`;
 }
 
-export function buildSupportTopAlertRow(isPurchased: boolean): string {
-  if (!isPurchased) return '';
-  const alert =
-    '<tr><td style="padding:16px;background-color:#FDF3E0;border:1px solid #DECA80;' +
-    'color:#181510;font-size:18px;font-weight:700;font-family:Arial,Helvetica,sans-serif;line-height:1.5;">' +
-    'Aangekochte wagen</td></tr>';
-  const spacer = '<tr><td style="padding:0;height:16px;font-size:0;line-height:0;">&nbsp;</td></tr>';
-  return alert + spacer;
-}
-
-/** Support-only (NL): prominent manual-review banner + optional purchased-car banner. */
-export function buildManualReviewSupportTopRows(isPurchased: boolean): string {
-  const manualBanner =
-    '<tr><td style="padding:16px;background-color:#EAF1FA;border:1px solid #B5CDE5;' +
-    'color:#181510;font-size:18px;font-weight:700;font-family:Arial,Helvetica,sans-serif;line-height:1.5;">' +
-    'Handmatige beoordeling</td></tr>';
-  const spacer = '<tr><td style="padding:0;height:16px;font-size:0;line-height:0;">&nbsp;</td></tr>';
-  return manualBanner + spacer + buildSupportTopAlertRow(isPurchased);
-}
-
-function buildSupportSummaryNl(s: Simulation, recipientEmail: string): string {
-  const lines = [
-    `Simulatie-ID: ${s.id}`,
-    `E-mail ontvanger: ${recipientEmail}`,
-    `Gemeente / stad: ${s.town?.name ?? '—'}`,
-    `Merk: ${s.brand?.name ?? '—'}`,
-    `Brandstof: ${s.fuelType?.name ?? '—'}`,
-    `Autotype: ${s.carType?.name ?? s.carTypeOther ?? '—'}`,
-    `Resultaat: ${nlResultLabel(s.resultCode)}`,
-    `Aangekochte wagen: ${s.isPurchased ? 'ja' : 'nee'}`,
-    `Eigen km/jaar: ${formatOptionalKm(s.ownerKmPerYear)}`,
-    `Km-stand: ${s.mileage.toLocaleString('nl-BE')} km`,
-    `Km-tarief (afgerond): ${formatOptionalEuro(s.resultRoundedKmCost)}`,
-    `Afschrijving per km: ${formatOptionalEuro(s.resultDepreciationCostKm)}`,
-    `Brandstofkost per 100 km: ${
-      s.resultConsumption == null
-        ? '—'
-        : `${s.resultConsumption.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} L/100km`
-    }`,
-    `Verzekering/jaar: ${formatOptionalEuro(s.resultInsuranceCostPerYear)}`,
-    `Belasting/jaar: ${formatOptionalEuro(s.resultTaxCostPerYear)}`,
-    `Onderhoud/jaar: ${formatOptionalEuro(s.resultMaintenanceCostPerYear)}`,
-    `Keuring/jaar: ${formatOptionalEuro(s.resultInspectionCostPerYear)}`,
-    `CO2: ${s.resultCo2 == null ? '—' : `${s.resultCo2} g/km`}`,
-    `EcoScore: ${s.resultEcoScore == null ? '—' : String(s.resultEcoScore)}`,
-    `EuroNorm: ${s.resultEuroNorm ?? '—'}`,
-    `Gedeelde km (min/gem/max): ${formatOptionalKm(s.resultMinSharedKm)} / ${formatOptionalKm(s.resultAvgSharedKm)} / ${formatOptionalKm(
-      s.resultMaxSharedKm,
-    )}`,
-  ];
-  const value = s.isPurchased ? s.purchasePrice : s.resultEstimatedCarValue;
-  lines.push(`Geschatte / koopprijs: ${formatOptionalEuro(value ?? null)}`);
-  return lines.join('\n');
-}
-
 export function isSimulationEligibleForResultEmail(simulation: Simulation): boolean {
   return simulation.resultCode !== SimulationResultCode.NOT_OK && simulation.error == null;
 }
@@ -117,62 +59,35 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
   }
 
   const locale = emailTemplateLocale();
-  const adminLink = buildAdminSimulationUrl(simulation.id);
-  const userVariables = {
-    SIMULATION_URL: buildPublicSimulationUrl(simulation.id),
-    BRAND_NAME: simulation.brand?.name ?? '—',
-    TOWN_NAME: simulation.town?.name ?? '—',
-    FUEL_TYPE: simulation.fuelType?.name ?? '—',
-    RESULT_LABEL: simulationResultLabel(locale, simulation.resultCode),
-    IS_PURCHASED: localizedYesNo(locale, simulation.isPurchased),
-    MILEAGE_KM: formatOptionalKm(simulation.mileage),
-    CAR_VALUE: formatOptionalEuro(simulation.isPurchased ? simulation.purchasePrice : simulation.resultEstimatedCarValue),
-    DEPRECIATION_RATE: formatOptionalEuro(simulation.resultDepreciationCostKm),
-  };
-
   const isManualReview = simulation.resultCode === SimulationResultCode.MANUAL_REVIEW;
+  const isPurchased = localizedYesNo(locale, simulation.isPurchased);
 
-  if (isManualReview) {
-    await sendTemplatedEmail({
-      to: options.recipientEmail,
-      template: TemplatesEnum.SimulationManualReviewEmail,
-      locale,
-      variables: userVariables,
-      replyTo: getSupportReplyToEmail(),
-    });
-
-    await sendTemplatedEmail({
-      to: getSupportReplyToEmail(),
-      template: TemplatesEnum.SimulationManualReviewSupportEmail,
-      locale: null,
-      variables: {
-        TOP_ALERT_ROW: buildManualReviewSupportTopRows(simulation.isPurchased),
-        ADMIN_LINK: adminLink,
-        RECIPIENT_EMAIL: options.recipientEmail,
-        SUMMARY_NL: buildSupportSummaryNl(simulation, options.recipientEmail),
-      },
-      replyTo: options.recipientEmail,
-    });
-    return;
-  }
-
-  await sendTemplatedEmail({
+  await sendEmailByCode({
     to: options.recipientEmail,
-    template: TemplatesEnum.SimulationResultsEmail,
+    code: isManualReview ? TemplatesEnum.SimulationManualReviewEmail : TemplatesEnum.SimulationResultsEmail,
     locale,
-    variables: userVariables,
+    variables: {
+      SIMULATION_URL: buildPublicSimulationUrl(simulation.id),
+      BRAND_NAME: simulation.brand?.name ?? '—',
+      TOWN_NAME: simulation.town?.name ?? '—',
+      FUEL_TYPE: simulation.fuelType?.name ?? '—',
+      RESULT_LABEL: simulationResultLabel(locale, simulation.resultCode),
+      IS_PURCHASED: isPurchased,
+      MILEAGE_KM: formatOptionalKm(simulation.mileage),
+      CAR_VALUE: formatOptionalEuro(simulation.isPurchased ? simulation.purchasePrice : simulation.resultEstimatedCarValue),
+      DEPRECIATION_RATE: formatOptionalEuro(simulation.resultDepreciationCostKm),
+    },
     replyTo: getSupportReplyToEmail(),
   });
 
-  await sendTemplatedEmail({
+  await sendEmailByCode({
     to: getSupportReplyToEmail(),
-    template: TemplatesEnum.SimulationResultsSupportEmail,
-    locale: null,
+    code: isManualReview ? TemplatesEnum.SimulationManualReviewSupportEmail : TemplatesEnum.SimulationResultsSupportEmail,
+    locale,
     variables: {
-      TOP_ALERT_ROW: buildSupportTopAlertRow(simulation.isPurchased),
-      ADMIN_LINK: adminLink,
+      BUTTON_URL: buildAdminSimulationUrl(simulation.id),
       RECIPIENT_EMAIL: options.recipientEmail,
-      SUMMARY_NL: buildSupportSummaryNl(simulation, options.recipientEmail),
+      IS_PURCHASED: isPurchased,
     },
     replyTo: options.recipientEmail,
   });

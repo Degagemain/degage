@@ -698,6 +698,27 @@ model TranslationOverride {
   @@index([locale])
 }
 
+model EmailTemplate {
+  id           String                      @id @default(uuid())
+  code         String                      @unique
+  designId     String
+  translations EmailTemplateTranslation[]
+  createdAt    DateTime                    @default(now())
+  updatedAt    DateTime                    @updatedAt
+}
+
+model EmailTemplateTranslation {
+  id              String        @id @default(uuid())
+  emailTemplateId String
+  emailTemplate   EmailTemplate @relation(fields: [emailTemplateId], references: [id], onDelete: Cascade)
+  locale          String
+  variables       Json
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([emailTemplateId, locale])
+}
+
 model ChatConversation {
   id            String                 @id @default(uuid())
   userId        String?

@@ -307,6 +307,51 @@
       "saveOverride": "Enregistrer",
       "removeOverride": "Supprimer"
     },
+    "emailTemplates": {
+      "title": "Modèles d'e-mail",
+      "searchPlaceholder": "Rechercher des modèles d'e-mail...",
+      "tryAgain": "Réessayer",
+      "columns": {
+        "code": "Code",
+        "design": "Design",
+        "created": "Créé",
+        "updated": "Mis à jour"
+      },
+      "codes": {
+        "verification-email": "Vérification d'e-mail",
+        "reset-password-email": "Réinitialisation du mot de passe",
+        "simulation-results-email": "Résultats de simulation",
+        "simulation-results-support": "Résultats de simulation (support)",
+        "simulation-manual-review-email": "Revue manuelle de simulation",
+        "simulation-manual-review-support": "Revue manuelle de simulation (support)"
+      },
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "variables": "Variables de texte",
+        "designsLoadError": "Impossible de charger les designs d'e-mail depuis Resend.",
+        "help": {
+          "code": "Type d'e-mail logique utilisé à l'envoi.",
+          "design": "Mise en page Resend qui fournit les variables.",
+          "variables": "Remplissez les variables du design par langue. Les valeurs runtime comme BUTTON_URL peuvent rester vides."
+        },
+        "placeholders": {
+          "code": "Sélectionner un code",
+          "design": "Sélectionner un design"
+        }
+      },
+      "delete": {
+        "title": "Supprimer le modèle d'e-mail",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Modèle d'e-mail supprimé.",
+        "error": "Échec de la suppression du modèle d'e-mail."
+      }
+    },
     "carBrands": {
       "title": "Marques",
       "filters": {
