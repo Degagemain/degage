@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-08-18
+
 ### Public features
 
 - Added: during car onboarding, new purchased cars require a proof of purchase

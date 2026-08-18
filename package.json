@@ -1,6 +1,6 @@
 {
   "name": "open-cars",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "predev": "pnpm db:start",
     "dev": "next dev --turbopack",
