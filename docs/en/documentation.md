@@ -9,8 +9,9 @@ roles:
 Central place for help content from the repository, Notion, or manual entries you add in the admin zone or via the API. The list shows all
 entries: open a title or **View** to read, and use **Edit** on the detail page or in the row menu. For **manual** entries, the row menu also
 includes **Delete**. **New** opens a form to create manual documentation (title and content in one or more languages, format, audience, tags,
-and groups). For repository- and Notion-backed pages, the edit form only lets you change FAQ visibility, public visibility, and groups—the
-headline and body stay synced from the external source. You cannot delete those from the list; they follow the external source.
+and groups). When you edit an entry you can change the format between plain text and Markdown. For repository- and Notion-backed pages, the edit
+form lets you change FAQ visibility, public visibility, groups, and format—the headline and body stay synced from the external source. You
+cannot delete those from the list; they follow the external source.
 
 Use the **Sync** button to refresh search embeddings after major documentation updates. Sync reports totals for updated, skipped, and failed
 records.
@@ -19,7 +20,7 @@ records.
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | External ID | Stable identifier; repository docs use `repo:{topic}`, Notion uses `notion:{page-id}`, manual entries can use `manual:…`.                                                                                                |
 | Source      | Where the record is managed: repository (seeded from `docs/`), Notion (synced via webhook), or manual (API).                                                                                                             |
-| Format      | `markdown` or plain `text`.                                                                                                                                                                                              |
+| Format      | `markdown` or plain `text`. You can change this when editing.                                                                                                                                                            |
 | FAQ         | When enabled, the item can be listed in FAQ widgets that filter by tags.                                                                                                                                                 |
 | Public      | When enabled, the item is a public article (intended for a future public FAQ page; may be combined with audience and FAQ settings).                                                                                      |
 | Audience    | Who may view the page in the app: technical, admin, user, public (technical/admin pages are only visible to administrators). In the documentation list, each assigned role appears as its own label in the Roles column. |

@@ -9,9 +9,9 @@ roles:
 Point central pour les textes d’aide issus du dépôt, de Notion ou des pages manuelles créées dans la zone admin ou via l’API. La liste affiche
 toutes les entrées : ouvrez un titre ou **Voir** pour lire, et **Modifier** depuis la page détail ou le menu de ligne. Pour les entrées
 **manuelles**, le menu de ligne propose aussi **Supprimer**. **Nouveau** ouvre un formulaire pour créer une documentation manuelle (titre et
-contenu dans une ou plusieurs langues, format, public, tags, groupes). Pour les contenus dépôt ou Notion, l’édition ne permet que la FAQ, la
-visibilité publique et les groupes — le titre et le texte restent synchronisés avec la source externe. Vous ne pouvez pas les supprimer depuis
-la liste ; ils suivent la source externe.
+contenu dans une ou plusieurs langues, format, public, tags, groupes). Lors de l’édition, vous pouvez changer le format entre texte brut et
+Markdown. Pour les contenus dépôt ou Notion, l’édition permet de modifier la FAQ, la visibilité publique, les groupes et le format — le titre et
+le texte restent synchronisés avec la source externe. Vous ne pouvez pas les supprimer depuis la liste ; ils suivent la source externe.
 
 Utilisez le bouton **Sync** pour relancer les embeddings de recherche après des mises à jour importantes de la documentation. La synchronisation
 affiche les compteurs total/mis à jour/ignorés/en échec.
@@ -20,7 +20,7 @@ affiche les compteurs total/mis à jour/ignorés/en échec.
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | ID externe     | Identifiant stable ; les docs dépôt utilisent `repo:{sujet}`, Notion `notion:{id-page}`, manuel souvent `manual:…`.                                                                                                |
 | Source         | Origine : dépôt (dossier `docs/`), Notion (webhook) ou manuel (API).                                                                                                                                               |
-| Format         | `markdown` ou `text` brut.                                                                                                                                                                                         |
+| Format         | `markdown` ou `text` brut. Vous pouvez le modifier à l’édition.                                                                                                                                                    |
 | FAQ            | Si activé, l’entrée peut apparaître dans les listes FAQ filtrées par tags.                                                                                                                                         |
 | Article public | Si activé, l’entrée est exposée comme article public (prévu pour une future page FAQ publique ; combinable avec le public cible et la FAQ).                                                                        |
 | Public cible   | Qui peut voir la page : technical, admin, user, public (technical/admin réservés aux administrateurs). Dans la liste documentation, chaque rôle attribué apparaît comme un libellé distinct dans la colonne Rôles. |
