@@ -71,4 +71,21 @@ describe('toPlayCarCreateInput', () => {
       fuel: 'PETROL',
     });
   });
+
+  it('keeps emission fields required by non-electric create', () => {
+    expect(
+      toPlayCarCreateInput({
+        fuel: 'DIESEL',
+        cc: 1968,
+        co2Emission: 128,
+        euroNorm: 'euro-6d',
+        email: 'owner@example.com',
+      }),
+    ).toEqual({
+      fuel: 'DIESEL',
+      cc: 1968,
+      co2Emission: 128,
+      euroNorm: 'euro-6d',
+    });
+  });
 });

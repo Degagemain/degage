@@ -46,6 +46,9 @@ describe('mapCarOnboardingToPlayCar', () => {
       simulation({
         ownerKmPerYear: 8000,
         resultConsumption: 5.4,
+        resultCc: 1968,
+        resultCo2: 128,
+        resultEuroNorm: 'euro-6d',
       }),
     );
 
@@ -100,8 +103,27 @@ describe('mapCarOnboardingToPlayCar', () => {
       assistanceExpiration: '2027-01-15',
       ownerAnnualKm: 8000,
       fuelEconomy: 5.4,
+      cc: 1968,
+      co2Emission: 128,
+      euroNorm: 'euro-6d',
       email: 'owner@example.com',
     });
+  });
+
+  it('omits emission fields when the simulation has none', async () => {
+    vi.mocked(dbFuelTypeRead).mockResolvedValueOnce(fuelType({ id: fuelTypeId, code: 'diesel' }));
+    vi.mocked(readSimulation).mockResolvedValueOnce(simulation({ resultCc: null, resultCo2: null, resultEuroNorm: null }));
+
+    const result = await mapCarOnboardingToPlayCar(
+      carOnboarding({
+        fuelType: { id: fuelTypeId, name: 'Diesel' },
+        simulation: { id: '550e8400-e29b-41d4-a716-446655440050' },
+      }),
+    );
+
+    expect(result.cc).toBeUndefined();
+    expect(result.co2Emission).toBeUndefined();
+    expect(result.euroNorm).toBeUndefined();
   });
 
   it('maps fuel codes and prefers carTypeOther', async () => {

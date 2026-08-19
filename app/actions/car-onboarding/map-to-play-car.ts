@@ -113,6 +113,9 @@ export const mapCarOnboardingToPlayCar = async (onboarding: CarOnboarding): Prom
     if (simulation.resultConsumption != null && simulation.resultConsumption > 0) {
       input.fuelEconomy = simulation.resultConsumption;
     }
+    if (simulation.resultCc != null && simulation.resultCc > 0) input.cc = simulation.resultCc;
+    if (simulation.resultCo2 != null && simulation.resultCo2 > 0) input.co2Emission = simulation.resultCo2;
+    if (isNonEmptyString(simulation.resultEuroNorm)) input.euroNorm = simulation.resultEuroNorm;
   }
 
   if (onboarding.owner?.id) {

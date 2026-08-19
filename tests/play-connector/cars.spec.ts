@@ -103,6 +103,18 @@ describe('buildPlayCarCreatePayload', () => {
     expect(payload.insurance).toMatchObject({ name: 'KBC', expiration: '2025-08-09', bonusMalus: '' });
     expect(payload.technicalCarDetails.licensePlate).toBe('2gmm226');
   });
+
+  it('defaults emission fields for electric cars', () => {
+    const payload = buildPlayCarCreatePayload({});
+
+    expect(payload).toMatchObject({ fuel: 'ELECTRIC', cc: 0, co2Emission: 0, euroNorm: '' });
+  });
+
+  it('sends emission fields for non-electric cars', () => {
+    const payload = buildPlayCarCreatePayload({ fuel: 'DIESEL', cc: 1968, co2Emission: 128, euroNorm: 'euro-6d' });
+
+    expect(payload).toMatchObject({ fuel: 'DIESEL', cc: 1968, co2Emission: 128, euroNorm: 'euro-6d' });
+  });
 });
 
 describe('playConnectorCreateCar', () => {

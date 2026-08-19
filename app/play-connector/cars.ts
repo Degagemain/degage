@@ -51,6 +51,9 @@ type PlayCarCreatePayload = {
   fuelEconomy: number;
   estimatedValue: number;
   ownerAnnualKm: number;
+  cc: number;
+  co2Emission: number;
+  euroNorm: string;
   comments: string;
   imagesId: string;
   locationId: string;
@@ -103,6 +106,9 @@ const defaultPlayCarCreatePayload = (): PlayCarCreatePayload => ({
   fuelEconomy: 0,
   estimatedValue: 0,
   ownerAnnualKm: 0,
+  cc: 0,
+  co2Emission: 0,
+  euroNorm: '',
   comments: '',
   imagesId: '',
   locationId: '',
@@ -157,6 +163,9 @@ export const buildPlayCarCreatePayload = (input: PlayCarCreateInput): PlayCarCre
   if (input.estimatedValue !== undefined) payload.estimatedValue = input.estimatedValue;
   if (input.ownerAnnualKm !== undefined) payload.ownerAnnualKm = input.ownerAnnualKm;
   if (input.carInitialMileage !== undefined) payload.carInitialMileage = input.carInitialMileage;
+  if (input.cc !== undefined) payload.cc = input.cc;
+  if (input.co2Emission !== undefined) payload.co2Emission = input.co2Emission;
+  if (input.euroNorm !== undefined) payload.euroNorm = input.euroNorm;
   if (input.comments !== undefined) payload.comments = input.comments;
 
   if (input.location) {

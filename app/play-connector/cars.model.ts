@@ -26,6 +26,9 @@ const playCarSharedFields = {
   estimatedValue: z.coerce.number().optional(),
   ownerAnnualKm: z.coerce.number().optional(),
   carInitialMileage: z.coerce.number().optional(),
+  cc: z.coerce.number().int().optional(),
+  co2Emission: z.coerce.number().int().optional(),
+  euroNorm: z.string().optional(),
   comments: z.string().optional(),
   location: z
     .object({
