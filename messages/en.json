@@ -2045,7 +2045,7 @@
         "saveError": "Could not save.",
         "cancel": "Cancel",
         "sourceLocked": "Source is fixed after creation.",
-        "syncedSourceNotice": "This page is synced from an external source. You can change FAQ, public visibility, and groups only — not title, body, tags, or audience.",
+        "syncedSourceNotice": "This page is synced from an external source. You can change FAQ, public visibility, groups, and format — not title, body, tags, or audience.",
         "syncedContentReadOnly": "Content is read-only here. Update the source to change the text.",
         "groupsEmpty": "No documentation groups exist yet. You can add them from Documentation → Groups in the admin menu.",
         "multiSelectGroups": "Select groups…",

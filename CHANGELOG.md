@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Admin features
+
+- Fixed: when editing documentation, you can change the format (plain text or Markdown).
+
 ## [0.0.4] - 2026-08-18
 
 ### Public features

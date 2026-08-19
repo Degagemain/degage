@@ -33,6 +33,7 @@ import type { DocumentationGroup } from '@/domain/documentation-group.model';
 import { Page } from '@/domain/page.model';
 import { MaxTake } from '@/domain/utils';
 import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
+import { documentationFromEditForm, isDocumentationContentLocked } from './documentation-from-edit-form';
 import { documentationTranslationsFromLocaleRecords } from './documentation-translations-from-locale-records';
 
 export const DOCUMENTATION_EDIT_FORM_ID = 'documentation-edit-form';
@@ -87,7 +88,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
   }, []);
 
   const isCreate = initialDocumentation.id === null;
-  const isContentLocked = !isCreate && (initialDocumentation.source === 'repository' || initialDocumentation.source === 'notion');
+  const isContentLocked = isDocumentationContentLocked(initialDocumentation);
   const initialRecords = useMemo(() => translationRecords(initialDocumentation), [initialDocumentation]);
 
   const [isFaq, setIsFaq] = useState(initialDocumentation.isFaq);
@@ -107,17 +108,10 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
     return primary ?? initialDocumentation.externalId;
   }, [initialDocumentation]);
 
-  const effectiveFormat = isCreate ? formatState : initialDocumentation.format;
-
   const sourceLabel = useMemo(() => {
     const key = { repository: 'filters.sourceRepository', notion: 'filters.sourceNotion', manual: 'filters.sourceManual' } as const;
     return t(key[initialDocumentation.source]);
   }, [initialDocumentation.source, t]);
-
-  const formatLabel = useMemo(() => {
-    const key = { markdown: 'filters.formatMarkdown', text: 'filters.formatText' } as const;
-    return t(key[initialDocumentation.format]);
-  }, [initialDocumentation.format, t]);
 
   const groupOptionsMerged = useMemo(() => {
     const map = new Map(groupSelectOptions.map((o) => [o.value, o.label]));
@@ -159,24 +153,19 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
       return;
     }
 
-    if (isCreate) {
-      const payload = documentationSchema.parse({
-        id: null,
-        source: 'manual',
-        externalId: '',
-        format: formatState,
-        isFaq,
-        isPublic,
-        groups,
-        translations,
-        audienceRoles,
-        tags,
-        createdAt: null,
-        updatedAt: null,
-      });
+    const payload = documentationFromEditForm(initialDocumentation, {
+      format: formatState,
+      isFaq,
+      isPublic,
+      groups,
+      translations,
+      audienceRoles,
+      tags,
+    });
 
-      setIsSaving(true);
-      try {
+    setIsSaving(true);
+    try {
+      if (isCreate) {
         const response = await apiPost('/api/documentation', payload);
         if (!response.ok) {
           const message = await parseApiErrorMessage(response, tForm('saveError'));
@@ -192,31 +181,14 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
         toast.success(tForm('saveSuccess'));
         router.push(`/app/admin/documentation/${encodeURIComponent(created.data.externalId)}`);
         router.refresh();
-      } catch {
-        toast.error(tForm('saveError'));
-      } finally {
-        setIsSaving(false);
+        return;
       }
-      return;
-    }
 
-    if (!initialDocumentation.id) {
-      toast.error(tForm('saveError'));
-      return;
-    }
+      if (!initialDocumentation.id) {
+        toast.error(tForm('saveError'));
+        return;
+      }
 
-    const payload = documentationSchema.parse({
-      ...initialDocumentation,
-      isFaq,
-      isPublic,
-      groups,
-      translations,
-      audienceRoles: isContentLocked ? initialDocumentation.audienceRoles : audienceRoles,
-      tags: isContentLocked ? initialDocumentation.tags : tags,
-    });
-
-    setIsSaving(true);
-    try {
       const response = await apiPut(`/api/documentation/${initialDocumentation.id}`, payload);
       if (!response.ok) {
         const message = await parseApiErrorMessage(response, tForm('saveError'));
@@ -234,7 +206,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
   };
 
   const contentTextareaClass =
-    effectiveFormat === 'markdown' ? 'font-mono min-h-[24rem] text-sm leading-relaxed' : 'min-h-[16rem] font-sans text-sm leading-relaxed';
+    formatState === 'markdown' ? 'font-mono min-h-[24rem] text-sm leading-relaxed' : 'min-h-[16rem] font-sans text-sm leading-relaxed';
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -261,34 +233,28 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
         ) : null}
 
         <FieldGroup className="max-w-3xl gap-6">
-          {isCreate ? (
-            <Field className="max-w-xl">
-              <FieldLabel>{tForm('format')}</FieldLabel>
-              <Select value={formatState} onValueChange={(v) => setFormatState(v as DocumentationFormat)} disabled={isSaving}>
-                <SelectTrigger className="w-full max-w-xs" size="sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {documentationFormatValues.map((fmt) => (
-                    <SelectItem key={fmt} value={fmt}>
-                      {fmt === 'markdown' ? t('filters.formatMarkdown') : t('filters.formatText')}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
-          ) : (
-            <div className="grid gap-2 text-sm sm:grid-cols-2">
-              <div>
-                <span className="text-muted-foreground">{tForm('source')}</span>
-                <p>{sourceLabel}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">{tForm('format')}</span>
-                <p>{formatLabel}</p>
-              </div>
+          {!isCreate ? (
+            <div className="text-sm">
+              <span className="text-muted-foreground">{tForm('source')}</span>
+              <p>{sourceLabel}</p>
             </div>
-          )}
+          ) : null}
+
+          <Field className="max-w-xl">
+            <FieldLabel>{tForm('format')}</FieldLabel>
+            <Select value={formatState} onValueChange={(v) => setFormatState(v as DocumentationFormat)} disabled={isSaving}>
+              <SelectTrigger className="w-full max-w-xs" size="sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {documentationFormatValues.map((fmt) => (
+                  <SelectItem key={fmt} value={fmt}>
+                    {fmt === 'markdown' ? t('filters.formatMarkdown') : t('filters.formatText')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
 
           <AdminSwitchFieldControl id="doc-is-faq" label={tForm('isFaq')} checked={isFaq} onChange={setIsFaq} disabled={isSaving} />
           <AdminSwitchFieldControl id="doc-is-public" label={tForm('isPublic')} checked={isPublic} onChange={setIsPublic} disabled={isSaving} />
@@ -346,7 +312,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
                     onChange={(e) => setContentByLocale((prev) => ({ ...prev, [activeLocale]: e.target.value }))}
                     disabled={isSaving}
                     className={contentTextareaClass}
-                    rows={effectiveFormat === 'markdown' ? 24 : 14}
+                    rows={formatState === 'markdown' ? 24 : 14}
                   />
                 </Field>
               </div>

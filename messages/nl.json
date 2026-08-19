@@ -2045,7 +2045,7 @@
         "saveError": "Opslaan mislukt.",
         "cancel": "Annuleren",
         "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden.",
-        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt alleen FAQ, zichtbaarheid en groepen wijzigen — niet titel, tekst, tags of doelpubliek.",
+        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt FAQ, zichtbaarheid, groepen en formaat wijzigen — niet titel, tekst, tags of doelpubliek.",
         "syncedContentReadOnly": "Inhoud is alleen-lezen. Wijzig de bron om de tekst aan te passen.",
         "groupsEmpty": "Er zijn nog geen documentatiegroepen. Voeg ze toe via Documentatie → Groepen in het adminmenu.",
         "multiSelectGroups": "Groepen kiezen…",
