@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  documentationFromEditForm,
-  isDocumentationContentLocked,
-} from '@/app/admin/documentation/components/documentation-from-edit-form';
+import { documentationFromEditForm, isDocumentationContentLocked } from '@/app/admin/documentation/components/documentation-from-edit-form';
 import { emptyManualDocumentation } from '@/app/admin/documentation/components/empty-manual-documentation';
 import { documentation } from '../../../builders/documentation.builder';
 
