@@ -194,6 +194,9 @@ When preparation is **Locked**, or after the owner has confirmed preparation, us
 until an admin unlocks it (for locked) or while confirmation stands. Admins can clear the owner confirmation from **Finalize** when preparation
 is not locked.
 
+If preparation is still **Open** and the owner has not confirmed, a reminder email can be sent. Admins send it from the onboarding detail
+screen. The same reminder is also sent automatically when no reminder was sent yet, or the last one was more than three days ago.
+
 ## Onboarding
 
 After preparation, admins manage the onboarding itself under a second menu. That menu has an **Admin wrap-up** tab where admins can sync the
@@ -245,5 +248,6 @@ the admin is asked to confirm before syncing.
 | Info session status                | Progress of the info session subprocess.                                                                                        |
 | Simulation                         | Linked simulation run, if any.                                                                                                  |
 | Preparation confirmed at           | Date and time when the owner confirmed preparation details.                                                                     |
+| Last preparation reminder email    | Date and time of the last reminder email asking the owner to finish preparation.                                                |
 | Preparation                        | Discrete progress of preparation steps; each block is colored by step status, shows the step name on hover, and opens that tab. |
 | Preparation status                 | Tracks preparation progress: Open, Ready, or Locked.                                                                            |

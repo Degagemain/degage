@@ -318,12 +318,8 @@
         "updated": "Updated"
       },
       "codes": {
-        "verification-email": "Email verification",
-        "reset-password-email": "Password reset",
-        "simulation-results-email": "Simulation results",
-        "simulation-results-support": "Simulation results (support)",
-        "simulation-manual-review-email": "Simulation manual review",
-        "simulation-manual-review-support": "Simulation manual review (support)"
+        "simulation-manual-review-support": "Simulation manual review (support)",
+        "car-onboarding-preparation-nudge-email": "Car onboarding preparation reminder"
       },
       "actions": {
         "openMenu": "Open menu",
@@ -1674,6 +1670,7 @@
         "carName": "Car name",
         "carPcId": "Autofiche",
         "preparationConfirmedAt": "Preparation confirmed by owner at",
+        "lastPreparationNudgeEmail": "Last preparation reminder email",
         "simulation": "Simulation",
         "preparationProgress": "Preparation",
         "created": "Created",
@@ -1761,6 +1758,11 @@
         "includedRoadAssistancePlan": "Purchased car has an included road assistance plan",
         "openSimulation": "Open simulation",
         "openPublicPage": "Open public page",
+        "sendPreparationNudge": "Send reminder email",
+        "sendPreparationNudgeSending": "Sending reminder…",
+        "sendPreparationNudgeSuccess": "Reminder email sent.",
+        "sendPreparationNudgeSkipped": "No reminder sent. Preparation is complete, locked, or a reminder was already sent in the last three days.",
+        "sendPreparationNudgeError": "Failed to send reminder email.",
         "overruleAgreement": "Overrule agreement",
         "overruleAgreementTitle": "Overrule car value agreement?",
         "overruleAgreementDescription": "Only use this when the owner has explicitly agreed to the proposed car value outside the normal in-app flow. This marks the car value as resolved without the owner confirming in the app.",

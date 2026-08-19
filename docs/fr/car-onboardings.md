@@ -184,6 +184,10 @@ Lorsque la préparation est **Verrouillée**, ou après confirmation du proprié
 utilisateur, infos véhicule, assurance ou la valeur. Les admins peuvent effacer la confirmation du propriétaire depuis **Finaliser** lorsque la
 préparation n'est pas verrouillée.
 
+Si la préparation est encore **Ouverte** et que le propriétaire n'a pas confirmé, un e-mail de rappel peut être envoyé. Les admins l'envoient
+depuis la fiche d'intégration. Le même rappel part aussi automatiquement lorsqu'aucun rappel n'a encore été envoyé, ou que le dernier date de
+plus de trois jours.
+
 ## Intégration
 
 Après la préparation, les admins gèrent l'intégration elle-même dans un second menu. Cet onglet **Clôture administrative** permet de
@@ -199,45 +203,46 @@ compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'ab
 
 ## Propriétés
 
-| Propriété                            | Description                                                                                                                            |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Rue                                  | Adresse (rue) de l'utilisateur.                                                                                                        |
-| Numéro                               | Numéro de maison de l'utilisateur.                                                                                                     |
-| Commune                              | Commune de l'utilisateur (code postal et localité).                                                                                    |
-| Téléphone                            | Numéro de téléphone de l'utilisateur.                                                                                                  |
-| Marque                               | Marque du véhicule.                                                                                                                    |
-| Type de carburant                    | Type de carburant du véhicule.                                                                                                         |
-| Type de véhicule                     | Modèle/type du véhicule dans le catalogue.                                                                                             |
-| Type de véhicule (autre)             | Texte libre lorsqu'aucune entrée du catalogue ne convient.                                                                             |
-| Véhicule acheté                      | Indique si le véhicule a été acheté.                                                                                                   |
-| Prix d'achat                         | Prix d'achat du véhicule.                                                                                                              |
-| Certificat d'immatriculation (recto) | Scan ou photo du recto du certificat d'immatriculation.                                                                                |
-| Certificat d'immatriculation (verso) | Scan ou photo du verso du certificat d'immatriculation.                                                                                |
-| Certificat de contrôle technique     | Rapport de contrôle technique valide (requis pour les véhicules de plus de 4 ans).                                                     |
-| Formulaire rose                      | Formulaire de cession du véhicule (formulaire rose) pour les véhicules achetés d'occasion.                                             |
-| Preuve d'achat                       | Facture ou document d'achat pour les véhicules neufs achetés. Le prix d'achat TTC (TVA comprise) doit être visible.                    |
-| Prix sur la preuve d'achat           | Montant d'achat TTC (TVA comprise) lu sur la preuve d'achat.                                                                           |
-| Valeur du véhicule                   | Valeur actuelle estimée du véhicule (proposée par l'admin).                                                                            |
-| Contre-proposition                   | Valeur alternative proposée par le propriétaire.                                                                                       |
-| Message de contre-proposition        | Explication optionnelle de la contre-proposition.                                                                                      |
-| Statut de valeur                     | Progression de la négociation sur la valeur du véhicule.                                                                               |
-| Assureur                             | Compagnie d'assurance actuelle du véhicule.                                                                                            |
-| Début du contrat d'assurance         | Date de début du contrat d'assurance.                                                                                                  |
-| Statut d'assurance                   | Progression du sous-processus assurance.                                                                                               |
-| Nom du plan d'assistance existant    | Nom du plan d'assistance actuel, lorsque le propriétaire a déjà une couverture.                                                        |
-| Amortissement par km                 | Coût d'amortissement estimé par kilomètre parcouru.                                                                                    |
-| Véhicule neuf                        | Indique si le véhicule est neuf.                                                                                                       |
-| Kilométrage                          | Kilométrage actuel.                                                                                                                    |
-| Première immatriculation             | Date de première immatriculation.                                                                                                      |
-| Places                               | Nombre de places assises.                                                                                                              |
-| Utilitaire                           | Indique si le véhicule est classé comme utilitaire.                                                                                    |
-| Propriétaire                         | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant).                                            |
-| Propriétaire Play connector          | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                                                                   |
-| Date session d'info                  | Date prévue de la session d'info inscrite.                                                                                             |
-| ID PC session d'info                 | Identifiant Play connector de la session d'info inscrite.                                                                              |
-| Autofiche                            | Identifiant Play de la fiche voiture synchronisée. Les admins la synchronisent depuis Clôture administrative.                          |
-| Statut session d'info                | Progression du sous-processus session d'info.                                                                                          |
-| Simulation                           | Simulation associée, le cas échéant.                                                                                                   |
-| Préparation confirmée le             | Date et heure auxquelles le propriétaire a confirmé les données de préparation.                                                        |
-| Préparation                          | Progression discrète des étapes de préparation ; chaque bloc est coloré selon le statut, affiche le nom au survol et ouvre cet onglet. |
-| Statut de préparation                | Suit la progression : Ouvert, Prêt ou Verrouillé.                                                                                      |
+| Propriété                               | Description                                                                                                                            |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Rue                                     | Adresse (rue) de l'utilisateur.                                                                                                        |
+| Numéro                                  | Numéro de maison de l'utilisateur.                                                                                                     |
+| Commune                                 | Commune de l'utilisateur (code postal et localité).                                                                                    |
+| Téléphone                               | Numéro de téléphone de l'utilisateur.                                                                                                  |
+| Marque                                  | Marque du véhicule.                                                                                                                    |
+| Type de carburant                       | Type de carburant du véhicule.                                                                                                         |
+| Type de véhicule                        | Modèle/type du véhicule dans le catalogue.                                                                                             |
+| Type de véhicule (autre)                | Texte libre lorsqu'aucune entrée du catalogue ne convient.                                                                             |
+| Véhicule acheté                         | Indique si le véhicule a été acheté.                                                                                                   |
+| Prix d'achat                            | Prix d'achat du véhicule.                                                                                                              |
+| Certificat d'immatriculation (recto)    | Scan ou photo du recto du certificat d'immatriculation.                                                                                |
+| Certificat d'immatriculation (verso)    | Scan ou photo du verso du certificat d'immatriculation.                                                                                |
+| Certificat de contrôle technique        | Rapport de contrôle technique valide (requis pour les véhicules de plus de 4 ans).                                                     |
+| Formulaire rose                         | Formulaire de cession du véhicule (formulaire rose) pour les véhicules achetés d'occasion.                                             |
+| Preuve d'achat                          | Facture ou document d'achat pour les véhicules neufs achetés. Le prix d'achat TTC (TVA comprise) doit être visible.                    |
+| Prix sur la preuve d'achat              | Montant d'achat TTC (TVA comprise) lu sur la preuve d'achat.                                                                           |
+| Valeur du véhicule                      | Valeur actuelle estimée du véhicule (proposée par l'admin).                                                                            |
+| Contre-proposition                      | Valeur alternative proposée par le propriétaire.                                                                                       |
+| Message de contre-proposition           | Explication optionnelle de la contre-proposition.                                                                                      |
+| Statut de valeur                        | Progression de la négociation sur la valeur du véhicule.                                                                               |
+| Assureur                                | Compagnie d'assurance actuelle du véhicule.                                                                                            |
+| Début du contrat d'assurance            | Date de début du contrat d'assurance.                                                                                                  |
+| Statut d'assurance                      | Progression du sous-processus assurance.                                                                                               |
+| Nom du plan d'assistance existant       | Nom du plan d'assistance actuel, lorsque le propriétaire a déjà une couverture.                                                        |
+| Amortissement par km                    | Coût d'amortissement estimé par kilomètre parcouru.                                                                                    |
+| Véhicule neuf                           | Indique si le véhicule est neuf.                                                                                                       |
+| Kilométrage                             | Kilométrage actuel.                                                                                                                    |
+| Première immatriculation                | Date de première immatriculation.                                                                                                      |
+| Places                                  | Nombre de places assises.                                                                                                              |
+| Utilitaire                              | Indique si le véhicule est classé comme utilitaire.                                                                                    |
+| Propriétaire                            | Utilisateur de la plateforme propriétaire de cet enregistrement (optionnel pour l'instant).                                            |
+| Propriétaire Play connector             | Indique si le propriétaire a lié un compte Play connector (Oui/Non).                                                                   |
+| Date session d'info                     | Date prévue de la session d'info inscrite.                                                                                             |
+| ID PC session d'info                    | Identifiant Play connector de la session d'info inscrite.                                                                              |
+| Autofiche                               | Identifiant Play de la fiche voiture synchronisée. Les admins la synchronisent depuis Clôture administrative.                          |
+| Statut session d'info                   | Progression du sous-processus session d'info.                                                                                          |
+| Simulation                              | Simulation associée, le cas échéant.                                                                                                   |
+| Préparation confirmée le                | Date et heure auxquelles le propriétaire a confirmé les données de préparation.                                                        |
+| Dernier e-mail de rappel de préparation | Date et heure du dernier e-mail de rappel demandant au propriétaire de terminer la préparation.                                        |
+| Préparation                             | Progression discrète des étapes de préparation ; chaque bloc est coloré selon le statut, affiche le nom au survol et ouvre cet onglet. |
+| Statut de préparation                   | Suit la progression : Ouvert, Prêt ou Verrouillé.                                                                                      |

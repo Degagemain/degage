@@ -194,6 +194,7 @@ model CarOnboarding {
   carName             String?
   carPcId             Int?
   preparationConfirmedAt DateTime?
+  lastPreparationNudgeEmail DateTime?
   stickerLinks        CarOnboardingSticker[]
   createdAt           DateTime                         @default(now())
   updatedAt           DateTime                         @updatedAt

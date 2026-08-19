@@ -9,15 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: if your car onboarding is still incomplete, you may receive a reminder email to continue.
 - Fixed: when the support assistant looks up more than one topic in a single reply, all documentation sources stay listed.
 
 ### Admin features
 
+- Added: admins can send a preparation reminder email from an onboarding, and incomplete onboardings are reminded automatically every few days.
 - Fixed: when editing documentation, you can change the format (plain text or Markdown).
 - Removed: documentation is no longer synced from Notion. Existing Notion-sourced articles disappear after this update.
 
 ### Technical
 
+- Added: Vercel daily cron for car onboarding preparation reminder emails (`CRON_SECRET`).
 - Added: MCP tool to create documentation articles.
 - Removed: Notion documentation webhook (`/api/webhooks/notion`), `@notionhq/client`, and all `NOTION_*` environment variables.
 - Removed: `DocumentationSource.notion`. The migration deletes Notion-sourced documentation rows, then drops the enum value.

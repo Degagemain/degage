@@ -323,7 +323,8 @@
         "simulation-results-email": "Résultats de simulation",
         "simulation-results-support": "Résultats de simulation (support)",
         "simulation-manual-review-email": "Revue manuelle de simulation",
-        "simulation-manual-review-support": "Revue manuelle de simulation (support)"
+        "simulation-manual-review-support": "Revue manuelle de simulation (support)",
+        "car-onboarding-preparation-nudge-email": "Rappel de préparation d'intégration voiture"
       },
       "actions": {
         "openMenu": "Ouvrir le menu",
@@ -1674,6 +1675,7 @@
         "carName": "Nom du véhicule",
         "carPcId": "Autofiche",
         "preparationConfirmedAt": "Préparation confirmée par le propriétaire le",
+        "lastPreparationNudgeEmail": "Dernier e-mail de rappel de préparation",
         "simulation": "Simulation",
         "preparationProgress": "Préparation",
         "created": "Créé",
@@ -1761,6 +1763,11 @@
         "includedRoadAssistancePlan": "Le véhicule acheté inclut un plan d'assistance routière",
         "openSimulation": "Ouvrir la simulation",
         "openPublicPage": "Ouvrir la page publique",
+        "sendPreparationNudge": "Envoyer un e-mail de rappel",
+        "sendPreparationNudgeSending": "Envoi du rappel…",
+        "sendPreparationNudgeSuccess": "E-mail de rappel envoyé.",
+        "sendPreparationNudgeSkipped": "Aucun rappel envoyé. La préparation est complète, verrouillée, ou un rappel a déjà été envoyé au cours des trois derniers jours.",
+        "sendPreparationNudgeError": "Échec de l'envoi de l'e-mail de rappel.",
         "overruleAgreement": "Outrepasser l'accord",
         "overruleAgreementTitle": "Outrepasser l'accord sur la valeur ?",
         "overruleAgreementDescription": "À utiliser uniquement lorsque le propriétaire a explicitement accepté la valeur proposée en dehors du flux normal dans l'application. Cela marque la valeur comme résolue sans confirmation du propriétaire dans l'app.",

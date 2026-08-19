@@ -39,6 +39,8 @@ adds **`BUTTON_URL`** at runtime (the Better Auth link) and uses the user’s sa
 | `verification-email`   | Email verification | `BUTTON_URL`     |
 | `reset-password-email` | Password reset     | `BUTTON_URL`     |
 
+Car onboarding preparation reminders use the same `button-email` design. See [Cron jobs](cron.md).
+
 The `button-email` design must exist as a **published** Resend template (alias `button-email`). Seed the in-app rows with `pnpm db:seed`.
 
 Resend reserves some variable names (e.g. `EMAIL`, `FIRST_NAME`); do not use those for custom placeholders.

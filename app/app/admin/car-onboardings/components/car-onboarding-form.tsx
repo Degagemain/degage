@@ -1513,6 +1513,10 @@ export function CarOnboardingForm({
                   <p className="text-sm font-medium">{t('columns.preparationConfirmedAt')}</p>
                   <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.preparationConfirmedAt)}</p>
                 </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.lastPreparationNudgeEmail')}</p>
+                  <p className="text-muted-foreground text-sm">{formatInfoSessionDate(initialCarOnboarding.lastPreparationNudgeEmail)}</p>
+                </div>
                 {preparationConfirmed ? (
                   preparationLocked ? (
                     <FieldDescription>{t('form.clearPreparationConfirmationLockedHint')}</FieldDescription>

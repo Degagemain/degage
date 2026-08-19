@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ExternalLink, Save, Trash2 } from 'lucide-react';
+import { ExternalLink, Mail, Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { CarOnboarding } from '@/domain/car-onboarding.model';
+import { CarOnboarding, isCarOnboardingEligibleForPreparationNudge } from '@/domain/car-onboarding.model';
 import { apiDelete, apiPut, apiPutForm } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
@@ -40,6 +40,7 @@ export default function EditCarOnboardingPage() {
   const [carOnboarding, setCarOnboarding] = useState<CarOnboarding | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSendingPreparationNudge, setIsSendingPreparationNudge] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -205,6 +206,32 @@ export default function EditCarOnboardingPage() {
       await loadCarOnboarding({ silent: true });
     } catch {
       toast.error(t('form.clearPreparationConfirmationError'));
+    }
+  };
+
+  const handleSendPreparationNudge = async () => {
+    if (!id) return;
+    setIsSendingPreparationNudge(true);
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/preparation-nudge`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.sendPreparationNudgeError'));
+        toast.error(message);
+        return;
+      }
+
+      const result: { sent?: boolean } = await response.json();
+      if (result.sent) {
+        toast.success(t('form.sendPreparationNudgeSuccess'));
+      } else {
+        toast.info(t('form.sendPreparationNudgeSkipped'));
+      }
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.sendPreparationNudgeError'));
+    } finally {
+      setIsSendingPreparationNudge(false);
     }
   };
 
@@ -402,6 +429,17 @@ export default function EditCarOnboardingPage() {
                 <ExternalLink className="size-3.5" />
                 {t('form.openPublicPage')}
               </Link>
+            </Button>
+          ) : null}
+          {carOnboarding && isCarOnboardingEligibleForPreparationNudge(carOnboarding) ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => void handleSendPreparationNudge()}
+              disabled={isLoading || isSaving || isSendingPreparationNudge}
+            >
+              <Mail className="size-3.5" />
+              {isSendingPreparationNudge ? t('form.sendPreparationNudgeSending') : t('form.sendPreparationNudge')}
             </Button>
           ) : null}
         </AdminPageToolbar>
