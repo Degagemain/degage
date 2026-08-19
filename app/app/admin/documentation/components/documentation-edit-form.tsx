@@ -109,7 +109,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
   }, [initialDocumentation]);
 
   const sourceLabel = useMemo(() => {
-    const key = { repository: 'filters.sourceRepository', notion: 'filters.sourceNotion', manual: 'filters.sourceManual' } as const;
+    const key = { repository: 'filters.sourceRepository', manual: 'filters.sourceManual' } as const;
     return t(key[initialDocumentation.source]);
   }, [initialDocumentation.source, t]);
 

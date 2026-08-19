@@ -37,9 +37,8 @@ describe('canDeleteDocumentation', () => {
     expect(canDeleteDocumentation(documentation({ source: 'manual' }))).toBe(true);
   });
 
-  it('rejects repository and notion documentation', () => {
+  it('rejects repository documentation', () => {
     expect(canDeleteDocumentation(documentation({ source: 'repository' }))).toBe(false);
-    expect(canDeleteDocumentation(documentation({ source: 'notion' }))).toBe(false);
   });
 
   it('rejects unsaved manual documentation', () => {

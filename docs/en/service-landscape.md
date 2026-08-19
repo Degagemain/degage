@@ -18,7 +18,6 @@ flowchart TB
     Resend[Resend]
     Gemini[Google Gemini API]
     PostHog[PostHog EU]
-    Notion[Notion API]
     GitHub[GitHub + Actions]
 
     Browser -->|HTTPS| App
@@ -28,24 +27,21 @@ flowchart TB
     App -->|chat + embeddings| Gemini
     App -->|events, traces, errors| PostHog
     Browser -->|product analytics| PostHog
-    Notion -->|docs webhook| App
-    App -->|fetch pages| Notion
     GitHub -->|deploy trigger| App
 ```
 
 # Service map
 
-| Service                 | Role                                          | Current plan                     | Free allowance                                                     | First paid tier             | Metering                                                       |
-| ----------------------- | --------------------------------------------- | -------------------------------- | ------------------------------------------------------------------ | --------------------------- | -------------------------------------------------------------- |
-| Neon                    | Postgres + pgvector (prod)                    | Free                             | 0.5 GB storage, ~191 compute-hrs/mo, autosuspend, 1 project        | Launch $19/mo               | Compute-hours ($/CU-hr) + storage $/GB-month + egress          |
-| Resend                  | Outbound auth mail + inbound support webhook  | Free                             | 3,000 emails/mo · 100/day · 1 verified domain                      | Pro $20/mo (50k emails)     | Per-email overage (~$1 / 1,000 extra)                          |
-| Google Gemini API       | Chat replies + embeddings                     | Free tier (AI Studio key)        | Rate-limited RPM/RPD per model; data may be used to improve models | Paid tier (Cloud billing)   | Per 1M input / output tokens, per model                        |
-| PostHog                 | Product analytics, error tracking, LLM traces | Free (EU cloud)                  | 1M events, 5k session recordings, 1M flag req, 100k exceptions /mo | Pay-as-you-go               | Per-event, per-recording, per-exception, per-LLM-trace overage |
-| Notion API              | Documentation source (webhook + page fetch)   | Free (API on any workspace plan) | API access included; workspace plan separate                       | Workspace: Plus $10/user/mo | No metered API billing — cost is the workspace seat            |
-| GitHub                  | Source control + OAuth provider               | Free                             | Unlimited public repos, 2,000 Actions min/mo (private)             | Team $4/user/mo             | Actions minutes + storage overages                             |
-| GitHub Actions          | CI: lint, build, test, format, docs           | Included in GitHub Free          | 2,000 Linux min/mo on private repos; unlimited on public           | Per-minute overage          | $0.008/min Linux · 2× macOS · 10× Windows                      |
-| Better Auth (in-app UI) | Email/password + GitHub OAuth                 | Self-hosted (OSS)                | No SaaS cost — runs in our Next.js process                         | —                           | Infra cost only (DB rows, function time)                       |
-| ngrok (optional, local) | HTTPS tunnel for Notion/Resend webhook dev    | Free                             | Random hostname, 1 online tunnel, limited requests/min             | Personal $8/mo              | Reserved domain + higher limits per seat                       |
+| Service                 | Role                                          | Current plan              | Free allowance                                                     | First paid tier           | Metering                                                       |
+| ----------------------- | --------------------------------------------- | ------------------------- | ------------------------------------------------------------------ | ------------------------- | -------------------------------------------------------------- |
+| Neon                    | Postgres + pgvector (prod)                    | Free                      | 0.5 GB storage, ~191 compute-hrs/mo, autosuspend, 1 project        | Launch $19/mo             | Compute-hours ($/CU-hr) + storage $/GB-month + egress          |
+| Resend                  | Outbound auth mail + inbound support webhook  | Free                      | 3,000 emails/mo · 100/day · 1 verified domain                      | Pro $20/mo (50k emails)   | Per-email overage (~$1 / 1,000 extra)                          |
+| Google Gemini API       | Chat replies + embeddings                     | Free tier (AI Studio key) | Rate-limited RPM/RPD per model; data may be used to improve models | Paid tier (Cloud billing) | Per 1M input / output tokens, per model                        |
+| PostHog                 | Product analytics, error tracking, LLM traces | Free (EU cloud)           | 1M events, 5k session recordings, 1M flag req, 100k exceptions /mo | Pay-as-you-go             | Per-event, per-recording, per-exception, per-LLM-trace overage |
+| GitHub                  | Source control + OAuth provider               | Free                      | Unlimited public repos, 2,000 Actions min/mo (private)             | Team $4/user/mo           | Actions minutes + storage overages                             |
+| GitHub Actions          | CI: lint, build, test, format, docs           | Included in GitHub Free   | 2,000 Linux min/mo on private repos; unlimited on public           | Per-minute overage        | $0.008/min Linux · 2× macOS · 10× Windows                      |
+| Better Auth (in-app UI) | Email/password + GitHub OAuth                 | Self-hosted (OSS)         | No SaaS cost — runs in our Next.js process                         | —                         | Infra cost only (DB rows, function time)                       |
+| ngrok (optional, local) | HTTPS tunnel for Resend webhook dev           | Free                      | Random hostname, 1 online tunnel, limited requests/min             | Personal $8/mo            | Reserved domain + higher limits per seat                       |
 
 # Detail by category
 
@@ -101,18 +97,6 @@ effectively rounding.
 
 Docs: [Gemini API pricing](https://ai.google.dev/pricing) · [API overview](https://ai.google.dev/gemini-api/docs) ·
 [Data use & privacy](https://ai.google.dev/gemini-api/terms).
-
-### Notion API
-
-Consumed by the documentation webhook to ingest pages. Auth is an internal integration token; payloads are HMAC-verified.
-
-- Notion does not meter the API. The only cost is the workspace plan that hosts the docs: Free for personal use, Plus $10/user/mo (billed
-  annually) or $12 month-to-month, Business $20/user/mo, Enterprise quote-based. Webhooks and page fetches are included on every plan.
-- Practical implication: the cost of Notion-as-CMS is "one editor seat", not per-request. The bottleneck is rate limit (≈3 req/s average), not
-  price.
-
-Docs: [Notion pricing](https://www.notion.com/pricing) · [API reference](https://developers.notion.com/reference/intro) ·
-[Webhooks](https://developers.notion.com/reference/webhooks).
 
 ## Messaging & identity
 

@@ -10,9 +10,8 @@ describe('isDocumentationContentLocked', () => {
     expect(isDocumentationContentLocked(documentation({ source: 'manual' }))).toBe(false);
   });
 
-  it('is locked for repository and notion documents', () => {
+  it('is locked for repository documents', () => {
     expect(isDocumentationContentLocked(documentation({ source: 'repository' }))).toBe(true);
-    expect(isDocumentationContentLocked(documentation({ source: 'notion' }))).toBe(true);
   });
 });
 
@@ -50,7 +49,7 @@ describe('documentationFromEditForm', () => {
   });
 
   it('allows changing format on synced documents', () => {
-    const initial = documentation({ source: 'notion', format: 'text' });
+    const initial = documentation({ source: 'repository', format: 'text' });
     const saved = documentationFromEditForm(initial, {
       format: 'markdown',
       isFaq: initial.isFaq,

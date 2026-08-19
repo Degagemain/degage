@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { BookOpen, Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
+import { Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -369,10 +369,9 @@ export default function DocumentationAdminPage() {
   );
 
   const sourceOptions: FacetedFilterOption[] = useMemo(() => {
-    const icons = { repository: Database, notion: BookOpen, manual: FileText } as const;
+    const icons = { repository: Database, manual: FileText } as const;
     const labelKey = {
       repository: 'filters.sourceRepository',
-      notion: 'filters.sourceNotion',
       manual: 'filters.sourceManual',
     } as const;
     return documentationSourceValues.map((src) => ({

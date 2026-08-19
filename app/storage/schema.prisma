@@ -592,7 +592,6 @@ model Verification {
 
 enum DocumentationSource {
   repository
-  notion
   manual
 }
 
