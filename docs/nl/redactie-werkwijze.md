@@ -32,10 +32,16 @@ Zoek niet met één zoekopdracht, maar laat Claude het volledige corpus ophalen
 woorden. Een vraag kan onder een heel andere titel al beantwoord zijn.
 
 **2. Overlapt het?**
-Lijkt het nieuwe artikel sterk op een bestaand artikel (zelfde antwoord, andere vraag),
-dan is het antwoord **mergen, niet toevoegen**: werk het bestaande artikel bij en zet de
-nieuwe vraagformulering erin. Twee artikels met bijna hetzelfde antwoord verwarren de
-chatbot: die krijgt dan twee licht verschillende versies en gaat mengen.
+De toets is niet "lijken ze op elkaar" maar **"is het antwoord hetzelfde?"**
+
+- **Zelfde antwoord, andere vraagformulering** → mergen, niet toevoegen: werk het
+  bestaande artikel bij en neem de nieuwe vraagformulering erin op. Twee versies van
+  hetzelfde antwoord groeien uit elkaar en verwarren de chatbot.
+- **Verwant onderwerp, maar een eigen antwoord** → een apart artikel is prima, en past
+  zelfs beter bij "één onderwerp per artikel". Twee verwante artikels mogen gerust
+  allebei gevonden worden — zolang ze elkaar niet tegenspreken.
+
+Mergen is altijd een vóórstel in het voorlegsjabloon; de medewerker beslist.
 
 **3. Pas dan: nieuw artikel.**
 Claude maakt het concept volgens het sjabloon hieronder; jij leest na en publiceert.
