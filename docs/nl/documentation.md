@@ -6,20 +6,20 @@ roles:
 
 # Documentatie
 
-Centrale plek voor hulpteksten uit de codebase, Notion of handmatige items die u in de beheerzone of via de API toevoegt. De lijst toont alle
-items: open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. Voor **handmatige** items bevat het
-rijmenu ook **Verwijderen**. **Nieuw** opent een formulier om handmatige documentatie te maken (titel en inhoud in één of meer talen, formaat,
-doelpubliek, tags, groepen). Bij bewerken kunt u het formaat wisselen tussen platte tekst en Markdown. Voor repository- of Notion-bronnen kunt u
-in het bewerkingsscherm FAQ, zichtbaarheid, groepen en formaat wijzigen — titel en inhoud blijven met de bron gesynchroniseerd. Die items kunt u
-niet uit de lijst verwijderen; ze volgen de externe bron.
+Centrale plek voor hulpteksten uit de codebase of handmatige items die u in de beheerzone of via de API toevoegt. De lijst toont alle items:
+open een titel of **Bekijken** om te lezen, en **Bewerken** op de detailpagina of in het rijmenu. Voor **handmatige** items bevat het rijmenu
+ook **Verwijderen**. **Nieuw** opent een formulier om handmatige documentatie te maken (titel en inhoud in één of meer talen, formaat,
+doelpubliek, tags, groepen). Bij bewerken kunt u het formaat wisselen tussen platte tekst en Markdown. Voor repository-bronnen kunt u in het
+bewerkingsscherm FAQ, zichtbaarheid, groepen en formaat wijzigen — titel en inhoud blijven met de repository gesynchroniseerd. Die items kunt u
+niet uit de lijst verwijderen; ze volgen de repository.
 
 Gebruik de knop **Sync** om zoek-embeddings opnieuw op te bouwen na grotere documentatie-updates. De sync toont totalen voor bijgewerkt,
 overgeslagen en mislukt.
 
 | Eigenschap  | Beschrijving                                                                                                                                                                                     |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Externe ID  | Vaste sleutel; repo-docs gebruiken `repo:{onderwerp}`, Notion `notion:{pagina-id}`, handmatig vaak `manual:…`.                                                                                   |
-| Bron        | Beheer: repository (uit `docs/`), Notion (via webhook) of handmatig (API).                                                                                                                       |
+| Externe ID  | Vaste sleutel; repo-docs gebruiken `repo:{onderwerp}`, handmatig vaak `manual:…`.                                                                                                                |
+| Bron        | Beheer: repository (uit `docs/`) of handmatig (API).                                                                                                                                             |
 | Formaat     | `markdown` of platte `text`. U kunt dit wijzigen bij bewerken.                                                                                                                                   |
 | FAQ         | Indien aan, kan het item in FAQ-lijsten met tagfilters verschijnen.                                                                                                                              |
 | Publiek     | Indien aan, is het item een publiek artikel (bedoeld voor een toekomstige publieke FAQ-pagina; combineerbaar met doelpubliek en FAQ).                                                            |

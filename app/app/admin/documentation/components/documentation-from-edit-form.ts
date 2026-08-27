@@ -7,7 +7,7 @@ import {
 } from '@/domain/documentation.model';
 
 export const isDocumentationContentLocked = (doc: Pick<Documentation, 'id' | 'source'>): boolean =>
-  doc.id !== null && (doc.source === 'repository' || doc.source === 'notion');
+  doc.id !== null && doc.source === 'repository';
 
 export type DocumentationEditFormFields = {
   format: DocumentationFormat;

@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { idNameSchema } from './id-name.model';
 import { roleValues } from './role.model';
 
-export const documentationSourceValues = ['repository', 'notion', 'manual'] as const;
+export const documentationSourceValues = ['repository', 'manual'] as const;
 export const documentationSourceSchema = z.enum(documentationSourceValues);
 export type DocumentationSource = z.infer<typeof documentationSourceSchema>;
 

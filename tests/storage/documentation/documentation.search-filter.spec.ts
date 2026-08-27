@@ -45,9 +45,9 @@ describe('documentation search filterToQuery (audience / roles)', () => {
   });
 
   it('filters by multiple sources with IN', () => {
-    const filter = documentationFilterSchema.parse({ sources: ['repository', 'notion'] });
+    const filter = documentationFilterSchema.parse({ sources: ['repository', 'manual'] });
     const where = filterToQuery(filter);
-    expect(where).toEqual({ source: { in: ['repository', 'notion'] } });
+    expect(where).toEqual({ source: { in: ['repository', 'manual'] } });
   });
 
   it('filters by single format', () => {

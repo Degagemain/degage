@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Admin features
 
 - Fixed: when editing documentation, you can change the format (plain text or Markdown).
+- Removed: documentation is no longer synced from Notion. Existing Notion-sourced articles disappear after this update.
+
+### Technical
+
+- Removed: Notion documentation webhook (`/api/webhooks/notion`), `@notionhq/client`, and all `NOTION_*` environment variables.
+- Removed: `DocumentationSource.notion`. The migration deletes Notion-sourced documentation rows, then drops the enum value.
 
 ## [0.0.4] - 2026-08-18
 

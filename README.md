@@ -332,48 +332,12 @@ This log explains why packages were installed.
 | Transactional email (auth)                 | resend                                                                                                 |
 | TS scripts with path aliases               | tsx                                                                                                    |
 | Seed / parse docs front matter             | gray-matter                                                                                            |
-| Notion webhooks & page fetch               | @notionhq/client                                                                                       |
 | PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
 | PostHog MCP analytics                      | @posthog/mcp                                                                                           |
 | PostHog Logs (OpenTelemetry OTLP)          | @opentelemetry/sdk-logs, @opentelemetry/exporter-logs-otlp-http, @opentelemetry/api-logs               |
 | PostHog Tracing (OpenTelemetry OTLP)       | @opentelemetry/exporter-trace-otlp-proto, @opentelemetry/sdk-trace-base                                |
 | PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
 | ShadCN forms (RHF + Zod)                   | react-hook-form, @hookform/resolvers                                                                   |
-
-### Notion Integration
-
-#### Webhook setup
-
-1. **Integration** — In [Notion integrations](https://www.notion.so/my-integrations), create or open an integration and copy its secret into `NOTION_API_KEY`. Invite that integration to every page (or parent) it must read; otherwise webhooks may not fire or page fetch will fail.
-2. **Public URL** — Notion requires **HTTPS** and a host reachable from the internet (not `localhost`). Register the webhook at **`/api/webhooks/notion`** on that host (your public origin + that path).
-
-3. **Create the subscription** — In the integration → **Webhooks**, add a subscription with that URL. Subscribe to page events this app handles: **`page.created`**, **`page.content_updated`**, **`page.properties_updated`**, **`page.moved`**, **`page.undeleted`**, **`page.deleted`**. Other event types are accepted but ignored.
-4. **Verify** — Notion sends a one-time `POST` to your URL. The JSON body contains **`verification_token`** (Notion does not show this token in its own UI—you must read it from the **incoming HTTP request**). This app answers with **200** and an empty body. Then in Notion, open **Verify** on the subscription and **paste that same token string**. Where to read it:
-   - **While `NOTION_WEBHOOK_VERIFICATION_TOKEN` is unset:** the token is **printed to server logs** (`stdout`) for every verification request, in any environment (local or hosted). After you set that env var, the app stops logging it (use request inspection if you still need the raw body).
-   - **ngrok:** while `ngrok http` is running, open the **Web Interface** URL printed in the ngrok terminal (default local port **4040**), find the `POST` to `/api/webhooks/notion`, and copy `verification_token` from the request body.
-   - **Hosted deploy (when the env var is already set):** use your host’s request logs or observability for that endpoint’s POST body. Official walkthrough: [Notion webhooks](https://developers.notion.com/reference/webhooks).
-5. **`NOTION_WEBHOOK_VERIFICATION_TOKEN`** — After verification, set this env var to the **same** `verification_token` value so incoming requests can be checked against `X-Notion-Signature` (HMAC-SHA256 of the raw body). **Tip:** Leave this unset until the verification request succeeds; if it is set incorrectly before verification, Notion’s first request may get **401**.
-
-#### Local testing with ngrok
-
-Use a tunnel so Notion can reach your machine. **Install the [ngrok agent](https://ngrok.com/download)** (Homebrew: `brew install ngrok/ngrok/ngrok`) on your system — do **not** add ngrok as an npm devDependency; it is a separate CLI, not something the app imports.
-
-1. Follow [ngrok getting started](https://ngrok.com/docs/getting-started/) to create an account, install the agent, and run **`ngrok config add-authtoken <token>`** once.
-2. Start the app: **`pnpm dev`** (default Next.js port **3000** with this repo’s `dev` script).
-3. In another terminal: **`ngrok http 3000`**.
-4. In the ngrok output, copy the **https** URL next to **Forwarding** and append **`/api/webhooks/notion`** — that full string is the webhook URL in Notion.
-5. Complete verification in Notion as above (token from server logs while `NOTION_WEBHOOK_VERIFICATION_TOKEN` is unset, or from the ngrok inspector). On the free tier the hostname may change each time you restart ngrok; update the subscription or use a [reserved domain](https://ngrok.com/docs/guides/how-to-set-up-a-custom-domain/) on a paid plan if you need a stable URL.
-
-| Variable                            | Purpose                                                                                                                                                                                                         |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NOTION_API_KEY`                    | Integration token to fetch pages after webhook events                                                                                                                                                           |
-| `NOTION_WEBHOOK_VERIFICATION_TOKEN` | Token from Notion webhook verification; used for `X-Notion-Signature` validation                                                                                                                                |
-| `NOTION_DOC_LANGUAGE_PROPERTY`      | Optional Notion property name for the page language. Defaults to **`Language`**. The value may come from **select**, **status**, **rich_text**, or **title** and must be one of `en`, `nl`, or `fr`.            |
-| `NOTION_DOC_PARENT_KEY_PROPERTY`    | Optional Notion property name for the stable parent documentation key. Defaults to **`Parent`**. The value may come from **select**, **status**, **rich_text**, or **title** and is stored as `notion:{value}`. |
-
-Each Notion page syncs exactly one documentation translation. The page **title** becomes that translation's title, and the page's main block content is converted to Markdown for the translation body. Notion fields for content, FAQ/public state, audience roles, tags, and format are intentionally ignored; manage those documentation-level settings in the admin zone.
-
-After deploying this sync shape, remove the old production variables `NOTION_DOC_LOCALE_TITLE_PROPERTIES`, `NOTION_DOC_LOCALE_CONTENT_PROPERTIES`, `NOTION_DOC_IS_FAQ_PROPERTY`, `NOTION_DOC_IS_PUBLIC_PROPERTY`, `NOTION_DOC_AUDIENCE_PROPERTY`, `NOTION_DOC_TAGS_PROPERTY`, and `NOTION_DOC_FORMAT_PROPERTY`. Keep `NOTION_API_KEY` and `NOTION_WEBHOOK_VERIFICATION_TOKEN`, and set `NOTION_DOC_LANGUAGE_PROPERTY` / `NOTION_DOC_PARENT_KEY_PROPERTY` only if production Notion uses names other than `Language` / `Parent`.
 
 ### Resend
 

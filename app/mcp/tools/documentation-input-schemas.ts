@@ -22,7 +22,7 @@ export const documentationUpdateBodySchema = documentationSchema.extend({
 export const documentationUpdateMcpInputSchema = {
   id: z.uuid().describe('Documentation UUID.'),
   source: documentationSourceSchema.describe(`Origin of the article. One of: ${documentationSourceValues.join(', ')}.`),
-  externalId: z.string().max(500).describe('Stable external identifier (e.g. notion page id or manual:slug).'),
+  externalId: z.string().max(500).describe('Stable external identifier (e.g. repo:topic or manual:slug).'),
   isFaq: z.boolean().describe('Whether the article appears in the FAQ catalog.'),
   isPublic: z.boolean().describe('Whether the article is visible in the public documentation catalog.'),
   format: documentationFormatSchema.describe(`Content format. One of: ${documentationFormatValues.join(', ')}.`),

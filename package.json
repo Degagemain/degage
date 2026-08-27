@@ -48,7 +48,6 @@
     "@google/genai": "^1.42.0",
     "@hookform/resolvers": "^5.2.2",
     "@modelcontextprotocol/sdk": "1.26.0",
-    "@notionhq/client": "^5.14.0",
     "@opentelemetry/api-logs": "^0.215.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.215.0",
     "@opentelemetry/exporter-trace-otlp-proto": "^0.214.0",

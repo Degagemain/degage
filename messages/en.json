@@ -2004,7 +2004,6 @@
         "formatMarkdown": "Markdown",
         "formatText": "Plain text",
         "sourceRepository": "Repository",
-        "sourceNotion": "Notion",
         "sourceManual": "Manual",
         "groups": "Group"
       },
