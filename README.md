@@ -255,7 +255,7 @@ pnpm run docs
 ### Client and proxy
 
 - **Initialization** — `instrumentation-client.ts` loads `posthog-js`. For Next.js App Router, initializing the browser SDK from [instrumentation](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation) (client hook) is the supported pattern from Next.js 15.3 onward.
-- **Rewrites (disabled!)** — `next.config.ts` maps `/ingest`, `/ingest/static`, and `/ingest/array` to the EU PostHog ingest and asset hosts (static and array must hit the asset host so remote config and lazy recorder scripts load correctly). If you use another region, update those destinations and `ui_host` in `instrumentation-client.ts` to match [PostHog’s docs](https://posthog.com/docs/advanced/proxy#nextjs-rewrites).
+- **Rewrites** — `next.config.ts` maps `/ingest`, `/ingest/static`, and `/ingest/array` to the PostHog ingest and asset hosts, so the browser sends analytics, session recording, and exception capture to the first-party origin instead of `eu.i.posthog.com` (which ad blockers drop). `static` and `array` hit the asset host so remote config and the lazy recorder script load. The destinations follow `NEXT_PUBLIC_POSTHOG_HOST`; for another region, update `ui_host` in `instrumentation-client.ts` to match [PostHog’s docs](https://posthog.com/docs/advanced/proxy#nextjs-rewrites).
 
 ### Server
 
