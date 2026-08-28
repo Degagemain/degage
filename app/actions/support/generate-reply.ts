@@ -6,7 +6,11 @@ import type { DocumentationAudienceRole } from '@/domain/documentation.model';
 import { Role, type UserWithRole } from '@/domain/role.model';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation } from '@/domain/chat.model';
-import { type DocumentationSupportCitation, toChatCitationsForSupportViewer } from '@/domain/documentation.support-citations';
+import {
+  type DocumentationSupportCitation,
+  mergeDocumentationSupportCitations,
+  toChatCitationsForSupportViewer,
+} from '@/domain/documentation.support-citations';
 import { type ContentLocale } from '@/i18n/locales';
 import { isPostHogEnabled } from '@/integrations/posthog';
 import { getSupportReplyToEmail } from '@/actions/utils';
@@ -128,7 +132,9 @@ export const generateSupportReplyStream = async (
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          latestRagCitations = includeCitations ? search.citations : [];
+          if (includeCitations) {
+            latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          }
           return search;
         },
       },
@@ -191,7 +197,9 @@ export const generateSupportReplyText = async (
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          latestRagCitations = includeCitations ? search.citations : [];
+          if (includeCitations) {
+            latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          }
           return search;
         },
       },

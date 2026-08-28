@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Fixed: when the support assistant looks up more than one topic in a single reply, all documentation sources stay listed.
+
 ### Admin features
 
 - Fixed: when editing documentation, you can change the format (plain text or Markdown).
