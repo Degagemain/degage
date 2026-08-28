@@ -15,12 +15,15 @@ import {
 import { idNameSchema } from '@/domain/id-name.model';
 import { DefaultTake, MaxTake, SortOrder } from '@/domain/utils';
 
+export const documentationCreateBodySchema = documentationSchema.extend({
+  id: z.null().default(null),
+});
+
 export const documentationUpdateBodySchema = documentationSchema.extend({
   id: z.uuid(),
 });
 
-export const documentationUpdateMcpInputSchema = {
-  id: z.uuid().describe('Documentation UUID.'),
+const documentationMcpSharedFields = {
   source: documentationSourceSchema.describe(`Origin of the article. One of: ${documentationSourceValues.join(', ')}.`),
   externalId: z.string().max(500).describe('Stable external identifier (e.g. repo:topic or manual:slug).'),
   isFaq: z.boolean().describe('Whether the article appears in the FAQ catalog.'),
@@ -31,6 +34,17 @@ export const documentationUpdateMcpInputSchema = {
     .describe(`Audience roles that may view this article. Values: ${documentationAudienceRoleValues.join(', ')}.`),
   tags: z.array(documentationTagSchema).describe(`Tags for filtering and workflows. Values: ${documentationTagValues.join(', ')}.`),
   groups: z.array(idNameSchema).describe('Documentation groups to assign (id required; name optional).'),
+  translations: z
+    .array(documentationTranslationSchema)
+    .min(1)
+    .describe('All locale translations for the article. Include every supported locale (en, nl, fr).'),
+};
+
+export const documentationCreateMcpInputSchema = documentationMcpSharedFields;
+
+export const documentationUpdateMcpInputSchema = {
+  id: z.uuid().describe('Documentation UUID.'),
+  ...documentationMcpSharedFields,
   translations: z
     .array(documentationTranslationSchema)
     .min(1)
