@@ -318,6 +318,11 @@
         "updated": "Updated"
       },
       "codes": {
+        "verification-email": "Email verification",
+        "reset-password-email": "Password reset",
+        "simulation-results-email": "Simulation results",
+        "simulation-results-support": "Simulation results (support)",
+        "simulation-manual-review-email": "Simulation manual review",
         "simulation-manual-review-support": "Simulation manual review (support)",
         "car-onboarding-preparation-nudge-email": "Car onboarding preparation reminder"
       },
