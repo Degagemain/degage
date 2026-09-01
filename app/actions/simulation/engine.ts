@@ -16,6 +16,7 @@ import { InvalidCarPriceEstimateError } from '@/actions/car-price-estimate/inval
 import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { calculateCarInsurance } from '@/actions/simulation/car-insurance-calculator';
 import { calculateCarTax } from '@/actions/simulation/car-tax-calculator';
+import { CarTaxOutOfCoverageError } from '@/actions/simulation/car-tax-out-of-coverage.error';
 import {
   addErrorMessage,
   addInfoMessage,
@@ -204,14 +205,26 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   const province = await dbProvinceRead(town.province.id);
   const fiscalRegion = await dbFiscalRegionRead(province.fiscalRegion.id);
   const euroNorm = carInfo?.euroNormCode != null ? await dbEuroNormFindByCode(carInfo.euroNormCode) : null;
-  const taxRate = await calculateCarTax(result, {
-    fiscalRegion,
-    fuelType,
-    firstRegistrationDate: input.firstRegisteredAt,
-    cc: carInfo?.cylinderCc,
-    co2Emission: carInfo?.co2Emission,
-    euroNorm,
-  });
+  let taxRate: number;
+  try {
+    taxRate = await calculateCarTax(result, {
+      fiscalRegion,
+      fuelType,
+      firstRegistrationDate: input.firstRegisteredAt,
+      cc: carInfo?.cylinderCc,
+      co2Emission: carInfo?.co2Emission,
+      euroNorm,
+    });
+  } catch (err) {
+    if (err instanceof CarTaxOutOfCoverageError) {
+      const message = await getSimulationMessage(SimulationStepCode.CAR_TAX_FAILED);
+      addErrorMessage(result, message);
+      result.resultCode = SimulationResultCode.MANUAL_REVIEW;
+      result.rejectionReason = message;
+      return result;
+    }
+    throw err;
+  }
   result.resultTaxCostPerYear = taxRate;
 
   setCurrentStep(result, SimulationPhase.CAR_INSURANCE);
