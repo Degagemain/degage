@@ -4,6 +4,7 @@ import type { McpAuthContext } from '@/mcp/auth-context';
 
 const {
   registerSearchDocumentationTool,
+  registerCreateDocumentationTool,
   registerUpdateDocumentationTool,
   registerSearchDocumentationGroupsTool,
   registerSearchFuelTypesTool,
@@ -17,6 +18,7 @@ const {
   registerCreateSimulationPrompt,
 } = vi.hoisted(() => ({
   registerSearchDocumentationTool: vi.fn(),
+  registerCreateDocumentationTool: vi.fn(),
   registerUpdateDocumentationTool: vi.fn(),
   registerSearchDocumentationGroupsTool: vi.fn(),
   registerSearchFuelTypesTool: vi.fn(),
@@ -32,6 +34,10 @@ const {
 
 vi.mock('@/mcp/tools/search-documentation', () => ({
   registerSearchDocumentationTool,
+}));
+
+vi.mock('@/mcp/tools/create-documentation', () => ({
+  registerCreateDocumentationTool,
 }));
 
 vi.mock('@/mcp/tools/update-documentation', () => ({
@@ -108,6 +114,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchTownsTool).not.toHaveBeenCalled();
     expect(registerCreateSimulationTool).not.toHaveBeenCalled();
     expect(registerCreateSimulationPrompt).not.toHaveBeenCalled();
+    expect(registerCreateDocumentationTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -125,6 +132,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
+    expect(registerCreateDocumentationTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -149,6 +157,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
+    expect(registerCreateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateDocumentationGroupTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationGroupTool).toHaveBeenCalledTimes(1);
@@ -166,6 +175,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchTownsTool).not.toHaveBeenCalled();
     expect(registerCreateSimulationTool).not.toHaveBeenCalled();
     expect(registerCreateSimulationPrompt).not.toHaveBeenCalled();
+    expect(registerCreateDocumentationTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
@@ -190,6 +200,7 @@ describe('registerMcpTools', () => {
     expect(registerSearchTownsTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateSimulationPrompt).toHaveBeenCalledTimes(1);
+    expect(registerCreateDocumentationTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();

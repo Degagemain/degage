@@ -15,14 +15,20 @@ import {
 import { idNameSchema } from '@/domain/id-name.model';
 import { DefaultTake, MaxTake, SortOrder } from '@/domain/utils';
 
+export const documentationCreateBodySchema = documentationSchema.extend({
+  id: z.null().default(null),
+});
+
 export const documentationUpdateBodySchema = documentationSchema.extend({
   id: z.uuid(),
 });
 
-export const documentationUpdateMcpInputSchema = {
-  id: z.uuid().describe('Documentation UUID.'),
+const documentationMcpSharedFields = {
   source: documentationSourceSchema.describe(`Origin of the article. One of: ${documentationSourceValues.join(', ')}.`),
-  externalId: z.string().max(500).describe('Stable external identifier (e.g. repo:topic or manual:slug).'),
+  externalId: z
+    .string()
+    .max(500)
+    .describe('Stable external identifier (e.g. repo:topic or manual:slug). An empty value is stored as manual:{uuid} on create.'),
   isFaq: z.boolean().describe('Whether the article appears in the FAQ catalog.'),
   isPublic: z.boolean().describe('Whether the article is visible in the public documentation catalog.'),
   format: documentationFormatSchema.describe(`Content format. One of: ${documentationFormatValues.join(', ')}.`),
@@ -34,7 +40,14 @@ export const documentationUpdateMcpInputSchema = {
   translations: z
     .array(documentationTranslationSchema)
     .min(1)
-    .describe('All locale translations for the article. Send the full set — partial updates are not supported.'),
+    .describe('All locale translations for the article. Include every supported locale (en, nl, fr). Send the full set.'),
+};
+
+export const documentationCreateMcpInputSchema = documentationMcpSharedFields;
+
+export const documentationUpdateMcpInputSchema = {
+  id: z.uuid().describe('Documentation UUID.'),
+  ...documentationMcpSharedFields,
 };
 
 export const documentationSearchMcpInputSchema = {

@@ -1,9 +1,33 @@
 import { describe, expect, it } from 'vitest';
 import { documentationFilterSchema } from '@/domain/documentation.filter';
-import { documentationUpdateBodySchema } from '@/mcp/tools/documentation-input-schemas';
+import { documentationCreateBodySchema, documentationUpdateBodySchema } from '@/mcp/tools/documentation-input-schemas';
 import { documentation } from '../../builders/documentation.builder';
 
 describe('documentation MCP input schemas', () => {
+  it('accepts a create body aligned with POST', () => {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...body } = documentation({ id: null });
+    const parsed = documentationCreateBodySchema.safeParse(body);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.id).toBeNull();
+    }
+  });
+
+  it('rejects create body with an id', () => {
+    const doc = documentation({ id: '550e8400-e29b-41d4-a716-446655440000' });
+    const parsed = documentationCreateBodySchema.safeParse(doc);
+    expect(parsed.success).toBe(false);
+  });
+
+  it('accepts create body with empty externalId', () => {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...body } = documentation({ id: null, externalId: '' });
+    const parsed = documentationCreateBodySchema.safeParse(body);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.externalId).toBe('');
+    }
+  });
+
   it('accepts a full documentation body aligned with PUT', () => {
     const doc = documentation({ id: '550e8400-e29b-41d4-a716-446655440000' });
     const parsed = documentationUpdateBodySchema.safeParse(doc);

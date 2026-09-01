@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Technical
 
+- Added: MCP tool to create documentation articles.
 - Removed: Notion documentation webhook (`/api/webhooks/notion`), `@notionhq/client`, and all `NOTION_*` environment variables.
 - Removed: `DocumentationSource.notion`. The migration deletes Notion-sourced documentation rows, then drops the enum value.
 
