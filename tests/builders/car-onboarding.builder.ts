@@ -58,6 +58,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     shareStartDate: data.shareStartDate !== undefined ? data.shareStartDate : null,
     carPcId: data.carPcId !== undefined ? data.carPcId : null,
     preparationConfirmedAt: data.preparationConfirmedAt !== undefined ? data.preparationConfirmedAt : null,
+    lastPreparationNudgeEmail: data.lastPreparationNudgeEmail !== undefined ? data.lastPreparationNudgeEmail : null,
     statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,
     createdAt: data.createdAt ?? new Date(),
     updatedAt: data.updatedAt ?? new Date(),

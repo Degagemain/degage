@@ -323,7 +323,8 @@
         "simulation-results-email": "Simulatieresultaten",
         "simulation-results-support": "Simulatieresultaten (support)",
         "simulation-manual-review-email": "Simulatie manuele review",
-        "simulation-manual-review-support": "Simulatie manuele review (support)"
+        "simulation-manual-review-support": "Simulatie manuele review (support)",
+        "car-onboarding-preparation-nudge-email": "Herinnering voorbereiding wagenonboarding"
       },
       "actions": {
         "openMenu": "Menu openen",
@@ -1674,6 +1675,7 @@
         "carName": "Naam van de wagen",
         "carPcId": "Autofiche",
         "preparationConfirmedAt": "Voorbereiding door eigenaar bevestigd op",
+        "lastPreparationNudgeEmail": "Laatste herinneringsmail voorbereiding",
         "simulation": "Simulatie",
         "preparationProgress": "Voorbereiding",
         "created": "Aangemaakt",
@@ -1761,6 +1763,11 @@
         "includedRoadAssistancePlan": "Aangekochte wagen heeft een inbegrepen pechverhelpingsplan",
         "openSimulation": "Open simulatie",
         "openPublicPage": "Publieke pagina openen",
+        "sendPreparationNudge": "Herinneringsmail versturen",
+        "sendPreparationNudgeSending": "Herinnering versturen…",
+        "sendPreparationNudgeSuccess": "Herinneringsmail verstuurd.",
+        "sendPreparationNudgeSkipped": "Geen herinnering verstuurd. De voorbereiding is compleet, vergrendeld, of er is al een herinnering verstuurd in de laatste drie dagen.",
+        "sendPreparationNudgeError": "Herinneringsmail versturen mislukt.",
         "overruleAgreement": "Overschrijven",
         "overruleAgreementTitle": "Akkoord overschrijven?",
         "overruleAgreementDescription": "Gebruik dit enkel als de eigenaar expliciet akkoord is gegaan.",

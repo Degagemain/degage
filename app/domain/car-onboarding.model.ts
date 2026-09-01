@@ -139,6 +139,7 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     shareStartDate: z.coerce.date().nullable().default(null),
     carPcId: z.number().int().positive().nullable().default(null),
     preparationConfirmedAt: z.coerce.date().nullable().default(null),
+    lastPreparationNudgeEmail: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
     createdAt: z.coerce.date().nullable().default(null),
     updatedAt: z.coerce.date().nullable().default(null),
@@ -317,6 +318,7 @@ export const carOnboardingFromSimulation = (
     carPcId: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     preparationConfirmedAt: null,
+    lastPreparationNudgeEmail: null,
     infoSessionDate: null,
     infoSessionPcId: null,
     infoSessionStatus: CarOnboardingInfoSessionStatus.TODO,
@@ -566,6 +568,29 @@ export const isCarStickerSectionComplete = (_onboarding: Pick<CarOnboarding, 'ca
 
 export const isPreparationConfirmed = (onboarding: Pick<CarOnboarding, 'preparationConfirmedAt'>): boolean => {
   return onboarding.preparationConfirmedAt != null;
+};
+
+export const PREPARATION_NUDGE_COOLDOWN_HOURS = 24 * 3;
+export const PREPARATION_NUDGE_COOLDOWN_MS = PREPARATION_NUDGE_COOLDOWN_HOURS * 60 * 60 * 1000;
+
+export const isCarOnboardingEligibleForPreparationNudge = (
+  onboarding: Pick<CarOnboarding, 'preparationConfirmedAt' | 'statusInPreparation'>,
+): boolean => {
+  if (isPreparationConfirmed(onboarding)) return false;
+  if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return false;
+  if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.READY) return false;
+  return true;
+};
+
+export const isCarOnboardingDueForPreparationNudge = (
+  onboarding: Pick<CarOnboarding, 'preparationConfirmedAt' | 'statusInPreparation' | 'lastPreparationNudgeEmail'>,
+  now: Date = new Date(),
+): boolean => {
+  if (!isCarOnboardingEligibleForPreparationNudge(onboarding)) return false;
+  if (onboarding.lastPreparationNudgeEmail == null) return true;
+  const last = parseDate(onboarding.lastPreparationNudgeEmail);
+  if (last == null) return true;
+  return now.getTime() - last.getTime() > PREPARATION_NUDGE_COOLDOWN_MS;
 };
 
 export const isPreparationConfirmable = (

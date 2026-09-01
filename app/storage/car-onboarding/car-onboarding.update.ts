@@ -13,3 +13,11 @@ export const dbCarOnboardingUpdate = async (onboarding: CarOnboarding): Promise<
   });
   return dbCarOnboardingToDomain(updated);
 };
+
+export const dbCarOnboardingUpdateLastPreparationNudgeEmail = async (id: string, sentAt: Date): Promise<void> => {
+  const prisma = getPrismaClient();
+  await prisma.carOnboarding.update({
+    where: { id },
+    data: { lastPreparationNudgeEmail: sentAt },
+  });
+};

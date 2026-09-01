@@ -5,6 +5,7 @@ import {
   CarOnboardingInfoSessionStatus,
   CarOnboardingInsurerStatus,
   CarOnboardingRoadAssistancePlanStatus,
+  PREPARATION_NUDGE_COOLDOWN_MS,
   applyInsurerStatus,
   applyRoadAssistancePlanStatus,
   areCarInfoDocumentsComplete,
@@ -28,6 +29,8 @@ import {
   getLatestShareStartDate,
   isCarInfoSectionComplete,
   isCarOlderThanFourYears,
+  isCarOnboardingDueForPreparationNudge,
+  isCarOnboardingEligibleForPreparationNudge,
   isCarStickerSectionComplete,
   isInfoSessionEnrolled,
   isInfoSessionSectionComplete,
@@ -108,6 +111,7 @@ describe('carOnboardingSchema', () => {
     expect(result.shareStartDate).toBeNull();
     expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
+    expect(result.lastPreparationNudgeEmail).toBeNull();
   });
 
   it('rejects unknown keys', () => {
@@ -394,6 +398,7 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
     expect(result.carPcId).toBeNull();
     expect(result.statusInPreparation).toBe(CarOnboardingInPreparationStatus.OPEN);
+    expect(result.lastPreparationNudgeEmail).toBeNull();
   });
 
   it('defaults null purchase price and result fields to zero', () => {
@@ -598,6 +603,35 @@ describe('isPreparationConfirmed', () => {
   it('returns true when preparationConfirmedAt is set', () => {
     expect(isPreparationConfirmed(carOnboarding({ preparationConfirmedAt: new Date('2026-06-21T10:00:00') }))).toBe(true);
     expect(isPreparationConfirmed(carOnboarding())).toBe(false);
+  });
+});
+
+describe('isCarOnboardingDueForPreparationNudge', () => {
+  const now = new Date('2026-08-19T12:00:00Z');
+
+  it('is due when preparation is open, unconfirmed, and never nudged', () => {
+    expect(isCarOnboardingEligibleForPreparationNudge(carOnboarding())).toBe(true);
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding(), now)).toBe(true);
+  });
+
+  it('is not due when the owner confirmed, or preparation is ready or locked', () => {
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ preparationConfirmedAt: new Date('2026-08-18T00:00:00Z') }), now)).toBe(false);
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ statusInPreparation: CarOnboardingInPreparationStatus.READY }), now)).toBe(
+      false,
+    );
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ statusInPreparation: CarOnboardingInPreparationStatus.LOCKED }), now)).toBe(
+      false,
+    );
+  });
+
+  it('is not due when a nudge was sent within the last 72 hours', () => {
+    const recent = new Date(now.getTime() - PREPARATION_NUDGE_COOLDOWN_MS);
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ lastPreparationNudgeEmail: recent }), now)).toBe(false);
+  });
+
+  it('is due when the last nudge is older than 72 hours', () => {
+    const stale = new Date(now.getTime() - PREPARATION_NUDGE_COOLDOWN_MS - 1);
+    expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ lastPreparationNudgeEmail: stale }), now)).toBe(true);
   });
 });
 

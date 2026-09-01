@@ -122,6 +122,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     shareStartDate: db.shareStartDate,
     carPcId: db.carPcId,
     preparationConfirmedAt: db.preparationConfirmedAt,
+    lastPreparationNudgeEmail: db.lastPreparationNudgeEmail,
     statusInPreparation: mapStatusFromDb(db.statusInPreparation),
     createdAt: db.createdAt,
     updatedAt: db.updatedAt,
@@ -269,6 +270,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     shareStartDate: onboarding.shareStartDate ?? undefined,
     carPcId: onboarding.carPcId ?? undefined,
     preparationConfirmedAt: onboarding.preparationConfirmedAt ?? undefined,
+    lastPreparationNudgeEmail: onboarding.lastPreparationNudgeEmail ?? undefined,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };
@@ -328,6 +330,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     carName: onboarding.carName,
     carPcId: onboarding.carPcId,
     preparationConfirmedAt: onboarding.preparationConfirmedAt,
+    lastPreparationNudgeEmail: onboarding.lastPreparationNudgeEmail,
     statusInPreparation: onboarding.statusInPreparation,
   };
 };

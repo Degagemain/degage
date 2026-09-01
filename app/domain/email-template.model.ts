@@ -7,6 +7,7 @@ export enum TemplatesEnum {
   SimulationResultsSupportEmail = 'simulation-results-support',
   SimulationManualReviewEmail = 'simulation-manual-review-email',
   SimulationManualReviewSupportEmail = 'simulation-manual-review-support',
+  CarOnboardingPreparationNudgeEmail = 'car-onboarding-preparation-nudge-email',
 }
 
 export const emailTemplateCodeValues = [
@@ -16,6 +17,7 @@ export const emailTemplateCodeValues = [
   TemplatesEnum.SimulationResultsSupportEmail,
   TemplatesEnum.SimulationManualReviewEmail,
   TemplatesEnum.SimulationManualReviewSupportEmail,
+  TemplatesEnum.CarOnboardingPreparationNudgeEmail,
 ] as const;
 
 export const emailTemplateCodeSchema = z.enum(emailTemplateCodeValues);

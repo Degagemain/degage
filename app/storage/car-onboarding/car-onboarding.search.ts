@@ -1,4 +1,4 @@
-import { CarOnboarding } from '@/domain/car-onboarding.model';
+import { CarOnboarding, CarOnboardingInPreparationStatus, PREPARATION_NUDGE_COOLDOWN_MS } from '@/domain/car-onboarding.model';
 import { CarOnboardingFilter } from '@/domain/car-onboarding.filter';
 import { Page } from '@/domain/page.model';
 import { getRequestContentLocale } from '@/context/request-context';
@@ -47,4 +47,46 @@ export const dbCarOnboardingSearch = async (filter: CarOnboardingFilter): Promis
     records: records.map((record) => dbCarOnboardingToDomainWithRelations(record, locale)),
     total,
   };
+};
+
+export const dueForPreparationNudgeWhere = (now: Date): Prisma.CarOnboardingWhereInput => {
+  const cutoff = new Date(now.getTime() - PREPARATION_NUDGE_COOLDOWN_MS);
+  return {
+    preparationConfirmedAt: null,
+    statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
+    ownerId: { not: null },
+    owner: {
+      email: { not: '' },
+    },
+    OR: [{ lastPreparationNudgeEmail: null }, { lastPreparationNudgeEmail: { lt: cutoff } }],
+  };
+};
+
+export type CarOnboardingPreparationNudgeCandidate = {
+  onboarding: CarOnboarding;
+  ownerEmail: string;
+  ownerLocale: string | null;
+};
+
+export const dbCarOnboardingSearchDueForPreparationNudge = async (
+  now: Date = new Date(),
+): Promise<CarOnboardingPreparationNudgeCandidate[]> => {
+  const prisma = getPrismaClient();
+  const locale = getRequestContentLocale();
+  const records = await prisma.carOnboarding.findMany({
+    where: dueForPreparationNudgeWhere(now),
+    include: carOnboardingRelationsInclude,
+  });
+
+  return records.flatMap((record) => {
+    const ownerEmail = record.owner?.email?.trim();
+    if (!ownerEmail) return [];
+    return [
+      {
+        onboarding: dbCarOnboardingToDomainWithRelations(record, locale),
+        ownerEmail,
+        ownerLocale: record.owner?.locale ?? null,
+      },
+    ];
+  });
 };

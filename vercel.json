@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/car-onboarding-preparation-nudge",
+      "schedule": "0 7 * * *"
+    }
+  ]
+}

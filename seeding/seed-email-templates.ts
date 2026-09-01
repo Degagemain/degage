@@ -249,6 +249,42 @@ const simulationManualReviewSupportVariables = {
   },
 } as const;
 
+const carOnboardingPreparationNudgeVariables = {
+  en: {
+    SUBJECT: 'Complete your car onboarding',
+    PREHEADER: 'A few details are still missing before your car can join Dégage.',
+    HEADER: 'Car onboarding',
+    HEADING: 'Finish your car profile',
+    BODY: 'You started adding your car to Dégage, but some details are still missing. Continue your onboarding so we can keep going.',
+    BUTTON_TEXT: 'Continue onboarding',
+    BUTTON_URL: '',
+    FALLBACK_HINT: buttonFallback.en,
+    FOOTER: 'Questions? Reply to this email.',
+  },
+  nl: {
+    SUBJECT: 'Rond je wagenonboarding af',
+    PREHEADER: 'Er ontbreken nog gegevens voordat je wagen bij Dégage kan.',
+    HEADER: 'Wagenonboarding',
+    HEADING: 'Vul je wagenprofiel verder in',
+    BODY: 'Je bent begonnen met het toevoegen van je wagen bij Dégage, maar er ontbreken nog gegevens. Ga verder met je onboarding zodat we kunnen verdergaan.',
+    BUTTON_TEXT: 'Verdergaan met onboarding',
+    BUTTON_URL: '',
+    FALLBACK_HINT: buttonFallback.nl,
+    FOOTER: 'Vragen? Antwoord op deze e-mail.',
+  },
+  fr: {
+    SUBJECT: "Terminez l'intégration de votre voiture",
+    PREHEADER: 'Quelques informations manquent encore avant que votre voiture puisse rejoindre Dégage.',
+    HEADER: 'Intégration voiture',
+    HEADING: 'Complétez le profil de votre voiture',
+    BODY: "Vous avez commencé à ajouter votre voiture chez Dégage, mais il manque encore des informations. Poursuivez l'intégration pour que nous puissions avancer.",
+    BUTTON_TEXT: "Continuer l'intégration",
+    BUTTON_URL: '',
+    FALLBACK_HINT: buttonFallback.fr,
+    FOOTER: 'Des questions ? Répondez à cet e-mail.',
+  },
+} as const;
+
 const templates = [
   { code: TemplatesEnum.VerificationEmail, designId: BUTTON_EMAIL_DESIGN_ALIAS, variables: verificationVariables },
   { code: TemplatesEnum.ResetPasswordEmail, designId: BUTTON_EMAIL_DESIGN_ALIAS, variables: resetPasswordVariables },
@@ -267,6 +303,11 @@ const templates = [
     code: TemplatesEnum.SimulationManualReviewSupportEmail,
     designId: BUTTON_EMAIL_DESIGN_ALIAS,
     variables: simulationManualReviewSupportVariables,
+  },
+  {
+    code: TemplatesEnum.CarOnboardingPreparationNudgeEmail,
+    designId: BUTTON_EMAIL_DESIGN_ALIAS,
+    variables: carOnboardingPreparationNudgeVariables,
   },
 ] as const;
 
