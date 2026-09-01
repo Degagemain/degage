@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   documentationFaqArticlePath,
+  mergeDocumentationSupportCitations,
   normalizeSupportChatCitationForViewer,
   toChatCitationsForSupportViewer,
 } from '@/domain/documentation.support-citations';
@@ -98,5 +99,34 @@ describe('documentation.support-citations', () => {
       { id: '1', role: Role.ADMIN },
     );
     expect(out).toEqual({ title: 'Help', url: '/app/admin/documentation/repo%3Apublic' });
+  });
+
+  it('accumulates citations and dedupes by externalId, keeping first occurrence', () => {
+    const first = {
+      title: 'First',
+      url: '/app/admin/documentation/a',
+      externalId: 'repo:a',
+      isPublic: true,
+    };
+    const shared = {
+      title: 'Shared',
+      url: '/app/admin/documentation/shared',
+      externalId: 'repo:shared',
+      isPublic: true,
+    };
+    const sharedAgain = {
+      title: 'Shared again',
+      url: '/app/admin/documentation/shared-new',
+      externalId: 'repo:shared',
+      isPublic: false,
+    };
+    const second = {
+      title: 'Second',
+      url: '/app/admin/documentation/b',
+      externalId: 'repo:b',
+      isPublic: true,
+    };
+
+    expect(mergeDocumentationSupportCitations([first, shared], [sharedAgain, second])).toEqual([first, shared, second]);
   });
 });

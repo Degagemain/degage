@@ -32,6 +32,20 @@ export const normalizeSupportChatCitationForViewer = (citation: ChatCitation, vi
   return citation;
 };
 
+export const mergeDocumentationSupportCitations = (
+  existing: DocumentationSupportCitation[],
+  incoming: DocumentationSupportCitation[],
+): DocumentationSupportCitation[] => {
+  const seen = new Set(existing.map((citation) => citation.externalId));
+  const merged = [...existing];
+  for (const citation of incoming) {
+    if (seen.has(citation.externalId)) continue;
+    seen.add(citation.externalId);
+    merged.push(citation);
+  }
+  return merged;
+};
+
 export const toChatCitationsForSupportViewer = (
   citations: DocumentationSupportCitation[],
   viewer: UserWithRole | null | undefined,

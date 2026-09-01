@@ -25,9 +25,25 @@ vi.mock('@/integrations/posthog', () => ({
   isPostHogEnabled: false,
 }));
 
-import { generateText } from 'ai';
+import { generateText, streamText } from 'ai';
 import { getSystemParameterByCode } from '@/actions/system-parameter/read';
-import { generateSupportReplyText } from '@/actions/support/generate-reply';
+import { searchDocumentationForRag } from '@/actions/documentation/search-rag';
+import { generateSupportReplyStream, generateSupportReplyText } from '@/actions/support/generate-reply';
+import type { DocumentationSupportCitation } from '@/domain/documentation.support-citations';
+
+const ragSearch = (citations: DocumentationSupportCitation[]) => ({
+  fullDocuments: [],
+  citations,
+  noResults: false,
+  noResultsGuidance: null,
+});
+
+const publicCitation = (externalId: string, title: string): DocumentationSupportCitation => ({
+  title,
+  url: `/app/admin/documentation/${encodeURIComponent(externalId)}`,
+  externalId,
+  isPublic: true,
+});
 
 const promptParameter = (code: string, valueString: string) => ({
   id: '550e8400-e29b-41d4-a716-446655440000',
@@ -71,5 +87,62 @@ describe('generateSupportReplyText', () => {
 
     expect(getSystemParameterByCode).toHaveBeenCalledWith(supportAssistantPromptSystemParameterCodes.email);
     expect(vi.mocked(generateText).mock.calls[0]?.[0].system).toContain('Configured email base prompt');
+  });
+
+  it('accumulates and dedupes citations across multiple documentation searches', async () => {
+    vi.mocked(getSystemParameterByCode).mockResolvedValueOnce(
+      promptParameter(supportAssistantPromptSystemParameterCodes.chat, 'Configured chat widget base prompt'),
+    );
+    vi.mocked(searchDocumentationForRag)
+      .mockResolvedValueOnce(ragSearch([publicCitation('repo:a', 'First'), publicCitation('repo:shared', 'Shared')]))
+      .mockResolvedValueOnce(ragSearch([publicCitation('repo:shared', 'Shared again'), publicCitation('repo:b', 'Second')]));
+
+    vi.mocked(generateText).mockImplementationOnce(async (opts: any) => {
+      await opts.tools.searchDocumentation.execute({ query: 'first search' });
+      await opts.tools.searchDocumentation.execute({ query: 'second search' });
+      return { text: 'assistant reply' };
+    });
+
+    const result = await generateSupportReplyText([{ role: 'user', content: 'Hello' }]);
+
+    expect(result.citations).toEqual([
+      { title: 'First', url: '/app/faq/articles/repo%3Aa' },
+      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared' },
+      { title: 'Second', url: '/app/faq/articles/repo%3Ab' },
+    ]);
+  });
+});
+
+describe('generateSupportReplyStream', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('accumulates and dedupes citations across multiple documentation searches', async () => {
+    vi.mocked(getSystemParameterByCode).mockResolvedValueOnce(
+      promptParameter(supportAssistantPromptSystemParameterCodes.chat, 'Configured chat widget base prompt'),
+    );
+    vi.mocked(searchDocumentationForRag)
+      .mockResolvedValueOnce(ragSearch([publicCitation('repo:a', 'First'), publicCitation('repo:shared', 'Shared')]))
+      .mockResolvedValueOnce(ragSearch([publicCitation('repo:shared', 'Shared again'), publicCitation('repo:b', 'Second')]));
+
+    vi.mocked(streamText).mockReturnValueOnce({} as never);
+
+    const onFinish = vi.fn();
+    const { getLatestCitations } = await generateSupportReplyStream([], { onFinish });
+
+    const streamOpts = vi.mocked(streamText).mock.calls[0]?.[0] as any;
+    await streamOpts.tools.searchDocumentation.execute({ query: 'first search' });
+    await streamOpts.tools.searchDocumentation.execute({ query: 'second search' });
+
+    const expectedCitations = [
+      { title: 'First', url: '/app/faq/articles/repo%3Aa' },
+      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared' },
+      { title: 'Second', url: '/app/faq/articles/repo%3Ab' },
+    ];
+    expect(getLatestCitations()).toEqual(expectedCitations);
+
+    await streamOpts.onFinish({ text: 'assistant reply' });
+    expect(onFinish).toHaveBeenCalledWith({ text: 'assistant reply', citations: expectedCitations });
   });
 });
