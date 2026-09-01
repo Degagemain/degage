@@ -33,6 +33,7 @@ URL: `/mcp`
 | `search_car_types`            | `mcp:user`  | List and search car types (requires brandId and fuelTypeId)                   |
 | `search_towns`                | `mcp:user`  | List and search towns by zip, name, or municipality                           |
 | `create_simulation`           | `mcp:user`  | Run and persist a car eligibility simulation; returns summary and public link |
+| `create_documentation`        | `mcp:admin` | Create a documentation article (full object, all translations required)       |
 | `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
 | `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
 | `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
@@ -74,11 +75,12 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 
 - JWT audience must match `{BETTER_AUTH_URL}/mcp`.
 - `tools/list` only includes tools the caller is allowed to use (scope, email verification, ban status, and admin role for
-  `update_documentation`, `create_documentation_group`, and `update_documentation_group`).
+  `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group`).
 - Each tool re-checks authorization at invocation time.
 - Banned users are rejected.
 - Unverified email/password users cannot call tools (OAuth may still complete).
-- `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at runtime.
+- `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at
+  runtime.
 
 ## Analytics
 

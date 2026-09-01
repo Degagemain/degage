@@ -3,6 +3,7 @@ import { canUseMcpTools } from '@/mcp/auth-context';
 import { mcpRoleScope } from '@/mcp/config';
 import { getMcpAuthContext } from '@/mcp/request-context';
 import { registerCreateSimulationPrompt } from '@/mcp/prompts/create-simulation';
+import { registerCreateDocumentationTool } from '@/mcp/tools/create-documentation';
 import { registerCreateDocumentationGroupTool } from '@/mcp/tools/create-documentation-group';
 import { registerCreateSimulationTool } from '@/mcp/tools/create-simulation';
 import { registerReadCarBrandTool } from '@/mcp/tools/read-car-brand';
@@ -35,6 +36,7 @@ export const registerMcpTools = (server: McpServer): void => {
   }
 
   if (canUseMcpTools(ctx, adminScope, true).ok) {
+    registerCreateDocumentationTool(server, getMcpAuthContext, adminScope);
     registerUpdateDocumentationTool(server, getMcpAuthContext, adminScope);
     registerCreateDocumentationGroupTool(server, getMcpAuthContext, adminScope);
     registerUpdateDocumentationGroupTool(server, getMcpAuthContext, adminScope);
