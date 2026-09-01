@@ -19,12 +19,15 @@ The cron endpoint is public unless this secret is set. Vercel does not create it
 
 1. Generate a random string of at least 16 characters (for example `openssl rand -hex 32`, or a password manager).
 2. In the Vercel dashboard, open the production project → **Settings** → **Environment Variables**.
-3. Add `CRON_SECRET` with that value. Scope it to **Production** (and Preview if you want to call the route there yourself). Do not include a trailing newline.
+3. Add `CRON_SECRET` with that value. Scope it to **Production** (and Preview if you want to call the route there yourself). Do not include a
+   trailing newline.
 4. Redeploy production so the new variable is available to the running app.
 
-After that, Vercel Cron sends `Authorization: Bearer <CRON_SECRET>` on each scheduled `GET`. The handler rejects any request without that header. Cron jobs only run on **Production** deployments.
+After that, Vercel Cron sends `Authorization: Bearer <CRON_SECRET>` on each scheduled `GET`. The handler rejects any request without that
+header. Cron jobs only run on **Production** deployments.
 
-Confirm the job under the project’s **Settings** → **Cron Jobs**. Runtime output is in **Logs**, filtered to `/api/cron/car-onboarding-preparation-nudge`. See [Managing Cron Jobs](https://vercel.com/docs/cron-jobs/manage-cron-jobs).
+Confirm the job under the project’s **Settings** → **Cron Jobs**. Runtime output is in **Logs**, filtered to
+`/api/cron/car-onboarding-preparation-nudge`. See [Managing Cron Jobs](https://vercel.com/docs/cron-jobs/manage-cron-jobs).
 
 ## Car onboarding preparation reminder
 
