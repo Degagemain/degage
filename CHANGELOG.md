@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.5] - 2026-09-02
+
 ### Public features
 
 - Added: if your car onboarding is still incomplete, you may receive a reminder email to continue.
