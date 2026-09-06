@@ -8,6 +8,7 @@ import { isElectricFuelType } from '@/domain/fuel-type.model';
 import { SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 import type { SimulationResultBuilder } from '@/domain/simulation.model';
 import { addStep, getSimulationMessage } from '@/actions/simulation/simulation-utils';
+import { CarTaxOutOfCoverageError } from '@/actions/simulation/car-tax-out-of-coverage.error';
 import { dbCarTaxFlatRateFindByFiscalRegionAndRegistrationDate } from '@/storage/car-tax-flat-rate/car-tax-flat-rate.read';
 import { dbCarTaxBaseRateFindByFiscalRegionDateAndCc } from '@/storage/car-tax-base-rate/car-tax-base-rate.read';
 // eslint-disable-next-line max-len -- long storage import path
@@ -108,7 +109,9 @@ export async function calculateCarTax(result: SimulationResultBuilder, input: Ca
     baseRate = await dbCarTaxBaseRateFindByFiscalRegionDateAndCc(fiscalRegion.id!, input.firstRegistrationDate);
 
     if (!baseRate || baseRate.maxCc > input.cc!) {
-      throw new Error('No car tax base rate found for the given fiscal region, registration date and cc');
+      throw new CarTaxOutOfCoverageError(
+        `No car tax base rate covers the first registration date ${format(input.firstRegistrationDate, 'dd/MM/yyyy')}`,
+      );
     }
 
     const extraCC = input.cc! - baseRate.maxCc;

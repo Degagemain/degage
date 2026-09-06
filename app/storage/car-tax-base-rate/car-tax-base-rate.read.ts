@@ -5,11 +5,13 @@ import { dbCarTaxBaseRateToDomain } from './car-tax-base-rate.mappers';
 
 const dateInRangeWhere = (registrationDate: Date) => ({
   start: { lte: registrationDate },
-  OR: [{ end: null }, { end: { gt: registrationDate } }],
+  OR: [{ end: null }, { end: { gte: registrationDate } }],
 });
 
 /**
- * Returns the base rate for the given fiscal region and registration date (in [start, end)).
+ * Returns the base rate for the given fiscal region and registration date (in [start, end]).
+ * The `end` bound is inclusive: periods store `end` as the last covered day (e.g. 30/06/YYYY),
+ * so a car registered on that day still matches its period.
  * When maxCc is provided: rate with maxCc closest to and not above maxCc (order by maxCc desc).
  * When maxCc is null or undefined: rate with the highest maxCc for the date filter.
  * Returns null if no matching rate exists.

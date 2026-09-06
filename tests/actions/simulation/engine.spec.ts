@@ -81,6 +81,8 @@ vi.mock('@/actions/simulation/car-insurance-calculator', () => ({
 
 import { carValueEstimator } from '@/actions/car-price-estimate/car-price-estimator';
 import { InvalidCarPriceEstimateError } from '@/actions/car-price-estimate/invalid-car-price-estimate.error';
+import { calculateCarTax } from '@/actions/simulation/car-tax-calculator';
+import { CarTaxOutOfCoverageError } from '@/actions/simulation/car-tax-out-of-coverage.error';
 import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
@@ -468,6 +470,19 @@ describe('runSimulationEngine', () => {
     expect(result.resultCode).toBe('manualReview');
     expect(result.rejectionReason).toBe('simulation.step.price_estimation_failed');
     expect(carInfoEstimator).not.toHaveBeenCalled();
+  });
+
+  it('returns manualReview with car_tax_failed when the registration date is out of tax coverage', async () => {
+    vi.mocked(calculateCarTax).mockRejectedValueOnce(
+      new CarTaxOutOfCoverageError('No car tax base rate covers the first registration date 15/03/1999'),
+    );
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('1999-03-15'), isPurchased: true, purchasePrice: 5_000 });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('manualReview');
+    expect(result.rejectionReason).toBe('simulation.step.car_tax_failed');
+    const lastStep = result.steps[result.steps.length - 1];
+    expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
+    expect(lastStep.message).toBe('simulation.step.car_tax_failed');
   });
 
   it('on unexpected error adds generic error step with current phase and returns manualReview', async () => {
