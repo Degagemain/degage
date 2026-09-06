@@ -4,12 +4,6 @@
     "updateFailed": "Impossible de mettre à jour la langue",
     "nonDefaultLocaleNotice": "Cette page est disponible en {language}, mais les services et la communauté Dégage sont principalement en néerlandais."
   },
-  "theme": {
-    "label": "Thème",
-    "light": "Clair",
-    "dark": "Sombre",
-    "automatic": "Automatique"
-  },
   "common": {
     "yes": "Oui",
     "no": "Non",

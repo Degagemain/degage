@@ -120,7 +120,7 @@ export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
             </Badge>
           );
         }
-        return <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">{t('statusActive')}</span>;
+        return <span className="text-sm font-medium text-emerald-600">{t('statusActive')}</span>;
       },
       enableHiding: true,
       enableSorting: false,

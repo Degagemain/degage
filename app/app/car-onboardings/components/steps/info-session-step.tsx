@@ -27,31 +27,31 @@ type PlayInfosessionListResponse = {
 
 function EnrolledSessionDetails({ session, t }: { session: PlayInfosession; t: ReturnType<typeof useTranslations> }) {
   return (
-    <dl className="mt-3 space-y-2 text-sm text-stone-600 dark:text-stone-400">
+    <dl className="mt-3 space-y-2 text-sm text-stone-600">
       <div>
-        <dt className="font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.columns.scheduledAt')}</dt>
+        <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.scheduledAt')}</dt>
         <dd>{formatInfosessionScheduledAt(session.scheduledAt)}</dd>
       </div>
       {session.district ? (
         <div>
-          <dt className="font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.columns.district')}</dt>
+          <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.district')}</dt>
           <dd>{session.district}</dd>
         </div>
       ) : null}
       {session.type ? (
         <div>
-          <dt className="font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.columns.type')}</dt>
+          <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.type')}</dt>
           <dd>{session.type}</dd>
         </div>
       ) : null}
       {session.host ? (
         <div>
-          <dt className="font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.columns.host')}</dt>
+          <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.host')}</dt>
           <dd>{session.host}</dd>
         </div>
       ) : null}
       <div>
-        <dt className="font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.columns.registrations')}</dt>
+        <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.registrations')}</dt>
         <dd>{formatInfosessionRegistrations(session, t('steps.infoSession.registrationsFull'))}</dd>
       </div>
     </dl>
@@ -180,9 +180,9 @@ export function InfoSessionStep() {
       <PublicInfoPanel title={t('steps.infoSession.panelTitle')} body={t('steps.infoSession.panelBody')} />
 
       {hasExternalPlayEnrollment && chosenInfosession ? (
-        <div className={`${styles.enrollmentStatusCard} mb-6 border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/30`}>
-          <p className="text-sm font-medium text-stone-900 dark:text-stone-50">{t('steps.infoSession.externalEnrollmentTitle')}</p>
-          <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+        <div className={`${styles.enrollmentStatusCard} mb-6 border-amber-200 bg-amber-50`}>
+          <p className="text-sm font-medium text-stone-900">{t('steps.infoSession.externalEnrollmentTitle')}</p>
+          <p className="mt-2 text-sm text-stone-600">
             <InlineCopy>{t('steps.infoSession.externalEnrollmentWarning')}</InlineCopy>
           </p>
           <EnrolledSessionDetails session={chosenInfosession} t={t} />
@@ -201,25 +201,25 @@ export function InfoSessionStep() {
 
       {isEnrolled || isDone ? (
         <div className={`${styles.enrollmentStatusCard}${isDone ? ` ${styles.enrollmentStatusCardDone}` : ''}`}>
-          <p className="text-sm font-medium text-stone-900 dark:text-stone-50">
+          <p className="text-sm font-medium text-stone-900">
             {isDone ? t('steps.infoSession.confirmedTitle') : t('steps.infoSession.enrolledTitle')}
           </p>
           {enrolledSession ? (
             <EnrolledSessionDetails session={enrolledSession} t={t} />
           ) : carOnboarding.infoSessionDate ? (
-            <p className="mt-1 text-sm text-stone-600 dark:text-stone-400">{formatInfosessionScheduledAt(carOnboarding.infoSessionDate)}</p>
+            <p className="mt-1 text-sm text-stone-600">{formatInfosessionScheduledAt(carOnboarding.infoSessionDate)}</p>
           ) : loadingInfosessions ? (
-            <div className="mt-2 flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400">
+            <div className="mt-2 flex items-center gap-2 text-sm text-stone-600">
               <Loader2 className="size-4 animate-spin" />
               {t('steps.infoSession.loading')}
             </div>
           ) : null}
           {isEnrolled ? (
             <>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+              <p className="mt-2 text-sm text-stone-600">
                 <InlineCopy>{t('steps.infoSession.waitingForConfirmation')}</InlineCopy>
               </p>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+              <p className="mt-2 text-sm text-stone-600">
                 <InlineCopy>{t('steps.infoSession.unenrollToSwitch')}</InlineCopy>
               </p>
               <Button
@@ -234,7 +234,7 @@ export function InfoSessionStep() {
               </Button>
             </>
           ) : (
-            <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
+            <p className="mt-2 text-sm text-stone-600">
               <InlineCopy>{t('steps.infoSession.confirmed')}</InlineCopy>
             </p>
           )}
@@ -242,19 +242,19 @@ export function InfoSessionStep() {
       ) : null}
 
       {canPickSession && loadingInfosessions ? (
-        <div className="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400">
+        <div className="flex items-center gap-2 text-sm text-stone-600">
           <Loader2 className="size-4 animate-spin" />
           {t('steps.infoSession.loading')}
         </div>
       ) : canPickSession && infosessionsError ? (
-        <p className="text-sm text-stone-600 dark:text-stone-400">
+        <p className="text-sm text-stone-600">
           <InlineCopy>{t('steps.infoSession.loadError')}</InlineCopy>
         </p>
       ) : canPickSession ? (
-        <div className="overflow-x-auto rounded-lg border border-stone-200 dark:border-stone-700">
+        <div className="overflow-x-auto rounded-lg border border-stone-200">
           <Table>
             <TableHeader>
-              <TableRow className="bg-stone-50 hover:bg-stone-50 dark:bg-stone-800/50 dark:hover:bg-stone-800/50">
+              <TableRow className="bg-stone-50 hover:bg-stone-50">
                 <TableHead className="w-[7rem]" />
                 <TableHead>{t('steps.infoSession.columns.scheduledAt')}</TableHead>
                 <TableHead>{t('steps.infoSession.columns.district')}</TableHead>

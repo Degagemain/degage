@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { useTheme } from 'next-themes';
-import { LogOut, Monitor, Moon, Settings, Shield, Sun } from 'lucide-react';
+import { LogOut, Settings, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { localeDisplayNames, uiLocales } from '@/i18n/locales';
@@ -36,11 +35,9 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('language');
-  const tTheme = useTranslations('theme');
   const tAuth = useTranslations('auth');
   const tAdmin = useTranslations('admin');
   const { isAdmin } = useIsAdmin();
-  const { theme, setTheme } = useTheme();
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -101,30 +98,6 @@ export function UserMenu({ name, email, image, size = 'default' }: UserMenuProps
             {localeDisplayNames[code]}
           </DropdownMenuItem>
         ))}
-        {isAdmin && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">{tTheme('label')}</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => setTheme('light')} className={(theme ?? 'system') === 'light' ? 'bg-accent' : ''}>
-              <span className="flex w-full items-center justify-between">
-                {tTheme('light')}
-                <Sun className="h-4 w-4" />
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')} className={(theme ?? 'system') === 'dark' ? 'bg-accent' : ''}>
-              <span className="flex w-full items-center justify-between">
-                {tTheme('dark')}
-                <Moon className="h-4 w-4" />
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')} className={(theme ?? 'system') === 'system' ? 'bg-accent' : ''}>
-              <span className="flex w-full items-center justify-between">
-                {tTheme('automatic')}
-                <Monitor className="h-4 w-4" />
-              </span>
-            </DropdownMenuItem>
-          </>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/app/account/settings">

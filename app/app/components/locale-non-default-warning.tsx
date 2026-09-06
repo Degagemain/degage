@@ -28,7 +28,7 @@ export function LanguageSwitcherIcon({ className }: LanguageSwitcherIconProps) {
     <HoverCard openDelay={200} closeDelay={100}>
       <HoverCardTrigger asChild>
         <span
-          className={cn('inline-flex shrink-0 text-amber-600 hover:text-amber-700 dark:text-amber-500', className)}
+          className={cn('inline-flex shrink-0 text-amber-600 hover:text-amber-700', className)}
           aria-label={notice}
           onPointerDown={(event) => event.stopPropagation()}
           onClick={(event) => event.stopPropagation()}

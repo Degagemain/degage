@@ -324,9 +324,7 @@ export default function SimulationDetailPage() {
                   <Button type="button" size="sm" onClick={() => void saveEmail()} disabled={isSavingEmail || !simulation.id}>
                     {tDetail('saveEmail')}
                   </Button>
-                  {emailSaveMessage === 'success' && (
-                    <span className="text-sm text-green-700 dark:text-green-500">{tDetail('saveSuccess')}</span>
-                  )}
+                  {emailSaveMessage === 'success' && <span className="text-sm text-green-700">{tDetail('saveSuccess')}</span>}
                   {emailSaveMessage === 'error' && <span className="text-destructive text-sm">{tDetail('saveError')}</span>}
                   {emailSaveMessage === 'validation' && <span className="text-destructive text-sm">{tDetail('validationError')}</span>}
                 </div>

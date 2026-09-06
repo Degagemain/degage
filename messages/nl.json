@@ -4,12 +4,6 @@
     "updateFailed": "Taal bijwerken mislukt",
     "nonDefaultLocaleNotice": "Deze pagina is beschikbaar in {language}, maar de Dégage-diensten en -community zijn voornamelijk in het Nederlands."
   },
-  "theme": {
-    "label": "Thema",
-    "light": "Licht",
-    "dark": "Donker",
-    "automatic": "Automatisch"
-  },
   "common": {
     "yes": "Ja",
     "no": "Nee",

@@ -45,51 +45,8 @@
   --public-lang-hover-fg: #1c1917;
 }
 
-:global(.dark) .publicTheme {
-  --public-surface: #1a2e1a;
-  --public-surface-muted: #142414;
-  --public-border: #2d4a2d;
-  --public-icon-bg: #1a2e1a;
-  --public-on-brand-muted: #d4e8d4;
-
-  --public-page-bg: #0c0a09;
-  --public-page-fg: #fafaf9;
-  --public-header-border: rgb(68 64 60 / 0.8);
-  --public-header-bg: rgb(12 10 9 / 0.9);
-  --public-header-bg-blur: rgb(12 10 9 / 0.75);
-  --public-section-border: rgb(68 64 60 / 0.8);
-  --public-elevated-bg: #1c1917;
-  --public-muted-section-bg: #141211;
-  --public-card-border: rgb(68 64 60 / 0.8);
-  --public-card-bg: #1c1917;
-  --public-text-muted: #a8a29e;
-  --public-text-subtle: #78716c;
-  --public-text-heading: #fafaf9;
-  --public-text-body: #d6d3d1;
-  --public-text-footer: #78716c;
-  --public-text-footer-strong: #e7e5e4;
-  --public-image-border: #44403c;
-  --public-image-bg: #292524;
-  --public-pill-bg: #292524;
-  --public-pill-fg: #d6d3d1;
-  --public-advantage-border: #292524;
-  --public-advantage-bg: rgb(28 25 23 / 0.5);
-  --public-dialog-bg: #1c1917;
-  --public-dialog-border: #44403c;
-  --public-option-bg: #1c1917;
-  --public-option-icon-bg: #292524;
-  --public-option-icon-fg: #d6d3d1;
-  --public-lang-fg: #a8a29e;
-  --public-lang-hover-bg: rgb(41 37 36 / 0.8);
-  --public-lang-hover-fg: #fafaf9;
-}
-
 .heroGlow {
   background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.14), transparent);
-}
-
-:global(.dark) .heroGlow {
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.08), transparent);
 }
 
 .badgeAccent {
@@ -97,12 +54,6 @@
   background-color: #c8e6c9;
   color: #2e7d32;
   font-weight: 600;
-}
-
-:global(.dark) .badgeAccent {
-  border-color: #2d4a2d;
-  background-color: #1a2e1a;
-  color: #81c784;
 }
 
 .pageSurface {

@@ -60,7 +60,7 @@ function StatusCell({ result, labels }: { result: ItemResult; labels: BulkDelete
       );
     case 'success':
       return (
-        <span className="flex items-center gap-1.5 text-sm text-green-600 dark:text-green-400">
+        <span className="flex items-center gap-1.5 text-sm text-green-600">
           <CircleCheck className="size-4" />
           {labels.statusSuccess}
         </span>

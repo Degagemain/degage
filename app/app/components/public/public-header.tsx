@@ -12,7 +12,6 @@ import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { cn } from '@/app/lib/utils';
 
-import { PublicLightTheme } from './public-light-theme';
 import { PublicLoginDialog } from './public-login-dialog';
 import styles from './public-theme.module.css';
 
@@ -46,7 +45,6 @@ export function PublicHeader() {
 
   return (
     <>
-      <PublicLightTheme />
       <header
         className={cn(
           styles.publicTheme,

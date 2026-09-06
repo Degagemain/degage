@@ -135,7 +135,7 @@ export const Attachment = ({ data, onRemove, className, children, ...props }: At
             'flex h-8 cursor-pointer items-center gap-1.5 select-none',
             'border-border rounded-md border px-1.5',
             'text-sm font-medium transition-all',
-            'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+            'hover:bg-accent hover:text-accent-foreground',
           ],
           variant === 'list' && ['flex w-full items-center gap-3 rounded-lg border p-3', 'hover:bg-accent/50'],
           className,
