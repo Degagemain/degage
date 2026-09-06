@@ -32,7 +32,7 @@ const HighlightedValue = ({ value, query }: { value: string; query: string }) =>
   <>
     {getHighlightedTextParts(value, query).map((part, index) =>
       part.isMatch ? (
-        <mark key={`${part.text}-${index}`} className="bg-yellow-200 px-0.5 text-inherit dark:bg-yellow-800/70">
+        <mark key={`${part.text}-${index}`} className="bg-yellow-200 px-0.5 text-inherit">
           {part.text}
         </mark>
       ) : (

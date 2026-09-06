@@ -249,13 +249,13 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
               </div>
 
               <div className={cn(landingSectionBlockGap, 'grid gap-5 sm:gap-6 lg:grid-cols-2')}>
-                <div className="rounded-2xl border border-red-100 bg-red-50/40 p-6 sm:p-8 dark:border-red-900/50 dark:bg-red-950/30">
-                  <h3 className="text-lg font-semibold text-red-900 dark:text-red-200">{tSim('koopgidsKnockoutTitle')}</h3>
+                <div className="rounded-2xl border border-red-100 bg-red-50/40 p-6 sm:p-8">
+                  <h3 className="text-lg font-semibold text-red-900">{tSim('koopgidsKnockoutTitle')}</h3>
                   <ul className="mt-5 space-y-3">
                     {KNOCKOUT_KEYS.map((key) => (
                       <li key={key} className={cn('flex gap-3 text-sm leading-relaxed sm:text-base', styles.textBody)}>
                         <span
-                          className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700 dark:bg-red-950 dark:text-red-300"
+                          className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700"
                           aria-hidden
                         >
                           !

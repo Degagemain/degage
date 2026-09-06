@@ -4,12 +4,6 @@
     "updateFailed": "Failed to update language",
     "nonDefaultLocaleNotice": "This page is available in {language}, but the Dégage services and community are mostly in Dutch."
   },
-  "theme": {
-    "label": "Theme",
-    "light": "Light",
-    "dark": "Dark",
-    "automatic": "Automatic"
-  },
   "common": {
     "yes": "Yes",
     "no": "No",

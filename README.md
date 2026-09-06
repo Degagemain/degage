@@ -235,7 +235,7 @@ Tailwind was installed using the [manual instructions](https://tailwindcss.com/d
 
 ### ShadCN
 
-ShadCn is used to build a compent library in this codebase. The [manual instructions](https://ui.shadcn.com/docs/installation/manual) were also followed to install this. The theming is configured to use a [dark mode](https://ui.shadcn.com/docs/dark-mode/next).
+ShadCn is used to build a compent library in this codebase. The [manual instructions](https://ui.shadcn.com/docs/installation/manual) were also followed to install this.
 
 ## Documentation Guidelines
 
@@ -302,7 +302,6 @@ This log explains why packages were installed.
 | ShadCn setup                               | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
 | Button Component                           | @radix-ui/react-slot                                                                                   |
 | Dropdown Menu Component                    | @radix-ui/react-dropdown-menu                                                                          |
-| Dark mode                                  | next-themes                                                                                            |
 | Label Component                            | @radix-ui/react-label                                                                                  |
 | Separator Component                        | @radix-ui/react-separator                                                                              |
 | Auth setup                                 | better-auth                                                                                            |

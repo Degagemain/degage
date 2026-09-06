@@ -83,7 +83,7 @@ function StatusCell({ result, common }: { result: ItemResult; common: CommonLabe
       );
     case 'success':
       return (
-        <span className="flex items-center gap-1.5 text-sm text-green-600 dark:text-green-400">
+        <span className="flex items-center gap-1.5 text-sm text-green-600">
           <CircleCheck className="size-4" />
           {common.statusSuccess}
         </span>

@@ -137,15 +137,12 @@ export function PlayConnectorCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div
-          className="rounded-lg border border-amber-300/80 bg-amber-50 px-4 py-3 text-sm text-stone-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100"
-          role="note"
-        >
+        <div className="rounded-lg border border-amber-300/80 bg-amber-50 px-4 py-3 text-sm text-stone-800" role="note">
           <div className="flex gap-3">
-            <TriangleAlertIcon className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden />
+            <TriangleAlertIcon className="mt-0.5 size-5 shrink-0 text-amber-600" aria-hidden />
             <div>
-              <p className="font-medium dark:text-amber-50">{t('credentialsNoticeTitle')}</p>
-              <p className="text-muted-foreground mt-1 leading-relaxed dark:text-amber-100/90">
+              <p className="font-medium">{t('credentialsNoticeTitle')}</p>
+              <p className="text-muted-foreground mt-1 leading-relaxed">
                 <InlineCopy>{t('credentialsNoticeBody')}</InlineCopy>
               </p>
             </div>

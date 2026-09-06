@@ -27,7 +27,7 @@ const HighlightedLabel = ({ value, query }: { value: string; query: string }) =>
   <span>
     {getHighlightedTextParts(value, query).map((part, index) =>
       part.isMatch ? (
-        <span key={`${part.text}-${index}`} className="bg-yellow-200 text-inherit dark:bg-yellow-800/70">
+        <span key={`${part.text}-${index}`} className="bg-yellow-200 text-inherit">
           {part.text}
         </span>
       ) : (
