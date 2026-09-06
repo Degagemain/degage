@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { PublicShell } from '@/app/components/public/public-shell';
@@ -11,15 +11,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (isPending) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || isPending) return;
     if (!session) {
       router.replace(buildSignInUrlWithReturnPath(pathname ?? '/app/dashboard'));
     }
-  }, [isPending, session, router, pathname]);
+  }, [mounted, isPending, session, router, pathname]);
 
-  if (isPending || !session) {
+  if (!mounted || isPending || !session) {
     return (
       <PublicShell>
         <div className="flex min-h-[50vh] items-center justify-center">
