@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Technical
+
+- Changed: `posthog-js` upgraded from 1.364.7 to 1.427.2 so browser events report a supported web SDK version.
+
 ## [0.0.5] - 2026-09-02
 
 ### Public features
