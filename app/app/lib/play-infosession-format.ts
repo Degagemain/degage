@@ -1,7 +1,7 @@
 import type { PlayInfosession } from '@/domain/play-infosession.model';
 
-export const formatInfosessionScheduledAt = (value: Date | string): string =>
-  new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+export const formatInfosessionScheduledAt = (value: Date | string, locale: string): string =>
+  new Date(value).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' });
 
 export const formatInfosessionRegistrations = (
   row: Pick<PlayInfosession, 'enrolled' | 'maxRegistrations' | 'isFull'>,
