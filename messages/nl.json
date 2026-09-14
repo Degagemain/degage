@@ -1729,6 +1729,10 @@
           "resolved": "Opgelost"
         }
       },
+      "filters": {
+        "owner": "Eigenaar",
+        "ownerPlaceholder": "Zoek gebruikers…"
+      },
       "searchPlaceholder": "Zoek auto-onboarding…",
       "createTypes": {
         "existingCar": "Bestaande wagen",

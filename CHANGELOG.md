@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Admin features
 
+- Added: the onboardings list search matches owner name and email, and admins can filter by owner.
 - Added: admins can open a user from the users list and update name, role, language, and ban status, including promoting a user to admin.
 
 ### Technical

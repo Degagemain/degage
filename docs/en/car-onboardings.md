@@ -16,6 +16,8 @@ required input is complete and whether further edits are allowed.
 Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, road assistance
 plan, car value, car name & start date, finalize). After preparation, a second menu **Onboarding** holds later steps.
 
+On the list, search also matches the owner's name and email. You can filter the list by owner.
+
 ### Owner
 
 Assigns the car onboarding owner and shows whether they have linked their legacy Dégage account (Play connector).

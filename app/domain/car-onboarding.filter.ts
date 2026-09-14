@@ -17,6 +17,7 @@ export const carOnboardingFilterSchema = z
     statusInPreparation: z.array(z.enum(CarOnboardingInPreparationStatus)).default([]),
     carValueStatuses: z.array(z.enum(CarOnboardingCarValueStatus)).default([]),
     insurerStatuses: z.array(z.enum(CarOnboardingInsurerStatus)).default([]),
+    ownerIds: z.array(z.string().min(1)).default([]),
     skip: z.coerce.number().int().min(0).default(0),
     take: z.coerce.number().int().min(0).max(MaxTake).default(DefaultTake),
     sortBy: z.enum(Object.values(CarOnboardingSortColumns) as [string, ...string[]]).default(CarOnboardingSortColumns.CREATED_AT),

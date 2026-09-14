@@ -1729,6 +1729,10 @@
           "resolved": "Resolved"
         }
       },
+      "filters": {
+        "owner": "Owner",
+        "ownerPlaceholder": "Search users…"
+      },
       "searchPlaceholder": "Search car onboardings...",
       "createTypes": {
         "existingCar": "Existing car",

@@ -18,6 +18,8 @@ Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et 
 véhicule, assurance, assistance routière, valeur, date de début du partage, finaliser). Après la préparation, un second menu **Intégration**
 regroupe les étapes suivantes.
 
+Dans la liste, la recherche porte aussi sur le nom et l'e-mail du propriétaire. Vous pouvez aussi filtrer la liste par propriétaire.
+
 ### Propriétaire
 
 Attribue le propriétaire de l'intégration véhicule et indique s'il a lié son compte Dégage legacy (Play connector).

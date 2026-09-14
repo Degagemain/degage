@@ -18,6 +18,8 @@ Admins beheren de voorbereiding in de adminzone onder **Onboardings** (lijst en 
 verzekering, pechverhelping, waarde, startdatum autodelen, afronden). Na de voorbereiding staat een tweede menu **De instap** voor latere
 stappen.
 
+Op de lijst zoekt de zoekfunctie ook op naam en e-mail van de eigenaar. Je kunt de lijst ook filteren op eigenaar.
+
 ### Eigenaar
 
 Wijst de eigenaar van de auto-onboarding toe en toont of die het legacy Dégage-account (Play connector) heeft gekoppeld.

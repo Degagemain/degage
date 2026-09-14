@@ -1729,6 +1729,10 @@
           "resolved": "Résolu"
         }
       },
+      "filters": {
+        "owner": "Propriétaire",
+        "ownerPlaceholder": "Rechercher des utilisateurs…"
+      },
       "searchPlaceholder": "Rechercher des intégrations véhicule…",
       "createTypes": {
         "existingCar": "Véhicule existant",
