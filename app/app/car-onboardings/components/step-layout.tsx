@@ -6,6 +6,7 @@ import { computeStepState, isStepReadOnly } from '../lib/compute-step-state';
 import { getStepDefinition } from '../lib/steps-config';
 import { useCarOnboarding } from '../lib/car-onboarding-context';
 import type { StepId } from '../lib/types';
+import { CarOnboardingFaq } from './car-onboarding-faq';
 import { PublicBackLink, PublicRoot, StateIcon } from './public-ui';
 import { StepReadOnlyProvider } from './step-read-only-context';
 import styles from '../car-onboarding-public.module.css';
@@ -39,6 +40,7 @@ export function StepLayout({
         <PublicBackLink href={basePath}>{t('backToOverview')}</PublicBackLink>
         <h1 className={styles.pageTitle}>{t(definition.titleKey)}</h1>
         <p className={styles.pageIntro}>{t('stepBlocked')}</p>
+        <CarOnboardingFaq stepId={stepId} />
       </PublicRoot>
     );
   }
@@ -55,6 +57,7 @@ export function StepLayout({
         <fieldset disabled={readOnly} className={styles.subflowFieldset}>
           {children}
         </fieldset>
+        <CarOnboardingFaq stepId={stepId} />
       </StepReadOnlyProvider>
     </PublicRoot>
   );

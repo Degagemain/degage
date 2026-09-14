@@ -1362,3 +1362,120 @@
   color: var(--demo-brand-mid);
   font-weight: 500;
 }
+
+.faqBlock {
+  margin-top: var(--demo-s32);
+}
+
+.faqPanel {
+  overflow: hidden;
+  background: var(--demo-surface);
+  border: 1px solid var(--demo-border);
+  border-radius: var(--demo-r12);
+}
+
+.faqPanelHeaderBtn {
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: var(--demo-s16) var(--demo-s24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--demo-sans);
+}
+
+.faqPanelHeaderBtn:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.faqPanelHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: var(--demo-s8);
+}
+
+.faqPanelTitle {
+  font-family: var(--demo-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--demo-ink);
+  margin: 0;
+}
+
+.faqPanelCount {
+  font-family: var(--demo-sans);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--demo-brand);
+  color: #fff;
+  border-radius: var(--demo-r20);
+  padding: 1px 8px;
+  line-height: 18px;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.faqPanelSectionChevron {
+  color: var(--demo-light);
+  transition: transform 0.2s;
+}
+
+.faqPanelHeaderBtn[data-state='open'] .faqPanelSectionChevron {
+  transform: rotate(180deg);
+}
+
+.faqPanelItem {
+  border-top: 1px solid var(--demo-sand);
+}
+
+.faqPanelQBtn {
+  width: 100%;
+  text-align: left;
+  padding: var(--demo-s16) var(--demo-s24);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--demo-s8);
+  font-family: var(--demo-sans);
+}
+
+.faqPanelQBtn[data-state='open'] {
+  background: var(--demo-brand-light);
+}
+
+.faqPanelQText {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--demo-ink);
+  line-height: 1.45;
+}
+
+.faqPanelQChevron {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--demo-light);
+  transition: transform 0.2s;
+}
+
+.faqPanelQBtn[data-state='open'] .faqPanelQChevron {
+  transform: rotate(180deg);
+}
+
+.faqPanelAnswer {
+  padding: 0 var(--demo-s24) var(--demo-s16);
+  font-family: var(--demo-sans);
+  font-size: 12px;
+  color: var(--demo-mid);
+  line-height: 1.6;
+}
+
+.faqPanelAnswer :global(.documentation-markdown) {
+  color: var(--demo-mid);
+}

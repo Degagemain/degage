@@ -2907,6 +2907,7 @@
         }
       }
     },
+    "faqCollapsedTitle": "Frequently asked questions",
     "backToOverview": "Back to overview",
     "stepNotFound": "Step not found.",
     "stepBlocked": "This step is not available yet. Complete the previous steps first.",

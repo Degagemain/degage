@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { InlineCopy } from '@/app/components/inline-copy';
 
+import { CarOnboardingFaq } from '../components/car-onboarding-faq';
 import { JourneyMeta } from '../components/journey-meta';
 import { PublicRoot } from '../components/public-ui';
 import { StepSection } from '../components/step-section';
@@ -21,6 +22,7 @@ export default function CarOnboardingOverviewPage() {
       </p>
       <JourneyMeta />
       <StepSection />
+      <CarOnboardingFaq />
     </PublicRoot>
   );
 }
