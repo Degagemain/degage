@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-09-14
+
 ### Public features
 
 - Added: frequently asked questions at the bottom of car onboarding pages.
