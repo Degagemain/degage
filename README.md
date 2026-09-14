@@ -247,7 +247,7 @@ All external URLs referenced in the README.md are automatically validated in CI/
 To validate URLs locally:
 
 ```bash
-pnpm run docs
+pnpm validate-docs
 ```
 
 ## PostHog

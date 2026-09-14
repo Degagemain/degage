@@ -37,4 +37,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Validate Docs
-        run: pnpm run docs
+        run: pnpm validate-docs
