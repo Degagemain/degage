@@ -12,6 +12,7 @@ import {
   attachmentDownloadJsonResponse,
   badRequestResponseFromZod,
   getIdFromRoute,
+  getStringIdFromRoute,
   isPrismaNotFoundError,
   isPrismaUniqueError,
   noContentResponse,
@@ -310,6 +311,24 @@ describe('API Utils', () => {
     });
   });
 
+  describe('getStringIdFromRoute', () => {
+    it('returns a non-uuid id', async () => {
+      const mockRoute = {
+        params: Promise.resolve({ id: 'better-auth-user-id' }),
+      };
+
+      await expect(getStringIdFromRoute(mockRoute)).resolves.toBe('better-auth-user-id');
+    });
+
+    it('throws when the id is empty', async () => {
+      const mockRoute = {
+        params: Promise.resolve({ id: '' }),
+      };
+
+      await expect(getStringIdFromRoute(mockRoute)).rejects.toThrow();
+    });
+  });
+
   describe('tryReadResource', () => {
     it('should return 200 response with resource for successful read', async () => {
       const mockResource = { id: '123', name: 'Test' };
@@ -555,6 +574,21 @@ describe('API Utils', () => {
       const mockUpdateResource = async (resource: any) => resource;
 
       await expect(tryUpdateResource(mockRequest, mockRoute, mockUpdateResource)).rejects.toThrow();
+    });
+
+    it('uses a custom id parser for non-uuid ids', async () => {
+      const mockRequest = {
+        json: async () => ({ id: 'better-auth-user-id', name: 'Updated Name' }),
+      } as never;
+      const mockRoute = {
+        params: Promise.resolve({ id: 'better-auth-user-id' }),
+      };
+      const mockUpdateResource = vi.fn(async (resource: { id: string }) => resource);
+
+      const response = await tryUpdateResource(mockRequest, mockRoute, mockUpdateResource, getStringIdFromRoute);
+
+      expect(response.status).toBe(204);
+      expect(mockUpdateResource).toHaveBeenCalledWith({ id: 'better-auth-user-id', name: 'Updated Name' });
     });
   });
 });

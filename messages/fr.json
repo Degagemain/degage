@@ -1973,7 +1973,26 @@
         "role": "Rôle"
       },
       "searchPlaceholder": "Rechercher des utilisateurs...",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier"
+      },
+      "form": {
+        "banReason": "Motif du bannissement",
+        "help": {
+          "name": "Nom affiché dans l'application.",
+          "email": "Adresse e-mail de connexion. Elle ne peut pas être modifiée ici.",
+          "role": "Les admins accèdent à la zone d'administration. Choisissez Admin pour accorder l'accès.",
+          "language": "Langue utilisée pour l'application et les e-mails.",
+          "verified": "Indique si l'utilisateur a confirmé son adresse e-mail.",
+          "status": "Les utilisateurs bannis ne peuvent pas se connecter.",
+          "banReason": "Motif facultatif enregistré avec le bannissement."
+        }
+      },
+      "errors": {
+        "lastAdmin": "Il doit rester au moins un admin. Promouvez d'abord un autre utilisateur."
+      }
     },
     "documentation": {
       "title": "Documentation",

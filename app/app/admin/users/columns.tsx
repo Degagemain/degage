@@ -1,10 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal, Pencil } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
 import { Badge } from '@/app/components/ui/badge';
+import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/app/components/ui/data-table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 import { User } from '@/domain/user.model';
 import { formatDateOrDash } from '@/domain/utils';
 import { type UILocale, localeDisplayNames } from '@/i18n/locales';
@@ -54,7 +58,9 @@ export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
               {user.image && <AvatarImage src={user.image} alt={user.name ?? ''} />}
               <AvatarFallback className="text-[10px]">{getInitials(user.name)}</AvatarFallback>
             </Avatar>
-            <span className="font-medium">{user.name ?? <span className="text-muted-foreground">—</span>}</span>
+            <Link href={`/app/admin/users/${user.id}`} className="font-medium hover:underline">
+              {user.name ?? <span className="text-muted-foreground">—</span>}
+            </Link>
           </div>
         );
       },
@@ -136,6 +142,33 @@ export const createColumns = (options: ColumnOptions): ColumnDef<User>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.updated')} onSort={options.onSort} />,
       cell: ({ row }) => <span className="text-muted-foreground text-sm">{formatDateOrDash(row.getValue('updatedAt'))}</span>,
       enableHiding: true,
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const item = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-xs">
+                <span className="sr-only">{t('actions.openMenu')}</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem asChild>
+                <Link href={`/app/admin/users/${item.id}`}>
+                  <Pencil />
+                  {t('actions.edit')}
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
 };
