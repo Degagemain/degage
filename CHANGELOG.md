@@ -7,12 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Added: frequently asked questions at the bottom of car onboarding pages.
+- Changed: articles are hidden by default in the FAQ.
+- Changed: if your car onboarding is still incomplete, a reminder email is sent at most once every 7 days.
+- Fixed: info session dates use your selected language for the month name.
+
 ### Admin features
 
+- Added: documentation can be tagged to show in the car onboarding FAQ, on every page or on a specific step.
+- Added: the onboardings list search matches owner name and email, and admins can filter by owner.
+- Fixed: info session dates use your selected language for the month name.
 - Added: admins can open a user from the users list and update name, role, language, and ban status, including promoting a user to admin.
 
 ### Technical
 
+- Changed: documentation URL validation is now `pnpm validate-docs` (was `pnpm docs`, which collided with pnpm’s built-in command).
 - Changed: `posthog-js` upgraded from 1.364.7 to 1.427.2 so browser events report a supported web SDK version.
 
 ## [0.0.5] - 2026-09-02

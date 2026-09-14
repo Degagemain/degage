@@ -624,12 +624,12 @@ describe('isCarOnboardingDueForPreparationNudge', () => {
     );
   });
 
-  it('is not due when a nudge was sent within the last 72 hours', () => {
+  it('is not due when a nudge was sent within the last 7 days', () => {
     const recent = new Date(now.getTime() - PREPARATION_NUDGE_COOLDOWN_MS);
     expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ lastPreparationNudgeEmail: recent }), now)).toBe(false);
   });
 
-  it('is due when the last nudge is older than 72 hours', () => {
+  it('is due when the last nudge is older than 7 days', () => {
     const stale = new Date(now.getTime() - PREPARATION_NUDGE_COOLDOWN_MS - 1);
     expect(isCarOnboardingDueForPreparationNudge(carOnboarding({ lastPreparationNudgeEmail: stale }), now)).toBe(true);
   });

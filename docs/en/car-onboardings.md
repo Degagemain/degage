@@ -16,6 +16,8 @@ required input is complete and whether further edits are allowed.
 Admins manage preparation in the admin zone under **Onboardings** (list and tabbed detail: owner, user info, car info, insurer, road assistance
 plan, car value, car name & start date, finalize). After preparation, a second menu **Onboarding** holds later steps.
 
+On the list, search also matches the owner's name and email. You can filter the list by owner.
+
 ### Owner
 
 Assigns the car onboarding owner and shows whether they have linked their legacy Dégage account (Play connector).
@@ -195,7 +197,7 @@ until an admin unlocks it (for locked) or while confirmation stands. Admins can 
 is not locked.
 
 If preparation is still **Open** and the owner has not confirmed, a reminder email can be sent. Admins send it from the onboarding detail
-screen. The same reminder is also sent automatically when no reminder was sent yet, or the last one was more than three days ago.
+screen. The same reminder is also sent automatically when no reminder was sent yet, or the last one was more than seven days ago.
 
 ## Onboarding
 

@@ -7,6 +7,7 @@ import { Prisma } from '@/storage/client/client';
 import { carOnboardingRelationsInclude, dbCarOnboardingToDomainWithRelations } from './car-onboarding.mappers';
 
 export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboardingWhereInput => {
+  const query = filter.query?.trim() ?? '';
   return {
     ...(filter.excludeId != null ? { id: { not: filter.excludeId } } : {}),
     ...(filter.carName != null && filter.carName.trim() !== ''
@@ -15,14 +16,17 @@ export const filterToQuery = (filter: CarOnboardingFilter): Prisma.CarOnboarding
     ...(filter.statusInPreparation.length > 0 ? { statusInPreparation: { in: filter.statusInPreparation } } : {}),
     ...(filter.carValueStatuses.length > 0 ? { carValueStatus: { in: filter.carValueStatuses } } : {}),
     ...(filter.insurerStatuses.length > 0 ? { insurerStatus: { in: filter.insurerStatuses } } : {}),
-    ...(filter.query != null && filter.query.trim() !== ''
+    ...(filter.ownerIds.length > 0 ? { ownerId: { in: filter.ownerIds } } : {}),
+    ...(query !== ''
       ? {
           OR: [
-            { street: { contains: filter.query.trim(), mode: 'insensitive' as const } },
-            { houseNumber: { contains: filter.query.trim(), mode: 'insensitive' as const } },
-            { phone: { contains: filter.query.trim(), mode: 'insensitive' as const } },
-            { carTypeOther: { contains: filter.query.trim(), mode: 'insensitive' as const } },
-            { carName: { contains: filter.query.trim(), mode: 'insensitive' as const } },
+            { street: { contains: query, mode: 'insensitive' as const } },
+            { houseNumber: { contains: query, mode: 'insensitive' as const } },
+            { phone: { contains: query, mode: 'insensitive' as const } },
+            { carTypeOther: { contains: query, mode: 'insensitive' as const } },
+            { carName: { contains: query, mode: 'insensitive' as const } },
+            { owner: { name: { contains: query, mode: 'insensitive' as const } } },
+            { owner: { email: { contains: query, mode: 'insensitive' as const } } },
           ],
         }
       : {}),

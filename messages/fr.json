@@ -1729,6 +1729,10 @@
           "resolved": "Résolu"
         }
       },
+      "filters": {
+        "owner": "Propriétaire",
+        "ownerPlaceholder": "Rechercher des utilisateurs…"
+      },
       "searchPlaceholder": "Rechercher des intégrations véhicule…",
       "createTypes": {
         "existingCar": "Véhicule existant",
@@ -1760,7 +1764,7 @@
         "sendPreparationNudge": "Envoyer un e-mail de rappel",
         "sendPreparationNudgeSending": "Envoi du rappel…",
         "sendPreparationNudgeSuccess": "E-mail de rappel envoyé.",
-        "sendPreparationNudgeSkipped": "Aucun rappel envoyé. La préparation est complète, verrouillée, ou un rappel a déjà été envoyé au cours des trois derniers jours.",
+        "sendPreparationNudgeSkipped": "Aucun rappel envoyé. La préparation est complète, verrouillée, ou un rappel a déjà été envoyé au cours des sept derniers jours.",
         "sendPreparationNudgeError": "Échec de l'envoi de l'e-mail de rappel.",
         "overruleAgreement": "Outrepasser l'accord",
         "overruleAgreementTitle": "Outrepasser l'accord sur la valeur ?",
@@ -2903,6 +2907,7 @@
         }
       }
     },
+    "faqCollapsedTitle": "Questions fréquentes",
     "backToOverview": "Retour à l'aperçu",
     "stepNotFound": "Étape introuvable.",
     "stepBlocked": "Cette étape n'est pas encore disponible. Terminez d'abord les étapes précédentes.",

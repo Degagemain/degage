@@ -30,7 +30,7 @@
     "gcp:encode-credentials": "bash -c 'base64 < \"$1\" | tr -d \"\\n\"' _",
     "db:backup": "bash scripts/db-backup.sh",
     "db:restore": "bash scripts/db-restore.sh",
-    "docs": "node scripts/validate-docs.mjs",
+    "validate-docs": "node scripts/validate-docs.mjs",
     "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
   },
   "keywords": [],

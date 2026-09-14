@@ -1729,6 +1729,10 @@
           "resolved": "Opgelost"
         }
       },
+      "filters": {
+        "owner": "Eigenaar",
+        "ownerPlaceholder": "Zoek gebruikers…"
+      },
       "searchPlaceholder": "Zoek auto-onboarding…",
       "createTypes": {
         "existingCar": "Bestaande wagen",
@@ -1760,7 +1764,7 @@
         "sendPreparationNudge": "Herinneringsmail versturen",
         "sendPreparationNudgeSending": "Herinnering versturen…",
         "sendPreparationNudgeSuccess": "Herinneringsmail verstuurd.",
-        "sendPreparationNudgeSkipped": "Geen herinnering verstuurd. De voorbereiding is compleet, vergrendeld, of er is al een herinnering verstuurd in de laatste drie dagen.",
+        "sendPreparationNudgeSkipped": "Geen herinnering verstuurd. De voorbereiding is compleet, vergrendeld, of er is al een herinnering verstuurd in de laatste zeven dagen.",
         "sendPreparationNudgeError": "Herinneringsmail versturen mislukt.",
         "overruleAgreement": "Overschrijven",
         "overruleAgreementTitle": "Akkoord overschrijven?",
@@ -2912,6 +2916,7 @@
         }
       }
     },
+    "faqCollapsedTitle": "Veelgestelde vragen",
     "backToOverview": "Terug naar overzicht",
     "stepNotFound": "Stap niet gevonden.",
     "stepBlocked": "Deze stap is nog niet beschikbaar. Rond eerst de vorige stappen af.",

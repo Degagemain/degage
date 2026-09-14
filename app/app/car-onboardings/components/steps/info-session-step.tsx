@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { CarOnboardingInfoSessionStatus } from '@/domain/car-onboarding.model';
@@ -25,12 +25,12 @@ type PlayInfosessionListResponse = {
   chosenInfosession: PlayInfosession | null;
 };
 
-function EnrolledSessionDetails({ session, t }: { session: PlayInfosession; t: ReturnType<typeof useTranslations> }) {
+function EnrolledSessionDetails({ session, t, locale }: { session: PlayInfosession; t: ReturnType<typeof useTranslations>; locale: string }) {
   return (
     <dl className="mt-3 space-y-2 text-sm text-stone-600">
       <div>
         <dt className="font-medium text-stone-900">{t('steps.infoSession.columns.scheduledAt')}</dt>
-        <dd>{formatInfosessionScheduledAt(session.scheduledAt)}</dd>
+        <dd>{formatInfosessionScheduledAt(session.scheduledAt, locale)}</dd>
       </div>
       {session.district ? (
         <div>
@@ -60,6 +60,7 @@ function EnrolledSessionDetails({ session, t }: { session: PlayInfosession; t: R
 
 export function InfoSessionStep() {
   const t = useTranslations('carOnboardingPublic');
+  const locale = useLocale();
   const { carOnboarding, reload } = useCarOnboarding();
   const [infosessions, setInfosessions] = useState<PlayInfosession[] | null>(null);
   const [chosenInfosession, setChosenInfosession] = useState<PlayInfosession | null>(null);
@@ -185,7 +186,7 @@ export function InfoSessionStep() {
           <p className="mt-2 text-sm text-stone-600">
             <InlineCopy>{t('steps.infoSession.externalEnrollmentWarning')}</InlineCopy>
           </p>
-          <EnrolledSessionDetails session={chosenInfosession} t={t} />
+          <EnrolledSessionDetails session={chosenInfosession} t={t} locale={locale} />
           <Button
             type="button"
             variant="outline"
@@ -205,9 +206,9 @@ export function InfoSessionStep() {
             {isDone ? t('steps.infoSession.confirmedTitle') : t('steps.infoSession.enrolledTitle')}
           </p>
           {enrolledSession ? (
-            <EnrolledSessionDetails session={enrolledSession} t={t} />
+            <EnrolledSessionDetails session={enrolledSession} t={t} locale={locale} />
           ) : carOnboarding.infoSessionDate ? (
-            <p className="mt-1 text-sm text-stone-600">{formatInfosessionScheduledAt(carOnboarding.infoSessionDate)}</p>
+            <p className="mt-1 text-sm text-stone-600">{formatInfosessionScheduledAt(carOnboarding.infoSessionDate, locale)}</p>
           ) : loadingInfosessions ? (
             <div className="mt-2 flex items-center gap-2 text-sm text-stone-600">
               <Loader2 className="size-4 animate-spin" />
@@ -286,7 +287,7 @@ export function InfoSessionStep() {
                           </Button>
                         ) : null}
                       </TableCell>
-                      <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt)}</TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">{formatInfosessionScheduledAt(row.scheduledAt, locale)}</TableCell>
                       <TableCell>{row.district}</TableCell>
                       <TableCell className="whitespace-nowrap">
                         {formatInfosessionRegistrations(row, t('steps.infoSession.registrationsFull'))}

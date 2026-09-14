@@ -88,4 +88,11 @@ describe('documentation search filterToQuery (audience / roles)', () => {
       groups: { some: { id: gid } },
     });
   });
+
+  it('filters tags with hasSome', () => {
+    const where = filterToQuery(documentationFilterSchema.parse({ tags: ['car_onboarding_all', 'car_onboarding_play_connector'] }));
+    expect(where).toEqual({
+      tags: { hasSome: ['car_onboarding_all', 'car_onboarding_play_connector'] },
+    });
+  });
 });

@@ -93,7 +93,7 @@ describe('nudgeCarOnboardingPreparation', () => {
     expect(dbCarOnboardingUpdateLastPreparationNudgeEmail).not.toHaveBeenCalled();
   });
 
-  it('does not send when a nudge was sent within 72 hours', async () => {
+  it('does not send when a nudge was sent within 7 days', async () => {
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id,

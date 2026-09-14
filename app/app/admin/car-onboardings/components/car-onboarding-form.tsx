@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { Check, CheckCircle2, ChevronDown, CircleDashed, Lock } from 'lucide-react';
 import * as z from 'zod';
@@ -28,6 +28,7 @@ import {
   startOfMonth,
 } from '@/domain/car-onboarding.model';
 import { apiGet } from '@/app/lib/api-client';
+import { formatInfosessionScheduledAt } from '@/app/lib/play-infosession-format';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
 import { Button } from '@/app/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
@@ -386,6 +387,7 @@ export function CarOnboardingForm({
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
   const tShared = useTranslations('common');
+  const locale = useLocale();
   const [isOverruleDialogOpen, setIsOverruleDialogOpen] = useState(false);
   const [isOverruling, setIsOverruling] = useState(false);
   const [isConfirmInfoSessionDialogOpen, setIsConfirmInfoSessionDialogOpen] = useState(false);
@@ -748,7 +750,7 @@ export function CarOnboardingForm({
 
   const formatInfoSessionDate = (value: Date | string | null): string => {
     if (value == null) return '—';
-    return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    return formatInfosessionScheduledAt(value, locale);
   };
 
   return (

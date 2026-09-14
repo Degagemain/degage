@@ -18,7 +18,7 @@ export const filterToQuery = (filter: DocumentationFilter): Prisma.Documentation
   const tagsFilter =
     filter.tags && filter.tags.length > 0
       ? {
-          hasEvery: filter.tags,
+          hasSome: filter.tags,
         }
       : undefined;
 

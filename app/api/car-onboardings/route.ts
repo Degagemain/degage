@@ -14,6 +14,7 @@ const carOnboardingFilterInputFromSearchParams = (sp: URLSearchParams): Record<s
   query: sp.get('query') ?? undefined,
   statusInPreparation: sp.getAll('statusInPreparation'),
   carValueStatuses: sp.getAll('carValueStatus'),
+  ownerIds: sp.getAll('ownerId'),
   skip: sp.get('skip') ?? undefined,
   take: sp.get('take') ?? undefined,
   sortBy: sp.get('sortBy') ?? undefined,

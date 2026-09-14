@@ -18,6 +18,8 @@ Les admins gèrent la préparation dans la zone admin **Onboardings** (liste et 
 véhicule, assurance, assistance routière, valeur, date de début du partage, finaliser). Après la préparation, un second menu **Intégration**
 regroupe les étapes suivantes.
 
+Dans la liste, la recherche porte aussi sur le nom et l'e-mail du propriétaire. Vous pouvez aussi filtrer la liste par propriétaire.
+
 ### Propriétaire
 
 Attribue le propriétaire de l'intégration véhicule et indique s'il a lié son compte Dégage legacy (Play connector).
@@ -186,7 +188,7 @@ préparation n'est pas verrouillée.
 
 Si la préparation est encore **Ouverte** et que le propriétaire n'a pas confirmé, un e-mail de rappel peut être envoyé. Les admins l'envoient
 depuis la fiche d'intégration. Le même rappel part aussi automatiquement lorsqu'aucun rappel n'a encore été envoyé, ou que le dernier date de
-plus de trois jours.
+plus de sept jours.
 
 ## Intégration
 

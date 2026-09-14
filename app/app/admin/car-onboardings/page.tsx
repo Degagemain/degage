@@ -13,7 +13,14 @@ import { useAdminListUrlSync } from '@/app/admin/admin-list-url-sync';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
-import { AdminTablePage, DataTable, DataTablePagination, DataTableToolbar } from '@/app/components/ui/data-table';
+import {
+  AdminTablePage,
+  DataTable,
+  DataTablePagination,
+  DataTableSearchableMultiselect,
+  DataTableToolbar,
+  type SearchableOption,
+} from '@/app/components/ui/data-table';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { BulkActionsButton } from '@/app/components/bulk-actions-button';
 import { BulkDeleteDialog, type BulkDeleteItem } from '@/app/components/bulk-delete-dialog';
@@ -56,11 +63,38 @@ export default function CarOnboardingsPage() {
     error: null,
   });
 
-  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, setPageIndex, setPageSize, setSort } = useAdminListUrlSync({
-    defaultPageSize: DEFAULT_PAGE_SIZE,
-    defaultSort: { id: 'createdAt', desc: true },
-    validSortIds: Object.keys(SORT_COLUMN_MAP),
-  });
+  const { queryInput, setQueryInput, debouncedQuery, pageIndex, pageSize, sorting, csv, setPageIndex, setPageSize, setSort, setCsvParam } =
+    useAdminListUrlSync({
+      defaultPageSize: DEFAULT_PAGE_SIZE,
+      defaultSort: { id: 'createdAt', desc: true },
+      validSortIds: Object.keys(SORT_COLUMN_MAP),
+      csvParamNames: ['ownerIds'],
+    });
+
+  const ownerIds = csv.ownerIds;
+  const [ownerOptions, setOwnerOptions] = useState<SearchableOption[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (ownerIds.length === 0) {
+      setOwnerOptions([]);
+      return;
+    }
+    (async () => {
+      const resolved = await Promise.all(
+        ownerIds.map(async (id) => {
+          const res = await fetch(`/api/users/${encodeURIComponent(id)}`);
+          if (!res.ok) return { id, name: id };
+          const user = await res.json();
+          return { id: user.id, name: user.name };
+        }),
+      );
+      if (!cancelled) setOwnerOptions(resolved);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [ownerIds]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     ownerHasPlayConnector: false,
@@ -106,6 +140,14 @@ export default function CarOnboardingsPage() {
   const handleDeleteRequest = useCallback((item: CarOnboarding) => {
     setItemToDelete(item);
   }, []);
+
+  const handleOwnerChange = useCallback(
+    (values: string[], options: SearchableOption[]) => {
+      setCsvParam('ownerIds', values);
+      setOwnerOptions(options);
+    },
+    [setCsvParam],
+  );
 
   const columns = useMemo(
     () => createColumns({ onSort: handleSort, onDelete: handleDeleteRequest, t, tShared }),
@@ -153,6 +195,7 @@ export default function CarOnboardingsPage() {
   const buildApiParams = useCallback(() => {
     const params = new URLSearchParams();
     if (debouncedQuery) params.set('query', debouncedQuery);
+    ownerIds.forEach((id) => params.append('ownerId', id));
 
     if (sorting.length > 0) {
       const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
@@ -163,7 +206,7 @@ export default function CarOnboardingsPage() {
     }
 
     return params;
-  }, [debouncedQuery, sorting]);
+  }, [debouncedQuery, ownerIds, sorting]);
 
   const fetchCarOnboardings = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -320,12 +363,22 @@ export default function CarOnboardingsPage() {
               </DropdownMenu>
             }
             filterSlot={
-              <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
-                <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
-                  <Trash2 />
-                  {t('bulkActions.delete')}
-                </DropdownMenuItem>
-              </BulkActionsButton>
+              <>
+                <DataTableSearchableMultiselect
+                  title={t('filters.owner')}
+                  apiPath="users"
+                  selectedValues={ownerIds}
+                  selectedOptions={ownerOptions}
+                  onSelectedChange={handleOwnerChange}
+                  placeholder={t('filters.ownerPlaceholder')}
+                />
+                <BulkActionsButton count={selectedItems.length} label={t('bulkActions.label')}>
+                  <DropdownMenuItem variant="destructive" onClick={() => setBulkDeleteOpen(true)}>
+                    <Trash2 />
+                    {t('bulkActions.delete')}
+                  </DropdownMenuItem>
+                </BulkActionsButton>
+              </>
             }
             columnLabels={columnLabels}
           />

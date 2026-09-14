@@ -1729,6 +1729,10 @@
           "resolved": "Resolved"
         }
       },
+      "filters": {
+        "owner": "Owner",
+        "ownerPlaceholder": "Search users…"
+      },
       "searchPlaceholder": "Search car onboardings...",
       "createTypes": {
         "existingCar": "Existing car",
@@ -1760,7 +1764,7 @@
         "sendPreparationNudge": "Send reminder email",
         "sendPreparationNudgeSending": "Sending reminder…",
         "sendPreparationNudgeSuccess": "Reminder email sent.",
-        "sendPreparationNudgeSkipped": "No reminder sent. Preparation is complete, locked, or a reminder was already sent in the last three days.",
+        "sendPreparationNudgeSkipped": "No reminder sent. Preparation is complete, locked, or a reminder was already sent in the last seven days.",
         "sendPreparationNudgeError": "Failed to send reminder email.",
         "overruleAgreement": "Overrule agreement",
         "overruleAgreementTitle": "Overrule car value agreement?",
@@ -2903,6 +2907,7 @@
         }
       }
     },
+    "faqCollapsedTitle": "Frequently asked questions",
     "backToOverview": "Back to overview",
     "stepNotFound": "Step not found.",
     "stepBlocked": "This step is not available yet. Complete the previous steps first.",
