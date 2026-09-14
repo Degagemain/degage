@@ -1760,7 +1760,7 @@
         "sendPreparationNudge": "Envoyer un e-mail de rappel",
         "sendPreparationNudgeSending": "Envoi du rappel…",
         "sendPreparationNudgeSuccess": "E-mail de rappel envoyé.",
-        "sendPreparationNudgeSkipped": "Aucun rappel envoyé. La préparation est complète, verrouillée, ou un rappel a déjà été envoyé au cours des trois derniers jours.",
+        "sendPreparationNudgeSkipped": "Aucun rappel envoyé. La préparation est complète, verrouillée, ou un rappel a déjà été envoyé au cours des sept derniers jours.",
         "sendPreparationNudgeError": "Échec de l'envoi de l'e-mail de rappel.",
         "overruleAgreement": "Outrepasser l'accord",
         "overruleAgreementTitle": "Outrepasser l'accord sur la valeur ?",

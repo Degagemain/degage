@@ -570,7 +570,7 @@ export const isPreparationConfirmed = (onboarding: Pick<CarOnboarding, 'preparat
   return onboarding.preparationConfirmedAt != null;
 };
 
-export const PREPARATION_NUDGE_COOLDOWN_HOURS = 24 * 3;
+export const PREPARATION_NUDGE_COOLDOWN_HOURS = 24 * 7;
 export const PREPARATION_NUDGE_COOLDOWN_MS = PREPARATION_NUDGE_COOLDOWN_HOURS * 60 * 60 * 1000;
 
 export const isCarOnboardingEligibleForPreparationNudge = (

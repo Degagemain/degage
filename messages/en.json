@@ -1760,7 +1760,7 @@
         "sendPreparationNudge": "Send reminder email",
         "sendPreparationNudgeSending": "Sending reminder…",
         "sendPreparationNudgeSuccess": "Reminder email sent.",
-        "sendPreparationNudgeSkipped": "No reminder sent. Preparation is complete, locked, or a reminder was already sent in the last three days.",
+        "sendPreparationNudgeSkipped": "No reminder sent. Preparation is complete, locked, or a reminder was already sent in the last seven days.",
         "sendPreparationNudgeError": "Failed to send reminder email.",
         "overruleAgreement": "Overrule agreement",
         "overruleAgreementTitle": "Overrule car value agreement?",

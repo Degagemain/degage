@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Public features
 
 - Changed: articles are hidden by default in the FAQ.
+- Changed: if your car onboarding is still incomplete, a reminder email is sent at most once every 7 days.
 
 ### Admin features
 

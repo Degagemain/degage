@@ -38,5 +38,5 @@ Confirm the job under the project’s **Settings** → **Cron Jobs**. Runtime ou
 | Template          | `car-onboarding-preparation-nudge-email` (Resend design alias `button-email`)  |
 | Public button URL | `{BETTER_AUTH_URL}/app/car-onboardings/{id}` via runtime variable `BUTTON_URL` |
 
-The job sends a reminder when preparation is still **Open**, the owner has not confirmed, and no reminder was sent in the last 72 hours. After a
+The job sends a reminder when preparation is still **Open**, the owner has not confirmed, and no reminder was sent in the last 7 days. After a
 successful send it stores `lastPreparationNudgeEmail`. Admins can trigger the same action from an onboarding detail screen.

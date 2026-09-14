@@ -186,7 +186,7 @@ préparation n'est pas verrouillée.
 
 Si la préparation est encore **Ouverte** et que le propriétaire n'a pas confirmé, un e-mail de rappel peut être envoyé. Les admins l'envoient
 depuis la fiche d'intégration. Le même rappel part aussi automatiquement lorsqu'aucun rappel n'a encore été envoyé, ou que le dernier date de
-plus de trois jours.
+plus de sept jours.
 
 ## Intégration
 

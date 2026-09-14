@@ -1760,7 +1760,7 @@
         "sendPreparationNudge": "Herinneringsmail versturen",
         "sendPreparationNudgeSending": "Herinnering versturen…",
         "sendPreparationNudgeSuccess": "Herinneringsmail verstuurd.",
-        "sendPreparationNudgeSkipped": "Geen herinnering verstuurd. De voorbereiding is compleet, vergrendeld, of er is al een herinnering verstuurd in de laatste drie dagen.",
+        "sendPreparationNudgeSkipped": "Geen herinnering verstuurd. De voorbereiding is compleet, vergrendeld, of er is al een herinnering verstuurd in de laatste zeven dagen.",
         "sendPreparationNudgeError": "Herinneringsmail versturen mislukt.",
         "overruleAgreement": "Overschrijven",
         "overruleAgreementTitle": "Akkoord overschrijven?",

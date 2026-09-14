@@ -195,7 +195,7 @@ until an admin unlocks it (for locked) or while confirmation stands. Admins can 
 is not locked.
 
 If preparation is still **Open** and the owner has not confirmed, a reminder email can be sent. Admins send it from the onboarding detail
-screen. The same reminder is also sent automatically when no reminder was sent yet, or the last one was more than three days ago.
+screen. The same reminder is also sent automatically when no reminder was sent yet, or the last one was more than seven days ago.
 
 ## Onboarding
 

@@ -182,7 +182,7 @@ waarde niet meer bijwerken. Admins kunnen de bevestiging van de eigenaar wissen 
 
 Als de voorbereiding nog **Open** is en de eigenaar nog niet heeft bevestigd, kan een herinneringsmail worden verstuurd. Admins versturen die
 vanaf het onboardingdetail. Dezelfde herinnering gaat ook automatisch uit wanneer er nog geen herinnering is verstuurd, of de laatste meer dan
-drie dagen geleden is.
+zeven dagen geleden is.
 
 ## De instap
 
