@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Admin features
+
+- Added: admins can open a user from the users list and update name, role, language, and ban status, including promoting a user to admin.
+
 ### Technical
 
 - Changed: `posthog-js` upgraded from 1.364.7 to 1.427.2 so browser events report a supported web SDK version.

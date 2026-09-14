@@ -1973,7 +1973,26 @@
         "role": "Rol"
       },
       "searchPlaceholder": "Zoek gebruikers...",
-      "tryAgain": "Opnieuw proberen"
+      "tryAgain": "Opnieuw proberen",
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken"
+      },
+      "form": {
+        "banReason": "Reden van blokkering",
+        "help": {
+          "name": "Weergavenaam in de app.",
+          "email": "E-mailadres om in te loggen. Dit kan hier niet worden gewijzigd.",
+          "role": "Admins hebben toegang tot de adminzone. Kies Admin om toegang te geven.",
+          "language": "Taal voor de app en e-mails.",
+          "verified": "Of de gebruiker het e-mailadres heeft bevestigd.",
+          "status": "Geblokkeerde gebruikers kunnen niet inloggen.",
+          "banReason": "Optionele reden die bij de blokkering wordt bewaard."
+        }
+      },
+      "errors": {
+        "lastAdmin": "Er moet minstens één admin overblijven. Promoveer eerst een andere gebruiker."
+      }
     },
     "documentation": {
       "title": "Documentatie",

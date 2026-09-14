@@ -31,10 +31,10 @@ entities that will get matching **new** and **`[id]`** pages.
 | `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`   | Per-locale content (custom)           | Separate flow                |
 | `email-templates`                          | `/api/email-templates`               | `/api/email-templates/{id}` | Yes (`translations[]` with variables) | Done                         |
 | `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)        | N/A                                   | Has `new` + read-only `[id]` |
+| `users`                                    | — (no collection `POST`)             | `/api/users/{id}`           | No                                    | Edit only (`[id]`, no `new`) |
 
 **Not in this table:** `car-tax-base-rates` and `car-tax-flat-rates` admin lists have **GET-only** collection routes (no `POST`). **System
-parameters** use **`PATCH`** on `/api/system-parameters/{id}` (values only), not full `PUT` body replace. **Users** has no admin `POST`/`PUT` in
-the same sense.
+parameters** use **`PATCH`** on `/api/system-parameters/{id}` (values only), not full `PUT` body replace.
 
 ## Routes and navigation
 
@@ -77,6 +77,7 @@ Shared UI lives under **`app/app/components/form/`** (not per-entity `fields/`):
 | `form/admin-locale-tabs-control.tsx`     | Compact locale tabs + error styling per tab                                             |
 | `form/admin-translated-string-field.tsx` | Name row: label + tabs + **single** `translations` RHF field with merge-on-change       |
 | `form/admin-searchable-select-field.tsx` | Label + `SearchableSelect` + description + error (relations: brand, fuel type, town, …) |
+| `form/admin-select-field-control.tsx`    | Label + `Select` + description + error (fixed option lists: role, locale, …)            |
 | `form/admin-date-field-control.tsx`      | Date input with validation helpers in `form/date-input-helpers.ts`                      |
 | `form/admin-textarea-field-control.tsx`  | Label + textarea + description + error (multi-line text, lists split by line)           |
 | `form/empty-content-locale-record.ts`    | `Record<ContentLocale, string>` initialiser                                             |

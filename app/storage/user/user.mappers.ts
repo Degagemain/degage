@@ -18,3 +18,15 @@ export const dbUserToDomain = (user: Prisma.UserGetPayload<Prisma.UserDefaultArg
     updatedAt: user.updatedAt,
   };
 };
+
+export const userToDbUpdate = (user: User): Prisma.UserUpdateInput => {
+  const banned = user.banned === true;
+  return {
+    name: user.name,
+    locale: user.locale,
+    role: user.role,
+    banned,
+    banReason: banned ? user.banReason : null,
+    banExpires: banned ? user.banExpires : null,
+  };
+};

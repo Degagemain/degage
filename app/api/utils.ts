@@ -131,10 +131,16 @@ export const attachmentDownloadCsvResponse = (body: string, filename: string = '
 };
 
 const uuidSchema = z.uuid();
+const stringIdSchema = z.string().min(1);
 
 export const getIdFromRoute = async (route: IdRouteParams): Promise<string> => {
   const { id } = await route.params;
   return uuidSchema.parse(id);
+};
+
+export const getStringIdFromRoute = async (route: IdRouteParams): Promise<string> => {
+  const { id } = await route.params;
+  return stringIdSchema.parse(id);
 };
 
 export const tryReadResource = async <T>(readResource: (id: string) => Promise<T>, id: string): Promise<Response> => {
@@ -162,8 +168,9 @@ export const tryUpdateResource = async <T>(
   request: NextRequest,
   route: IdRouteParams,
   updateResource: (resource: T) => Promise<T>,
+  parseId: (route: IdRouteParams) => Promise<string> = getIdFromRoute,
 ): Promise<Response> => {
-  const id = await getIdFromRoute(route);
+  const id = await parseId(route);
 
   const { data, errorResponse } = await safeParseRequestJson(request);
   if (errorResponse) return errorResponse;

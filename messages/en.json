@@ -1973,7 +1973,26 @@
         "role": "Role"
       },
       "searchPlaceholder": "Search users...",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit"
+      },
+      "form": {
+        "banReason": "Ban reason",
+        "help": {
+          "name": "Display name shown in the app.",
+          "email": "Sign-in email. This cannot be changed here.",
+          "role": "Admins can access the admin area. Set to Admin to grant access.",
+          "language": "Language used for the app and emails.",
+          "verified": "Whether the user has confirmed their email address.",
+          "status": "Banned users cannot sign in.",
+          "banReason": "Optional reason stored with the ban."
+        }
+      },
+      "errors": {
+        "lastAdmin": "There must be at least one admin. Promote another user first."
+      }
     },
     "documentation": {
       "title": "Documentation",
