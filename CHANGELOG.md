@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Changed: articles are hidden by default in the FAQ.
+
 ### Admin features
 
 - Added: admins can open a user from the users list and update name, role, language, and ban status, including promoting a user to admin.
