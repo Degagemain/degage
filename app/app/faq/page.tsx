@@ -8,9 +8,11 @@ import { PublicPage } from '@/app/components/public/public-shell';
 import { FaqArticleHero } from './components/faq-article-hero';
 import { FaqGroupsList } from './components/faq-groups-list';
 import { FaqSearch } from './components/faq-search';
+import { isFaqArticlesEnabled } from './faq-features';
 
 export default function FaqHubPage() {
   const t = useTranslations('faq');
+  const showArticles = isFaqArticlesEnabled();
 
   return (
     <PublicPage>
@@ -21,7 +23,7 @@ export default function FaqHubPage() {
       <div className="mt-8 w-full">
         <FaqSearch />
       </div>
-      <FaqArticleHero />
+      {showArticles && <FaqArticleHero />}
       <FaqGroupsList />
     </PublicPage>
   );
