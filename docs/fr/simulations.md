@@ -42,7 +42,8 @@ La simulation utilise notamment :
 ### 1) Controles initiaux
 
 - Toutes les executions verifient le kilometrage maximal (odometre, y compris pour un achat recent).
-- Les vehicules d'occasion sont aussi verifies sur l'age maximal.
+- Toutes les executions verifient aussi l'age maximal a partir de la premiere immatriculation (y compris les vehicules d'occasion achetes). Les
+  vehicules neufs achetes utilisent la date du jour, donc ils passent ce controle.
 - Les seuils viennent de la configuration du hub selectionne.
 - Si un controle echoue, la simulation s'arrete avec **Not OK**.
 

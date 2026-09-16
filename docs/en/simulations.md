@@ -42,7 +42,7 @@ The run uses car and context data such as:
 ### 1) Initial checks
 
 - All runs check max mileage (odometer reading, including for newly purchased cars).
-- Used cars also check max age.
+- All runs also check max age from first registration (including purchased used cars). Brand-new purchased cars use today's date, so they pass.
 - Limits come from the selected hub configuration.
 - If one check fails, the simulation stops with **Not OK**.
 
