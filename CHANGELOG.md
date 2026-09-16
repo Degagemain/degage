@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
+
+### Admin features
+
+- Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
+
 ## [0.0.6] - 2026-09-14
 
 ### Public features

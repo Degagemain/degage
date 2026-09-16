@@ -42,7 +42,8 @@ De simulatie gebruikt onder andere:
 ### 1) Initiële controles
 
 - Elke run controleert de maximale kilometerstand (odometer, ook voor nieuw aangekochte wagens).
-- Tweedehands voertuigen worden ook gecontroleerd op maximale leeftijd.
+- Elke run controleert ook de maximale leeftijd vanaf de eerste inschrijving (inclusief aangekochte tweedehandswagens). Nieuw aangekochte wagens
+  gebruiken de datum van vandaag, dus ze slagen voor deze controle.
 - De limieten komen uit de configuratie van de gekozen hub.
 - Als een controle faalt, stopt de simulatie met **Niet OK**.
 

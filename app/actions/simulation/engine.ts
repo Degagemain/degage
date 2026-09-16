@@ -136,13 +136,13 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
     return result;
   }
 
-  if (!input.isPurchased) {
-    if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
-      result.resultCode = SimulationResultCode.NOT_OK;
-      result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
-      return result;
-    }
+  if (!(await passesAgeRule(result, input.firstRegisteredAt, maxAgeYears))) {
+    result.resultCode = SimulationResultCode.NOT_OK;
+    result.rejectionReason = await getSimulationMessage(SimulationStepCode.CAR_LIMIT, { maxYears: maxAgeYears });
+    return result;
+  }
 
+  if (!input.isPurchased) {
     setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
     let priceRange: PriceRange;
     try {

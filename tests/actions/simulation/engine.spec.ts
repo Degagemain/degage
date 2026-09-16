@@ -189,7 +189,7 @@ describe('runSimulationEngine', () => {
   it('uses current year for car info when purchased car is new', async () => {
     vi.mocked(carInfoEstimator).mockClear();
     const currentYear = new Date().getFullYear();
-    await runSimulationEngine(
+    const result = await runSimulationEngine(
       simulationRunInput({
         isPurchased: true,
         isNewCar: true,
@@ -198,6 +198,7 @@ describe('runSimulationEngine', () => {
         firstRegisteredAt: new Date(),
       }),
     );
+    expect(result.steps[1].status).toBe(SimulationStepIcon.OK);
     expect(carInfoEstimator).toHaveBeenCalledWith(expect.any(String), expect.anything(), expect.anything(), null, currentYear);
   });
 
@@ -224,6 +225,25 @@ describe('runSimulationEngine', () => {
     expect(result.steps).toHaveLength(2);
     expect(result.steps[1].status).toBe(SimulationStepIcon.NOT_OK);
     expect(carValueEstimator).not.toHaveBeenCalled();
+  });
+
+  it('rejects purchased used car when too old', async () => {
+    const oldDate = new Date();
+    oldDate.setFullYear(oldDate.getFullYear() - 20);
+    const input = simulationRunInput({
+      isPurchased: true,
+      isNewCar: false,
+      purchasePrice: 5_000,
+      firstRegisteredAt: oldDate,
+      mileage: 33_000,
+    });
+    const result = await runSimulationEngine(input);
+    expect(result.resultCode).toBe('notOk');
+    expect(result.rejectionReason).toBe('simulation.step.car_limit');
+    expect(result.steps).toHaveLength(2);
+    expect(result.steps[1].status).toBe(SimulationStepIcon.NOT_OK);
+    expect(carValueEstimator).not.toHaveBeenCalled();
+    expect(carInfoEstimator).not.toHaveBeenCalled();
   });
 
   it('returns manualReview when value exceeds simMaxPrice but rules would accept (van → category B)', async () => {
@@ -476,7 +496,7 @@ describe('runSimulationEngine', () => {
     vi.mocked(calculateCarTax).mockRejectedValueOnce(
       new CarTaxOutOfCoverageError('No car tax base rate covers the first registration date 15/03/1999'),
     );
-    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('1999-03-15'), isPurchased: true, purchasePrice: 5_000 });
+    const input = simulationRunInput({ mileage: 50_000, firstRegisteredAt: new Date('2020-03-15'), isPurchased: true, purchasePrice: 5_000 });
     const result = await runSimulationEngine(input);
     expect(result.resultCode).toBe('manualReview');
     expect(result.rejectionReason).toBe('simulation.step.car_tax_failed');
