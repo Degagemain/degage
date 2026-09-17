@@ -7,14 +7,18 @@ import { getRequestContentLocale } from '@/context/request-context';
 import { dbSimulationToDomainWithRelations } from './simulation.mappers';
 
 export const filterToQuery = (filter: SimulationFilter): Prisma.SimulationWhereInput => {
+  const query = filter.query?.trim() ?? '';
   return {
     ...(filter.brandIds.length > 0 ? { brandId: { in: filter.brandIds } } : {}),
     ...(filter.fuelTypeIds.length > 0 ? { fuelTypeId: { in: filter.fuelTypeIds } } : {}),
     ...(filter.carTypeIds.length > 0 ? { carTypeId: { in: filter.carTypeIds } } : {}),
     ...(filter.resultCodes.length > 0 ? { resultCode: { in: filter.resultCodes } } : {}),
-    ...(filter.query != null && filter.query.trim() !== ''
+    ...(query !== ''
       ? {
-          OR: [{ carTypeOther: { contains: filter.query.trim(), mode: 'insensitive' as const } }],
+          OR: [
+            { carTypeOther: { contains: query, mode: 'insensitive' as const } },
+            { email: { contains: query, mode: 'insensitive' as const } },
+          ],
         }
       : {}),
   };
