@@ -104,6 +104,9 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
   }
 
   const externalIds: string[] = [];
+  let created = 0;
+  let updated = 0;
+  let unchanged = 0;
 
   for (const [basename, locales] of byBasename) {
     const externalId = `repo:${basename}`;
@@ -125,7 +128,7 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
     const audienceRoles = [...new Set(sorted.flatMap((l) => l.audienceRoles))] as DocumentationAudienceRole[];
     const tags = [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[];
 
-    await dbDocumentationUpsertRepository({
+    const result = await dbDocumentationUpsertRepository({
       externalId,
       isFaq,
       isPublic,
@@ -134,8 +137,15 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
       tags,
       translations,
     });
+    if (result === 'created') {
+      created += 1;
+    } else if (result === 'updated') {
+      updated += 1;
+    } else {
+      unchanged += 1;
+    }
   }
 
   await dbDocumentationDeleteRepositoryNotIn(externalIds);
-  console.log(`Documentation seed: upserted ${externalIds.length} repo document(s).`);
+  console.log(`Documentation seed: created ${created}, updated ${updated}, unchanged ${unchanged} repo document(s).`);
 }

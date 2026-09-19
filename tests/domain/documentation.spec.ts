@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { documentationFilterSchema } from '@/domain/documentation.filter';
+import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
 import { canDeleteDocumentation, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
@@ -65,5 +65,28 @@ describe('documentationFilterSchema', () => {
     if (r.success) {
       expect(r.data.formats).toEqual(['markdown', 'text']);
     }
+  });
+
+  it('parses audiences array', () => {
+    const r = documentationFilterSchema.safeParse({ audiences: ['admin', 'user'] });
+    expect(r.success).toBe(true);
+    if (r.success) {
+      expect(r.data.audiences).toEqual(['admin', 'user']);
+    }
+  });
+});
+
+describe('documentationFilterFromSearchParams', () => {
+  it('maps repeated audience and tags params', () => {
+    const params = new URLSearchParams();
+    params.append('audience', 'admin');
+    params.append('audience', 'user');
+    params.append('tags', 'simulation_step_1');
+    params.append('tags', 'car_onboarding_all');
+
+    const raw = documentationFilterFromSearchParams(params);
+    const parsed = documentationFilterSchema.parse(raw);
+    expect(parsed.audiences).toEqual(['admin', 'user']);
+    expect(parsed.tags).toEqual(['simulation_step_1', 'car_onboarding_all']);
   });
 });

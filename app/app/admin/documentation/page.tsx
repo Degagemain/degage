@@ -89,7 +89,7 @@ export default function DocumentationAdminPage() {
       defaultPageSize: DEFAULT_PAGE_SIZE,
       defaultSort: { id: 'updatedAt', desc: true },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
-      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups'],
+      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups', 'roles', 'tags'],
     });
 
   const isFaqFilter = csv.isFaq;
@@ -97,11 +97,16 @@ export default function DocumentationAdminPage() {
   const sourceFilter = csv.sources;
   const formatFilter = csv.formats;
   const groupFilter = csv.groups;
+  const roleFilter = csv.roles;
+  const tagFilter = csv.tags;
 
   const [groupOptions, setGroupOptions] = useState<GroupOption[]>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
+    source: false,
+    audienceRoles: false,
+    format: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
@@ -152,6 +157,20 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleRoleFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('roles', values);
+    },
+    [setCsvParam],
+  );
+
+  const handleTagFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('tags', values);
+    },
+    [setCsvParam],
+  );
+
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -191,6 +210,12 @@ export default function DocumentationAdminPage() {
     for (const gid of groupFilter) {
       params.append('group', gid);
     }
+    for (const role of roleFilter) {
+      params.append('audience', role);
+    }
+    for (const tag of tagFilter) {
+      params.append('tags', tag);
+    }
     if (sorting.length > 0) {
       const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
       if (sortColumn) {
@@ -199,7 +224,7 @@ export default function DocumentationAdminPage() {
       }
     }
     return params;
-  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, sorting]);
+  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, roleFilter, tagFilter, sorting]);
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -463,6 +488,24 @@ export default function DocumentationAdminPage() {
         onSelectedChange={handleIsFaqFilterChange}
       />
       <DataTableFacetedFilter
+        title={t('filters.roles')}
+        options={roleOptions}
+        selectedValues={roleFilter}
+        onSelectedChange={handleRoleFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.tags')}
+        options={tagOptions}
+        selectedValues={tagFilter}
+        onSelectedChange={handleTagFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.groups')}
+        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
+        selectedValues={groupFilter}
+        onSelectedChange={handleGroupFilterChange}
+      />
+      <DataTableFacetedFilter
         title={t('filters.isPublic')}
         options={isPublicOptions}
         selectedValues={isPublicFilter}
@@ -479,12 +522,6 @@ export default function DocumentationAdminPage() {
         options={formatOptions}
         selectedValues={formatFilter}
         onSelectedChange={handleFormatFilterChange}
-      />
-      <DataTableFacetedFilter
-        title={t('filters.groups')}
-        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
-        selectedValues={groupFilter}
-        onSelectedChange={handleGroupFilterChange}
       />
     </>
   );

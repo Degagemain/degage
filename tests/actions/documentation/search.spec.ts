@@ -32,4 +32,18 @@ describe('searchDocumentation (API role → list filter)', () => {
     await searchDocumentation(filter, { isViewerAdmin: true, isAuthenticated: true });
     expect(dbDocumentationSearch).toHaveBeenCalledWith({ ...filter, audiences: ['admin', 'user', 'public'] });
   });
+
+  it('narrows to requested audiences that the viewer may see', async () => {
+    vi.mocked(dbDocumentationSearch).mockResolvedValueOnce({ records: [], total: 0 });
+    const adminFilter = documentationFilterSchema.parse({ audiences: ['admin'] });
+    await searchDocumentation(adminFilter, { isViewerAdmin: true, isAuthenticated: true });
+    expect(dbDocumentationSearch).toHaveBeenCalledWith({ ...adminFilter, audiences: ['admin'] });
+  });
+
+  it('returns no records when requested audiences are not visible to the viewer', async () => {
+    const userFilter = documentationFilterSchema.parse({ audiences: ['admin'] });
+    const result = await searchDocumentation(userFilter, { isViewerAdmin: false, isAuthenticated: true });
+    expect(result).toEqual({ records: [], total: 0 });
+    expect(dbDocumentationSearch).not.toHaveBeenCalled();
+  });
 });

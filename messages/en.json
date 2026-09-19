@@ -2029,7 +2029,9 @@
         "formatText": "Plain text",
         "sourceRepository": "Repository",
         "sourceManual": "Manual",
-        "groups": "Group"
+        "groups": "Group",
+        "roles": "Roles",
+        "tags": "Tags"
       },
       "columns": {
         "externalId": "External ID",

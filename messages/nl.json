@@ -2029,7 +2029,9 @@
         "formatText": "Platte tekst",
         "sourceRepository": "Repository",
         "sourceManual": "Handmatig",
-        "groups": "Groep"
+        "groups": "Groep",
+        "roles": "Rollen",
+        "tags": "Tags"
       },
       "columns": {
         "externalId": "Externe ID",

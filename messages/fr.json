@@ -2029,7 +2029,9 @@
         "formatText": "Texte brut",
         "sourceRepository": "Dépôt",
         "sourceManual": "Manuel",
-        "groups": "Groupe"
+        "groups": "Groupe",
+        "roles": "Rôles",
+        "tags": "Tags"
       },
       "columns": {
         "externalId": "ID externe",
