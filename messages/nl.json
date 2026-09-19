@@ -2032,6 +2032,7 @@
         "code": "Code",
         "description": "Waar het verschijnt",
         "public_faq": "Help & FAQ-pagina",
+        "landing_faq": "Startpagina",
         "simulation_step_1": "Simulatie — wageninformatie (ook tijdens het laden van het resultaat)",
         "simulation_step_2_approved": "Simulatie — resultaat als de wagen is toegelaten",
         "simulation_step_2_rejected": "Simulatie — resultaat als de wagen is afgekeurd",
@@ -2741,19 +2742,7 @@
     },
     "faq": {
       "title": "Veelgestelde vragen",
-      "imageAlt": "Dégage deelauto's in de buurt",
-      "schedule": {
-        "q": "Kan ik delen wanneer ik wil?",
-        "a": "Ja! Je reserveert je eigen ritten volgens je eigen agenda. Via ons reservatiesysteem kan je filters instellen, bv. niet langer dan 2 weken op voorhand te reserveren."
-      },
-      "insurance": {
-        "q": "Is mijn auto goed verzekerd?",
-        "a": "Ja! Dégage heeft een groepsverzekering aangepast aan autodelen. Alle auto's die op onze vlootpolis staan, hebben volgende verzekeringen:\n- Burgerlijke aansprakelijkheid (BA): schade aan derden en lichamelijke schade van inzittenden.\n- Rechtsbijstand: juridische ondersteuning bij ongevallen.\n- Bestuurdersverzekering: dekt lichamelijke schade van de bestuurder zelf."
-      },
-      "effort": {
-        "q": "Is mijn auto delen veel werk?",
-        "a": "Neen. Elke eigenaar vindt zijn eigen systeem om reservaties te beheren. Dégage neemt alle facturatie op zich. Om de drie maanden krijg je je kosten terugbetaald."
-      }
+      "imageAlt": "Dégage deelauto's in de buurt"
     },
     "videos": {
       "items": {

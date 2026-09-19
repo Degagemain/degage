@@ -2032,6 +2032,7 @@
         "code": "Code",
         "description": "Where it appears",
         "public_faq": "Help & FAQ page",
+        "landing_faq": "Home page",
         "simulation_step_1": "Simulation — car details (also while the result is loading)",
         "simulation_step_2_approved": "Simulation — result when the car is approved",
         "simulation_step_2_rejected": "Simulation — result when the car is not approved",
@@ -2732,19 +2733,7 @@
     },
     "faq": {
       "title": "Common questions",
-      "imageAlt": "Dégage shared cars in the neighbourhood",
-      "schedule": {
-        "q": "Can I share when I want?",
-        "a": "Yes. You reserve your own trips according to your schedule. Set filters such as maximum booking length or how far in advance others can book."
-      },
-      "insurance": {
-        "q": "Is my car well insured?",
-        "a": "Yes. Dégage has a group insurance policy tailored to car sharing. If you are not at fault in an incident, you pay nothing."
-      },
-      "effort": {
-        "q": "Is sharing a lot of work?",
-        "a": "No. You choose how to hand over keys. Dégage handles all billing. Every three months you receive your share back."
-      }
+      "imageAlt": "Dégage shared cars in the neighbourhood"
     },
     "videos": {
       "items": {

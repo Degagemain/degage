@@ -25,6 +25,15 @@ describe('documentationSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('accepts a document tagged landing_faq', () => {
+    const doc = documentation({ tags: ['landing_faq'], isFaq: true });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toEqual(['landing_faq']);
+    }
+  });
+
   it('rejects a document with no translations', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);

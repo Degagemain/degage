@@ -17,6 +17,7 @@ export const documentationAudienceRolesInputSchema = z.array(documentationAudien
 
 export const documentationTagValues = [
   'public_faq',
+  'landing_faq',
   'simulation_step_1',
   'simulation_step_2_approved',
   'simulation_step_2_rejected',
@@ -38,6 +39,7 @@ export const documentationTagValues = [
 export const documentationTagSchema = z.enum(documentationTagValues);
 export type DocumentationTag = z.infer<typeof documentationTagSchema>;
 export const PUBLIC_FAQ_TAG = 'public_faq' satisfies DocumentationTag;
+export const LANDING_FAQ_TAG = 'landing_faq' satisfies DocumentationTag;
 
 export const defaultDocumentationTags = (isFaq: boolean, tags: DocumentationTag[]): DocumentationTag[] =>
   isFaq && tags.length === 0 ? [PUBLIC_FAQ_TAG] : tags;

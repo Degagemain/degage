@@ -2032,6 +2032,7 @@
         "code": "Code",
         "description": "Où cela apparaît",
         "public_faq": "Page Aide & FAQ",
+        "landing_faq": "Page d’accueil",
         "simulation_step_1": "Simulation — infos voiture (et pendant le chargement du résultat)",
         "simulation_step_2_approved": "Simulation — résultat si la voiture est acceptée",
         "simulation_step_2_rejected": "Simulation — résultat si la voiture est refusée",
@@ -2732,19 +2733,7 @@
     },
     "faq": {
       "title": "Questions fréquentes",
-      "imageAlt": "Voitures partagées Dégage dans le quartier",
-      "schedule": {
-        "q": "Puis-je partager quand je veux ?",
-        "a": "Oui. Vous réservez vos propres trajets selon votre agenda. Définissez des filtres, par exemple la durée maximale de réservation."
-      },
-      "insurance": {
-        "q": "Ma voiture est-elle bien assurée ?",
-        "a": "Oui. Dégage dispose d'une assurance groupe adaptée au partage. Si vous n'êtes pas responsable, vous ne payez rien."
-      },
-      "effort": {
-        "q": "Le partage demande-t-il beaucoup de travail ?",
-        "a": "Non. Vous choisissez comment remettre les clés. Dégage gère toute la facturation. Tous les trois mois, vous recevez votre part."
-      }
+      "imageAlt": "Voitures partagées Dégage dans le quartier"
     },
     "videos": {
       "items": {
