@@ -31,6 +31,7 @@
     "db:backup": "bash scripts/db-backup.sh",
     "db:restore": "bash scripts/db-restore.sh",
     "validate-docs": "node scripts/validate-docs.mjs",
+    "docs:sync-embeddings": "pnpx tsx scripts/sync-documentation-embeddings.ts",
     "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
   },
   "keywords": [],

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
+import { Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -61,7 +61,6 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function DocumentationAdminPage() {
   const t = useTranslations('admin.documentation');
   const tCommon = useTranslations('admin.common');
-  const tShared = useTranslations('common');
   const uiLocale = useLocale();
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : defaultUILocale;
@@ -353,12 +352,11 @@ export default function DocumentationAdminPage() {
     () =>
       createColumns({
         t,
-        tShared,
         getTitle,
         onSort: handleSort,
         onDelete: handleDeleteRequest,
       }),
-    [t, tShared, getTitle, handleSort, handleDeleteRequest],
+    [t, getTitle, handleSort, handleDeleteRequest],
   );
 
   const columnLabels = useMemo(
@@ -379,18 +377,18 @@ export default function DocumentationAdminPage() {
 
   const isFaqOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: tShared('yes'), icon: Check },
-      { value: 'false', label: tShared('no'), icon: X },
+      { value: 'true', label: t('type.faq') },
+      { value: 'false', label: t('type.article') },
     ],
-    [tShared],
+    [t],
   );
 
   const isPublicOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: tShared('yes'), icon: Check },
-      { value: 'false', label: tShared('no'), icon: X },
+      { value: 'true', label: t('visibility.available') },
+      { value: 'false', label: t('visibility.hidden') },
     ],
-    [tShared],
+    [t],
   );
 
   const sourceOptions: FacetedFilterOption[] = useMemo(() => {
@@ -464,23 +462,6 @@ export default function DocumentationAdminPage() {
           {t('bulkActions.delete')}
         </DropdownMenuItem>
       </BulkActionsButton>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="h-9 shrink-0 gap-1.5"
-        onClick={() => void handleEmbeddingSync()}
-        disabled={isSyncingEmbeddings}
-        title={t('embeddings.syncTitle')}
-        aria-busy={isSyncingEmbeddings}
-      >
-        {isSyncingEmbeddings ? (
-          <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
-        ) : (
-          <RefreshCw className="size-4 shrink-0" aria-hidden />
-        )}
-        <span className="max-w-[10ch] truncate">{isSyncingEmbeddings ? t('embeddings.syncing') : t('embeddings.sync')}</span>
-      </Button>
       <DataTableFacetedFilter
         title={t('filters.isFaq')}
         options={isFaqOptions}
@@ -548,9 +529,19 @@ export default function DocumentationAdminPage() {
             buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             moreMenuExtra={
-              <DropdownMenuItem asChild>
-                <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem onClick={() => void handleEmbeddingSync()} disabled={isSyncingEmbeddings} title={t('embeddings.syncTitle')}>
+                  {isSyncingEmbeddings ? (
+                    <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
+                  ) : (
+                    <RefreshCw className="size-4 shrink-0" aria-hidden />
+                  )}
+                  {isSyncingEmbeddings ? t('embeddings.syncing') : t('embeddings.sync')}
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
+                </DropdownMenuItem>
+              </>
             }
             columnLabels={columnLabels}
           />
@@ -613,8 +604,10 @@ export default function DocumentationAdminPage() {
           rolesLabel: t('bulkUpdate.rolesLabel'),
           groupsLabel: t('bulkUpdate.groupsLabel'),
           unsetOption: t('bulkUpdate.unsetOption'),
-          yesOption: tShared('yes'),
-          noOption: tShared('no'),
+          isFaqTrueOption: t('type.faq'),
+          isFaqFalseOption: t('type.article'),
+          isPublicTrueOption: t('visibility.available'),
+          isPublicFalseOption: t('visibility.hidden'),
           replaceOption: t('bulkUpdate.replaceOption'),
           tagsPlaceholder: t('form.multiSelectTags'),
           rolesPlaceholder: t('form.multiSelectAudience'),

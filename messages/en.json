@@ -2014,15 +2014,43 @@
         "groups": "Groups"
       },
       "embeddings": {
-        "sync": "Sync",
+        "sync": "Sync all embeddings",
         "syncing": "Syncing…",
         "syncTitle": "Generate and update documentation embeddings for search.",
         "syncError": "Failed to generate embeddings.",
         "syncSuccess": "Embedding sync complete. Total: {total}, updated: {updated}, skipped: {skipped}, failed: {failed}."
       },
+      "type": {
+        "faq": "FAQ",
+        "article": "Article"
+      },
+      "visibility": {
+        "available": "Available",
+        "hidden": "Hidden"
+      },
+      "faqLists": {
+        "code": "Code",
+        "description": "Where it appears",
+        "simulation_step_1": "Simulation — car details (also while the result is loading)",
+        "simulation_step_2_approved": "Simulation — result when the car is approved",
+        "simulation_step_2_rejected": "Simulation — result when the car is not approved",
+        "simulation_step_2_review": "Simulation — result when the car needs a manual review",
+        "simulation_step_3": "Simulation — your costs",
+        "simulation_step_4": "Simulation — confirmation",
+        "car_onboarding_all": "Car onboarding — overview and every step",
+        "car_onboarding_play_connector": "Car onboarding — Connect Dégage",
+        "car_onboarding_info_session": "Car onboarding — Info session",
+        "car_onboarding_user_info": "Car onboarding — User info",
+        "car_onboarding_car_info": "Car onboarding — Car info",
+        "car_onboarding_insurer": "Car onboarding — Insurer",
+        "car_onboarding_road_assistance_plan": "Car onboarding — Road assistance plan",
+        "car_onboarding_car_value": "Car onboarding — Car value",
+        "car_onboarding_car_stickers": "Car onboarding — Car stickers",
+        "car_onboarding_share_start": "Car onboarding — Car name & start date"
+      },
       "filters": {
-        "isFaq": "FAQ",
-        "isPublic": "Public article",
+        "isFaq": "Type",
+        "isPublic": "Article Visibility",
         "source": "Source",
         "format": "Format",
         "formatMarkdown": "Markdown",
@@ -2031,14 +2059,14 @@
         "sourceManual": "Manual",
         "groups": "Group",
         "roles": "Roles",
-        "tags": "Tags"
+        "tags": "FAQ Lists"
       },
       "columns": {
         "externalId": "External ID",
         "source": "Source",
-        "isFaq": "FAQ",
-        "isPublic": "Public",
-        "tags": "Tags",
+        "isFaq": "Type",
+        "isPublic": "Article Visibility",
+        "tags": "FAQ Lists",
         "groups": "Groups",
         "roles": "Roles",
         "audienceRole": {
@@ -2058,10 +2086,11 @@
         "externalIdHint": "Leave empty to auto-generate (manual:…)",
         "source": "Source",
         "format": "Format",
-        "isFaq": "FAQ entry",
-        "isPublic": "Public article",
+        "isFaq": "Type",
+        "isPublic": "Article Visibility",
+        "isPublicHelp": "Hidden articles can still be used to answer questions, but people cannot open the article page.",
         "audience": "Audience roles",
-        "tags": "Tags",
+        "tags": "FAQ Lists",
         "locale": "Locale",
         "titleField": "Title",
         "content": "Content",
@@ -2070,12 +2099,12 @@
         "saveError": "Could not save.",
         "cancel": "Cancel",
         "sourceLocked": "Source is fixed after creation.",
-        "syncedSourceNotice": "This page is synced from an external source. You can change FAQ, public visibility, groups, and format — not title, body, tags, or audience.",
+        "syncedSourceNotice": "This page is synced from an external source. You can change type, article visibility, groups, and format — not title, body, FAQ lists, or audience.",
         "syncedContentReadOnly": "Content is read-only here. Update the source to change the text.",
         "groupsEmpty": "No documentation groups exist yet. You can add them from Documentation → Groups in the admin menu.",
         "multiSelectGroups": "Select groups…",
         "multiSelectAudience": "Select audience roles…",
-        "multiSelectTags": "Select tags…"
+        "multiSelectTags": "Select FAQ lists…"
       },
       "actions": {
         "openMenu": "Open menu",
@@ -2114,9 +2143,9 @@
       "bulkUpdate": {
         "title": "Bulk update documentation",
         "description": "The following {count} record(s) will be updated. Unset fields stay unchanged.",
-        "isFaqLabel": "FAQ",
-        "isPublicLabel": "Public",
-        "tagsLabel": "Tags",
+        "isFaqLabel": "Type",
+        "isPublicLabel": "Article Visibility",
+        "tagsLabel": "FAQ Lists",
         "rolesLabel": "Roles",
         "groupsLabel": "Groups",
         "unsetOption": "Unset",

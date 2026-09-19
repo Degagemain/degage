@@ -15,14 +15,13 @@ import {
   documentationAudienceRoleValues,
   documentationFormatValues,
   documentationSchema,
-  documentationTagValues,
 } from '@/domain/documentation.model';
 import { type ContentLocale, contentLocales, defaultContentLocale } from '@/i18n/locales';
 import { apiPost, apiPut } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { AdminLocaleTabsControl } from '@/app/components/form/admin-locale-tabs-control';
 import { AdminMultiSelectFieldControl } from '@/app/components/form/admin-multi-select-field-control';
-import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
+import { AdminSelectFieldControl } from '@/app/components/form/admin-select-field-control';
 import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
 import { emptyContentLocaleRecord } from '@/app/components/form/empty-content-locale-record';
 import { Button } from '@/app/components/ui/button';
@@ -34,6 +33,7 @@ import { Page } from '@/domain/page.model';
 import { MaxTake } from '@/domain/utils';
 import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 import { documentationFromEditForm, isDocumentationContentLocked } from './documentation-from-edit-form';
+import { DocumentationFaqListsField } from './documentation-faq-lists-field';
 import { documentationTranslationsFromLocaleRecords } from './documentation-translations-from-locale-records';
 
 export const DOCUMENTATION_EDIT_FORM_ID = 'documentation-edit-form';
@@ -108,11 +108,6 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
     return primary ?? initialDocumentation.externalId;
   }, [initialDocumentation]);
 
-  const sourceLabel = useMemo(() => {
-    const key = { repository: 'filters.sourceRepository', manual: 'filters.sourceManual' } as const;
-    return t(key[initialDocumentation.source]);
-  }, [initialDocumentation.source, t]);
-
   const groupOptionsMerged = useMemo(() => {
     const map = new Map(groupSelectOptions.map((o) => [o.value, o.label]));
     for (const g of initialDocumentation.groups) {
@@ -131,8 +126,6 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
       })),
     [tColumns],
   );
-
-  const tagOptions = useMemo(() => documentationTagValues.map((tag) => ({ value: tag, label: tag })), []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -233,13 +226,6 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
         ) : null}
 
         <FieldGroup className="max-w-3xl gap-6">
-          {!isCreate ? (
-            <div className="text-sm">
-              <span className="text-muted-foreground">{tForm('source')}</span>
-              <p>{sourceLabel}</p>
-            </div>
-          ) : null}
-
           <Field className="max-w-xl">
             <FieldLabel>{tForm('format')}</FieldLabel>
             <Select value={formatState} onValueChange={(v) => setFormatState(v as DocumentationFormat)} disabled={isSaving}>
@@ -256,8 +242,29 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
             </Select>
           </Field>
 
-          <AdminSwitchFieldControl id="doc-is-faq" label={tForm('isFaq')} checked={isFaq} onChange={setIsFaq} disabled={isSaving} />
-          <AdminSwitchFieldControl id="doc-is-public" label={tForm('isPublic')} checked={isPublic} onChange={setIsPublic} disabled={isSaving} />
+          <AdminSelectFieldControl
+            label={tForm('isFaq')}
+            value={isFaq ? 'true' : 'false'}
+            onChange={(value) => setIsFaq(value === 'true')}
+            options={[
+              { value: 'true', label: t('type.faq') },
+              { value: 'false', label: t('type.article') },
+            ]}
+            disabled={isSaving}
+          />
+          {!isFaq ? (
+            <AdminSelectFieldControl
+              label={tForm('isPublic')}
+              value={isPublic ? 'true' : 'false'}
+              onChange={(value) => setIsPublic(value === 'true')}
+              options={[
+                { value: 'true', label: t('visibility.available') },
+                { value: 'false', label: t('visibility.hidden') },
+              ]}
+              description={tForm('isPublicHelp')}
+              disabled={isSaving}
+            />
+          ) : null}
 
           <AdminMultiSelectFieldControl
             label={tColumns('groups')}
@@ -282,15 +289,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
                 disabled={isSaving}
               />
 
-              <AdminMultiSelectFieldControl
-                label={tForm('tags')}
-                options={tagOptions}
-                values={tags}
-                onValuesChange={(v) => setTags(v as DocumentationTag[])}
-                placeholder={tForm('multiSelectTags')}
-                disabled={isSaving}
-                monospaceOptions
-              />
+              {isFaq ? <DocumentationFaqListsField values={tags} onValuesChange={setTags} disabled={isSaving} /> : null}
 
               <div className="max-w-3xl space-y-3">
                 <AdminLocaleTabsControl

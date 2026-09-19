@@ -2014,15 +2014,43 @@
         "groups": "Groupes"
       },
       "embeddings": {
-        "sync": "Sync",
+        "sync": "Synchroniser tous les embeddings",
         "syncing": "Sync…",
         "syncTitle": "Génère et met à jour les embeddings de la documentation pour la recherche.",
         "syncError": "Échec de la génération des embeddings.",
         "syncSuccess": "Synchronisation terminée. Total: {total}, mis à jour: {updated}, ignorés: {skipped}, échecs: {failed}."
       },
+      "type": {
+        "faq": "FAQ",
+        "article": "Article"
+      },
+      "visibility": {
+        "available": "Disponible",
+        "hidden": "Masqué"
+      },
+      "faqLists": {
+        "code": "Code",
+        "description": "Où cela apparaît",
+        "simulation_step_1": "Simulation — infos voiture (et pendant le chargement du résultat)",
+        "simulation_step_2_approved": "Simulation — résultat si la voiture est acceptée",
+        "simulation_step_2_rejected": "Simulation — résultat si la voiture est refusée",
+        "simulation_step_2_review": "Simulation — résultat si un examen manuel est nécessaire",
+        "simulation_step_3": "Simulation — vos coûts",
+        "simulation_step_4": "Simulation — confirmation",
+        "car_onboarding_all": "Onboarding voiture — aperçu et chaque étape",
+        "car_onboarding_play_connector": "Onboarding voiture — Connecter Dégage",
+        "car_onboarding_info_session": "Onboarding voiture — Session d’info",
+        "car_onboarding_user_info": "Onboarding voiture — Infos utilisateur",
+        "car_onboarding_car_info": "Onboarding voiture — Infos véhicule",
+        "car_onboarding_insurer": "Onboarding voiture — Assurance existante",
+        "car_onboarding_road_assistance_plan": "Onboarding voiture — Assistance routière",
+        "car_onboarding_car_value": "Onboarding voiture — Valeur",
+        "car_onboarding_car_stickers": "Onboarding voiture — Autocollants",
+        "car_onboarding_share_start": "Onboarding voiture — Nom et date de début"
+      },
       "filters": {
-        "isFaq": "FAQ",
-        "isPublic": "Article public",
+        "isFaq": "Type",
+        "isPublic": "Visibilité de l’article",
         "source": "Source",
         "format": "Format",
         "formatMarkdown": "Markdown",
@@ -2031,14 +2059,14 @@
         "sourceManual": "Manuel",
         "groups": "Groupe",
         "roles": "Rôles",
-        "tags": "Tags"
+        "tags": "Listes FAQ"
       },
       "columns": {
         "externalId": "ID externe",
         "source": "Source",
-        "isFaq": "FAQ",
-        "isPublic": "Public",
-        "tags": "Tags",
+        "isFaq": "Type",
+        "isPublic": "Visibilité de l’article",
+        "tags": "Listes FAQ",
         "groups": "Groupes",
         "roles": "Rôles",
         "audienceRole": {
@@ -2058,10 +2086,11 @@
         "externalIdHint": "Laisser vide pour générer automatiquement (manual:…)",
         "source": "Source",
         "format": "Format",
-        "isFaq": "Entrée FAQ",
-        "isPublic": "Article public",
+        "isFaq": "Type",
+        "isPublic": "Visibilité de l’article",
+        "isPublicHelp": "Les articles masqués peuvent encore servir à répondre aux questions, mais les utilisateurs ne peuvent pas ouvrir la page de l’article.",
         "audience": "Rôles cibles",
-        "tags": "Tags",
+        "tags": "Listes FAQ",
         "locale": "Langue",
         "titleField": "Titre",
         "content": "Contenu",
@@ -2070,12 +2099,12 @@
         "saveError": "Échec de l’enregistrement.",
         "cancel": "Annuler",
         "sourceLocked": "La source ne peut pas être modifiée après création.",
-        "syncedSourceNotice": "Cette page est synchronisée depuis une source externe. Vous pouvez modifier la FAQ, la visibilité publique, les groupes et le format — pas le titre, le corps, les tags ou le public.",
+        "syncedSourceNotice": "Cette page est synchronisée depuis une source externe. Vous pouvez modifier le type, la visibilité de l’article, les groupes et le format — pas le titre, le corps, les listes FAQ ou le public.",
         "syncedContentReadOnly": "Le contenu est en lecture seule. Modifiez la source pour changer le texte.",
         "groupsEmpty": "Aucun groupe de documentation pour l’instant. Ajoutez-en depuis Documentation → Groupes dans le menu admin.",
         "multiSelectGroups": "Sélectionner des groupes…",
         "multiSelectAudience": "Sélectionner les rôles du public…",
-        "multiSelectTags": "Sélectionner des tags…"
+        "multiSelectTags": "Sélectionner des listes FAQ…"
       },
       "actions": {
         "openMenu": "Ouvrir le menu",
@@ -2114,9 +2143,9 @@
       "bulkUpdate": {
         "title": "Mettre à jour la documentation en groupe",
         "description": "Les {count} enregistrement(s) suivants seront mis à jour. Les champs non définis restent inchangés.",
-        "isFaqLabel": "FAQ",
-        "isPublicLabel": "Public",
-        "tagsLabel": "Tags",
+        "isFaqLabel": "Type",
+        "isPublicLabel": "Visibilité de l’article",
+        "tagsLabel": "Listes FAQ",
         "rolesLabel": "Rôles",
         "groupsLabel": "Groupes",
         "unsetOption": "Non défini",

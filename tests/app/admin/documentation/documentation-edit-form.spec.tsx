@@ -58,3 +58,67 @@ describe('DocumentationEditForm format field', () => {
     expect(trigger?.textContent).toContain('filters.formatText');
   });
 });
+
+describe('DocumentationEditForm type and visibility', () => {
+  beforeEach(() => {
+    class ResizeObserverMock {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ records: [] }),
+      }),
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it('renders type and article visibility as selects for articles', () => {
+    render(<DocumentationEditForm initialDocumentation={emptyManualDocumentation()} />);
+
+    expect(screen.getByText('isFaq')).toBeTruthy();
+    expect(screen.getByText('isPublic')).toBeTruthy();
+    expect(screen.getByText('isPublicHelp')).toBeTruthy();
+    const triggers = Array.from(document.querySelectorAll('[data-slot="select-trigger"]'));
+    expect(triggers.some((el) => el.textContent?.includes('type.article'))).toBe(true);
+    expect(triggers.some((el) => el.textContent?.includes('visibility.hidden'))).toBe(true);
+  });
+
+  it('hides article visibility when the document is a FAQ', () => {
+    render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true })} />);
+
+    expect(screen.getByText('isFaq')).toBeTruthy();
+    expect(screen.queryByText('isPublic')).toBeNull();
+  });
+
+  it('hides FAQ lists when the document is an article', () => {
+    render(<DocumentationEditForm initialDocumentation={emptyManualDocumentation()} />);
+
+    expect(screen.queryByText('tags')).toBeNull();
+  });
+
+  it('shows FAQ lists as a checkbox table when the document is a FAQ', () => {
+    render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true })} />);
+
+    expect(screen.getByText('tags')).toBeTruthy();
+    expect(screen.getByText('code')).toBeTruthy();
+    expect(screen.getByText('description')).toBeTruthy();
+    expect(screen.getByRole('checkbox', { name: 'simulation_step_1' })).toBeTruthy();
+    expect(screen.getByRole('checkbox', { name: 'car_onboarding_all' })).toBeTruthy();
+  });
+
+  it('does not show the source field', () => {
+    render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual' })} />);
+
+    expect(screen.queryByText('source')).toBeNull();
+  });
+});

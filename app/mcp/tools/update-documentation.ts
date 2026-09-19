@@ -1,6 +1,5 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { updateDocumentation } from '@/actions/documentation/update';
-import { embedDocumentationById } from '@/actions/documentation/embed';
 import { withRequestContext } from '@/context/request-context';
 import { defaultUILocale, getContentLocale } from '@/i18n/locales';
 import { type McpAuthContext, canUseMcpTools, mcpToolGateErrorMessage } from '@/mcp/auth-context';
@@ -13,7 +12,7 @@ export const registerUpdateDocumentationTool = (server: McpServer, getContext: (
       description:
         'Replace a documentation article. Use search_documentation to load the current record, ' +
         'change the desired fields, then send the complete object including all translations. ' +
-        'This is a full replace, not a partial update. Regenerates search embeddings after save.',
+        'This is a full replace, not a partial update. Generates search embeddings after save; unchanged content is skipped.',
       inputSchema: documentationUpdateMcpInputSchema,
     },
     async (input) => {
@@ -41,13 +40,7 @@ export const registerUpdateDocumentationTool = (server: McpServer, getContext: (
             contentLocale: getContentLocale(defaultUILocale),
             userId: ctx.userId,
           },
-          async () => {
-            const saved = await updateDocumentation(doc);
-            if (saved.id) {
-              await embedDocumentationById(saved.id);
-            }
-            return saved;
-          },
+          () => updateDocumentation(doc),
         );
 
         return {

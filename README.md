@@ -125,6 +125,16 @@ Notes:
 - Neon Adapter is used on production and Pg Adapter for local development
 - To check: [connection pooling](https://vercel.com/guides/connection-pooling-with-functions) still relevant with Neon driver?
 
+### Documentation embeddings
+
+After seeding documentation in production, sync search embeddings. The command uses `DATABASE_URL` and `GOOGLE_GENERATIVE_AI_API_KEY` from the process environment (it does not load `.env`):
+
+```bash
+pnpm docs:sync-embeddings
+```
+
+Unchanged articles are skipped. The command exits with status 1 if any article fails to embed.
+
 ### Backup and restore
 
 Plain SQL dumps via Docker (`postgres:16`). **Docker must be installed and running.**

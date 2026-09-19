@@ -36,8 +36,10 @@ export interface BulkUpdateDocumentationLabels {
   rolesLabel: string;
   groupsLabel: string;
   unsetOption: string;
-  yesOption: string;
-  noOption: string;
+  isFaqTrueOption: string;
+  isFaqFalseOption: string;
+  isPublicTrueOption: string;
+  isPublicFalseOption: string;
   replaceOption: string;
   tagsPlaceholder: string;
   rolesPlaceholder: string;
@@ -101,13 +103,17 @@ function BooleanUpdateField({
   label,
   value,
   onChange,
-  labels,
+  trueLabel,
+  falseLabel,
+  unsetLabel,
   disabled,
 }: {
   label: string;
   value: BooleanUpdate;
   onChange: (value: BooleanUpdate) => void;
-  labels: BulkUpdateDocumentationLabels;
+  trueLabel: string;
+  falseLabel: string;
+  unsetLabel: string;
   disabled: boolean;
 }) {
   return (
@@ -119,9 +125,9 @@ function BooleanUpdateField({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="unset">{labels.unsetOption}</SelectItem>
-            <SelectItem value="true">{labels.yesOption}</SelectItem>
-            <SelectItem value="false">{labels.noOption}</SelectItem>
+            <SelectItem value="unset">{unsetLabel}</SelectItem>
+            <SelectItem value="true">{trueLabel}</SelectItem>
+            <SelectItem value="false">{falseLabel}</SelectItem>
           </SelectContent>
         </Select>
       </FieldContent>
@@ -285,12 +291,22 @@ export function BulkUpdateDocumentationDialog({
 
         <div className="flex flex-col gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <BooleanUpdateField label={labels.isFaqLabel} value={isFaq} onChange={setIsFaq} labels={labels} disabled={isRunning || isDone} />
+            <BooleanUpdateField
+              label={labels.isFaqLabel}
+              value={isFaq}
+              onChange={setIsFaq}
+              trueLabel={labels.isFaqTrueOption}
+              falseLabel={labels.isFaqFalseOption}
+              unsetLabel={labels.unsetOption}
+              disabled={isRunning || isDone}
+            />
             <BooleanUpdateField
               label={labels.isPublicLabel}
               value={isPublic}
               onChange={setIsPublic}
-              labels={labels}
+              trueLabel={labels.isPublicTrueOption}
+              falseLabel={labels.isPublicFalseOption}
+              unsetLabel={labels.unsetOption}
               disabled={isRunning || isDone}
             />
           </div>
