@@ -14,7 +14,7 @@ import { seedInsurers } from './seed-insurers';
 import { migrateTowns2 } from './migrate-towns-2';
 import { seedTowns } from './seed-towns';
 import { seedDocumentationFromRepo } from './seed-documentation-from-repo';
-import { seedDocumentationFromCsv } from './seed-documentation-from-csv';
+import { seedDocumentationFromCsv, seedMissingLandingFaqFromCsv } from './seed-documentation-from-csv';
 import { seedSupportAssistantPrompts } from './seed-support-assistant-prompts';
 import { seedEmailTemplates } from './seed-email-templates';
 import { getPrismaClient } from '@/storage/utils';
@@ -39,6 +39,13 @@ async function seed() {
   await seedCarTypes(prisma);
   await seedDocumentationFromRepo(prisma);
   await seedDocumentationFromCsv(prisma);
+  await seedMissingLandingFaqFromCsv(prisma);
+  await prisma.$executeRaw`
+    UPDATE "Documentation"
+    SET tags = ARRAY['public_faq']::"DocumentationTag"[]
+    WHERE "isFaq" = true
+      AND tags = '{}';
+  `;
   await seedSupportAssistantPrompts(prisma);
   await seedEmailTemplates(prisma);
 }

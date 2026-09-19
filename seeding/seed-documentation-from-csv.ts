@@ -5,6 +5,7 @@ import {
   type DocumentationAudienceRole,
   type DocumentationFormat,
   type DocumentationTag,
+  defaultDocumentationTags,
   documentationAudienceRoleSchema,
   documentationFormatSchema,
   documentationTagSchema,
@@ -146,15 +147,18 @@ const parseFormat = (value: string): DocumentationFormat => {
   return parsed.success ? parsed.data : 'text';
 };
 
+const LANDING_FAQ_EXTERNAL_IDS = ['landing-faq-01-schedule', 'landing-faq-02-insurance', 'landing-faq-03-effort'] as const;
+
 const toManualDocInput = (row: CsvRow) => {
   const audienceRoles = parseAudienceRoles(row.roles);
+  const isFaq = parseYesNo(row.faq);
   return {
     externalId: row.name.trim(),
-    isFaq: parseYesNo(row.faq),
+    isFaq,
     isPublic: audienceRoles.includes('public'),
     format: parseFormat(row.format),
     audienceRoles,
-    tags: parseTags(row.tags),
+    tags: defaultDocumentationTags(isFaq, parseTags(row.tags)),
     translations: [
       { locale: 'en', title: row.titleEn.trim(), content: row.contentEn },
       { locale: 'fr', title: row.titleFr.trim(), content: row.contentFr },
@@ -163,29 +167,40 @@ const toManualDocInput = (row: CsvRow) => {
   };
 };
 
-export async function seedDocumentationFromCsv(_prisma: PrismaClient): Promise<void> {
+const loadDocumentationCsv = (): { table: string[][]; col: Record<keyof CsvRow, number> } | null => {
   const raw = readFileSync(CSV_PATH, 'utf-8');
   const table = parseCsv(raw);
   if (table.length < 2) {
+    return null;
+  }
+
+  const header = table[0]!.map(stripBom);
+  return {
+    table,
+    col: {
+      name: columnIndex(header, 'Name'),
+      contentEn: columnIndex(header, 'ContentEn'),
+      contentFr: columnIndex(header, 'ContentFr'),
+      contentNl: columnIndex(header, 'ContentNl'),
+      faq: columnIndex(header, 'FAQ'),
+      format: columnIndex(header, 'Format'),
+      roles: columnIndex(header, 'Roles'),
+      tags: columnIndex(header, 'Tags'),
+      titleEn: columnIndex(header, 'TitleEn'),
+      titleFr: columnIndex(header, 'TitleFr'),
+      titleNl: columnIndex(header, 'TitleNl'),
+    },
+  };
+};
+
+export async function seedDocumentationFromCsv(_prisma: PrismaClient): Promise<void> {
+  const loaded = loadDocumentationCsv();
+  if (!loaded) {
     console.log('Documentation CSV is empty, skipping.');
     return;
   }
 
-  const header = table[0]!.map(stripBom);
-  const col = {
-    name: columnIndex(header, 'Name'),
-    contentEn: columnIndex(header, 'ContentEn'),
-    contentFr: columnIndex(header, 'ContentFr'),
-    contentNl: columnIndex(header, 'ContentNl'),
-    faq: columnIndex(header, 'FAQ'),
-    format: columnIndex(header, 'Format'),
-    roles: columnIndex(header, 'Roles'),
-    tags: columnIndex(header, 'Tags'),
-    titleEn: columnIndex(header, 'TitleEn'),
-    titleFr: columnIndex(header, 'TitleFr'),
-    titleNl: columnIndex(header, 'TitleNl'),
-  };
-
+  const { table, col } = loaded;
   const firstDataRow = table[1]!;
   const firstName = stripBom(firstDataRow[col.name] ?? '').trim();
   if (!firstName) {
@@ -211,4 +226,33 @@ export async function seedDocumentationFromCsv(_prisma: PrismaClient): Promise<v
   }
 
   console.log(`Documentation CSV seed: upserted ${seeded} manual document(s).`);
+}
+
+export async function seedMissingLandingFaqFromCsv(_prisma: PrismaClient): Promise<void> {
+  const loaded = loadDocumentationCsv();
+  if (!loaded) {
+    return;
+  }
+
+  const { table, col } = loaded;
+  const wanted = new Set<string>(LANDING_FAQ_EXTERNAL_IDS);
+  let created = 0;
+
+  for (let i = 1; i < table.length; i++) {
+    const row = rowFromCells(table[i]!, col);
+    const externalId = row.name.trim();
+    if (!wanted.has(externalId)) {
+      continue;
+    }
+    const existing = await dbDocumentationGetByExternalId(externalId);
+    if (existing) {
+      continue;
+    }
+    await dbDocumentationUpsertManual(toManualDocInput(row));
+    created++;
+  }
+
+  if (created > 0) {
+    console.log(`Landing FAQ seed: created ${created} missing document(s).`);
+  }
 }

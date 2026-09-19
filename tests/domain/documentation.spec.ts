@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { documentationFilterSchema } from '@/domain/documentation.filter';
-import { canDeleteDocumentation, documentationSchema } from '@/domain/documentation.model';
+import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
+import { canDeleteDocumentation, defaultDocumentationTags, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
 describe('documentationSchema', () => {
@@ -25,10 +25,33 @@ describe('documentationSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('accepts a document tagged landing_faq', () => {
+    const doc = documentation({ tags: ['landing_faq'], isFaq: true });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toEqual(['landing_faq']);
+    }
+  });
+
   it('rejects a document with no translations', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);
     expect(result.success).toBe(false);
+  });
+});
+
+describe('defaultDocumentationTags', () => {
+  it('adds public_faq to FAQ items with no tags', () => {
+    expect(defaultDocumentationTags(true, [])).toEqual(['public_faq']);
+  });
+
+  it('leaves existing FAQ tags unchanged', () => {
+    expect(defaultDocumentationTags(true, ['simulation_step_1'])).toEqual(['simulation_step_1']);
+  });
+
+  it('leaves untagged articles unchanged', () => {
+    expect(defaultDocumentationTags(false, [])).toEqual([]);
   });
 });
 
@@ -65,5 +88,28 @@ describe('documentationFilterSchema', () => {
     if (r.success) {
       expect(r.data.formats).toEqual(['markdown', 'text']);
     }
+  });
+
+  it('parses audiences array', () => {
+    const r = documentationFilterSchema.safeParse({ audiences: ['admin', 'user'] });
+    expect(r.success).toBe(true);
+    if (r.success) {
+      expect(r.data.audiences).toEqual(['admin', 'user']);
+    }
+  });
+});
+
+describe('documentationFilterFromSearchParams', () => {
+  it('maps repeated audience and tags params', () => {
+    const params = new URLSearchParams();
+    params.append('audience', 'admin');
+    params.append('audience', 'user');
+    params.append('tags', 'simulation_step_1');
+    params.append('tags', 'car_onboarding_all');
+
+    const raw = documentationFilterFromSearchParams(params);
+    const parsed = documentationFilterSchema.parse(raw);
+    expect(parsed.audiences).toEqual(['admin', 'user']);
+    expect(parsed.tags).toEqual(['simulation_step_1', 'car_onboarding_all']);
   });
 });

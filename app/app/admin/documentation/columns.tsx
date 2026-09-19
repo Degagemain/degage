@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Check, Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
 import { type Documentation, type DocumentationAudienceRole, canDeleteDocumentation } from '@/domain/documentation.model';
 import { formatDateOrDash } from '@/domain/utils';
@@ -15,14 +15,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export type DocumentationColumnsCtx = {
   t: (key: string) => string;
-  tShared: (key: string) => string;
   getTitle: (doc: Documentation) => string;
   onSort: (columnId: string, desc: boolean) => void;
   onDelete?: (doc: Documentation) => void;
 };
 
 export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documentation>[] => {
-  const { t, tShared, getTitle, onSort } = ctx;
+  const { t, getTitle, onSort } = ctx;
 
   return [
     {
@@ -66,22 +65,17 @@ export const createColumns = (ctx: DocumentationColumnsCtx): ColumnDef<Documenta
     {
       accessorKey: 'isFaq',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isFaq')} onSort={onSort} />,
-      cell: ({ row }) =>
-        row.original.isFaq ? (
-          <Check className="text-primary size-4" aria-label={tShared('yes')} />
-        ) : (
-          <span className="text-muted-foreground">—</span>
-        ),
+      cell: ({ row }) => (row.original.isFaq ? t('type.faq') : t('type.article')),
     },
     {
       accessorKey: 'isPublic',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.isPublic')} onSort={onSort} />,
-      cell: ({ row }) =>
-        row.original.isPublic ? (
-          <Check className="text-primary size-4" aria-label={tShared('yes')} />
-        ) : (
-          <span className="text-muted-foreground">—</span>
-        ),
+      cell: ({ row }) => {
+        if (row.original.isFaq) {
+          return null;
+        }
+        return row.original.isPublic ? t('visibility.available') : t('visibility.hidden');
+      },
     },
     {
       accessorKey: 'tags',

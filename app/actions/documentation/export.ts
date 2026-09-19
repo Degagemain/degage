@@ -48,6 +48,13 @@ const buildDocumentationColumns = async (uiLocale: string): Promise<CsvColumn<Do
         if (row.groups.length === 0) return DashPlaceholder;
         return row.groups.map((g) => g.name ?? g.id).join(', ');
       }
+      if (key === 'isFaq') {
+        return row.isFaq ? t('type.faq') : t('type.article');
+      }
+      if (key === 'isPublic') {
+        if (row.isFaq) return '';
+        return row.isPublic ? t('visibility.available') : t('visibility.hidden');
+      }
       return formatExportValueByKey(key, (row as Record<string, unknown>)[key], uiLocale);
     },
   }));

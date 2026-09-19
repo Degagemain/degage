@@ -10,10 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Public features
 
 - Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
+- Changed: common questions on the home page are managed as documentation.
+- Changed: the Help & FAQ page only lists questions tagged for that page.
 
 ### Admin features
 
 - Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
+- Changed: documentation tags are now FAQ Lists. Admins choose Help & FAQ, home page, simulation, or car onboarding; items with no list appear on Help & FAQ.
+- Added: the documentation list can be filtered by audience roles and FAQ lists.
+- Changed: overlapping audience roles on a documentation item are reduced to the widest one (public, user, or admin).
+- Changed: documentation type is FAQ or Article, and articles can be Available or Hidden.
+- Added: saving documentation refreshes search embeddings when the title or body changed; More → Sync all embeddings refreshes every article.
+
+### Technical
+
+- Added: `pnpm docs:sync-embeddings` to regenerate documentation search embeddings from the CLI.
 
 ## [0.0.6] - 2026-09-14
 

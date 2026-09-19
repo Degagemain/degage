@@ -2014,29 +2014,61 @@
         "groups": "Groepen"
       },
       "embeddings": {
-        "sync": "Sync",
+        "sync": "Alle embeddings synchroniseren",
         "syncing": "Sync…",
         "syncTitle": "Genereert en werkt documentatie-embeddings bij voor zoeken.",
         "syncError": "Embeddings genereren mislukt.",
         "syncSuccess": "Embeddings bijgewerkt. Totaal: {total}, bijgewerkt: {updated}, overgeslagen: {skipped}, mislukt: {failed}."
       },
+      "type": {
+        "faq": "FAQ",
+        "article": "Artikel"
+      },
+      "visibility": {
+        "available": "Beschikbaar",
+        "hidden": "Verborgen"
+      },
+      "faqLists": {
+        "code": "Code",
+        "description": "Waar het verschijnt",
+        "public_faq": "Help & FAQ-pagina",
+        "landing_faq": "Startpagina",
+        "simulation_step_1": "Simulatie — wageninformatie (ook tijdens het laden van het resultaat)",
+        "simulation_step_2_approved": "Simulatie — resultaat als de wagen is toegelaten",
+        "simulation_step_2_rejected": "Simulatie — resultaat als de wagen is afgekeurd",
+        "simulation_step_2_review": "Simulatie — resultaat als manuele controle nodig is",
+        "simulation_step_3": "Simulatie — jouw kosten",
+        "simulation_step_4": "Simulatie — bevestiging",
+        "car_onboarding_all": "Auto-onboarding — overzicht en elke stap",
+        "car_onboarding_play_connector": "Auto-onboarding — Koppeling met Degapp",
+        "car_onboarding_info_session": "Auto-onboarding — Infosessie",
+        "car_onboarding_user_info": "Auto-onboarding — Eigenaarsinfo",
+        "car_onboarding_car_info": "Auto-onboarding — Wageninfo",
+        "car_onboarding_insurer": "Auto-onboarding — Bestaande verzekering",
+        "car_onboarding_road_assistance_plan": "Auto-onboarding — Pechverhelpingsplan",
+        "car_onboarding_car_value": "Auto-onboarding — Waarde van de auto",
+        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers",
+        "car_onboarding_share_start": "Auto-onboarding — Naam & startdatum"
+      },
       "filters": {
-        "isFaq": "FAQ",
-        "isPublic": "Publiek artikel",
+        "isFaq": "Type",
+        "isPublic": "Artikelzichtbaarheid",
         "source": "Bron",
         "format": "Formaat",
         "formatMarkdown": "Markdown",
         "formatText": "Platte tekst",
         "sourceRepository": "Repository",
         "sourceManual": "Handmatig",
-        "groups": "Groep"
+        "groups": "Groep",
+        "roles": "Rollen",
+        "tags": "FAQ-lijsten"
       },
       "columns": {
         "externalId": "Externe ID",
         "source": "Bron",
-        "isFaq": "FAQ",
-        "isPublic": "Publiek",
-        "tags": "Tags",
+        "isFaq": "Type",
+        "isPublic": "Artikelzichtbaarheid",
+        "tags": "FAQ-lijsten",
         "groups": "Groepen",
         "roles": "Rollen",
         "audienceRole": {
@@ -2056,10 +2088,11 @@
         "externalIdHint": "Leeg laten om automatisch te genereren (manual:…)",
         "source": "Bron",
         "format": "Formaat",
-        "isFaq": "FAQ-item",
-        "isPublic": "Publiek artikel",
+        "isFaq": "Type",
+        "isPublic": "Artikelzichtbaarheid",
+        "isPublicHelp": "Verborgen artikelen kunnen nog gebruikt worden om vragen te beantwoorden, maar mensen kunnen de artikelpagina niet openen.",
         "audience": "Doelpubliek",
-        "tags": "Tags",
+        "tags": "FAQ-lijsten",
         "locale": "Taal",
         "titleField": "Titel",
         "content": "Inhoud",
@@ -2068,12 +2101,12 @@
         "saveError": "Opslaan mislukt.",
         "cancel": "Annuleren",
         "sourceLocked": "Bron kan na aanmaak niet gewijzigd worden.",
-        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt FAQ, zichtbaarheid, groepen en formaat wijzigen — niet titel, tekst, tags of doelpubliek.",
+        "syncedSourceNotice": "Deze pagina komt van een externe bron. U kunt type, artikelzichtbaarheid, groepen en formaat wijzigen — niet titel, tekst, FAQ-lijsten of doelpubliek.",
         "syncedContentReadOnly": "Inhoud is alleen-lezen. Wijzig de bron om de tekst aan te passen.",
         "groupsEmpty": "Er zijn nog geen documentatiegroepen. Voeg ze toe via Documentatie → Groepen in het adminmenu.",
         "multiSelectGroups": "Groepen kiezen…",
         "multiSelectAudience": "Doelpubliek kiezen…",
-        "multiSelectTags": "Tags kiezen…"
+        "multiSelectTags": "FAQ-lijsten kiezen…"
       },
       "actions": {
         "openMenu": "Menu openen",
@@ -2112,9 +2145,9 @@
       "bulkUpdate": {
         "title": "Documentatie in bulk bijwerken",
         "description": "De volgende {count} record(s) worden bijgewerkt. Niet-ingestelde velden blijven ongewijzigd.",
-        "isFaqLabel": "FAQ",
-        "isPublicLabel": "Publiek",
-        "tagsLabel": "Tags",
+        "isFaqLabel": "Type",
+        "isPublicLabel": "Artikelzichtbaarheid",
+        "tagsLabel": "FAQ-lijsten",
         "rolesLabel": "Rollen",
         "groupsLabel": "Groepen",
         "unsetOption": "Niet ingesteld",
@@ -2709,19 +2742,7 @@
     },
     "faq": {
       "title": "Veelgestelde vragen",
-      "imageAlt": "Dégage deelauto's in de buurt",
-      "schedule": {
-        "q": "Kan ik delen wanneer ik wil?",
-        "a": "Ja! Je reserveert je eigen ritten volgens je eigen agenda. Via ons reservatiesysteem kan je filters instellen, bv. niet langer dan 2 weken op voorhand te reserveren."
-      },
-      "insurance": {
-        "q": "Is mijn auto goed verzekerd?",
-        "a": "Ja! Dégage heeft een groepsverzekering aangepast aan autodelen. Alle auto's die op onze vlootpolis staan, hebben volgende verzekeringen:\n- Burgerlijke aansprakelijkheid (BA): schade aan derden en lichamelijke schade van inzittenden.\n- Rechtsbijstand: juridische ondersteuning bij ongevallen.\n- Bestuurdersverzekering: dekt lichamelijke schade van de bestuurder zelf."
-      },
-      "effort": {
-        "q": "Is mijn auto delen veel werk?",
-        "a": "Neen. Elke eigenaar vindt zijn eigen systeem om reservaties te beheren. Dégage neemt alle facturatie op zich. Om de drie maanden krijg je je kosten terugbetaald."
-      }
+      "imageAlt": "Dégage deelauto's in de buurt"
     },
     "videos": {
       "items": {

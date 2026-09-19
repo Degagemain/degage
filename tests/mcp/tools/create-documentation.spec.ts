@@ -8,19 +8,7 @@ vi.mock('@/actions/documentation/create', () => ({
   createDocumentation: vi.fn(),
 }));
 
-vi.mock('@/actions/documentation/embed', () => ({
-  embedDocumentationById: vi.fn(),
-}));
-
-vi.mock('@/lib/logger', () => ({
-  logger: {
-    exception: vi.fn(),
-  },
-}));
-
 import { createDocumentation } from '@/actions/documentation/create';
-import { embedDocumentationById } from '@/actions/documentation/embed';
-import { logger } from '@/lib/logger';
 import { registerCreateDocumentationTool } from '@/mcp/tools/create-documentation';
 
 type ToolResult = {
@@ -85,40 +73,21 @@ describe('create_documentation tool', () => {
     expect(createDocumentation).not.toHaveBeenCalled();
   });
 
-  it('creates the article and generates embeddings', async () => {
+  it('creates the article', async () => {
     const saved = documentation({ id: '550e8400-e29b-41d4-a716-446655440000', externalId: 'manual:abc' });
     vi.mocked(createDocumentation).mockResolvedValueOnce(saved);
-    vi.mocked(embedDocumentationById).mockResolvedValueOnce();
 
     const handler = registerAndGetHandler(() => adminContext);
     const result = await handler(createInput());
 
     expect(result.isError).toBeUndefined();
     expect(createDocumentation).toHaveBeenCalledTimes(1);
-    expect(embedDocumentationById).toHaveBeenCalledWith(saved.id);
     expect(result.content).toHaveLength(1);
     expect(JSON.parse(result.content[0]!.text)).toEqual({
       ...saved,
       createdAt: saved.createdAt?.toISOString(),
       updatedAt: saved.updatedAt?.toISOString(),
     });
-  });
-
-  it('returns the created article without isError when embeddings fail', async () => {
-    const saved = documentation({ id: '550e8400-e29b-41d4-a716-446655440000', externalId: 'manual:abc' });
-    vi.mocked(createDocumentation).mockResolvedValueOnce(saved);
-    vi.mocked(embedDocumentationById).mockRejectedValueOnce(new Error('gemini down'));
-
-    const handler = registerAndGetHandler(() => adminContext);
-    const result = await handler(createInput());
-
-    expect(result.isError).toBeUndefined();
-    expect(createDocumentation).toHaveBeenCalledTimes(1);
-    expect(embedDocumentationById).toHaveBeenCalledWith(saved.id);
-    expect(logger.exception).toHaveBeenCalled();
-    expect(JSON.parse(result.content[0]!.text).id).toBe(saved.id);
-    expect(result.content[1]?.text).toContain('Do not create it again');
-    expect(result.content[1]?.text).toContain(saved.id);
   });
 
   it('returns isError when create fails', async () => {
@@ -129,6 +98,5 @@ describe('create_documentation tool', () => {
 
     expect(result.isError).toBe(true);
     expect(result.content[0]?.text).toBe('db unique constraint');
-    expect(embedDocumentationById).not.toHaveBeenCalled();
   });
 });

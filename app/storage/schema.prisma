@@ -609,6 +609,8 @@ enum DocumentationAudienceRole {
 }
 
 enum DocumentationTag {
+  public_faq
+  landing_faq
   simulation_step_1
   simulation_step_2_approved
   simulation_step_2_rejected

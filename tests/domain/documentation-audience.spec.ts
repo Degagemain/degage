@@ -5,6 +5,7 @@ import {
   documentationRequiresAdminViewer,
   documentationSearchVisibleAudiences,
   documentationViewerHasPrivilegedDocSearchAccess,
+  keepWidestDocumentationAudienceRoles,
 } from '@/domain/documentation-audience.utils';
 
 describe('documentation audience', () => {
@@ -29,5 +30,14 @@ describe('documentation audience', () => {
     expect(documentationSearchVisibleAudiences({ isViewerAdmin: true, isAuthenticated: true })).toEqual(['admin', 'user', 'public']);
     expect(documentationSearchVisibleAudiences({ isViewerAdmin: false, isAuthenticated: true })).toEqual(['user', 'public']);
     expect(documentationSearchVisibleAudiences({ isViewerAdmin: false, isAuthenticated: false })).toEqual(['public']);
+  });
+
+  it('keepWidestDocumentationAudienceRoles drops narrower overlapping roles', () => {
+    expect(keepWidestDocumentationAudienceRoles(['public', 'user', 'admin'])).toEqual(['public']);
+    expect(keepWidestDocumentationAudienceRoles(['admin', 'public'])).toEqual(['public']);
+    expect(keepWidestDocumentationAudienceRoles(['user', 'admin'])).toEqual(['user']);
+    expect(keepWidestDocumentationAudienceRoles(['admin'])).toEqual(['admin']);
+    expect(keepWidestDocumentationAudienceRoles(['user', 'user'])).toEqual(['user']);
+    expect(keepWidestDocumentationAudienceRoles([])).toEqual([]);
   });
 });

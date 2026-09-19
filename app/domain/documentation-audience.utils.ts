@@ -6,6 +6,14 @@ export type DocumentationSearchViewerContext = {
   isAuthenticated: boolean;
 };
 
+const documentationAudienceRolesByWidestScope: DocumentationAudienceRole[] = ['public', Role.USER, Role.ADMIN];
+
+export const keepWidestDocumentationAudienceRoles = (roles: DocumentationAudienceRole[]): DocumentationAudienceRole[] => {
+  const unique = new Set(roles);
+  const widest = documentationAudienceRolesByWidestScope.find((role) => unique.has(role));
+  return widest ? [widest] : [];
+};
+
 export const documentationSearchVisibleAudiences = (ctx: DocumentationSearchViewerContext): DocumentationAudienceRole[] => {
   if (ctx.isViewerAdmin) {
     return [Role.ADMIN, Role.USER, 'public'];

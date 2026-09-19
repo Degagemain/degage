@@ -369,7 +369,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               <UserMenu name={session.user.name} email={session.user.email} image={session.user.image} size="sm" />
             </div>
           </header>
-          <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
             <Suspense fallback={<AdminMainFallback />}>{children}</Suspense>
           </main>
         </SidebarInset>

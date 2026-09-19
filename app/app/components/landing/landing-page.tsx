@@ -21,6 +21,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
 import { InlineCopy } from '@/app/components/inline-copy';
+import { LandingFaq } from '@/app/components/landing/landing-faq';
 import { LandingHeader } from '@/app/components/landing/landing-header';
 import { PublicHeroGlow } from '@/app/components/public/public-hero-glow';
 import {
@@ -35,7 +36,6 @@ import {
   landingTitleToBody,
 } from '@/app/components/landing/landing-layout';
 import styles from '@/app/components/public/public-theme.module.css';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 import { Button } from '@/app/components/ui/button';
 import { cn } from '@/app/lib/utils';
 
@@ -115,7 +115,6 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
 
   const benefits = ['cheaper', 'flexible', 'environment', 'community'] as const;
   const advantages = ['billing', 'insurance', 'platform', 'damage', 'breakdown', 'access', 'parking'] as const;
-  const faqs = ['schedule', 'insurance', 'effort'] as const;
 
   return (
     <div className={styles.publicTheme}>
@@ -338,18 +337,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
             <div className={cn(landingContainer, 'grid items-start lg:grid-cols-[1.1fr_0.9fr]', landingGridGap)}>
               <Reveal>
                 <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t('faq.title')}</h2>
-                <Accordion type="single" collapsible defaultValue={faqs[0]} className="mt-6">
-                  {faqs.map((key) => (
-                    <AccordionItem key={key} value={key} className="border-[var(--public-image-border)]">
-                      <AccordionTrigger className={cn('py-3 text-base font-medium hover:no-underline', styles.textHeading)}>
-                        {t(`faq.${key}.q`)}
-                      </AccordionTrigger>
-                      <AccordionContent className={cn('text-sm leading-relaxed', styles.textMuted)}>
-                        <InlineCopy>{t(`faq.${key}.a`)}</InlineCopy>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                <LandingFaq />
                 <Button asChild variant="link" className="mt-4 h-auto p-0 text-[var(--public-accent)]">
                   <Link href="/app/faq">{t('footer.faq')} →</Link>
                 </Button>

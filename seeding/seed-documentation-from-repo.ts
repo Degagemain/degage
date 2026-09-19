@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs';
 import path from 'path';
 import type { PrismaClient } from '@/storage/client/client';
 import type { DocumentationAudienceRole, DocumentationTag } from '@/domain/documentation.model';
-import { documentationAudienceRoleSchema, documentationTagSchema } from '@/domain/documentation.model';
+import { defaultDocumentationTags, documentationAudienceRoleSchema, documentationTagSchema } from '@/domain/documentation.model';
 import { contentLocales } from '@/i18n/locales';
 import { dbDocumentationDeleteRepositoryNotIn, dbDocumentationUpsertRepository } from '@/storage/documentation/documentation.upsert-repository';
 
@@ -104,6 +104,9 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
   }
 
   const externalIds: string[] = [];
+  let created = 0;
+  let updated = 0;
+  let unchanged = 0;
 
   for (const [basename, locales] of byBasename) {
     const externalId = `repo:${basename}`;
@@ -123,9 +126,9 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
     const isFaq = sorted.some((l) => l.isFaq);
     const isPublic = sorted.some((l) => l.isPublic);
     const audienceRoles = [...new Set(sorted.flatMap((l) => l.audienceRoles))] as DocumentationAudienceRole[];
-    const tags = [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[];
+    const tags = defaultDocumentationTags(isFaq, [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[]);
 
-    await dbDocumentationUpsertRepository({
+    const result = await dbDocumentationUpsertRepository({
       externalId,
       isFaq,
       isPublic,
@@ -134,8 +137,15 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
       tags,
       translations,
     });
+    if (result === 'created') {
+      created += 1;
+    } else if (result === 'updated') {
+      updated += 1;
+    } else {
+      unchanged += 1;
+    }
   }
 
   await dbDocumentationDeleteRepositoryNotIn(externalIds);
-  console.log(`Documentation seed: upserted ${externalIds.length} repo document(s).`);
+  console.log(`Documentation seed: created ${created}, updated ${updated}, unchanged ${unchanged} repo document(s).`);
 }

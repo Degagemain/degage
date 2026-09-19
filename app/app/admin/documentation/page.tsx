@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { RowSelectionState, VisibilityState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { Check, Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2, X } from 'lucide-react';
+import { Database, FileText, Loader2, Pencil, Plus, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -61,7 +61,6 @@ const SORT_COLUMN_MAP: Record<string, string> = {
 export default function DocumentationAdminPage() {
   const t = useTranslations('admin.documentation');
   const tCommon = useTranslations('admin.common');
-  const tShared = useTranslations('common');
   const uiLocale = useLocale();
   const contentLocale = useMemo(() => {
     const l = uiLocales.includes(uiLocale as UILocale) ? (uiLocale as UILocale) : defaultUILocale;
@@ -89,7 +88,7 @@ export default function DocumentationAdminPage() {
       defaultPageSize: DEFAULT_PAGE_SIZE,
       defaultSort: { id: 'updatedAt', desc: true },
       validSortIds: Object.keys(SORT_COLUMN_MAP),
-      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups'],
+      csvParamNames: ['isFaq', 'isPublic', 'sources', 'formats', 'groups', 'roles', 'tags'],
     });
 
   const isFaqFilter = csv.isFaq;
@@ -97,11 +96,16 @@ export default function DocumentationAdminPage() {
   const sourceFilter = csv.sources;
   const formatFilter = csv.formats;
   const groupFilter = csv.groups;
+  const roleFilter = csv.roles;
+  const tagFilter = csv.tags;
 
   const [groupOptions, setGroupOptions] = useState<GroupOption[]>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     externalId: false,
+    source: false,
+    audienceRoles: false,
+    format: false,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [isSyncingEmbeddings, setIsSyncingEmbeddings] = useState(false);
@@ -152,6 +156,20 @@ export default function DocumentationAdminPage() {
     [setCsvParam],
   );
 
+  const handleRoleFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('roles', values);
+    },
+    [setCsvParam],
+  );
+
+  const handleTagFilterChange = useCallback(
+    (values: string[]) => {
+      setCsvParam('tags', values);
+    },
+    [setCsvParam],
+  );
+
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -191,6 +209,12 @@ export default function DocumentationAdminPage() {
     for (const gid of groupFilter) {
       params.append('group', gid);
     }
+    for (const role of roleFilter) {
+      params.append('audience', role);
+    }
+    for (const tag of tagFilter) {
+      params.append('tags', tag);
+    }
     if (sorting.length > 0) {
       const sortColumn = SORT_COLUMN_MAP[sorting[0].id];
       if (sortColumn) {
@@ -199,7 +223,7 @@ export default function DocumentationAdminPage() {
       }
     }
     return params;
-  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, sorting]);
+  }, [debouncedQuery, isFaqFilter, isPublicFilter, sourceFilter, formatFilter, groupFilter, roleFilter, tagFilter, sorting]);
 
   const fetchDocs = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -328,12 +352,11 @@ export default function DocumentationAdminPage() {
     () =>
       createColumns({
         t,
-        tShared,
         getTitle,
         onSort: handleSort,
         onDelete: handleDeleteRequest,
       }),
-    [t, tShared, getTitle, handleSort, handleDeleteRequest],
+    [t, getTitle, handleSort, handleDeleteRequest],
   );
 
   const columnLabels = useMemo(
@@ -354,18 +377,18 @@ export default function DocumentationAdminPage() {
 
   const isFaqOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: tShared('yes'), icon: Check },
-      { value: 'false', label: tShared('no'), icon: X },
+      { value: 'true', label: t('type.faq') },
+      { value: 'false', label: t('type.article') },
     ],
-    [tShared],
+    [t],
   );
 
   const isPublicOptions: FacetedFilterOption[] = useMemo(
     () => [
-      { value: 'true', label: tShared('yes'), icon: Check },
-      { value: 'false', label: tShared('no'), icon: X },
+      { value: 'true', label: t('visibility.available') },
+      { value: 'false', label: t('visibility.hidden') },
     ],
-    [tShared],
+    [t],
   );
 
   const sourceOptions: FacetedFilterOption[] = useMemo(() => {
@@ -439,28 +462,29 @@ export default function DocumentationAdminPage() {
           {t('bulkActions.delete')}
         </DropdownMenuItem>
       </BulkActionsButton>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="h-9 shrink-0 gap-1.5"
-        onClick={() => void handleEmbeddingSync()}
-        disabled={isSyncingEmbeddings}
-        title={t('embeddings.syncTitle')}
-        aria-busy={isSyncingEmbeddings}
-      >
-        {isSyncingEmbeddings ? (
-          <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
-        ) : (
-          <RefreshCw className="size-4 shrink-0" aria-hidden />
-        )}
-        <span className="max-w-[10ch] truncate">{isSyncingEmbeddings ? t('embeddings.syncing') : t('embeddings.sync')}</span>
-      </Button>
       <DataTableFacetedFilter
         title={t('filters.isFaq')}
         options={isFaqOptions}
         selectedValues={isFaqFilter}
         onSelectedChange={handleIsFaqFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.roles')}
+        options={roleOptions}
+        selectedValues={roleFilter}
+        onSelectedChange={handleRoleFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.tags')}
+        options={tagOptions}
+        selectedValues={tagFilter}
+        onSelectedChange={handleTagFilterChange}
+      />
+      <DataTableFacetedFilter
+        title={t('filters.groups')}
+        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
+        selectedValues={groupFilter}
+        onSelectedChange={handleGroupFilterChange}
       />
       <DataTableFacetedFilter
         title={t('filters.isPublic')}
@@ -479,12 +503,6 @@ export default function DocumentationAdminPage() {
         options={formatOptions}
         selectedValues={formatFilter}
         onSelectedChange={handleFormatFilterChange}
-      />
-      <DataTableFacetedFilter
-        title={t('filters.groups')}
-        options={groupOptions.map((g) => ({ value: g.id, label: g.label }))}
-        selectedValues={groupFilter}
-        onSelectedChange={handleGroupFilterChange}
       />
     </>
   );
@@ -511,9 +529,19 @@ export default function DocumentationAdminPage() {
             buildExportParams={buildApiParams}
             onImportClick={() => setBulkImportOpen(true)}
             moreMenuExtra={
-              <DropdownMenuItem asChild>
-                <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem onClick={() => void handleEmbeddingSync()} disabled={isSyncingEmbeddings} title={t('embeddings.syncTitle')}>
+                  {isSyncingEmbeddings ? (
+                    <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
+                  ) : (
+                    <RefreshCw className="size-4 shrink-0" aria-hidden />
+                  )}
+                  {isSyncingEmbeddings ? t('embeddings.syncing') : t('embeddings.sync')}
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/app/admin/documentation-groups">{t('moreMenu.groups')}</Link>
+                </DropdownMenuItem>
+              </>
             }
             columnLabels={columnLabels}
           />
@@ -576,8 +604,10 @@ export default function DocumentationAdminPage() {
           rolesLabel: t('bulkUpdate.rolesLabel'),
           groupsLabel: t('bulkUpdate.groupsLabel'),
           unsetOption: t('bulkUpdate.unsetOption'),
-          yesOption: tShared('yes'),
-          noOption: tShared('no'),
+          isFaqTrueOption: t('type.faq'),
+          isFaqFalseOption: t('type.article'),
+          isPublicTrueOption: t('visibility.available'),
+          isPublicFalseOption: t('visibility.hidden'),
           replaceOption: t('bulkUpdate.replaceOption'),
           tagsPlaceholder: t('form.multiSelectTags'),
           rolesPlaceholder: t('form.multiSelectAudience'),
