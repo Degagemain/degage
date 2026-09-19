@@ -5,6 +5,7 @@ import {
   type DocumentationAudienceRole,
   type DocumentationFormat,
   type DocumentationTag,
+  defaultDocumentationTags,
   documentationAudienceRoleSchema,
   documentationFormatSchema,
   documentationTagSchema,
@@ -148,13 +149,14 @@ const parseFormat = (value: string): DocumentationFormat => {
 
 const toManualDocInput = (row: CsvRow) => {
   const audienceRoles = parseAudienceRoles(row.roles);
+  const isFaq = parseYesNo(row.faq);
   return {
     externalId: row.name.trim(),
-    isFaq: parseYesNo(row.faq),
+    isFaq,
     isPublic: audienceRoles.includes('public'),
     format: parseFormat(row.format),
     audienceRoles,
-    tags: parseTags(row.tags),
+    tags: defaultDocumentationTags(isFaq, parseTags(row.tags)),
     translations: [
       { locale: 'en', title: row.titleEn.trim(), content: row.contentEn },
       { locale: 'fr', title: row.titleFr.trim(), content: row.contentFr },

@@ -39,6 +39,12 @@ async function seed() {
   await seedCarTypes(prisma);
   await seedDocumentationFromRepo(prisma);
   await seedDocumentationFromCsv(prisma);
+  await prisma.$executeRaw`
+    UPDATE "Documentation"
+    SET tags = ARRAY['public_faq']::"DocumentationTag"[]
+    WHERE "isFaq" = true
+      AND tags = '{}';
+  `;
   await seedSupportAssistantPrompts(prisma);
   await seedEmailTemplates(prisma);
 }

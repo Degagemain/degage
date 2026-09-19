@@ -2031,6 +2031,7 @@
       "faqLists": {
         "code": "Code",
         "description": "Waar het verschijnt",
+        "public_faq": "Help & FAQ-pagina",
         "simulation_step_1": "Simulatie — wageninformatie (ook tijdens het laden van het resultaat)",
         "simulation_step_2_approved": "Simulatie — resultaat als de wagen is toegelaten",
         "simulation_step_2_rejected": "Simulatie — resultaat als de wagen is afgekeurd",

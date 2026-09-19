@@ -6,7 +6,9 @@ roles:
 
 # Public FAQ
 
-The public help hub at `/app/faq` lists FAQ questions (grouped) and, optionally, help articles.
+The public help hub at `/app/faq` lists FAQ questions (grouped) and, optionally, help articles. Grouped FAQ questions are limited to items
+tagged `public_faq`, in addition to the viewer’s audience and `isFaq` / `isPublic` filters. The same item can also carry simulation or
+car-onboarding tags so it appears in those widgets as well.
 
 ## Articles section
 

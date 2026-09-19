@@ -10,6 +10,7 @@ import { Skeleton } from '@/app/components/ui/skeleton';
 
 import { FaqAccordionItem } from './faq-accordion-item';
 import { FaqSectionHeader } from './faq-section-header';
+import { PUBLIC_FAQ_TAG } from '../faq-public.constants';
 import { pickDocumentationTranslation } from '../faq-utils';
 import styles from '../faq.module.css';
 
@@ -38,6 +39,7 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
     params.set('isPublic', 'true');
     params.set('isFaq', 'true');
     params.set('group', groupId);
+    params.append('tags', PUBLIC_FAQ_TAG);
     params.set('take', '5');
     params.set('skip', '0');
     params.set('sortBy', 'updatedAt');

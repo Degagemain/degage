@@ -14,6 +14,7 @@ import { Skeleton } from '@/app/components/ui/skeleton';
 
 import { FaqAccordionItem } from '../../components/faq-accordion-item';
 import { FaqBackToHelpLink } from '../../components/faq-back-to-help-link';
+import { PUBLIC_FAQ_TAG } from '../../faq-public.constants';
 import { pickDocumentationTranslation } from '../../faq-utils';
 
 const PAGE_SIZE = 24;
@@ -75,6 +76,7 @@ export default function FaqGroupPage() {
       params.set('isPublic', 'true');
       params.set('isFaq', 'true');
       params.set('group', groupId);
+      params.append('tags', PUBLIC_FAQ_TAG);
       params.set('take', String(PAGE_SIZE));
       params.set('skip', String(from));
       params.set('sortBy', 'updatedAt');

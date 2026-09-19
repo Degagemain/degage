@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
-import { canDeleteDocumentation, documentationSchema } from '@/domain/documentation.model';
+import { canDeleteDocumentation, defaultDocumentationTags, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
 describe('documentationSchema', () => {
@@ -29,6 +29,20 @@ describe('documentationSchema', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);
     expect(result.success).toBe(false);
+  });
+});
+
+describe('defaultDocumentationTags', () => {
+  it('adds public_faq to FAQ items with no tags', () => {
+    expect(defaultDocumentationTags(true, [])).toEqual(['public_faq']);
+  });
+
+  it('leaves existing FAQ tags unchanged', () => {
+    expect(defaultDocumentationTags(true, ['simulation_step_1'])).toEqual(['simulation_step_1']);
+  });
+
+  it('leaves untagged articles unchanged', () => {
+    expect(defaultDocumentationTags(false, [])).toEqual([]);
   });
 });
 

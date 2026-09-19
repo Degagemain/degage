@@ -2031,6 +2031,7 @@
       "faqLists": {
         "code": "Code",
         "description": "Where it appears",
+        "public_faq": "Help & FAQ page",
         "simulation_step_1": "Simulation — car details (also while the result is loading)",
         "simulation_step_2_approved": "Simulation — result when the car is approved",
         "simulation_step_2_rejected": "Simulation — result when the car is not approved",

@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs';
 import path from 'path';
 import type { PrismaClient } from '@/storage/client/client';
 import type { DocumentationAudienceRole, DocumentationTag } from '@/domain/documentation.model';
-import { documentationAudienceRoleSchema, documentationTagSchema } from '@/domain/documentation.model';
+import { defaultDocumentationTags, documentationAudienceRoleSchema, documentationTagSchema } from '@/domain/documentation.model';
 import { contentLocales } from '@/i18n/locales';
 import { dbDocumentationDeleteRepositoryNotIn, dbDocumentationUpsertRepository } from '@/storage/documentation/documentation.upsert-repository';
 
@@ -126,7 +126,7 @@ export async function seedDocumentationFromRepo(_prisma: PrismaClient): Promise<
     const isFaq = sorted.some((l) => l.isFaq);
     const isPublic = sorted.some((l) => l.isPublic);
     const audienceRoles = [...new Set(sorted.flatMap((l) => l.audienceRoles))] as DocumentationAudienceRole[];
-    const tags = [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[];
+    const tags = defaultDocumentationTags(isFaq, [...new Set(sorted.flatMap((l) => l.tags))] as DocumentationTag[]);
 
     const result = await dbDocumentationUpsertRepository({
       externalId,
