@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.7] - 2026-09-20
+
 ### Public features
 
 - Changed: without an existing insurance contract, car sharing can start from the first of this month only on the 1st; otherwise next month. A date already chosen stays.
