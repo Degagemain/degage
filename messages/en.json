@@ -1881,7 +1881,7 @@
           "proofOfPurchasePrice": "Amount read from the proof of purchase, including VAT.",
           "firstRegisteredAtNewCarReadOnly": "Not applicable for new cars.",
           "insurerNotApplicable": "Insurance is not applicable when the car has no existing insurance.",
-          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month.",
+          "shareStartDate": "Always the first of the month. Any other day is saved as the first of that month. You may choose the current month even after it has started; owners cannot.",
           "carName": "Letters and digits only (3–13 characters), no special characters or dashes. Must be unique across Dégage cars and other onboardings.",
           "carNameTaken": "This name is already taken.",
           "carNameChecking": "Checking availability…",

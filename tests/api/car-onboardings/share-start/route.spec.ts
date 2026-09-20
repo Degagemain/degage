@@ -38,7 +38,7 @@ import { updateCarOnboardingShareStart } from '@/actions/car-onboarding/update-s
 import { dbCarOnboardingReadWithRelations } from '@/storage/car-onboarding/car-onboarding.read';
 import { saveCarOnboardingWithPreparationCheck } from '@/actions/car-onboarding/save-with-preparation';
 import { assertCarOnboardingCarNameAvailable } from '@/actions/car-onboarding/assert-car-name-available';
-import { CarOnboardingInsurerStatus, startOfMonth } from '@/domain/car-onboarding.model';
+import { CarOnboardingInsurerStatus, ceilToFirstOfMonth } from '@/domain/car-onboarding.model';
 import { carOnboarding } from '../../../builders/car-onboarding.builder';
 
 const validId = '550e8400-e29b-41d4-a716-446655440000';
@@ -49,7 +49,7 @@ describe('PUT /api/car-onboardings/[id]/share-start', () => {
   });
 
   const mockUser = { id: 'user-id', name: 'User', email: 'user@example.com', role: 'user', banned: false };
-  const shareStartDate = startOfMonth(new Date());
+  const shareStartDate = ceilToFirstOfMonth(new Date());
   const body = {
     shareStartDate: `${shareStartDate.getFullYear()}-${String(shareStartDate.getMonth() + 1).padStart(2, '0')}-01`,
     carName: 'MyCar',

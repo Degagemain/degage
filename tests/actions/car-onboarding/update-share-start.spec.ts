@@ -12,7 +12,7 @@ vi.mock('@/actions/car-onboarding/assert-car-name-available', () => ({
   assertCarOnboardingCarNameAvailable: vi.fn(),
 }));
 
-import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus, startOfMonth } from '@/domain/car-onboarding.model';
+import { CarOnboardingInPreparationStatus, CarOnboardingInsurerStatus, ceilToFirstOfMonth, startOfMonth } from '@/domain/car-onboarding.model';
 import { assertCarOnboardingCarNameAvailable } from '@/actions/car-onboarding/assert-car-name-available';
 import { CarOnboardingCarNameTakenError } from '@/actions/car-onboarding/car-onboarding-car-name-taken.error';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
@@ -28,15 +28,16 @@ const onboardingId = '550e8400-e29b-41d4-a716-446655440000';
 const owner = { id: 'user-1', role: 'user', banned: false };
 const otherUser = { id: 'user-2', role: 'user', banned: false };
 
+const isoFirstOfMonth = (date: Date): string => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-01`;
+
 describe('updateCarOnboardingShareStart', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('saves a valid first-of-month share start date and car name', async () => {
-    const today = new Date();
-    const shareStartDate = startOfMonth(today);
-    const iso = `${shareStartDate.getFullYear()}-${String(shareStartDate.getMonth() + 1).padStart(2, '0')}-01`;
+    const shareStartDate = ceilToFirstOfMonth(new Date());
+    const iso = isoFirstOfMonth(shareStartDate);
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -63,9 +64,8 @@ describe('updateCarOnboardingShareStart', () => {
   });
 
   it('skips availability assert when car name is unchanged', async () => {
-    const today = new Date();
-    const shareStartDate = startOfMonth(today);
-    const iso = `${shareStartDate.getFullYear()}-${String(shareStartDate.getMonth() + 1).padStart(2, '0')}-01`;
+    const shareStartDate = ceilToFirstOfMonth(new Date());
+    const iso = isoFirstOfMonth(shareStartDate);
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -84,8 +84,8 @@ describe('updateCarOnboardingShareStart', () => {
   });
 
   it('rejects when car name is taken', async () => {
-    const shareStartDate = startOfMonth(new Date());
-    const iso = `${shareStartDate.getFullYear()}-${String(shareStartDate.getMonth() + 1).padStart(2, '0')}-01`;
+    const shareStartDate = ceilToFirstOfMonth(new Date());
+    const iso = isoFirstOfMonth(shareStartDate);
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
       carOnboarding({
         id: onboardingId,
@@ -178,9 +178,9 @@ describe('updateCarOnboardingShareStart', () => {
   });
 
   it('allows the first of next month when the insurer supports instant onboarding', async () => {
+    const earliest = ceilToFirstOfMonth(new Date());
+    const iso = isoFirstOfMonth(earliest);
     const today = new Date();
-    const earliest = today.getDate() === 1 ? startOfMonth(today) : new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    const iso = `${earliest.getFullYear()}-${String(earliest.getMonth() + 1).padStart(2, '0')}-01`;
     const recentContractStart = new Date(today.getFullYear(), today.getMonth() - 3, 15);
 
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
@@ -204,5 +204,50 @@ describe('updateCarOnboardingShareStart', () => {
         carName: 'MyCar',
       }),
     );
+  });
+
+  it('keeps an already-saved current-month date when there is no insurance contract', async () => {
+    const shareStartDate = startOfMonth(new Date());
+    const iso = isoFirstOfMonth(shareStartDate);
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        shareStartDate,
+        carName: 'MyCar',
+      }),
+    );
+    vi.mocked(saveCarOnboardingWithPreparationCheck).mockResolvedValueOnce(completeCarOnboarding({ id: onboardingId }));
+
+    await updateCarOnboardingShareStart(onboardingId, { shareStartDate: iso, carName: 'MyCar' }, owner);
+
+    expect(saveCarOnboardingWithPreparationCheck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shareStartDate,
+        carName: 'MyCar',
+      }),
+    );
+  });
+
+  it.skipIf(new Date().getDate() === 1)('rejects a new current-month date after the 1st when there is no insurance contract', async () => {
+    const shareStartDate = startOfMonth(new Date());
+    const iso = isoFirstOfMonth(shareStartDate);
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(
+      carOnboarding({
+        id: onboardingId,
+        owner: { id: owner.id },
+        hasInsuranceContract: false,
+        insurerStatus: CarOnboardingInsurerStatus.NOT_APPLICABLE,
+        shareStartDate: null,
+        carName: null,
+      }),
+    );
+
+    await expect(updateCarOnboardingShareStart(onboardingId, { shareStartDate: iso, carName: 'MyCar' }, owner)).rejects.toThrow(
+      CarOnboardingInvalidShareStartDateError,
+    );
+    expect(saveCarOnboardingWithPreparationCheck).not.toHaveBeenCalled();
   });
 });

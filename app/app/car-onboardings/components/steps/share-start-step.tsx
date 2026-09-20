@@ -34,13 +34,15 @@ const CAR_NAME_AVAILABILITY_DEBOUNCE_MS = 1000;
 
 const monthKey = (date: Date): string => `${date.getFullYear()}-${date.getMonth()}`;
 
-const buildMonthCells = (earliest: Date, latest: Date): MonthCell[] => {
+const buildMonthCells = (earliest: Date, latest: Date, saved: Date | null): MonthCell[] => {
   const lockedLead = 2;
   const start = new Date(earliest.getFullYear(), earliest.getMonth() - lockedLead, 1);
+  const savedKey = saved != null ? monthKey(saved) : null;
   const cells: MonthCell[] = [];
   for (let cursor = start; cursor.getTime() <= latest.getTime(); cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)) {
     const isEarliest = monthKey(cursor) === monthKey(earliest);
-    const locked = cursor.getTime() < earliest.getTime();
+    const isSaved = savedKey != null && monthKey(cursor) === savedKey;
+    const locked = cursor.getTime() < earliest.getTime() && !isSaved;
     cells.push({ date: new Date(cursor), locked, earliest: isEarliest });
   }
   return cells;
@@ -62,7 +64,11 @@ export function ShareStartStep() {
 
   const earliest = useMemo(() => getEarliestShareStartDate(carOnboarding), [carOnboarding]);
   const latest = useMemo(() => getLatestShareStartDate(), []);
-  const months = useMemo(() => buildMonthCells(earliest, latest), [earliest, latest]);
+  const savedShareStart = useMemo(() => {
+    const date = parseDateInput(formatDateForInput(carOnboarding.shareStartDate));
+    return date ? startOfMonth(date) : null;
+  }, [carOnboarding.shareStartDate]);
+  const months = useMemo(() => buildMonthCells(earliest, latest, savedShareStart), [earliest, latest, savedShareStart]);
 
   const [selected, setSelected] = useState<Date | null>(() => {
     const date = parseDateInput(formatDateForInput(carOnboarding.shareStartDate));
