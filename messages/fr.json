@@ -1881,7 +1881,7 @@
           "proofOfPurchasePrice": "Montant lu sur la preuve d'achat, TVA comprise.",
           "firstRegisteredAtNewCarReadOnly": "Non applicable pour les véhicules neufs.",
           "insurerNotApplicable": "L'assurance ne s'applique pas lorsque le véhicule n'a pas d'assurance existante.",
-          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois.",
+          "shareStartDate": "Toujours le premier du mois. Tout autre jour est enregistré comme le premier de ce mois. Vous pouvez choisir le mois en cours même après son début ; les propriétaires ne le peuvent pas.",
           "carName": "Lettres et chiffres uniquement (3–13 caractères), sans caractères spéciaux ni tirets. Doit être unique parmi les véhicules Dégage et les autres onboardings.",
           "carNameTaken": "Ce nom est déjà pris.",
           "carNameChecking": "Vérification de la disponibilité…",

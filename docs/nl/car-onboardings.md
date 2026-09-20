@@ -149,9 +149,10 @@ Deze stap is altijd compleet; extra stickers zijn optioneel.
 Kiest een unieke naam voor de wagen en wanneer die beschikbaar wordt voor autodelen. Dit is de laatste voorbereidingsstap. De naam telt tussen
 de 3 en de 13 karakters, bevat alleen letters en cijfers (geen speciale tekens of streepjes) en mag nog niet bestaan in het legacy
 Play-wagenpark of bij een andere auto-onboarding. De startdatum is altijd de eerste van de maand. De vroegst toegelaten maand hangt af van de
-verzekeringsgegevens (of de eerste van de huidige maand wanneer er geen bestaand verzekeringscontract is). Verzekeraars met directe start slaan
-de gebruikelijke wachttijd over: de vroegste maand is de eerste van deze of volgende maand. De laatst toegelaten maand is 18 maanden vanaf
-vandaag.
+verzekeringsgegevens. Zonder bestaand verzekeringscontract is de vroegste maand de eerste van deze of volgende maand (de huidige maand alleen op
+de 1ste). Verzekeraars met directe start slaan de gebruikelijke wachttijd over, met dezelfde vroegste maand. De laatst toegelaten maand is 18
+maanden vanaf vandaag. Een al opgeslagen datum (ook door een admin) blijft staan tot verzekeringsgegevens die de vroegste datum beïnvloeden
+wijzigen. Admins mogen de huidige maand nog instellen nadat die al begonnen is.
 
 | Eigenschap        | Beschrijving                                                        |
 | ----------------- | ------------------------------------------------------------------- |

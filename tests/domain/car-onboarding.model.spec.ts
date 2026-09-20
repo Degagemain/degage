@@ -1019,8 +1019,11 @@ describe('share start date helpers', () => {
     expect(ceilToFirstOfMonth(new Date(2026, 2, 1))).toEqual(new Date(2026, 2, 1));
   });
 
-  it('uses the first of the current month when there is no insurance contract', () => {
-    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toEqual(new Date(2026, 7, 1));
+  it('uses the first of this or next month when there is no insurance contract', () => {
+    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toEqual(new Date(2026, 8, 1));
+    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, new Date(2026, 7, 1))).toEqual(
+      new Date(2026, 7, 1),
+    );
   });
 
   it('uses contract start plus one year when the contract is less than a year old', () => {
@@ -1071,10 +1074,18 @@ describe('share start date helpers', () => {
 
   it('validates first-of-month dates within earliest and latest', () => {
     const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null };
-    expect(isValidShareStartDate(new Date(2026, 7, 1), onboarding, today)).toBe(true);
+    expect(isValidShareStartDate(new Date(2026, 8, 1), onboarding, today)).toBe(true);
+    expect(isValidShareStartDate(new Date(2026, 7, 1), onboarding, today)).toBe(false);
     expect(isValidShareStartDate(new Date(2026, 7, 15), onboarding, today)).toBe(false);
     expect(isValidShareStartDate(new Date(2026, 6, 1), onboarding, today)).toBe(false);
     expect(isValidShareStartDate(new Date(2028, 2, 1), onboarding, today)).toBe(false);
+  });
+
+  it('keeps an already-saved current-month date valid after the 1st', () => {
+    const shareStartDate = new Date(2026, 7, 1);
+    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null, shareStartDate };
+    expect(isValidShareStartDate(shareStartDate, onboarding, today)).toBe(true);
+    expect(isValidShareStartDate(new Date(2026, 7, 1), { hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toBe(false);
   });
 
   it('marks the section complete when share start date and valid car name are set', () => {
@@ -1150,6 +1161,24 @@ describe('share start date helpers', () => {
           hasInsuranceContract: true,
           insurerContractStartedAt: contractStart,
           insurer: { id: '550e8400-e29b-41d4-a716-446655440010', supportsInstantOnboarding: true },
+        },
+        today,
+      ),
+    ).toBe(false);
+  });
+
+  it('does not clear a grandfathered current-month date when insurance fields are unchanged', () => {
+    const shareStartDate = new Date(2026, 7, 1);
+    expect(
+      shouldClearShareStartOnInsurerChange(
+        {
+          hasInsuranceContract: false,
+          insurerContractStartedAt: null,
+          shareStartDate,
+        },
+        {
+          hasInsuranceContract: false,
+          insurerContractStartedAt: null,
         },
         today,
       ),

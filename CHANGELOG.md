@@ -9,12 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: without an existing insurance contract, car sharing can start from the first of this month only on the 1st; otherwise next month. A date already chosen stays.
 - Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
 - Changed: common questions on the home page are managed as documentation.
 - Changed: the Help & FAQ page only lists questions tagged for that page.
 
 ### Admin features
 
+- Changed: admins can still set a car onboarding share start date to the current month after it has started.
 - Fixed: a used car being purchased is now rejected when it is older than the hub maximum age.
 - Changed: documentation tags are now FAQ Lists. Admins choose Help & FAQ, home page, simulation, or car onboarding; items with no list appear on Help & FAQ.
 - Added: the documentation list can be filtered by audience roles and FAQ lists.

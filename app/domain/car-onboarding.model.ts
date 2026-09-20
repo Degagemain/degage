@@ -450,23 +450,20 @@ const dateTimeEquals = (a: Date | string | null | undefined, b: Date | string | 
   return left.getTime() === right.getTime();
 };
 
-type ShareStartInsuranceFields = Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt' | 'insurer'>;
+type ShareStartInsuranceFields = Pick<CarOnboarding, 'hasInsuranceContract' | 'insurerContractStartedAt' | 'insurer'> &
+  Partial<Pick<CarOnboarding, 'shareStartDate'>>;
 
 const insurerSupportsInstantOnboarding = (onboarding: ShareStartInsuranceFields): boolean =>
   onboarding.hasInsuranceContract === true && onboarding.insurer?.supportsInstantOnboarding === true;
 
 export const getEarliestShareStartDate = (onboarding: ShareStartInsuranceFields, today: Date = new Date()): Date => {
-  if (insurerSupportsInstantOnboarding(onboarding)) {
+  if (insurerSupportsInstantOnboarding(onboarding) || !onboarding.hasInsuranceContract || onboarding.insurerContractStartedAt == null) {
     return ceilToFirstOfMonth(today);
-  }
-
-  if (!onboarding.hasInsuranceContract || onboarding.insurerContractStartedAt == null) {
-    return startOfMonth(today);
   }
 
   const contractStart = parseDate(onboarding.insurerContractStartedAt);
   if (contractStart == null) {
-    return startOfMonth(today);
+    return ceilToFirstOfMonth(today);
   }
 
   const oneYearAgo = addCalendarYears(today, -1);
@@ -486,7 +483,9 @@ export const isValidShareStartDate = (date: Date | string, onboarding: ShareStar
   const earliest = getEarliestShareStartDate(onboarding, today);
   const latest = getLatestShareStartDate(today);
   const normalized = startOfMonth(parsed).getTime();
-  return normalized >= earliest.getTime() && normalized <= latest.getTime();
+  const isUnchangedExisting = onboarding.shareStartDate != null && startOfMonth(onboarding.shareStartDate).getTime() === normalized;
+
+  return (normalized >= earliest.getTime() || isUnchangedExisting) && normalized <= latest.getTime();
 };
 
 export const isShareStartSectionComplete = (onboarding: Pick<CarOnboarding, 'shareStartDate' | 'carName'>): boolean => {
@@ -511,7 +510,7 @@ export const shouldClearShareStartOnInsurerChange = (
 
   if (insuranceChanged) return true;
 
-  return !isValidShareStartDate(previous.shareStartDate, next, today);
+  return !isValidShareStartDate(previous.shareStartDate, { ...next, shareStartDate: previous.shareStartDate }, today);
 };
 
 export const canUpdateInsurer = (onboarding: Pick<CarOnboarding, 'insurerStatus' | 'isPurchased' | 'hasInsuranceContract'>): boolean => {

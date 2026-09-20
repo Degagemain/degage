@@ -162,9 +162,11 @@ This step is always complete; extra stickers are optional.
 
 Chooses a unique name for the car and when it becomes available for sharing. This is the last preparation step. The car name is 3–13 characters,
 uses letters and digits only (no special characters or dashes), and must not already exist in the legacy Play fleet or on another car
-onboarding. The share start date is always the first of a month. The earliest allowed month depends on the insurance details (or the first of
-the current month when there is no existing insurance contract). Insurers marked for instant onboarding skip the usual insurance waiting period:
-the earliest month is the first of this or next month. The latest allowed month is 18 months from today.
+onboarding. The share start date is always the first of a month. The earliest allowed month depends on the insurance details. Without an
+existing insurance contract, the earliest month is the first of this or next month (the current month only on the 1st). Insurers marked for
+instant onboarding skip the usual insurance waiting period with the same earliest month. The latest allowed month is 18 months from today. A
+date already saved (including by an admin) stays until insurance details that affect the earliest date change. Admins may still set the current
+month after it has started.
 
 | Property         | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |

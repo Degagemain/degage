@@ -1881,7 +1881,7 @@
           "proofOfPurchasePrice": "Bedrag gelezen van het aankoopbewijs, inclusief btw.",
           "firstRegisteredAtNewCarReadOnly": "Niet van toepassing voor nieuwe wagens.",
           "insurerNotApplicable": "Verzekering is niet van toepassing wanneer de wagen geen bestaande verzekering heeft.",
-          "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand.",
+          "shareStartDate": "Altijd de eerste van de maand. Een andere dag wordt opgeslagen als de eerste van die maand. U mag de huidige maand kiezen ook nadat die al begonnen is; eigenaars niet.",
           "carName": "Alleen letters en cijfers (3–13 tekens), geen speciale tekens of streepjes. Moet uniek zijn onder Dégage-wagens en andere onboardings.",
           "carNameTaken": "Deze naam is al in gebruik.",
           "carNameChecking": "Beschikbaarheid controleren…",
