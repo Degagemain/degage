@@ -4,6 +4,7 @@ const capture = vi.fn();
 const captureImmediate = vi.fn().mockResolvedValue(undefined);
 const flush = vi.fn().mockResolvedValue(undefined);
 const captureException = vi.fn();
+const isFeatureEnabled = vi.fn();
 
 vi.mock('posthog-node', () => ({
   PostHog: vi.fn(function PostHog() {
@@ -12,6 +13,7 @@ vi.mock('posthog-node', () => ({
       captureImmediate,
       flush,
       captureException,
+      isFeatureEnabled,
     };
   }),
 }));
@@ -94,6 +96,31 @@ describe('integrations/posthog', () => {
       event: AnalyticsEvent.SIMULATION,
       properties: { id: 'sim-1', request_id: 'req-1' },
     });
+  });
+
+  it('isSupportChatEnabled is true when PostHog is not configured', async () => {
+    delete process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
+    delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    vi.resetModules();
+
+    const { isSupportChatEnabled } = await import('@/integrations/posthog');
+
+    await expect(isSupportChatEnabled()).resolves.toBe(true);
+    expect(isFeatureEnabled).not.toHaveBeenCalled();
+  });
+
+  it('isSupportChatEnabled is true only when the support-chat flag is on', async () => {
+    isFeatureEnabled.mockResolvedValueOnce(true);
+    const { isSupportChatEnabled } = await import('@/integrations/posthog');
+
+    await expect(isSupportChatEnabled('user-9')).resolves.toBe(true);
+    expect(isFeatureEnabled).toHaveBeenCalledWith('support-chat', 'user-9');
+
+    isFeatureEnabled.mockResolvedValueOnce(false);
+    await expect(isSupportChatEnabled()).resolves.toBe(false);
+
+    isFeatureEnabled.mockResolvedValueOnce(undefined);
+    await expect(isSupportChatEnabled()).resolves.toBe(false);
   });
 
   it('getPostHogClient does not set flushAt or flushInterval', async () => {

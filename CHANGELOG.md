@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Changed: when support chat is switched off, opening it shows that chat is currently disabled.
+
 ### Technical
 
 - Added: support chat stream errors are logged and flushed to PostHog.
+- Added: support chat follows the PostHog feature flag `support-chat`. Chat stays available when PostHog is not configured.
 
 ## [0.0.7] - 2026-09-20
 

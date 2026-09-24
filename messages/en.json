@@ -2806,6 +2806,7 @@
     "openChatCardTitle": "Support Chat",
     "openChatCardDescription": "Ask questions about the platform. Answers use your documentation when relevant.",
     "closeChat": "Close Support Chat",
+    "disabled": "Support chat is currently disabled.",
     "conversations": "Conversations",
     "newConversation": "New conversation",
     "conversationCreatedLabel": "Created {time}",

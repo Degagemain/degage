@@ -8,7 +8,10 @@ import { updateChatConversation } from '@/actions/conversation/update';
 import { createMessage } from '@/actions/conversation/message/create';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { forbiddenResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
+import { statusCodes } from '@/api/status-codes';
 import { withPublic } from '@/api/with-context';
+import { isSupportChatEnabled } from '@/integrations/posthog';
+import { logger } from '@/lib/logger';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
 import { type DocumentationAudienceRole, documentationAudienceRoleSchema } from '@/domain/documentation.model';
@@ -40,8 +43,24 @@ const toUiMessagesFromStoredConversation = (
 
 // Chat supports both anonymous visitors (public support widget) and authenticated users.
 // Anonymous frontend conversations are persisted after the first message using a guest token.
+const supportChatDisabledResponse = (): Response => {
+  return Response.json(
+    { code: 'support_chat_disabled', errors: [{ message: 'Support chat is currently disabled' }] },
+    { status: statusCodes.SERVICE_UNAVAILABLE },
+  );
+};
+
 export const POST = withPublic(async (request: NextRequest, _context, session) => {
   const user = session?.user;
+  try {
+    if (!(await isSupportChatEnabled(user?.id))) {
+      return supportChatDisabledResponse();
+    }
+  } catch (error) {
+    logger.exception(error, { route: 'POST /api/chat', phase: 'support-chat-flag' });
+    return supportChatDisabledResponse();
+  }
+
   const isAuthenticated = Boolean(user?.id);
 
   const { data, errorResponse } = await safeParseRequestJson(request);

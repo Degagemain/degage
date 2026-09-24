@@ -149,6 +149,9 @@ is wired via OpenTelemetry and the Vercel AI SDK's telemetry hooks, so every sup
 Practical cost model: until the product hits ~1M autocaptured events/month, PostHog stays free except for LLM traces, which start charging from
 the first paid trace. If support chat ramps, LLM analytics usually becomes the first line item — often before events do.
 
+Support chat follows the PostHog feature flag `support-chat`. When that flag is off, the chat window opens with a message that chat is disabled
+and new replies are refused. When PostHog is not configured, the chat stays available.
+
 Docs: [PostHog pricing](https://posthog.com/pricing) · [Product analytics](https://posthog.com/docs/product-analytics) ·
 [LLM observability](https://posthog.com/docs/ai-engineering/observability) · [Error tracking](https://posthog.com/docs/error-tracking).
 

@@ -2815,6 +2815,7 @@
     "openChatCardTitle": "Stel je vraag",
     "openChatCardDescription": "Stel vragen over het platform. Antwoorden gebruiken je documentatie waar relevant.",
     "closeChat": "Support Chat sluiten",
+    "disabled": "De supportchat is momenteel uitgeschakeld.",
     "conversations": "Gesprekken",
     "newConversation": "Nieuw gesprek",
     "conversationCreatedLabel": "Aangemaakt {time}",
