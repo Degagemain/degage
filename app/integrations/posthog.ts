@@ -1,5 +1,6 @@
 import { getRequestId, getRequestUserId } from '@/context/request-context';
 import type { AnalyticsEventName } from '@/domain/analytics-event.model';
+import { supportChatFeatureFlag } from '@/domain/chat.model';
 import { PostHog } from 'posthog-node';
 
 let posthogClient: PostHog | null = null;
@@ -21,6 +22,12 @@ export const getPostHogClient = (): PostHog => {
 export const flushPostHogEvents = async (): Promise<void> => {
   if (!posthogClient) return;
   await posthogClient.flush();
+};
+
+export const isSupportChatEnabled = async (distinctId?: string): Promise<boolean> => {
+  if (!isPostHogEnabled) return true;
+  const enabled = await getPostHogClient().isFeatureEnabled(supportChatFeatureFlag, distinctId ?? getServerDistinctId());
+  return enabled === true;
 };
 
 function getServerDistinctId(): string {

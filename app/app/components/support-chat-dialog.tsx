@@ -1,6 +1,7 @@
 'use client';
 
 import { capture } from '@/app/lib/posthog';
+import { useSupportChatAvailability } from '@/app/lib/use-support-chat-enabled';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { ChevronDownIcon, History, Plus, Trash2, X } from 'lucide-react';
@@ -143,6 +144,8 @@ export type SupportChatDialogProps = {
 export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps) {
   const t = useTranslations('chat');
   const format = useFormatter();
+  const supportChatAvailability = useSupportChatAvailability();
+  const isSupportChatEnabled = supportChatAvailability === 'enabled';
   const { data: session, isPending } = authClient.useSession();
   const isViewerAdmin = Boolean(session?.user && isAdmin(session.user));
   const [previewAudience, setPreviewAudience] = useState<DocumentationAudienceRole>(Role.ADMIN);
@@ -177,7 +180,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   }, [isViewerAdmin]);
 
   useEffect(() => {
-    if (!open || isPending || isHistoryOpen || isLoadingMessages) {
+    if (!open || !isSupportChatEnabled || isPending || isHistoryOpen || isLoadingMessages) {
       return;
     }
     let cancelled = false;
@@ -194,7 +197,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
       cancelled = true;
       cancelAnimationFrame(outer);
     };
-  }, [open, isPending, session?.user, isHistoryOpen, isLoadingMessages]);
+  }, [open, isSupportChatEnabled, isPending, session?.user, isHistoryOpen, isLoadingMessages]);
 
   const loadConversationList = useCallback(async () => {
     if (!session?.user) {
@@ -289,6 +292,8 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   );
 
   useEffect(() => {
+    if (!isSupportChatEnabled) return;
+
     const isAuthenticated = Boolean(session?.user);
     const justAuthenticated = isAuthenticated && !hadAuthenticatedSessionRef.current;
     hadAuthenticatedSessionRef.current = isAuthenticated;
@@ -319,7 +324,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
     }
 
     void loadGuestConversation(guestSession.conversationId, guestSession.guestToken);
-  }, [session?.user, setMessages, loadGuestConversation, lastLoadedConversationId]);
+  }, [isSupportChatEnabled, session?.user, setMessages, loadGuestConversation, lastLoadedConversationId]);
 
   const createConversation = useCallback(async () => {
     const response = await apiPost('/api/chat/conversations', {});
@@ -373,26 +378,27 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
   );
 
   useEffect(() => {
-    if (!open || !session?.user) return;
+    if (!open || !isSupportChatEnabled || !session?.user) return;
     void loadConversationList();
-  }, [open, session?.user, loadConversationList]);
+  }, [open, isSupportChatEnabled, session?.user, loadConversationList]);
 
   useEffect(() => {
-    if (!open || !activeConversationId || !session?.user) return;
+    if (!open || !isSupportChatEnabled || !activeConversationId || !session?.user) return;
     if (isLoadingMessages) return;
     if (activeConversationId === lastLoadedConversationId) return;
     void loadConversation(activeConversationId);
-  }, [open, activeConversationId, isLoadingMessages, lastLoadedConversationId, loadConversation, session?.user]);
+  }, [open, isSupportChatEnabled, activeConversationId, isLoadingMessages, lastLoadedConversationId, loadConversation, session?.user]);
 
   const activeConversationLabel = useMemo(() => {
     return conversationList.find((item) => item.id === activeConversationId)?.title || t('newConversation');
   }, [activeConversationId, conversationList, t]);
 
   const dialogAccessibilityTitle = useMemo(() => {
-    if (isPending || !session?.user) return t('openChatCardTitle');
+    if (supportChatAvailability === 'disabled') return t('disabled');
+    if (isPending || supportChatAvailability === 'loading' || !session?.user) return t('openChatCardTitle');
     if (isHistoryOpen) return t('conversations');
     return activeConversationLabel;
-  }, [isPending, session?.user, isHistoryOpen, activeConversationLabel, t]);
+  }, [isPending, supportChatAvailability, session?.user, isHistoryOpen, activeConversationLabel, t]);
 
   const handleSourceNavigate = useCallback(() => {
     onOpenChange(false);
@@ -400,7 +406,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
 
   const handlePromptSubmit = useCallback(
     (message: PromptInputMessage) => {
-      if (status !== 'ready') return;
+      if (!isSupportChatEnabled || status !== 'ready') return;
       const text = message.text.trim().slice(0, chatUserMessageMaxLength);
       if (!text) return;
       sendMessage({ text });
@@ -410,7 +416,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
       });
       setInput('');
     },
-    [sendMessage, status, activeConversationId],
+    [isSupportChatEnabled, sendMessage, status, activeConversationId],
   );
 
   return (
@@ -426,11 +432,29 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
         )}
       >
         <DialogTitle className="sr-only">{dialogAccessibilityTitle}</DialogTitle>
-        <DialogDescription className="sr-only">{t('openChatCardDescription')}</DialogDescription>
-        {isPending ? (
+        <DialogDescription className="sr-only">
+          {supportChatAvailability === 'disabled' ? t('disabled') : t('openChatCardDescription')}
+        </DialogDescription>
+        {isPending || supportChatAvailability === 'loading' ? (
           <div className="flex flex-1 items-center justify-center p-6">
             <Skeleton className="h-48 w-full" />
           </div>
+        ) : supportChatAvailability === 'disabled' ? (
+          <Card className="flex min-h-0 flex-1 flex-col rounded-none border-0 shadow-none sm:rounded-xl">
+            <CardHeader className="shrink-0 pb-2">
+              <div className="flex min-w-0 items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="truncate text-sm">{t('supportChat')}</CardTitle>
+                </div>
+                <Button type="button" size="icon" variant="ghost" aria-label={t('closeChat')} onClick={() => onOpenChange(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="flex min-h-0 flex-1 items-center justify-center px-6 pb-6">
+              <p className="text-muted-foreground text-center text-sm">{t('disabled')}</p>
+            </CardContent>
+          </Card>
         ) : (
           <Card className="flex min-h-0 flex-1 flex-col rounded-none border-0 shadow-none sm:rounded-xl">
             <CardHeader className="shrink-0 pb-2">

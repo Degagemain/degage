@@ -37,17 +37,49 @@ vi.mock('@/actions/support/generate-reply', () => ({
   generateSupportReplyStream: vi.fn(),
 }));
 
+vi.mock('@/integrations/posthog', () => ({
+  isSupportChatEnabled: vi.fn(async () => true),
+  flushPostHogEvents: vi.fn(),
+}));
+
+vi.mock('@/lib/logger', () => ({
+  logger: { exception: vi.fn() },
+}));
+
 import { createChatConversation } from '@/actions/conversation/create';
 import { createMessage } from '@/actions/conversation/message/create';
 import { readChatConversation } from '@/actions/conversation/read';
 import { readChatConversationByGuestToken } from '@/actions/conversation/read-by-guest-token';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { auth } from '@/auth';
+import { isSupportChatEnabled } from '@/integrations/posthog';
 import { POST } from '@/api/chat/route';
 
 describe('POST /api/chat', () => {
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('returns 503 and does not generate a reply when support chat is disabled', async () => {
+    vi.mocked(isSupportChatEnabled).mockResolvedValueOnce(false);
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: 'user-1', role: 'user', locale: 'en' },
+    } as any);
+
+    const request = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ id: 'u1', role: 'user', parts: [{ type: 'text', text: 'Hello' }] }],
+      }),
+    });
+
+    const response = await POST(request as any);
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toMatchObject({ code: 'support_chat_disabled' });
+    expect(generateSupportReplyStream).not.toHaveBeenCalled();
+    expect(createMessage).not.toHaveBeenCalled();
   });
 
   it('persists assistant output when streaming completes', async () => {

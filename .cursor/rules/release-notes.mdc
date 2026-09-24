@@ -83,3 +83,8 @@ Avoid:
 Add an entry under `## [Unreleased]` in the same change that ships a
 user-, admin-, or developer-visible change. Derive the entry from the change
 itself, not from the git log.
+
+## Discord announcements
+
+The changelog stays English. When asked to announce a release to admins, follow
+`.cursor/rules/release-announcements.mdc` (Dutch Discord post, not changelog).

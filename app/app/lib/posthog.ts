@@ -1,7 +1,7 @@
 import posthog from 'posthog-js';
 import type { AnalyticsEventName } from '@/domain/analytics-event.model';
 
-const isPostHogClientEnabled = () => !!(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST);
+export const isPostHogClientEnabled = () => !!(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST);
 
 export const capture = (event: AnalyticsEventName, properties?: Record<string, string | number | boolean | null>) => {
   if (isPostHogClientEnabled()) {
