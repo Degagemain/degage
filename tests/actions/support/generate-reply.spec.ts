@@ -23,6 +23,19 @@ vi.mock('@/actions/system-parameter/read', () => ({
 
 vi.mock('@/integrations/posthog', () => ({
   isPostHogEnabled: false,
+  flushPostHogEvents: vi.fn(),
+}));
+
+vi.mock('@/lib/logger', () => ({
+  logger: { exception: vi.fn() },
+}));
+
+vi.mock('@/lib/posthog-otel-logs', () => ({
+  flushPostHogOtelLogs: vi.fn(),
+}));
+
+vi.mock('@/lib/posthog-otel-traces', () => ({
+  flushPostHogOtelTraces: vi.fn(),
 }));
 
 import { generateText, streamText } from 'ai';
@@ -30,6 +43,10 @@ import { getSystemParameterByCode } from '@/actions/system-parameter/read';
 import { searchDocumentationForRag } from '@/actions/documentation/search-rag';
 import { generateSupportReplyStream, generateSupportReplyText } from '@/actions/support/generate-reply';
 import type { DocumentationSupportCitation } from '@/domain/documentation.support-citations';
+import { flushPostHogEvents } from '@/integrations/posthog';
+import { logger } from '@/lib/logger';
+import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+import { flushPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 
 const ragSearch = (citations: DocumentationSupportCitation[]) => ({
   fullDocuments: [],
@@ -144,5 +161,23 @@ describe('generateSupportReplyStream', () => {
 
     await streamOpts.onFinish({ text: 'assistant reply' });
     expect(onFinish).toHaveBeenCalledWith({ text: 'assistant reply', citations: expectedCitations });
+  });
+
+  it('logs stream model errors and flushes them to PostHog', async () => {
+    vi.mocked(getSystemParameterByCode).mockResolvedValueOnce(
+      promptParameter(supportAssistantPromptSystemParameterCodes.chat, 'Configured chat widget base prompt'),
+    );
+    vi.mocked(streamText).mockReturnValueOnce({} as never);
+
+    await generateSupportReplyStream([]);
+
+    const streamOpts = vi.mocked(streamText).mock.calls[0]?.[0] as { onError: (event: { error: unknown }) => Promise<void> };
+    const error = new Error('credits depleted');
+    await streamOpts.onError({ error });
+
+    expect(logger.exception).toHaveBeenCalledWith(error, { integration: 'gemini', functionId: 'support-chat-stream' });
+    expect(flushPostHogOtelLogs).toHaveBeenCalled();
+    expect(flushPostHogOtelTraces).toHaveBeenCalled();
+    expect(flushPostHogEvents).toHaveBeenCalled();
   });
 });

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Technical
+
+- Added: support chat stream errors are logged and flushed to PostHog.
+
 ## [0.0.7] - 2026-09-20
 
 ### Public features

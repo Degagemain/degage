@@ -12,7 +12,10 @@ import {
   toChatCitationsForSupportViewer,
 } from '@/domain/documentation.support-citations';
 import { type ContentLocale } from '@/i18n/locales';
-import { isPostHogEnabled } from '@/integrations/posthog';
+import { flushPostHogEvents, isPostHogEnabled } from '@/integrations/posthog';
+import { logger } from '@/lib/logger';
+import { flushPostHogOtelLogs } from '@/lib/posthog-otel-logs';
+import { flushPostHogOtelTraces } from '@/lib/posthog-otel-traces';
 import { getSupportReplyToEmail } from '@/actions/utils';
 import { getSystemParameterByCode } from '@/actions/system-parameter/read';
 import {
@@ -20,6 +23,11 @@ import {
   getDefaultSupportAssistantBasePrompt,
   supportAssistantPromptSystemParameterCodes,
 } from '@/domain/support-assistant-prompt.model';
+
+const logSupportStreamError = async (error: unknown): Promise<void> => {
+  logger.exception(error, { integration: 'gemini', functionId: 'support-chat-stream' });
+  await Promise.all([flushPostHogOtelLogs(), flushPostHogOtelTraces(), flushPostHogEvents()]);
+};
 
 const SEARCH_DOCUMENTATION_TOOL_DESCRIPTION =
   'Search internal documentation. Returns fullDocuments (complete articles for top matches) ' +
@@ -113,6 +121,7 @@ export const generateSupportReplyStream = async (
     }),
     messages: await convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
+    onError: ({ error }) => logSupportStreamError(error),
     experimental_telemetry: {
       isEnabled: isPostHogEnabled,
       functionId: 'support-chat-stream',
