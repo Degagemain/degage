@@ -1,0 +1,59 @@
+---
+description: Write Dutch Discord release announcements from CHANGELOG.md for admins
+alwaysApply: false
+---
+
+# Release announcements
+
+When asked for a release announcement (Discord, admins, “release note”), write
+Dutch copy from `CHANGELOG.md`. Do **not** put this text in the changelog.
+
+## Audience and tone
+
+- Aimed at **admins**, but include both user-facing and admin-zone changes so
+  they know what members see.
+- Functional, not technical: no CLI, file paths, function names, or
+  implementation detail. Name a UI action only if admins must find it
+  (e.g. **Meer → Alle embeddings synchroniseren**).
+- Use the same Dutch terms as the app (`messages/nl.json`).
+- **Group related changelog lines into one bullet.** Skip the Technical section.
+
+## Format
+
+Match previous Discord posts:
+
+```
+Update v0.0.7 - 2026-09-20
+
+Aan de gebruikers kant
+
+- Gewijzigd: ...
+- Opgelost: ...
+
+In de adminzone
+
+- Toegevoegd: ...
+- Gewijzigd: ...
+```
+
+- Title: `Update v{version} - {YYYY-MM-DD}` from the changelog heading.
+- Two headings only: **Aan de gebruikers kant** (Public features) and **In de
+  adminzone** (Admin features). Omit a heading if that section is empty.
+- One bullet per grouped change. Prefix with `Toegevoegd`, `Gewijzigd`, or
+  `Opgelost` (from Added / Changed / Fixed). Lowercase after the colon.
+- Repeat a change in both sections only when the admin action differs from what
+  users see.
+
+## Example
+
+Changelog: several documentation bullets (FAQ lists, filters, type/visibility).
+
+Announcement (admin section, grouped):
+
+- Gewijzigd: tags zijn nu FAQ-lijsten. Je kiest waar een vraag verschijnt (Help
+  & FAQ, startpagina, simulatie of auto-onboarding); items zonder lijst
+  verschijnen op Help & FAQ.
+- Toegevoegd: de documentatielijst kan gefilterd worden op rollen en FAQ-lijsten.
+- Gewijzigd: documentatie is FAQ of Artikel, en artikelen kunnen Beschikbaar of
+  Verborgen zijn. Overlappende rollen worden tot de ruimste beperkt (publiek,
+  gebruiker of beheerder).
