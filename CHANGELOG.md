@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.8] - 2026-09-24
+
 ### Public features
 
 - Changed: when support chat is switched off, opening it shows that chat is currently disabled.
