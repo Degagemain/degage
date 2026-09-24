@@ -107,13 +107,38 @@ describe('syncCarOnboardingAutofiche', () => {
     expect(updatePlayCar).not.toHaveBeenCalled();
   });
 
-  it('maps play update failures to admin mode unavailable', async () => {
-    const existing = completeCarOnboarding({ id, carPcId: 3961 });
+  it('throws when creating the play car fails', async () => {
+    const existing = completeCarOnboarding({ id, carPcId: null });
     vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(existing);
+    vi.mocked(mapCarOnboardingToPlayCar).mockResolvedValueOnce(mapped);
+    vi.mocked(createPlayCar).mockRejectedValueOnce(new PlayConnectorError('fetch_failed', 'Play create car failed'));
+
+    await expect(syncCarOnboardingAutofiche(id, admin)).rejects.toThrow(PlayConnectorError);
+    expect(dbCarOnboardingUpdate).not.toHaveBeenCalled();
+    expect(updatePlayCar).not.toHaveBeenCalled();
+  });
+
+  it('returns the onboarding when create succeeds and the play update fails', async () => {
+    const existing = completeCarOnboarding({ id, carPcId: null });
+    const withId = { ...existing, carPcId: 3961 };
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(existing).mockResolvedValueOnce(withId);
+    vi.mocked(mapCarOnboardingToPlayCar).mockResolvedValueOnce(mapped);
+    vi.mocked(createPlayCar).mockResolvedValueOnce({ id: 3961 });
+    vi.mocked(dbCarOnboardingUpdate).mockResolvedValueOnce(withId);
+    vi.mocked(dbUserReadOldestAdmin).mockResolvedValueOnce({ id: 'admin-play' });
+    vi.mocked(updatePlayCar).mockRejectedValueOnce(new PlayConnectorError('fetch_failed', 'Play post failed with status 400'));
+
+    await expect(syncCarOnboardingAutofiche(id, admin)).resolves.toEqual(withId);
+    expect(dbCarOnboardingUpdate).toHaveBeenCalledWith({ ...existing, carPcId: 3961 });
+  });
+
+  it('returns the onboarding when the play update fails', async () => {
+    const existing = completeCarOnboarding({ id, carPcId: 3961 });
+    vi.mocked(dbCarOnboardingReadWithRelations).mockResolvedValueOnce(existing).mockResolvedValueOnce(existing);
     vi.mocked(mapCarOnboardingToPlayCar).mockResolvedValueOnce(mapped);
     vi.mocked(dbUserReadOldestAdmin).mockResolvedValueOnce({ id: 'admin-play' });
     vi.mocked(updatePlayCar).mockRejectedValueOnce(new PlayConnectorError('fetch_failed', 'Play post failed with status 400'));
 
-    await expect(syncCarOnboardingAutofiche(id, admin)).rejects.toThrow(CarOnboardingAdminModeUnavailableError);
+    await expect(syncCarOnboardingAutofiche(id, admin)).resolves.toEqual(existing);
   });
 });

@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Changed: when support chat is switched off, opening it shows that chat is currently disabled.
 - Changed: a rejected simulation explains the specific reason (mileage, age, price, or quality).
 
+### Admin features
+
+- Fixed: syncing an autofiche no longer shows an error when the car fiche was created and updated.
+
 ### Technical
 
 - Added: support chat stream errors are logged and flushed to PostHog.
