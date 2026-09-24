@@ -10,8 +10,8 @@ export function setCurrentStep(result: SimulationEngineResult, phase: Simulation
   result.currentStep = phase;
 }
 
-export function addStep(result: SimulationResultBuilder, status: SimulationStepIcon, message: string): void {
-  result.steps.push({ status, message });
+export function addStep(result: SimulationResultBuilder, status: SimulationStepIcon, message: string, code?: SimulationStepCode): void {
+  result.steps.push(code == null ? { status, message } : { status, message, code });
 }
 
 export function addSuccessMessage(result: SimulationResultBuilder, message: string): void {
@@ -22,6 +22,6 @@ export function addInfoMessage(result: SimulationResultBuilder, message: string)
   addStep(result, SimulationStepIcon.INFO, message);
 }
 
-export function addErrorMessage(result: SimulationResultBuilder, message: string): void {
-  addStep(result, SimulationStepIcon.NOT_OK, message);
+export function addErrorMessage(result: SimulationResultBuilder, message: string, code?: SimulationStepCode): void {
+  addStep(result, SimulationStepIcon.NOT_OK, message, code);
 }

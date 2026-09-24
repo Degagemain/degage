@@ -69,6 +69,7 @@ export const simulationStepIconSchema = z.enum(SimulationStepIcon);
 export const simulationStepSchema = z.object({
   status: simulationStepIconSchema,
   message: z.string(),
+  code: z.enum(SimulationStepCode).optional(),
 });
 
 export type SimulationStep = z.infer<typeof simulationStepSchema>;

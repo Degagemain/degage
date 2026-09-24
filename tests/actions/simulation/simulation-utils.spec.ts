@@ -43,6 +43,16 @@ describe('simulation-utils', () => {
       expect(result.steps).toHaveLength(1);
       expect(result.steps[0]).toEqual({ status: SimulationStepIcon.NOT_OK, message: 'Something failed' });
     });
+
+    it('stores the rejection step code when provided', () => {
+      const result = { steps: [] as { status: string; message: string; code?: string }[] };
+      addErrorMessage(result, 'Too many kilometres', SimulationStepCode.MILEAGE_LIMIT);
+      expect(result.steps[0]).toEqual({
+        status: SimulationStepIcon.NOT_OK,
+        message: 'Too many kilometres',
+        code: SimulationStepCode.MILEAGE_LIMIT,
+      });
+    });
   });
 
   describe('setCurrentStep', () => {

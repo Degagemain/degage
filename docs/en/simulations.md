@@ -203,6 +203,8 @@ That page is addressable by id: anyone with the link can view the result; the su
 - **Read by id:** `GET /api/simulations/{id}` (public when unauthenticated; email omitted)
 - **Result URL in emails:** `{BETTER_AUTH_URL}/app/simulation/{id}` via template variable `SIMULATION_URL`
 
+A **Not OK** result shows the specific rejection (mileage, age, price, or quality) with an explanation that matches that reason.
+
 Users cannot return to the wizard from a saved result; starting again opens a new run at `/app/simulation`.
 
 ## Admin guidance

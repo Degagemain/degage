@@ -25,6 +25,7 @@ import {
   STEP_COST_SCENARIOS,
   STEP_RESULT,
 } from '../simulation-public.constants';
+import { notOkReasonDetailKey } from '../not-ok-reason-detail';
 import styles from '../simulation.module.css';
 
 type Props = {
@@ -82,6 +83,7 @@ export function SimulationResultView({ simulation }: Props) {
   const displaySuccess = isSuccessResult;
   const displayNotOk = isNotOkResult;
   const displayUnclear = isUnclearResult;
+  const notOkDetailKey = useMemo(() => notOkReasonDetailKey(simulation.steps), [simulation.steps]);
   const showNewRegionWarning = displaySuccess && !simulation.townHasActiveMembers;
   const townDisplayName = simulation.townMunicipality || simulation.town.name || '';
 
@@ -356,7 +358,7 @@ export function SimulationResultView({ simulation }: Props) {
                   <div className={styles.noGoReasonEyebrow}>{t('result.notOkReasonEyebrow')}</div>
                   <div className={styles.noGoReasonTitle}>{simulation.rejectionReason?.trim() || t('result.notOkReasonTitleFallback')}</div>
                   <p className={styles.noGoReasonBody}>
-                    <InlineCopy>{t('result.notOkReasonDetail')}</InlineCopy>
+                    <InlineCopy>{t(notOkDetailKey)}</InlineCopy>
                   </p>
                 </div>
               </div>
