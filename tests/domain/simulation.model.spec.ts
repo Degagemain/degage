@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   SimulationResultCode,
+  SimulationStepCode,
   SimulationStepIcon,
   simulationRunInputParseSchema,
   simulationSchema,
@@ -19,12 +20,22 @@ describe('simulationStepSchema', () => {
 
   it('strips unknown keys', () => {
     const result = simulationStepSchema.safeParse({
-      code: 'mileage_limit',
+      extra: true,
       status: SimulationStepIcon.OK,
       message: 'x',
     });
     expect(result.success).toBe(true);
     if (result.success) expect(result.data).toEqual({ status: SimulationStepIcon.OK, message: 'x' });
+  });
+
+  it('keeps a known rejection step code', () => {
+    const result = simulationStepSchema.safeParse({
+      status: SimulationStepIcon.NOT_OK,
+      message: 'Max 250000 km',
+      code: SimulationStepCode.MILEAGE_LIMIT,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.code).toBe(SimulationStepCode.MILEAGE_LIMIT);
   });
 
   it('rejects invalid status', () => {

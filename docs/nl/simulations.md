@@ -201,6 +201,8 @@ Die pagina is bereikbaar via id: iedereen met de link kan het resultaat bekijken
 - **Opvragen op id:** `GET /api/simulations/{id}` (publiek zonder login; e-mail weggelaten)
 - **Resultaat-URL in e-mails:** `{BETTER_AUTH_URL}/app/simulation/{id}` via sjabloonvariabele `SIMULATION_URL`
 
+Een resultaat **Niet OK** toont de concrete afwijzing (kilometerstand, leeftijd, prijs of kwaliteit) met een uitleg die bij die reden past.
+
 Gebruikers kunnen niet terug naar de wizard vanaf een opgeslagen resultaat; opnieuw proberen start een nieuwe run op `/app/simulation`.
 
 ## Richtlijnen voor admins

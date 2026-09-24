@@ -202,6 +202,8 @@ sur `GET /api/simulations/{id}` anonyme. Les utilisateurs connectés (y compris 
 - **Lecture par id :** `GET /api/simulations/{id}` (public sans connexion ; e-mail omis)
 - **URL résultat dans les e-mails :** `{BETTER_AUTH_URL}/app/simulation/{id}` via la variable `SIMULATION_URL`
 
+Un résultat **Not OK** affiche le motif précis (kilométrage, âge, prix ou qualité) avec une explication qui correspond à ce motif.
+
 Les utilisateurs ne peuvent pas revenir à l'assistant depuis un résultat enregistré ; une nouvelle tentative démarre sur `/app/simulation`.
 
 ## Conseils pour les admins

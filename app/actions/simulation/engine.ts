@@ -68,7 +68,7 @@ export async function passesMileageRule(result: SimulationResultBuilder, mileage
   const passed = mileage <= maxMileage;
   logger.debug('passesMileageRule', { mileage, maxMileage, passed });
   const status = passed ? SimulationStepIcon.OK : SimulationStepIcon.NOT_OK;
-  addStep(result, status, await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage }));
+  addStep(result, status, await getSimulationMessage(SimulationStepCode.MILEAGE_LIMIT, { maxMileage }), SimulationStepCode.MILEAGE_LIMIT);
   return passed;
 }
 
@@ -77,7 +77,7 @@ export async function passesAgeRule(result: SimulationResultBuilder, firstRegist
   const limitDate = addYears(firstRegisteredAt, maxAgeYears);
   const passed = !isBefore(limitDate, new Date());
   const status = passed ? SimulationStepIcon.OK : SimulationStepIcon.NOT_OK;
-  addStep(result, status, await getSimulationMessage(SimulationStepCode.CAR_LIMIT, params));
+  addStep(result, status, await getSimulationMessage(SimulationStepCode.CAR_LIMIT, params), SimulationStepCode.CAR_LIMIT);
   return passed;
 }
 
@@ -303,7 +303,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
       );
     } else {
       const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
-      addErrorMessage(result, priceFailure);
+      addErrorMessage(result, priceFailure, SimulationStepCode.PRICE_CRITERIA_NOT_MET);
       result.resultCode = SimulationResultCode.NOT_OK;
       result.rejectionReason = priceFailure;
       return result;
@@ -364,7 +364,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
 
   if (bonusPoints < 2) {
     const qualityFailure = await getSimulationMessage(SimulationStepCode.QUALITY_CRITERIA_NOT_MET);
-    addErrorMessage(result, qualityFailure);
+    addErrorMessage(result, qualityFailure, SimulationStepCode.QUALITY_CRITERIA_NOT_MET);
     result.resultCode = SimulationResultCode.NOT_OK;
     result.rejectionReason = qualityFailure;
     return result;
@@ -379,7 +379,7 @@ export async function tryRunSimulationEngine(input: SimulationRunInput, result: 
   }
 
   const priceFailure = await getSimulationMessage(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
-  addErrorMessage(result, priceFailure);
+  addErrorMessage(result, priceFailure, SimulationStepCode.PRICE_CRITERIA_NOT_MET);
   result.resultCode = SimulationResultCode.NOT_OK;
   result.rejectionReason = priceFailure;
 

@@ -87,7 +87,7 @@ import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { hubSchema } from '@/domain/hub.model';
-import { SimulationStepIcon } from '@/domain/simulation.model';
+import { SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 import { dbHubRead } from '@/storage/hub/hub.read';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
@@ -107,10 +107,11 @@ describe('applyMileageRule', () => {
   });
 
   it('adds not_ok step and returns false when mileage is over 250_000', async () => {
-    const result = { steps: [] as { status: string; message: string }[] };
+    const result = { steps: [] as { status: string; message: string; code?: string }[] };
     const passed = await passesMileageRule(result, 300_000, DEFAULT_MAX_MILEAGE);
     expect(passed).toBe(false);
     expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
+    expect(result.steps[0].code).toBe(SimulationStepCode.MILEAGE_LIMIT);
   });
 
   it('boundary: exactly 250_000 adds ok step and returns true', async () => {
@@ -134,12 +135,13 @@ describe('applyAgeRule', () => {
   });
 
   it('adds not_ok step and returns false when car is older than 15 years', async () => {
-    const result = { steps: [] as { status: string; message: string }[] };
+    const result = { steps: [] as { status: string; message: string; code?: string }[] };
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
     const passed = await passesAgeRule(result, oldDate, DEFAULT_MAX_AGE_YEARS);
     expect(passed).toBe(false);
     expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
+    expect(result.steps[0].code).toBe(SimulationStepCode.CAR_LIMIT);
   });
 });
 
@@ -469,6 +471,7 @@ describe('runSimulationEngine', () => {
     const lastStep = result.steps[result.steps.length - 1];
     expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
     expect(lastStep.message).toBe('simulation.step.price_criteria_not_met');
+    expect(lastStep.code).toBe(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
   });
 
   it('returns manualReview with price_estimation_failed when estimator returns invalid prices', async () => {
@@ -556,6 +559,7 @@ describe('runSimulationEngine', () => {
     const lastStep = result.steps[result.steps.length - 1];
     expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
     expect(lastStep.message).toBe('simulation.step.quality_criteria_not_met');
+    expect(lastStep.code).toBe(SimulationStepCode.QUALITY_CRITERIA_NOT_MET);
   });
 
   it('adds an explicit NOT_OK step when price criteria are not met', async () => {
@@ -595,5 +599,6 @@ describe('runSimulationEngine', () => {
     const lastStep = result.steps[result.steps.length - 1];
     expect(lastStep.status).toBe(SimulationStepIcon.NOT_OK);
     expect(lastStep.message).toBe('simulation.step.price_criteria_not_met');
+    expect(lastStep.code).toBe(SimulationStepCode.PRICE_CRITERIA_NOT_MET);
   });
 });
