@@ -16,16 +16,14 @@ type PageProps = {
 
 export default async function FaqArticleDetailPage({ params }: PageProps) {
   const { externalId: raw } = await params;
-  const externalId = raw ? decodeURIComponent(raw) : '';
+  const externalId = decodeURIComponent(raw);
 
   const [session, locale, t] = await Promise.all([auth.api.getSession({ headers: await headers() }), getLocale(), getTranslations('faq')]);
   const isViewerAdmin = session?.user ? isAdmin(session.user) : false;
 
-  const result = externalId
-    ? await getDocumentationByExternalIdForViewer(externalId, getContentLocale(locale), isViewerAdmin, { publicCatalogOnly: true })
-    : null;
+  const result = await getDocumentationByExternalIdForViewer(externalId, getContentLocale(locale), isViewerAdmin, { publicCatalogOnly: true });
 
-  if (!result?.ok) {
+  if (!result.ok) {
     return (
       <PublicPage>
         <FaqBackToHelpLink />
