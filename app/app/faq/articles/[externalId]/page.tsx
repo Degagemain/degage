@@ -1,84 +1,31 @@
-'use client';
+import { headers } from 'next/headers';
+import { getLocale, getTranslations } from 'next-intl/server';
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-
+import { auth } from '@/auth';
+import { getDocumentationByExternalIdForViewer } from '@/actions/documentation/get-by-external-id-for-viewer';
 import { DocumentationMarkdown } from '@/app/components/documentation/documentation-markdown';
 import { PublicPage } from '@/app/components/public/public-shell';
-import { Skeleton } from '@/app/components/ui/skeleton';
+import { isAdmin } from '@/domain/role.utils';
+import { getContentLocale } from '@/i18n/locales';
 
 import { FaqBackToHelpLink } from '../../components/faq-back-to-help-link';
 
-type ViewerPayload = {
-  externalId: string;
-  format: 'markdown' | 'text';
-  title: string;
-  content: string;
+type PageProps = {
+  params: Promise<{ externalId: string }>;
 };
 
-export default function FaqArticleDetailPage() {
-  const params = useParams();
-  const raw = typeof params.externalId === 'string' ? params.externalId : '';
+export default async function FaqArticleDetailPage({ params }: PageProps) {
+  const { externalId: raw } = await params;
   const externalId = raw ? decodeURIComponent(raw) : '';
-  const t = useTranslations('faq');
 
-  const [state, setState] = useState<{ doc: ViewerPayload | null; loading: boolean; error: 'not_found' | 'forbidden' | 'network' | null }>({
-    doc: null,
-    loading: true,
-    error: null,
-  });
+  const [session, locale, t] = await Promise.all([auth.api.getSession({ headers: await headers() }), getLocale(), getTranslations('faq')]);
+  const isViewerAdmin = session?.user ? isAdmin(session.user) : false;
 
-  useEffect(() => {
-    if (!externalId) {
-      setState({ doc: null, loading: false, error: 'not_found' });
-      return;
-    }
-    let cancelled = false;
-    setState((s) => ({ ...s, loading: true, error: null }));
-    void fetch(
-      `/api/documentation/by-external-id/${encodeURIComponent(externalId)}?${new URLSearchParams({ publicCatalog: 'true' }).toString()}`,
-    )
-      .then(async (res) => {
-        if (cancelled) {
-          return;
-        }
-        if (res.status === 404) {
-          setState({ doc: null, loading: false, error: 'not_found' });
-          return;
-        }
-        if (res.status === 403) {
-          setState({ doc: null, loading: false, error: 'forbidden' });
-          return;
-        }
-        if (!res.ok) {
-          setState({ doc: null, loading: false, error: 'network' });
-          return;
-        }
-        const doc = (await res.json()) as ViewerPayload;
-        setState({ doc, loading: false, error: null });
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setState({ doc: null, loading: false, error: 'network' });
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [externalId]);
+  const result = externalId
+    ? await getDocumentationByExternalIdForViewer(externalId, getContentLocale(locale), isViewerAdmin, { publicCatalogOnly: true })
+    : null;
 
-  if (state.loading) {
-    return (
-      <PublicPage>
-        <Skeleton className="mb-6 h-8 w-40 rounded-lg" />
-        <Skeleton className="mb-4 h-10 w-full max-w-lg" />
-        <Skeleton className="h-40 w-full rounded-xl" />
-      </PublicPage>
-    );
-  }
-
-  if (state.error || !state.doc) {
+  if (!result?.ok) {
     return (
       <PublicPage>
         <FaqBackToHelpLink />
@@ -87,7 +34,7 @@ export default function FaqArticleDetailPage() {
     );
   }
 
-  const doc = state.doc;
+  const doc = result.doc;
 
   return (
     <PublicPage>
