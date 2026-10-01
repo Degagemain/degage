@@ -20,56 +20,63 @@ The product should feel like a helpful neighbor, not an insurance form. If the o
 
 ## Public pages (shared chrome)
 
-All unauthenticated marketing and self-service surfaces share one shell:
+All unauthenticated marketing and self-service surfaces share one shell: one neo-grotesque family, tight extra-bold headlines, a green identity bar, and a dark footer. Brand greens stay; neutrals are cool greys instead of warm stone.
 
-| Piece            | Location                                            | Notes                                                     |
-| ---------------- | --------------------------------------------------- | --------------------------------------------------------- |
-| Theme tokens     | `app/app/components/public/public-theme.module.css` | CSS variables on `.publicTheme`                           |
-| Layout utilities | `app/app/components/public/public-layout.ts`        | Container widths, section spacing                         |
-| Header           | `app/app/components/public/public-header.tsx`       | Fixed, logo image, language switcher, sign-in / user menu |
-| Shell            | `app/app/components/public/public-shell.tsx`        | Wraps header + main; use on FAQ, simulation, etc.         |
-| Login dialog     | `app/app/components/public/public-login-dialog.tsx` | Guest sign-in entry points                                |
+| Piece            | Location                                            | Notes                                                            |
+| ---------------- | --------------------------------------------------- | ---------------------------------------------------------------- |
+| Typeface         | `app/app/components/public/public-fonts.ts`         | Archivo via `next/font`; scoped to public only                   |
+| Theme tokens     | `app/app/components/public/public-theme.module.css` | CSS variables on `.publicTheme`                                  |
+| Layout utilities | `app/app/components/public/public-layout.ts`        | Container widths, section spacing                                |
+| Header           | `app/app/components/public/public-header.tsx`       | Fixed, 3px green bar, logo, nav, language, sign-in / user menu   |
+| Footer           | `app/app/components/public/public-footer.tsx`       | Dark band, FAQ / simulation / support                            |
+| Shell            | `app/app/components/public/public-shell.tsx`        | Wraps header + main + footer; use on FAQ, simulation, auth, etc. |
+| Login dialog     | `app/app/components/public/public-login-dialog.tsx` | Guest sign-in entry points                                       |
 
-**Used on:** landing (`/app`), FAQ (`/app/faq/*`), public simulation (`/app/simulation`).
+**Used on:** landing (`/app`), FAQ (`/app/faq/*`), public simulation (`/app/simulation`), auth, dashboard, account, car onboarding. **Not used on** `/app/admin/**`.
 
 ### Page canvas
 
-| Property             | Value                                       |
-| -------------------- | ------------------------------------------- |
-| Background           | `#fafaf9` (Tailwind `stone-50`)             |
-| Body text            | `#1c1917` (`stone-900`)                     |
-| Secondary text       | `stone-600` / `stone-500`                   |
-| Max content width    | `max-w-6xl` (header + default page content) |
-| Narrow wizard column | `max-w-[880px]` via `publicContainerNarrow` |
+| Property              | Value                                       |
+| --------------------- | ------------------------------------------- |
+| Background            | `#ffffff`                                   |
+| Body text             | `#121212`                                   |
+| Secondary text        | `#4a4a4a` / `#6b6b6b`                       |
+| Max content width     | `max-w-6xl` (header + default page content) |
+| Narrow wizard column  | `max-w-[880px]` via `publicContainerNarrow` |
+| Card / control radius | 12px / 8px (pills 999px)                    |
 
 ### Header
 
 - **Fixed** to the top; content scrolls underneath.
-- **At rest:** transparent background, no border.
-- **Scrolled (>8px):** `stone-50` at 90% opacity, backdrop blur, bottom border `stone-200/80`.
+- **Always solid white** with a **3px brand-green top bar** and a 1px bottom hairline. Scrolled state adds a light shadow + blur.
 - **Logo:** `/landing/logo.png`, links to `/app`, height `h-7` / `sm:h-8`.
+- **Nav (sm+):** Simulation, Help & FAQ — active item gets a 3px green underline.
 - **Actions (right):** language switcher; guests get a **rounded-full** primary “Sign in” button; signed-in users get `UserMenu`.
-- **Main offset:** `pt-14 sm:pt-16` on `<main>` (`publicMainPadTop`) so content clears the header.
+- **Main offset:** `pt-[3.75rem] sm:pt-[4.25rem]` on `<main>` (`publicMainPadTop`) so content clears the header + identity bar.
+
+### Footer
+
+Dark `#121212` band with a 3px green top edge. Brand name extra-bold; links to FAQ, simulation, and support chat.
 
 ### Brand palette (logo-aligned greens)
 
 Primary brand colors follow the Dégage logo (mint / grass / forest):
 
-| Token                    | Hex       | Use                                 |
-| ------------------------ | --------- | ----------------------------------- |
-| `--public-brand`         | `#388e3c` | Primary buttons, links, key accents |
-| `--public-brand-hover`   | `#2e7d32` | Button hover                        |
-| `--public-accent`        | `#43a047` | Eyebrows, icons, highlights         |
-| `--public-accent-strong` | `#2e7d32` | Strong accents                      |
-| `--public-accent-deep`   | `#1b5e20` | Stats, deep headings on light bg    |
-| `--public-surface`       | `#f0f7f0` | Tinted panels, selected tiles       |
-| `--public-surface-muted` | `#e3f1e4` | Softer green backgrounds            |
-| `--public-border`        | `#c5e3c6` | Borders on green-tinted surfaces    |
-| `--public-icon-bg`       | `#e8f5e9` | Icon wells                          |
+| Token                    | Hex       | Use                                  |
+| ------------------------ | --------- | ------------------------------------ |
+| `--public-brand`         | `#2f8a38` | Primary buttons, links, identity bar |
+| `--public-brand-hover`   | `#267530` | Button hover                         |
+| `--public-accent`        | `#3b9a42` | Eyebrows, icons, highlights          |
+| `--public-accent-strong` | `#2e7d32` | Strong accents                       |
+| `--public-accent-deep`   | `#1b5e20` | Stats, deep headings on light bg     |
+| `--public-surface`       | `#eef7ee` | Tinted panels, selected tiles        |
+| `--public-surface-muted` | `#e3f1e4` | Softer green backgrounds             |
+| `--public-border`        | `#c5e3c6` | Borders on green-tinted surfaces     |
+| `--public-icon-bg`       | `#e8f5e9` | Icon wells                           |
 
-**Glow (optional, marketing hero):** radial gradients using `--public-glow` / `--public-glow-mint` (RGB tuples for `rgb(var(--public-glow) / α)`).
+**Kickers:** uppercase, 0.1em tracking, 8px green square before the label (`.kicker`).
 
-**Primary CTA pattern:** `rounded-full`, `bg-[var(--public-brand)]`, white text, subtle hover lift (`-translate-y-0.5`) on marketing buttons.
+**Primary CTA pattern:** `rounded-full`, `bg-[var(--public-brand)]`, white text, extra-bold. Form buttons use `r8` (8px).
 
 ### Header vs page titles
 
@@ -103,20 +110,20 @@ Wizard and form-heavy screens (simulation steps) reuse the public shell but keep
 
 **Surfaces**
 
-| Token     | Hex       | Use                                              |
-| --------- | --------- | ------------------------------------------------ |
-| `bg`      | `#fafaf9` | Page background (aligned with public `stone-50`) |
-| `surface` | `#FFFFFF` | Cards, inputs, modals                            |
-| `sand`    | `#EDE7DC` | Subtle separators, inactive elements             |
-| `border`  | `#DDD6CB` | Card edges, dividers                             |
+| Token     | Hex       | Use                                  |
+| --------- | --------- | ------------------------------------ |
+| `bg`      | `#ffffff` | Page background                      |
+| `surface` | `#FFFFFF` | Cards, inputs, modals                |
+| `sand`    | `#EEEEEE` | Subtle separators, inactive elements |
+| `border`  | `#E2E2E2` | Card edges, dividers                 |
 
 **Text**
 
 | Token   | Hex       | Use                            |
 | ------- | --------- | ------------------------------ |
-| `ink`   | `#181510` | Section headings, primary text |
-| `mid`   | `#5A5248` | Body, secondary labels         |
-| `light` | `#9C9489` | Hints, captions, placeholders  |
+| `ink`   | `#121212` | Section headings, primary text |
+| `mid`   | `#4A4A4A` | Body, secondary labels         |
+| `light` | `#8A8A8A` | Hints, captions, placeholders  |
 
 **Semantic accents**
 
@@ -139,11 +146,11 @@ All spacing is a multiple of 8. No exceptions.
 
 ### Border radius — three sizes
 
-| Token | Value | Use                                         |
-| ----- | ----- | ------------------------------------------- |
-| `r8`  | 8px   | Inputs, small buttons, inline badges        |
-| `r12` | 12px  | Cards, panels, FAQ containers, hero blocks  |
-| `r20` | 20px  | Pills, badges, toggles, tags, round buttons |
+| Token | Value | Use                                        |
+| ----- | ----- | ------------------------------------------ |
+| `r8`  | 8px   | Inputs, small buttons, inline badges       |
+| `r12` | 12px  | Cards, panels, FAQ containers, hero blocks |
+| `r20` | 20px  | Pills, badges, toggles, tags               |
 
 ### Layout widths
 
@@ -157,17 +164,18 @@ All spacing is a multiple of 8. No exceptions.
 
 ### Typography
 
-| Name      | Size | Weight | Font     | Use                                           |
-| --------- | ---- | ------ | -------- | --------------------------------------------- |
-| `title`   | 28px | 800    | Fraunces | Section titles inside flows (not page chrome) |
-| `heading` | 18px | 700    | Fraunces | Section headings, reason labels               |
-| `body`    | 15px | 400    | DM Sans  | Body copy, inputs, button text                |
-| `caption` | 12px | 600    | DM Sans  | Labels, sidebar text, FAQ questions           |
-| `micro`   | 11px | 600    | DM Sans  | Tags, badges, footnotes, eyebrows             |
+| Name      | Size          | Weight | Font    | Use                                           |
+| --------- | ------------- | ------ | ------- | --------------------------------------------- |
+| `display` | clamp 36–68px | 800    | Archivo | Marketing heroes (`.displayTitle`)            |
+| `title`   | 28px          | 800    | Archivo | Section titles inside flows (not page chrome) |
+| `heading` | 18px          | 800    | Archivo | Section headings, reason labels               |
+| `body`    | 15px          | 400    | Archivo | Body copy, inputs, button text                |
+| `caption` | 12px          | 600    | Archivo | Labels, sidebar text, FAQ questions           |
+| `micro`   | 11px          | 700    | Archivo | Tags, badges, footnotes, eyebrows             |
 
-**Tracking:** `letter-spacing: 0.06em` on uppercase labels (eyebrows, card section headers).
+**Tracking:** `letter-spacing: -0.03em` to `-0.04em` on display/titles; `0.1em` on uppercase kickers.
 
-**Pairing:** Fraunces for headings (warmth). DM Sans for functional UI. Marketing landing may use system `font-semibold` at larger sizes for hero display type.
+**Pairing:** Archivo for headlines (extra-bold, tight) and UI. Admin zone keeps the ShadCN system stack.
 
 **Exception:** Large numbers in result contexts (coverage %, trip totals) may sit outside the scale as visual anchors.
 
@@ -212,7 +220,7 @@ All spacing is a multiple of 8. No exceptions.
 - `brand` background, white text, `r8`, padding 12px 24px
 - Disabled: `sand` / `light` text
 - Secondary: outline `border`, `mid` text
-- **Public header sign-in:** `rounded-full` (exception to `r8` for chrome CTAs)
+- **Public header sign-in / marketing CTAs:** `rounded-full`
 
 **Rule:** One primary button per screen. “Back” is always secondary.
 
@@ -278,7 +286,7 @@ Car animation, people bar, contextual loading, confirmation celebration—nice-t
 □ Uses PublicShell on new public routes (FAQ, simulation, marketing)?
 □ Header + main offset; no second top bar unless dev-only?
 □ Page titles in content, not in the fixed header?
-□ Titles and body on the type scale where Fraunces/DM Sans apply?
+□ Titles and body on the Archivo type scale?
 □ Spacing on the 8px grid?
 □ Radius from 8 / 12 / 20?
 □ At most 2 supporting blocks beside the main story?

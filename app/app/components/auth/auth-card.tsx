@@ -13,9 +13,9 @@ type AuthCardProps = {
 
 export function AuthCard({ title, description, children, className }: AuthCardProps) {
   return (
-    <Card className={cn('border-border bg-card w-full max-w-sm shadow-sm', className)}>
+    <Card className={cn('border-border bg-card w-full max-w-sm rounded-xl shadow-none', className)}>
       <CardHeader className="gap-1">
-        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+        <CardTitle className="text-xl font-extrabold tracking-tight">{title}</CardTitle>
         {description ? (
           <CardDescription className="text-sm">
             <InlineCopy>{description}</InlineCopy>

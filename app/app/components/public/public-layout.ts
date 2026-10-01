@@ -4,8 +4,8 @@ export const publicContainer = 'mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8';
 /** Default vertical padding for full-width bands (80px → 96px). */
 export const publicSectionPad = 'py-20 sm:py-24';
 
-/** Clears fixed header; use on first content block below the header. */
-export const publicMainPadTop = 'pt-14 sm:pt-16';
+/** Clears fixed header (3px brand bar + h-14/h-16); use on first content block below the header. */
+export const publicMainPadTop = 'pt-[3.75rem] sm:pt-[4.25rem]';
 
 /** Hero: slightly more top air on marketing pages. */
 export const publicHeroPad = 'pt-20 pb-16 sm:pt-24 sm:pb-20';

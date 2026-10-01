@@ -2,6 +2,8 @@
 
 import { cn } from '@/app/lib/utils';
 
+import { publicSans } from './public-fonts';
+import { PublicFooter } from './public-footer';
 import { PublicHeroGlow } from './public-hero-glow';
 import { PublicHeader } from './public-header';
 import { publicContainer, publicContainerNarrow, publicMainPadTop, publicPagePad } from './public-layout';
@@ -15,10 +17,21 @@ type PublicShellProps = {
 
 export function PublicShell({ children, className, heroGlow }: PublicShellProps) {
   return (
-    <div className={cn(styles.publicTheme, styles.pageSurface, 'min-h-screen', heroGlow && 'relative overflow-x-hidden', className)}>
+    <div
+      className={cn(
+        publicSans.variable,
+        publicSans.className,
+        styles.publicTheme,
+        styles.pageSurface,
+        'flex min-h-screen flex-col',
+        heroGlow && 'relative overflow-x-hidden',
+        className,
+      )}
+    >
       {heroGlow && <PublicHeroGlow />}
       <PublicHeader />
-      <main className={cn(publicMainPadTop, heroGlow && 'relative')}>{children}</main>
+      <main className={cn(publicMainPadTop, 'flex-1', heroGlow && 'relative')}>{children}</main>
+      <PublicFooter />
     </div>
   );
 }

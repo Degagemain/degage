@@ -20,7 +20,7 @@ export function AccountSettingsPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t('settings')}</h1>
+      <h1 className="mb-6 text-3xl font-extrabold tracking-tight">{t('settings')}</h1>
       <Tabs defaultValue={initialTab} orientation="vertical" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
         <TabsList variant="line" className="h-fit w-full shrink-0 sm:w-48">
           <TabsTrigger value="profile">{t('accountTabProfile')}</TabsTrigger>

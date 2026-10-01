@@ -1,17 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap');
-
 .root {
-  --demo-brand: var(--public-brand, #388e3c);
+  --demo-brand: var(--public-brand, #2f8a38);
   --demo-brand-mid: var(--public-accent-strong, #2e7d32);
-  --demo-brand-light: var(--public-surface, #f0f7f0);
+  --demo-brand-light: var(--public-surface, #eef7ee);
   --demo-brand-border: var(--public-border, #c5e3c6);
-  --demo-bg: #fafaf9;
+  --demo-bg: #ffffff;
   --demo-surface: #ffffff;
-  --demo-sand: #ede7dc;
-  --demo-border: #ddd6cb;
-  --demo-ink: #181510;
-  --demo-mid: #5a5248;
-  --demo-light: #9c9489;
+  --demo-sand: #eeeeee;
+  --demo-border: #e2e2e2;
+  --demo-ink: #121212;
+  --demo-mid: #4a4a4a;
+  --demo-light: #8a8a8a;
   --demo-blue: #1d548a;
   --demo-blue-bg: #eaf1fa;
   --demo-blue-border: #b5cde5;
@@ -30,8 +28,8 @@
   --demo-r8: 8px;
   --demo-r12: 12px;
   --demo-r20: 20px;
-  --demo-serif: 'Fraunces', Georgia, serif;
-  --demo-sans: 'DM Sans', system-ui, sans-serif;
+  --demo-serif: var(--font-public), 'Archivo', system-ui, sans-serif;
+  --demo-sans: var(--font-public), 'Archivo', system-ui, sans-serif;
 
   font-family: var(--demo-sans);
 }

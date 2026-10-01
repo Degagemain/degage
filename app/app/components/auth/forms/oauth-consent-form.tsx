@@ -73,7 +73,7 @@ export function OAuthConsentForm() {
           <AuthPrimaryButton type="button" onClick={onAccept} disabled={loading || scopes.length === 0}>
             {t('accept')}
           </AuthPrimaryButton>
-          <Button type="button" variant="outline" className="h-10 w-full rounded-full" onClick={onDeny} disabled={loading}>
+          <Button type="button" variant="outline" className="h-10 w-full rounded-lg" onClick={onDeny} disabled={loading}>
             {t('deny')}
           </Button>
         </div>

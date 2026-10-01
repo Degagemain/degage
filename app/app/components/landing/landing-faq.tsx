@@ -84,7 +84,9 @@ export function LandingFaq() {
           doc.format === 'markdown' ? <DocumentationMarkdown markdown={tr.content} /> : <p className="m-0 whitespace-pre-wrap">{tr.content}</p>;
         return (
           <AccordionItem key={value} value={value} className="border-[var(--public-image-border)]">
-            <AccordionTrigger className={cn('py-3 text-base font-medium hover:no-underline', styles.textHeading)}>{tr.title}</AccordionTrigger>
+            <AccordionTrigger className={cn('py-3 text-base font-bold tracking-tight hover:no-underline', styles.textHeading)}>
+              {tr.title}
+            </AccordionTrigger>
             <AccordionContent className={cn('text-sm leading-relaxed', styles.textMuted)}>{body}</AccordionContent>
           </AccordionItem>
         );

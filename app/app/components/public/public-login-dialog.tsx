@@ -32,10 +32,10 @@ export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn(styles.publicTheme, 'gap-0 border-[var(--public-dialog-border)] bg-[var(--public-dialog-bg)] p-0 sm:max-w-md')}
+        className={cn(styles.publicTheme, 'gap-0 rounded-xl border-[var(--public-dialog-border)] bg-[var(--public-dialog-bg)] p-0 sm:max-w-md')}
       >
         <DialogHeader className="border-b border-[var(--public-dialog-border)] px-6 py-5 text-left">
-          <DialogTitle className={cn('text-xl font-semibold', styles.textHeading)}>{t('title')}</DialogTitle>
+          <DialogTitle className={cn('text-xl font-extrabold tracking-tight', styles.textHeading)}>{t('title')}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-3 p-6">

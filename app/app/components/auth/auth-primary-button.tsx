@@ -13,7 +13,10 @@ export function AuthPrimaryButton({ loading, children, className, disabled, ...p
     <Button
       type="submit"
       disabled={disabled || loading}
-      className={cn('h-10 w-full rounded-full border-0 bg-[var(--public-brand)] text-white hover:bg-[var(--public-brand-hover)]', className)}
+      className={cn(
+        'h-10 w-full rounded-lg border-0 bg-[var(--public-brand)] font-bold text-white hover:bg-[var(--public-brand-hover)]',
+        className,
+      )}
       {...props}
     >
       {loading ? <Loader2 className="size-4 animate-spin" aria-hidden /> : children}
