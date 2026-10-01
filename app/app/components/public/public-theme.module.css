@@ -1,59 +1,69 @@
-/* Palette aligned with Dégage logo: mint (#99cc99), grass (#4caf50), forest (#2e7d32) */
+/* Broadcast-inspired public chrome. Brand greens from the Dégage logo, cooler news neutrals. */
 .publicTheme {
-  --public-brand: #388e3c;
-  --public-brand-hover: #2e7d32;
-  --public-accent: #43a047;
+  --public-brand: #2f8a38;
+  --public-brand-hover: #267530;
+  --public-accent: #3b9a42;
   --public-accent-strong: #2e7d32;
   --public-accent-deep: #1b5e20;
-  --public-surface: #f0f7f0;
+  --public-surface: #eef7ee;
   --public-surface-muted: #e3f1e4;
   --public-border: #c5e3c6;
   --public-icon-bg: #e8f5e9;
-  --public-on-brand-muted: #e8f5e9;
-  --public-glow: 76 175 80;
+  --public-on-brand-muted: #d7ead8;
+  --public-glow: 47 138 56;
   --public-glow-mint: 153 204 153;
 
-  --public-page-bg: #fafaf9;
-  --public-page-fg: #1c1917;
-  --public-header-border: rgb(231 229 228 / 0.8);
-  --public-header-bg: rgb(250 250 249 / 0.9);
-  --public-header-bg-blur: rgb(250 250 249 / 0.75);
-  --public-section-border: rgb(231 229 228 / 0.8);
+  --public-page-bg: #ffffff;
+  --public-page-fg: #121212;
+  --public-header-border: #e6e6e6;
+  --public-header-bg: #ffffff;
+  --public-header-bg-blur: rgb(255 255 255 / 0.94);
+  --public-section-border: #e6e6e6;
   --public-elevated-bg: #ffffff;
-  --public-muted-section-bg: #fafaf9;
-  --public-card-border: rgb(231 229 228 / 0.8);
+  --public-muted-section-bg: #f5f5f5;
+  --public-card-border: #e6e6e6;
   --public-card-bg: #ffffff;
-  --public-text-muted: #57534e;
-  --public-text-subtle: #78716c;
-  --public-text-heading: #1c1917;
-  --public-text-body: #44403c;
-  --public-text-footer: #78716c;
-  --public-text-footer-strong: #292524;
-  --public-image-border: #e7e5e4;
-  --public-image-bg: #f5f5f4;
-  --public-pill-bg: #f5f5f4;
-  --public-pill-fg: #44403c;
-  --public-advantage-border: #f5f5f4;
-  --public-advantage-bg: rgb(250 250 249 / 0.5);
-  --public-dialog-bg: #fafaf9;
-  --public-dialog-border: #e7e5e4;
+  --public-text-muted: #4a4a4a;
+  --public-text-subtle: #6b6b6b;
+  --public-text-heading: #121212;
+  --public-text-body: #2a2a2a;
+  --public-text-footer: #b8b8b8;
+  --public-text-footer-strong: #ffffff;
+  --public-image-border: #e6e6e6;
+  --public-image-bg: #f0f0f0;
+  --public-pill-bg: #eef7ee;
+  --public-pill-fg: #1b5e20;
+  --public-advantage-border: #e6e6e6;
+  --public-advantage-bg: #fafafa;
+  --public-dialog-bg: #ffffff;
+  --public-dialog-border: #e6e6e6;
   --public-option-bg: #ffffff;
-  --public-option-icon-bg: #f5f5f4;
-  --public-option-icon-fg: #44403c;
-  --public-lang-fg: #57534e;
-  --public-lang-hover-bg: rgb(245 245 244 / 0.8);
-  --public-lang-hover-fg: #1c1917;
+  --public-option-icon-bg: #f5f5f5;
+  --public-option-icon-fg: #2a2a2a;
+  --public-lang-fg: #2a2a2a;
+  --public-lang-hover-bg: #f5f5f5;
+  --public-lang-hover-fg: #121212;
+  --public-footer-bg: #121212;
+  --public-radius: 2px;
+  --public-radius-control: 4px;
+  --public-font: var(--font-public), 'Archivo', system-ui, sans-serif;
+
+  font-family: var(--public-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .heroGlow {
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgb(var(--public-glow) / 0.14), transparent);
+  background: linear-gradient(180deg, rgb(var(--public-glow) / 0.06), transparent 70%);
 }
 
 .badgeAccent {
-  border: 1px solid #a5d6a7;
-  background-color: #c8e6c9;
-  color: #2e7d32;
-  font-weight: 600;
+  border: 1px solid var(--public-border);
+  background-color: var(--public-surface);
+  color: var(--public-accent-deep);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .pageSurface {
@@ -61,16 +71,102 @@
   color: var(--public-page-fg);
 }
 
-.headerScrolled {
+.headerBar {
+  border-top: 3px solid var(--public-brand);
   border-bottom: 1px solid var(--public-header-border);
   background-color: var(--public-header-bg);
-  backdrop-filter: blur(12px);
+}
+
+.headerScrolled {
+  box-shadow: 0 1px 0 rgb(18 18 18 / 0.04);
 }
 
 @supports (backdrop-filter: blur(0)) {
   .headerScrolled {
     background-color: var(--public-header-bg-blur);
+    backdrop-filter: blur(12px);
   }
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 2px;
+  border-bottom: 3px solid transparent;
+  color: var(--public-text-heading);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: var(--public-brand);
+}
+
+.navLinkActive {
+  border-bottom-color: var(--public-brand);
+  color: var(--public-brand);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--public-brand);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.kicker::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: var(--public-brand);
+}
+
+.displayTitle {
+  color: var(--public-text-heading);
+  font-family: var(--public-font);
+  font-size: clamp(2.25rem, 5vw, 4.25rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.sectionTitle {
+  color: var(--public-text-heading);
+  font-family: var(--public-font);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.pageTitle {
+  color: var(--public-text-heading);
+  font-family: var(--public-font);
+  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.primaryCta {
+  border-radius: var(--public-radius-control);
+  background-color: var(--public-brand);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.primaryCta:hover {
+  background-color: var(--public-brand-hover);
 }
 
 .sectionBorderTop {
@@ -95,6 +191,7 @@
 
 .benefitCard {
   border: 1px solid var(--public-card-border);
+  border-left: 3px solid var(--public-brand);
   background-color: var(--public-card-bg);
 }
 
@@ -127,9 +224,17 @@
   background-color: var(--public-image-bg);
 }
 
+.leadImage {
+  border-radius: var(--public-radius);
+  overflow: hidden;
+}
+
 .pillBadge {
   background-color: var(--public-pill-bg);
   color: var(--public-pill-fg);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .advantageItem {
@@ -149,4 +254,10 @@
 .langTrigger:hover {
   background-color: var(--public-lang-hover-bg);
   color: var(--public-lang-hover-fg);
+}
+
+.siteFooter {
+  background-color: var(--public-footer-bg);
+  color: var(--public-text-footer);
+  border-top: 3px solid var(--public-brand);
 }

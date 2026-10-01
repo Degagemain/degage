@@ -83,7 +83,7 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
   if (isSessionPending || isLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="size-8 animate-spin rounded-full border-4 border-[#388e3c] border-t-transparent" />
+        <div className="size-8 animate-spin rounded-full border-4 border-[#2f8a38] border-t-transparent" />
       </div>
     );
   }

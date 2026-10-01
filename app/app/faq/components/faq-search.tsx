@@ -75,14 +75,14 @@ export function FaqSearch({ className }: { className?: string }) {
         }}
         onFocus={() => setOpen(true)}
         placeholder={t('searchPlaceholder')}
-        className="border-border bg-card h-12 rounded-lg text-base"
+        className="border-border bg-card h-12 rounded-[4px] text-base"
         aria-autocomplete="list"
         aria-expanded={open && debounced.length >= 2}
         autoComplete="off"
       />
       {open && debounced.length >= 2 && (
         <div
-          className="border-border absolute z-20 mt-2 max-h-80 w-full overflow-auto rounded-xl border bg-white py-1 shadow-md"
+          className="border-border absolute z-20 mt-2 max-h-80 w-full overflow-auto rounded-[4px] border bg-white py-1 shadow-md"
           role="listbox"
         >
           {loading && <p className="text-muted-foreground px-4 py-3 text-sm">{t('searchLoading')}</p>}

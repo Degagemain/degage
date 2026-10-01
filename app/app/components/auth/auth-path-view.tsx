@@ -51,7 +51,7 @@ function AuthPathContent({ path }: AuthPathViewProps) {
 export function AuthPathView({ path }: AuthPathViewProps) {
   return (
     <PublicPage narrow className="flex flex-col items-center justify-center py-12">
-      <Suspense fallback={<div className="h-64 w-full max-w-sm animate-pulse rounded-xl bg-stone-200" />}>
+      <Suspense fallback={<div className="h-64 w-full max-w-sm animate-pulse rounded-[4px] bg-neutral-200" />}>
         <AuthPathContent path={path} />
       </Suspense>
     </PublicPage>

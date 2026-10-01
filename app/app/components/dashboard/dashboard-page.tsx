@@ -13,10 +13,10 @@ type DashboardPageProps = {
   name: string;
 };
 
-const cardClassName = 'flex h-full flex-col rounded-xl border border-stone-200/80 bg-white p-6 shadow-none';
+const cardClassName = 'flex h-full flex-col border border-[var(--public-card-border)] bg-white p-6 shadow-none';
 
 const iconWellClassName =
-  'flex size-10 shrink-0 items-center justify-center self-start rounded-lg bg-[var(--public-icon-bg)] text-[var(--public-accent-strong)]';
+  'flex size-10 shrink-0 items-center justify-center self-start bg-[var(--public-icon-bg)] text-[var(--public-accent-strong)]';
 
 const iconClassName = 'size-5 shrink-0';
 
@@ -26,8 +26,8 @@ export function DashboardPage({ name }: DashboardPageProps) {
 
   return (
     <PublicPage>
-      <h1 className="text-[28px] leading-tight font-extrabold tracking-tight text-stone-900">{t('title', { name })}</h1>
-      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-stone-600">
+      <h1 className="text-[32px] leading-none font-extrabold tracking-tight text-[#121212]">{t('title', { name })}</h1>
+      <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-[#4a4a4a]">
         <InlineCopy>{t('intro')}</InlineCopy>
       </p>
 
@@ -36,11 +36,14 @@ export function DashboardPage({ name }: DashboardPageProps) {
           <span className={iconWellClassName} aria-hidden>
             <Car className={iconClassName} />
           </span>
-          <h2 className="mt-4 text-lg font-bold text-stone-900">{t('cards.simulation.title')}</h2>
-          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600">
+          <h2 className="mt-4 text-lg font-extrabold tracking-tight text-[#121212]">{t('cards.simulation.title')}</h2>
+          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-[#4a4a4a]">
             <InlineCopy>{t('cards.simulation.description')}</InlineCopy>
           </p>
-          <Button className="mt-6 h-11 rounded-lg bg-[var(--public-brand)] px-6 text-white hover:bg-[var(--public-brand-hover)]" asChild>
+          <Button
+            className="mt-6 h-11 rounded-[4px] bg-[var(--public-brand)] px-6 font-bold text-white hover:bg-[var(--public-brand-hover)]"
+            asChild
+          >
             <Link href="/app/simulation">{t('cards.simulation.cta')}</Link>
           </Button>
         </article>
@@ -49,11 +52,11 @@ export function DashboardPage({ name }: DashboardPageProps) {
           <span className={iconWellClassName} aria-hidden>
             <CircleHelp className={iconClassName} />
           </span>
-          <h2 className="mt-4 text-lg font-bold text-stone-900">{t('cards.faq.title')}</h2>
-          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600">
+          <h2 className="mt-4 text-lg font-extrabold tracking-tight text-[#121212]">{t('cards.faq.title')}</h2>
+          <p className="mt-2 flex-1 text-[15px] leading-relaxed text-[#4a4a4a]">
             <InlineCopy>{t('cards.faq.description')}</InlineCopy>
           </p>
-          <Button variant="outline" className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50" asChild>
+          <Button variant="outline" className="mt-6 h-11 rounded-[4px] border-[#e2e2e2] text-[#2a2a2a] hover:bg-[#f5f5f5]" asChild>
             <Link href="/app/faq">{t('cards.faq.cta')}</Link>
           </Button>
         </article>
@@ -63,11 +66,11 @@ export function DashboardPage({ name }: DashboardPageProps) {
             <span className={iconWellClassName} aria-hidden>
               <Shield className={iconClassName} />
             </span>
-            <h2 className="mt-4 text-lg font-bold text-stone-900">{t('cards.admin.title')}</h2>
-            <p className="mt-2 flex-1 text-[15px] leading-relaxed text-stone-600">
+            <h2 className="mt-4 text-lg font-extrabold tracking-tight text-[#121212]">{t('cards.admin.title')}</h2>
+            <p className="mt-2 flex-1 text-[15px] leading-relaxed text-[#4a4a4a]">
               <InlineCopy>{t('cards.admin.description')}</InlineCopy>
             </p>
-            <Button variant="outline" className="mt-6 h-11 rounded-lg border-stone-300 text-stone-700 hover:bg-stone-50" asChild>
+            <Button variant="outline" className="mt-6 h-11 rounded-[4px] border-[#e2e2e2] text-[#2a2a2a] hover:bg-[#f5f5f5]" asChild>
               <Link href="/app/admin">{t('cards.admin.cta')}</Link>
             </Button>
           </article>

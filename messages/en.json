@@ -2658,6 +2658,11 @@
   "landing": {
     "brand": "Dégage!",
     "header": {
+      "nav": {
+        "label": "Main",
+        "simulation": "Simulation",
+        "faq": "Help & FAQ"
+      },
       "loginDialog": {
         "title": "Sign in",
         "degapp": {

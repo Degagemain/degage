@@ -117,7 +117,7 @@ export default function FaqGroupPage() {
 
       {!error && !loading && items.length === 0 && <p className="text-muted-foreground text-sm">{t('emptyFaq')}</p>}
 
-      <div className="border-border bg-card overflow-hidden rounded-xl border">
+      <div className="border-border bg-card overflow-hidden rounded-[4px] border">
         {items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
           if (!tr) {

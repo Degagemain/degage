@@ -62,7 +62,7 @@ export function GoogleSignInButton({ callbackURL, disabled }: GoogleSignInButton
       variant="outline"
       disabled={disabled || loading}
       onClick={handleClick}
-      className={cn('border-border bg-card text-foreground hover:bg-muted h-10 w-full rounded-full')}
+      className={cn('border-border bg-card text-foreground hover:bg-muted h-10 w-full rounded-[4px] font-semibold')}
     >
       {loading ? (
         <Loader2 className="size-4 animate-spin" aria-hidden />

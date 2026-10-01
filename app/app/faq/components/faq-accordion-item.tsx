@@ -17,7 +17,7 @@ export function FaqAccordionItem({ title, markdown }: Props) {
       <CollapsibleTrigger
         className={cn(
           'hover:bg-muted/25 flex w-full items-start justify-between gap-2 border-0 bg-transparent px-5 py-4',
-          'text-foreground text-left text-sm font-medium transition-colors',
+          'text-foreground text-left text-sm font-bold tracking-tight transition-colors',
           'outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-accent-deep)] focus-visible:ring-offset-2',
           'data-[state=open]:bg-[var(--public-surface)]/80',
         )}

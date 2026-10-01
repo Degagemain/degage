@@ -6,8 +6,8 @@ export const LANDING_HERO_HEADING = 'Share your car, share the costs';
 export const SIMULATION_SITUATION_HEADING = 'Does your car fit Dégage?';
 export const FAQ_PAGE_HEADING = 'Help & FAQ';
 
-export const LANDING_SIMULATION_LINK_COUNT = 3;
-export const LANDING_FAQ_LINK_COUNT = 2;
+export const LANDING_SIMULATION_LINK_COUNT = 5;
+export const LANDING_FAQ_LINK_COUNT = 3;
 
 export async function gotoLandingAsGuest(page: Page, baseURL: string) {
   await page.goto(`${baseURL}${LANDING_PATH}`);

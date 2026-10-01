@@ -1,5 +1,6 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { publicSans } from '@/app/components/public/public-fonts';
 import '@/app/globals.css';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -7,7 +8,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={publicSans.variable} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>

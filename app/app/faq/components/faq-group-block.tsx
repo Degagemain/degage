@@ -68,7 +68,7 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
           <Skeleton className="h-7 w-2/3 max-w-md" />
           <Skeleton className="h-5 w-32" />
         </div>
-        <Skeleton className="h-24 w-full rounded-xl" />
+        <Skeleton className="h-24 w-full rounded-[4px]" />
       </div>
     );
   }
@@ -89,7 +89,7 @@ export function FaqGroupBlock({ groupId, groupName }: Props) {
         moreHref={`/app/faq/groups/${groupId}`}
         moreLabel={t('groupShowMoreCta', { name: groupName })}
       />
-      <div className="border-border bg-card overflow-hidden rounded-xl border">
+      <div className="border-border bg-card overflow-hidden rounded-[4px] border">
         {state.items.map((doc) => {
           const tr = pickDocumentationTranslation(doc, contentLocale);
           if (!tr) {
