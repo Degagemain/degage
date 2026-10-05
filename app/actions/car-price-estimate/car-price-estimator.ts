@@ -66,6 +66,24 @@ function toPriceRange(result: GeminiPriceEstimate): PriceRange {
   return { price: result.price, min: result.rangeMin, max: result.rangeMax };
 }
 
+const isUniqueConstraintError = (error: unknown): boolean => {
+  return Boolean(error && typeof error === 'object' && 'code' in error && error.code === 'P2002');
+};
+
+const readCachedPriceRange = async (carTypeId: string, year: number, estimateYear: number): Promise<PriceRange | null> => {
+  const cached = await dbCarPriceEstimateFindByCarTypeAndYear(carTypeId, year, estimateYear);
+  if (!cached) return null;
+  const cachedEstimate: GeminiPriceEstimate = {
+    price: cached.price,
+    rangeMin: cached.rangeMin,
+    rangeMax: cached.rangeMax,
+    remarks: null,
+    articleRefs: [],
+  };
+  assertValidPriceEstimate(cachedEstimate);
+  return toPriceRange(cachedEstimate);
+};
+
 export function assertValidPriceEstimate(result: GeminiPriceEstimate): void {
   const { price, rangeMin, rangeMax } = result;
   if (!Number.isFinite(price) || price <= 0) {
@@ -104,18 +122,8 @@ export async function carValueEstimator(
   const estimateYear = backtestYear ?? new Date().getFullYear();
 
   if (carTypeId) {
-    const cached = await dbCarPriceEstimateFindByCarTypeAndYear(carTypeId, year, estimateYear);
-    if (cached) {
-      const cachedEstimate: GeminiPriceEstimate = {
-        price: cached.price,
-        rangeMin: cached.rangeMin,
-        rangeMax: cached.rangeMax,
-        remarks: null,
-        articleRefs: [],
-      };
-      assertValidPriceEstimate(cachedEstimate);
-      return toPriceRange(cachedEstimate);
-    }
+    const cached = await readCachedPriceRange(carTypeId, year, estimateYear);
+    if (cached) return cached;
   }
 
   const brand = await dbCarBrandRead(brandId);
@@ -157,7 +165,15 @@ export async function carValueEstimator(
       createdAt: null,
       updatedAt: null,
     };
-    await dbCarPriceEstimateCreate(estimate);
+    try {
+      await dbCarPriceEstimateCreate(estimate);
+    } catch (err) {
+      // Another writer can cache the same (carTypeId, year, estimateYear) between our lookup and insert.
+      if (!isUniqueConstraintError(err)) throw err;
+      const cached = await readCachedPriceRange(carTypeId, year, estimateYear);
+      if (!cached) throw err;
+      return cached;
+    }
   }
 
   return toPriceRange(result);
