@@ -29,54 +29,57 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
   const { data: session, isPending: isSessionPending } = authClient.useSession();
   const [carOnboarding, setCarOnboarding] = useState<CarOnboarding | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isForbidden, setIsForbidden] = useState(false);
+  const [failure, setFailure] = useState<'forbidden' | 'load' | null>(null);
   const basePath = `/app/car-onboardings/${id}`;
+
+  const redirectToSignIn = useCallback(() => {
+    router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
+  }, [pathname, router]);
 
   const load = useCallback(async () => {
     setIsLoading(true);
-    setError(null);
-    setIsForbidden(false);
+    setFailure(null);
     try {
       const response = await fetch(`/api/car-onboardings/${id}`);
       if (response.status === 401) {
-        router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
+        redirectToSignIn();
         return;
       }
       if (response.status === 403) {
-        setError(t('errors.forbidden'));
-        setIsForbidden(true);
+        setFailure('forbidden');
         setCarOnboarding(null);
         return;
       }
       if (!response.ok) {
-        setError(t('errors.load'));
+        setFailure('load');
         setCarOnboarding(null);
         return;
       }
       const data: CarOnboarding = await response.json();
       setCarOnboarding(data);
     } catch {
-      setError(t('errors.load'));
+      setFailure('load');
       setCarOnboarding(null);
     } finally {
       setIsLoading(false);
     }
-  }, [id, pathname, router, t]);
+  }, [id, redirectToSignIn]);
+
+  const error = failure != null ? t(`errors.${failure}`) : null;
 
   useEffect(() => {
     if (isSessionPending) return;
     if (!session) {
-      router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
+      redirectToSignIn();
       return;
     }
     void load();
-  }, [isSessionPending, session, load, pathname, router]);
+  }, [isSessionPending, session, load, redirectToSignIn]);
 
   const switchAccount = useCallback(async () => {
     await authClient.signOut();
-    router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
-  }, [pathname, router]);
+    redirectToSignIn();
+  }, [redirectToSignIn]);
 
   const value = useMemo((): CarOnboardingContextValue | null => {
     if (!carOnboarding) return null;
@@ -102,7 +105,7 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
         <p className="text-destructive font-medium">{error}</p>
-        {isForbidden && session ? (
+        {failure === 'forbidden' && session ? (
           <>
             <p>{t('errors.forbiddenSignedInAs', { email: session.user.email })}</p>
             <p>
