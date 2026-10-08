@@ -2965,7 +2965,10 @@
     "errors": {
       "load": "Failed to load car onboarding.",
       "save": "Failed to save.",
-      "forbidden": "You do not have access to this car onboarding."
+      "forbidden": "You do not have access to this car onboarding.",
+      "forbiddenSignedInAs": "You are signed in as {email}.",
+      "forbiddenHelp": "Use the account with the email address of your simulation. Need help? Email [deeljeauto@degage.be](mailto:deeljeauto@degage.be).",
+      "switchAccount": "Sign in with another account"
     },
     "steps": {
       "playConnector": {

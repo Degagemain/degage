@@ -2965,7 +2965,10 @@
     "errors": {
       "load": "Échec du chargement de l'intégration véhicule.",
       "save": "Échec de l'enregistrement.",
-      "forbidden": "Vous n'avez pas accès à cette intégration véhicule."
+      "forbidden": "Vous n'avez pas accès à cette intégration véhicule.",
+      "forbiddenSignedInAs": "Vous êtes connecté en tant que {email}.",
+      "forbiddenHelp": "Utilisez le compte avec l'adresse e-mail de votre simulation. Besoin d'aide ? Écrivez à [deeljeauto@degage.be](mailto:deeljeauto@degage.be).",
+      "switchAccount": "Se connecter avec un autre compte"
     },
     "steps": {
       "playConnector": {

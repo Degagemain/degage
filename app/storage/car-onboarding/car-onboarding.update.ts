@@ -21,3 +21,11 @@ export const dbCarOnboardingUpdateLastPreparationNudgeEmail = async (id: string,
     data: { lastPreparationNudgeEmail: sentAt },
   });
 };
+
+export const dbCarOnboardingUpdateOwner = async (id: string, ownerId: string): Promise<void> => {
+  const prisma = getPrismaClient();
+  await prisma.carOnboarding.update({
+    where: { id },
+    data: { owner: { connect: { id: ownerId } } },
+  });
+};

@@ -22,6 +22,10 @@ On the list, search also matches the owner's name and email. You can filter the 
 
 Assigns the car onboarding owner and shows whether they have linked their legacy Dégage account (Play connector).
 
+When you start an onboarding from a simulation, the owner is the account with the simulation email. If no such account exists yet, the owner
+stays empty. The car owner gets the onboarding when they sign up with that email, confirm it, and open the onboarding link. This also replaces
+an admin who is set as owner. Change the simulation email before you start the onboarding if the car owner uses another address.
+
 This step is complete when the owner has a Play connector record configured.
 
 ### Info session

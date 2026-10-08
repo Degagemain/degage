@@ -24,6 +24,11 @@ Dans la liste, la recherche porte aussi sur le nom et l'e-mail du propriétaire.
 
 Attribue le propriétaire de l'intégration véhicule et indique s'il a lié son compte Dégage legacy (Play connector).
 
+Quand vous démarrez une intégration à partir d'une simulation, le propriétaire est le compte avec l'adresse e-mail de la simulation. Si ce
+compte n'existe pas encore, le propriétaire reste vide. Le propriétaire du véhicule reçoit l'intégration quand il s'inscrit avec cette adresse,
+la confirme et ouvre le lien de l'intégration. Cela remplace aussi un administrateur défini comme propriétaire. Modifiez l'adresse e-mail de la
+simulation avant de démarrer l'intégration si le propriétaire du véhicule utilise une autre adresse.
+
 Cette étape est complète lorsque le propriétaire a configuré un enregistrement Play connector.
 
 ### Session d'info

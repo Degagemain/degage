@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Fixed: a car owner who signs up with the email address of their simulation now gets access to the car onboarding that an admin started for them.
+- Changed: without access to a car onboarding, the page shows the signed-in account, a button to sign in with another account, and a support contact.
+
+### Admin features
+
+- Changed: starting an onboarding from a simulation sets the owner to the account with the simulation email. Without such an account, the owner stays empty until the car owner signs up with that email.
+
+### Technical
+
+- Added: PostHog events `car onboarding claimed` and `car onboarding load failed`.
+
 ## [0.0.8] - 2026-09-24
 
 ### Public features

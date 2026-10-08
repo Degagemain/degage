@@ -24,6 +24,11 @@ Op de lijst zoekt de zoekfunctie ook op naam en e-mail van de eigenaar. Je kunt 
 
 Wijst de eigenaar van de auto-onboarding toe en toont of die het legacy Dégage-account (Play connector) heeft gekoppeld.
 
+Wanneer je een onboarding start vanuit een simulatie, is de eigenaar het account met het e-mailadres van de simulatie. Bestaat dat account nog
+niet, dan blijft de eigenaar leeg. De auto-eigenaar krijgt de onboarding wanneer die zich registreert met dat e-mailadres, het bevestigt en de
+onboardinglink opent. Dit vervangt ook een beheerder die als eigenaar staat. Pas het e-mailadres van de simulatie aan voor je de onboarding
+start als de auto-eigenaar een ander adres gebruikt.
+
 Deze stap is compleet wanneer de eigenaar een Play connector-record heeft geconfigureerd.
 
 ### Infosessie

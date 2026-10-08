@@ -424,6 +424,12 @@ describe('carOnboardingFromSimulation', () => {
 
     expect(result.depreciationCostKm).toBe(0.1235);
   });
+
+  it('leaves owner empty without owner id', () => {
+    const result = carOnboardingFromSimulation(simulation({ id: '550e8400-e29b-41d4-a716-446655440010' }), { ownerId: null });
+
+    expect(result.owner).toBeNull();
+  });
 });
 
 describe('isCarInfoSectionComplete', () => {

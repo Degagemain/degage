@@ -2974,7 +2974,10 @@
     "errors": {
       "load": "Auto-onboarding laden mislukt.",
       "save": "Opslaan mislukt.",
-      "forbidden": "Je hebt geen toegang tot de instap van deze wagen."
+      "forbidden": "Je hebt geen toegang tot de instap van deze wagen.",
+      "forbiddenSignedInAs": "Je bent aangemeld als {email}.",
+      "forbiddenHelp": "Gebruik het account met het e-mailadres van je simulatie. Hulp nodig? Mail naar [deeljeauto@degage.be](mailto:deeljeauto@degage.be).",
+      "switchAccount": "Aanmelden met een ander account"
     },
     "steps": {
       "playConnector": {

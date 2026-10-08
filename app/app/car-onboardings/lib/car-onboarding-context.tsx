@@ -8,6 +8,8 @@ import type { CarOnboarding } from '@/domain/car-onboarding.model';
 import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model';
 import { authClient } from '@/app/lib/auth';
 import { buildPostSignInReturnPath, buildSignInUrlWithReturnPath } from '@/app/lib/sign-in-return-path';
+import { InlineCopy } from '@/app/components/inline-copy';
+import { PublicBtn } from '@/app/car-onboardings/components/public-ui';
 
 type CarOnboardingContextValue = {
   carOnboarding: CarOnboarding;
@@ -28,11 +30,13 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
   const [carOnboarding, setCarOnboarding] = useState<CarOnboarding | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isForbidden, setIsForbidden] = useState(false);
   const basePath = `/app/car-onboardings/${id}`;
 
   const load = useCallback(async () => {
     setIsLoading(true);
     setError(null);
+    setIsForbidden(false);
     try {
       const response = await fetch(`/api/car-onboardings/${id}`);
       if (response.status === 401) {
@@ -41,6 +45,7 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
       }
       if (response.status === 403) {
         setError(t('errors.forbidden'));
+        setIsForbidden(true);
         setCarOnboarding(null);
         return;
       }
@@ -68,6 +73,11 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
     void load();
   }, [isSessionPending, session, load, pathname, router]);
 
+  const switchAccount = useCallback(async () => {
+    await authClient.signOut();
+    router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
+  }, [pathname, router]);
+
   const value = useMemo((): CarOnboardingContextValue | null => {
     if (!carOnboarding) return null;
     return {
@@ -90,8 +100,19 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
 
   if (error) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center px-4">
-        <p className="text-destructive text-center font-medium">{error}</p>
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <p className="text-destructive font-medium">{error}</p>
+        {isForbidden && session ? (
+          <>
+            <p>{t('errors.forbiddenSignedInAs', { email: session.user.email })}</p>
+            <p>
+              <InlineCopy>{t('errors.forbiddenHelp')}</InlineCopy>
+            </p>
+            <PublicBtn type="button" variant="secondary" onClick={() => void switchAccount()}>
+              {t('errors.switchAccount')}
+            </PublicBtn>
+          </>
+        ) : null}
       </div>
     );
   }

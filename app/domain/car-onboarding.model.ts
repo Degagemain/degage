@@ -269,7 +269,7 @@ export const hasInsuranceContractFromIsPurchased = (isPurchased: boolean): boole
 
 export const carOnboardingFromSimulation = (
   simulation: Simulation,
-  options: { ownerId: string },
+  options: { ownerId: string | null },
 ): Omit<CarOnboarding, 'id' | 'createdAt' | 'updatedAt'> => {
   return {
     street: null,
@@ -305,7 +305,7 @@ export const carOnboardingFromSimulation = (
     firstRegisteredAt: simulation.firstRegisteredAt,
     seats: simulation.seats,
     isVan: simulation.isVan,
-    owner: { id: options.ownerId },
+    owner: options.ownerId != null ? { id: options.ownerId } : null,
     simulation: simulation.id != null ? { id: simulation.id } : null,
     registrationCertificateFront: null,
     registrationCertificateBack: null,

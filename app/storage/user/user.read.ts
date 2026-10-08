@@ -22,6 +22,15 @@ export const dbUserRead = async (id: string): Promise<User> => {
   return dbUserToDomain(user);
 };
 
+export const dbUserReadVerifiedIdByEmail = async (email: string): Promise<string | null> => {
+  const prisma = getPrismaClient();
+  const user = await prisma.user.findFirst({
+    where: { email: { equals: email.trim(), mode: 'insensitive' }, emailVerified: true },
+    select: { id: true },
+  });
+  return user?.id ?? null;
+};
+
 export const dbUserCountActiveAdmins = async (): Promise<number> => {
   const prisma = getPrismaClient();
   return prisma.user.count({

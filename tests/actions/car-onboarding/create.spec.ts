@@ -12,11 +12,16 @@ vi.mock('@/actions/car-onboarding/read', () => ({
   readCarOnboarding: vi.fn(),
 }));
 
+vi.mock('@/storage/user/user.read', () => ({
+  dbUserReadVerifiedIdByEmail: vi.fn(),
+}));
+
 import { createCarOnboarding } from '@/actions/car-onboarding/create';
 import { readCarOnboarding } from '@/actions/car-onboarding/read';
 import { readSimulation } from '@/actions/simulation/read';
 import { CarOnboardingForbiddenError } from '@/actions/car-onboarding/car-onboarding-forbidden.error';
 import { dbCarOnboardingCreate } from '@/storage/car-onboarding/car-onboarding.create';
+import { dbUserReadVerifiedIdByEmail } from '@/storage/user/user.read';
 import { carOnboarding } from '../../builders/car-onboarding.builder';
 import { simulation } from '../../builders/simulation.builder';
 
@@ -52,20 +57,40 @@ describe('createCarOnboarding', () => {
     expect(result.id).toBe(createdId);
   });
 
-  it('creates from simulation when caller id is not a uuid', async () => {
-    const nonUuidCaller = { id: 'better-auth-admin-id', role: 'admin', banned: false };
-    const sim = simulation({ id: simulationId });
+  it('sets owner to the verified account with the simulation email when an admin creates from simulation', async () => {
+    const matchedOwnerId = 'better-auth-user-id';
+    const sim = simulation({ id: simulationId, email: 'owner@example.com' });
     vi.mocked(readSimulation).mockResolvedValueOnce(sim);
+    vi.mocked(dbUserReadVerifiedIdByEmail).mockResolvedValueOnce(matchedOwnerId);
     vi.mocked(dbCarOnboardingCreate).mockImplementationOnce(async (draft) => carOnboarding({ ...draft, id: createdId }));
-    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: createdId, owner: { id: nonUuidCaller.id } }));
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: createdId, owner: { id: matchedOwnerId } }));
 
-    await createCarOnboarding({ simulation: { id: simulationId } }, nonUuidCaller);
+    await createCarOnboarding({ simulation: { id: simulationId } }, mockAdmin);
 
-    expect(dbCarOnboardingCreate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        owner: { id: nonUuidCaller.id },
-      }),
-    );
+    expect(dbUserReadVerifiedIdByEmail).toHaveBeenCalledWith('owner@example.com');
+    expect(dbCarOnboardingCreate).toHaveBeenCalledWith(expect.objectContaining({ owner: { id: matchedOwnerId } }));
+  });
+
+  it('leaves owner empty when an admin creates from simulation and no account has the simulation email', async () => {
+    vi.mocked(readSimulation).mockResolvedValueOnce(simulation({ id: simulationId, email: 'new@example.com' }));
+    vi.mocked(dbUserReadVerifiedIdByEmail).mockResolvedValueOnce(null);
+    vi.mocked(dbCarOnboardingCreate).mockImplementationOnce(async (draft) => carOnboarding({ ...draft, id: createdId }));
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: createdId }));
+
+    await createCarOnboarding({ simulation: { id: simulationId } }, mockAdmin);
+
+    expect(dbCarOnboardingCreate).toHaveBeenCalledWith(expect.objectContaining({ owner: null }));
+  });
+
+  it('leaves owner empty when an admin creates from simulation without email', async () => {
+    vi.mocked(readSimulation).mockResolvedValueOnce(simulation({ id: simulationId, email: null }));
+    vi.mocked(dbCarOnboardingCreate).mockImplementationOnce(async (draft) => carOnboarding({ ...draft, id: createdId }));
+    vi.mocked(readCarOnboarding).mockResolvedValueOnce(carOnboarding({ id: createdId }));
+
+    await createCarOnboarding({ simulation: { id: simulationId } }, mockAdmin);
+
+    expect(dbUserReadVerifiedIdByEmail).not.toHaveBeenCalled();
+    expect(dbCarOnboardingCreate).toHaveBeenCalledWith(expect.objectContaining({ owner: null }));
   });
 
   it('allows admin to create empty shell without simulation', async () => {
