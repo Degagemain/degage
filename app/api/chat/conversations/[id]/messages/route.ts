@@ -11,6 +11,7 @@ import { chatUserMessageMaxLength } from '@/domain/chat.model';
 const citationSchema = z.object({
   title: z.string().min(1),
   url: z.string().min(1),
+  externalId: z.string().min(1).optional(),
 });
 
 const appendSchema = z.object({

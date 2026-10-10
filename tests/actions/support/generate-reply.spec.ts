@@ -123,10 +123,32 @@ describe('generateSupportReplyText', () => {
     const result = await generateSupportReplyText([{ role: 'user', content: 'Hello' }]);
 
     expect(result.citations).toEqual([
-      { title: 'First', url: '/app/faq/articles/repo%3Aa' },
-      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared' },
-      { title: 'Second', url: '/app/faq/articles/repo%3Ab' },
+      { title: 'First', url: '/app/faq/articles/repo%3Aa', externalId: 'repo:a' },
+      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared', externalId: 'repo:shared' },
+      { title: 'Second', url: '/app/faq/articles/repo%3Ab', externalId: 'repo:b' },
     ]);
+    expect(result.noResults).toBe(false);
+  });
+
+  it('marks a reply as noResults when every documentation search misses', async () => {
+    vi.mocked(getSystemParameterByCode).mockResolvedValueOnce(
+      promptParameter(supportAssistantPromptSystemParameterCodes.chat, 'Configured chat widget base prompt'),
+    );
+    vi.mocked(searchDocumentationForRag).mockResolvedValueOnce({
+      fullDocuments: [],
+      citations: [],
+      noResults: true,
+      noResultsGuidance: 'none',
+    });
+    vi.mocked(generateText).mockImplementationOnce(async (opts: any) => {
+      await opts.tools.searchDocumentation.execute({ query: 'missing topic' });
+      return { text: 'I could not find that.' };
+    });
+
+    const result = await generateSupportReplyText([{ role: 'user', content: 'Hello' }]);
+
+    expect(result.citations).toEqual([]);
+    expect(result.noResults).toBe(true);
   });
 });
 
@@ -153,14 +175,14 @@ describe('generateSupportReplyStream', () => {
     await streamOpts.tools.searchDocumentation.execute({ query: 'second search' });
 
     const expectedCitations = [
-      { title: 'First', url: '/app/faq/articles/repo%3Aa' },
-      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared' },
-      { title: 'Second', url: '/app/faq/articles/repo%3Ab' },
+      { title: 'First', url: '/app/faq/articles/repo%3Aa', externalId: 'repo:a' },
+      { title: 'Shared', url: '/app/faq/articles/repo%3Ashared', externalId: 'repo:shared' },
+      { title: 'Second', url: '/app/faq/articles/repo%3Ab', externalId: 'repo:b' },
     ];
     expect(getLatestCitations()).toEqual(expectedCitations);
 
     await streamOpts.onFinish({ text: 'assistant reply' });
-    expect(onFinish).toHaveBeenCalledWith({ text: 'assistant reply', citations: expectedCitations });
+    expect(onFinish).toHaveBeenCalledWith({ text: 'assistant reply', citations: expectedCitations, noResults: false });
   });
 
   it('logs stream model errors and flushes them to PostHog', async () => {

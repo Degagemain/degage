@@ -3,6 +3,7 @@ import { createChatConversation } from '@/actions/conversation/create';
 import { searchChatConversations } from '@/actions/conversation/search';
 import { safeParseRequestJson } from '@/api/utils';
 import { withAuth } from '@/api/with-context';
+import { getRequestContentLocale } from '@/context/request-context';
 
 export const GET = withAuth(async (_request, _context, session) => {
   const conversations = await searchChatConversations({ userId: session.user.id });
@@ -28,6 +29,7 @@ export const POST = withAuth(async (request: NextRequest, _context, session) => 
   const conversation = await createChatConversation({
     userId: session.user.id,
     medium: 'frontend',
+    locale: getRequestContentLocale(),
     title: body.title?.trim() || '',
   });
 

@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Changed: during car onboarding preparation, the car name and share start date come before car stickers.
 
+### Admin features
+
+- Added: admins can search support chats by date, language, channel, and whether the assistant found no documentation, without seeing who asked.
+
+### Technical
+
+- Added: MCP tool `search_chat_conversations` (`mcp:admin`) lists support chats and reads messages with the cited article id and title.
+
 ## [0.0.8] - 2026-09-24
 
 ### Public features

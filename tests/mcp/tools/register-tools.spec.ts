@@ -15,6 +15,7 @@ const {
   registerCreateSimulationTool,
   registerCreateDocumentationGroupTool,
   registerUpdateDocumentationGroupTool,
+  registerSearchChatConversationsTool,
   registerCreateSimulationPrompt,
 } = vi.hoisted(() => ({
   registerSearchDocumentationTool: vi.fn(),
@@ -29,6 +30,7 @@ const {
   registerCreateSimulationTool: vi.fn(),
   registerCreateDocumentationGroupTool: vi.fn(),
   registerUpdateDocumentationGroupTool: vi.fn(),
+  registerSearchChatConversationsTool: vi.fn(),
   registerCreateSimulationPrompt: vi.fn(),
 }));
 
@@ -84,6 +86,10 @@ vi.mock('@/mcp/tools/update-documentation-group', () => ({
   registerUpdateDocumentationGroupTool,
 }));
 
+vi.mock('@/mcp/tools/search-chat-conversations', () => ({
+  registerSearchChatConversationsTool,
+}));
+
 import { runWithMcpAuthContext } from '@/mcp/request-context';
 import { registerMcpTools } from '@/mcp/tools/register-tools';
 
@@ -118,6 +124,7 @@ describe('registerMcpTools', () => {
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
+    expect(registerSearchChatConversationsTool).not.toHaveBeenCalled();
   });
 
   it('registers only search tools for a verified user with mcp:user scope', () => {
@@ -136,6 +143,7 @@ describe('registerMcpTools', () => {
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
+    expect(registerSearchChatConversationsTool).not.toHaveBeenCalled();
   });
 
   it('registers all tools for a verified admin with both scopes', () => {
@@ -161,6 +169,7 @@ describe('registerMcpTools', () => {
     expect(registerUpdateDocumentationTool).toHaveBeenCalledTimes(1);
     expect(registerCreateDocumentationGroupTool).toHaveBeenCalledTimes(1);
     expect(registerUpdateDocumentationGroupTool).toHaveBeenCalledTimes(1);
+    expect(registerSearchChatConversationsTool).toHaveBeenCalledTimes(1);
   });
 
   it('registers no tools when email is unverified', () => {
@@ -179,6 +188,7 @@ describe('registerMcpTools', () => {
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
+    expect(registerSearchChatConversationsTool).not.toHaveBeenCalled();
   });
 
   it('does not register admin tools when admin scope is missing', () => {
@@ -204,5 +214,6 @@ describe('registerMcpTools', () => {
     expect(registerUpdateDocumentationTool).not.toHaveBeenCalled();
     expect(registerCreateDocumentationGroupTool).not.toHaveBeenCalled();
     expect(registerUpdateDocumentationGroupTool).not.toHaveBeenCalled();
+    expect(registerSearchChatConversationsTool).not.toHaveBeenCalled();
   });
 });

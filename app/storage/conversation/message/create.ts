@@ -9,6 +9,7 @@ export const dbChatMessageCreate = async (input: {
   role: ChatMessageRole;
   content: string;
   citations?: ChatCitation[];
+  noResults?: boolean | null;
 }): Promise<void> => {
   const prisma = getPrismaClient();
   await prisma.chatMessage.create({
@@ -19,6 +20,7 @@ export const dbChatMessageCreate = async (input: {
       role: input.role,
       content: input.content,
       citations: (input.citations ?? []) as unknown as Prisma.InputJsonValue,
+      noResults: input.noResults ?? null,
     },
   });
 };

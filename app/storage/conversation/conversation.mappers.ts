@@ -1,11 +1,17 @@
+import { assistantTurnIsDocumentationGap } from '@/domain/chat-conversation-gap';
+import type { ChatConversationMcpDetail, ChatConversationMcpListItem, ChatConversationMcpMessage } from '@/domain/chat-conversation-mcp.model';
 import type {
   ChatCitation,
   ChatConversation,
   ChatConversationAdminDetail,
   ChatConversationListItem,
+  ChatConversationMedium,
   ChatConversationUpdateInput,
   ChatMessage,
 } from '@/domain/chat.model';
+import { chatConversationMediumToChannel } from '@/domain/chat.model';
+import { externalIdFromChatCitation } from '@/domain/documentation.support-citations';
+import { isContentLocale } from '@/i18n/locales';
 import type { Prisma } from '@/storage/client/client';
 
 type DbChatMessage = Prisma.ChatMessageGetPayload<Record<string, never>>;
@@ -35,7 +41,9 @@ const parseCitations = (value: unknown): ChatCitation[] => {
       if (!title || !url) {
         return null;
       }
-      return { title, url };
+      const rawExternalId = 'externalId' in citation && typeof citation.externalId === 'string' ? citation.externalId : null;
+      const externalId = externalIdFromChatCitation({ externalId: rawExternalId, url });
+      return externalId ? { title, url, externalId } : { title, url };
     })
     .filter((item): item is ChatCitation => item !== null);
 };
@@ -60,6 +68,7 @@ export const dbChatConversationToDomain = (conversation: DbChatConversation): Ch
     medium: conversation.medium,
     emailThreadId: conversation.emailThreadId,
     guestToken: conversation.guestToken,
+    locale: conversation.locale && isContentLocale(conversation.locale) ? conversation.locale : null,
     title: conversation.title,
     messages: conversation.messages.map(dbChatMessageToDomain),
     createdAt: conversation.createdAt,
@@ -94,5 +103,79 @@ export const dbChatConversationToAdminDetail = (conversation: DbChatConversation
   return {
     ...rest,
     user: conversation.user ? dbUserToIdName(conversation.user) : null,
+  };
+};
+
+export type ChatConversationMcpSourceMessage = {
+  id: string;
+  role: string;
+  content?: string;
+  citations: unknown;
+  noResults: boolean | null;
+  createdAt: Date;
+};
+
+export type ChatConversationMcpSource = {
+  id: string;
+  title: string;
+  medium: ChatConversationMedium;
+  locale: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  user: { locale: string | null } | null;
+  messages: ChatConversationMcpSourceMessage[];
+};
+
+const resolveMcpLocale = (conversation: Pick<ChatConversationMcpSource, 'locale' | 'user'>): ChatConversationMcpListItem['locale'] => {
+  if (conversation.locale && isContentLocale(conversation.locale)) return conversation.locale;
+  const userLocale = conversation.user?.locale;
+  if (userLocale && isContentLocale(userLocale)) return userLocale;
+  return null;
+};
+
+const toMcpCitations = (value: unknown): ChatConversationMcpDetail['messages'][number]['citations'] => {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const record = item as { title?: unknown; url?: unknown; externalId?: unknown };
+    const title = typeof record.title === 'string' ? record.title.trim() : '';
+    if (!title) return [];
+    const url = typeof record.url === 'string' ? record.url : '';
+    return [
+      {
+        externalId: externalIdFromChatCitation({
+          externalId: typeof record.externalId === 'string' ? record.externalId : null,
+          url,
+        }),
+        title,
+      },
+    ];
+  });
+};
+
+export const toChatConversationMcpListItem = (conversation: ChatConversationMcpSource): ChatConversationMcpListItem => {
+  return {
+    id: conversation.id,
+    title: conversation.title,
+    channel: chatConversationMediumToChannel(conversation.medium),
+    locale: resolveMcpLocale(conversation),
+    noResults: conversation.messages.some((message) => assistantTurnIsDocumentationGap(message, conversation.medium)),
+    createdAt: conversation.createdAt,
+    updatedAt: conversation.updatedAt,
+  };
+};
+
+export const toChatConversationMcpDetail = (conversation: ChatConversationMcpSource): ChatConversationMcpDetail => {
+  return {
+    ...toChatConversationMcpListItem(conversation),
+    messages: conversation.messages.map(
+      (message): ChatConversationMcpMessage => ({
+        id: message.id,
+        role: message.role === 'assistant' ? 'assistant' : 'user',
+        content: message.content ?? '',
+        createdAt: message.createdAt,
+        citations: message.role === 'assistant' ? toMcpCitations(message.citations) : [],
+      }),
+    ),
   };
 };

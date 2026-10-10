@@ -37,6 +37,7 @@ URL: `/mcp`
 | `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
 | `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
 | `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
+| `search_chat_conversations`   | `mcp:admin` | List support chats and read messages with cited articles (no names or emails) |
 
 MCP is a peer interface to REST (`/api/*`), not nested under it.
 
@@ -75,12 +76,14 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 
 - JWT audience must match `{BETTER_AUTH_URL}/mcp`.
 - `tools/list` only includes tools the caller is allowed to use (scope, email verification, ban status, and admin role for
-  `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group`).
+  `create_documentation`, `update_documentation`, `create_documentation_group`, `update_documentation_group`, and `search_chat_conversations`).
 - Each tool re-checks authorization at invocation time.
 - Banned users are rejected.
 - Unverified email/password users cannot call tools (OAuth may still complete).
-- `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at
-  runtime.
+- `create_documentation`, `update_documentation`, `create_documentation_group`, `update_documentation_group`, and `search_chat_conversations`
+  also require `admin` role at runtime.
+- `search_chat_conversations` is read-only. It omits names, email addresses, and user ids. `noResults` selects conversations where an assistant
+  reply found no documentation. Cited articles on assistant messages are returned as `externalId` and title.
 
 ## Analytics
 

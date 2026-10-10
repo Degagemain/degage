@@ -10,6 +10,7 @@ import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { forbiddenResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withPublic } from '@/api/with-context';
+import { getRequestContentLocale } from '@/context/request-context';
 import { isSupportChatEnabled } from '@/integrations/posthog';
 import { logger } from '@/lib/logger';
 import { isAdmin } from '@/domain/role.utils';
@@ -117,7 +118,9 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
       return forbiddenResponse('Access denied');
     }
 
-    const conversation = existingConversation ?? (await createChatConversation({ userId: user.id, title: '', medium: 'frontend' }));
+    const conversation =
+      existingConversation ??
+      (await createChatConversation({ userId: user.id, title: '', medium: 'frontend', locale: getRequestContentLocale() }));
     resolvedConversationId = conversation.id;
     existingConversationMessages = conversation.messages;
     if (!resolvedConversationId) {
@@ -187,6 +190,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
           guestToken,
           title: text.slice(0, 80),
           medium: 'frontend',
+          locale: getRequestContentLocale(),
         });
         resolvedConversationId = conversation.id;
         resolvedGuestToken = guestToken;
@@ -217,7 +221,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
     outputFormat: 'markdown',
     replyStyle: 'chat',
     userLocale,
-    onFinish: async ({ text, citations }) => {
+    onFinish: async ({ text, citations, noResults }) => {
       if (!resolvedConversationId) return;
       const assistantText = text.trim();
       if (!assistantText) return;
@@ -226,6 +230,7 @@ export const POST = withPublic(async (request: NextRequest, _context, session) =
         role: 'assistant',
         content: assistantText,
         citations,
+        noResults,
       });
     },
   });

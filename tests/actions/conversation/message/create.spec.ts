@@ -27,6 +27,7 @@ describe('createMessage', () => {
       role: 'user',
       content: 'hello',
       citations: [],
+      noResults: null,
     });
   });
 
