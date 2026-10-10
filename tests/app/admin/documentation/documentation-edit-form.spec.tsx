@@ -113,6 +113,7 @@ describe('DocumentationEditForm type and visibility', () => {
     expect(screen.getByText('code')).toBeTruthy();
     expect(screen.getByText('description')).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'public_faq' })).toBeTruthy();
+    expect(screen.getByRole('checkbox', { name: 'simulation_all' })).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'simulation_step_1' })).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'car_onboarding_all' })).toBeTruthy();
   });
