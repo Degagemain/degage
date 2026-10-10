@@ -13,6 +13,7 @@ export type DocumentationEditFormFields = {
   format: DocumentationFormat;
   isFaq: boolean;
   isPublic: boolean;
+  shortLink: string | null;
   groups: Documentation['groups'];
   translations: Documentation['translations'];
   audienceRoles: DocumentationAudienceRole[];
@@ -30,6 +31,7 @@ export const documentationFromEditForm = (initial: Documentation, fields: Docume
       format: fields.format,
       isFaq: fields.isFaq,
       isPublic: fields.isPublic,
+      shortLink: fields.shortLink,
       groups: fields.groups,
       translations: fields.translations,
       audienceRoles: fields.audienceRoles,
@@ -44,6 +46,7 @@ export const documentationFromEditForm = (initial: Documentation, fields: Docume
     format: fields.format,
     isFaq: fields.isFaq,
     isPublic: fields.isPublic,
+    shortLink: fields.shortLink,
     groups: fields.groups,
     translations: fields.translations,
     audienceRoles: locked ? initial.audienceRoles : fields.audienceRoles,
