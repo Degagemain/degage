@@ -66,27 +66,18 @@ describe('computeStepState', () => {
     ).toBe('pending');
   });
 
-  it('blocks user info until info session is enrolled', () => {
-    expect(computeStepState('user-info', withPlayConnector())).toBe('blocked');
-    expect(
-      computeStepState(
-        'user-info',
-        withPlayConnector({
-          infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
-          infoSessionPcId: '1359',
-        }),
-      ),
-    ).toBe('todo');
+  it('keeps user info, car info, and insurer open without a play connector', () => {
+    const withoutConnector = carOnboarding();
+    expect(computeStepState('user-info', withoutConnector)).toBe('todo');
+    expect(computeStepState('car-info', withoutConnector)).toBe('todo');
+    expect(computeStepState('insurer', withoutConnector)).toBe('todo');
+    expect(computeStepState('info-session', withoutConnector)).toBe('blocked');
+    expect(computeStepState('road-assistance-plan', withoutConnector)).toBe('blocked');
     expect(computeStepState('user-info', completeCarOnboarding())).toBe('done');
   });
 
-  it('unlocks car-info when info session is enrolled, without user info', () => {
-    const enrolledWithoutUserInfo = withPlayConnector({
-      infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED,
-      infoSessionPcId: '1359',
-      street: null,
-    });
-    expect(computeStepState('car-info', enrolledWithoutUserInfo)).toBe('todo');
+  it('keeps car-info open without user info', () => {
+    expect(computeStepState('car-info', carOnboarding({ street: null }))).toBe('todo');
     expect(computeStepState('car-info', completeCarOnboarding({ street: 'Main' }))).toBe('done');
   });
 
@@ -213,20 +204,15 @@ describe('arePrerequisitesMet', () => {
     expect(arePrerequisitesMet('info-session', withPlayConnector())).toBe(true);
   });
 
-  it('requires info session enrolled before user info', () => {
-    expect(arePrerequisitesMet('user-info', withPlayConnector())).toBe(false);
-    expect(
-      arePrerequisitesMet(
-        'user-info',
-        withPlayConnector({ infoSessionStatus: CarOnboardingInfoSessionStatus.ENROLLED, infoSessionPcId: '1359' }),
-      ),
-    ).toBe(true);
+  it('does not require a play connector or info session for user info, car info, or insurer', () => {
+    expect(arePrerequisitesMet('user-info', carOnboarding())).toBe(true);
+    expect(arePrerequisitesMet('car-info', carOnboarding())).toBe(true);
+    expect(arePrerequisitesMet('insurer', carOnboarding())).toBe(true);
     expect(arePrerequisitesMet('user-info', completeCarOnboarding())).toBe(true);
   });
 
-  it('requires info session enrolled before car info, insurer, car value, and car stickers', () => {
-    expect(arePrerequisitesMet('car-info', withPlayConnector())).toBe(false);
-    expect(arePrerequisitesMet('insurer', withPlayConnector())).toBe(false);
+  it('requires info session enrolled before road assistance, car value, and car stickers', () => {
+    expect(arePrerequisitesMet('road-assistance-plan', carOnboarding())).toBe(false);
     expect(arePrerequisitesMet('car-value', withPlayConnector())).toBe(false);
     expect(arePrerequisitesMet('car-stickers', withPlayConnector())).toBe(false);
     const enrolled = withPlayConnector({
@@ -236,6 +222,7 @@ describe('arePrerequisitesMet', () => {
     });
     expect(arePrerequisitesMet('car-info', enrolled)).toBe(true);
     expect(arePrerequisitesMet('insurer', enrolled)).toBe(true);
+    expect(arePrerequisitesMet('road-assistance-plan', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-value', enrolled)).toBe(true);
     expect(arePrerequisitesMet('car-stickers', enrolled)).toBe(true);
   });

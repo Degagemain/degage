@@ -2982,7 +2982,7 @@
         "subtitle": "Attend a Degapp info session",
         "info": "Choose an upcoming info session and enroll. After you attend, an admin will confirm your participation.",
         "panelTitle": "Info session",
-        "panelBody": "Choose an upcoming owner info session and enroll. Enrolling unlocks the next preparation steps.\n\nYou can only be enrolled in one session at a time. After you attend, an admin will confirm your presence — only then is this step fully complete.",
+        "panelBody": "Choose an upcoming owner info session and enroll. You can already fill in your contact details, car info, and existing insurance. Enrolling unlocks the remaining preparation steps.\n\nYou can only be enrolled in one session at a time. After you attend, an admin will confirm your presence — only then is this step fully complete.",
         "loading": "Loading info sessions…",
         "loadError": "Could not load info sessions. Check your Play connector connection and try again.",
         "tableEmpty": "No upcoming info sessions found.",

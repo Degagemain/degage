@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Changed: during car onboarding preparation, owner info, car info, and existing insurance stay open before a Degapp account is connected.
 - Changed: during car onboarding preparation, the car name and share start date come before car stickers.
 
 ## [0.0.8] - 2026-09-24

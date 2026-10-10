@@ -2982,7 +2982,7 @@
         "subtitle": "Participez à une infosession Degapp",
         "info": "Choisissez une infosession à venir et inscrivez-vous. Après votre participation, un administrateur confirmera votre présence.",
         "panelTitle": "Session d'info",
-        "panelBody": "Choisissez une session d'info pour propriétaires à venir et inscrivez-vous. L'inscription débloque les étapes de préparation suivantes.\n\nVous ne pouvez être inscrit qu'à une seule session à la fois. Après votre participation, un administrateur confirmera votre présence — ce n'est qu'alors que cette étape est pleinement terminée.",
+        "panelBody": "Choisissez une session d'info pour propriétaires à venir et inscrivez-vous. Vous pouvez déjà remplir vos coordonnées, les informations du véhicule et l'assurance existante. L'inscription débloque les autres étapes de préparation.\n\nVous ne pouvez être inscrit qu'à une seule session à la fois. Après votre participation, un administrateur confirmera votre présence — ce n'est qu'alors que cette étape est pleinement terminée.",
         "loading": "Chargement des infosessions…",
         "loadError": "Impossible de charger les infosessions. Vérifiez votre connexion Play connector et réessayez.",
         "tableEmpty": "Aucune infosession à venir trouvée.",
