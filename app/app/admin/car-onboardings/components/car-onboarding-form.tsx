@@ -38,6 +38,7 @@ import { AdminDateFieldControl } from '@/app/components/form/admin-date-field-co
 import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
 import { AdminNumberFieldControl } from '@/app/components/form/admin-number-field-control';
 import { AdminSearchableSelectField } from '@/app/components/form/admin-searchable-select-field';
+import { AdminSelectFieldControl } from '@/app/components/form/admin-select-field-control';
 import { AdminSwitchFieldControl } from '@/app/components/form/admin-switch-field-control';
 import { AdminTextFieldControl } from '@/app/components/form/admin-text-field-control';
 import { AdminTextareaFieldControl } from '@/app/components/form/admin-textarea-field-control';
@@ -45,6 +46,20 @@ import { AdminRegistrationCertificateField } from './admin-registration-certific
 import { CarOnboardingSubprocessFlow, type SubprocessFlowStep } from './car-onboarding-subprocess-flow';
 
 export const CAR_ONBOARDING_FORM_ID = 'car-onboarding-editor-form';
+
+type ExistingRoadAssistanceChoice = '' | 'yes' | 'no';
+
+const toExistingRoadAssistanceChoice = (value: boolean | null): ExistingRoadAssistanceChoice => {
+  if (value === true) return 'yes';
+  if (value === false) return 'no';
+  return '';
+};
+
+const fromExistingRoadAssistanceChoice = (value: string): boolean | null => {
+  if (value === 'yes') return true;
+  if (value === 'no') return false;
+  return null;
+};
 
 export const CAR_ONBOARDING_PREPARATION_TAB_IDS = [
   'owner',
@@ -131,7 +146,7 @@ interface FormValues {
   insurerContractStartedAt: string;
   insurerAnnouncedPriceIncrease: boolean;
   hasInsuranceContract: boolean;
-  hasExistingRoadAssistancePlan: boolean;
+  hasExistingRoadAssistancePlan: ExistingRoadAssistanceChoice;
   existingRoadAssistancePlanEndDate: string;
   roadAssistancePlanDescription: string;
   roadAssistancePlanId: string;
@@ -176,7 +191,7 @@ const getInitialState = (row: CarOnboarding): FormValues => {
     insurerContractStartedAt: formatDateForInput(row.insurerContractStartedAt),
     insurerAnnouncedPriceIncrease: row.insurerAnnouncedPriceIncrease,
     hasInsuranceContract: row.hasInsuranceContract,
-    hasExistingRoadAssistancePlan: row.hasExistingRoadAssistancePlan,
+    hasExistingRoadAssistancePlan: toExistingRoadAssistanceChoice(row.hasExistingRoadAssistancePlan),
     existingRoadAssistancePlanEndDate: formatDateForInput(row.existingRoadAssistancePlanEndDate),
     roadAssistancePlanDescription: row.roadAssistancePlanDescription ?? '',
     roadAssistancePlanId: row.roadAssistancePlan?.id ?? NONE,
@@ -221,7 +236,7 @@ const createSchema = (tCommon: (key: string) => string) =>
     insurerContractStartedAt: z.string(),
     insurerAnnouncedPriceIncrease: z.boolean(),
     hasInsuranceContract: z.boolean(),
-    hasExistingRoadAssistancePlan: z.boolean(),
+    hasExistingRoadAssistancePlan: z.enum(['', 'yes', 'no']),
     existingRoadAssistancePlanEndDate: z.string(),
     roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH),
     roadAssistancePlanId: z.string(),
@@ -505,10 +520,12 @@ export function CarOnboardingForm({
         ? CarOnboardingInsurerStatus.READY
         : CarOnboardingInsurerStatus.TODO,
   });
+  const hasExistingRoadAssistancePlan = fromExistingRoadAssistanceChoice(watchedValues.hasExistingRoadAssistancePlan);
   const roadAssistancePlanComplete = isRoadAssistancePlanSectionComplete({
     roadAssistancePlanStatus:
-      watchedValues.hasExistingRoadAssistancePlan &&
-      (watchedValues.existingRoadAssistancePlanEndDate.trim() === '' || watchedValues.roadAssistancePlanDescription.trim() === '')
+      hasExistingRoadAssistancePlan == null ||
+      (hasExistingRoadAssistancePlan &&
+        (watchedValues.existingRoadAssistancePlanEndDate.trim() === '' || watchedValues.roadAssistancePlanDescription.trim() === ''))
         ? CarOnboardingRoadAssistancePlanStatus.TODO
         : CarOnboardingRoadAssistancePlanStatus.READY,
   });
@@ -654,13 +671,13 @@ export function CarOnboardingForm({
         !values.hasInsuranceContract || values.insurerContractStartedAt === '' ? null : parseDateInput(values.insurerContractStartedAt),
       insurerAnnouncedPriceIncrease: values.insurerAnnouncedPriceIncrease,
       hasInsuranceContract: values.hasInsuranceContract,
-      hasExistingRoadAssistancePlan: values.hasExistingRoadAssistancePlan,
+      hasExistingRoadAssistancePlan: fromExistingRoadAssistanceChoice(values.hasExistingRoadAssistancePlan),
       existingRoadAssistancePlanEndDate:
-        !values.hasExistingRoadAssistancePlan || values.existingRoadAssistancePlanEndDate === ''
+        values.hasExistingRoadAssistancePlan !== 'yes' || values.existingRoadAssistancePlanEndDate === ''
           ? null
           : parseDateInput(values.existingRoadAssistancePlanEndDate),
       roadAssistancePlanDescription:
-        !values.hasExistingRoadAssistancePlan || values.roadAssistancePlanDescription.trim() === ''
+        values.hasExistingRoadAssistancePlan !== 'yes' || values.roadAssistancePlanDescription.trim() === ''
           ? null
           : values.roadAssistancePlanDescription.trim(),
       roadAssistancePlan: toIdName(values.roadAssistancePlanId, values.roadAssistancePlanName),
@@ -1332,21 +1349,22 @@ export function CarOnboardingForm({
                 <Controller
                   name="hasExistingRoadAssistancePlan"
                   control={form.control}
-                  render={({ field }) => (
-                    <AdminSwitchFieldControl
-                      id="car-onboarding-has-existing-road-assistance-plan"
-                      label={
-                        watchedValues.isPurchased && watchedValues.isNewCar
-                          ? t('form.includedRoadAssistancePlan')
-                          : t('columns.hasExistingRoadAssistancePlan')
-                      }
-                      checked={field.value}
+                  render={({ field, fieldState }) => (
+                    <AdminSelectFieldControl
+                      label={t('columns.hasExistingRoadAssistancePlan')}
+                      value={field.value}
                       onChange={field.onChange}
+                      placeholder={t('form.hasExistingRoadAssistancePlanPlaceholder')}
+                      options={[
+                        { value: 'yes', label: t('form.hasExistingRoadAssistancePlanYes') },
+                        { value: 'no', label: t('form.hasExistingRoadAssistancePlanNo') },
+                      ]}
+                      error={fieldState.error?.message}
                       disabled={isSubmitting}
                     />
                   )}
                 />
-                {watchedValues.hasExistingRoadAssistancePlan ? (
+                {watchedValues.hasExistingRoadAssistancePlan === 'yes' ? (
                   <>
                     <Controller
                       name="roadAssistancePlanDescription"

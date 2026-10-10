@@ -94,21 +94,23 @@ Cette étape est complète lorsque le statut d'assurance n'est pas **Todo**.
 
 ### Assistance routière
 
-Indique si le véhicule a déjà une assistance routière. Choisir un plan souhaité dans le catalogue n'est actuellement pas requis.
+Indique si le véhicule a déjà une assistance routière. Le propriétaire doit choisir l'une des deux réponses. La question commence vide, donc
+aucune des deux réponses n'est présumée. Un véhicule neuf acheté utilise le même choix. Choisir un plan souhaité dans le catalogue n'est
+actuellement pas requis.
 
-| Propriété                                 | Description                                                                                                  |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| A un plan d'assistance existant           | Indique si le véhicule a déjà une assistance routière (pour un véhicule neuf acheté, cela peut être inclus). |
-| Nom du plan d'assistance existant         | Nom du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                        |
-| Date de fin du plan d'assistance existant | Date de fin du plan d'assistance actuel (lorsque a un plan d'assistance existant est activé).                |
+| Propriété                                 | Description                                                                                                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A un plan d'assistance existant           | Choix obligatoire : le propriétaire a une assistance routière pour ce véhicule, ou ne l'a pas encore. Commence vide. Un véhicule neuf acheté utilise le même choix. |
+| Nom du plan d'assistance existant         | Nom du plan d'assistance actuel. Obligatoire lorsque le propriétaire a une assistance routière. Sinon masqué.                                                       |
+| Date de fin du plan d'assistance existant | Date de fin du plan d'assistance actuel. Obligatoire lorsque le propriétaire a une assistance routière. Sinon masquée.                                              |
 
-| Statut | Signification                                                                                      |
-| ------ | -------------------------------------------------------------------------------------------------- |
-| Todo   | A un plan d'assistance existant est activé, mais le nom ou la date de fin du plan existant manque. |
-| Prêt   | Les détails du plan existant sont complets le cas échéant. Un plan souhaité n'est pas obligatoire. |
+| Statut | Signification                                                                                                                                              |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Todo   | Pas encore de choix, ou le propriétaire a une assistance routière mais le nom ou la date de fin du plan manque.                                            |
+| Prêt   | Le propriétaire n'a pas encore d'assistance routière, ou en a une et le nom ainsi que la date de fin sont remplis. Un plan souhaité n'est pas obligatoire. |
 
-Le système définit le statut automatiquement à l'enregistrement. Lorsque **A un plan d'assistance existant** est désactivé, le nom et la date de
-fin du plan existant sont effacés.
+Le système définit le statut automatiquement à l'enregistrement. Lorsque le propriétaire n'a pas encore d'assistance routière, le nom et la date
+de fin du plan existant sont effacés.
 
 Le propriétaire peut mettre à jour les détails via une mise à jour partielle tant que le statut est **Todo**.
 

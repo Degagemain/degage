@@ -158,7 +158,7 @@ model CarOnboarding {
   insurerStatus                  CarOnboardingInsurerStatus       @default(todo)
   insurerContractStartedAt       DateTime?
   insurerAnnouncedPriceIncrease    Boolean                          @default(false)
-  hasExistingRoadAssistancePlan           Boolean                                @default(false)
+  hasExistingRoadAssistancePlan           Boolean?
   existingRoadAssistancePlanEndDate       DateTime?
   roadAssistancePlanDescription           String?
   roadAssistancePlanId                    String?

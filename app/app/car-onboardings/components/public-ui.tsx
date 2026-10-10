@@ -23,10 +23,12 @@ export function PublicBackLink({ href, children }: { href: string; children: Rea
   );
 }
 
-export function PublicField({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
+export function PublicField({ label, hint, htmlFor, children }: { label: string; hint?: string; htmlFor?: string; children: ReactNode }) {
   return (
     <div className={styles.field}>
-      <label className={styles.fieldLabel}>{label}</label>
+      <label className={styles.fieldLabel} htmlFor={htmlFor}>
+        {label}
+      </label>
       {hint ? (
         <p className={styles.fieldHint}>
           <InlineCopy>{hint}</InlineCopy>

@@ -92,20 +92,22 @@ Deze stap is compleet wanneer de verzekeringsstatus niet **Todo** is.
 
 ### Pechverhelpingsplan
 
-Legt vast of de wagen al pechverhelping heeft. Een gewenst plan kiezen uit de catalogus is momenteel niet verplicht.
+Legt vast of de wagen al pechverhelping heeft. De eigenaar moet één van twee antwoorden kiezen. De vraag start leeg, zodat geen van beide
+antwoorden wordt aangenomen. Een nieuw aangekochte wagen gebruikt dezelfde keuze. Een gewenst plan kiezen uit de catalogus is momenteel niet
+verplicht.
 
-| Eigenschap                             | Beschrijving                                                                                          |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Heeft bestaand pechverhelpingsplan     | Of de wagen al pechverhelping heeft (bij een nieuwe aangekochte wagen kan dit inbegrepen zijn).       |
-| Naam bestaand pechverhelpingsplan      | Naam van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat).      |
-| Einddatum bestaand pechverhelpingsplan | Einddatum van het huidige pechverhelpingsplan (wanneer heeft bestaand pechverhelpingsplan aan staat). |
+| Eigenschap                             | Beschrijving                                                                                                                                                |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Heeft bestaand pechverhelpingsplan     | Verplichte keuze: de eigenaar heeft pechverhelping voor deze wagen, of heeft die nog niet. Start leeg. Een nieuw aangekochte wagen gebruikt dezelfde keuze. |
+| Naam bestaand pechverhelpingsplan      | Naam van het huidige pechverhelpingsplan. Verplicht wanneer de eigenaar pechverhelping heeft. Anders verborgen.                                             |
+| Einddatum bestaand pechverhelpingsplan | Einddatum van het huidige pechverhelpingsplan. Verplicht wanneer de eigenaar pechverhelping heeft. Anders verborgen.                                        |
 
-| Status | Betekenis                                                                                                 |
-| ------ | --------------------------------------------------------------------------------------------------------- |
-| Todo   | Heeft bestaand pechverhelpingsplan staat aan, maar de naam of einddatum van het bestaande plan ontbreekt. |
-| Klaar  | Bestaande plangegevens zijn compleet wanneer van toepassing. Een gewenst plan is niet verplicht.          |
+| Status | Betekenis                                                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Todo   | Nog geen keuze, of de eigenaar heeft pechverhelping maar de naam of einddatum van het plan ontbreekt.                                            |
+| Klaar  | De eigenaar heeft nog geen pechverhelping, of heeft die wel en zowel de naam als de einddatum zijn ingevuld. Een gewenst plan is niet verplicht. |
 
-Het systeem zet de status automatisch bij opslaan. Wanneer **Heeft bestaand pechverhelpingsplan** uit staat, worden de naam en einddatum van het
+Het systeem zet de status automatisch bij opslaan. Wanneer de eigenaar nog geen pechverhelping heeft, worden de naam en einddatum van het
 bestaande plan gewist.
 
 De eigenaar kan pechverhelpingsgegevens bijwerken via een gedeeltelijke update zolang de status **Todo** is.

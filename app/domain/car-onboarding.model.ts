@@ -84,7 +84,7 @@ export const CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH = 100;
 
 export const carOnboardingRoadAssistancePlanSchema = z
   .object({
-    hasExistingRoadAssistancePlan: z.boolean().default(false),
+    hasExistingRoadAssistancePlan: z.boolean().nullable().default(null),
     existingRoadAssistancePlanEndDate: z.coerce.date().nullable().default(null),
     roadAssistancePlanDescription: z.string().max(CAR_ONBOARDING_ROAD_ASSISTANCE_PLAN_DESCRIPTION_MAX_LENGTH).nullable().default(null),
     roadAssistancePlan: idNameSchema.nullable().default(null),
@@ -292,7 +292,7 @@ export const carOnboardingFromSimulation = (
     insurerContractStartedAt: null,
     insurerAnnouncedPriceIncrease: false,
     insurerStatus: CarOnboardingInsurerStatus.TODO,
-    hasExistingRoadAssistancePlan: false,
+    hasExistingRoadAssistancePlan: null,
     existingRoadAssistancePlanEndDate: null,
     roadAssistancePlanDescription: null,
     roadAssistancePlan: null,
@@ -646,6 +646,15 @@ export const applyRoadAssistancePlanStatus = (onboarding: CarOnboarding): CarOnb
   const roadAssistancePlanDescription = isNonEmptyString(onboarding.roadAssistancePlanDescription)
     ? onboarding.roadAssistancePlanDescription.trim()
     : null;
+
+  if (onboarding.hasExistingRoadAssistancePlan == null) {
+    return {
+      ...onboarding,
+      existingRoadAssistancePlanEndDate: null,
+      roadAssistancePlanDescription: null,
+      roadAssistancePlanStatus: CarOnboardingRoadAssistancePlanStatus.TODO,
+    };
+  }
 
   if (!onboarding.hasExistingRoadAssistancePlan) {
     onboarding = {
