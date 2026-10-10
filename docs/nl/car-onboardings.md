@@ -39,8 +39,10 @@ getoond.
 
 De eigenaar kan slechts in één sessie tegelijk ingeschreven zijn. Om een andere sessie te kiezen, moet hij zich eerst uitschrijven.
 
-Inschrijven ontgrendelt de volgende voorbereidingsstappen in de publieke onboardingflow. Bevestiging van aanwezigheid door een beheerder is nog
-steeds vereist voordat de infosessiestap als voltooid wordt gemarkeerd en de voorbereiding kan worden afgerond.
+Eigenaarsinfo, wageninfo en bestaande verzekering blijven beschikbaar voordat de eigenaar een Degapp-account koppelt. Inschrijven ontgrendelt de
+latere voorbereidingsstappen: pechverhelpingsplan, waarde van de auto, en naam en startdatum zodra de verzekering compleet is. Bevestiging van
+aanwezigheid door een beheerder is nog steeds vereist voordat de infosessiestap als voltooid wordt gemarkeerd en de voorbereiding kan worden
+afgerond.
 
 Deze stap is compleet wanneer de infosessiestatus **Compleet** is.
 
