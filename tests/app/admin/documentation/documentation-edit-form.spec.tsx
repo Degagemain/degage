@@ -102,10 +102,13 @@ describe('DocumentationEditForm type and visibility', () => {
     expect(screen.getByText('shortLinkPreview')).toBeTruthy();
   });
 
-  it('hides the short link field when the article is not public', () => {
-    render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true, isPublic: false })} />);
+  it('shows a short link field when the article is not public', () => {
+    render(
+      <DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true, isPublic: false, shortLink: 'boete' })} />,
+    );
 
-    expect(screen.queryByText('shortLink')).toBeNull();
+    expect(screen.getByText('shortLink')).toBeTruthy();
+    expect(screen.getByDisplayValue('boete')).toBeTruthy();
   });
 
   it('shows a short link field for a public article', () => {
@@ -135,6 +138,7 @@ describe('DocumentationEditForm type and visibility', () => {
     expect(screen.getByText('code')).toBeTruthy();
     expect(screen.getByText('description')).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'public_faq' })).toBeTruthy();
+    expect(screen.getByRole('checkbox', { name: 'simulation_all' })).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'simulation_step_1' })).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'car_onboarding_all' })).toBeTruthy();
   });

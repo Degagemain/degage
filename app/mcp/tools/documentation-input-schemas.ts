@@ -36,9 +36,9 @@ const documentationMcpSharedFields = {
     .nullable()
     .optional()
     .describe(
-      'Optional public short link, such as boete for /app/faq/boete. ' +
+      'Optional short link, such as boete for /app/faq/articles/boete. ' +
         'Letters, numbers, and hyphens. Null or omitted clears it. ' +
-        'Kept only when isPublic is true. Reserved values: articles, groups.',
+        'Kept when the article is not public. The public page still shows only public articles.',
     ),
   format: documentationFormatSchema.describe(`Content format. One of: ${documentationFormatValues.join(', ')}.`),
   audienceRoles: z

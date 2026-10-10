@@ -148,14 +148,9 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
       return;
     }
 
-    const normalizedShortLink = isPublic ? normalizeDocumentationShortLink(shortLink) : null;
-    const shortLinkProblem = documentationShortLinkProblem(normalizedShortLink);
-    if (shortLinkProblem === 'invalid') {
+    const normalizedShortLink = normalizeDocumentationShortLink(shortLink);
+    if (documentationShortLinkProblem(normalizedShortLink) === 'invalid') {
       toast.error(tForm('shortLinkInvalid'));
-      return;
-    }
-    if (shortLinkProblem === 'reserved') {
-      toast.error(tForm('shortLinkReserved'));
       return;
     }
 
@@ -221,7 +216,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
   const normalizedShortLinkPreview = normalizeDocumentationShortLink(shortLink);
   const shortLinkDescription =
     normalizedShortLinkPreview && !documentationShortLinkProblem(normalizedShortLinkPreview)
-      ? tForm('shortLinkPreview', { path: `/app/faq/${normalizedShortLinkPreview}` })
+      ? tForm('shortLinkPreview', { path: `/app/faq/articles/${normalizedShortLinkPreview}` })
       : tForm('shortLinkHelp');
 
   return (
@@ -288,16 +283,14 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
               disabled={isSaving}
             />
           ) : null}
-          {isPublic ? (
-            <AdminTextFieldControl
-              label={tForm('shortLink')}
-              value={shortLink}
-              onChange={setShortLink}
-              placeholder={tForm('shortLinkPlaceholder')}
-              description={shortLinkDescription}
-              disabled={isSaving}
-            />
-          ) : null}
+          <AdminTextFieldControl
+            label={tForm('shortLink')}
+            value={shortLink}
+            onChange={setShortLink}
+            placeholder={tForm('shortLinkPlaceholder')}
+            description={shortLinkDescription}
+            disabled={isSaving}
+          />
 
           <AdminMultiSelectFieldControl
             label={tColumns('groups')}

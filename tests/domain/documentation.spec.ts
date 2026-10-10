@@ -1,11 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
-import {
-  documentationShortLinkProblem,
-  documentationWithPublicShortLink,
-  normalizeDocumentationShortLink,
-} from '@/domain/documentation-short-link';
+import { documentationShortLinkProblem, normalizeDocumentationShortLink } from '@/domain/documentation-short-link';
 import { canDeleteDocumentation, defaultDocumentationTags, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
@@ -39,6 +35,15 @@ describe('documentationSchema', () => {
     }
   });
 
+  it('accepts a document tagged simulation_all', () => {
+    const doc = documentation({ tags: ['simulation_all'], isFaq: true });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toEqual(['simulation_all']);
+    }
+  });
+
   it('defaults a missing short link to null', () => {
     const { shortLink, ...withoutShortLink } = documentation();
     expect(shortLink).toBeNull();
@@ -50,28 +55,24 @@ describe('documentationSchema', () => {
   });
 
   it('normalizes a short link', () => {
-    const result = documentationSchema.safeParse(documentation({ isPublic: true, shortLink: ' Boete ' }));
+    const result = documentationSchema.safeParse(documentation({ isPublic: false, shortLink: ' Boete ' }));
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.shortLink).toBe('boete');
     }
   });
 
-  it('rejects a reserved short link', () => {
-    const result = documentationSchema.safeParse(documentation({ shortLink: 'articles' }));
-    expect(result.success).toBe(false);
+  it('keeps a short link when the item is not public', () => {
+    const result = documentationSchema.safeParse(documentation({ isPublic: false, shortLink: 'boete' }));
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.shortLink).toBe('boete');
+    }
   });
 
   it('rejects a short link with spaces', () => {
     expect(documentationShortLinkProblem(normalizeDocumentationShortLink('my link'))).toBe('invalid');
-    expect(documentationShortLinkProblem('groups')).toBe('reserved');
   });
-
-  it('clears a short link on an item that is not public', () => {
-    const doc = documentationWithPublicShortLink(documentation({ isPublic: false, shortLink: 'boete' }));
-    expect(doc.shortLink).toBeNull();
-  });
-
   it('rejects a document with no translations', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);

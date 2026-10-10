@@ -78,15 +78,16 @@ describe('updateDocumentation', () => {
     expect(dbDocumentationUpdate).toHaveBeenCalledWith(expect.objectContaining({ shortLink: 'boete' }));
   });
 
-  it('drops the short link when the article is not public', async () => {
-    const updated = documentation({ isPublic: false, shortLink: null });
+  it('keeps the short link when the article is not public', async () => {
+    const updated = documentation({ isPublic: false, shortLink: 'boete' });
+    vi.mocked(dbDocumentationGetByShortLink).mockResolvedValueOnce(null);
     vi.mocked(dbDocumentationUpdate).mockResolvedValueOnce(updated);
     vi.mocked(embedDocumentationById).mockResolvedValueOnce();
 
     await updateDocumentation({ ...updated, shortLink: 'boete' });
 
-    expect(dbDocumentationGetByShortLink).not.toHaveBeenCalled();
-    expect(dbDocumentationUpdate).toHaveBeenCalledWith(expect.objectContaining({ shortLink: null }));
+    expect(dbDocumentationGetByShortLink).toHaveBeenCalledWith('boete');
+    expect(dbDocumentationUpdate).toHaveBeenCalledWith(expect.objectContaining({ shortLink: 'boete' }));
   });
 
   it('rejects a short link already used by another article', async () => {

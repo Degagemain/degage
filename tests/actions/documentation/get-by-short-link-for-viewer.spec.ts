@@ -47,8 +47,8 @@ describe('getDocumentationByShortLinkForViewer', () => {
     expect(result).toEqual({ ok: false, reason: 'not_found' });
   });
 
-  it('returns not_found for a reserved short link without querying', async () => {
-    const result = await getDocumentationByShortLinkForViewer('articles', 'nl', false);
+  it('returns not_found for an invalid short link without querying', async () => {
+    const result = await getDocumentationByShortLinkForViewer('my link', 'nl', false);
     expect(result).toEqual({ ok: false, reason: 'not_found' });
     expect(dbDocumentationGetByShortLink).not.toHaveBeenCalled();
   });
