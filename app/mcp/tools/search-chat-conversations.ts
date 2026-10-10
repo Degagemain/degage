@@ -1,7 +1,15 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { readChatConversationForMcp, searchChatConversationsForMcp } from '@/actions/conversation/mcp-search';
+import { readChatConversationForAdmin } from '@/actions/conversation/admin-read';
+import { searchChatConversationsForAdmin } from '@/actions/conversation/admin-search';
+import { chatConversationAdminFilterSchema } from '@/domain/chat-conversation-admin.filter';
 import { type McpAuthContext, canUseMcpTools, mcpToolGateErrorMessage } from '@/mcp/auth-context';
 import { searchChatConversationsMcpInputSchema } from '@/mcp/tools/chat-conversation-input-schemas';
+
+const withoutUser = <T extends { user?: unknown }>(record: T): Omit<T, 'user'> => {
+  const copy = { ...record };
+  delete copy.user;
+  return copy;
+};
 
 export const registerSearchChatConversationsTool = (
   server: McpServer,
@@ -12,11 +20,10 @@ export const registerSearchChatConversationsTool = (
     'search_chat_conversations',
     {
       description:
-        'Search support conversations for editorial review. Read-only. ' +
-        'Omits names, email addresses, and user ids. ' +
-        'Without id, returns { records, total } with id, title, channel (chat or email), locale, noResults, createdAt, and updatedAt. ' +
-        'Filter with from, to, locale, channel, and noResults. ' +
-        'With id, returns that conversation and its messages. Assistant messages include citations as { externalId, title }.',
+        'Read-only search of support chats, using the same filters as the admin support chat list. ' +
+        'Returns { records, total }. Records have id, title, medium (frontend or email), and updatedAt. ' +
+        'User name and email are omitted. ' +
+        'Pass id to return one conversation and its messages, including cited article title and url on assistant messages.',
       inputSchema: searchChatConversationsMcpInputSchema,
     },
     async (input) => {
@@ -38,7 +45,7 @@ export const registerSearchChatConversationsTool = (
 
       try {
         if (input.id) {
-          const detail = await readChatConversationForMcp(input.id);
+          const detail = await readChatConversationForAdmin(input.id);
           if (!detail) {
             return {
               content: [{ type: 'text' as const, text: 'Conversation not found' }],
@@ -46,23 +53,26 @@ export const registerSearchChatConversationsTool = (
             };
           }
           return {
-            content: [{ type: 'text' as const, text: JSON.stringify(detail, null, 2) }],
+            content: [{ type: 'text' as const, text: JSON.stringify(withoutUser(detail), null, 2) }],
           };
         }
 
-        const result = await searchChatConversationsForMcp({
-          from: input.from,
-          to: input.to,
-          locale: input.locale,
-          channel: input.channel,
-          noResults: input.noResults,
+        const filter = chatConversationAdminFilterSchema.parse({
+          userIds: input.userIds,
+          mediums: input.mediums,
           skip: input.skip,
           take: input.take,
           sortBy: input.sortBy,
           sortOrder: input.sortOrder,
         });
+        const result = await searchChatConversationsForAdmin(filter);
         return {
-          content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
+          content: [
+            {
+              type: 'text' as const,
+              text: JSON.stringify({ ...result, records: result.records.map(withoutUser) }, null, 2),
+            },
+          ],
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to search chat conversations';

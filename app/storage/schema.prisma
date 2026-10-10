@@ -611,6 +611,7 @@ enum DocumentationAudienceRole {
 enum DocumentationTag {
   public_faq
   landing_faq
+  simulation_all
   simulation_step_1
   simulation_step_2_approved
   simulation_step_2_rejected
@@ -738,7 +739,6 @@ model ChatConversation {
   medium        ChatConversationMedium @default(frontend)
   emailThreadId String?
   guestToken    String?                @unique
-  locale        String?
   title         String                 @default("")
   messages      ChatMessage[]
   createdAt     DateTime               @default(now())
@@ -746,8 +746,6 @@ model ChatConversation {
 
   @@index([userId])
   @@index([updatedAt])
-  @@index([createdAt])
-  @@index([locale])
   @@index([medium, emailThreadId])
   @@unique([medium, emailThreadId])
 }
@@ -761,7 +759,6 @@ model ChatMessage {
   role              String
   content           String
   citations         Json             @default("[]")
-  noResults         Boolean?
   createdAt         DateTime         @default(now())
 
   @@unique([conversationId, externalId])

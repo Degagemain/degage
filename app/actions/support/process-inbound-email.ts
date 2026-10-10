@@ -324,7 +324,6 @@ export const processInboundSupportEmail = async (event: ResendReceivedEvent): Pr
     role: 'assistant',
     content: reply.text,
     externalMessageId: sent.id,
-    citations: reply.citations,
-    noResults: reply.noResults,
+    citations: [],
   });
 };

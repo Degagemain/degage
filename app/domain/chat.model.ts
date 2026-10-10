@@ -1,5 +1,4 @@
 import * as z from 'zod';
-import { contentLocales } from '@/i18n/locales';
 import { idNameSchema } from './id-name.model';
 
 export const chatUserMessageMaxLength = 4000;
@@ -7,15 +6,6 @@ export const supportChatFeatureFlag = 'support-chat';
 export const chatConversationMediumValues = ['frontend', 'email'] as const;
 export const chatConversationMediumSchema = z.enum(chatConversationMediumValues);
 export type ChatConversationMedium = z.infer<typeof chatConversationMediumSchema>;
-export const chatConversationChannelValues = ['chat', 'email'] as const;
-export const chatConversationChannelSchema = z.enum(chatConversationChannelValues);
-export type ChatConversationChannel = z.infer<typeof chatConversationChannelSchema>;
-
-export const chatConversationChannelToMedium = (channel: ChatConversationChannel): ChatConversationMedium =>
-  channel === 'chat' ? 'frontend' : 'email';
-
-export const chatConversationMediumToChannel = (medium: ChatConversationMedium): ChatConversationChannel =>
-  medium === 'email' ? 'email' : 'chat';
 export const chatMessageRoleValues = ['user', 'assistant'] as const;
 export const chatMessageRoleSchema = z.enum(chatMessageRoleValues);
 export type ChatMessageRole = z.infer<typeof chatMessageRoleSchema>;
@@ -24,7 +14,6 @@ export const chatCitationSchema = z
   .object({
     title: z.string().min(1),
     url: z.string().min(1),
-    externalId: z.string().min(1).optional(),
   })
   .strict();
 
@@ -52,7 +41,6 @@ export const chatConversationSchema = z
     medium: chatConversationMediumSchema.default('frontend'),
     emailThreadId: z.string().min(1).nullable().default(null),
     guestToken: z.string().min(1).nullable().default(null),
-    locale: z.enum(contentLocales).nullable().default(null),
     title: z.string().default(''),
     messages: z.array(chatMessageSchema).default([]),
     createdAt: z.coerce.date().nullable().default(null),
@@ -68,7 +56,6 @@ export const chatConversationCreateInputSchema = z
     medium: chatConversationSchema.shape.medium.optional(),
     emailThreadId: chatConversationSchema.shape.emailThreadId.optional(),
     guestToken: chatConversationSchema.shape.guestToken.optional(),
-    locale: chatConversationSchema.shape.locale.optional(),
     title: chatConversationSchema.shape.title.optional(),
   })
   .strict();

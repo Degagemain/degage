@@ -14,30 +14,6 @@ export const documentationFaqArticlePath = (externalId: string): string => {
   return `/app/faq/articles/${encodeURIComponent(externalId)}`;
 };
 
-const externalIdFromCitationPath = (url: string, prefix: string): string | null => {
-  const index = url.indexOf(prefix);
-  if (index === -1) return null;
-  const rest = url.slice(index + prefix.length).split(/[?#]/)[0];
-  if (!rest) return null;
-  try {
-    return decodeURIComponent(rest);
-  } catch {
-    return rest;
-  }
-};
-
-export const externalIdFromChatCitation = (citation: { externalId?: string | null; url?: string | null }): string | null => {
-  const explicit = citation.externalId?.trim();
-  if (explicit) return explicit;
-  const url = citation.url?.trim() ?? '';
-  if (!url) return null;
-  return externalIdFromCitationPath(url, '/app/faq/articles/') ?? externalIdFromCitationPath(url, '/app/admin/documentation/');
-};
-
-const chatCitationWithUrl = (citation: ChatCitation, url: string): ChatCitation => {
-  return citation.externalId ? { title: citation.title, url, externalId: citation.externalId } : { title: citation.title, url };
-};
-
 const adminDocumentationPathPattern = /^\/app\/admin\/documentation\/(.+)$/;
 
 export const normalizeSupportChatCitationForViewer = (citation: ChatCitation, viewer: UserWithRole | null | undefined): ChatCitation => {
@@ -47,10 +23,13 @@ export const normalizeSupportChatCitationForViewer = (citation: ChatCitation, vi
 
   const adminMatch = citation.url.match(adminDocumentationPathPattern);
   if (adminMatch?.[1]) {
-    return chatCitationWithUrl(citation, documentationFaqArticlePath(decodeURIComponent(adminMatch[1])));
+    return {
+      title: citation.title,
+      url: documentationFaqArticlePath(decodeURIComponent(adminMatch[1])),
+    };
   }
 
-  return chatCitationWithUrl(citation, citation.url);
+  return citation;
 };
 
 export const mergeDocumentationSupportCitations = (
@@ -80,10 +59,9 @@ export const toChatCitationsForSupportViewer = (
         return {
           title: c.title,
           url: documentationFaqArticlePath(c.externalId),
-          externalId: c.externalId,
         };
       }
 
-      return { title: c.title, url: c.url, externalId: c.externalId };
+      return { title: c.title, url: c.url };
     });
 };

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import {
   documentationFaqArticlePath,
-  externalIdFromChatCitation,
   mergeDocumentationSupportCitations,
   normalizeSupportChatCitationForViewer,
   toChatCitationsForSupportViewer,
@@ -26,7 +25,7 @@ describe('documentation.support-citations', () => {
       ],
       { id: '1', role: Role.ADMIN },
     );
-    expect(out).toEqual([{ title: 'A', url: '/app/admin/documentation/x', externalId: 'x' }]);
+    expect(out).toEqual([{ title: 'A', url: '/app/admin/documentation/x' }]);
   });
 
   it('uses FAQ paths for public docs even when viewer is admin', () => {
@@ -41,7 +40,7 @@ describe('documentation.support-citations', () => {
       ],
       { id: '1', role: Role.ADMIN },
     );
-    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/repo%3Apublic', externalId: 'repo:public' }]);
+    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/repo%3Apublic' }]);
   });
 
   it('filters to public docs and uses FAQ paths for non-admins', () => {
@@ -62,7 +61,7 @@ describe('documentation.support-citations', () => {
       ],
       { id: '1', role: Role.USER },
     );
-    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/repo%3Apublic', externalId: 'repo:public' }]);
+    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/repo%3Apublic' }]);
   });
 
   it('treats unauthenticated viewers like non-admin for citations', () => {
@@ -77,7 +76,7 @@ describe('documentation.support-citations', () => {
       ],
       null,
     );
-    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/a', externalId: 'a' }]);
+    expect(out).toEqual([{ title: 'Help', url: '/app/faq/articles/a' }]);
   });
 
   it('rewrites legacy admin citation URLs to FAQ paths for non-admin viewers', () => {
@@ -129,12 +128,5 @@ describe('documentation.support-citations', () => {
     };
 
     expect(mergeDocumentationSupportCitations([first, shared], [sharedAgain, second])).toEqual([first, shared, second]);
-  });
-
-  it('reads externalId from the citation or from article URLs', () => {
-    expect(externalIdFromChatCitation({ externalId: 'repo:explicit', url: '/app/faq/articles/other' })).toBe('repo:explicit');
-    expect(externalIdFromChatCitation({ url: '/app/faq/articles/repo%3Apublic' })).toBe('repo:public');
-    expect(externalIdFromChatCitation({ url: 'https://example.com/app/admin/documentation/repo%3Ainternal?ref=1' })).toBe('repo:internal');
-    expect(externalIdFromChatCitation({ url: 'https://example.com/help' })).toBeNull();
   });
 });

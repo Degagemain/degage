@@ -54,7 +54,6 @@ describe('API Route - GET /api/admin/chat-conversations/[id]', () => {
       id: conversationId,
       title: 'Help',
       medium: 'frontend',
-      locale: null,
       emailThreadId: null,
       messages: [],
       user: null,

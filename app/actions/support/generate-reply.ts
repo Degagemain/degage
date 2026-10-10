@@ -105,13 +105,11 @@ type CommonSupportOptions = {
 export const generateSupportReplyStream = async (
   messages: UIMessage[],
   options: CommonSupportOptions & {
-    onFinish?: (payload: { text: string; citations: ChatCitation[]; noResults: boolean }) => Promise<void> | void;
+    onFinish?: (payload: { text: string; citations: ChatCitation[] }) => Promise<void> | void;
   } = {},
 ) => {
   const includeCitations = options.includeCitations ?? true;
   let latestRagCitations: DocumentationSupportCitation[] = [];
-  let documentationSearchCount = 0;
-  let documentationMissCount = 0;
 
   const result = streamText({
     model: google('gemini-2.5-flash'),
@@ -143,9 +141,9 @@ export const generateSupportReplyStream = async (
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          documentationSearchCount += 1;
-          if (search.noResults) documentationMissCount += 1;
-          latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          if (includeCitations) {
+            latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          }
           return search;
         },
       },
@@ -154,8 +152,7 @@ export const generateSupportReplyStream = async (
       if (!options.onFinish) return;
       await options.onFinish({
         text,
-        citations: toChatCitationsForSupportViewer(latestRagCitations, options.viewer),
-        noResults: documentationSearchCount > 0 && documentationMissCount === documentationSearchCount,
+        citations: includeCitations ? toChatCitationsForSupportViewer(latestRagCitations, options.viewer) : [],
       });
     },
   });
@@ -172,13 +169,10 @@ export const generateSupportReplyText = async (
 ): Promise<{
   text: string;
   citations: ChatCitation[];
-  noResults: boolean;
 }> => {
   const includeCitations = options.includeCitations ?? true;
   const outputFormat = options.outputFormat ?? 'plain';
   let latestRagCitations: DocumentationSupportCitation[] = [];
-  let documentationSearchCount = 0;
-  let documentationMissCount = 0;
 
   const response = await generateText({
     model: google('gemini-2.5-flash'),
@@ -212,9 +206,9 @@ export const generateSupportReplyText = async (
             viewerAudienceRole,
             ...(options.searchLocales?.length ? { locales: options.searchLocales } : {}),
           });
-          documentationSearchCount += 1;
-          if (search.noResults) documentationMissCount += 1;
-          latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          if (includeCitations) {
+            latestRagCitations = mergeDocumentationSupportCitations(latestRagCitations, search.citations);
+          }
           return search;
         },
       },
@@ -224,7 +218,6 @@ export const generateSupportReplyText = async (
   const text = outputFormat === 'plain' ? toPlainText(response.text) : response.text.trim();
   return {
     text,
-    citations: toChatCitationsForSupportViewer(latestRagCitations, options.viewer),
-    noResults: documentationSearchCount > 0 && documentationMissCount === documentationSearchCount,
+    citations: includeCitations ? toChatCitationsForSupportViewer(latestRagCitations, options.viewer) : [],
   };
 };

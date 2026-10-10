@@ -3,12 +3,16 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Role } from '@/domain/role.model';
 import type { McpAuthContext } from '@/mcp/auth-context';
 
-vi.mock('@/actions/conversation/mcp-search', () => ({
-  searchChatConversationsForMcp: vi.fn(),
-  readChatConversationForMcp: vi.fn(),
+vi.mock('@/actions/conversation/admin-search', () => ({
+  searchChatConversationsForAdmin: vi.fn(),
 }));
 
-import { readChatConversationForMcp, searchChatConversationsForMcp } from '@/actions/conversation/mcp-search';
+vi.mock('@/actions/conversation/admin-read', () => ({
+  readChatConversationForAdmin: vi.fn(),
+}));
+
+import { readChatConversationForAdmin } from '@/actions/conversation/admin-read';
+import { searchChatConversationsForAdmin } from '@/actions/conversation/admin-search';
 import { registerSearchChatConversationsTool } from '@/mcp/tools/search-chat-conversations';
 
 type ToolResult = {
@@ -16,7 +20,7 @@ type ToolResult = {
   isError?: boolean;
 };
 
-type ToolHandler = (input: { id?: string; from?: string; channel?: 'chat' | 'email'; noResults?: boolean }) => Promise<ToolResult>;
+type ToolHandler = (input: { id?: string; mediums?: Array<'frontend' | 'email'>; userIds?: string[] }) => Promise<ToolResult>;
 
 const adminContext: McpAuthContext = {
   userId: 'admin-1',
@@ -45,7 +49,7 @@ describe('search_chat_conversations tool', () => {
     const result = await handler({});
     expect(result.isError).toBe(true);
     expect(result.content[0]?.text).toBe('Unauthorized');
-    expect(searchChatConversationsForMcp).not.toHaveBeenCalled();
+    expect(searchChatConversationsForAdmin).not.toHaveBeenCalled();
   });
 
   it('rejects callers without the admin role', async () => {
@@ -56,71 +60,75 @@ describe('search_chat_conversations tool', () => {
     const result = await handler({});
     expect(result.isError).toBe(true);
     expect(result.content[0]?.text).toContain('Admin role');
-    expect(searchChatConversationsForMcp).not.toHaveBeenCalled();
+    expect(searchChatConversationsForAdmin).not.toHaveBeenCalled();
   });
 
-  it('lists conversations for an admin', async () => {
-    const createdAt = new Date('2026-05-01T00:00:00.000Z');
-    vi.mocked(searchChatConversationsForMcp).mockResolvedValueOnce({
+  it('returns the admin chat search without the user', async () => {
+    const updatedAt = new Date('2026-05-01T00:00:00.000Z');
+    vi.mocked(searchChatConversationsForAdmin).mockResolvedValueOnce({
       records: [
         {
           id: '6eccebe4-069a-4292-8d89-1f40392b935d',
           title: 'Battery',
-          channel: 'chat',
-          locale: 'nl',
-          noResults: true,
-          createdAt,
-          updatedAt: createdAt,
+          medium: 'frontend',
+          user: { id: 'user-1', name: 'Ada <ada@example.com>' },
+          updatedAt,
         },
       ],
       total: 1,
     });
 
     const handler = registerAndGetHandler(() => adminContext);
-    const result = await handler({ from: '2026-05-01', channel: 'chat', noResults: true });
+    const result = await handler({ mediums: ['frontend'], userIds: ['user-1'] });
 
     expect(result.isError).toBeUndefined();
-    expect(searchChatConversationsForMcp).toHaveBeenCalledWith(
-      expect.objectContaining({ from: '2026-05-01', channel: 'chat', noResults: true }),
+    expect(searchChatConversationsForAdmin).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mediums: ['frontend'],
+        userIds: ['user-1'],
+      }),
     );
     expect(JSON.parse(result.content[0]!.text)).toEqual({
       records: [
         {
           id: '6eccebe4-069a-4292-8d89-1f40392b935d',
           title: 'Battery',
-          channel: 'chat',
-          locale: 'nl',
-          noResults: true,
-          createdAt: createdAt.toISOString(),
-          updatedAt: createdAt.toISOString(),
+          medium: 'frontend',
+          updatedAt: updatedAt.toISOString(),
         },
       ],
       total: 1,
     });
+    expect(result.content[0]?.text).not.toContain('ada@example.com');
+    expect(readChatConversationForAdmin).not.toHaveBeenCalled();
   });
 
-  it('returns one conversation when id is set', async () => {
-    vi.mocked(readChatConversationForMcp).mockResolvedValueOnce({
+  it('returns one admin conversation without the user when id is set', async () => {
+    vi.mocked(readChatConversationForAdmin).mockResolvedValueOnce({
       id: '6eccebe4-069a-4292-8d89-1f40392b935d',
       title: 'Battery',
-      channel: 'chat',
-      locale: 'nl',
-      noResults: false,
+      medium: 'email',
+      emailThreadId: '<thread-1>',
+      messages: [],
+      user: { id: 'user-1', name: 'Ada' },
       createdAt: new Date('2026-05-01T00:00:00.000Z'),
       updatedAt: new Date('2026-05-01T00:00:00.000Z'),
-      messages: [],
     });
 
     const handler = registerAndGetHandler(() => adminContext);
-    const result = await handler({ id: '6eccebe4-069a-4292-8d89-1f40392b935d', channel: 'email' });
+    const result = await handler({ id: '6eccebe4-069a-4292-8d89-1f40392b935d' });
 
     expect(result.isError).toBeUndefined();
-    expect(readChatConversationForMcp).toHaveBeenCalledWith('6eccebe4-069a-4292-8d89-1f40392b935d');
-    expect(searchChatConversationsForMcp).not.toHaveBeenCalled();
+    expect(readChatConversationForAdmin).toHaveBeenCalledWith('6eccebe4-069a-4292-8d89-1f40392b935d');
+    expect(searchChatConversationsForAdmin).not.toHaveBeenCalled();
+    const body = JSON.parse(result.content[0]!.text);
+    expect(body.user).toBeUndefined();
+    expect(body.medium).toBe('email');
+    expect(body.messages).toEqual([]);
   });
 
   it('returns not found when the conversation is missing', async () => {
-    vi.mocked(readChatConversationForMcp).mockResolvedValueOnce(null);
+    vi.mocked(readChatConversationForAdmin).mockResolvedValueOnce(null);
     const handler = registerAndGetHandler(() => adminContext);
     const result = await handler({ id: '6eccebe4-069a-4292-8d89-1f40392b935d' });
     expect(result.isError).toBe(true);

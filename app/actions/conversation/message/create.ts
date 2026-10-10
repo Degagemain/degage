@@ -10,7 +10,6 @@ const createMessageInputSchema = z
     role: chatMessageRoleSchema,
     content: z.string().min(1).max(chatUserMessageMaxLength),
     citations: z.array(chatCitationSchema).optional().default([]),
-    noResults: z.boolean().nullable().optional().default(null),
   })
   .strict();
 
@@ -21,7 +20,6 @@ export const createMessage = async (input: {
   role: z.infer<typeof chatMessageRoleSchema>;
   content: string;
   citations?: z.infer<typeof chatCitationSchema>[];
-  noResults?: boolean | null;
 }): Promise<void> => {
   const validated = createMessageInputSchema.parse(input);
   return dbChatMessageCreate(validated);

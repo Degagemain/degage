@@ -66,7 +66,6 @@ describe('processInboundSupportEmail', () => {
     vi.mocked(generateSupportReplyText).mockResolvedValueOnce({
       text: 'Thank you for your message. Here is how to proceed.',
       citations: [],
-      noResults: true,
     });
     vi.mocked(sendEmail).mockResolvedValueOnce({ id: 'out-1' });
 
@@ -102,8 +101,6 @@ describe('processInboundSupportEmail', () => {
         conversationId: 'f3ca74c4-c552-4d3a-a141-e7b0a1850c3e',
         role: 'assistant',
         externalMessageId: 'out-1',
-        citations: [],
-        noResults: true,
       }),
     );
   });
