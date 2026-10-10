@@ -34,6 +34,15 @@ describe('documentationSchema', () => {
     }
   });
 
+  it('accepts a document tagged simulation_all', () => {
+    const doc = documentation({ tags: ['simulation_all'], isFaq: true });
+    const result = documentationSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toEqual(['simulation_all']);
+    }
+  });
+
   it('rejects a document with no translations', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);

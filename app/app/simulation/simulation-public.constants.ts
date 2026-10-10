@@ -28,13 +28,18 @@ export const SIM_FAQ_PANEL: Partial<FaqPanelClassNames> = {
   itemContent: styles.faqPanelAnswer,
 };
 
+export const SIMULATION_FAQ_TAG_ALL = 'simulation_all' satisfies DocumentationTag;
+
+const withSimulationFaqAll = (tags: readonly DocumentationTag[]): DocumentationTag[] => [SIMULATION_FAQ_TAG_ALL, ...tags];
+
 export const SIMULATION_FAQ_TAGS = {
-  step1: ['simulation_step_1'],
-  step2Approved: ['simulation_step_2_approved'],
-  step2Rejected: ['simulation_step_2_rejected'],
-  step2Review: ['simulation_step_2_review'],
-  step3: ['simulation_step_3'],
-  step4: ['simulation_step_4'],
+  opening: withSimulationFaqAll([]),
+  step1: withSimulationFaqAll(['simulation_step_1']),
+  step2Approved: withSimulationFaqAll(['simulation_step_2_approved']),
+  step2Rejected: withSimulationFaqAll(['simulation_step_2_rejected']),
+  step2Review: withSimulationFaqAll(['simulation_step_2_review']),
+  step3: withSimulationFaqAll(['simulation_step_3']),
+  step4: withSimulationFaqAll(['simulation_step_4']),
 } as const satisfies Record<string, DocumentationTag[]>;
 
 export type ConfirmationMemberPath = 'infosessie' | 'lid' | 'nieuw';
