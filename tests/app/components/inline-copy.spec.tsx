@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { InlineCopy } from '@/app/components/inline-copy';
+import { InlineCopy, renderInlineCopyRich } from '@/app/components/inline-copy';
 
 describe('InlineCopy', () => {
   afterEach(() => {
@@ -34,5 +34,27 @@ describe('InlineCopy', () => {
 
     expect(screen.getByText('No links here')).toBeTruthy();
     expect(screen.queryByRole('link')).toBeNull();
+  });
+
+  it('renders markdown links in the text around a rich-text anchor', () => {
+    render(
+      <p>
+        {renderInlineCopyRich([
+          'Meer info kan je in ',
+          <a key="start" href="https://www.degage.be/start.pdf">
+            dit startdocument
+          </a>,
+          ' vinden. [Dan horen we graag van je!](mailto:deeljeauto@degage.be)',
+        ])}
+      </p>,
+    );
+
+    const startDoc = screen.getByRole('link', { name: 'dit startdocument' });
+    expect(startDoc.getAttribute('href')).toBe('https://www.degage.be/start.pdf');
+
+    const email = screen.getByRole('link', { name: 'Dan horen we graag van je!' });
+    expect(email.getAttribute('href')).toBe('mailto:deeljeauto@degage.be');
+    expect(email.getAttribute('target')).toBeNull();
+    expect(screen.queryByText(/\[Dan horen we graag van je!\]/)).toBeNull();
   });
 });
