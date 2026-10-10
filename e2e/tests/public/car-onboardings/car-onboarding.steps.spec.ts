@@ -15,11 +15,13 @@ test.describe('public car onboarding steps', () => {
 
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}`);
 
-    const titles = await page.locator('h3').allTextContents();
-    const nameIndex = titles.indexOf('Name & start date');
-    const stickersIndex = titles.indexOf('Car stickers');
-    expect(nameIndex).toBeGreaterThanOrEqual(0);
-    expect(stickersIndex).toBeGreaterThan(nameIndex);
+    const name = page.getByRole('heading', { name: 'Name & start date', exact: true });
+    const stickers = page.getByRole('heading', { name: 'Car stickers', exact: true });
+    await expect(name).toBeVisible();
+    await expect(stickers).toBeVisible();
+
+    const titles = (await page.locator('h3').allTextContents()).map((title) => title.trim());
+    expect(titles.indexOf('Name & start date')).toBeLessThan(titles.indexOf('Car stickers'));
   });
 
   test('step 1 (play connector) hides disconnect after connecting', async ({ page, appServer, asUser }) => {
