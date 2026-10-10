@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Fixed: on a simulation result for a new region, a website or email link in the warning can be clicked.
 - Changed: during car onboarding preparation, owner info, car info, and existing insurance stay open before a Degapp account is connected.
 - Added: the opening simulation page shows frequently asked questions and the ask-a-question button. Questions marked for every simulation page also appear on the later screens.
 - Fixed: after uploading a document on car info, the page stays next to that document.

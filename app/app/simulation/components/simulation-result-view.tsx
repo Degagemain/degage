@@ -17,7 +17,6 @@ import {
   CONFIRMATION_STEPS_BY_PATH,
   COST_SCENARIO_PEOPLE_BY_INDEX,
   type ConfirmationMemberPath,
-  NEW_REGION_START_DOC_HREF,
   NUMBERED_STEP_TOTAL,
   SIMULATION_FAQ_TAGS,
   SIM_FAQ_PANEL,
@@ -27,6 +26,7 @@ import {
 } from '../simulation-public.constants';
 import { notOkReasonDetailKey } from '../not-ok-reason-detail';
 import styles from '../simulation.module.css';
+import { NewRegionWarning } from './new-region-warning';
 
 type Props = {
   simulation: PublicSimulation;
@@ -325,20 +325,7 @@ export function SimulationResultView({ simulation }: Props) {
             </div>
           )}
 
-          {showNewRegionWarning && (
-            <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="note">
-              <p className={styles.amberBannerText}>
-                {t.rich('newRegionWarning', {
-                  town: townDisplayName,
-                  link: (chunks) => (
-                    <a href={NEW_REGION_START_DOC_HREF} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
-                      {chunks}
-                    </a>
-                  ),
-                })}
-              </p>
-            </div>
-          )}
+          {showNewRegionWarning && <NewRegionWarning town={townDisplayName} />}
 
           {displayNotOk && (
             <>
@@ -703,20 +690,7 @@ export function SimulationResultView({ simulation }: Props) {
             </p>
           </div>
 
-          {showNewRegionWarning && (
-            <div className={`${styles.amberBanner} ${styles.amberBannerSpaced}`} role="note">
-              <p className={styles.amberBannerText}>
-                {t.rich('newRegionWarning', {
-                  town: townDisplayName,
-                  link: (chunks) => (
-                    <a href={NEW_REGION_START_DOC_HREF} target="_blank" rel="noopener noreferrer" className={styles.privacyLink}>
-                      {chunks}
-                    </a>
-                  ),
-                })}
-              </p>
-            </div>
-          )}
+          {showNewRegionWarning && <NewRegionWarning town={townDisplayName} />}
 
           <div className={styles.bevestigingFormCard}>
             {confirmationStatus !== 'success' ? (
