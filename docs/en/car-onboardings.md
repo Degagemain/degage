@@ -147,26 +147,14 @@ Admins can overrule the agreement on the car value tab when the owner has explic
 
 This step is complete when car value status is **Resolved**.
 
-### Car stickers
-
-The owner can choose extra sticker designs from the catalog during the public onboarding flow. Extra stickers are optional. Always-included
-stickers are shown as pre-selected and cannot be removed; they are not stored on the onboarding record.
-
-| Property     | Description                                            |
-| ------------ | ------------------------------------------------------ |
-| Car stickers | Extra sticker designs selected by the owner and saved. |
-
-This step is always complete; extra stickers are optional.
-
 ### Car name and share start date
 
-Chooses a unique name for the car and when it becomes available for sharing. This is the last preparation step. The car name is 3–13 characters,
-uses letters and digits only (no special characters or dashes), and must not already exist in the legacy Play fleet or on another car
-onboarding. The share start date is always the first of a month. The earliest allowed month depends on the insurance details. Without an
-existing insurance contract, the earliest month is the first of this or next month (the current month only on the 1st). Insurers marked for
-instant onboarding skip the usual insurance waiting period with the same earliest month. The latest allowed month is 18 months from today. A
-date already saved (including by an admin) stays until insurance details that affect the earliest date change. Admins may still set the current
-month after it has started.
+Chooses a unique name for the car and when it becomes available for sharing. The car name is 3–13 characters, uses letters and digits only (no
+special characters or dashes), and must not already exist in the legacy Play fleet or on another car onboarding. The share start date is always
+the first of a month. The earliest allowed month depends on the insurance details. Without an existing insurance contract, the earliest month is
+the first of this or next month (the current month only on the 1st). Insurers marked for instant onboarding skip the usual insurance waiting
+period with the same earliest month. The latest allowed month is 18 months from today. A date already saved (including by an admin) stays until
+insurance details that affect the earliest date change. Admins may still set the current month after it has started.
 
 | Property         | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |
@@ -178,9 +166,20 @@ start date so the owner must pick again.
 
 This step is complete when a valid car name and a share start date are set.
 
+### Car stickers
+
+The owner can choose extra sticker designs from the catalog during the public onboarding flow. Extra stickers are optional. Always-included
+stickers are shown as pre-selected and cannot be removed; they are not stored on the onboarding record. This is the last preparation step.
+
+| Property     | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| Car stickers | Extra sticker designs selected by the owner and saved. |
+
+This step is always complete; extra stickers are optional.
+
 ### Finalize
 
-When play connector, info session, user info, car info, insurer, road assistance plan, car value, car stickers, car name and share start date,
+When play connector, info session, user info, car info, insurer, road assistance plan, car value, car name and share start date, car stickers,
 and owner preparation confirmation are all complete, the system sets preparation status to **Ready** automatically on save. An admin can then
 lock preparation on the **Finalize** tab.
 
@@ -191,7 +190,7 @@ info session is **Done** (along with the other requirements).
 | Status | Meaning                                                                                                                                                                                                                                   |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Open   | Onboarding is in progress; preparation sections (including owner confirmation) are not all complete yet.                                                                                                                                  |
-| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), car value (Resolved), car stickers, car name and share start date, and owner preparation confirmation are all complete. The system sets this automatically. |
+| Ready  | Play connector, info session (Done), car-info, user-info, insurer (not Todo), car value (Resolved), car name and share start date, car stickers, and owner preparation confirmation are all complete. The system sets this automatically. |
 | Locked | No further user updates are allowed. Admins can still change the full record. Locked with **Lock preparation** on **Finalize** when **Ready**; unlock with **Unlock preparation**.                                                        |
 
 When preparation is **Locked**, or after the owner has confirmed preparation, users cannot update car-info, user-info, insurer, or car value

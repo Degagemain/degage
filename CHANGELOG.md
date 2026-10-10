@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Changed: during car onboarding preparation, the car name and share start date come before car stickers.
+
 ## [0.0.8] - 2026-09-24
 
 ### Public features

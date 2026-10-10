@@ -2047,8 +2047,8 @@
         "car_onboarding_insurer": "Auto-onboarding — Bestaande verzekering",
         "car_onboarding_road_assistance_plan": "Auto-onboarding — Pechverhelpingsplan",
         "car_onboarding_car_value": "Auto-onboarding — Waarde van de auto",
-        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers",
-        "car_onboarding_share_start": "Auto-onboarding — Naam & startdatum"
+        "car_onboarding_share_start": "Auto-onboarding — Naam & startdatum",
+        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers"
       },
       "filters": {
         "isFaq": "Type",

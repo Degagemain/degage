@@ -26,8 +26,8 @@ export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
     'insurer',
     'road-assistance-plan',
     'car-value',
-    'car-stickers',
     'share-start',
+    'car-stickers',
   ];
 };
 

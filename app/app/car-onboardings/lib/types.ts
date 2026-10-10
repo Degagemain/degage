@@ -6,8 +6,8 @@ export type StepId =
   | 'insurer'
   | 'road-assistance-plan'
   | 'car-value'
-  | 'car-stickers'
-  | 'share-start';
+  | 'share-start'
+  | 'car-stickers';
 
 export type StepState = 'blocked' | 'todo' | 'pending' | 'done';
 
@@ -19,8 +19,8 @@ export const STEP_IDS: StepId[] = [
   'insurer',
   'road-assistance-plan',
   'car-value',
-  'car-stickers',
   'share-start',
+  'car-stickers',
 ];
 
 export const isStepId = (value: string): value is StepId => STEP_IDS.includes(value as StepId);

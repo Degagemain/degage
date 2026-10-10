@@ -132,27 +132,15 @@ Admins kunnen het akkoord overschrijven op het tabblad waarde wanneer de eigenaa
 
 Deze stap is compleet wanneer de waarde-status **Resolved** is.
 
-### Autostickers
-
-De eigenaar kan extra stickerontwerpen uit de catalogus kiezen tijdens de publieke onboarding-flow. Extra stickers zijn optioneel.
-Altijd-inbegrepen stickers worden vooraf geselecteerd getoond en kunnen niet worden verwijderd; ze worden niet opgeslagen op het
-onboarding-record.
-
-| Eigenschap   | Beschrijving                                                        |
-| ------------ | ------------------------------------------------------------------- |
-| Autostickers | Extra stickerontwerpen geselecteerd en opgeslagen door de eigenaar. |
-
-Deze stap is altijd compleet; extra stickers zijn optioneel.
-
 ### Naam van de wagen en startdatum autodelen
 
-Kiest een unieke naam voor de wagen en wanneer die beschikbaar wordt voor autodelen. Dit is de laatste voorbereidingsstap. De naam telt tussen
-de 3 en de 13 karakters, bevat alleen letters en cijfers (geen speciale tekens of streepjes) en mag nog niet bestaan in het legacy
-Play-wagenpark of bij een andere auto-onboarding. De startdatum is altijd de eerste van de maand. De vroegst toegelaten maand hangt af van de
-verzekeringsgegevens. Zonder bestaand verzekeringscontract is de vroegste maand de eerste van deze of volgende maand (de huidige maand alleen op
-de 1ste). Verzekeraars met directe start slaan de gebruikelijke wachttijd over, met dezelfde vroegste maand. De laatst toegelaten maand is 18
-maanden vanaf vandaag. Een al opgeslagen datum (ook door een admin) blijft staan tot verzekeringsgegevens die de vroegste datum beïnvloeden
-wijzigen. Admins mogen de huidige maand nog instellen nadat die al begonnen is.
+Kiest een unieke naam voor de wagen en wanneer die beschikbaar wordt voor autodelen. De naam telt tussen de 3 en de 13 karakters, bevat alleen
+letters en cijfers (geen speciale tekens of streepjes) en mag nog niet bestaan in het legacy Play-wagenpark of bij een andere auto-onboarding.
+De startdatum is altijd de eerste van de maand. De vroegst toegelaten maand hangt af van de verzekeringsgegevens. Zonder bestaand
+verzekeringscontract is de vroegste maand de eerste van deze of volgende maand (de huidige maand alleen op de 1ste). Verzekeraars met directe
+start slaan de gebruikelijke wachttijd over, met dezelfde vroegste maand. De laatst toegelaten maand is 18 maanden vanaf vandaag. Een al
+opgeslagen datum (ook door een admin) blijft staan tot verzekeringsgegevens die de vroegste datum beïnvloeden wijzigen. Admins mogen de huidige
+maand nog instellen nadat die al begonnen is.
 
 | Eigenschap        | Beschrijving                                                        |
 | ----------------- | ------------------------------------------------------------------- |
@@ -164,9 +152,21 @@ de gekozen startdatum, zodat de eigenaar opnieuw moet kiezen.
 
 Deze stap is compleet wanneer een geldige wagennaam en een startdatum zijn ingesteld.
 
+### Autostickers
+
+De eigenaar kan extra stickerontwerpen uit de catalogus kiezen tijdens de publieke onboarding-flow. Extra stickers zijn optioneel.
+Altijd-inbegrepen stickers worden vooraf geselecteerd getoond en kunnen niet worden verwijderd; ze worden niet opgeslagen op het
+onboarding-record. Dit is de laatste voorbereidingsstap.
+
+| Eigenschap   | Beschrijving                                                        |
+| ------------ | ------------------------------------------------------------------- |
+| Autostickers | Extra stickerontwerpen geselecteerd en opgeslagen door de eigenaar. |
+
+Deze stap is altijd compleet; extra stickers zijn optioneel.
+
 ### Afronden
 
-Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde, autostickers, startdatum en bevestiging door
+Wanneer Play connector, infosessie, gebruikersinfo, wageninfo, verzekering, pechverhelping, waarde, startdatum, autostickers en bevestiging door
 de eigenaar allemaal compleet zijn, zet het systeem de voorbereidingsstatus automatisch op **Klaar** bij opslaan. Een admin kan daarna de
 auto-onboarding vergrendelen op het tabblad **Afronden**.
 
@@ -177,7 +177,7 @@ bevestiging er is én de infosessie **Compleet** is (samen met de overige vereis
 | Status      | Betekenis                                                                                                                                                                                                                                |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Open        | Onboarding is bezig; voorbereidingsstappen (inclusief bevestiging door de eigenaar) zijn nog niet allemaal compleet.                                                                                                                     |
-| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost), autostickers, startdatum en bevestiging door de eigenaar zijn compleet. Het systeem zet dit automatisch.                   |
+| Klaar       | Play connector, infosessie (Compleet), gebruikersinfo, wageninfo, verzekering (niet Todo), waarde (Opgelost), startdatum, autostickers en bevestiging door de eigenaar zijn compleet. Het systeem zet dit automatisch.                   |
 | Vergrendeld | Geen verdere gebruikerswijzigingen toegestaan. Admins kunnen het volledige record nog wel aanpassen. Vergrendelen via **Voorbereiding vergrendelen** op **Afronden** wanneer **Klaar**; ontgrendelen via **Voorbereiding ontgrendelen**. |
 
 Wanneer de voorbereiding **Vergrendeld** is, of nadat de eigenaar heeft bevestigd, kunnen gebruikers gebruikersinfo, wageninfo, verzekering en

@@ -135,27 +135,15 @@ l'application.
 
 Cette étape est complète lorsque le statut de valeur est **Resolved**.
 
-### Stickers voiture
-
-Le propriétaire peut choisir des designs de stickers supplémentaires dans le catalogue pendant le flux d'intégration public. Les stickers
-supplémentaires sont facultatifs. Les stickers toujours inclus sont affichés comme pré-sélectionnés et ne peuvent pas être retirés ; ils ne sont
-pas enregistrés sur l'enregistrement d'intégration.
-
-| Propriété        | Description                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| Stickers voiture | Designs de stickers supplémentaires sélectionnés et enregistrés par le propriétaire. |
-
-Cette étape est toujours complète ; les stickers supplémentaires sont facultatifs.
-
 ### Nom du véhicule et date de début du partage
 
-Choisit un nom unique pour le véhicule et quand il devient disponible pour le partage. C'est la dernière étape de préparation. Le nom compte
-entre 3 et 13 caractères, utilise uniquement des lettres et des chiffres (sans caractères spéciaux ni tirets) et ne doit pas déjà exister dans
-la flotte Play legacy ni sur un autre onboarding. La date de début est toujours le premier du mois. Le mois le plus tôt autorisé dépend des
-détails d'assurance. Sans contrat d'assurance existant, le mois le plus tôt est le premier de ce mois ou du mois suivant (le mois en cours
-uniquement le 1er). Les assureurs en démarrage immédiat ignorent le délai d'attente habituel, avec le même mois le plus tôt. Le mois le plus
-tard autorisé est 18 mois à partir d'aujourd'hui. Une date déjà enregistrée (y compris par un admin) est conservée jusqu'à ce que les détails
-d'assurance qui affectent la date la plus tôt changent. Les admins peuvent encore fixer le mois en cours après son début.
+Choisit un nom unique pour le véhicule et quand il devient disponible pour le partage. Le nom compte entre 3 et 13 caractères, utilise
+uniquement des lettres et des chiffres (sans caractères spéciaux ni tirets) et ne doit pas déjà exister dans la flotte Play legacy ni sur un
+autre onboarding. La date de début est toujours le premier du mois. Le mois le plus tôt autorisé dépend des détails d'assurance. Sans contrat
+d'assurance existant, le mois le plus tôt est le premier de ce mois ou du mois suivant (le mois en cours uniquement le 1er). Les assureurs en
+démarrage immédiat ignorent le délai d'attente habituel, avec le même mois le plus tôt. Le mois le plus tard autorisé est 18 mois à partir
+d'aujourd'hui. Une date déjà enregistrée (y compris par un admin) est conservée jusqu'à ce que les détails d'assurance qui affectent la date la
+plus tôt changent. Les admins peuvent encore fixer le mois en cours après son début.
 
 | Propriété             | Description                                                               |
 | --------------------- | ------------------------------------------------------------------------- |
@@ -167,10 +155,22 @@ efface la date de début choisie afin que le propriétaire doive la choisir à n
 
 Cette étape est complète lorsqu'un nom de véhicule valide et une date de début sont définis.
 
+### Stickers voiture
+
+Le propriétaire peut choisir des designs de stickers supplémentaires dans le catalogue pendant le flux d'intégration public. Les stickers
+supplémentaires sont facultatifs. Les stickers toujours inclus sont affichés comme pré-sélectionnés et ne peuvent pas être retirés ; ils ne sont
+pas enregistrés sur l'enregistrement d'intégration. C'est la dernière étape de préparation.
+
+| Propriété        | Description                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| Stickers voiture | Designs de stickers supplémentaires sélectionnés et enregistrés par le propriétaire. |
+
+Cette étape est toujours complète ; les stickers supplémentaires sont facultatifs.
+
 ### Finaliser
 
-Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière, valeur, stickers voiture, date de
-début du partage et confirmation du propriétaire sont toutes complètes, le système définit le statut de préparation sur **Prêt** automatiquement
+Lorsque Play connector, session d'info, infos utilisateur, infos véhicule, assurance, assistance routière, valeur, date de début du partage,
+stickers voiture et confirmation du propriétaire sont toutes complètes, le système définit le statut de préparation sur **Prêt** automatiquement
 à l'enregistrement. Un admin peut ensuite verrouiller la préparation sur l'onglet **Finaliser**.
 
 Le propriétaire peut confirmer la préparation une fois les autres étapes terminées, même si la session d'info est seulement **Inscrit** (pas
@@ -180,7 +180,7 @@ qu'après cette confirmation et lorsque la session d'info est **Complet** (avec 
 | Statut     | Signification                                                                                                                                                                                                                                             |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ouvert     | L'intégration est en cours ; les étapes de préparation (y compris la confirmation du propriétaire) ne sont pas toutes complètes.                                                                                                                          |
-| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo), valeur (Résolu), stickers voiture, date de début et confirmation du propriétaire sont complètes. Le système définit ce statut automatiquement.         |
+| Prêt       | Play connector, session d'info (Complet), infos utilisateur, infos véhicule, assurance (pas Todo), valeur (Résolu), date de début, stickers voiture et confirmation du propriétaire sont complètes. Le système définit ce statut automatiquement.         |
 | Verrouillé | Aucune mise à jour utilisateur n'est autorisée. Les admins peuvent toujours modifier l'enregistrement complet. Verrouiller avec **Verrouiller la préparation** sur **Finaliser** lorsque **Prête** ; déverrouiller avec **Déverrouiller la préparation**. |
 
 Lorsque la préparation est **Verrouillée**, ou après confirmation du propriétaire, les utilisateurs ne peuvent plus mettre à jour les infos
