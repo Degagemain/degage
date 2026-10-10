@@ -2047,8 +2047,8 @@
         "car_onboarding_insurer": "Onboarding voiture — Assurance existante",
         "car_onboarding_road_assistance_plan": "Onboarding voiture — Assistance routière",
         "car_onboarding_car_value": "Onboarding voiture — Valeur",
-        "car_onboarding_car_stickers": "Onboarding voiture — Autocollants",
-        "car_onboarding_share_start": "Onboarding voiture — Nom et date de début"
+        "car_onboarding_share_start": "Onboarding voiture — Nom et date de début",
+        "car_onboarding_car_stickers": "Onboarding voiture — Autocollants"
       },
       "filters": {
         "isFaq": "Type",

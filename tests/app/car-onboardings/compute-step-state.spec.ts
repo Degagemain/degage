@@ -31,8 +31,8 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
-      'car-stickers',
       'share-start',
+      'car-stickers',
     ]);
     expect(getStepsForRecord(carOnboarding({ isPurchased: false }))).toEqual([
       'play-connector',
@@ -42,8 +42,8 @@ describe('getStepsForRecord', () => {
       'insurer',
       'road-assistance-plan',
       'car-value',
-      'car-stickers',
       'share-start',
+      'car-stickers',
     ]);
   });
 });

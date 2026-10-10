@@ -10,6 +10,18 @@ const field = (page: Page, label: string) => page.getByText(label, { exact: true
 test.describe('public car onboarding steps', () => {
   test.use({ locale: 'en' });
 
+  test('preparation lists name and start date before car stickers', async ({ page, appServer, asUser }) => {
+    await asUser;
+
+    await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}`);
+
+    const titles = await page.locator('h3').allTextContents();
+    const nameIndex = titles.indexOf('Name & start date');
+    const stickersIndex = titles.indexOf('Car stickers');
+    expect(nameIndex).toBeGreaterThanOrEqual(0);
+    expect(stickersIndex).toBeGreaterThan(nameIndex);
+  });
+
   test('step 1 (play connector) hides disconnect after connecting', async ({ page, appServer, asUser }) => {
     await asUser;
 
@@ -90,18 +102,19 @@ test.describe('public car onboarding steps', () => {
 
     await page.getByRole('button', { name: 'Yes, I agree' }).click();
     await page.getByRole('button', { name: /Save & Next/i }).click();
-    await expect(page).toHaveURL(/\/car-stickers$/);
+    // Name & start date is next when insurer is already saved. Until then that step stays locked, so continue opens stickers.
+    await expect(page).toHaveURL(/\/(share-start|car-stickers)$/);
 
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/car-value`);
     await expect(page.getByLabel('Complete')).toBeVisible();
   });
 
-  test('step 8 (car stickers) saves and continues to the next step or overview', async ({ page, appServer, asUser }) => {
+  test('step 9 (car stickers) saves and continues to the overview', async ({ page, appServer, asUser }) => {
     await asUser;
 
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/car-stickers`);
 
     await page.getByRole('button', { name: /Save & Next/i }).click();
-    await expect(page).toHaveURL(new RegExp(`/app/car-onboardings/${E2E_CAR_ONBOARDING.id}(/share-start)?$`));
+    await expect(page).toHaveURL(new RegExp(`/app/car-onboardings/${E2E_CAR_ONBOARDING.id}$`));
   });
 });

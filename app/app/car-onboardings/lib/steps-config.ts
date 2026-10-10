@@ -52,15 +52,15 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     actors: ['you', 'degage'],
   },
   {
-    id: 'car-stickers',
-    titleKey: 'steps.carStickers.title',
-    subtitleKey: 'steps.carStickers.subtitle',
-    actors: ['you'],
-  },
-  {
     id: 'share-start',
     titleKey: 'steps.shareStart.title',
     subtitleKey: 'steps.shareStart.subtitle',
+    actors: ['you'],
+  },
+  {
+    id: 'car-stickers',
+    titleKey: 'steps.carStickers.title',
+    subtitleKey: 'steps.carStickers.subtitle',
     actors: ['you'],
   },
 ];

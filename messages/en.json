@@ -2047,8 +2047,8 @@
         "car_onboarding_insurer": "Car onboarding — Insurer",
         "car_onboarding_road_assistance_plan": "Car onboarding — Road assistance plan",
         "car_onboarding_car_value": "Car onboarding — Car value",
-        "car_onboarding_car_stickers": "Car onboarding — Car stickers",
-        "car_onboarding_share_start": "Car onboarding — Car name & start date"
+        "car_onboarding_share_start": "Car onboarding — Car name & start date",
+        "car_onboarding_car_stickers": "Car onboarding — Car stickers"
       },
       "filters": {
         "isFaq": "Type",

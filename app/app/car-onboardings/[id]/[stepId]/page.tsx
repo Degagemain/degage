@@ -36,10 +36,10 @@ export default function CarOnboardingStepPage({ params }: { params: Promise<{ id
       return <RoadAssistancePlanStep />;
     case 'car-value':
       return <CarValueStep />;
-    case 'car-stickers':
-      return <CarStickersStep />;
     case 'share-start':
       return <ShareStartStep />;
+    case 'car-stickers':
+      return <CarStickersStep />;
     default:
       notFound();
   }
