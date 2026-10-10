@@ -12,8 +12,8 @@ type E2eAccount = {
 };
 
 const accounts: E2eAccount[] = [
-  { email: process.env.E2E_ADMIN_EMAIL ?? 'admin@e2e.test', role: 'admin' },
-  { email: process.env.E2E_USER_EMAIL ?? 'user@e2e.test', role: 'user' },
+  { email: process.env.E2E_ADMIN_EMAIL ?? 'delivered+e2e-admin@resend.dev', role: 'admin' },
+  { email: process.env.E2E_USER_EMAIL ?? 'delivered+e2e-user@resend.dev', role: 'user' },
 ];
 
 async function ensureE2eAccount({ email, role }: E2eAccount) {
@@ -24,7 +24,8 @@ async function ensureE2eAccount({ email, role }: E2eAccount) {
     return;
   }
 
-  const name = email.split('@')[0] ?? role;
+  const localPart = email.split('@')[0] ?? role;
+  const name = localPart.split('+').pop() || localPart;
 
   await auth.api.createUser({
     body: {

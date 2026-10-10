@@ -19,7 +19,8 @@ async function seedDevAccount() {
     return;
   }
 
-  const name = email.split('@')[0] ?? 'dev';
+  const localPart = email.split('@')[0] ?? 'dev';
+  const name = localPart.split('+').pop() || localPart;
 
   await auth.api.createUser({
     body: {
