@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Fixed: after uploading a document on car info, the page stays next to that document.
 - Changed: during car onboarding preparation, the car name and share start date come before car stickers.
 
 ## [0.0.8] - 2026-09-24
