@@ -2998,7 +2998,7 @@
         "subtitle": "Volg een infosessie voor eigenaars",
         "info": "Kies een komende infosessie en schrijf je in. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid.",
         "panelTitle": "Infosessie",
-        "panelBody": "Kies een komende infosessie voor eigenaars en schrijf je in. Inschrijven ontgrendelt de volgende voorbereidingsstappen.\n\nJe kan slechts in één sessie tegelijk ingeschreven zijn. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid — pas dan is deze stap volledig afgerond.",
+        "panelBody": "Kies een komende infosessie voor eigenaars en schrijf je in. Je contactgegevens, wageninfo en bestaande verzekering kan je al invullen. Inschrijven ontgrendelt de overige voorbereidingsstappen.\n\nJe kan slechts in één sessie tegelijk ingeschreven zijn. Nadat je hebt deelgenomen, bevestigt een beheerder je aanwezigheid — pas dan is deze stap volledig afgerond.",
         "loading": "Infosessies laden…",
         "loadError": "Infosessies laden mislukt. Controleer je Play connector-verbinding en probeer opnieuw.",
         "tableEmpty": "Geen komende infosessies gevonden.",

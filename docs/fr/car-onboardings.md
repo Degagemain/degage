@@ -39,8 +39,10 @@ propriétaires sont listées.
 
 Le propriétaire ne peut être inscrit qu'à une seule session à la fois. Pour en choisir une autre, il doit d'abord se désinscrire.
 
-L'inscription débloque les étapes de préparation suivantes dans le parcours public. La confirmation de présence par un admin reste nécessaire
-avant que l'étape session d'info soit marquée complète et que la préparation puisse être finalisée.
+Les infos utilisateur, les infos véhicule et l'assurance existante restent disponibles avant que le propriétaire connecte un compte Degapp.
+L'inscription débloque les étapes de préparation ultérieures : assistance routière, valeur, et nom et date de début une fois l'assurance
+complète. La confirmation de présence par un admin reste nécessaire avant que l'étape session d'info soit marquée complète et que la préparation
+puisse être finalisée.
 
 Cette étape est complète lorsque le statut de session d'info est **Complet**.
 

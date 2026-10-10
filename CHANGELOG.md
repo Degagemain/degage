@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Public features
 
 - Added: a public FAQ article can open at a short address such as /app/faq/articles/boete. The long address still works.
+- Changed: during car onboarding preparation, owner info, car info, and existing insurance stay open before a Degapp account is connected.
 - Added: the opening simulation page shows frequently asked questions and the ask-a-question button. Questions marked for every simulation page also appear on the later screens.
 - Fixed: after uploading a document on car info, the page stays next to that document.
 - Changed: during car onboarding preparation, the car name and share start date come before car stickers.

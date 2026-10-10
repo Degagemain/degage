@@ -36,8 +36,9 @@ The owner enrolls in an upcoming Degapp info session for car owners during the p
 
 The owner can enroll in only one session at a time. To choose a different session, they must unenroll first.
 
-Enrolling unlocks the next preparation steps in the public onboarding flow. Admin confirmation of attendance is still required before the info
-session step is marked complete and preparation can be finalized.
+Owner details, car info, and existing insurance stay available before the owner connects a Degapp account. Enrolling unlocks the later
+preparation steps: road assistance, car value, and car name and start date once insurance is complete. Admin confirmation of attendance is still
+required before the info session step is marked complete and preparation can be finalized.
 
 This step is complete when info session status is **Done**.
 

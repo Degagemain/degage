@@ -36,19 +36,12 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
 };
 
 export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
-  if (stepId === 'play-connector') return true;
+  if (stepId === 'play-connector' || stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
   if (stepId === 'share-start') {
     return hasInfoSessionPrerequisites(onboarding) && isInsurerSectionComplete(onboarding);
   }
-  if (
-    stepId === 'user-info' ||
-    stepId === 'car-info' ||
-    stepId === 'insurer' ||
-    stepId === 'road-assistance-plan' ||
-    stepId === 'car-value' ||
-    stepId === 'car-stickers'
-  ) {
+  if (stepId === 'road-assistance-plan' || stepId === 'car-value' || stepId === 'car-stickers') {
     return hasInfoSessionPrerequisites(onboarding);
   }
   return false;

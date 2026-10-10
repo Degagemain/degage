@@ -27,6 +27,15 @@ describe('preparation step order', () => {
     expect(getNextAccessibleStep(onboarding, 'car-stickers')).toBeNull();
   });
 
+  it('continues from play connector to user info when Degapp is not connected', () => {
+    const onboarding = carOnboarding();
+
+    expect(getNextAccessibleStep(onboarding, 'play-connector')?.id).toBe('user-info');
+    expect(getNextAccessibleStep(onboarding, 'user-info')?.id).toBe('car-info');
+    expect(getNextAccessibleStep(onboarding, 'car-info')?.id).toBe('insurer');
+    expect(getNextAccessibleStep(onboarding, 'insurer')?.id).toBe('car-stickers');
+  });
+
   it('skips name and start date until insurer is done', () => {
     const onboarding = carOnboarding({
       owner: { id: 'owner-1', hasPlayConnector: true },
