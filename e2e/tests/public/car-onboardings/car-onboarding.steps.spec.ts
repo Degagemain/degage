@@ -71,16 +71,40 @@ test.describe('public car onboarding steps', () => {
     );
   });
 
-  test('step 6 (road assistance) saves and persists', async ({ page, appServer, asUser }) => {
+  test('step 6 (road assistance) requires a choice and persists', async ({ page, appServer, asUser }) => {
     await asUser;
 
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/road-assistance-plan`);
 
-    await page.getByRole('button', { name: /Save & Next/i }).click();
+    const choice = page.getByLabel('Existing road assistance?');
+    const saveAndNext = page.getByRole('button', { name: /Save & Next/i });
+    await expect(choice).toHaveValue('');
+    await expect(saveAndNext).toBeDisabled();
+
+    await choice.selectOption({ label: 'I have road assistance for this car.' });
+    const planName = field(page, 'Existing road assistance plan name').getByRole('textbox');
+    const endDate = field(page, 'Existing road assistance plan end date').locator('input[type="date"]');
+    await expect(planName).toBeVisible();
+    await expect(saveAndNext).toBeDisabled();
+
+    await planName.fill('VAB Europa');
+    await endDate.fill('2027-06-01');
+    await saveAndNext.click();
     await expect(page).toHaveURL(/\/car-value$/);
 
     await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/road-assistance-plan`);
-    await expect(page.getByRole('checkbox')).not.toBeChecked();
+    await expect(choice).toHaveValue('yes');
+    await expect(planName).toHaveValue('VAB Europa');
+    await expect(endDate).toHaveValue('2027-06-01');
+
+    await choice.selectOption({ label: 'I do not have road assistance for this car yet.' });
+    await expect(planName).toHaveCount(0);
+    await saveAndNext.click();
+    await expect(page).toHaveURL(/\/car-value$/);
+
+    await page.goto(`${appServer.baseURL}/app/car-onboardings/${E2E_CAR_ONBOARDING.id}/road-assistance-plan`);
+    await expect(choice).toHaveValue('no');
+    await expect(page.getByText('Existing road assistance plan name', { exact: true })).toHaveCount(0);
   });
 
   test('step 7 (car value) can be accepted', async ({ page, appServer, asUser }) => {

@@ -95,7 +95,7 @@ describe('carOnboardingSchema', () => {
     expect(result.insurer).toBeNull();
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
     expect(result.insurerContractStartedAt).toBeNull();
-    expect(result.hasExistingRoadAssistancePlan).toBe(false);
+    expect(result.hasExistingRoadAssistancePlan).toBeNull();
     expect(result.existingRoadAssistancePlanEndDate).toBeNull();
     expect(result.roadAssistancePlanDescription).toBeNull();
     expect(result.roadAssistancePlan).toBeNull();
@@ -393,6 +393,8 @@ describe('carOnboardingFromSimulation', () => {
     expect(result.insurer).toBeNull();
     expect(result.insurerContractStartedAt).toBeNull();
     expect(result.insurerStatus).toBe(CarOnboardingInsurerStatus.TODO);
+    expect(result.hasExistingRoadAssistancePlan).toBeNull();
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
     expect(result.infoSessionDate).toBeNull();
     expect(result.infoSessionPcId).toBeNull();
     expect(result.infoSessionStatus).toBe(CarOnboardingInfoSessionStatus.TODO);
@@ -887,6 +889,21 @@ describe('applyInsurerStatus', () => {
 });
 
 describe('applyRoadAssistancePlanStatus', () => {
+  it('stays todo and clears existing plan details when the choice is unanswered', () => {
+    const result = applyRoadAssistancePlanStatus(
+      carOnboarding({
+        hasExistingRoadAssistancePlan: null,
+        existingRoadAssistancePlanEndDate: new Date('2026-12-31'),
+        roadAssistancePlanDescription: 'VAB Europa',
+        roadAssistancePlan: { id: '550e8400-e29b-41d4-a716-446655440011' },
+      }),
+    );
+    expect(result.existingRoadAssistancePlanEndDate).toBeNull();
+    expect(result.roadAssistancePlanDescription).toBeNull();
+    expect(result.roadAssistancePlan).toEqual({ id: '550e8400-e29b-41d4-a716-446655440011' });
+    expect(result.roadAssistancePlanStatus).toBe(CarOnboardingRoadAssistancePlanStatus.TODO);
+  });
+
   it('clears existing plan details when hasExistingRoadAssistancePlan is false', () => {
     const result = applyRoadAssistancePlanStatus(
       carOnboarding({

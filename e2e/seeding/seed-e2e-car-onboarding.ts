@@ -61,6 +61,10 @@ export async function seedE2eCarOnboarding(): Promise<void> {
       carValue: E2E_CAR_ONBOARDING.carValue.proposedValue,
       insurerId: null,
       roadAssistancePlanId: null,
+      hasExistingRoadAssistancePlan: null,
+      existingRoadAssistancePlanEndDate: null,
+      roadAssistancePlanDescription: null,
+      roadAssistancePlanStatus: 'todo',
     },
     create: {
       id: E2E_CAR_ONBOARDING.id,
@@ -69,6 +73,8 @@ export async function seedE2eCarOnboarding(): Promise<void> {
       infoSessionDate: new Date(E2E_CAR_ONBOARDING.infoSessionDateIso),
       infoSessionStatus: 'done',
       carValue: E2E_CAR_ONBOARDING.carValue.proposedValue,
+      hasExistingRoadAssistancePlan: null,
+      roadAssistancePlanStatus: 'todo',
     },
   });
 

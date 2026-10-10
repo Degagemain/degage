@@ -97,7 +97,8 @@ describe('createCarOnboarding', () => {
         isNewCar: true,
         hasInsuranceContract: false,
         insurerStatus: 'todo',
-        roadAssistancePlanStatus: 'ready',
+        hasExistingRoadAssistancePlan: null,
+        roadAssistancePlanStatus: 'todo',
       }),
     );
   });

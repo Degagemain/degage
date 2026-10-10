@@ -107,20 +107,21 @@ This step is complete when insurer status is not **Todo**.
 
 ### Road assistance plan
 
-Records whether the car already has road assistance coverage. Choosing a desired plan from the catalog is currently not required.
+Records whether the car already has road assistance. The owner must choose one of two answers. The question starts unanswered, so neither answer
+is assumed. A newly purchased car uses the same choice. Choosing a desired plan from the catalog is currently not required.
 
-| Property                               | Description                                                                                                           |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Has existing road assistance plan      | Whether the car already has road assistance coverage (for new purchased cars, this may be included with the vehicle). |
-| Existing road assistance plan name     | Name of the current road assistance plan (when has existing road assistance plan is enabled).                         |
-| Existing road assistance plan end date | End date of the current road assistance plan (when has existing road assistance plan is enabled).                     |
+| Property                               | Description                                                                                                                                          |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Has existing road assistance plan      | Required choice: the owner has road assistance for this car, or does not have it yet. Starts unanswered. A newly purchased car uses the same choice. |
+| Existing road assistance plan name     | Name of the current road assistance plan. Required when the owner has road assistance for this car. Hidden otherwise.                                |
+| Existing road assistance plan end date | End date of the current road assistance plan. Required when the owner has road assistance for this car. Hidden otherwise.                            |
 
-| Status | Meaning                                                                                          |
-| ------ | ------------------------------------------------------------------------------------------------ |
-| Todo   | Has existing road assistance plan is enabled, but the existing plan name or end date is missing. |
-| Ready  | Existing plan details are complete when applicable. A desired plan is not required.              |
+| Status | Meaning                                                                                                                                   |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Todo   | No choice yet, or the owner has road assistance but the plan name or end date is missing.                                                 |
+| Ready  | The owner does not have road assistance yet, or has it and both the plan name and end date are filled in. A desired plan is not required. |
 
-The system sets road assistance plan status automatically on save. When **Has existing road assistance plan** is off, the existing plan name and
+The system sets road assistance plan status automatically on save. When the owner does not have road assistance yet, the existing plan name and
 end date are cleared.
 
 The owner can update road assistance plan details via a partial update while status is **Todo**.
