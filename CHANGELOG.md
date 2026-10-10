@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Admin features
 
 - Added: documentation has an FAQ list for every simulation page.
+- Added: admins can search support chats from connected AI tools, with the same filters as the support chat list, without seeing who asked.
+
+### Technical
+
+- Added: MCP tool `search_chat_conversations` (`mcp:admin`) reads the admin support chat search and a single conversation.
 
 ## [0.0.8] - 2026-09-24
 

@@ -23,20 +23,21 @@ Run database migrations so OAuth Provider tables exist (`pnpm db:migrate`).
 
 URL: `/mcp`
 
-| Tool                          | OAuth scope | Description                                                                   |
-| ----------------------------- | ----------- | ----------------------------------------------------------------------------- |
-| `search_documentation`        | `mcp:user`  | List and search help documentation articles (non-admins see public docs only) |
-| `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)    |
-| `search_fuel_types`           | `mcp:user`  | List and search fuel types with code, price, and CO₂ contribution             |
-| `search_car_brands`           | `mcp:user`  | List and search car brands with code and locale names                         |
-| `read_car_brand`              | `mcp:user`  | Read a single car brand by UUID                                               |
-| `search_car_types`            | `mcp:user`  | List and search car types (requires brandId and fuelTypeId)                   |
-| `search_towns`                | `mcp:user`  | List and search towns by zip, name, or municipality                           |
-| `create_simulation`           | `mcp:user`  | Run and persist a car eligibility simulation; returns summary and public link |
-| `create_documentation`        | `mcp:admin` | Create a documentation article (full object, all translations required)       |
-| `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)      |
-| `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations          |
-| `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)        |
+| Tool                          | OAuth scope | Description                                                                       |
+| ----------------------------- | ----------- | --------------------------------------------------------------------------------- |
+| `search_documentation`        | `mcp:user`  | List and search help documentation articles (non-admins see public docs only)     |
+| `search_documentation_groups` | `mcp:user`  | List and search documentation groups (labels for organising help articles)        |
+| `search_fuel_types`           | `mcp:user`  | List and search fuel types with code, price, and CO₂ contribution                 |
+| `search_car_brands`           | `mcp:user`  | List and search car brands with code and locale names                             |
+| `read_car_brand`              | `mcp:user`  | Read a single car brand by UUID                                                   |
+| `search_car_types`            | `mcp:user`  | List and search car types (requires brandId and fuelTypeId)                       |
+| `search_towns`                | `mcp:user`  | List and search towns by zip, name, or municipality                               |
+| `create_simulation`           | `mcp:user`  | Run and persist a car eligibility simulation; returns summary and public link     |
+| `create_documentation`        | `mcp:admin` | Create a documentation article (full object, all translations required)           |
+| `update_documentation`        | `mcp:admin` | Replace a documentation article (full object, all translations required)          |
+| `create_documentation_group`  | `mcp:admin` | Create a documentation group with sort order and locale translations              |
+| `update_documentation_group`  | `mcp:admin` | Replace a documentation group (full object, all translations required)            |
+| `search_chat_conversations`   | `mcp:admin` | Search support chats with the same filters as the admin list; omit name and email |
 
 MCP is a peer interface to REST (`/api/*`), not nested under it.
 
@@ -75,12 +76,14 @@ Protected resource metadata lists the Better Auth issuer (`{BETTER_AUTH_URL}/api
 
 - JWT audience must match `{BETTER_AUTH_URL}/mcp`.
 - `tools/list` only includes tools the caller is allowed to use (scope, email verification, ban status, and admin role for
-  `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group`).
+  `create_documentation`, `update_documentation`, `create_documentation_group`, `update_documentation_group`, and `search_chat_conversations`).
 - Each tool re-checks authorization at invocation time.
 - Banned users are rejected.
 - Unverified email/password users cannot call tools (OAuth may still complete).
-- `create_documentation`, `update_documentation`, `create_documentation_group`, and `update_documentation_group` also require `admin` role at
-  runtime.
+- `create_documentation`, `update_documentation`, `create_documentation_group`, `update_documentation_group`, and `search_chat_conversations`
+  also require `admin` role at runtime.
+- `search_chat_conversations` is read-only. It uses the admin support chat search (user and channel filters). Names and email addresses are
+  omitted. Passing `id` returns that conversation and its messages, including cited article title and url.
 
 ## Analytics
 
