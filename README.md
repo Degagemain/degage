@@ -21,7 +21,7 @@ To start the dev server run:
 pnpm dev
 ```
 
-The dev account (`DEV_ACCOUNT_EMAIL` in `.env`, default `dev@degage.be`) is created with password `password` and has admin privileges. Email verification is skipped for this account.
+The dev account (`DEV_ACCOUNT_EMAIL` in `.env`, default `delivered+dev@resend.dev`) is created with password `password` and has admin privileges. Email verification is skipped for this account. Resend accepts this address and does not deliver mail to a real inbox.
 
 # Technologies
 

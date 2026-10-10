@@ -13,7 +13,7 @@ export const getPlayMockPort = (): number => {
 export const getPlayMockBaseUrl = (): string => `http://127.0.0.1:${getPlayMockPort()}`;
 
 export const getPlayMockCredentials = (): { email: string; password: string } => ({
-  email: process.env.PLAY_MOCK_EMAIL?.trim() || process.env.E2E_USER_EMAIL?.trim() || 'user@e2e.test',
+  email: process.env.PLAY_MOCK_EMAIL?.trim() || process.env.E2E_USER_EMAIL?.trim() || 'delivered+e2e-user@resend.dev',
   password: process.env.PLAY_MOCK_PASSWORD?.trim() || process.env.E2E_PASSWORD?.trim() || 'password',
 });
 
