@@ -20,6 +20,10 @@ type CarOnboardingContextValue = {
 
 const CarOnboardingContext = createContext<CarOnboardingContextValue | null>(null);
 
+type LoadOptions = {
+  background?: boolean;
+};
+
 export function CarOnboardingProvider({ id, children }: { id: string; children: React.ReactNode }) {
   const t = useTranslations('carOnboardingPublic');
   const router = useRouter();
@@ -30,34 +34,42 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
   const [error, setError] = useState<string | null>(null);
   const basePath = `/app/car-onboardings/${id}`;
 
-  const load = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`/api/car-onboardings/${id}`);
-      if (response.status === 401) {
-        router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
-        return;
+  const load = useCallback(
+    async (options?: LoadOptions) => {
+      // A full-page spinner unmounts the step and sends the owner back to the top.
+      if (!options?.background) {
+        setIsLoading(true);
       }
-      if (response.status === 403) {
-        setError(t('errors.forbidden'));
-        setCarOnboarding(null);
-        return;
-      }
-      if (!response.ok) {
+      setError(null);
+      try {
+        const response = await fetch(`/api/car-onboardings/${id}`);
+        if (response.status === 401) {
+          router.replace(buildSignInUrlWithReturnPath(buildPostSignInReturnPath(pathname, '')));
+          return;
+        }
+        if (response.status === 403) {
+          setError(t('errors.forbidden'));
+          setCarOnboarding(null);
+          return;
+        }
+        if (!response.ok) {
+          setError(t('errors.load'));
+          setCarOnboarding(null);
+          return;
+        }
+        const data: CarOnboarding = await response.json();
+        setCarOnboarding(data);
+      } catch {
         setError(t('errors.load'));
         setCarOnboarding(null);
-        return;
+      } finally {
+        setIsLoading(false);
       }
-      const data: CarOnboarding = await response.json();
-      setCarOnboarding(data);
-    } catch {
-      setError(t('errors.load'));
-      setCarOnboarding(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id, pathname, router, t]);
+    },
+    [id, pathname, router, t],
+  );
+
+  const reload = useCallback(() => load({ background: true }), [load]);
 
   useEffect(() => {
     if (isSessionPending) return;
@@ -72,13 +84,13 @@ export function CarOnboardingProvider({ id, children }: { id: string; children: 
     if (!carOnboarding) return null;
     return {
       carOnboarding,
-      reload: load,
+      reload,
       isLocked: carOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED,
       basePath,
       isLoading,
       error,
     };
-  }, [carOnboarding, load, basePath, isLoading, error]);
+  }, [carOnboarding, reload, basePath, isLoading, error]);
 
   if (isSessionPending || isLoading) {
     return (

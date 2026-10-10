@@ -9,6 +9,7 @@ import { registerCreateSimulationTool } from '@/mcp/tools/create-simulation';
 import { registerReadCarBrandTool } from '@/mcp/tools/read-car-brand';
 import { registerSearchCarBrandsTool } from '@/mcp/tools/search-car-brands';
 import { registerSearchCarTypesTool } from '@/mcp/tools/search-car-types';
+import { registerSearchChatConversationsTool } from '@/mcp/tools/search-chat-conversations';
 import { registerSearchDocumentationGroupsTool } from '@/mcp/tools/search-documentation-groups';
 import { registerSearchFuelTypesTool } from '@/mcp/tools/search-fuel-types';
 import { registerSearchTownsTool } from '@/mcp/tools/search-towns';
@@ -40,5 +41,6 @@ export const registerMcpTools = (server: McpServer): void => {
     registerUpdateDocumentationTool(server, getMcpAuthContext, adminScope);
     registerCreateDocumentationGroupTool(server, getMcpAuthContext, adminScope);
     registerUpdateDocumentationGroupTool(server, getMcpAuthContext, adminScope);
+    registerSearchChatConversationsTool(server, getMcpAuthContext, adminScope);
   }
 };

@@ -335,6 +335,10 @@ export default function SimulationPage() {
               </p>
             </div>
           </section>
+
+          <div className={styles.marginTop32}>
+            <FaqByTags tags={SIMULATION_FAQ_TAGS.opening} heading={t('faqCollapsedTitle')} classNames={SIM_FAQ_PANEL} />
+          </div>
         </div>
       )}
 

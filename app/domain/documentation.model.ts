@@ -18,6 +18,7 @@ export const documentationAudienceRolesInputSchema = z.array(documentationAudien
 export const documentationTagValues = [
   'public_faq',
   'landing_faq',
+  'simulation_all',
   'simulation_step_1',
   'simulation_step_2_approved',
   'simulation_step_2_rejected',
