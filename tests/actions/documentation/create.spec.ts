@@ -4,6 +4,10 @@ vi.mock('@/storage/documentation/documentation.create', () => ({
   dbDocumentationCreate: vi.fn(),
 }));
 
+vi.mock('@/storage/documentation/documentation.get-by-short-link', () => ({
+  dbDocumentationGetByShortLink: vi.fn(),
+}));
+
 vi.mock('@/actions/documentation/embed', () => ({
   embedDocumentationById: vi.fn(),
 }));
@@ -16,6 +20,7 @@ vi.mock('@/lib/logger', () => ({
 
 import { createDocumentation } from '@/actions/documentation/create';
 import { embedDocumentationById } from '@/actions/documentation/embed';
+import { dbDocumentationGetByShortLink } from '@/storage/documentation/documentation.get-by-short-link';
 import { dbDocumentationCreate } from '@/storage/documentation/documentation.create';
 import { logger } from '@/lib/logger';
 import { documentation } from '../../builders/documentation.builder';
@@ -60,5 +65,16 @@ describe('createDocumentation', () => {
 
     expect(result.id).toBe('new-id');
     expect(logger.exception).toHaveBeenCalled();
+  });
+
+  it('stores a short link on a public article', async () => {
+    const created = documentation({ id: '550e8400-e29b-41d4-a716-446655440000', isPublic: true, shortLink: 'boete' });
+    vi.mocked(dbDocumentationGetByShortLink).mockResolvedValueOnce(null);
+    vi.mocked(dbDocumentationCreate).mockResolvedValueOnce(created);
+    vi.mocked(embedDocumentationById).mockResolvedValueOnce();
+
+    await createDocumentation({ ...created, id: null, shortLink: 'boete' });
+
+    expect(dbDocumentationCreate).toHaveBeenCalledWith(expect.objectContaining({ shortLink: 'boete' }));
   });
 });

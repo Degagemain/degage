@@ -21,6 +21,7 @@ describe('documentationFromEditForm', () => {
       format: 'text',
       isFaq: false,
       isPublic: false,
+      shortLink: null,
       groups: [],
       translations: [{ locale: 'en', title: 'Hello', content: 'World' }],
       audienceRoles: [],
@@ -33,11 +34,12 @@ describe('documentationFromEditForm', () => {
   });
 
   it('keeps a format change when editing a manual document', () => {
-    const initial = documentation({ source: 'manual', format: 'text' });
+    const initial = documentation({ source: 'manual', format: 'text', isPublic: true });
     const saved = documentationFromEditForm(initial, {
       format: 'markdown',
       isFaq: initial.isFaq,
-      isPublic: initial.isPublic,
+      isPublic: true,
+      shortLink: 'boete',
       groups: initial.groups,
       translations: initial.translations,
       audienceRoles: initial.audienceRoles,
@@ -46,6 +48,7 @@ describe('documentationFromEditForm', () => {
 
     expect(saved.format).toBe('markdown');
     expect(saved.id).toBe(initial.id);
+    expect(saved.shortLink).toBe('boete');
   });
 
   it('allows changing format on synced documents', () => {
@@ -53,7 +56,8 @@ describe('documentationFromEditForm', () => {
     const saved = documentationFromEditForm(initial, {
       format: 'markdown',
       isFaq: initial.isFaq,
-      isPublic: initial.isPublic,
+      isPublic: true,
+      shortLink: 'boete',
       groups: initial.groups,
       translations: initial.translations,
       audienceRoles: ['user'],
@@ -63,5 +67,6 @@ describe('documentationFromEditForm', () => {
     expect(saved.format).toBe('markdown');
     expect(saved.audienceRoles).toEqual(initial.audienceRoles);
     expect(saved.tags).toEqual(initial.tags);
+    expect(saved.shortLink).toBe('boete');
   });
 });

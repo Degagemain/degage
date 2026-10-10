@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { documentationShortLinkSchema } from './documentation-short-link';
 import { idNameSchema } from './id-name.model';
 import { roleValues } from './role.model';
 
@@ -59,6 +60,7 @@ export const documentationSchema = z
     externalId: z.string().max(500),
     isFaq: z.boolean().default(false),
     isPublic: z.boolean().default(false),
+    shortLink: documentationShortLinkSchema,
     format: documentationFormatSchema,
     audienceRoles: documentationAudienceRolesInputSchema,
     tags: z.array(documentationTagSchema).default([]),

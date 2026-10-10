@@ -31,6 +31,15 @@ const documentationMcpSharedFields = {
     .describe('Stable external identifier (e.g. repo:topic or manual:slug). An empty value is stored as manual:{uuid} on create.'),
   isFaq: z.boolean().describe('Whether the article appears in the FAQ catalog.'),
   isPublic: z.boolean().describe('Whether the article is visible in the public documentation catalog.'),
+  shortLink: z
+    .string()
+    .nullable()
+    .optional()
+    .describe(
+      'Optional public short link, such as boete for /app/faq/boete. ' +
+        'Letters, numbers, and hyphens. Null or omitted clears it. ' +
+        'Kept only when isPublic is true. Reserved values: articles, groups.',
+    ),
   format: documentationFormatSchema.describe(`Content format. One of: ${documentationFormatValues.join(', ')}.`),
   audienceRoles: z
     .array(documentationAudienceRoleSchema)

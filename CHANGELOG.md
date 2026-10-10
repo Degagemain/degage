@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Public features
 
+- Added: a public FAQ article can open at a short address such as /app/faq/boete. The long address still works.
 - Changed: during car onboarding preparation, the car name and share start date come before car stickers.
+
+### Admin features
+
+- Added: admins can set an optional short link on a public FAQ article.
 
 ## [0.0.8] - 2026-09-24
 

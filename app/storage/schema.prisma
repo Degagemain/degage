@@ -640,6 +640,7 @@ model Documentation {
   externalId    String                      @unique
   isFaq         Boolean                     @default(false)
   isPublic      Boolean                     @default(false)
+  shortLink     String?                     @unique
   format        DocumentationFormat
   audienceRoles DocumentationAudienceRole[]
   tags          DocumentationTag[]

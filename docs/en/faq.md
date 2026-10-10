@@ -24,3 +24,10 @@ Enable in `.env`:
 ```bash
 NEXT_PUBLIC_FAQ_ARTICLES_ENABLED=true
 ```
+
+## Short links
+
+A public FAQ item or public article can store an optional `shortLink`. `/app/faq/{shortLink}` renders the same page as
+`/app/faq/articles/{externalId}`. The value is stored lowercase and may contain letters, numbers, and hyphens. `articles` and `groups` are
+reserved so a short link cannot replace the article list or a group page. An item that is not public does not keep a short link. Two items
+cannot share one.
