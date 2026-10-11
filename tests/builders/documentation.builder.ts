@@ -9,6 +9,7 @@ export const documentation = (data: Partial<Documentation> = {}): Documentation 
     externalId: data.externalId ?? `manual:${randomUUID()}`,
     isFaq: data.isFaq ?? false,
     isPublic: data.isPublic ?? false,
+    shortLink: data.shortLink ?? null,
     format: data.format ?? 'markdown',
     audienceRoles: data.audienceRoles ?? ['admin'],
     tags: data.tags ?? [],

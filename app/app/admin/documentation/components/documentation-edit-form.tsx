@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { documentationShortLinkProblem, normalizeDocumentationShortLink } from '@/domain/documentation-short-link';
 import {
   type Documentation,
   type DocumentationAudienceRole,
@@ -93,6 +94,7 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
 
   const [isFaq, setIsFaq] = useState(initialDocumentation.isFaq);
   const [isPublic, setIsPublic] = useState(initialDocumentation.isPublic);
+  const [shortLink, setShortLink] = useState(initialDocumentation.shortLink ?? '');
   const [groupIds, setGroupIds] = useState<string[]>(() => initialDocumentation.groups.map((g) => g.id).filter(Boolean) as string[]);
   const [activeLocale, setActiveLocale] = useState<ContentLocale>(defaultContentLocale);
   const [titleByLocale, setTitleByLocale] = useState(() => initialRecords.title);
@@ -146,10 +148,17 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
       return;
     }
 
+    const normalizedShortLink = normalizeDocumentationShortLink(shortLink);
+    if (documentationShortLinkProblem(normalizedShortLink) === 'invalid') {
+      toast.error(tForm('shortLinkInvalid'));
+      return;
+    }
+
     const payload = documentationFromEditForm(initialDocumentation, {
       format: formatState,
       isFaq,
       isPublic,
+      shortLink: normalizedShortLink,
       groups,
       translations,
       audienceRoles,
@@ -161,7 +170,9 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
       if (isCreate) {
         const response = await apiPost('/api/documentation', payload);
         if (!response.ok) {
-          const message = await parseApiErrorMessage(response, tForm('saveError'));
+          const message = await parseApiErrorMessage(response, tForm('saveError'), {
+            short_link_taken: tForm('shortLinkTaken'),
+          });
           toast.error(message);
           return;
         }
@@ -184,7 +195,9 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
 
       const response = await apiPut(`/api/documentation/${initialDocumentation.id}`, payload);
       if (!response.ok) {
-        const message = await parseApiErrorMessage(response, tForm('saveError'));
+        const message = await parseApiErrorMessage(response, tForm('saveError'), {
+          short_link_taken: tForm('shortLinkTaken'),
+        });
         toast.error(message);
         return;
       }
@@ -200,6 +213,11 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
 
   const contentTextareaClass =
     formatState === 'markdown' ? 'font-mono min-h-[24rem] text-sm leading-relaxed' : 'min-h-[16rem] font-sans text-sm leading-relaxed';
+  const normalizedShortLinkPreview = normalizeDocumentationShortLink(shortLink);
+  const shortLinkDescription =
+    normalizedShortLinkPreview && !documentationShortLinkProblem(normalizedShortLinkPreview)
+      ? tForm('shortLinkPreview', { path: `/app/faq/articles/${normalizedShortLinkPreview}` })
+      : tForm('shortLinkHelp');
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -265,6 +283,14 @@ export function DocumentationEditForm({ initialDocumentation, formId = DOCUMENTA
               disabled={isSaving}
             />
           ) : null}
+          <AdminTextFieldControl
+            label={tForm('shortLink')}
+            value={shortLink}
+            onChange={setShortLink}
+            placeholder={tForm('shortLinkPlaceholder')}
+            description={shortLinkDescription}
+            disabled={isSaving}
+          />
 
           <AdminMultiSelectFieldControl
             label={tColumns('groups')}
