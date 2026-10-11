@@ -1,3 +1,5 @@
+import { Fragment, type ReactNode } from 'react';
+
 import { parseInlineCopy } from '@/app/lib/inline-copy';
 
 type InlineCopyProps = {
@@ -27,4 +29,16 @@ export function InlineCopy({ children }: InlineCopyProps) {
       })}
     </>
   );
+}
+
+export function renderInlineCopyRich(node: ReactNode): ReactNode {
+  if (typeof node === 'string') {
+    return <InlineCopy>{node}</InlineCopy>;
+  }
+
+  if (Array.isArray(node)) {
+    return node.map((child, index) => <Fragment key={index}>{renderInlineCopyRich(child)}</Fragment>);
+  }
+
+  return node;
 }

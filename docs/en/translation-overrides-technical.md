@@ -21,4 +21,6 @@ placeholders, but it cannot introduce new placeholders that were absent from the
 
 Public and owner prose is rendered with `InlineCopy`, which turns markdown-style links into anchors: a square-bracket label followed by a
 parenthesized http, https, or mailto address. Use that syntax in message files and overrides for those screens. Do not put markdown links in
-`placeholder`, `aria-label`, button labels, or other string-only call sites. Known app-owned URLs can still use `t.rich` with a mapped tag.
+`placeholder`, `aria-label`, button labels, or other string-only call sites. Known app-owned URLs can still use `t.rich` with a mapped tag. The
+new-region simulation warning does that for the starter document, and the text around that tag still goes through `InlineCopy`, so a markdown
+link in the same sentence stays clickable. Do not put a markdown link inside the mapped tag.
