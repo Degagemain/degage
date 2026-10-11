@@ -7,6 +7,7 @@ export const emptyManualDocumentation = (): Documentation => ({
   externalId: '',
   isFaq: false,
   isPublic: false,
+  shortLink: null,
   format: 'markdown',
   audienceRoles: [],
   tags: [],

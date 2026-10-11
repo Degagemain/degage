@@ -93,6 +93,31 @@ describe('DocumentationEditForm type and visibility', () => {
     expect(triggers.some((el) => el.textContent?.includes('visibility.hidden'))).toBe(true);
   });
 
+  it('shows a short link field for a public FAQ', () => {
+    const initialDocumentation = documentation({ source: 'manual', isFaq: true, isPublic: true, shortLink: 'boete' });
+    render(<DocumentationEditForm initialDocumentation={initialDocumentation} />);
+
+    expect(screen.getByText('shortLink')).toBeTruthy();
+    expect(screen.getByDisplayValue('boete')).toBeTruthy();
+    expect(screen.getByText('shortLinkPreview')).toBeTruthy();
+  });
+
+  it('shows a short link field when the article is not public', () => {
+    render(
+      <DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true, isPublic: false, shortLink: 'boete' })} />,
+    );
+
+    expect(screen.getByText('shortLink')).toBeTruthy();
+    expect(screen.getByDisplayValue('boete')).toBeTruthy();
+  });
+
+  it('shows a short link field for a public article', () => {
+    render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: false, isPublic: true })} />);
+
+    expect(screen.getByText('shortLink')).toBeTruthy();
+    expect(screen.getByText('shortLinkHelp')).toBeTruthy();
+  });
+
   it('hides article visibility when the document is a FAQ', () => {
     render(<DocumentationEditForm initialDocumentation={documentation({ source: 'manual', isFaq: true })} />);
 

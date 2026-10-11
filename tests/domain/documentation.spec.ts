@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { documentationFilterFromSearchParams, documentationFilterSchema } from '@/domain/documentation.filter';
+import { documentationShortLinkProblem, normalizeDocumentationShortLink } from '@/domain/documentation-short-link';
 import { canDeleteDocumentation, defaultDocumentationTags, documentationSchema } from '@/domain/documentation.model';
 import { documentation } from '../builders/documentation.builder';
 
@@ -43,6 +44,35 @@ describe('documentationSchema', () => {
     }
   });
 
+  it('defaults a missing short link to null', () => {
+    const { shortLink, ...withoutShortLink } = documentation();
+    expect(shortLink).toBeNull();
+    const result = documentationSchema.safeParse(withoutShortLink);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.shortLink).toBeNull();
+    }
+  });
+
+  it('normalizes a short link', () => {
+    const result = documentationSchema.safeParse(documentation({ isPublic: false, shortLink: ' Boete ' }));
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.shortLink).toBe('boete');
+    }
+  });
+
+  it('keeps a short link when the item is not public', () => {
+    const result = documentationSchema.safeParse(documentation({ isPublic: false, shortLink: 'boete' }));
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.shortLink).toBe('boete');
+    }
+  });
+
+  it('rejects a short link with spaces', () => {
+    expect(documentationShortLinkProblem(normalizeDocumentationShortLink('my link'))).toBe('invalid');
+  });
   it('rejects a document with no translations', () => {
     const doc = documentation({ translations: [] });
     const result = documentationSchema.safeParse(doc);
