@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.9] - 2026-10-11
+
 ### Public features
 
 - Added: a public FAQ article can open at a short address such as /app/faq/articles/boete. The long address still works.
