@@ -20,6 +20,9 @@ All object-storage environment variables use the `GCP_BUCKET_` prefix:
 
 On GCP runtime (Cloud Run, GCE), omit `GCP_BUCKET_CREDENTIALS` and use Application Default Credentials or workload identity.
 
+A preview deployment must use its own `GCP_BUCKET_NAME`. Anonymizing a preview database leaves document rows in place, so a preview pointed at
+the production bucket can still download those files.
+
 ### One-time GCP bucket setup
 
 [`scripts/gcp-setup-bucket.sh`](../../scripts/gcp-setup-bucket.sh) provisions a private documents bucket and a dedicated service account.

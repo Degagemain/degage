@@ -174,6 +174,10 @@ pnpm db:restore -- \
 
 On success, the script prints the connection URL for the new database on stdout. `NEW_DB_NAME` must be lowercase letters, digits, and underscores (starting with a letter).
 
+### Preview databases
+
+`pnpm db:anonymize` replaces personal data in the database from `DATABASE_URL_UNPOOLED` (or `DATABASE_URL`) and then creates the dev admin. It runs on its own only when `VERCEL_ENV` is `preview`. Pass `--force` for a local database. Preview must use its own document bucket. See [docs/en/anonymization.md](docs/en/anonymization.md).
+
 ## Security
 
 ### Authentication
