@@ -11,6 +11,10 @@
     "noResults": "No results.",
     "loading": "Loading…"
   },
+  "previewEnvironment": {
+    "message": "You are on the test environment. This is not the live site.",
+    "dismiss": "Dismiss"
+  },
   "notFound": {
     "eyebrow": "Page not found",
     "title": "We can’t find that page",

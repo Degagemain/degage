@@ -15,7 +15,15 @@ type PublicShellProps = {
 
 export function PublicShell({ children, className, heroGlow }: PublicShellProps) {
   return (
-    <div className={cn(styles.publicTheme, styles.pageSurface, 'min-h-screen', heroGlow && 'relative overflow-x-hidden', className)}>
+    <div
+      className={cn(
+        styles.publicTheme,
+        styles.pageSurface,
+        'min-h-[calc(100vh-var(--preview-banner-offset))]',
+        heroGlow && 'relative overflow-x-hidden',
+        className,
+      )}
+    >
       {heroGlow && <PublicHeroGlow />}
       <PublicHeader />
       <main className={cn(publicMainPadTop, heroGlow && 'relative')}>{children}</main>
