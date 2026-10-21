@@ -120,7 +120,7 @@ export function LandingPage({ onOpenChat }: LandingPageProps) {
     <div className={styles.publicTheme}>
       <LandingHeader />
 
-      <div className={cn('relative min-h-screen overflow-x-hidden', styles.pageSurface)}>
+      <div className={cn('relative min-h-[calc(100vh-var(--preview-banner-offset))] overflow-x-hidden', styles.pageSurface)}>
         <PublicHeroGlow />
 
         <main>

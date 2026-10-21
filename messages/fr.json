@@ -11,6 +11,10 @@
     "noResults": "Aucun résultat.",
     "loading": "Chargement…"
   },
+  "previewEnvironment": {
+    "message": "Vous êtes sur l'environnement de test. Ce n'est pas le site en ligne.",
+    "dismiss": "Fermer"
+  },
   "notFound": {
     "eyebrow": "Page introuvable",
     "title": "Nous ne trouvons pas cette page",

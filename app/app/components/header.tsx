@@ -21,7 +21,7 @@ export function Header() {
   const showLoadingUi = !mounted || isPending;
 
   return (
-    <header className="bg-background sticky top-0 z-50 border-b">
+    <header className="bg-background sticky top-(--preview-banner-offset) z-50 border-b">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
           <Link href="/app" className="text-xl font-semibold" aria-label="Home">

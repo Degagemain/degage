@@ -11,6 +11,10 @@
     "noResults": "Geen resultaten.",
     "loading": "Laden…"
   },
+  "previewEnvironment": {
+    "message": "Je zit op de testomgeving. Dit is niet de echte site.",
+    "dismiss": "Sluiten"
+  },
   "notFound": {
     "eyebrow": "Pagina niet gevonden",
     "title": "We vinden die pagina niet",

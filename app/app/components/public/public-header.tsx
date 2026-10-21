@@ -48,7 +48,7 @@ export function PublicHeader() {
       <header
         className={cn(
           styles.publicTheme,
-          'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300',
+          'fixed inset-x-0 top-(--preview-banner-offset) z-50 transition-[background-color,border-color,backdrop-filter] duration-300',
           scrolled ? styles.headerScrolled : 'border-b border-transparent bg-transparent',
         )}
       >

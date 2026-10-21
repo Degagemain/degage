@@ -344,7 +344,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         <SidebarInset>
           <header
             className={
-              'bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 ' +
+              'bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-(--preview-banner-offset) z-50 ' +
               'flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur'
             }
           >
