@@ -29,7 +29,7 @@ describe('GET /api/system-parameters', () => {
       user: { id: '1', role: 'user', name: 'U', email: 'u@x.com' },
       session: {} as any,
     };
-    vi.mocked(auth.api.getSession).mockResolvedValue(session);
+    vi.mocked(auth.api.getSession).mockResolvedValue(session as never);
     const request = new Request('http://localhost/api/system-parameters');
     const response = await GET(request as any);
     expect(response.status).toBe(403);

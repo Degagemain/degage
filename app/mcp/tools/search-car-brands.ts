@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { searchCarBrands } from '@/actions/car-brand/search';
 import { carBrandFilterSchema } from '@/domain/car-brand.filter';
 import { withRequestContext } from '@/context/request-context';

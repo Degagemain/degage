@@ -22,6 +22,8 @@ describe('exportSimulations', () => {
     fuelTypeIds: [] as string[],
     carTypeIds: [] as string[],
     resultCodes: [] as SimulationResultCode[],
+    skip: 0,
+    take: MaxTake,
     sortBy: SimulationSortColumns.CREATED_AT,
     sortOrder: SortOrder.DESC,
   };

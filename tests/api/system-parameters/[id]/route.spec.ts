@@ -42,7 +42,7 @@ describe('GET /api/system-parameters/[id]', () => {
       user: { id: '1', role: 'admin', name: 'A', email: 'a@x.com' },
       session: {} as any,
     };
-    vi.mocked(auth.api.getSession).mockResolvedValue(session);
+    vi.mocked(auth.api.getSession).mockResolvedValue(session as never);
     vi.mocked(readSystemParameter).mockResolvedValueOnce(param);
     const request = new Request('http://localhost/api/system-parameters/550e8400-e29b-41d4-a716-446655440000');
     const context = { params: Promise.resolve({ id: '550e8400-e29b-41d4-a716-446655440000' }) };
@@ -74,7 +74,7 @@ describe('PATCH /api/system-parameters/[id]', () => {
       user: { id: '1', role: 'admin', name: 'A', email: 'a@x.com' },
       session: {} as any,
     };
-    vi.mocked(auth.api.getSession).mockResolvedValue(session);
+    vi.mocked(auth.api.getSession).mockResolvedValue(session as never);
     vi.mocked(updateSystemParameterValues).mockResolvedValueOnce(updated);
     const request = new Request('http://localhost/api/system-parameters/550e8400-e29b-41d4-a716-446655440000', {
       method: 'PATCH',
@@ -97,7 +97,7 @@ describe('PATCH /api/system-parameters/[id]', () => {
       user: { id: '1', role: 'admin', name: 'A', email: 'a@x.com' },
       session: {} as any,
     };
-    vi.mocked(auth.api.getSession).mockResolvedValue(session);
+    vi.mocked(auth.api.getSession).mockResolvedValue(session as never);
     vi.mocked(updateSystemParameterValues).mockResolvedValueOnce(updated);
     const request = new Request('http://localhost/api/system-parameters/550e8400-e29b-41d4-a716-446655440000', {
       method: 'PATCH',

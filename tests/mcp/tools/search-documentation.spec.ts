@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { DocumentationSortColumns } from '@/domain/documentation.filter';
 import { Role } from '@/domain/role.model';
+import { SortOrder } from '@/domain/utils';
 import { canUseMcpTools } from '@/mcp/auth-context';
 
 vi.mock('@/actions/documentation/search', () => ({
@@ -40,8 +42,8 @@ describe('search_documentation gate', () => {
         groupIds: undefined,
         skip: 0,
         take: 10,
-        sortBy: 'updatedAt',
-        sortOrder: 'desc',
+        sortBy: DocumentationSortColumns.UPDATED_AT,
+        sortOrder: SortOrder.DESC,
         audiences: undefined,
       },
       { isViewerAdmin: false, isAuthenticated: true },

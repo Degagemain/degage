@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { readChatConversationForAdmin } from '@/actions/conversation/admin-read';
 import { searchChatConversationsForAdmin } from '@/actions/conversation/admin-search';
 import { chatConversationAdminFilterSchema } from '@/domain/chat-conversation-admin.filter';

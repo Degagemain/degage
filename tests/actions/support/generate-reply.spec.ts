@@ -114,11 +114,11 @@ describe('generateSupportReplyText', () => {
       .mockResolvedValueOnce(ragSearch([publicCitation('repo:a', 'First'), publicCitation('repo:shared', 'Shared')]))
       .mockResolvedValueOnce(ragSearch([publicCitation('repo:shared', 'Shared again'), publicCitation('repo:b', 'Second')]));
 
-    vi.mocked(generateText).mockImplementationOnce(async (opts: any) => {
+    vi.mocked(generateText).mockImplementationOnce((async (opts: any) => {
       await opts.tools.searchDocumentation.execute({ query: 'first search' });
       await opts.tools.searchDocumentation.execute({ query: 'second search' });
       return { text: 'assistant reply' };
-    });
+    }) as never);
 
     const result = await generateSupportReplyText([{ role: 'user', content: 'Hello' }]);
 
@@ -171,7 +171,7 @@ describe('generateSupportReplyStream', () => {
 
     await generateSupportReplyStream([]);
 
-    const streamOpts = vi.mocked(streamText).mock.calls[0]?.[0] as { onError: (event: { error: unknown }) => Promise<void> };
+    const streamOpts = vi.mocked(streamText).mock.calls[0]?.[0] as unknown as { onError: (event: { error: unknown }) => Promise<void> };
     const error = new Error('credits depleted');
     await streamOpts.onError({ error });
 

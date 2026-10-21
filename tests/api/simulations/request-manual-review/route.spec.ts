@@ -22,7 +22,7 @@ vi.mock('next/headers', () => ({
 }));
 
 import { POST } from '@/api/simulations/request-manual-review/route';
-import { SimulationNotManualReviewError, publicRequestManualReview } from '@/actions/simulation/public-request-manual-review';
+import { publicRequestManualReview } from '@/actions/simulation/public-request-manual-review';
 
 const simId = '550e8400-e29b-41d4-a716-446655440000';
 

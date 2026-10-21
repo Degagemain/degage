@@ -179,7 +179,7 @@ describe('API Route - PUT /api/insurers/[id]', () => {
 
     it('returns 204 when admin updates', async () => {
       vi.mocked(auth.api.getSession).mockResolvedValue({ user: mockAdminUser } as any);
-      vi.mocked(updateInsurer).mockResolvedValueOnce(insurer(updateBody));
+      vi.mocked(updateInsurer).mockResolvedValueOnce(insurer(updateBody as never));
 
       const request = { json: vi.fn().mockResolvedValue(updateBody) } as any;
       const route = { params: Promise.resolve({ id: validId }) };

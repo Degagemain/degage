@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('better-auth/oauth2', () => ({
-  verifyAccessToken: vi.fn(),
+  verifyBearerToken: vi.fn(),
 }));
 
 vi.mock('@/mcp/auth-context', () => ({
@@ -9,7 +9,7 @@ vi.mock('@/mcp/auth-context', () => ({
   parseScopes: vi.fn((scopes: string | undefined) => (scopes ? scopes.split(/\s+/) : [])),
 }));
 
-import { verifyAccessToken } from 'better-auth/oauth2';
+import { verifyBearerToken } from 'better-auth/oauth2';
 import { loadMcpAuthContext } from '@/mcp/auth-context';
 import { verifyMcpAccessToken } from '@/mcp/verify-token';
 
@@ -24,12 +24,12 @@ describe('verifyMcpAccessToken', () => {
   it('returns undefined when bearer token is missing', async () => {
     const result = await verifyMcpAccessToken(undefined, 'aud');
     expect(result).toBeUndefined();
-    expect(verifyAccessToken).not.toHaveBeenCalled();
+    expect(verifyBearerToken).not.toHaveBeenCalled();
   });
 
   it('verifies token with issuer and jwks derived from BETTER_AUTH_URL', async () => {
     process.env.BETTER_AUTH_URL = 'http://localhost:3000';
-    vi.mocked(verifyAccessToken).mockResolvedValueOnce({
+    vi.mocked(verifyBearerToken).mockResolvedValueOnce({
       sub: 'user-1',
       scope: 'openid mcp:user',
       azp: 'client-1',
@@ -45,7 +45,7 @@ describe('verifyMcpAccessToken', () => {
 
     const result = await verifyMcpAccessToken('test-token', 'http://localhost:3000/mcp');
 
-    expect(verifyAccessToken).toHaveBeenCalledWith('test-token', {
+    expect(verifyBearerToken).toHaveBeenCalledWith('test-token', {
       jwksUrl: 'http://localhost:3000/api/auth/jwks',
       verifyOptions: {
         audience: 'http://localhost:3000/mcp',
@@ -58,7 +58,7 @@ describe('verifyMcpAccessToken', () => {
 
   it('returns undefined when verification throws', async () => {
     process.env.BETTER_AUTH_URL = 'http://localhost:3000';
-    vi.mocked(verifyAccessToken).mockRejectedValueOnce(new Error('invalid access token'));
+    vi.mocked(verifyBearerToken).mockRejectedValueOnce(new Error('invalid access token'));
 
     const result = await verifyMcpAccessToken('bad-token', 'http://localhost:3000/mcp');
 

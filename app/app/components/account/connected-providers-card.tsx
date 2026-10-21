@@ -68,7 +68,6 @@ export function ConnectedProvidersCard() {
     setLoadingId(account.providerId);
     try {
       await authClient.unlinkAccount({
-        providerId: account.providerId,
         accountId: account.accountId,
         fetchOptions: { throw: true },
       });

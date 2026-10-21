@@ -5,7 +5,7 @@ const idNameMcpSchema = z.object({
   name: z.string().optional().describe('Display name (optional but recommended for readability).'),
 });
 
-export const simulationCreateMcpInputSchema = {
+export const simulationCreateMcpInputSchema = z.object({
   town: idNameMcpSchema.describe('Town where the car will be used. Resolve via search_towns.'),
   brand: idNameMcpSchema.describe('Car brand. Resolve via search_car_brands.'),
   fuelType: idNameMcpSchema.describe('Fuel type. Resolve via search_fuel_types.'),
@@ -34,4 +34,4 @@ export const simulationCreateMcpInputSchema = {
     .nullable()
     .optional()
     .describe('Purchase price incl. VAT. Required when isPurchased=true; omit or null for existing cars.'),
-};
+});

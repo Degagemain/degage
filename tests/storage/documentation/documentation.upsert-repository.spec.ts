@@ -17,7 +17,7 @@ const input: RepositoryDocUpsertInput = {
   isFaq: false,
   isPublic: false,
   format: 'markdown',
-  audienceRoles: ['admin', 'technical'],
+  audienceRoles: ['admin', 'technical'] as RepositoryDocUpsertInput['audienceRoles'],
   tags: ['simulation_step_1'],
   translations: [
     { locale: 'en', title: 'Auth', content: 'Hello' },

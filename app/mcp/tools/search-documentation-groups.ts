@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { searchDocumentationGroups } from '@/actions/documentation-group/search';
 import { documentationGroupFilterSchema } from '@/domain/documentation-group.filter';
 import { withRequestContext } from '@/context/request-context';

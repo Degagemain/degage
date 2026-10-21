@@ -322,7 +322,7 @@ This log explains why packages were installed.
 | Auth setup                                 | better-auth                                                                                            |
 | OAuth 2.1 provider (MCP)                   | @better-auth/oauth-provider                                                                            |
 | MCP HTTP transport                         | mcp-handler                                                                                            |
-| MCP SDK types                              | @modelcontextprotocol/sdk                                                                              |
+| MCP server                                 | @modelcontextprotocol/server                                                                           |
 | Toastr Component                           | sonner                                                                                                 |
 | ShadCN Table/Select                        | radix-ui                                                                                               |
 | Data Table                                 | @tanstack/react-table                                                                                  |
@@ -333,7 +333,6 @@ This log explains why packages were installed.
 | ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
 | Gemini AI integration                      | @google/genai                                                                                          |
 | GCS object storage for documents           | @google-cloud/storage                                                                                  |
-| Temporary transitive vuln mitigation       | pnpm override: protobufjs@^7.5.5 (remove once upstream deps use a safe version)                        |
 | AI SDK chat + streaming                    | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
 | AI Elements chat UI                        | streamdown, use-stick-to-bottom, nanoid                                                                |
 | AI markdown plugins                        | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |

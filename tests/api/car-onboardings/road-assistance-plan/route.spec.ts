@@ -5,7 +5,9 @@ vi.mock('@/actions/car-onboarding/update-road-assistance-plan', () => ({
 }));
 
 vi.mock('@/api/with-context', () => ({
-  withAuth: (handler: (request: unknown, context: unknown, session: { user: { id: string } }) => Promise<Response>) => {
+  withAuth: (
+    handler: (request: unknown, context: unknown, session: { user: { id: string; role: string; banned: boolean } }) => Promise<Response>,
+  ) => {
     return (request: unknown, context: unknown) => handler(request, context, { user: { id: 'user-1', role: 'user', banned: false } });
   },
 }));

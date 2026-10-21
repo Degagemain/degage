@@ -18,15 +18,15 @@ function ensureProvider(): LoggerProvider | null {
       'service.name': 'open-cars',
     }),
     processors: [
-      new BatchLogRecordProcessor(
-        new OTLPLogExporter({
+      new BatchLogRecordProcessor({
+        exporter: new OTLPLogExporter({
           url,
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         }),
-      ),
+      }),
     ],
   });
 

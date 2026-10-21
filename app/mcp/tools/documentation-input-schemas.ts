@@ -52,14 +52,14 @@ const documentationMcpSharedFields = {
     .describe('All locale translations for the article. Include every supported locale (en, nl, fr). Send the full set.'),
 };
 
-export const documentationCreateMcpInputSchema = documentationMcpSharedFields;
+export const documentationCreateMcpInputSchema = z.object(documentationMcpSharedFields);
 
-export const documentationUpdateMcpInputSchema = {
+export const documentationUpdateMcpInputSchema = z.object({
   id: z.uuid().describe('Documentation UUID.'),
   ...documentationMcpSharedFields,
-};
+});
 
-export const documentationSearchMcpInputSchema = {
+export const documentationSearchMcpInputSchema = z.object({
   query: z.string().nullable().optional().describe('Free-text search in title and content.'),
   isFaq: z.boolean().nullable().optional().describe('Filter by FAQ flag. Omit for no filter.'),
   isPublic: z.boolean().nullable().optional().describe('Filter by public visibility. Non-admin callers are always limited to public docs.'),
@@ -87,4 +87,4 @@ export const documentationSearchMcpInputSchema = {
     .optional()
     .describe(`Sort column. Values: ${Object.values(DocumentationSortColumns).join(', ')}.`),
   sortOrder: z.nativeEnum(SortOrder).optional().describe('Sort direction: asc or desc.'),
-};
+});

@@ -20,7 +20,7 @@ function ensureSdk(): NodeSDK | null {
         headers: { Authorization: `Bearer ${apiKey}` },
       }),
     ),
-    new PostHogSpanProcessor({ apiKey, host }),
+    new PostHogSpanProcessor({ projectToken: apiKey, host }),
   ];
 
   sdk = new NodeSDK({

@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { CarTypeSortColumns } from '@/domain/car-type.filter';
 import { DefaultTake, MaxTake, SortOrder } from '@/domain/utils';
 
-export const carTypeSearchMcpInputSchema = {
+export const carTypeSearchMcpInputSchema = z.object({
   brandId: z.uuid().describe('Car brand UUID. Use search_car_brands to find ids.'),
   fuelTypeId: z.uuid().describe('Fuel type UUID. Use search_fuel_types to find ids.'),
   query: z.string().nullable().optional().describe('Free-text search in car type names.'),
@@ -14,7 +14,7 @@ export const carTypeSearchMcpInputSchema = {
     .optional()
     .describe(`Sort column. Values: ${Object.values(CarTypeSortColumns).join(', ')}.`),
   sortOrder: z.nativeEnum(SortOrder).optional().describe('Sort direction: asc or desc.'),
-};
+});
 
 export const carTypeMcpFilterSchema = z
   .object({

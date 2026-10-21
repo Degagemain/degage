@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { canUseMcpTools } from '@/mcp/auth-context';
 import { mcpRoleScope } from '@/mcp/config';
 import { getMcpAuthContext } from '@/mcp/request-context';

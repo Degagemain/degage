@@ -87,7 +87,7 @@ import { carInfoEstimator } from '@/actions/simulation/car-info-estimator';
 import { passesAgeRule, passesMileageRule, runSimulationEngine } from '@/actions/simulation/engine';
 import { dbCarTypeRead } from '@/storage/car-type/car-type.read';
 import { hubSchema } from '@/domain/hub.model';
-import { SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
+import { type SimulationResultBuilder, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
 import { dbHubRead } from '@/storage/hub/hub.read';
 import { simulationRunInput } from '../../builders/simulation.builder';
 
@@ -99,7 +99,7 @@ const DEFAULT_MAX_MILEAGE = 250_000;
 
 describe('applyMileageRule', () => {
   it('adds ok step and returns true when mileage is under limit', async () => {
-    const result = { steps: [] as { status: string; message: string }[] };
+    const result: SimulationResultBuilder = { steps: [] };
     const passed = await passesMileageRule(result, 100_000, DEFAULT_MAX_MILEAGE);
     expect(passed).toBe(true);
     expect(result.steps).toHaveLength(1);
@@ -107,7 +107,7 @@ describe('applyMileageRule', () => {
   });
 
   it('adds not_ok step and returns false when mileage is over 250_000', async () => {
-    const result = { steps: [] as { status: string; message: string; code?: string }[] };
+    const result: SimulationResultBuilder = { steps: [] };
     const passed = await passesMileageRule(result, 300_000, DEFAULT_MAX_MILEAGE);
     expect(passed).toBe(false);
     expect(result.steps[0].status).toBe(SimulationStepIcon.NOT_OK);
@@ -115,7 +115,7 @@ describe('applyMileageRule', () => {
   });
 
   it('boundary: exactly 250_000 adds ok step and returns true', async () => {
-    const result = { steps: [] as { status: string; message: string }[] };
+    const result: SimulationResultBuilder = { steps: [] };
     const passed = await passesMileageRule(result, 250_000, DEFAULT_MAX_MILEAGE);
     expect(passed).toBe(true);
     expect(result.steps[0].status).toBe(SimulationStepIcon.OK);
@@ -126,7 +126,7 @@ const DEFAULT_MAX_AGE_YEARS = 15;
 
 describe('applyAgeRule', () => {
   it('adds ok step and returns true when car is not older than 15 years', async () => {
-    const result = { steps: [] as { status: string; message: string }[] };
+    const result: SimulationResultBuilder = { steps: [] };
     const recentDate = new Date();
     recentDate.setFullYear(recentDate.getFullYear() - 5);
     const passed = await passesAgeRule(result, recentDate, DEFAULT_MAX_AGE_YEARS);
@@ -135,7 +135,7 @@ describe('applyAgeRule', () => {
   });
 
   it('adds not_ok step and returns false when car is older than 15 years', async () => {
-    const result = { steps: [] as { status: string; message: string; code?: string }[] };
+    const result: SimulationResultBuilder = { steps: [] };
     const oldDate = new Date();
     oldDate.setFullYear(oldDate.getFullYear() - 20);
     const passed = await passesAgeRule(result, oldDate, DEFAULT_MAX_AGE_YEARS);
