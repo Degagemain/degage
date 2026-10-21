@@ -3,7 +3,7 @@ import { createAuthMiddleware } from 'better-auth/api';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin, jwt } from 'better-auth/plugins';
 import { oauthProvider } from '@better-auth/oauth-provider';
-import { isMcpEnabled, oauthProviderScopes } from '@/mcp/config';
+import { isMcpEnabled, mcpAudience, oauthProviderScopes } from '@/mcp/config';
 import { assertUserCanReceiveOAuthToken } from '@/mcp/auth-context';
 import { captureImmediate } from '@/integrations/posthog';
 import { AnalyticsEvent } from '@/domain/analytics-event.model';
@@ -77,13 +77,12 @@ export const auth = betterAuth({
             consentPage: '/app/auth/consent',
             signup: { page: '/app/auth/sign-up' },
             scopes: oauthProviderScopes,
-            validAudiences: [`${process.env.BETTER_AUTH_URL}/mcp`],
+            resources: [mcpAudience()],
             allowUnauthenticatedClientRegistration: true,
             allowDynamicClientRegistration: true,
-            silenceWarnings: {
-              oauthAuthServerConfig: true,
-              openidConfig: true,
-            },
+            enforcePerClientResources: false,
+            clientRegistrationDefaultResources: [mcpAudience()],
+            clientRegistrationAllowedResources: [mcpAudience()],
             customAccessTokenClaims: ({ user }) => ({
               role: user?.role ?? 'user',
               email_verified: user?.emailVerified ?? false,

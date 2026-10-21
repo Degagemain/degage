@@ -3,7 +3,7 @@ import { ChatConversationAdminSortColumns } from '@/domain/chat-conversation-adm
 import { chatConversationMediumValues } from '@/domain/chat.model';
 import { DefaultTake, MaxTake, SortOrder } from '@/domain/utils';
 
-export const searchChatConversationsMcpInputSchema = {
+export const searchChatConversationsMcpInputSchema = z.object({
   id: z.uuid().optional().describe('Conversation UUID. When set, return that conversation instead of the list. Other filters are ignored.'),
   userIds: z.array(z.string().min(1)).optional().describe('Filter the list by user id. Same filter as the admin support chat list.'),
   mediums: z
@@ -17,4 +17,4 @@ export const searchChatConversationsMcpInputSchema = {
     .optional()
     .describe(`Sort column. Values: ${Object.values(ChatConversationAdminSortColumns).join(', ')}.`),
   sortOrder: z.nativeEnum(SortOrder).optional().describe('Sort direction: asc or desc.'),
-};
+});

@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-const createMcpHandler = vi.fn(() => vi.fn(async () => new Response('ok')));
+const createMcpHandler = vi.fn((..._args: unknown[]) => vi.fn(async () => new Response('ok')));
 const withMcpAuth = vi.fn((_handler: unknown, _verify: unknown) => vi.fn(async () => new Response('ok')));
 const instrument = vi.fn();
 const getPostHogClient = vi.fn(() => ({ flush: vi.fn() }));
 
 vi.mock('mcp-handler', () => ({
   createMcpHandler,
-  withMcpAuth,
+  experimental_withMcpAuth: withMcpAuth,
 }));
 
 vi.mock('@posthog/mcp', () => ({
@@ -36,7 +36,7 @@ describe('createMcpRouteHandlers', () => {
     vi.clearAllMocks();
   });
 
-  it('configures streamableHttpEndpoint to match the route path', async () => {
+  it('reports the MCP server on the route handler options', async () => {
     process.env.MCP_ENABLED = 'true';
     process.env.BETTER_AUTH_URL = 'http://localhost:3000';
 
@@ -44,10 +44,10 @@ describe('createMcpRouteHandlers', () => {
     createMcpRouteHandlers();
 
     expect(createMcpHandler).toHaveBeenCalledTimes(1);
-    expect(createMcpHandler.mock.calls[0]?.[2]).toMatchObject({
-      streamableHttpEndpoint: '/mcp',
-      disableSse: true,
+    expect(createMcpHandler.mock.calls[0]?.[1]).toMatchObject({
+      serverInfo: { name: 'deg-mcp', version: '1.0.0' },
     });
+    expect(createMcpHandler.mock.calls[0]?.[2]).toBeUndefined();
   });
 
   it('instruments the MCP server with PostHog when enabled', async () => {
@@ -57,7 +57,7 @@ describe('createMcpRouteHandlers', () => {
     const { createMcpRouteHandlers } = await import('@/mcp/create-route');
     createMcpRouteHandlers();
 
-    const setup = createMcpHandler.mock.calls[0]?.[0] as (server: unknown) => void;
+    const setup = createMcpHandler.mock.calls[0]?.[0] as unknown as (server: unknown) => void;
     const server = { tool: vi.fn() };
     setup(server);
 

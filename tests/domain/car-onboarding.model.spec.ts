@@ -1037,22 +1037,24 @@ describe('share start date helpers', () => {
   });
 
   it('uses the first of this or next month when there is no insurance contract', () => {
-    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toEqual(new Date(2026, 8, 1));
-    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null }, new Date(2026, 7, 1))).toEqual(
-      new Date(2026, 7, 1),
+    expect(getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null, insurer: null }, today)).toEqual(
+      new Date(2026, 8, 1),
     );
+    expect(
+      getEarliestShareStartDate({ hasInsuranceContract: false, insurerContractStartedAt: null, insurer: null }, new Date(2026, 7, 1)),
+    ).toEqual(new Date(2026, 7, 1));
   });
 
   it('uses contract start plus one year when the contract is less than a year old', () => {
     const contractStart = new Date(2026, 0, 15); // 15 Jan 2026
-    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart }, today)).toEqual(
+    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart, insurer: null }, today)).toEqual(
       new Date(2027, 1, 1),
     ); // ceil of 15 Jan 2027
   });
 
   it('uses today plus two months when the contract is a year or older', () => {
     const contractStart = new Date(2024, 0, 15);
-    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart }, today)).toEqual(
+    expect(getEarliestShareStartDate({ hasInsuranceContract: true, insurerContractStartedAt: contractStart, insurer: null }, today)).toEqual(
       new Date(2026, 10, 1),
     ); // ceil of 7 Oct 2026 → 1 Nov 2026
   });
@@ -1090,7 +1092,7 @@ describe('share start date helpers', () => {
   });
 
   it('validates first-of-month dates within earliest and latest', () => {
-    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null };
+    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null, insurer: null };
     expect(isValidShareStartDate(new Date(2026, 8, 1), onboarding, today)).toBe(true);
     expect(isValidShareStartDate(new Date(2026, 7, 1), onboarding, today)).toBe(false);
     expect(isValidShareStartDate(new Date(2026, 7, 15), onboarding, today)).toBe(false);
@@ -1100,9 +1102,11 @@ describe('share start date helpers', () => {
 
   it('keeps an already-saved current-month date valid after the 1st', () => {
     const shareStartDate = new Date(2026, 7, 1);
-    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null, shareStartDate };
+    const onboarding = { hasInsuranceContract: false, insurerContractStartedAt: null, insurer: null, shareStartDate };
     expect(isValidShareStartDate(shareStartDate, onboarding, today)).toBe(true);
-    expect(isValidShareStartDate(new Date(2026, 7, 1), { hasInsuranceContract: false, insurerContractStartedAt: null }, today)).toBe(false);
+    expect(
+      isValidShareStartDate(new Date(2026, 7, 1), { hasInsuranceContract: false, insurerContractStartedAt: null, insurer: null }, today),
+    ).toBe(false);
   });
 
   it('marks the section complete when share start date and valid car name are set', () => {
@@ -1120,11 +1124,13 @@ describe('share start date helpers', () => {
         {
           hasInsuranceContract: true,
           insurerContractStartedAt: new Date(2020, 0, 15),
+          insurer: null,
           shareStartDate,
         },
         {
           hasInsuranceContract: true,
           insurerContractStartedAt: new Date(2021, 5, 1),
+          insurer: null,
         },
         today,
       ),
@@ -1135,11 +1141,13 @@ describe('share start date helpers', () => {
         {
           hasInsuranceContract: true,
           insurerContractStartedAt: new Date(2020, 0, 15),
+          insurer: null,
           shareStartDate,
         },
         {
           hasInsuranceContract: true,
           insurerContractStartedAt: new Date(2020, 0, 15),
+          insurer: null,
         },
         today,
       ),
@@ -1191,11 +1199,13 @@ describe('share start date helpers', () => {
         {
           hasInsuranceContract: false,
           insurerContractStartedAt: null,
+          insurer: null,
           shareStartDate,
         },
         {
           hasInsuranceContract: false,
           insurerContractStartedAt: null,
+          insurer: null,
         },
         today,
       ),

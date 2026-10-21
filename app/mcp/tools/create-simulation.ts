@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { ZodError } from 'zod';
 import { createSimulation } from '@/actions/simulation/create';
 import { buildPublicSimulationUrl } from '@/actions/simulation/notify-simulation-result-emails';

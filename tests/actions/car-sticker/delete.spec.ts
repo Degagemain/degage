@@ -44,7 +44,7 @@ describe('deleteCarSticker', () => {
 
     expect(dbDocumentDelete).toHaveBeenCalledWith('image-doc');
     expect(dbCarStickerDelete).toHaveBeenCalledWith(stickerId);
-    expect(dbDocumentDelete.mock.invocationCallOrder[0]).toBeLessThan(dbCarStickerDelete.mock.invocationCallOrder[0]);
+    expect(vi.mocked(dbDocumentDelete).mock.invocationCallOrder[0]).toBeLessThan(vi.mocked(dbCarStickerDelete).mock.invocationCallOrder[0]);
   });
 
   it('does not delete sticker when document delete fails', async () => {

@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { searchFuelTypes } from '@/actions/fuel-type/search';
 import { fuelTypeFilterSchema } from '@/domain/fuel-type.filter';
 import { withRequestContext } from '@/context/request-context';

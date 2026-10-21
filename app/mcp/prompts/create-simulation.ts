@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod';
 
 const guidanceBody = `You help the user run a car eligibility simulation on the Degage platform.
@@ -60,12 +60,12 @@ export const registerCreateSimulationPrompt = (server: McpServer): void => {
       title: 'Create a car simulation',
       description:
         'Guides collecting inputs for an existing car or a car being purchased, resolving entities via search tools, then running create_simulation.',
-      argsSchema: {
+      argsSchema: z.object({
         situation: z
           .enum(['existing', 'purchase'])
           .optional()
           .describe('Pre-select situation: existing car the user owns, or a car being purchased. Omit to ask the user.'),
-      },
+      }),
     },
     ({ situation }) => {
       const situationHint =

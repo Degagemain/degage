@@ -6,7 +6,7 @@ export type PlayConnectorRecord = Partial<DbPlayConnector> & {
   encryptedPassword: string;
 };
 
-export const playConnectorRecord = (data: Partial<PlayConnectorRecord> = {}): PlayConnectorRecord => ({
+export const playConnectorRecord = (data: Partial<PlayConnectorRecord> = {}): DbPlayConnector => ({
   id: data.id ?? '550e8400-e29b-41d4-a716-446655440000',
   userId: data.userId ?? 'user-1',
   email: data.email ?? 'user@example.com',

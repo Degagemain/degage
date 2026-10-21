@@ -22,7 +22,7 @@ describe('readPlayProfile', () => {
   });
 
   it('fetches /profile and parses basic info', async () => {
-    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc', expiresAt: new Date() });
+    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc' });
     vi.mocked(fetchPlay).mockResolvedValueOnce({ html: profileHtml, status: 200 });
 
     const result = await readPlayProfile('user-1');
@@ -43,7 +43,7 @@ describe('readPlayProfile', () => {
   });
 
   it('returns null when profile HTML cannot be parsed', async () => {
-    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc', expiresAt: new Date() });
+    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc' });
     vi.mocked(fetchPlay).mockResolvedValueOnce({ html: '<html></html>', status: 200 });
 
     const result = await readPlayProfile('user-1');

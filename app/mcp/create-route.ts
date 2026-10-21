@@ -1,9 +1,9 @@
-import { createMcpHandler, withMcpAuth } from 'mcp-handler';
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { createMcpHandler, experimental_withMcpAuth as withMcpAuth } from 'mcp-handler';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { instrument } from '@posthog/mcp';
 import { flushPostHogEvents, getPostHogClient, isPostHogEnabled } from '@/integrations/posthog';
 import { verifyMcpAccessToken } from '@/mcp/verify-token';
-import { betterAuthBaseUrl, isMcpEnabled, mcpAudience, mcpPath, mcpResourceMetadataPath, mcpServerName } from '@/mcp/config';
+import { betterAuthBaseUrl, isMcpEnabled, mcpAudience, mcpResourceMetadataPath, mcpServerName } from '@/mcp/config';
 import { getMcpAuthContext, mcpContextFromAuthExtra, runWithMcpAuthContext } from '@/mcp/request-context';
 import { registerMcpTools } from '@/mcp/tools/register-tools';
 
@@ -41,11 +41,6 @@ export const createMcpRouteHandlers = (): RouteHandlers => {
         name: mcpServerName,
         version: '1.0.0',
       },
-    },
-    {
-      maxDuration: 60,
-      disableSse: true,
-      streamableHttpEndpoint: mcpPath,
     },
   );
 

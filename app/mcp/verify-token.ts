@@ -1,5 +1,5 @@
-import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
-import { verifyAccessToken } from 'better-auth/oauth2';
+import type { AuthInfo } from '@modelcontextprotocol/server';
+import { verifyBearerToken } from 'better-auth/oauth2';
 import { loadMcpAuthContext, parseScopes } from '@/mcp/auth-context';
 import { betterAuthIssuer } from '@/mcp/config';
 
@@ -9,7 +9,7 @@ export const verifyMcpAccessToken = async (bearerToken: string | undefined, audi
   const issuer = betterAuthIssuer();
 
   try {
-    const payload = await verifyAccessToken(bearerToken, {
+    const payload = await verifyBearerToken(bearerToken, {
       jwksUrl: `${issuer}/jwks`,
       verifyOptions: {
         audience,

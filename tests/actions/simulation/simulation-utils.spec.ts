@@ -5,20 +5,26 @@ vi.mock('@/i18n/get-message', () => ({
 }));
 
 import { addErrorMessage, addInfoMessage, addStep, getSimulationMessage, setCurrentStep } from '@/actions/simulation/simulation-utils';
-import { SimulationPhase, SimulationStepCode, SimulationStepIcon } from '@/domain/simulation.model';
+import {
+  type SimulationEngineResult,
+  SimulationPhase,
+  type SimulationResultBuilder,
+  SimulationStepCode,
+  SimulationStepIcon,
+} from '@/domain/simulation.model';
 import { getMessage } from '@/i18n/get-message';
 
 describe('simulation-utils', () => {
   describe('addStep', () => {
     it('appends a step to the result steps array', () => {
-      const result = { steps: [] as { status: string; message: string }[] };
+      const result: SimulationResultBuilder = { steps: [] };
       addStep(result, SimulationStepIcon.OK, 'Mileage OK');
       expect(result.steps).toHaveLength(1);
       expect(result.steps[0]).toEqual({ status: SimulationStepIcon.OK, message: 'Mileage OK' });
     });
 
     it('appends multiple steps in order', () => {
-      const result = { steps: [] as { status: string; message: string }[] };
+      const result: SimulationResultBuilder = { steps: [] };
       addStep(result, SimulationStepIcon.OK, 'First');
       addStep(result, SimulationStepIcon.NOT_OK, 'Second');
       expect(result.steps).toHaveLength(2);
@@ -29,7 +35,7 @@ describe('simulation-utils', () => {
 
   describe('addInfoMessage', () => {
     it('appends an info step', () => {
-      const result = { steps: [] as { status: string; message: string }[] };
+      const result: SimulationResultBuilder = { steps: [] };
       addInfoMessage(result, 'Some info');
       expect(result.steps).toHaveLength(1);
       expect(result.steps[0]).toEqual({ status: SimulationStepIcon.INFO, message: 'Some info' });
@@ -38,14 +44,14 @@ describe('simulation-utils', () => {
 
   describe('addErrorMessage', () => {
     it('appends an error step', () => {
-      const result = { steps: [] as { status: string; message: string }[] };
+      const result: SimulationResultBuilder = { steps: [] };
       addErrorMessage(result, 'Something failed');
       expect(result.steps).toHaveLength(1);
       expect(result.steps[0]).toEqual({ status: SimulationStepIcon.NOT_OK, message: 'Something failed' });
     });
 
     it('stores the rejection step code when provided', () => {
-      const result = { steps: [] as { status: string; message: string; code?: string }[] };
+      const result: SimulationResultBuilder = { steps: [] };
       addErrorMessage(result, 'Too many kilometres', SimulationStepCode.MILEAGE_LIMIT);
       expect(result.steps[0]).toEqual({
         status: SimulationStepIcon.NOT_OK,
@@ -57,7 +63,7 @@ describe('simulation-utils', () => {
 
   describe('setCurrentStep', () => {
     it('sets currentStep on the result', () => {
-      const result = { steps: [] as { status: string; message: string }[], currentStep: null as string | null };
+      const result = { steps: [], currentStep: null } as unknown as SimulationEngineResult;
       setCurrentStep(result, SimulationPhase.PRICE_ESTIMATION);
       expect(result.currentStep).toBe(SimulationPhase.PRICE_ESTIMATION);
     });

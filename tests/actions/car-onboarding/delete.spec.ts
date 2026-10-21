@@ -44,7 +44,7 @@ describe('deleteCarOnboarding', () => {
     expect(dbDocumentDelete).toHaveBeenCalledWith('pink-form-doc');
     expect(dbDocumentDelete).toHaveBeenCalledWith('proof-of-purchase-doc');
     expect(dbCarOnboardingDelete).toHaveBeenCalledWith(onboardingId);
-    expect(dbDocumentDelete.mock.invocationCallOrder[0]).toBeLessThan(dbCarOnboardingDelete.mock.invocationCallOrder[0]);
+    expect(vi.mocked(dbDocumentDelete).mock.invocationCallOrder[0]).toBeLessThan(vi.mocked(dbCarOnboardingDelete).mock.invocationCallOrder[0]);
   });
 
   it('does not delete onboarding when document delete fails', async () => {

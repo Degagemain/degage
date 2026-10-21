@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/server';
 import { updateDocumentationGroup } from '@/actions/documentation-group/update';
 import { withRequestContext } from '@/context/request-context';
 import { defaultUILocale, getContentLocale } from '@/i18n/locales';

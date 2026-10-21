@@ -36,7 +36,7 @@ describe('listPlayInfosessions', () => {
   });
 
   it('returns only owner infosessions from the upcoming table', async () => {
-    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc', expiresAt: new Date() });
+    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc' });
     vi.mocked(fetchPlay).mockResolvedValueOnce({ html: tableHtml, status: 200 });
 
     const result = await listPlayInfosessions('user-1');
@@ -50,7 +50,7 @@ describe('listPlayInfosessions', () => {
   });
 
   it('keeps the chosen session even when listing owner rows', async () => {
-    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc', expiresAt: new Date() });
+    vi.mocked(getPlaySessionCookie).mockResolvedValueOnce({ cookieHeader: 'session=abc' });
     vi.mocked(fetchPlay).mockResolvedValueOnce({ html: enrolledHtml, status: 200 });
 
     const result = await listPlayInfosessions('user-1');

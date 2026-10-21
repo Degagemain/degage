@@ -22,7 +22,7 @@ vi.mock('next/headers', () => ({
 }));
 
 import { POST } from '@/api/simulations/confirm-result-email/route';
-import { SimulationNotSuccessForResultEmailError, publicConfirmResultEmail } from '@/actions/simulation/public-confirm-result-email';
+import { publicConfirmResultEmail } from '@/actions/simulation/public-confirm-result-email';
 
 const simId = '550e8400-e29b-41d4-a716-446655440000';
 
