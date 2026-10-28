@@ -311,6 +311,7 @@ This log explains why packages were installed.
 | prisma ORM setup                           | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
 | Unit testing setup                         | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
 | Unit test coverage                         | @vitest/coverage-v8                                                                                    |
+| Vite peer for Vitest, held on the 7.x line | vite                                                                                                   |
 | E2E browser tests                          | @playwright/test                                                                                       |
 | E2E Postgres (Testcontainers)              | testcontainers, @testcontainers/postgresql, pg, @types/pg                                              |
 | Tailwind setup                             | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
@@ -341,7 +342,7 @@ This log explains why packages were installed.
 | Carousel support                           | embla-carousel-react                                                                                   |
 | Play connector HTML parsing                | cheerio                                                                                                |
 | Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
-| Syntax highlighting/runtime                | shiki, tokenlens, ansi-to-react                                                                        |
+| Syntax highlighting/runtime                | shiki, tokenlens                                                                                       |
 | Rive animations                            | @rive-app/react-webgl2                                                                                 |
 | Transactional email (auth)                 | resend                                                                                                 |
 | TS scripts with path aliases               | tsx                                                                                                    |
