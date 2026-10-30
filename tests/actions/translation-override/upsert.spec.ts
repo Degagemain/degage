@@ -4,7 +4,12 @@ vi.mock('@/storage/translation-override/translation-override.upsert', () => ({
   dbTranslationOverrideUpsert: vi.fn(),
 }));
 
+vi.mock('@/actions/translation-override/translation-override-cache', () => ({
+  expireTranslationOverridesCache: vi.fn(),
+}));
+
 import { upsertTranslationOverride } from '@/actions/translation-override/upsert';
+import { expireTranslationOverridesCache } from '@/actions/translation-override/translation-override-cache';
 import { TranslationOverrideValidationError } from '@/actions/translation-override/validation';
 import { dbTranslationOverrideUpsert } from '@/storage/translation-override/translation-override.upsert';
 
@@ -28,6 +33,7 @@ describe('upsertTranslationOverride', () => {
 
     await expect(upsertTranslationOverride(override)).resolves.toMatchObject(override);
     expect(dbTranslationOverrideUpsert).toHaveBeenCalledWith(override);
+    expect(expireTranslationOverridesCache).toHaveBeenCalledTimes(1);
   });
 
   it('rejects overrides that introduce new variables', async () => {
@@ -39,6 +45,7 @@ describe('upsertTranslationOverride', () => {
       }),
     ).rejects.toBeInstanceOf(TranslationOverrideValidationError);
     expect(dbTranslationOverrideUpsert).not.toHaveBeenCalled();
+    expect(expireTranslationOverridesCache).not.toHaveBeenCalled();
   });
 
   it('rejects keys that are not string messages for the locale', async () => {

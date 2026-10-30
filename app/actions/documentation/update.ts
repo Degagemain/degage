@@ -4,6 +4,7 @@ import { Documentation, documentationSchema } from '@/domain/documentation.model
 import { embedDocumentationById } from '@/actions/documentation/embed';
 import { dbDocumentationUpdate } from '@/storage/documentation/documentation.update';
 import { logger } from '@/lib/logger';
+import { expireDocumentationCache } from './documentation-cache';
 import { DocumentationShortLinkTakenError, isDocumentationShortLinkUniqueError } from './documentation-short-link-taken.error';
 import { prepareDocumentationShortLink } from './prepare-documentation-short-link';
 
@@ -23,6 +24,7 @@ export const updateDocumentation = async (doc: Documentation): Promise<Documenta
     }
     throw error;
   }
+  expireDocumentationCache();
   if (saved.id) {
     try {
       await embedDocumentationById(saved.id);

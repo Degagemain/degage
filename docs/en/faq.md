@@ -32,3 +32,10 @@ A FAQ item or article can store an optional `shortLink`. `/app/faq/articles/{sho
 `/app/faq/articles/{externalId}` when no article uses that string as its external id. The value is stored lowercase and may contain letters,
 numbers, and hyphens. The link is kept when the item is not public, but the public page still shows only public articles. Two items cannot share
 one.
+
+## Caching
+
+The article page reads articles through `getFaqArticleForViewer`, which caches the result in the Next.js data cache under the `documentation`
+tag. The page reads the session only when an article is hidden from visitors, so most visits do not query the database. Creating, updating, or
+deleting documentation through the app expires the tag. Seed scripts run outside Next.js and cannot expire it, so each entry also expires after
+one hour.
