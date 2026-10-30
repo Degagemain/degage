@@ -14,7 +14,7 @@ type PageProps = {
 
 const isRequestFromAdmin = async (): Promise<boolean> => {
   const session = await auth.api.getSession({ headers: await headers() });
-  return session?.user ? isAdmin(session.user) : false;
+  return isAdmin(session?.user);
 };
 
 export default async function FaqArticleDetailPage({ params }: PageProps) {

@@ -1,7 +1,7 @@
 import { dbDocumentationDelete } from '@/storage/documentation/documentation.delete';
-import { expireDocumentationCache } from './documentation-cache';
+import { cacheTags, expireCacheTag } from '@/lib/cache-tags';
 
 export const deleteDocumentation = async (id: string): Promise<void> => {
   await dbDocumentationDelete(id);
-  expireDocumentationCache();
+  expireCacheTag(cacheTags.documentation);
 };
