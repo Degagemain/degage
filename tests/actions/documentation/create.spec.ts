@@ -8,6 +8,11 @@ vi.mock('@/storage/documentation/documentation.get-by-short-link', () => ({
   dbDocumentationGetByShortLink: vi.fn(),
 }));
 
+vi.mock('@/lib/cache-tags', () => ({
+  cacheTags: { documentation: 'documentation' },
+  expireCacheTag: vi.fn(),
+}));
+
 vi.mock('@/actions/documentation/embed', () => ({
   embedDocumentationById: vi.fn(),
 }));
@@ -22,6 +27,7 @@ import { createDocumentation } from '@/actions/documentation/create';
 import { embedDocumentationById } from '@/actions/documentation/embed';
 import { dbDocumentationGetByShortLink } from '@/storage/documentation/documentation.get-by-short-link';
 import { dbDocumentationCreate } from '@/storage/documentation/documentation.create';
+import { expireCacheTag } from '@/lib/cache-tags';
 import { logger } from '@/lib/logger';
 import { documentation } from '../../builders/documentation.builder';
 
@@ -39,6 +45,7 @@ describe('createDocumentation', () => {
 
     expect(result.id).toBe('new-id');
     expect(dbDocumentationCreate).toHaveBeenCalledTimes(1);
+    expect(expireCacheTag).toHaveBeenCalledWith('documentation');
     expect(embedDocumentationById).toHaveBeenCalledWith('new-id');
   });
 

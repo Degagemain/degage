@@ -2,8 +2,7 @@ import { headers } from 'next/headers';
 import { getLocale } from 'next-intl/server';
 
 import { auth } from '@/auth';
-import { getDocumentationByExternalIdForViewer } from '@/actions/documentation/get-by-external-id-for-viewer';
-import { getDocumentationByShortLinkForViewer } from '@/actions/documentation/get-by-short-link-for-viewer';
+import { getFaqArticleForViewer } from '@/actions/documentation/get-faq-article-for-viewer';
 import { isAdmin } from '@/domain/role.utils';
 import { getContentLocale } from '@/i18n/locales';
 
@@ -13,19 +12,21 @@ type PageProps = {
   params: Promise<{ externalId: string }>;
 };
 
+const isRequestFromAdmin = async (): Promise<boolean> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return isAdmin(session?.user);
+};
+
 export default async function FaqArticleDetailPage({ params }: PageProps) {
   const { externalId: raw } = await params;
-  const externalId = decodeURIComponent(raw);
+  const slug = decodeURIComponent(raw);
+  const contentLocale = getContentLocale(await getLocale());
 
-  const [session, locale] = await Promise.all([auth.api.getSession({ headers: await headers() }), getLocale()]);
-  const isViewerAdmin = session?.user ? isAdmin(session.user) : false;
-  const contentLocale = getContentLocale(locale);
-
-  const byExternalId = await getDocumentationByExternalIdForViewer(externalId, contentLocale, isViewerAdmin, { publicCatalogOnly: true });
+  const forVisitor = await getFaqArticleForViewer(slug, contentLocale, false);
   const result =
-    byExternalId.ok || byExternalId.reason === 'forbidden'
-      ? byExternalId
-      : await getDocumentationByShortLinkForViewer(externalId, contentLocale, isViewerAdmin);
+    forVisitor.ok || forVisitor.reason === 'not_found'
+      ? forVisitor
+      : await getFaqArticleForViewer(slug, contentLocale, await isRequestFromAdmin());
 
   if (!result.ok) {
     return <FaqArticleUnavailable />;

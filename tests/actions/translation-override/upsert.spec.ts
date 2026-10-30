@@ -4,8 +4,14 @@ vi.mock('@/storage/translation-override/translation-override.upsert', () => ({
   dbTranslationOverrideUpsert: vi.fn(),
 }));
 
+vi.mock('@/lib/cache-tags', () => ({
+  cacheTags: { translationOverrides: 'translation-overrides' },
+  expireCacheTag: vi.fn(),
+}));
+
 import { upsertTranslationOverride } from '@/actions/translation-override/upsert';
 import { TranslationOverrideValidationError } from '@/actions/translation-override/validation';
+import { expireCacheTag } from '@/lib/cache-tags';
 import { dbTranslationOverrideUpsert } from '@/storage/translation-override/translation-override.upsert';
 
 describe('upsertTranslationOverride', () => {
@@ -28,6 +34,7 @@ describe('upsertTranslationOverride', () => {
 
     await expect(upsertTranslationOverride(override)).resolves.toMatchObject(override);
     expect(dbTranslationOverrideUpsert).toHaveBeenCalledWith(override);
+    expect(expireCacheTag).toHaveBeenCalledWith('translation-overrides');
   });
 
   it('rejects overrides that introduce new variables', async () => {
@@ -39,6 +46,7 @@ describe('upsertTranslationOverride', () => {
       }),
     ).rejects.toBeInstanceOf(TranslationOverrideValidationError);
     expect(dbTranslationOverrideUpsert).not.toHaveBeenCalled();
+    expect(expireCacheTag).not.toHaveBeenCalled();
   });
 
   it('rejects keys that are not string messages for the locale', async () => {

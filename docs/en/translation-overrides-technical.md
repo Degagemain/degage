@@ -16,6 +16,9 @@ keeps the JSON message files as the source of truth and applies database overrid
 3. Review and commit the changed `messages/*.json` files.
 4. Clear applied overrides from the admin page so the database no longer shadows the committed files.
 
+Runtime message loading caches the overrides of each locale in the Next.js data cache under the `translation-overrides` tag, so a page render
+does not query the database. Saving or deleting an override in the admin area expires the tag.
+
 Overrides are validated against the original message value for that locale. Replacement text may reuse existing `{template_variable}`
 placeholders, but it cannot introduce new placeholders that were absent from the original value.
 

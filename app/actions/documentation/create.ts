@@ -4,6 +4,7 @@ import { Documentation, documentationSchema } from '@/domain/documentation.model
 import { embedDocumentationById } from '@/actions/documentation/embed';
 import { dbDocumentationCreate } from '@/storage/documentation/documentation.create';
 import { logger } from '@/lib/logger';
+import { cacheTags, expireCacheTag } from '@/lib/cache-tags';
 import { DocumentationShortLinkTakenError, isDocumentationShortLinkUniqueError } from './documentation-short-link-taken.error';
 import { prepareDocumentationShortLink } from './prepare-documentation-short-link';
 
@@ -27,6 +28,7 @@ export const createDocumentation = async (doc: Documentation): Promise<Documenta
     }
     throw error;
   }
+  expireCacheTag(cacheTags.documentation);
   if (saved.id) {
     try {
       await embedDocumentationById(saved.id);

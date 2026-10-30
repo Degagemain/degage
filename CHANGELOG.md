@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Fixed: public FAQ articles open faster, because the page no longer waits for the database on each visit.
+
+### Technical
+
+- Changed: public FAQ article lookups and translation overrides are cached in the Next.js data cache. Saving documentation or a translation override expires the cache.
+
 ## [0.0.9] - 2026-10-11
 
 ### Public features
