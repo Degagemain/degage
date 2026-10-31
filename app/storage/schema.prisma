@@ -698,6 +698,10 @@ model DocumentationChunk {
   @@unique([documentationId, locale, chunkIndex])
   @@index([documentationId])
   @@index([locale])
+  // Prisma cannot express the hnsw index type; the migration creates it as
+  // `USING hnsw (embedding vector_cosine_ops)`. Keep the name in sync so
+  // `migrate dev` does not see drift and drop it.
+  @@index([embedding], map: "DocumentationChunk_embedding_hnsw_idx")
 }
 
 model TranslationOverride {
