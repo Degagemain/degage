@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Technical
 
 - Added: support chat stream errors are logged and flushed to PostHog.
-- Added: support chat follows the PostHog feature flag `support-chat`. Chat stays available when PostHog is not configured.
+- Added: support chat follows the in-app feature flag `support-chat` (admin-toggleable).
 
 ## [0.0.7] - 2026-09-20
 

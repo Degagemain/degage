@@ -37,9 +37,8 @@ vi.mock('@/actions/support/generate-reply', () => ({
   generateSupportReplyStream: vi.fn(),
 }));
 
-vi.mock('@/integrations/posthog', () => ({
-  isSupportChatEnabled: vi.fn(async () => true),
-  flushPostHogEvents: vi.fn(),
+vi.mock('@/actions/feature-flag/read', () => ({
+  isFeatureFlagEnabled: vi.fn(async () => true),
 }));
 
 vi.mock('@/lib/logger', () => ({
@@ -52,7 +51,7 @@ import { readChatConversation } from '@/actions/conversation/read';
 import { readChatConversationByGuestToken } from '@/actions/conversation/read-by-guest-token';
 import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { auth } from '@/auth';
-import { isSupportChatEnabled } from '@/integrations/posthog';
+import { isFeatureFlagEnabled } from '@/actions/feature-flag/read';
 import { POST } from '@/api/chat/route';
 
 describe('POST /api/chat', () => {
@@ -61,7 +60,7 @@ describe('POST /api/chat', () => {
   });
 
   it('returns 503 and does not generate a reply when support chat is disabled', async () => {
-    vi.mocked(isSupportChatEnabled).mockResolvedValueOnce(false);
+    vi.mocked(isFeatureFlagEnabled).mockResolvedValueOnce(false);
     vi.mocked(auth.api.getSession).mockResolvedValue({
       user: { id: 'user-1', role: 'user', locale: 'en' },
     } as any);
