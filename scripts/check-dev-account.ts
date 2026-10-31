@@ -16,9 +16,7 @@ async function checkDevAccount(): Promise<void> {
       return;
     }
 
-    console.log(
-      `Dev account ${email} not found. Run pnpm db:seed-dev-account to create it.`,
-    );
+    console.log(`Dev account ${email} not found. Run pnpm db:seed-dev-account to create it.`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`Could not check dev account: ${message}`);
