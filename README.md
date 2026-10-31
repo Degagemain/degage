@@ -23,6 +23,8 @@ pnpm dev
 
 The dev account (`DEV_ACCOUNT_EMAIL` in `.env`, default `delivered+dev@resend.dev`) is created with password `password` and has admin privileges. Email verification is skipped for this account. Resend accepts this address and does not deliver mail to a real inbox.
 
+Running several checkouts at once? `pnpm worktree:new -- feat/my-branch` adds a sibling git worktree with its own database and port. See [Local development](docs/en/local-development.md).
+
 # Technologies
 
 ## Next.js
@@ -125,6 +127,10 @@ Notes:
 - Neon Adapter is used on production and Pg Adapter for local development
 - To check: [connection pooling](https://vercel.com/guides/connection-pooling-with-functions) still relevant with Neon driver?
 
+### Reset
+
+`pnpm db:reset` drops and recreates only the database in `DATABASE_URL`, then migrates and reseeds it. `pnpm db:nuke` removes the Docker volume and destroys every checkout's database. After a nuke, each checkout needs `pnpm db:migrate`, `pnpm db:seed`, and `pnpm db:seed-dev-account` again.
+
 ### Documentation embeddings
 
 After seeding documentation in production, sync search embeddings. The command uses `DATABASE_URL` and `GOOGLE_GENERATIVE_AI_API_KEY` from the process environment (it does not load `.env`):
@@ -223,7 +229,7 @@ Copy `.env.example` to `.env` and fill in your values. The app loads `.env` loca
 
 | Variable                          | Description                                                                                                                                                                                                                          |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DATABASE_URL                      | The database url.                                                                                                                                                                                                                    |
+| DATABASE_URL                      | The database url. Locally, one database per checkout: `app` for the main checkout, `app_<branch>` for a worktree. See [Local development](docs/en/local-development.md).                                                             |
 | DATABASE_URL_UNPOOLED             | Direct database url, without connection pooling.                                                                                                                                                                                     |
 | GITHUB_CLIENT_ID                  | GitHub OAuth client ID (required for GitHub auth).                                                                                                                                                                                   |
 | GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).                                                                                                                                                                               |
@@ -311,6 +317,7 @@ This log explains why packages were installed.
 | prisma ORM setup                           | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
 | Unit testing setup                         | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
 | Unit test coverage                         | @vitest/coverage-v8                                                                                    |
+| Vite peer for Vitest, held on the 7.x line | vite                                                                                                   |
 | E2E browser tests                          | @playwright/test                                                                                       |
 | E2E Postgres (Testcontainers)              | testcontainers, @testcontainers/postgresql, pg, @types/pg                                              |
 | Tailwind setup                             | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
@@ -341,7 +348,7 @@ This log explains why packages were installed.
 | Carousel support                           | embla-carousel-react                                                                                   |
 | Play connector HTML parsing                | cheerio                                                                                                |
 | Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
-| Syntax highlighting/runtime                | shiki, tokenlens, ansi-to-react                                                                        |
+| Syntax highlighting/runtime                | shiki, tokenlens                                                                                       |
 | Rive animations                            | @rive-app/react-webgl2                                                                                 |
 | Transactional email (auth)                 | resend                                                                                                 |
 | TS scripts with path aliases               | tsx                                                                                                    |

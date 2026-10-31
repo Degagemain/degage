@@ -16,6 +16,7 @@ const SKIP_PATTERNS = [
   /^git@/, // Skip SSH git URLs
   /\.git$/, // Skip .git URLs (they're usually not directly accessible)
   /^https:\/\/mcp(-eu)?\.posthog\.com\/mcp$/, // MCP endpoint; HEAD without auth returns 401
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/, // Local services are not reachable from CI
 ];
 
 function extractUrls(content) {

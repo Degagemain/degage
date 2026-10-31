@@ -22,7 +22,7 @@ services:
     image: dbgate/dbgate
     restart: unless-stopped
     ports:
-      - '3001:3000'
+      - '8081:3000'
     volumes:
       - dbgate-data:/root/.dbgate
     environment:
@@ -32,7 +32,6 @@ services:
       USER_con1: postgres
       PASSWORD_con1: postgres
       PORT_con1: 5432
-      DATABASE_con1: app
       ENGINE_con1: postgres@dbgate-plugin-postgres
     depends_on:
       postgres:
