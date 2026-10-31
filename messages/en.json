@@ -1455,6 +1455,20 @@
         "columnName": "Road assistance plan"
       }
     },
+    "featureFlags": {
+      "title": "Feature flags",
+      "columns": {
+        "code": "Code",
+        "description": "Description",
+        "enabled": "Enabled",
+        "updated": "Updated"
+      },
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "toggleFailed": "Failed to update feature flag",
+      "searchPlaceholder": "Search feature flags...",
+      "tryAgain": "Try again"
+    },
     "systemParameters": {
       "title": "System Parameters",
       "filters": {
