@@ -12,7 +12,8 @@ checkout gets its own database inside it.
 ## Shared stack
 
 [`docker-compose.yml`](../../docker-compose.yml) pins `name: neurotic-web`, so `docker compose up -d` from any checkout attaches to the same
-project, container, and volume. `pnpm db:start` is idempotent. `pnpm dev` already runs it via `predev`.
+project, container, and volume. `pnpm db:start` is idempotent. `pnpm dev` already runs it via `predev`. When `DEV_ACCOUNT_EMAIL` is set,
+`predev` also checks whether that user exists and prints a login hint or a reminder to run `pnpm db:seed-dev-account`.
 
 | Service    | Host port | Purpose                                                         |
 | ---------- | --------- | --------------------------------------------------------------- |

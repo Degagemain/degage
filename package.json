@@ -2,7 +2,8 @@
   "name": "open-cars",
   "version": "0.0.9",
   "scripts": {
-    "predev": "pnpm db:start",
+    "predev": "pnpm db:start && pnpm check:dev-account",
+    "check:dev-account": "dotenv -e .env -- pnpx tsx scripts/check-dev-account.ts",
     "dev": "dotenv -e .env -- next dev --turbopack",
     "build": "next build",
     "start": "next start",
