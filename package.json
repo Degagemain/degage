@@ -3,7 +3,7 @@
   "version": "0.0.9",
   "scripts": {
     "predev": "pnpm db:start",
-    "dev": "next dev --turbopack",
+    "dev": "dotenv -e .env -- next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "test": "vitest",
@@ -17,7 +17,8 @@
     "postinstall": "prisma generate",
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
-    "db:reset": "docker compose down --volumes --remove-orphans && pnpm db:start && pnpm db:migrate && pnpm db:seed",
+    "db:nuke": "docker compose down --volumes --remove-orphans",
+    "db:reset": "pnpm db:start && dotenv -e .env -- prisma migrate reset --force",
     "db:migrate": "dotenv -e .env -- prisma migrate dev",
     "db:seed": "dotenv -e .env -- prisma db seed",
     "db:seed-dev-account": "dotenv -e .env -- pnpx tsx seeding/seed-dev-account.ts",
@@ -33,7 +34,9 @@
     "db:restore": "bash scripts/db-restore.sh",
     "validate-docs": "node scripts/validate-docs.mjs",
     "docs:sync-embeddings": "pnpx tsx scripts/sync-documentation-embeddings.ts",
-    "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts"
+    "benchmark": "dotenv -e .env -- pnpx tsx scripts/benchmark.ts",
+    "worktree:init": "bash scripts/worktree-init.sh",
+    "worktree:new": "bash scripts/worktree-new.sh"
   },
   "keywords": [],
   "author": "Mathias Colpaert",
