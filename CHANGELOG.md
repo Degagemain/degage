@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Admin features
+
+- Added: admins can turn feature flags on or off (including support chat).
+
+### Technical
+
+- Changed: support chat follows the in-app feature flag `support-chat` instead of PostHog.
+
 ## [0.0.9] - 2026-10-11
 
 ### Public features

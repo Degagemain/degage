@@ -1455,6 +1455,20 @@
         "columnName": "Pechverhelpingsplan"
       }
     },
+    "featureFlags": {
+      "title": "Feature flags",
+      "columns": {
+        "code": "Code",
+        "description": "Omschrijving",
+        "enabled": "Ingeschakeld",
+        "updated": "Bijgewerkt"
+      },
+      "enabled": "Ingeschakeld",
+      "disabled": "Uitgeschakeld",
+      "toggleFailed": "Feature flag bijwerken mislukt",
+      "searchPlaceholder": "Zoek feature flags...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "systemParameters": {
       "title": "Systeemparameters",
       "filters": {

@@ -1455,6 +1455,20 @@
         "columnName": "Plan d'assistance routière"
       }
     },
+    "featureFlags": {
+      "title": "Feature flags",
+      "columns": {
+        "code": "Code",
+        "description": "Description",
+        "enabled": "Activé",
+        "updated": "Modifié"
+      },
+      "enabled": "Activé",
+      "disabled": "Désactivé",
+      "toggleFailed": "Échec de la mise à jour du feature flag",
+      "searchPlaceholder": "Rechercher des feature flags...",
+      "tryAgain": "Réessayer"
+    },
     "systemParameters": {
       "title": "Paramètres système",
       "filters": {
