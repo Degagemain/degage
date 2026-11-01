@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Fixed: when a search list cannot load because the connection drops, it shows a message and a try-again button.
+
 ### Admin features
 
 - Added: admins can turn feature flags on or off (including support chat).

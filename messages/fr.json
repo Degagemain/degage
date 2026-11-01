@@ -9,7 +9,9 @@
     "no": "Non",
     "search": "Rechercher…",
     "noResults": "Aucun résultat.",
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "loadError": "Impossible de charger la liste.",
+    "retry": "Réessayer"
   },
   "previewEnvironment": {
     "message": "Vous êtes sur l'environnement de test. Ce n'est pas le site en ligne.",

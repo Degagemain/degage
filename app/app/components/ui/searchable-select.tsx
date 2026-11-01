@@ -89,6 +89,8 @@ export function SearchableSelect({
   const [total, setTotal] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [loadingMore, setLoadingMore] = React.useState(false);
+  const [loadError, setLoadError] = React.useState(false);
+  const [retryKey, setRetryKey] = React.useState(0);
   const [localSelectedDescription, setLocalSelectedDescription] = React.useState<string | undefined>(selectedDescription);
   const passThroughKeysRef = React.useRef(passThroughKeys);
   passThroughKeysRef.current = passThroughKeys;
@@ -99,7 +101,7 @@ export function SearchableSelect({
   }, [search]);
 
   const fetchPage = React.useCallback(
-    async (skip: number, append: boolean) => {
+    async (skip: number, append: boolean, signal?: AbortSignal) => {
       const params = new URLSearchParams();
       if (debouncedSearch) params.set('query', debouncedSearch);
       params.set('skip', String(skip));
@@ -109,7 +111,7 @@ export function SearchableSelect({
           if (v) params.set(k, v);
         }
       }
-      const res = await fetch(`/api/${apiPath}?${params.toString()}`);
+      const res = await fetch(`/api/${apiPath}?${params.toString()}`, { signal });
       if (!res.ok) return;
       const data = await res.json();
       const records = (data.records ?? []).map((r: Record<string, unknown>) => {
@@ -142,19 +144,30 @@ export function SearchableSelect({
 
   React.useEffect(() => {
     if (!open) return;
+    const controller = new AbortController();
     setLoading(true);
-    fetchPage(0, false).finally(() => setLoading(false));
-  }, [open, debouncedSearch, fetchPage]);
+    setLoadError(false);
+    fetchPage(0, false, controller.signal)
+      .catch(() => {
+        if (!controller.signal.aborted) setLoadError(true);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, [open, debouncedSearch, fetchPage, retryKey]);
 
   const loadMore = React.useCallback(() => {
     if (options.length >= total || loadingMore) return;
     setLoadingMore(true);
-    fetchPage(options.length, true).finally(() => setLoadingMore(false));
+    fetchPage(options.length, true)
+      .catch(() => setLoadError(true))
+      .finally(() => setLoadingMore(false));
   }, [options.length, total, loadingMore, fetchPage]);
 
   const [scrollRoot, setScrollRoot] = React.useState<HTMLElement | null>(null);
   const sentinelRef = React.useRef<HTMLDivElement>(null);
-  const canLoadMore = options.length < total && !loading && !loadingMore;
+  const canLoadMore = options.length < total && !loading && !loadingMore && !loadError;
   useIntersectionObserver(sentinelRef, loadMore, {
     root: scrollRoot,
     enabled: open && canLoadMore && options.length > 0,
@@ -222,7 +235,7 @@ export function SearchableSelect({
                   </div>
                 ) : (
                   <>
-                    <CommandEmpty>{t('noResults')}</CommandEmpty>
+                    {!loadError && <CommandEmpty>{t('noResults')}</CommandEmpty>}
                     <CommandGroup>
                       {allOptions.map((option) => (
                         <CommandItem
@@ -242,6 +255,14 @@ export function SearchableSelect({
                     {loadingMore && (
                       <div className="flex justify-center py-2">
                         <span className="text-muted-foreground text-xs">{t('loading')}</span>
+                      </div>
+                    )}
+                    {loadError && (
+                      <div className="flex flex-col items-center gap-1 py-4 text-center">
+                        <span className="text-muted-foreground text-sm">{t('loadError')}</span>
+                        <Button variant="link" size="sm" onClick={() => setRetryKey((key) => key + 1)}>
+                          {t('retry')}
+                        </Button>
                       </div>
                     )}
                   </>
