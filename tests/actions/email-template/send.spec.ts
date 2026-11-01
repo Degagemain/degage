@@ -78,7 +78,7 @@ describe('sendEmailByCode', () => {
           {
             locale: 'nl',
             variables: {
-              SUBJECT: 'Support',
+              SUBJECT: '[Support] New simulation — result sent',
               BODY: 'Sent to {{{RECIPIENT_EMAIL}}}. Purchased: {{{IS_PURCHASED}}}.',
               BUTTON_URL: '',
             },
@@ -92,13 +92,19 @@ describe('sendEmailByCode', () => {
       to: 'support@example.com',
       code: TemplatesEnum.SimulationResultsSupportEmail,
       locale: 'nl',
-      variables: { BUTTON_URL: 'https://admin.example/sim', RECIPIENT_EMAIL: 'u@x.co', IS_PURCHASED: 'Ja' },
+      variables: {
+        BUTTON_URL: 'https://admin.example/sim',
+        RECIPIENT_EMAIL: 'u@x.co',
+        IS_PURCHASED: 'Ja',
+        SUBJECT: '[Support] New simulation — result sent – {{{RECIPIENT_EMAIL}}}',
+      },
     });
 
     expect(sendResendTemplateEmail).toHaveBeenCalledWith(
       expect.objectContaining({
+        subject: '[Support] New simulation — result sent – u@x.co',
         variables: {
-          SUBJECT: 'Support',
+          SUBJECT: '[Support] New simulation — result sent – u@x.co',
           BODY: 'Sent to u@x.co. Purchased: Ja.',
           BUTTON_URL: 'https://admin.example/sim',
         },
