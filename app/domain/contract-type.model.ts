@@ -4,9 +4,10 @@ import { userReferenceSchema } from '@/domain/id-name.model';
 
 export enum ContractTypeCode {
   CarOnboarding = 'car-onboarding',
+  Other = 'other',
 }
 
-export const contractTypeCodeValues = [ContractTypeCode.CarOnboarding] as const;
+export const contractTypeCodeValues = [ContractTypeCode.CarOnboarding, ContractTypeCode.Other] as const;
 
 export const contractTypeCodeSchema = z.enum(contractTypeCodeValues);
 export type ContractTypeCodeValue = z.infer<typeof contractTypeCodeSchema>;

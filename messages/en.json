@@ -365,7 +365,8 @@
         "updated": "Updated"
       },
       "codes": {
-        "car-onboarding": "Car onboarding"
+        "car-onboarding": "Car onboarding",
+        "other": "Other"
       },
       "template": {
         "ready": "Template ready",
@@ -390,7 +391,7 @@
           "defaultViewers": "Select viewers"
         },
         "help": {
-          "code": "Stable code used by the app (for example car-onboarding).",
+          "code": "Stable code used by the app (car-onboarding or other).",
           "name": "Display name in the admin zone.",
           "defaultSignee": "Optional Degage admin who must also sign. Leave empty when only the owner signs.",
           "defaultViewers": "Admins who receive a copy of the signed contract.",

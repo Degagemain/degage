@@ -365,7 +365,8 @@
         "updated": "Bijgewerkt"
       },
       "codes": {
-        "car-onboarding": "Wagenonboarding"
+        "car-onboarding": "Wagenonboarding",
+        "other": "Overig"
       },
       "template": {
         "ready": "Template klaar",
@@ -390,7 +391,7 @@
           "defaultViewers": "Selecteer kijkers"
         },
         "help": {
-          "code": "Stabiele code die de app gebruikt (bijvoorbeeld car-onboarding).",
+          "code": "Stabiele code die de app gebruikt (car-onboarding of other).",
           "name": "Weergavenaam in de adminzone.",
           "defaultSignee": "Optionele Dégage-admin die ook moet ondertekenen. Laat leeg als alleen de eigenaar tekent.",
           "defaultViewers": "Admins die een kopie van het getekende contract ontvangen.",

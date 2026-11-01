@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added: admins can turn feature flags on or off (including support chat).
 - Added: admins can turn the FAQ hub articles section on or off via the `faq-articles` feature flag.
 - Added: contract types with Documenso PDF templates, and contracts that can be sent for signature.
+- Added: contract type code `other` for general contracts outside car onboarding.
 
 ### Technical
 

@@ -30,8 +30,9 @@ describe('contractTypeSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('includes car-onboarding in the closed code set', () => {
+  it('includes car-onboarding and other in the closed code set', () => {
     expect(contractTypeCodeValues).toContain(ContractTypeCode.CarOnboarding);
+    expect(contractTypeCodeValues).toContain(ContractTypeCode.Other);
   });
 
   it('has i18n labels for every code', () => {

@@ -365,7 +365,8 @@
         "updated": "Mis à jour"
       },
       "codes": {
-        "car-onboarding": "Intégration voiture"
+        "car-onboarding": "Intégration voiture",
+        "other": "Autre"
       },
       "template": {
         "ready": "Modèle prêt",
@@ -390,7 +391,7 @@
           "defaultViewers": "Sélectionner des observateurs"
         },
         "help": {
-          "code": "Code stable utilisé par l'application (par ex. car-onboarding).",
+          "code": "Code stable utilisé par l'application (car-onboarding ou other).",
           "name": "Nom affiché dans la zone admin.",
           "defaultSignee": "Admin Dégage optionnel qui doit aussi signer. Laisser vide si seul le propriétaire signe.",
           "defaultViewers": "Admins qui reçoivent une copie du contrat signé.",
