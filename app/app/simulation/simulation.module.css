@@ -1276,6 +1276,14 @@
   line-height: 1.45;
 }
 
+.fieldError {
+  font-family: var(--sim-sans);
+  font-size: 12px;
+  color: var(--sim-red);
+  margin-top: var(--sim-s8);
+  line-height: 1.45;
+}
+
 .input {
   width: 100%;
   font-family: var(--sim-sans);

@@ -2616,6 +2616,14 @@
       "ownerKmLabel": "Kilometer per jaar",
       "ownerKmPlaceholder": "bv. 15000",
       "ownerKmHint": "Hoeveel kilometer je per jaar met deze wagen rijdt. Ter indicatie: af en toe gebruik circa 5.000–8.000; woon-werk circa 12.000–20.000; intensief gebruik 25.000 of meer.",
+      "errorCarTypeOtherRequired": "Vul het autotype in wanneer \"Anders\" is geselecteerd.",
+      "errorValidSeats": "Vul een geldig aantal zitplaatsen in.",
+      "errorValidPurchaseAmount": "Vul een geldig aankoopbedrag in.",
+      "errorValidMileage": "Vul een geldige kilometerstand in.",
+      "errorFirstRegistrationRequired": "Vul de datum van eerste inschrijving in.",
+      "errorFirstRegistrationInvalid": "Vul een geldige datum in.",
+      "errorFirstRegistrationFuture": "De datum van eerste inschrijving kan niet in de toekomst liggen.",
+      "errorValidOwnerKmPerYear": "Vul een geldig aantal kilometer per jaar in.",
       "submit": "Simuleer mijn wagen →"
     },
     "loading": {

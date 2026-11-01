@@ -2616,6 +2616,14 @@
       "ownerKmLabel": "Km par an",
       "ownerKmPlaceholder": "ex. 15000",
       "ownerKmHint": "Combien de kilomètres par an vous prévoyez de parcourir avec cette voiture. À titre indicatif : usage occasionnel environ 5 000–8 000 ; trajets quotidiens environ 12 000–20 000 ; usage intensif 25 000 ou plus.",
+      "errorCarTypeOtherRequired": "Indiquez le type de voiture lorsque « Autre » est sélectionné.",
+      "errorValidSeats": "Indiquez un nombre de places valide.",
+      "errorValidPurchaseAmount": "Indiquez un montant d'achat valide.",
+      "errorValidMileage": "Indiquez un kilométrage valide.",
+      "errorFirstRegistrationRequired": "Veuillez saisir la date de première immatriculation.",
+      "errorFirstRegistrationInvalid": "Veuillez saisir une date valide.",
+      "errorFirstRegistrationFuture": "La date de première immatriculation ne peut pas être dans le futur.",
+      "errorValidOwnerKmPerYear": "Indiquez un nombre de kilomètres par an valide.",
       "submit": "Simuler ma voiture →"
     },
     "loading": {
