@@ -2968,6 +2968,7 @@
     "emptyConversationTitle": "Posez une question",
     "emptyConversationDescription": "Vous pouvez poser n’importe quelle question sur Dégage. Les réponses s’appuient sur votre documentation lorsque c’est utile.",
     "inputPlaceholder": "Posez votre question...",
+    "inputDisclaimer": "Vous discutez avec un assistant IA. Les bénévoles et collaborateurs de Dégage relisent périodiquement les chats pour améliorer notre service.",
     "inputCharacterCount": "{current} / {max}",
     "send": "Envoyer",
     "stop": "Stop",

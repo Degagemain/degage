@@ -2968,6 +2968,7 @@
     "emptyConversationTitle": "Stel een vraag",
     "emptyConversationDescription": "Je kan me alles over Dégage vragen. Ik doe mijn best om te antwoorden. ",
     "inputPlaceholder": "Stel je vraag...",
+    "inputDisclaimer": "Je chat met een AI-assistent. Vrijwilligers en medewerkers van Dégage lezen de chats periodiek na om onze dienstverlening te verbeteren.",
     "inputCharacterCount": "{current} / {max}",
     "send": "Versturen",
     "stop": "Stop",
