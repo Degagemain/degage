@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Added: admins can turn feature flags on or off (including support chat).
 - Added: admins can turn the FAQ hub articles section on or off via the `faq-articles` feature flag.
+- Added: contract types with Documenso PDF templates, and contracts that can be sent for signature.
 
 ### Technical
 
 - Changed: support chat follows the in-app feature flag `support-chat` instead of PostHog.
 - Removed: `NEXT_PUBLIC_FAQ_ARTICLES_ENABLED`; FAQ hub articles use the `faq-articles` feature flag.
+- Added: Documenso integration (`DOCUMENSO_*` env vars) and webhook at `/api/webhooks/documenso`.
 
 ## [0.0.9] - 2026-10-11
 

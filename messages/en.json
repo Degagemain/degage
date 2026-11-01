@@ -351,6 +351,119 @@
         "error": "Failed to delete email template."
       }
     },
+    "contractTypes": {
+      "title": "Contract types",
+      "searchPlaceholder": "Search contract types...",
+      "tryAgain": "Try again",
+      "columns": {
+        "name": "Name",
+        "code": "Code",
+        "defaultSignee": "Default signee",
+        "defaultViewers": "Default viewers",
+        "template": "Documenso template",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "codes": {
+        "car-onboarding": "Car onboarding"
+      },
+      "template": {
+        "ready": "Template ready",
+        "missing": "No template yet",
+        "upload": "Upload PDF",
+        "uploading": "Uploading…",
+        "open": "Open in Documenso",
+        "uploadSuccess": "Documenso template created.",
+        "uploadError": "Could not create the Documenso template."
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "none": "None",
+        "placeholders": {
+          "code": "Select a code",
+          "name": "Contract type name",
+          "defaultSignee": "Optional Degage signee",
+          "defaultViewers": "Select viewers"
+        },
+        "help": {
+          "code": "Stable code used by the app (for example car-onboarding).",
+          "name": "Display name in the admin zone.",
+          "defaultSignee": "Optional Degage admin who must also sign. Leave empty when only the owner signs.",
+          "defaultViewers": "Admins who receive a copy of the signed contract.",
+          "template": "Upload a PDF to create a Documenso template, then place signature fields in Documenso."
+        }
+      },
+      "delete": {
+        "title": "Delete contract type",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Contract type deleted successfully.",
+        "error": "Failed to delete contract type.",
+        "conflict": "This contract type is linked to contracts and cannot be deleted."
+      }
+    },
+    "contracts": {
+      "title": "Contracts",
+      "searchPlaceholder": "Search contracts...",
+      "tryAgain": "Try again",
+      "columns": {
+        "user": "User",
+        "type": "Type",
+        "status": "Status",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "updated": "Updated"
+      },
+      "statuses": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "signed": "Signed"
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "view": "View",
+        "delete": "Delete",
+        "send": "Send",
+        "openDocument": "Open PDF"
+      },
+      "form": {
+        "placeholders": {
+          "user": "Select a user",
+          "type": "Select a contract type"
+        },
+        "help": {
+          "user": "Person who must sign the contract.",
+          "type": "Contract type and Documenso template to use.",
+          "startDate": "Contract start date.",
+          "endDate": "Optional end date."
+        },
+        "validation": {
+          "endBeforeStart": "End date must be on or after the start date."
+        }
+      },
+      "send": {
+        "success": "Contract sent for signature.",
+        "error": "Could not send the contract.",
+        "sending": "Sending…"
+      },
+      "document": {
+        "error": "Could not open the signed PDF."
+      },
+      "delete": {
+        "title": "Delete contract",
+        "description": "Are you sure you want to delete the contract for \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Contract deleted successfully.",
+        "error": "Failed to delete contract."
+      }
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {
@@ -2756,9 +2869,18 @@
       "paragraph2": "Dégage is a fast-growing community of more than 550 owners and 7,000 members. We pursue no profit, but affordable, reliable and accessible mobility.",
       "paragraph3": "By sharing cars and bikes with each other, Dégage brings people back in touch with one another. We have been doing this for more than 25 years, independent and self-sufficient. And we are proud of that.",
       "stats": {
-        "owners": { "value": "550+", "label": "owners" },
-        "members": { "value": "7,000", "label": "members" },
-        "years": { "value": "25+", "label": "years of experience" }
+        "owners": {
+          "value": "550+",
+          "label": "owners"
+        },
+        "members": {
+          "value": "7,000",
+          "label": "members"
+        },
+        "years": {
+          "value": "25+",
+          "label": "years of experience"
+        }
       },
       "imageAlt": "Dégage community, neighbours sharing cars"
     },

@@ -8,6 +8,7 @@ export enum DocumentType {
   PINK_FORM = 'pinkForm',
   PROOF_OF_PURCHASE = 'proofOfPurchase',
   CAR_STICKER = 'carSticker',
+  CONTRACT = 'contract',
   OTHER = 'other',
 }
 

@@ -18,6 +18,7 @@ import { seedDocumentationFromCsv, seedMissingLandingFaqFromCsv } from './seed-d
 import { seedSupportAssistantPrompts } from './seed-support-assistant-prompts';
 import { seedEmailTemplates } from './seed-email-templates';
 import { seedFeatureFlags } from './seed-feature-flags';
+import { seedContractTypes } from './seed-contract-types';
 import { getPrismaClient } from '@/storage/utils';
 
 const prisma = getPrismaClient();
@@ -50,6 +51,7 @@ async function seed() {
   await seedSupportAssistantPrompts(prisma);
   await seedEmailTemplates(prisma);
   await seedFeatureFlags(prisma);
+  await seedContractTypes(prisma);
 }
 
 seed()
