@@ -8,7 +8,7 @@ import { ExternalLink, Mail, Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { CarOnboarding, isCarOnboardingEligibleForPreparationNudge } from '@/domain/car-onboarding.model';
-import { apiDelete, apiPut, apiPutForm } from '@/app/lib/api-client';
+import { apiDelete, apiPost, apiPut, apiPutForm } from '@/app/lib/api-client';
 import { parseApiErrorMessage } from '@/app/lib/parse-api-error-message';
 import { DeleteConfirmationDialog } from '@/app/components/delete-confirmation-dialog';
 import { Button } from '@/app/components/ui/button';
@@ -253,6 +253,51 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleStartContract = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPost(`/api/car-onboardings/${id}/contract/start`, {});
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.contractStartError'));
+        toast.error(message);
+        return;
+      }
+      toast.success(t('form.contractStartSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.contractStartError'));
+    }
+  };
+
+  const handleResendContract = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPost(`/api/car-onboardings/${id}/contract/resend`, {});
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.contractResendError'));
+        toast.error(message);
+        return;
+      }
+      toast.success(t('form.contractResendSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.contractResendError'));
+    }
+  };
+
+  const handleOpenContractDocument = async () => {
+    const contractId = carOnboarding?.contract?.id;
+    if (!contractId) return;
+    const response = await fetch(`/api/contracts/${contractId}/document`);
+    if (!response.ok) {
+      const message = await parseApiErrorMessage(response, t('form.contractDocumentError'));
+      toast.error(message);
+      return;
+    }
+    const data: { url: string } = await response.json();
+    window.open(data.url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleUploadRegistrationCertificate = async (side: 'front' | 'back', file: File) => {
     if (!id) return;
     const formData = new FormData();
@@ -465,6 +510,9 @@ export default function EditCarOnboardingPage() {
               onUnlockPreparation={handleUnlockPreparation}
               onClearPreparationConfirmation={handleClearPreparationConfirmation}
               onSyncAutofiche={handleSyncAutofiche}
+              onStartContract={handleStartContract}
+              onResendContract={handleResendContract}
+              onOpenContractDocument={handleOpenContractDocument}
               onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
               onDownloadRegistrationCertificate={handleDownloadRegistrationCertificate}
               onUploadInspectionCertificate={handleUploadInspectionCertificate}

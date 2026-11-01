@@ -1,15 +1,18 @@
-import { getContractDocumentViewUrl } from '@/actions/contract/get-document-view-url';
-import { type IdRouteParams, getIdFromRoute, responseFromCaughtError } from '@/api/utils';
-import { withAdmin } from '@/api/with-context';
+import { ContractDocumentForbiddenError, getContractDocumentViewUrl } from '@/actions/contract/get-document-view-url';
+import { type IdRouteParams, forbiddenResponse, getIdFromRoute, responseFromCaughtError } from '@/api/utils';
+import { withAuth } from '@/api/with-context';
 import { logger } from '@/lib/logger';
 import { statusCodes } from '@/api/status-codes';
 
-export const GET = withAdmin(async (_request, context) => {
+export const GET = withAuth(async (_request, context, session) => {
   try {
     const id = await getIdFromRoute(context as IdRouteParams);
-    const url = await getContractDocumentViewUrl(id);
+    const url = await getContractDocumentViewUrl(id, session.user);
     return Response.json({ url });
   } catch (error) {
+    if (error instanceof ContractDocumentForbiddenError) {
+      return forbiddenResponse(error.message);
+    }
     const mapped = responseFromCaughtError(error);
     if (mapped) return mapped;
     logger.exception(error, { helper: 'contracts/[id]/document' });

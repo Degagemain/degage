@@ -62,6 +62,11 @@ Documenso cannot reach `localhost`. Tunnel the Next app and register the public 
 
 Free ngrok assigns a new hostname each start; update the Documenso webhook URL when it changes.
 
+## Resend
+
+For a contract already in `sent` status, `POST /api/contracts/:id/resend` (and the car-onboarding contract tab) calls Documenso
+`/envelope/redistribute` for unsigned signer/approver recipients so the signing email can be sent again.
+
 ## Recipient model
 
 Each Documenso template always includes an Owner `SIGNER` with placeholder email `owner@contract.placeholder` so admins can place signature

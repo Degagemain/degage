@@ -23,3 +23,21 @@ export class ContractDocumentMissingError extends AppError {
     super('contract_document_missing', message, 404);
   }
 }
+
+export class ContractNotSentError extends AppError {
+  constructor(message = 'Only sent contracts can be resent') {
+    super('contract_not_sent', message, 409);
+  }
+}
+
+export class ContractAlreadySignedError extends AppError {
+  constructor(message = 'Signed contracts cannot be resent') {
+    super('contract_already_signed', message, 409);
+  }
+}
+
+export class ContractEnvelopeMissingError extends AppError {
+  constructor(message = 'Contract has no Documenso envelope') {
+    super('contract_envelope_missing', message, 400);
+  }
+}

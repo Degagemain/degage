@@ -53,6 +53,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     inspectionCertificate: data.inspectionCertificate !== undefined ? data.inspectionCertificate : null,
     pinkForm: data.pinkForm !== undefined ? data.pinkForm : null,
     proofOfPurchase: data.proofOfPurchase !== undefined ? data.proofOfPurchase : null,
+    contract: data.contract !== undefined ? data.contract : null,
     carStickers: data.carStickers ?? [],
     carName: data.carName !== undefined ? data.carName : null,
     shareStartDate: data.shareStartDate !== undefined ? data.shareStartDate : null,
