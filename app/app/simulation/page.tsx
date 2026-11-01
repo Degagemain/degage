@@ -8,19 +8,18 @@ import { useTranslations } from 'next-intl';
 
 import { FaqByTags } from '@/app/components/documentation/faq-by-tags';
 import { InlineCopy } from '@/app/components/inline-copy';
-import { formatDateForInput, parseDateInput } from '@/app/components/form/date-input-helpers';
+import { formatDateForInput } from '@/app/components/form/date-input-helpers';
 import { apiPost } from '@/app/lib/api-client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
 import { SearchableSelect } from '@/app/components/ui/searchable-select';
 import { NUMBERED_STEP_TOTAL, SIMULATION_FAQ_TAGS, SIM_FAQ_PANEL } from './simulation-public.constants';
+import { CAR_TYPE_OTHER, isSimulationCarInfoComplete, visibleSimulationCarInfoFieldErrors } from './simulation-car-info-validation';
 import { simulationLoadingVehicleName } from './simulation-loading-title';
 import styles from './simulation.module.css';
 
 const STEP_SITUATION = 1;
 const STEP_CAR_INFO = 2;
 const STEP_LOADING = 3;
-
-const CAR_TYPE_OTHER = '__other__';
 
 type CarChoice = 'existing' | 'newCar';
 
@@ -81,10 +80,6 @@ export default function SimulationPage() {
     };
   }, []);
 
-  function firstRegistrationDateToDate(value: string): Date | null {
-    return parseDateInput(value);
-  }
-
   function todayIsoDate(): string {
     return formatDateForInput(new Date());
   }
@@ -107,42 +102,50 @@ export default function SimulationPage() {
     [brandId, fuelTypeId],
   );
 
-  const isCarInfoValid = useMemo(() => {
-    if (isCommercialVehicle) return false;
-    if (!townId || !brandId || !fuelTypeId || !carTypeId) return false;
-    if (carTypeId === CAR_TYPE_OTHER && !carTypeOther.trim()) return false;
-    const seatsNum = parseInt(seats.trim(), 10);
-    if (!Number.isInteger(seatsNum) || seatsNum < 1) return false;
-    if (carChoice === 'newCar') {
-      const amount = purchaseAmountInclVat.trim() ? parseFloat(purchaseAmountInclVat.replace(/,/g, '.')) : NaN;
-      if (!Number.isFinite(amount) || amount <= 0) return false;
-      if (isNewCar) return parsedOwnerKmPerYear !== null;
-      const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
-      const date = firstRegistrationDateToDate(firstRegisteredAt);
-      if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
-      if (!date || date > new Date()) return false;
-      return parsedOwnerKmPerYear !== null;
-    }
-    const mileageNum = mileage.trim() ? parseInt(mileage.trim(), 10) : NaN;
-    const date = firstRegistrationDateToDate(firstRegisteredAt);
-    if (!Number.isInteger(mileageNum) || mileageNum < 0) return false;
-    if (!date || date > new Date()) return false;
-    return parsedOwnerKmPerYear !== null;
-  }, [
-    carChoice,
-    isCommercialVehicle,
-    isNewCar,
-    townId,
-    brandId,
-    fuelTypeId,
-    carTypeId,
-    carTypeOther,
-    seats,
-    mileage,
-    firstRegisteredAt,
-    parsedOwnerKmPerYear,
-    purchaseAmountInclVat,
-  ]);
+  const carInfoValues = useMemo(
+    () => ({
+      isCommercialVehicle,
+      townId,
+      brandId,
+      fuelTypeId,
+      carTypeId,
+      carTypeOther,
+      seats,
+      carChoice,
+      isNewCar,
+      mileage,
+      firstRegisteredAt,
+      ownerKmPerYear,
+      purchaseAmountInclVat,
+    }),
+    [
+      isCommercialVehicle,
+      townId,
+      brandId,
+      fuelTypeId,
+      carTypeId,
+      carTypeOther,
+      seats,
+      carChoice,
+      isNewCar,
+      mileage,
+      firstRegisteredAt,
+      ownerKmPerYear,
+      purchaseAmountInclVat,
+    ],
+  );
+
+  const isCarInfoValid = useMemo(() => isSimulationCarInfoComplete(carInfoValues), [carInfoValues]);
+  const carInfoFieldErrors = useMemo(() => visibleSimulationCarInfoFieldErrors(carInfoValues), [carInfoValues]);
+
+  const firstRegistrationFieldError =
+    carInfoFieldErrors.firstRegisteredAt === 'future'
+      ? t('wageninfo.errorFirstRegistrationFuture')
+      : carInfoFieldErrors.firstRegisteredAt === 'invalid'
+        ? t('wageninfo.errorFirstRegistrationInvalid')
+        : carInfoFieldErrors.firstRegisteredAt === 'required'
+          ? t('wageninfo.errorFirstRegistrationRequired')
+          : null;
 
   useEffect(() => {
     if (screen !== STEP_LOADING || simulationRequestInFlight.current) return;
@@ -493,20 +496,28 @@ export default function SimulationPage() {
                 onChange={(e) => setCarTypeOther(e.target.value)}
                 placeholder={t('wageninfo.carTypeOtherPlaceholder')}
                 className={styles.input}
+                aria-invalid={Boolean(carInfoFieldErrors.carTypeOther)}
               />
+              {carInfoFieldErrors.carTypeOther ? <p className={styles.fieldError}>{t('wageninfo.errorCarTypeOtherRequired')}</p> : null}
             </div>
           )}
 
           <div className={styles.formGridTwoCol}>
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.seatsLabel')}</label>
-              <select value={seats} onChange={(e) => setSeats(e.target.value)} className={styles.select}>
+              <select
+                value={seats}
+                onChange={(e) => setSeats(e.target.value)}
+                className={styles.select}
+                aria-invalid={Boolean(carInfoFieldErrors.seats)}
+              >
                 {Array.from({ length: 8 }, (_, i) => i + 2).map((n) => (
                   <option key={n} value={String(n)}>
                     {n}
                   </option>
                 ))}
               </select>
+              {carInfoFieldErrors.seats ? <p className={styles.fieldError}>{t('wageninfo.errorValidSeats')}</p> : null}
             </div>
             <div className={styles.field}>
               <label className={styles.fieldLabel}>{t('wageninfo.isVanLabel')}</label>
@@ -537,7 +548,11 @@ export default function SimulationPage() {
                     onChange={(e) => setPurchaseAmountInclVat(e.target.value)}
                     placeholder={tWizard('mileage.purchaseAmountPlaceholder')}
                     className={styles.input}
+                    aria-invalid={Boolean(carInfoFieldErrors.purchaseAmountInclVat)}
                   />
+                  {carInfoFieldErrors.purchaseAmountInclVat ? (
+                    <p className={styles.fieldError}>{t('wageninfo.errorValidPurchaseAmount')}</p>
+                  ) : null}
                 </div>
                 <div className={styles.field}>
                   <label className={styles.fieldLabel}>{t('wageninfo.isNewCarLabel')}</label>
@@ -565,7 +580,9 @@ export default function SimulationPage() {
                       onChange={(e) => setMileage(e.target.value)}
                       placeholder={t('wageninfo.mileagePlaceholder')}
                       className={styles.input}
+                      aria-invalid={Boolean(carInfoFieldErrors.mileage)}
                     />
+                    {carInfoFieldErrors.mileage ? <p className={styles.fieldError}>{t('wageninfo.errorValidMileage')}</p> : null}
                   </div>
                   <div className={styles.field}>
                     <div className={styles.fieldLabelRow}>
@@ -588,10 +605,13 @@ export default function SimulationPage() {
                     <input
                       id="sim-first-registration-purchase"
                       type="date"
+                      max={todayIsoDate()}
                       value={firstRegisteredAt}
                       onChange={(e) => setFirstRegisteredAt(e.target.value)}
                       className={styles.input}
+                      aria-invalid={Boolean(firstRegistrationFieldError)}
                     />
+                    {firstRegistrationFieldError ? <p className={styles.fieldError}>{firstRegistrationFieldError}</p> : null}
                   </div>
                 </div>
               )}
@@ -609,7 +629,9 @@ export default function SimulationPage() {
                   onChange={(e) => setMileage(e.target.value)}
                   placeholder={t('wageninfo.mileagePlaceholder')}
                   className={styles.input}
+                  aria-invalid={Boolean(carInfoFieldErrors.mileage)}
                 />
+                {carInfoFieldErrors.mileage ? <p className={styles.fieldError}>{t('wageninfo.errorValidMileage')}</p> : null}
               </div>
               <div className={styles.field}>
                 <div className={styles.fieldLabelRow}>
@@ -632,10 +654,13 @@ export default function SimulationPage() {
                 <input
                   id="sim-first-registration"
                   type="date"
+                  max={todayIsoDate()}
                   value={firstRegisteredAt}
                   onChange={(e) => setFirstRegisteredAt(e.target.value)}
                   className={styles.input}
+                  aria-invalid={Boolean(firstRegistrationFieldError)}
                 />
+                {firstRegistrationFieldError ? <p className={styles.fieldError}>{firstRegistrationFieldError}</p> : null}
               </div>
             </div>
           )}
@@ -650,10 +675,12 @@ export default function SimulationPage() {
               onChange={(e) => setOwnerKmPerYear(e.target.value)}
               placeholder={t('wageninfo.ownerKmPlaceholder')}
               className={styles.input}
+              aria-invalid={Boolean(carInfoFieldErrors.ownerKmPerYear)}
             />
             <p className={styles.fieldHint}>
               <InlineCopy>{t('wageninfo.ownerKmHint')}</InlineCopy>
             </p>
+            {carInfoFieldErrors.ownerKmPerYear ? <p className={styles.fieldError}>{t('wageninfo.errorValidOwnerKmPerYear')}</p> : null}
           </div>
 
           <div className={styles.buttonRow}>

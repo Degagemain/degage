@@ -2616,6 +2616,14 @@
       "ownerKmLabel": "Km per year",
       "ownerKmPlaceholder": "e.g. 15000",
       "ownerKmHint": "How many kilometres you expect to drive per year with this car. As a guide: occasional use about 5,000–8,000; daily commute about 12,000–20,000; heavy use 25,000 or more.",
+      "errorCarTypeOtherRequired": "Enter the car type when \"Other\" is selected.",
+      "errorValidSeats": "Enter a valid number of seats.",
+      "errorValidPurchaseAmount": "Enter a valid purchase amount.",
+      "errorValidMileage": "Enter a valid mileage.",
+      "errorFirstRegistrationRequired": "Please enter the first registration date.",
+      "errorFirstRegistrationInvalid": "Please enter a valid date.",
+      "errorFirstRegistrationFuture": "The first registration date cannot be in the future.",
+      "errorValidOwnerKmPerYear": "Enter a valid number of kilometres per year.",
       "submit": "Simulate my car →"
     },
     "loading": {
