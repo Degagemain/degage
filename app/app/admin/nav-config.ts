@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, Car, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Car, FilePenLine, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
   translationKey: 'simulations' | 'users' | 'chatConversations' | 'documentation';
@@ -13,10 +13,13 @@ export const MAIN_ITEMS: {
 ];
 
 export const UNDER_CONSTRUCTION_ITEMS: {
-  translationKey: 'carOnboardings';
+  translationKey: 'carOnboardings' | 'contracts';
   href: string;
   icon: LucideIcon;
-}[] = [{ translationKey: 'carOnboardings', href: '/app/admin/car-onboardings', icon: Car }];
+}[] = [
+  { translationKey: 'carOnboardings', href: '/app/admin/car-onboardings', icon: Car },
+  { translationKey: 'contracts', href: '/app/admin/contracts', icon: FilePenLine },
+];
 
 /** Linked from the documentation admin “More” menu; listed in quick search (⌘K), not the sidebar. */
 export const DOCUMENTATION_SUB_ITEMS: {
@@ -38,13 +41,14 @@ export const CAR_SETTINGS_ITEMS: {
 ];
 
 export const CORE_SETTINGS_ITEMS: {
-  translationKey: 'systemParameters' | 'translationOverrides' | 'emailTemplates' | 'featureFlags';
+  translationKey: 'systemParameters' | 'featureFlags' | 'translationOverrides' | 'emailTemplates' | 'contractTypes';
   href: string;
 }[] = [
   { translationKey: 'systemParameters', href: '/app/admin/system-parameters' },
   { translationKey: 'featureFlags', href: '/app/admin/feature-flags' },
   { translationKey: 'translationOverrides', href: '/app/admin/translation-overrides' },
   { translationKey: 'emailTemplates', href: '/app/admin/email-templates' },
+  { translationKey: 'contractTypes', href: '/app/admin/contract-types' },
 ];
 
 export const SIMULATION_ITEMS: {

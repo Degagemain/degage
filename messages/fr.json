@@ -351,6 +351,120 @@
         "error": "Échec de la suppression du modèle d'e-mail."
       }
     },
+    "contractTypes": {
+      "title": "Types de contrat",
+      "searchPlaceholder": "Rechercher des types de contrat...",
+      "tryAgain": "Réessayer",
+      "columns": {
+        "name": "Nom",
+        "code": "Code",
+        "defaultSignee": "Signataire par défaut",
+        "defaultViewers": "Observateurs par défaut",
+        "template": "Modèle Documenso",
+        "created": "Créé",
+        "updated": "Mis à jour"
+      },
+      "codes": {
+        "car-onboarding": "Intégration voiture",
+        "other": "Autre"
+      },
+      "template": {
+        "ready": "Modèle prêt",
+        "missing": "Pas encore de modèle",
+        "upload": "Téléverser un PDF",
+        "uploading": "Téléversement…",
+        "open": "Ouvrir dans Documenso",
+        "uploadSuccess": "Modèle Documenso créé.",
+        "uploadError": "Impossible de créer le modèle Documenso."
+      },
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "form": {
+        "none": "Aucun",
+        "placeholders": {
+          "code": "Sélectionner un code",
+          "name": "Nom du type de contrat",
+          "defaultSignee": "Signataire Dégage optionnel",
+          "defaultViewers": "Sélectionner des observateurs"
+        },
+        "help": {
+          "code": "Code stable utilisé par l'application (car-onboarding ou other).",
+          "name": "Nom affiché dans la zone admin.",
+          "defaultSignee": "Admin Dégage optionnel qui doit aussi signer. Laisser vide si seul le propriétaire signe.",
+          "defaultViewers": "Admins qui reçoivent une copie du contrat signé.",
+          "template": "Téléversez un PDF pour créer un modèle Documenso, puis placez les champs de signature dans Documenso."
+        }
+      },
+      "delete": {
+        "title": "Supprimer le type de contrat",
+        "description": "Voulez-vous vraiment supprimer « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Type de contrat supprimé.",
+        "error": "Échec de la suppression du type de contrat.",
+        "conflict": "Ce type de contrat est lié à des contrats et ne peut pas être supprimé."
+      }
+    },
+    "contracts": {
+      "title": "Contrats",
+      "searchPlaceholder": "Rechercher des contrats...",
+      "tryAgain": "Réessayer",
+      "columns": {
+        "user": "Utilisateur",
+        "type": "Type",
+        "status": "Statut",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "updated": "Mis à jour"
+      },
+      "statuses": {
+        "draft": "Brouillon",
+        "sent": "Envoyé",
+        "signed": "Signé"
+      },
+      "actions": {
+        "openMenu": "Ouvrir le menu",
+        "edit": "Modifier",
+        "view": "Voir",
+        "delete": "Supprimer",
+        "send": "Envoyer",
+        "openDocument": "Ouvrir le PDF"
+      },
+      "form": {
+        "placeholders": {
+          "user": "Sélectionner un utilisateur",
+          "type": "Sélectionner un type de contrat"
+        },
+        "help": {
+          "user": "Personne qui doit signer le contrat.",
+          "type": "Type de contrat et modèle Documenso à utiliser.",
+          "startDate": "Date de début du contrat.",
+          "endDate": "Date de fin optionnelle."
+        },
+        "validation": {
+          "endBeforeStart": "La date de fin doit être égale ou postérieure à la date de début."
+        }
+      },
+      "send": {
+        "success": "Contrat envoyé pour signature.",
+        "error": "Impossible d'envoyer le contrat.",
+        "sending": "Envoi…"
+      },
+      "document": {
+        "error": "Impossible d'ouvrir le PDF signé."
+      },
+      "delete": {
+        "title": "Supprimer le contrat",
+        "description": "Voulez-vous vraiment supprimer le contrat de « {name} » ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "success": "Contrat supprimé.",
+        "error": "Échec de la suppression du contrat."
+      }
+    },
     "carBrands": {
       "title": "Marques",
       "filters": {
@@ -2756,9 +2870,18 @@
       "paragraph2": "Dégage est une communauté en pleine croissance de plus de 550 propriétaires et 7 000 membres. Sans but lucratif, nous visons une mobilité abordable, fiable et accessible.",
       "paragraph3": "En partageant voitures et vélos entre membres, Dégage recrée du lien entre les habitants. Nous le faisons depuis plus de 25 ans, de manière indépendante et autonome. Et nous en sommes fiers.",
       "stats": {
-        "owners": { "value": "550+", "label": "propriétaires" },
-        "members": { "value": "7 000", "label": "membres" },
-        "years": { "value": "25+", "label": "ans d'expérience" }
+        "owners": {
+          "value": "550+",
+          "label": "propriétaires"
+        },
+        "members": {
+          "value": "7 000",
+          "label": "membres"
+        },
+        "years": {
+          "value": "25+",
+          "label": "ans d'expérience"
+        }
       },
       "imageAlt": "Communauté Dégage, autopartage de quartier"
     },

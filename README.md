@@ -246,6 +246,10 @@ Copy `.env.example` to `.env` and fill in your values. The app loads `.env` loca
 | NEXT_PUBLIC_POSTHOG_HOST          | PostHog **ingest API origin** used by the browser and server SDKs and passed to `@posthog/nextjs-config` when set.                                                                                                                   |
 | POSTHOG_API_KEY                   | Optional. [Personal API key](https://app.posthog.com/settings/user-api-keys) (`phx_…`) with error-tracking write.                                                                                                                    |
 | POSTHOG_PROJECT_ID                | Optional. Project **numeric id** from [project settings](https://app.posthog.com/settings/project#variables).                                                                                                                        |
+| DOCUMENSO_API_URL                 | Documenso API base including `/api/v2`. Required to create templates and send contracts.                                                                                                                                             |
+| DOCUMENSO_API_KEY                 | Documenso API key (`api_…`). Required to create templates and send contracts.                                                                                                                                                        |
+| DOCUMENSO_APP_URL                 | Documenso web app origin for “Open in Documenso” links. Required to create templates and send contracts.                                                                                                                             |
+| DOCUMENSO_WEBHOOK_SECRET          | Optional shared secret; when set, `POST /api/webhooks/documenso` requires matching `X-Documenso-Secret`.                                                                                                                             |
 
 ## Frontend
 

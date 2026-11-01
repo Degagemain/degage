@@ -351,6 +351,120 @@
         "error": "E-mailtemplate verwijderen mislukt."
       }
     },
+    "contractTypes": {
+      "title": "Contracttypes",
+      "searchPlaceholder": "Zoek contracttypes...",
+      "tryAgain": "Opnieuw proberen",
+      "columns": {
+        "name": "Naam",
+        "code": "Code",
+        "defaultSignee": "Standaard ondertekenaar",
+        "defaultViewers": "Standaard kijkers",
+        "template": "Documenso-template",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "codes": {
+        "car-onboarding": "Wagenonboarding",
+        "other": "Overig"
+      },
+      "template": {
+        "ready": "Template klaar",
+        "missing": "Nog geen template",
+        "upload": "PDF uploaden",
+        "uploading": "Uploaden…",
+        "open": "Open in Documenso",
+        "uploadSuccess": "Documenso-template aangemaakt.",
+        "uploadError": "Kon de Documenso-template niet aanmaken."
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "none": "Geen",
+        "placeholders": {
+          "code": "Selecteer een code",
+          "name": "Naam van het contracttype",
+          "defaultSignee": "Optionele Dégage-ondertekenaar",
+          "defaultViewers": "Selecteer kijkers"
+        },
+        "help": {
+          "code": "Stabiele code die de app gebruikt (car-onboarding of other).",
+          "name": "Weergavenaam in de adminzone.",
+          "defaultSignee": "Optionele Dégage-admin die ook moet ondertekenen. Laat leeg als alleen de eigenaar tekent.",
+          "defaultViewers": "Admins die een kopie van het getekende contract ontvangen.",
+          "template": "Upload een PDF om een Documenso-template te maken en plaats daarna handtekeningvelden in Documenso."
+        }
+      },
+      "delete": {
+        "title": "Contracttype verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Contracttype succesvol verwijderd.",
+        "error": "Contracttype verwijderen mislukt.",
+        "conflict": "Dit contracttype is gekoppeld aan contracten en kan niet worden verwijderd."
+      }
+    },
+    "contracts": {
+      "title": "Contracten",
+      "searchPlaceholder": "Zoek contracten...",
+      "tryAgain": "Opnieuw proberen",
+      "columns": {
+        "user": "Gebruiker",
+        "type": "Type",
+        "status": "Status",
+        "startDate": "Startdatum",
+        "endDate": "Einddatum",
+        "updated": "Bijgewerkt"
+      },
+      "statuses": {
+        "draft": "Concept",
+        "sent": "Verzonden",
+        "signed": "Getekend"
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "view": "Bekijken",
+        "delete": "Verwijderen",
+        "send": "Verzenden",
+        "openDocument": "PDF openen"
+      },
+      "form": {
+        "placeholders": {
+          "user": "Selecteer een gebruiker",
+          "type": "Selecteer een contracttype"
+        },
+        "help": {
+          "user": "Persoon die het contract moet ondertekenen.",
+          "type": "Contracttype en Documenso-template die gebruikt worden.",
+          "startDate": "Startdatum van het contract.",
+          "endDate": "Optionele einddatum."
+        },
+        "validation": {
+          "endBeforeStart": "Einddatum moet op of na de startdatum liggen."
+        }
+      },
+      "send": {
+        "success": "Contract verzonden ter ondertekening.",
+        "error": "Kon het contract niet verzenden.",
+        "sending": "Verzenden…"
+      },
+      "document": {
+        "error": "Kon de getekende PDF niet openen."
+      },
+      "delete": {
+        "title": "Contract verwijderen",
+        "description": "Weet je zeker dat je het contract voor \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Contract succesvol verwijderd.",
+        "error": "Contract verwijderen mislukt."
+      }
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {

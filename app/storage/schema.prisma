@@ -110,7 +110,14 @@ enum DocumentType {
   pinkForm
   proofOfPurchase
   carSticker
+  contract
   other
+}
+
+enum ContractStatus {
+  draft
+  sent
+  signed
 }
 
 model Document {
@@ -129,6 +136,7 @@ model Document {
   carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
   carOnboardingsProofOfPurchase              CarOnboarding[] @relation("ProofOfPurchase")
   carStickersImage                           CarSticker[]    @relation("CarStickerImage")
+  contracts                                  Contract[]      @relation("ContractDocument")
 }
 
 model CarOnboarding {
@@ -517,6 +525,9 @@ model User {
   oauthconsents      OauthConsent[]
   playConnector      PlayConnector?
   carOnboardings     CarOnboarding[]
+  contracts          Contract[]
+  contractTypesAsDefaultSignee ContractType[] @relation("ContractTypeDefaultSignee")
+  contractTypeViewers ContractTypeViewer[]
 
   @@unique([email])
   @@map("user")
@@ -983,4 +994,49 @@ model FeatureFlag {
   enabled     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model ContractType {
+  id                          String               @id @default(uuid())
+  code                        String               @unique
+  name                        String
+  defaultSigneeId             String?
+  defaultSignee               User?                @relation("ContractTypeDefaultSignee", fields: [defaultSigneeId], references: [id], onDelete: SetNull)
+  documensoTemplateEnvelopeId String?
+  viewers                     ContractTypeViewer[]
+  contracts                   Contract[]
+  createdAt                   DateTime             @default(now())
+  updatedAt                   DateTime             @updatedAt
+}
+
+model ContractTypeViewer {
+  id             String       @id @default(uuid())
+  contractTypeId String
+  contractType   ContractType @relation(fields: [contractTypeId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([contractTypeId, userId])
+  @@index([userId])
+}
+
+model Contract {
+  id                           String         @id @default(uuid())
+  userId                       String
+  user                         User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  typeId                       String
+  type                         ContractType   @relation(fields: [typeId], references: [id], onDelete: Restrict)
+  startDate                    DateTime
+  endDate                      DateTime?
+  status                       ContractStatus @default(draft)
+  documentId                   String?
+  document                     Document?      @relation("ContractDocument", fields: [documentId], references: [id], onDelete: SetNull)
+  documensoDocumentEnvelopeId  String?
+  createdAt                    DateTime       @default(now())
+  updatedAt                    DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([typeId])
+  @@index([status])
+  @@index([documensoDocumentEnvelopeId])
 }
