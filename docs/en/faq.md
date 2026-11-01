@@ -13,18 +13,8 @@ the opening simulation page and on every later screen, together with that screen
 
 ## Articles section
 
-The articles block on the FAQ hub is **disabled by default**. Other FAQ routes (`/app/faq/articles`, article detail pages, group pages) are
-unchanged.
-
-| Variable                           | Description                                                          |
-| ---------------------------------- | -------------------------------------------------------------------- |
-| `NEXT_PUBLIC_FAQ_ARTICLES_ENABLED` | When `true`, shows the articles section on `/app/faq`. Default: off. |
-
-Enable in `.env`:
-
-```bash
-NEXT_PUBLIC_FAQ_ARTICLES_ENABLED=true
-```
+The articles block on the FAQ hub is controlled by the in-app feature flag `faq-articles` (Admin → Feature flags). It is **disabled by default**
+when seeded. Other FAQ routes (`/app/faq/articles`, article detail pages, group pages) are unchanged.
 
 ## Short links
 

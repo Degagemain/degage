@@ -8,11 +8,11 @@ import { PublicPage } from '@/app/components/public/public-shell';
 import { FaqArticleHero } from './components/faq-article-hero';
 import { FaqGroupsList } from './components/faq-groups-list';
 import { FaqSearch } from './components/faq-search';
-import { isFaqArticlesEnabled } from './faq-features';
+import { useFaqArticlesEnabled } from './use-faq-articles-enabled';
 
 export default function FaqHubPage() {
   const t = useTranslations('faq');
-  const showArticles = isFaqArticlesEnabled();
+  const showArticles = useFaqArticlesEnabled() === 'enabled';
 
   return (
     <PublicPage>

@@ -1,11 +1,16 @@
 import { PrismaClient } from '@/storage/client/client';
-import { SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
+import { FAQ_ARTICLES_FEATURE_FLAG, SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
 
 const featureFlags = [
   {
     code: SUPPORT_CHAT_FEATURE_FLAG,
     description: 'Controls whether support chat is available to users.',
     enabled: true,
+  },
+  {
+    code: FAQ_ARTICLES_FEATURE_FLAG,
+    description: 'Controls whether the articles section is shown on the public FAQ hub.',
+    enabled: false,
   },
 ] as const;
 
