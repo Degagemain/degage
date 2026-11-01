@@ -25,12 +25,12 @@ vi.mock('@/app/faq/components/faq-search', () => ({
   FaqSearch: () => <div data-testid="faq-search">search</div>,
 }));
 
-vi.mock('@/app/faq/faq-features', () => ({
-  isFaqArticlesEnabled: vi.fn(),
+vi.mock('@/app/faq/use-faq-articles-enabled', () => ({
+  useFaqArticlesEnabled: vi.fn(),
 }));
 
 import FaqHubPage from '@/app/faq/page';
-import { isFaqArticlesEnabled } from '@/app/faq/faq-features';
+import { useFaqArticlesEnabled } from '@/app/faq/use-faq-articles-enabled';
 
 describe('FaqHubPage articles section', () => {
   afterEach(() => {
@@ -38,16 +38,20 @@ describe('FaqHubPage articles section', () => {
     vi.clearAllMocks();
   });
 
-  it('hides the articles section when the flag is off', () => {
-    vi.mocked(isFaqArticlesEnabled).mockReturnValue(false);
-    render(<FaqHubPage />);
+  it('hides the articles section when the flag is off or loading', () => {
+    vi.mocked(useFaqArticlesEnabled).mockReturnValue('disabled');
+    const { rerender } = render(<FaqHubPage />);
 
     expect(screen.queryByTestId('faq-articles')).toBeNull();
     expect(screen.getByTestId('faq-groups')).toBeTruthy();
+
+    vi.mocked(useFaqArticlesEnabled).mockReturnValue('loading');
+    rerender(<FaqHubPage />);
+    expect(screen.queryByTestId('faq-articles')).toBeNull();
   });
 
   it('shows the articles section when the flag is on', () => {
-    vi.mocked(isFaqArticlesEnabled).mockReturnValue(true);
+    vi.mocked(useFaqArticlesEnabled).mockReturnValue('enabled');
     render(<FaqHubPage />);
 
     expect(screen.getByTestId('faq-articles')).toBeTruthy();

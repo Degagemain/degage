@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Admin features
 
 - Added: admins can turn feature flags on or off (including support chat).
+- Added: admins can turn the FAQ hub articles section on or off via the `faq-articles` feature flag.
 
 ### Technical
 
 - Changed: support chat follows the in-app feature flag `support-chat` instead of PostHog.
+- Removed: `NEXT_PUBLIC_FAQ_ARTICLES_ENABLED`; FAQ hub articles use the `faq-articles` feature flag.
 
 ## [0.0.9] - 2026-10-11
 
