@@ -179,7 +179,7 @@ const buttonFallback = {
 
 const simulationResultsSupportVariables = {
   en: {
-    SUBJECT: '[Support] New simulation — result sent',
+    SUBJECT: '[Support] New simulation — result sent – {{{RECIPIENT_EMAIL}}}',
     PREHEADER: 'A simulation result was sent to a user.',
     HEADER: 'Internal',
     HEADING: 'Simulation — internal notification',
@@ -190,7 +190,7 @@ const simulationResultsSupportVariables = {
     FOOTER: 'Reply to this email to contact the user.',
   },
   nl: {
-    SUBJECT: '[Support] Nieuwe simulatie — resultaat verstuurd',
+    SUBJECT: '[Support] Nieuwe simulatie — resultaat verstuurd – {{{RECIPIENT_EMAIL}}}',
     PREHEADER: 'Er is een simulatieresultaat naar een gebruiker verstuurd.',
     HEADER: 'Intern',
     HEADING: 'Simulatie — interne notificatie',
@@ -201,7 +201,7 @@ const simulationResultsSupportVariables = {
     FOOTER: 'Antwoord op deze e-mail om de gebruiker te contacteren.',
   },
   fr: {
-    SUBJECT: '[Support] Nouvelle simulation — résultat envoyé',
+    SUBJECT: '[Support] Nouvelle simulation — résultat envoyé – {{{RECIPIENT_EMAIL}}}',
     PREHEADER: 'Un résultat de simulation a été envoyé à un utilisateur.',
     HEADER: 'Interne',
     HEADING: 'Simulation — notification interne',

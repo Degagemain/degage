@@ -64,6 +64,7 @@ describe('notifySimulationResultEmails', () => {
         variables: expect.objectContaining({
           BUTTON_URL: buildAdminSimulationUrl(simId),
           RECIPIENT_EMAIL: 'u@x.co',
+          SUBJECT: '[Support] New simulation — result sent – {{{RECIPIENT_EMAIL}}}',
         }),
       }),
     );
@@ -87,7 +88,11 @@ describe('notifySimulationResultEmails', () => {
     );
     expect(sendEmailByCode).toHaveBeenNthCalledWith(
       2,
-      expect.objectContaining({ code: TemplatesEnum.SimulationManualReviewSupportEmail, locale: 'nl' }),
+      expect.objectContaining({
+        code: TemplatesEnum.SimulationManualReviewSupportEmail,
+        locale: 'nl',
+        variables: expect.not.objectContaining({ SUBJECT: expect.anything() }),
+      }),
     );
   });
 
