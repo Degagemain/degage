@@ -11,7 +11,7 @@
     "noResults": "Aucun résultat.",
     "loading": "Chargement…",
     "loadError": "Impossible de charger la liste.",
-    "retry": "Réessayer"
+    "tryAgain": "Réessayer"
   },
   "previewEnvironment": {
     "message": "Vous êtes sur l'environnement de test. Ce n'est pas le site en ligne.",

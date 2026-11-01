@@ -10,7 +10,7 @@ const messages = {
     noResults: 'No results.',
     loading: 'Loading…',
     loadError: 'Could not load the list.',
-    retry: 'Try again',
+    tryAgain: 'Try again',
   },
 };
 

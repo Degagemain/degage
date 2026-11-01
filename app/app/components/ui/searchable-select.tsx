@@ -261,7 +261,7 @@ export function SearchableSelect({
                       <div className="flex flex-col items-center gap-1 py-4 text-center">
                         <span className="text-muted-foreground text-sm">{t('loadError')}</span>
                         <Button variant="link" size="sm" onClick={() => setRetryKey((key) => key + 1)}>
-                          {t('retry')}
+                          {t('tryAgain')}
                         </Button>
                       </div>
                     )}

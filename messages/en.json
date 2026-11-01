@@ -11,7 +11,7 @@
     "noResults": "No results.",
     "loading": "Loading…",
     "loadError": "Could not load the list.",
-    "retry": "Try again"
+    "tryAgain": "Try again"
   },
   "previewEnvironment": {
     "message": "You are on the test environment. This is not the live site.",
