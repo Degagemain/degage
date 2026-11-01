@@ -4,6 +4,7 @@
   "scripts": {
     "predev": "pnpm db:start && pnpm check:dev-account",
     "check:dev-account": "dotenv -e .env -- pnpx tsx scripts/check-dev-account.ts",
+    "changelog:collect": "node scripts/collect-unreleased-changelog.mjs",
     "dev": "dotenv -e .env -- next dev --turbopack",
     "build": "next build",
     "start": "next start",
