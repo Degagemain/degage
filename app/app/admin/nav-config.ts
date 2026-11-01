@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Calculator, Car, FileText, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
+import { BookOpen, Calculator, Car, FilePenLine, Layers, LineChart, MapPin, MessagesSquare, Settings, Settings2, Users } from 'lucide-react';
 
 export const MAIN_ITEMS: {
   translationKey: 'simulations' | 'users' | 'chatConversations' | 'documentation';
@@ -18,7 +18,7 @@ export const UNDER_CONSTRUCTION_ITEMS: {
   icon: LucideIcon;
 }[] = [
   { translationKey: 'carOnboardings', href: '/app/admin/car-onboardings', icon: Car },
-  { translationKey: 'contracts', href: '/app/admin/contracts', icon: FileText },
+  { translationKey: 'contracts', href: '/app/admin/contracts', icon: FilePenLine },
 ];
 
 /** Linked from the documentation admin “More” menu; listed in quick search (⌘K), not the sidebar. */
