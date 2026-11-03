@@ -1,0 +1,25 @@
+---
+description: Feature branches start from staging, the trunk
+alwaysApply: true
+---
+
+# Branching
+
+Trunk-based development. `staging` is the trunk and the GitHub default branch. Open pull requests against `staging`.
+
+`main` is the release line. The Release action tags it, and it lags `staging`. Do not start feature work from `main`.
+
+`pnpm worktree:new` creates the branch from the current commit, so run it from an up-to-date `staging`:
+
+```bash
+git fetch origin staging
+git checkout staging
+git pull
+pnpm worktree:new -- feat/short-name
+cd ../degage-feat-short-name
+pnpm dev
+```
+
+The `--` is required. The sibling folder is `<repo-directory>-<branch>` with `/` turned into `-`. From this checkout that is `../degage-feat-short-name`.
+
+Details: `docs/en/local-development.md`.
