@@ -9,7 +9,9 @@
     "no": "No",
     "search": "Search…",
     "noResults": "No results.",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "loadError": "Could not load the list.",
+    "tryAgain": "Try again"
   },
   "previewEnvironment": {
     "message": "You are on the test environment. This is not the live site.",

@@ -9,7 +9,9 @@
     "no": "Nee",
     "search": "Zoeken…",
     "noResults": "Geen resultaten.",
-    "loading": "Laden…"
+    "loading": "Laden…",
+    "loadError": "De lijst kon niet worden geladen.",
+    "tryAgain": "Opnieuw proberen"
   },
   "previewEnvironment": {
     "message": "Je zit op de testomgeving. Dit is niet de echte site.",
