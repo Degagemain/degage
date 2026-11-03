@@ -7,6 +7,7 @@ import { CarOnboardingInPreparationStatus } from '@/domain/car-onboarding.model'
 import { cn } from '@/app/lib/utils';
 
 import { CHAPTER_DEFINITIONS, type ChapterDefinition } from '../lib/chapters-config';
+import { computeContractStepState } from '../lib/compute-contract-step-state';
 import { computeStepState } from '../lib/compute-step-state';
 import { getOrderedSteps } from '../lib/step-navigation';
 import { useCarOnboarding } from '../lib/car-onboarding-context';
@@ -53,6 +54,42 @@ function PreparationChapter({ chapter }: { chapter: ChapterDefinition }) {
           );
         })}
         <PreparationConfirmCard />
+      </div>
+    </ChapterShell>
+  );
+}
+
+function TransitionChapter({ chapter }: { chapter: ChapterDefinition }) {
+  const t = useTranslations('carOnboardingPublic');
+  const { carOnboarding, basePath } = useCarOnboarding();
+  const contractState = computeContractStepState(carOnboarding);
+  const contractHref = contractState === 'blocked' ? undefined : `${basePath}/contract`;
+  const dummySteps = chapter.dummySteps ?? [];
+  const total = 1 + dummySteps.length;
+  const doneCount = contractState === 'done' ? 1 : 0;
+  const status: ChapterDisplayStatus = carOnboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED ? 'open' : 'locked';
+
+  return (
+    <ChapterShell chapter={chapter} status={status} progressLabel={t('chapterProgress', { done: doneCount, total })}>
+      <div className={styles.stageCards}>
+        <OverviewStepCard
+          stepNumber={1}
+          title={t('chapters.transition.steps.contract.title')}
+          subtitle={t('chapters.transition.steps.contract.subtitle')}
+          state={contractState}
+          href={contractHref}
+          actors={['you', 'degage']}
+        />
+        {dummySteps.map((step, index) => (
+          <OverviewStepCard
+            key={step.id}
+            stepNumber={index + 2}
+            title={t(step.titleKey)}
+            subtitle={t(step.subtitleKey)}
+            state="blocked"
+            actors={step.actors}
+          />
+        ))}
       </div>
     </ChapterShell>
   );
@@ -130,13 +167,15 @@ function ChapterShell({
 export function StepSection() {
   return (
     <div className={styles.journeyChapters}>
-      {CHAPTER_DEFINITIONS.map((chapter) =>
-        chapter.id === 'preparation' ? (
-          <PreparationChapter key={chapter.id} chapter={chapter} />
-        ) : (
-          <LockedDummyChapter key={chapter.id} chapter={chapter} />
-        ),
-      )}
+      {CHAPTER_DEFINITIONS.map((chapter) => {
+        if (chapter.id === 'preparation') {
+          return <PreparationChapter key={chapter.id} chapter={chapter} />;
+        }
+        if (chapter.id === 'transition') {
+          return <TransitionChapter key={chapter.id} chapter={chapter} />;
+        }
+        return <LockedDummyChapter key={chapter.id} chapter={chapter} />;
+      })}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -27,6 +28,7 @@ import {
   isUserInfoSectionComplete,
   startOfMonth,
 } from '@/domain/car-onboarding.model';
+import { ContractStatus } from '@/domain/contract.model';
 import { apiGet } from '@/app/lib/api-client';
 import { formatInfosessionScheduledAt } from '@/app/lib/play-infosession-format';
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/app/components/ui/field';
@@ -73,7 +75,7 @@ export const CAR_ONBOARDING_PREPARATION_TAB_IDS = [
   'finalize',
 ] as const;
 
-export const CAR_ONBOARDING_ONBOARDING_TAB_IDS = ['adminHandoff'] as const;
+export const CAR_ONBOARDING_ONBOARDING_TAB_IDS = ['contract', 'adminHandoff'] as const;
 
 export const CAR_ONBOARDING_TAB_IDS = [...CAR_ONBOARDING_PREPARATION_TAB_IDS, ...CAR_ONBOARDING_ONBOARDING_TAB_IDS] as const;
 export type CarOnboardingTabId = (typeof CAR_ONBOARDING_TAB_IDS)[number];
@@ -104,6 +106,9 @@ interface CarOnboardingFormProps {
   onUnlockPreparation?: () => Promise<void>;
   onClearPreparationConfirmation?: () => Promise<void>;
   onSyncAutofiche?: () => Promise<void>;
+  onStartContract?: () => Promise<void>;
+  onResendContract?: () => Promise<void>;
+  onOpenContractDocument?: () => Promise<void>;
   onUploadRegistrationCertificate?: (side: 'front' | 'back', file: File) => Promise<void>;
   onDownloadRegistrationCertificate?: (side: 'front' | 'back') => Promise<void>;
   onUploadInspectionCertificate?: (file: File) => Promise<void>;
@@ -345,6 +350,9 @@ function CarOnboardingPreparationTabsList({
 function CarOnboardingOnboardingTabsList({ t }: { t: ReturnType<typeof useTranslations<'admin.carOnboardings'>> }) {
   return (
     <TabsList variant="line" className="h-fit w-full">
+      <TabsTrigger value="contract" className="gap-1.5">
+        {t('tabs.contract')}
+      </TabsTrigger>
       <TabsTrigger value="adminHandoff" className="gap-1.5">
         {t('tabs.adminHandoff')}
       </TabsTrigger>
@@ -390,6 +398,9 @@ export function CarOnboardingForm({
   onUnlockPreparation,
   onClearPreparationConfirmation,
   onSyncAutofiche,
+  onStartContract,
+  onResendContract,
+  onOpenContractDocument,
   onUploadRegistrationCertificate,
   onDownloadRegistrationCertificate,
   onUploadInspectionCertificate,
@@ -402,6 +413,7 @@ export function CarOnboardingForm({
   const t = useTranslations('admin.carOnboardings');
   const tCommon = useTranslations('admin.common');
   const tShared = useTranslations('common');
+  const tContracts = useTranslations('admin.contracts');
   const locale = useLocale();
   const [isOverruleDialogOpen, setIsOverruleDialogOpen] = useState(false);
   const [isOverruling, setIsOverruling] = useState(false);
@@ -415,6 +427,8 @@ export function CarOnboardingForm({
   const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
   const [isSyncAutoficheDialogOpen, setIsSyncAutoficheDialogOpen] = useState(false);
   const [isSyncingAutofiche, setIsSyncingAutofiche] = useState(false);
+  const [isStartingContract, setIsStartingContract] = useState(false);
+  const [isResendingContract, setIsResendingContract] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [carNameAvailability, setCarNameAvailability] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
   const carNameRequestIdRef = useRef(0);
@@ -1576,6 +1590,83 @@ export function CarOnboardingForm({
                         disabled={!preparationReady || isSubmitting || isStarting}
                       >
                         {t('form.startOnboarding')}
+                      </Button>
+                    ) : null}
+                  </>
+                )}
+              </FieldGroup>
+            </FieldSet>
+          </TabsContent>
+
+          <TabsContent value="contract" className="mt-0">
+            <FieldSet className="max-w-2xl">
+              <FieldLegend>{t('tabs.contract')}</FieldLegend>
+              <FieldGroup className="gap-6">
+                {initialCarOnboarding.owner?.id == null ? <FieldDescription>{t('form.contractOwnerMissing')}</FieldDescription> : null}
+                {initialCarOnboarding.contract == null ? (
+                  <>
+                    <FieldDescription>{t('form.contractNotStarted')}</FieldDescription>
+                    {onStartContract != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={initialCarOnboarding.owner?.id == null || isSubmitting || isStartingContract}
+                        onClick={() => {
+                          setIsStartingContract(true);
+                          void onStartContract().finally(() => setIsStartingContract(false));
+                        }}
+                      >
+                        {isStartingContract ? t('form.contractStarting') : t('form.contractStart')}
+                      </Button>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">{t('form.contractStatus')}</p>
+                      <p className="text-muted-foreground text-sm">{tContracts(`statuses.${initialCarOnboarding.contract.status}`)}</p>
+                    </div>
+                    {initialCarOnboarding.contract.name ? (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">{t('form.contractType')}</p>
+                        <p className="text-muted-foreground text-sm">{initialCarOnboarding.contract.name}</p>
+                      </div>
+                    ) : null}
+                    <Button type="button" variant="outline" size="sm" asChild>
+                      <Link href={`/app/admin/contracts/${initialCarOnboarding.contract.id}`}>{t('form.contractOpenAdmin')}</Link>
+                    </Button>
+                    {initialCarOnboarding.contract.status === ContractStatus.Draft && onStartContract != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={isSubmitting || isStartingContract}
+                        onClick={() => {
+                          setIsStartingContract(true);
+                          void onStartContract().finally(() => setIsStartingContract(false));
+                        }}
+                      >
+                        {isStartingContract ? t('form.contractStarting') : t('form.contractSend')}
+                      </Button>
+                    ) : null}
+                    {initialCarOnboarding.contract.status === ContractStatus.Sent && onResendContract != null ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={isSubmitting || isResendingContract}
+                        onClick={() => {
+                          setIsResendingContract(true);
+                          void onResendContract().finally(() => setIsResendingContract(false));
+                        }}
+                      >
+                        {isResendingContract ? t('form.contractResending') : t('form.contractResend')}
+                      </Button>
+                    ) : null}
+                    {initialCarOnboarding.contract.status === ContractStatus.Signed && onOpenContractDocument != null ? (
+                      <Button type="button" variant="outline" size="sm" disabled={isSubmitting} onClick={() => void onOpenContractDocument()}>
+                        {t('form.contractOpenDocument')}
                       </Button>
                     ) : null}
                   </>

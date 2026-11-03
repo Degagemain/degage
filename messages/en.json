@@ -1820,7 +1820,8 @@
         "carValue": "Car value",
         "shareStart": "Car name & start date",
         "finalize": "Finalize",
-        "adminHandoff": "Admin wrap-up"
+        "adminHandoff": "Admin wrap-up",
+        "contract": "Contract"
       },
       "preparationStatus": {
         "open": "Open",
@@ -2020,7 +2021,23 @@
           "carNameTaken": "This name is already taken.",
           "carNameChecking": "Checking availability…",
           "carNameAvailable": "This name is available."
-        }
+        },
+        "contractOwnerMissing": "Assign an owner before starting the contract.",
+        "contractNotStarted": "No car-onboarding contract has been started yet.",
+        "contractStart": "Start contract",
+        "contractStarting": "Starting…",
+        "contractSend": "Send for signature",
+        "contractStartSuccess": "Contract sent for signature.",
+        "contractStartError": "Failed to start the contract.",
+        "contractResend": "Send signature again",
+        "contractResending": "Sending…",
+        "contractResendSuccess": "Signature request sent again.",
+        "contractResendError": "Failed to resend the signature request.",
+        "contractStatus": "Contract status",
+        "contractType": "Contract type",
+        "contractOpenAdmin": "Open in contracts",
+        "contractOpenDocument": "Open signed PDF",
+        "contractDocumentError": "Failed to open the signed contract."
       },
       "detailPage": {
         "owner": "Owner",
@@ -2183,7 +2200,8 @@
         "car_onboarding_road_assistance_plan": "Car onboarding — Road assistance plan",
         "car_onboarding_car_value": "Car onboarding — Car value",
         "car_onboarding_share_start": "Car onboarding — Car name & start date",
-        "car_onboarding_car_stickers": "Car onboarding — Car stickers"
+        "car_onboarding_car_stickers": "Car onboarding — Car stickers",
+        "car_onboarding_contract": "Car onboarding — Contract"
       },
       "filters": {
         "isFaq": "Type",
@@ -3331,6 +3349,15 @@
         "loading": "Loading stickers…",
         "loadError": "Could not load stickers. Please try again.",
         "alwaysIncluded": "Always included"
+      },
+      "contract": {
+        "waiting": "Dégage still needs to start your owner contract. You will see this step once the signature request is sent.",
+        "needsSignature": "You still need to sign your owner contract.",
+        "checkEmail": "Check your email for the Documenso signing link.",
+        "signed": "Everyone has signed. You can download the signed contract.",
+        "download": "Download contract",
+        "downloading": "Opening…",
+        "downloadError": "Failed to open the signed contract."
       }
     }
   },

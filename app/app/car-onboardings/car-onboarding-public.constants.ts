@@ -16,6 +16,7 @@ export const CAR_ONBOARDING_STEP_FAQ_TAGS = {
   'car-value': 'car_onboarding_car_value',
   'share-start': 'car_onboarding_share_start',
   'car-stickers': 'car_onboarding_car_stickers',
+  contract: 'car_onboarding_contract',
 } as const satisfies Record<StepId, DocumentationTag>;
 
 export const carOnboardingFaqTags = (stepId?: StepId): DocumentationTag[] =>

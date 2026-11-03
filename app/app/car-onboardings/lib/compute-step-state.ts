@@ -15,9 +15,10 @@ import {
   isShareStartSectionComplete,
   isUserInfoSectionComplete,
 } from '@/domain/car-onboarding.model';
-import type { StepId, StepState } from './types';
+import type { PrepStepId, StepId, StepState } from './types';
+import { computeContractStepState } from './compute-contract-step-state';
 
-export const getStepsForRecord = (_onboarding: CarOnboarding): StepId[] => {
+export const getStepsForRecord = (_onboarding: CarOnboarding): PrepStepId[] => {
   return [
     'play-connector',
     'info-session',
@@ -35,7 +36,7 @@ const hasInfoSessionPrerequisites = (onboarding: CarOnboarding): boolean => {
   return isPlayConnectorSectionComplete(onboarding) && isInfoSessionEnrolled(onboarding);
 };
 
-export const arePrerequisitesMet = (stepId: StepId, onboarding: CarOnboarding): boolean => {
+export const arePrerequisitesMet = (stepId: PrepStepId, onboarding: CarOnboarding): boolean => {
   if (stepId === 'play-connector' || stepId === 'user-info' || stepId === 'car-info' || stepId === 'insurer') return true;
   if (stepId === 'info-session') return isPlayConnectorSectionComplete(onboarding);
   if (stepId === 'share-start') {
@@ -67,12 +68,18 @@ export const isStepComplete = (stepId: StepId, onboarding: CarOnboarding): boole
       return onboarding.isPurchased || onboarding.carValueStatus === CarOnboardingCarValueStatus.RESOLVED;
     case 'car-stickers':
       return isCarStickerSectionComplete(onboarding);
+    case 'contract':
+      return computeContractStepState(onboarding) === 'done';
     default:
       return false;
   }
 };
 
 export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): StepState => {
+  if (stepId === 'contract') {
+    return computeContractStepState(onboarding);
+  }
+
   if (isStepComplete(stepId, onboarding)) return 'done';
   if (!arePrerequisitesMet(stepId, onboarding)) return 'blocked';
 
@@ -98,6 +105,7 @@ export const computeStepState = (stepId: StepId, onboarding: CarOnboarding): Ste
 };
 
 export const isStepReadOnly = (stepId: StepId, onboarding: CarOnboarding): boolean => {
+  if (stepId === 'contract') return true;
   if (onboarding.statusInPreparation === CarOnboardingInPreparationStatus.LOCKED) return true;
   if (isPreparationConfirmed(onboarding)) return true;
 

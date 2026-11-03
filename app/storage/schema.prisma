@@ -197,6 +197,8 @@ model CarOnboarding {
   pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   proofOfPurchaseId              String?
   proofOfPurchase                Document?                        @relation("ProofOfPurchase", fields: [proofOfPurchaseId], references: [id], onDelete: SetNull)
+  contractId          String?                          @unique
+  contract            Contract?                        @relation(fields: [contractId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
   carName             String?
@@ -639,6 +641,7 @@ enum DocumentationTag {
   car_onboarding_car_value
   car_onboarding_car_stickers
   car_onboarding_share_start
+  car_onboarding_contract
 }
 
 enum ChatConversationMedium {
@@ -1032,6 +1035,7 @@ model Contract {
   documentId                   String?
   document                     Document?      @relation("ContractDocument", fields: [documentId], references: [id], onDelete: SetNull)
   documensoDocumentEnvelopeId  String?
+  carOnboarding                CarOnboarding?
   createdAt                    DateTime       @default(now())
   updatedAt                    DateTime       @updatedAt
 

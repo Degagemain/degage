@@ -5,8 +5,8 @@ import { STEP_DEFINITIONS } from './steps-config';
 import type { StepId } from './types';
 
 export const getOrderedSteps = (onboarding: CarOnboarding): StepDefinition[] => {
-  const visibleIds = getStepsForRecord(onboarding);
-  return STEP_DEFINITIONS.filter((s) => visibleIds.includes(s.id));
+  const visibleIds = new Set<string>(getStepsForRecord(onboarding));
+  return STEP_DEFINITIONS.filter((s) => visibleIds.has(s.id));
 };
 
 export const getNextAccessibleStep = (onboarding: CarOnboarding, currentId: StepId): StepDefinition | null => {

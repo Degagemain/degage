@@ -41,12 +41,6 @@ export const CHAPTER_DEFINITIONS: ChapterDefinition[] = [
     metaBodyKey: 'chapters.transition.metaBody',
     dummySteps: [
       {
-        id: 'contract',
-        titleKey: 'chapters.transition.steps.contract.title',
-        subtitleKey: 'chapters.transition.steps.contract.subtitle',
-        actors: ['you', 'degage'],
-      },
-      {
         id: 'cancel-insurance',
         titleKey: 'chapters.transition.steps.cancelInsurance.title',
         subtitleKey: 'chapters.transition.steps.cancelInsurance.subtitle',

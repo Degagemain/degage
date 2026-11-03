@@ -1820,7 +1820,8 @@
         "carValue": "Valeur",
         "shareStart": "Nom & date de début",
         "finalize": "Finaliser",
-        "adminHandoff": "Clôture administrative"
+        "adminHandoff": "Clôture administrative",
+        "contract": "Contrat"
       },
       "preparationStatus": {
         "open": "Ouvert",
@@ -2020,7 +2021,23 @@
           "carNameTaken": "Ce nom est déjà pris.",
           "carNameChecking": "Vérification de la disponibilité…",
           "carNameAvailable": "Ce nom est disponible."
-        }
+        },
+        "contractOwnerMissing": "Assignez un propriétaire avant de démarrer le contrat.",
+        "contractNotStarted": "Aucun contrat d’intégration n’a encore été démarré.",
+        "contractStart": "Démarrer le contrat",
+        "contractStarting": "Démarrage…",
+        "contractSend": "Envoyer pour signature",
+        "contractStartSuccess": "Contrat envoyé pour signature.",
+        "contractStartError": "Échec du démarrage du contrat.",
+        "contractResend": "Renvoyer la signature",
+        "contractResending": "Envoi…",
+        "contractResendSuccess": "Demande de signature renvoyée.",
+        "contractResendError": "Échec du renvoi de la demande de signature.",
+        "contractStatus": "Statut du contrat",
+        "contractType": "Type de contrat",
+        "contractOpenAdmin": "Ouvrir dans les contrats",
+        "contractOpenDocument": "Ouvrir le PDF signé",
+        "contractDocumentError": "Échec de l’ouverture du contrat signé."
       },
       "detailPage": {
         "owner": "Propriétaire",
@@ -2183,7 +2200,8 @@
         "car_onboarding_road_assistance_plan": "Onboarding voiture — Assistance routière",
         "car_onboarding_car_value": "Onboarding voiture — Valeur",
         "car_onboarding_share_start": "Onboarding voiture — Nom et date de début",
-        "car_onboarding_car_stickers": "Onboarding voiture — Autocollants"
+        "car_onboarding_car_stickers": "Onboarding voiture — Autocollants",
+        "car_onboarding_contract": "Onboarding voiture — Contrat"
       },
       "filters": {
         "isFaq": "Type",
@@ -3331,6 +3349,15 @@
         "loading": "Chargement des autocollants…",
         "loadError": "Impossible de charger les autocollants. Veuillez réessayer.",
         "alwaysIncluded": "Toujours inclus"
+      },
+      "contract": {
+        "waiting": "Dégage doit encore démarrer votre contrat propriétaire. Cette étape apparaîtra une fois la demande de signature envoyée.",
+        "needsSignature": "Vous devez encore signer votre contrat propriétaire.",
+        "checkEmail": "Vérifiez votre e-mail pour le lien de signature Documenso.",
+        "signed": "Tout le monde a signé. Vous pouvez télécharger le contrat signé.",
+        "download": "Télécharger le contrat",
+        "downloading": "Ouverture…",
+        "downloadError": "Échec de l’ouverture du contrat signé."
       }
     }
   },

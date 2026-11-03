@@ -6,6 +6,7 @@ import {
   CarOnboardingInsurerStatus,
   CarOnboardingRoadAssistancePlanStatus,
 } from '@/domain/car-onboarding.model';
+import { ContractStatus } from '@/domain/contract.model';
 import { Prisma } from '@/storage/client/client';
 import { type ContentLocale, defaultContentLocale } from '@/i18n/locales';
 
@@ -31,6 +32,7 @@ export const carOnboardingRelationsInclude = {
   inspectionCertificate: true,
   pinkForm: true,
   proofOfPurchase: true,
+  contract: { include: { type: true } },
   stickerLinks: { include: { carSticker: true } },
 } as const satisfies Prisma.CarOnboardingInclude;
 
@@ -117,6 +119,7 @@ export const dbCarOnboardingToDomain = (db: CarOnboardingDb): CarOnboarding => {
     inspectionCertificate: db.inspectionCertificateId != null ? { id: db.inspectionCertificateId } : null,
     pinkForm: db.pinkFormId != null ? { id: db.pinkFormId } : null,
     proofOfPurchase: db.proofOfPurchaseId != null ? { id: db.proofOfPurchaseId } : null,
+    contract: null,
     carStickers: [],
     carName: db.carName,
     shareStartDate: db.shareStartDate,
@@ -212,6 +215,13 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
           name: db.proofOfPurchase.fileName,
         }
       : null,
+    contract: db.contract
+      ? {
+          id: db.contractId!,
+          name: db.contract.type.name,
+          status: db.contract.status as ContractStatus,
+        }
+      : null,
     carStickers: db.stickerLinks.map((link) => ({
       id: link.carStickerId,
       name: link.carSticker.name,
@@ -266,6 +276,7 @@ export const carOnboardingToDbCreate = (onboarding: CarOnboarding): Prisma.CarOn
     inspectionCertificate: onboarding.inspectionCertificate != null ? { connect: { id: onboarding.inspectionCertificate.id } } : undefined,
     pinkForm: onboarding.pinkForm != null ? { connect: { id: onboarding.pinkForm.id } } : undefined,
     proofOfPurchase: onboarding.proofOfPurchase != null ? { connect: { id: onboarding.proofOfPurchase.id } } : undefined,
+    contract: onboarding.contract != null ? { connect: { id: onboarding.contract.id } } : undefined,
     carName: onboarding.carName ?? undefined,
     shareStartDate: onboarding.shareStartDate ?? undefined,
     carPcId: onboarding.carPcId ?? undefined,
@@ -320,6 +331,7 @@ export const carOnboardingToDbUpdate = (onboarding: CarOnboarding): Prisma.CarOn
     inspectionCertificate: optionalRelationConnect(onboarding.inspectionCertificate),
     pinkForm: optionalRelationConnect(onboarding.pinkForm),
     proofOfPurchase: optionalRelationConnect(onboarding.proofOfPurchase),
+    contract: optionalRelationConnect(onboarding.contract),
     stickerLinks: {
       deleteMany: {},
       create: onboarding.carStickers.map((sticker) => ({

@@ -1820,7 +1820,8 @@
         "carValue": "Waarde van de wagen",
         "shareStart": "Naam & startdatum",
         "finalize": "Afronden",
-        "adminHandoff": "Administratieve afhandeling"
+        "adminHandoff": "Administratieve afhandeling",
+        "contract": "Contract"
       },
       "preparationStatus": {
         "open": "Open",
@@ -2020,7 +2021,23 @@
           "carNameTaken": "Deze naam is al in gebruik.",
           "carNameChecking": "Beschikbaarheid controleren…",
           "carNameAvailable": "Deze naam is beschikbaar."
-        }
+        },
+        "contractOwnerMissing": "Wijs eerst een eigenaar toe voor je het contract start.",
+        "contractNotStarted": "Er is nog geen eigenaarscontract gestart.",
+        "contractStart": "Contract starten",
+        "contractStarting": "Bezig met starten…",
+        "contractSend": "Versturen ter ondertekening",
+        "contractStartSuccess": "Contract verstuurd ter ondertekening.",
+        "contractStartError": "Contract starten mislukt.",
+        "contractResend": "Handtekening opnieuw versturen",
+        "contractResending": "Bezig met versturen…",
+        "contractResendSuccess": "Handtekeningverzoek opnieuw verstuurd.",
+        "contractResendError": "Handtekening opnieuw versturen mislukt.",
+        "contractStatus": "Contractstatus",
+        "contractType": "Contracttype",
+        "contractOpenAdmin": "Openen bij contracten",
+        "contractOpenDocument": "Ondertekende pdf openen",
+        "contractDocumentError": "Ondertekend contract openen mislukt."
       },
       "detailPage": {
         "owner": "Eigenaar",
@@ -2183,7 +2200,8 @@
         "car_onboarding_road_assistance_plan": "Auto-onboarding — Pechverhelpingsplan",
         "car_onboarding_car_value": "Auto-onboarding — Waarde van de auto",
         "car_onboarding_share_start": "Auto-onboarding — Naam & startdatum",
-        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers"
+        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers",
+        "car_onboarding_contract": "Auto-onboarding — Contract"
       },
       "filters": {
         "isFaq": "Type",
@@ -3331,6 +3349,15 @@
         "loading": "Stickers laden…",
         "loadError": "Stickers laden mislukt. Probeer opnieuw.",
         "alwaysIncluded": "Altijd inbegrepen"
+      },
+      "contract": {
+        "waiting": "Dégage moet je eigenaarscontract nog starten. Je ziet deze stap zodra het handtekeningverzoek is verstuurd.",
+        "needsSignature": "Je moet je eigenaarscontract nog ondertekenen.",
+        "checkEmail": "Bekijk je e-mail voor de Documenso-ondertekenlink.",
+        "signed": "Iedereen heeft getekend. Je kan het ondertekende contract downloaden.",
+        "download": "Contract downloaden",
+        "downloading": "Openen…",
+        "downloadError": "Ondertekend contract openen mislukt."
       }
     }
   },

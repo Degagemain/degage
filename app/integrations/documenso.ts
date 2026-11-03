@@ -164,6 +164,18 @@ export const getEnvelope = async (envelopeId: string): Promise<DocumensoEnvelope
   return requestJson<DocumensoEnvelope>(`/envelope/${encodeURIComponent(envelopeId)}`);
 };
 
+export const redistributeEnvelope = async (envelopeId: string, recipientIds: number[]): Promise<void> => {
+  if (recipientIds.length === 0) return;
+  await requestJson('/envelope/redistribute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      envelopeId,
+      recipients: recipientIds,
+    }),
+  });
+};
+
 export const createDocumentFromTemplate = async (input: UseTemplateInput): Promise<DocumensoEnvelope> => {
   const config = getConfig();
   if (!config) {

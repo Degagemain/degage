@@ -197,9 +197,26 @@ plus de sept jours.
 
 ## Intégration
 
-Après la préparation, les admins gèrent l'intégration elle-même dans un second menu. Cet onglet **Clôture administrative** permet de
-synchroniser l'**Autofiche** (la fiche voiture dans Play). La synchronisation n'est pas disponible tant que le propriétaire n'a pas lié son
-compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'abord confirmer.
+Après la préparation, les admins gèrent l'intégration elle-même dans un second menu.
+
+### Contrat
+
+Depuis l'onglet **Contrat**, un admin démarre le contrat d'intégration (même flux que les Contrats : brouillon de type car-onboarding, puis
+envoi via Documenso). Tant que le contrat est envoyé, l'admin peut renvoyer la demande de signature. Une fois signé, le PDF stocké peut être
+ouvert depuis cet onglet ou depuis Contrats.
+
+Sur l'onboarding public, une fois la préparation verrouillée et le contrat envoyé, le propriétaire voit **Signer votre contrat propriétaire**
+sous **La transition**. Tant que la signature n'est pas faite, l'étape indique qu'elle est encore due (via le lien e-mail). Quand le contrat est
+signé, le propriétaire peut télécharger le PDF.
+
+La signature du contrat ne change **aucun** champ de statut de l'onboarding voiture. Seul le contrat lié passe à signé ; l'étape publique
+débloque le téléchargement à partir de ce statut de contrat.
+
+### Clôture administrative
+
+Ce menu a aussi un onglet **Clôture administrative** pour synchroniser l'**Autofiche** (la fiche voiture dans Play). La synchronisation n'est
+pas disponible tant que le propriétaire n'a pas lié son compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'abord
+confirmer.
 
 ## Création d'un enregistrement
 
