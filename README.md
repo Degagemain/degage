@@ -311,58 +311,57 @@ On **Vercel** (or any host that runs `next build` for deploy), set:
 
 This log explains why packages were installed.
 
-| Reason                                     | Package(s)                                                                                             |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| Next.js setup                              | next@latest, react@latest, react-dom@latest                                                            |
-| commit message linting                     | @commitlint/config-conventional, @commitlint/cli, husky                                                |
-| ESLint via Next.js                         | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
-| validating models                          | zod                                                                                                    |
-| prisma ORM setup                           | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
-| Unit testing setup                         | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
-| Unit test coverage                         | @vitest/coverage-v8                                                                                    |
-| Vite peer for Vitest, held on the 7.x line | vite                                                                                                   |
-| E2E browser tests                          | @playwright/test                                                                                       |
-| E2E Postgres (Testcontainers)              | testcontainers, @testcontainers/postgresql, pg, @types/pg                                              |
-| Tailwind setup                             | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
-| ShadCn setup                               | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
-| Button Component                           | @radix-ui/react-slot                                                                                   |
-| Dropdown Menu Component                    | @radix-ui/react-dropdown-menu                                                                          |
-| Label Component                            | @radix-ui/react-label                                                                                  |
-| Separator Component                        | @radix-ui/react-separator                                                                              |
-| Auth setup                                 | better-auth                                                                                            |
-| OAuth 2.1 provider (MCP)                   | @better-auth/oauth-provider                                                                            |
-| MCP HTTP transport                         | mcp-handler                                                                                            |
-| MCP server                                 | @modelcontextprotocol/server                                                                           |
-| Toastr Component                           | sonner                                                                                                 |
-| ShadCN Table/Select                        | radix-ui                                                                                               |
-| Data Table                                 | @tanstack/react-table                                                                                  |
-| Sidebar Component                          | (shadcn generated - uses radix-ui)                                                                     |
-| Navigation Menu/Avatar                     | (shadcn generated - uses radix-ui)                                                                     |
-| Faceted Filter                             | cmdk (shadcn command component)                                                                        |
-| Internationalization                       | next-intl                                                                                              |
-| ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
-| Gemini AI integration                      | @google/genai                                                                                          |
-| GCS object storage for documents           | @google-cloud/storage                                                                                  |
-| Google Sheets API (service account)        | @googleapis/sheets, google-auth-library                                                                |
-| AI SDK chat + streaming                    | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
-| AI Elements chat UI                        | streamdown, use-stick-to-bottom, nanoid                                                                |
-| AI markdown plugins                        | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
-| Chat canvas/state utilities                | @radix-ui/react-use-controllable-state, motion                                                         |
-| Graph/flow editor UI                       | @xyflow/react                                                                                          |
-| Carousel support                           | embla-carousel-react                                                                                   |
-| Play connector HTML parsing                | cheerio                                                                                                |
-| Rich media rendering                       | media-chrome, react-jsx-parser                                                                         |
-| Syntax highlighting/runtime                | shiki, tokenlens                                                                                       |
-| Rive animations                            | @rive-app/react-webgl2                                                                                 |
-| Transactional email (auth)                 | resend                                                                                                 |
-| TS scripts with path aliases               | tsx                                                                                                    |
-| Seed / parse docs front matter             | gray-matter                                                                                            |
-| PostHog (client, server, LLM)              | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
-| PostHog MCP analytics                      | @posthog/mcp                                                                                           |
-| PostHog Logs (OpenTelemetry OTLP)          | @opentelemetry/sdk-logs, @opentelemetry/exporter-logs-otlp-http, @opentelemetry/api-logs               |
-| PostHog Tracing (OpenTelemetry OTLP)       | @opentelemetry/exporter-trace-otlp-proto, @opentelemetry/sdk-trace-base                                |
-| PostHog error-tracking source maps (build) | @posthog/nextjs-config                                                                                 |
-| ShadCN forms (RHF + Zod)                   | react-hook-form, @hookform/resolvers                                                                   |
+| Reason                                          | Package(s)                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Next.js setup                                   | next@latest, react@latest, react-dom@latest                                                            |
+| commit message linting                          | @commitlint/config-conventional, @commitlint/cli, husky                                                |
+| ESLint via Next.js                              | eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc                                   |
+| validating models                               | zod                                                                                                    |
+| prisma ORM setup                                | prisma, @prisma/client, @prisma/adapter-neon, @prisma/adapter-pg                                       |
+| Unit testing setup                              | vitest, vite-tsconfig-paths, jsdom, @vitejs/plugin-react, @testing-library/dom, @testing-library/react |
+| Unit test coverage                              | @vitest/coverage-v8                                                                                    |
+| Vite peer for Vitest, held on the 7.x line      | vite                                                                                                   |
+| E2E browser tests                               | @playwright/test                                                                                       |
+| E2E Postgres (Testcontainers)                   | testcontainers, @testcontainers/postgresql, pg, @types/pg                                              |
+| Tailwind setup                                  | tailwindcss, @tailwindcss/postcss, postcss, prettier-plugin-tailwindcss                                |
+| ShadCn setup                                    | class-variance-authority, clsx, tailwind-merge, lucide-react, tw-animate-css                           |
+| Button Component                                | @radix-ui/react-slot                                                                                   |
+| Dropdown Menu Component                         | @radix-ui/react-dropdown-menu                                                                          |
+| Label Component                                 | @radix-ui/react-label                                                                                  |
+| Separator Component                             | @radix-ui/react-separator                                                                              |
+| Auth setup                                      | better-auth                                                                                            |
+| OAuth 2.1 provider (MCP)                        | @better-auth/oauth-provider                                                                            |
+| MCP HTTP transport                              | mcp-handler                                                                                            |
+| MCP server                                      | @modelcontextprotocol/server                                                                           |
+| Toastr Component                                | sonner                                                                                                 |
+| ShadCN Table/Select                             | radix-ui                                                                                               |
+| Data Table                                      | @tanstack/react-table                                                                                  |
+| Sidebar Component                               | (shadcn generated - uses radix-ui)                                                                     |
+| Navigation Menu/Avatar                          | (shadcn generated - uses radix-ui)                                                                     |
+| Faceted Filter                                  | cmdk (shadcn command component)                                                                        |
+| Internationalization                            | next-intl                                                                                              |
+| ShadCN Calendar / Date picker                   | react-day-picker, date-fns                                                                             |
+| GCS object storage for documents                | @google-cloud/storage                                                                                  |
+| Google Sheets API (service account)             | @googleapis/sheets, google-auth-library                                                                |
+| AI SDK (chat, documents, estimates, embeddings) | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
+| AI Elements chat UI                             | streamdown, use-stick-to-bottom, nanoid                                                                |
+| AI markdown plugins                             | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
+| Chat canvas/state utilities                     | @radix-ui/react-use-controllable-state, motion                                                         |
+| Graph/flow editor UI                            | @xyflow/react                                                                                          |
+| Carousel support                                | embla-carousel-react                                                                                   |
+| Play connector HTML parsing                     | cheerio                                                                                                |
+| Rich media rendering                            | media-chrome, react-jsx-parser                                                                         |
+| Syntax highlighting/runtime                     | shiki, tokenlens                                                                                       |
+| Rive animations                                 | @rive-app/react-webgl2                                                                                 |
+| Transactional email (auth)                      | resend                                                                                                 |
+| TS scripts with path aliases                    | tsx                                                                                                    |
+| Seed / parse docs front matter                  | gray-matter                                                                                            |
+| PostHog (client, server, LLM)                   | posthog-js, posthog-node, @posthog/ai, @opentelemetry/sdk-node, @opentelemetry/resources               |
+| PostHog MCP analytics                           | @posthog/mcp                                                                                           |
+| PostHog Logs (OpenTelemetry OTLP)               | @opentelemetry/sdk-logs, @opentelemetry/exporter-logs-otlp-http, @opentelemetry/api-logs               |
+| PostHog Tracing (OpenTelemetry OTLP)            | @opentelemetry/exporter-trace-otlp-proto, @opentelemetry/sdk-trace-base                                |
+| PostHog error-tracking source maps (build)      | @posthog/nextjs-config                                                                                 |
+| ShadCN forms (RHF + Zod)                        | react-hook-form, @hookform/resolvers                                                                   |
 
 ### Resend
 

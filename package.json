@@ -53,7 +53,6 @@
     "@ai-sdk/react": "^3.0.319",
     "@better-auth/oauth-provider": "^1.7.12",
     "@google-cloud/storage": "^8.4.0",
-    "@google/genai": "^1.52.0",
     "@googleapis/sheets": "^18.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@modelcontextprotocol/server": "^2.3.1",
