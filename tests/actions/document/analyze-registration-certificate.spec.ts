@@ -35,11 +35,23 @@ describe('analyzeRegistrationCertificate', () => {
     expect(generateStructuredJsonFromImage).toHaveBeenCalledWith(
       expect.stringContaining('vehicle registration certificate'),
       { data: fileBody, mimeType: 'image/jpeg' },
-      expect.objectContaining({
-        type: 'OBJECT',
-        required: ['isRegistrationDocument'],
-      }),
+      expect.anything(),
+      'registration-certificate-analysis',
     );
+    const schema = vi.mocked(generateStructuredJsonFromImage).mock.calls[0][2];
+    expect(
+      schema.safeParse({
+        isRegistrationDocument: true,
+        side: 'front',
+        vin: null,
+        plate: null,
+        firstRegisteredAt: '2020-03-15',
+        ownerName: null,
+        ownerStreet: null,
+        ownerZip: 1000,
+        ownerCity: null,
+      }).success,
+    ).toBe(true);
     expect(result).toEqual({
       isRegistrationDocument: true,
       side: 'front',
