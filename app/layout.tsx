@@ -13,7 +13,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <NextIntlClientProvider messages={messages}>
           <PreviewEnvironmentBanner />
-          {children}
+          <div className="preview-banner-offset">{children}</div>
         </NextIntlClientProvider>
       </body>
     </html>
