@@ -52,7 +52,6 @@
     "@ai-sdk/react": "^3.0.319",
     "@better-auth/oauth-provider": "^1.7.12",
     "@google-cloud/storage": "^8.4.0",
-    "@google/genai": "^1.52.0",
     "@hookform/resolvers": "^5.2.2",
     "@modelcontextprotocol/server": "^2.3.1",
     "@opentelemetry/api-logs": "0.223.0",

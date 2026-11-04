@@ -1,5 +1,4 @@
-import type { Schema } from '@google/genai';
-import { Type } from '@google/genai';
+import * as z from 'zod';
 
 import type { FuelType } from '@/domain/fuel-type.model';
 import type { PriceRange } from '@/domain/simulation.model';
@@ -20,24 +19,13 @@ interface GeminiPriceEstimate {
   articleRefs: string[];
 }
 
-const responseSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    price: { type: Type.NUMBER, description: 'Estimated average market price in EUR at low mileage' },
-    rangeMin: {
-      type: Type.NUMBER,
-      description: 'Expected market value in EUR when the car has reached the depreciation km threshold (not zero)',
-    },
-    rangeMax: { type: Type.NUMBER, description: 'Upper bound of the market price range in EUR' },
-    remarks: { type: Type.STRING, nullable: true, description: 'Any notable observations about pricing, market trends, or caveats' },
-    articleRefs: {
-      type: Type.ARRAY,
-      items: { type: Type.STRING },
-      description: 'URLs of relevant second-hand car listing pages used as sources',
-    },
-  },
-  required: ['price', 'rangeMin', 'rangeMax', 'articleRefs'],
-};
+const responseSchema = z.object({
+  price: z.number().describe('Estimated average market price in EUR at low mileage'),
+  rangeMin: z.number().describe('Expected market value in EUR when the car has reached the depreciation km threshold (not zero)'),
+  rangeMax: z.number().describe('Upper bound of the market price range in EUR'),
+  remarks: z.string().nullable().describe('Any notable observations about pricing, market trends, or caveats'),
+  articleRefs: z.array(z.string()).describe('URLs of relevant second-hand car listing pages used as sources'),
+});
 
 function buildPrompt(
   brandName: string,
@@ -131,7 +119,7 @@ export async function carValueEstimator(
   const carTypeName = carType?.name ?? carTypeOther ?? 'unknown model';
 
   const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year, depreciationKm, backtestYear);
-  const result = await generateGroundedJson<GeminiPriceEstimate>(prompt, responseSchema);
+  const result = await generateGroundedJson(prompt, responseSchema, 'car-price-estimate');
 
   try {
     assertValidPriceEstimate(result);
