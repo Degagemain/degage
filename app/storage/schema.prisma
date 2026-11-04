@@ -203,6 +203,7 @@ model CarOnboarding {
   shareStartDate      DateTime?
   carName             String?
   carPcId             Int?
+  gsheetRowNumber     Int?
   preparationConfirmedAt DateTime?
   lastPreparationNudgeEmail DateTime?
   stickerLinks        CarOnboardingSticker[]

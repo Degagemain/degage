@@ -146,6 +146,12 @@ describe('carOnboardingSchema', () => {
     expect(carOnboardingSchema.parse({ id, carPcId: 3961 }).carPcId).toBe(3961);
     expect(carOnboardingSchema.safeParse({ id, carPcId: 0 }).success).toBe(false);
   });
+
+  it('accepts a positive gsheetRowNumber and rejects zero', () => {
+    const id = '550e8400-e29b-41d4-a716-446655440000';
+    expect(carOnboardingSchema.parse({ id, gsheetRowNumber: 15 }).gsheetRowNumber).toBe(15);
+    expect(carOnboardingSchema.safeParse({ id, gsheetRowNumber: 0 }).success).toBe(false);
+  });
 });
 
 describe('carOnboardingCarInfoInputSchema', () => {

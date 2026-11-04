@@ -221,8 +221,9 @@ download from that contract status.
 
 ### Admin wrap-up
 
-That menu also has an **Admin wrap-up** tab where admins can sync the **Autofiche** (the car record in Play). Sync is unavailable until the
-owner has attached their Play account. If preparation is not locked yet, the admin is asked to confirm before syncing.
+That menu also has an **Admin wrap-up** tab where admins can sync the **Autofiche** (the car record in Play) and the **Google Sheet** row.
+Autofiche sync is unavailable until the owner has attached their Play account. If preparation is not locked yet, the admin is asked to confirm
+before either sync.
 
 ## Creating a record
 
@@ -266,6 +267,7 @@ owner has attached their Play account. If preparation is not locked yet, the adm
 | Info session date                  | Scheduled date of the enrolled info session.                                                                                    |
 | Info session PC id                 | Play connector identifier for the enrolled info session.                                                                        |
 | Autofiche                          | Play identifier of the synced car fiche. Admins sync it from Admin wrap-up.                                                     |
+| Google Sheet row                   | Row number in the car-onboarding Google Spreadsheet. Admins sync it from Admin wrap-up.                                         |
 | Info session status                | Progress of the info session subprocess.                                                                                        |
 | Simulation                         | Linked simulation run, if any.                                                                                                  |
 | Preparation confirmed at           | Date and time when the owner confirmed preparation details.                                                                     |

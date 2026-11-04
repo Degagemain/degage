@@ -214,9 +214,9 @@ débloque le téléchargement à partir de ce statut de contrat.
 
 ### Clôture administrative
 
-Ce menu a aussi un onglet **Clôture administrative** pour synchroniser l'**Autofiche** (la fiche voiture dans Play). La synchronisation n'est
-pas disponible tant que le propriétaire n'a pas lié son compte Play. Si la préparation n'est pas encore verrouillée, l'admin doit d'abord
-confirmer.
+Ce menu a aussi un onglet **Clôture administrative** pour synchroniser l'**Autofiche** (la fiche voiture dans Play) et la ligne **Google
+Sheet**. La synchronisation Autofiche n'est pas disponible tant que le propriétaire n'a pas lié son compte Play. Si la préparation n'est pas
+encore verrouillée, l'admin doit d'abord confirmer chaque synchronisation.
 
 ## Création d'un enregistrement
 
@@ -264,6 +264,7 @@ confirmer.
 | Date session d'info                     | Date prévue de la session d'info inscrite.                                                                                             |
 | ID PC session d'info                    | Identifiant Play connector de la session d'info inscrite.                                                                              |
 | Autofiche                               | Identifiant Play de la fiche voiture synchronisée. Les admins la synchronisent depuis Clôture administrative.                          |
+| Ligne Google Sheet                      | Numéro de ligne dans le Google Spreadsheet d'onboarding voiture. Les admins la synchronisent depuis Clôture administrative.            |
 | Statut session d'info                   | Progression du sous-processus session d'info.                                                                                          |
 | Simulation                              | Simulation associée, le cas échéant.                                                                                                   |
 | Préparation confirmée le                | Date et heure auxquelles le propriétaire a confirmé les données de préparation.                                                        |

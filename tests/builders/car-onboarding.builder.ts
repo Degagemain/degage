@@ -58,6 +58,7 @@ export const carOnboarding = (data: Partial<CarOnboarding> = {}): CarOnboarding 
     carName: data.carName !== undefined ? data.carName : null,
     shareStartDate: data.shareStartDate !== undefined ? data.shareStartDate : null,
     carPcId: data.carPcId !== undefined ? data.carPcId : null,
+    gsheetRowNumber: data.gsheetRowNumber !== undefined ? data.gsheetRowNumber : null,
     preparationConfirmedAt: data.preparationConfirmedAt !== undefined ? data.preparationConfirmedAt : null,
     lastPreparationNudgeEmail: data.lastPreparationNudgeEmail !== undefined ? data.lastPreparationNudgeEmail : null,
     statusInPreparation: data.statusInPreparation ?? CarOnboardingInPreparationStatus.OPEN,

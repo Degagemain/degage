@@ -106,6 +106,7 @@ interface CarOnboardingFormProps {
   onUnlockPreparation?: () => Promise<void>;
   onClearPreparationConfirmation?: () => Promise<void>;
   onSyncAutofiche?: () => Promise<void>;
+  onSyncGsheet?: () => Promise<void>;
   onStartContract?: () => Promise<void>;
   onResendContract?: () => Promise<void>;
   onOpenContractDocument?: () => Promise<void>;
@@ -398,6 +399,7 @@ export function CarOnboardingForm({
   onUnlockPreparation,
   onClearPreparationConfirmation,
   onSyncAutofiche,
+  onSyncGsheet,
   onStartContract,
   onResendContract,
   onOpenContractDocument,
@@ -427,6 +429,8 @@ export function CarOnboardingForm({
   const [isClearingConfirmation, setIsClearingConfirmation] = useState(false);
   const [isSyncAutoficheDialogOpen, setIsSyncAutoficheDialogOpen] = useState(false);
   const [isSyncingAutofiche, setIsSyncingAutofiche] = useState(false);
+  const [isSyncGsheetDialogOpen, setIsSyncGsheetDialogOpen] = useState(false);
+  const [isSyncingGsheet, setIsSyncingGsheet] = useState(false);
   const [isStartingContract, setIsStartingContract] = useState(false);
   const [isResendingContract, setIsResendingContract] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -768,6 +772,17 @@ export function CarOnboardingForm({
       setIsSyncAutoficheDialogOpen(false);
     } finally {
       setIsSyncingAutofiche(false);
+    }
+  };
+
+  const handleSyncGsheet = async () => {
+    if (!onSyncGsheet) return;
+    setIsSyncingGsheet(true);
+    try {
+      await onSyncGsheet();
+      setIsSyncGsheetDialogOpen(false);
+    } finally {
+      setIsSyncingGsheet(false);
     }
   };
 
@@ -1701,6 +1716,27 @@ export function CarOnboardingForm({
                     {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutofiche')}
                   </Button>
                 ) : null}
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{t('columns.gsheetRowNumber')}</p>
+                  <p className="text-muted-foreground text-sm">{initialCarOnboarding.gsheetRowNumber ?? '—'}</p>
+                </div>
+                {onSyncGsheet != null ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      if (!preparationLocked) {
+                        setIsSyncGsheetDialogOpen(true);
+                        return;
+                      }
+                      void handleSyncGsheet();
+                    }}
+                    disabled={isSubmitting || isSyncingGsheet}
+                  >
+                    {isSyncingGsheet ? t('form.syncGsheetConfirming') : t('form.syncGsheet')}
+                  </Button>
+                ) : null}
               </FieldGroup>
             </FieldSet>
           </TabsContent>
@@ -1804,6 +1840,23 @@ export function CarOnboardingForm({
             </Button>
             <Button onClick={() => void handleSyncAutofiche()} disabled={isSyncingAutofiche}>
               {isSyncingAutofiche ? t('form.syncAutoficheConfirming') : t('form.syncAutoficheConfirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isSyncGsheetDialogOpen} onOpenChange={isSyncingGsheet ? undefined : setIsSyncGsheetDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('form.syncGsheetTitle')}</DialogTitle>
+            <DialogDescription>{t('form.syncGsheetDescription')}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsSyncGsheetDialogOpen(false)} disabled={isSyncingGsheet}>
+              {tCommon('actions.cancel')}
+            </Button>
+            <Button onClick={() => void handleSyncGsheet()} disabled={isSyncingGsheet}>
+              {isSyncingGsheet ? t('form.syncGsheetConfirming') : t('form.syncGsheetConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -210,9 +210,9 @@ stap ontgrendelt de download op basis van die contractstatus.
 
 ### Administratieve afhandeling
 
-Dat menu heeft ook een tabblad **Administratieve afhandeling** waar admins de **Autofiche** (het wagenrecord in Play) kunnen synchroniseren.
-Synchroniseren is niet beschikbaar tot de eigenaar het Play-account heeft gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de
-admin eerst bevestiging.
+Dat menu heeft ook een tabblad **Administratieve afhandeling** waar admins de **Autofiche** (het wagenrecord in Play) en de **Google Sheet**-rij
+kunnen synchroniseren. Autofiche-synchronisatie is niet beschikbaar tot de eigenaar het Play-account heeft gekoppeld. Als de voorbereiding nog
+niet vergrendeld is, vraagt de admin eerst bevestiging voor elke sync.
 
 ## Record aanmaken
 
@@ -261,6 +261,7 @@ admin eerst bevestiging.
 | Infosessie datum                       | Geplande datum van de ingeschreven infosessie.                                                                                      |
 | Infosessie PC-id                       | Play connector-identificatie van de ingeschreven infosessie.                                                                        |
 | Autofiche                              | Play-identificatie van de gesynchroniseerde autofiche. Admins synchroniseren die vanuit Administratieve afhandeling.                |
+| Google Sheet-rij                       | Rijnummer in de Google Spreadsheet voor auto-onboarding. Admins synchroniseren die vanuit Administratieve afhandeling.              |
 | Infosessiestatus                       | Voortgang van het infosessie-proces.                                                                                                |
 | Simulatie                              | Gekoppelde simulatie-run, indien aanwezig.                                                                                          |
 | Voorbereiding bevestigd op             | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                              |
