@@ -343,6 +343,7 @@ This log explains why packages were installed.
 | ShadCN Calendar / Date picker              | react-day-picker, date-fns                                                                             |
 | Gemini AI integration                      | @google/genai                                                                                          |
 | GCS object storage for documents           | @google-cloud/storage                                                                                  |
+| Google Sheets API (service account)        | @googleapis/sheets, google-auth-library                                                                |
 | AI SDK chat + streaming                    | ai, @ai-sdk/google, @ai-sdk/react                                                                      |
 | AI Elements chat UI                        | streamdown, use-stick-to-bottom, nanoid                                                                |
 | AI markdown plugins                        | @streamdown/cjk, @streamdown/code, @streamdown/math, @streamdown/mermaid                               |
