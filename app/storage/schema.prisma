@@ -1002,7 +1002,6 @@ model FeatureFlag {
 model ContractType {
   id                          String               @id @default(uuid())
   code                        String               @unique
-  name                        String
   defaultSigneeId             String?
   defaultSignee               User?                @relation("ContractTypeDefaultSignee", fields: [defaultSigneeId], references: [id], onDelete: SetNull)
   documensoTemplateEnvelopeId String?

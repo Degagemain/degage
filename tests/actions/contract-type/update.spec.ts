@@ -115,7 +115,7 @@ describe('updateContractType', () => {
     });
     const next = contractType({
       ...existing,
-      name: 'Renamed',
+      code: 'fleet-agreement',
     });
 
     vi.mocked(dbContractTypeRead).mockResolvedValueOnce(existing);
@@ -124,5 +124,6 @@ describe('updateContractType', () => {
     await updateContractType(next);
 
     expect(syncEnvelopeRecipients).not.toHaveBeenCalled();
+    expect(dbContractTypeUpdate).toHaveBeenCalledWith(expect.objectContaining({ code: existing.code }));
   });
 });

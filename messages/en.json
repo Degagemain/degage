@@ -356,17 +356,12 @@
       "searchPlaceholder": "Search contract types...",
       "tryAgain": "Try again",
       "columns": {
-        "name": "Name",
         "code": "Code",
         "defaultSignee": "Default signee",
         "defaultViewers": "Default viewers",
         "template": "Documenso template",
         "created": "Created",
         "updated": "Updated"
-      },
-      "codes": {
-        "car-onboarding": "Car onboarding",
-        "other": "Other"
       },
       "template": {
         "ready": "Template ready",
@@ -385,17 +380,19 @@
       "form": {
         "none": "None",
         "placeholders": {
-          "code": "Select a code",
-          "name": "Contract type name",
+          "code": "car-onboarding",
           "defaultSignee": "Optional Degage signee",
           "defaultViewers": "Select viewers"
         },
         "help": {
-          "code": "Stable code used by the app (car-onboarding or other).",
-          "name": "Display name in the admin zone.",
+          "code": "Unique code, also used as the name. Lowercase letters, numbers, and hyphens. Cannot be changed after creation.",
           "defaultSignee": "Optional Degage admin who must also sign. Leave empty when only the owner signs.",
           "defaultViewers": "Admins who receive a copy of the signed contract.",
           "template": "Upload a PDF to create a Documenso template, then place signature fields in Documenso."
+        },
+        "validation": {
+          "code": "Use lowercase letters, numbers, and hyphens.",
+          "duplicate": "A contract type with this code already exists."
         }
       },
       "delete": {

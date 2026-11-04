@@ -7,7 +7,7 @@ describe('contractSchema', () => {
     const result = contractSchema.safeParse({
       id: null,
       user: { id: 'user_1', name: 'Owner' },
-      type: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'Car onboarding', code: ContractTypeCode.CarOnboarding },
+      type: { id: '550e8400-e29b-41d4-a716-446655440010', name: ContractTypeCode.CarOnboarding, code: ContractTypeCode.CarOnboarding },
       startDate: new Date('2026-02-01T00:00:00.000Z'),
       endDate: null,
       status: ContractStatus.Draft,
@@ -23,7 +23,7 @@ describe('contractSchema', () => {
     const result = contractSchema.safeParse({
       id: null,
       user: { id: '' },
-      type: { id: '550e8400-e29b-41d4-a716-446655440010', name: 'Car onboarding' },
+      type: { id: '550e8400-e29b-41d4-a716-446655440010', name: ContractTypeCode.CarOnboarding },
       startDate: new Date('2026-02-01T00:00:00.000Z'),
       status: ContractStatus.Draft,
     });

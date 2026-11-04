@@ -16,7 +16,6 @@ export const filterToQuery = (filter: ContractFilter): Prisma.ContractWhereInput
           OR: [
             { user: { name: { contains: q, mode: 'insensitive' } } },
             { user: { email: { contains: q, mode: 'insensitive' } } },
-            { type: { name: { contains: q, mode: 'insensitive' } } },
             { type: { code: { contains: q, mode: 'insensitive' } } },
           ],
         }

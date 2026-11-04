@@ -12,7 +12,6 @@ export type ContractTypeWithRelations = Prisma.ContractTypeGetPayload<{ include:
 export const dbContractTypeToDomain = (row: ContractTypeWithRelations): ContractType => ({
   id: row.id,
   code: row.code as ContractTypeCodeValue,
-  name: row.name,
   defaultSignee: row.defaultSignee
     ? {
         id: row.defaultSignee.id,
@@ -30,7 +29,6 @@ export const dbContractTypeToDomain = (row: ContractTypeWithRelations): Contract
 
 export const contractTypeToDbCreate = (contractType: ContractType): Prisma.ContractTypeCreateInput => ({
   code: contractType.code,
-  name: contractType.name,
   documensoTemplateEnvelopeId: contractType.documensoTemplateEnvelopeId,
   defaultSignee: contractType.defaultSignee ? { connect: { id: contractType.defaultSignee.id } } : undefined,
   viewers: {
@@ -41,8 +39,6 @@ export const contractTypeToDbCreate = (contractType: ContractType): Prisma.Contr
 });
 
 export const contractTypeToDbUpdate = (contractType: ContractType): Prisma.ContractTypeUpdateInput => ({
-  code: contractType.code,
-  name: contractType.name,
   documensoTemplateEnvelopeId: contractType.documensoTemplateEnvelopeId,
   defaultSignee: contractType.defaultSignee ? { connect: { id: contractType.defaultSignee.id } } : { disconnect: true },
   viewers: {

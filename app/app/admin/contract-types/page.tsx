@@ -27,7 +27,6 @@ interface ContractTypesState {
 }
 
 const SORT_COLUMN_MAP: Record<string, string> = {
-  name: 'name',
   code: 'code',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -69,7 +68,6 @@ export default function ContractTypesPage() {
 
   const columnLabels = useMemo(
     () => ({
-      name: t('columns.name'),
       code: t('columns.code'),
       defaultSignee: t('columns.defaultSignee'),
       template: t('columns.template'),
@@ -214,7 +212,7 @@ export default function ContractTypesPage() {
         onOpenChange={(open) => !open && setItemToDelete(null)}
         onConfirm={handleDeleteConfirm}
         title={t('delete.title')}
-        description={t('delete.description', { name: itemToDelete?.name ?? '' })}
+        description={t('delete.description', { name: itemToDelete?.code ?? '' })}
         confirmLabel={t('delete.confirm')}
         cancelLabel={t('delete.cancel')}
       />

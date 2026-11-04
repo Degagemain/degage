@@ -27,7 +27,7 @@ describe('resendCarOnboardingContract', () => {
     const linked = contract({ status: ContractStatus.Sent });
     vi.mocked(readCarOnboarding).mockResolvedValueOnce(
       carOnboarding({
-        contract: { id: linked.id!, status: ContractStatus.Sent, name: 'Car onboarding' },
+        contract: { id: linked.id!, status: ContractStatus.Sent, name: 'car-onboarding' },
       }),
     );
     vi.mocked(resendContract).mockResolvedValueOnce(linked);

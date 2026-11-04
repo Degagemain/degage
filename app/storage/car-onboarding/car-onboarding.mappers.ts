@@ -218,7 +218,7 @@ export const dbCarOnboardingToDomainWithRelations = (db: CarOnboardingWithRelati
     contract: db.contract
       ? {
           id: db.contractId!,
-          name: db.contract.type.name,
+          name: db.contract.type.code,
           status: db.contract.status as ContractStatus,
         }
       : null,

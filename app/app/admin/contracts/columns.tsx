@@ -39,9 +39,9 @@ export const createColumns = (options: ColumnOptions): ColumnDef<Contract>[] => 
     },
     {
       id: 'type',
-      accessorFn: (row) => row.type.name,
+      accessorFn: (row) => row.type.code ?? row.type.name,
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.type')} onSort={options.onSort} />,
-      cell: ({ row }) => <span className="text-sm">{row.original.type.name}</span>,
+      cell: ({ row }) => <span className="text-sm">{row.original.type.code ?? row.original.type.name}</span>,
       enableSorting: false,
     },
     {

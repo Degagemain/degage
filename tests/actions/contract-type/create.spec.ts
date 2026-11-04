@@ -32,7 +32,7 @@ describe('createContractType', () => {
   });
 
   it('rejects an invalid payload', async () => {
-    await expect(createContractType({ ...contractType(), name: '' })).rejects.toThrow();
+    await expect(createContractType({ ...contractType(), code: 'Bad code' })).rejects.toThrow();
     expect(dbContractTypeCreate).not.toHaveBeenCalled();
   });
 });

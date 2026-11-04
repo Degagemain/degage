@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl';
 import { Controller, type Resolver, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { ContractType, ContractTypeCodeValue } from '@/domain/contract-type.model';
-import { contractTypeCodeValues } from '@/domain/contract-type.model';
+import type { ContractType } from '@/domain/contract-type.model';
+import { CONTRACT_TYPE_CODE_MAX_LENGTH, contractTypeCodePattern } from '@/domain/contract-type.model';
 import type { User } from '@/domain/user.model';
 import type { Page } from '@/domain/page.model';
 import { FieldGroup } from '@/app/components/ui/field';
@@ -25,8 +25,7 @@ interface ContractTypeFormProps {
 }
 
 interface ContractTypeFormValues {
-  code: ContractTypeCodeValue | '';
-  name: string;
+  code: string;
   defaultSigneeId: string;
   defaultViewerIds: string[];
 }
@@ -35,7 +34,6 @@ const NONE_VALUE = '__none__';
 
 const getInitialState = (contractType?: ContractType): ContractTypeFormValues => ({
   code: contractType?.code ?? '',
-  name: contractType?.name ?? '',
   defaultSigneeId: contractType?.defaultSignee?.id ?? NONE_VALUE,
   defaultViewerIds: contractType?.defaultViewers.map((viewer) => viewer.id) ?? [],
 });
@@ -55,12 +53,17 @@ export function ContractTypeForm({
   const schema = useMemo(
     () =>
       z.object({
-        code: z.enum(contractTypeCodeValues, { message: tCommon('validation.required') }),
-        name: z.string().trim().min(1, tCommon('validation.required')).max(100),
+        code: z
+          .string()
+          .trim()
+          .toLowerCase()
+          .min(1, tCommon('validation.required'))
+          .max(CONTRACT_TYPE_CODE_MAX_LENGTH)
+          .regex(contractTypeCodePattern, t('form.validation.code')),
         defaultSigneeId: z.string(),
         defaultViewerIds: z.array(z.string()),
       }),
-    [tCommon],
+    [t, tCommon],
   );
 
   const initialState = useMemo(() => getInitialState(initialContractType), [initialContractType]);
@@ -121,8 +124,7 @@ export function ContractTypeForm({
 
     const payload: ContractType = {
       id: initialContractType?.id ?? null,
-      code: parsed.code,
-      name: parsed.name.trim(),
+      code: isEdit ? (initialContractType?.code ?? parsed.code) : parsed.code,
       defaultSignee,
       defaultViewers: parsed.defaultViewerIds.map((id: string) => ({
         id,
@@ -142,30 +144,14 @@ export function ContractTypeForm({
           name="code"
           control={form.control}
           render={({ field, fieldState }) => (
-            <AdminSelectFieldControl
+            <AdminTextFieldControl
               label={t('columns.code')}
               value={field.value}
-              onChange={field.onChange}
-              options={contractTypeCodeValues.map((code) => ({ value: code, label: t(`codes.${code}`) }))}
+              onChange={(value) => field.onChange(value.toLowerCase())}
               placeholder={t('form.placeholders.code')}
               description={t('form.help.code')}
               error={fieldState.error?.message}
               disabled={isSubmitting || isEdit}
-            />
-          )}
-        />
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <AdminTextFieldControl
-              label={t('columns.name')}
-              value={field.value}
-              onChange={field.onChange}
-              placeholder={t('form.placeholders.name')}
-              description={t('form.help.name')}
-              error={fieldState.error?.message}
-              disabled={isSubmitting}
             />
           )}
         />
