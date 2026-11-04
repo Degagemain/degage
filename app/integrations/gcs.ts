@@ -1,5 +1,7 @@
 import { Bucket, Storage } from '@google-cloud/storage';
 
+import { loadServiceAccountCredentialsFromEnv } from '@/integrations/gcp-credentials';
+
 let storageClient: Storage | null = null;
 let bucketInstance: Bucket | null = null;
 
@@ -8,13 +10,8 @@ const getStorageClient = (): Storage => {
     return storageClient;
   }
 
-  const credentialsB64 = process.env.GCP_BUCKET_CREDENTIALS;
-  if (credentialsB64?.trim()) {
-    const credentials = JSON.parse(Buffer.from(credentialsB64, 'base64').toString('utf8')) as Record<string, unknown>;
-    storageClient = new Storage({ credentials });
-  } else {
-    storageClient = new Storage();
-  }
+  const credentials = loadServiceAccountCredentialsFromEnv('GCP_BUCKET_CREDENTIALS');
+  storageClient = credentials ? new Storage({ credentials }) : new Storage();
 
   return storageClient;
 };
