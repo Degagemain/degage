@@ -253,6 +253,24 @@ export default function EditCarOnboardingPage() {
     }
   };
 
+  const handleSyncGsheet = async () => {
+    if (!id) return;
+    try {
+      const response = await apiPut(`/api/car-onboardings/${id}/gsheet/sync`);
+
+      if (!response.ok) {
+        const message = await parseApiErrorMessage(response, t('form.syncGsheetError'));
+        toast.error(message);
+        return;
+      }
+
+      toast.success(t('form.syncGsheetSuccess'));
+      await loadCarOnboarding({ silent: true });
+    } catch {
+      toast.error(t('form.syncGsheetError'));
+    }
+  };
+
   const handleStartContract = async () => {
     if (!id) return;
     try {
@@ -510,6 +528,7 @@ export default function EditCarOnboardingPage() {
               onUnlockPreparation={handleUnlockPreparation}
               onClearPreparationConfirmation={handleClearPreparationConfirmation}
               onSyncAutofiche={handleSyncAutofiche}
+              onSyncGsheet={handleSyncGsheet}
               onStartContract={handleStartContract}
               onResendContract={handleResendContract}
               onOpenContractDocument={handleOpenContractDocument}
