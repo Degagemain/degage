@@ -218,7 +218,7 @@ export default function EditContractTypePage() {
         onOpenChange={setIsDeleteDialogOpen}
         onConfirm={handleDelete}
         title={t('delete.title')}
-        description={t('delete.description', { name: contractType?.name ?? '' })}
+        description={t('delete.description', { name: contractType?.code ?? '' })}
         confirmLabel={t('delete.confirm')}
         cancelLabel={t('delete.cancel')}
       />

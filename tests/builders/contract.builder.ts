@@ -6,7 +6,7 @@ export const contract = (data: Partial<Contract> = {}): Contract => ({
   user: data.user ?? { id: 'user_owner_1', name: 'Owner' },
   type: data.type ?? {
     id: '550e8400-e29b-41d4-a716-446655440010',
-    name: 'Car onboarding',
+    name: ContractTypeCode.CarOnboarding,
     code: ContractTypeCode.CarOnboarding,
   },
   startDate: data.startDate ?? new Date('2026-02-01T00:00:00.000Z'),

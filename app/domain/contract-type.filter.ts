@@ -3,7 +3,6 @@ import { DefaultTake, MaxTake, SortOrder } from './utils';
 
 export enum ContractTypeSortColumns {
   CODE = 'code',
-  NAME = 'name',
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updatedAt',
 }

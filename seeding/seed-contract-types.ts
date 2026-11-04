@@ -1,10 +1,7 @@
 import { PrismaClient } from '@/storage/client/client';
 import { ContractTypeCode } from '@/domain/contract-type.model';
 
-const seedTypes = [
-  { code: ContractTypeCode.CarOnboarding, name: 'Car onboarding' },
-  { code: ContractTypeCode.Other, name: 'Other' },
-] as const;
+const seedTypes = [{ code: ContractTypeCode.CarOnboarding }] as const;
 
 export async function seedContractTypes(prisma: PrismaClient) {
   console.log('Seeding contract types...');
@@ -18,7 +15,6 @@ export async function seedContractTypes(prisma: PrismaClient) {
     await prisma.contractType.create({
       data: {
         code: type.code,
-        name: type.name,
       },
     });
     console.log(`  Seeded: ${type.code}`);

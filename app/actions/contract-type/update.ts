@@ -13,6 +13,7 @@ export const updateContractType = async (contractType: ContractType): Promise<Co
   const existing = await dbContractTypeRead(contractType.id!);
   const validated = contractTypeSchema.parse({
     ...contractType,
+    code: existing.code,
     documensoTemplateEnvelopeId: existing.documensoTemplateEnvelopeId,
   });
 

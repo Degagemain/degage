@@ -20,7 +20,7 @@ export const dbContractToDomain = (row: ContractWithRelations): Contract => ({
   },
   type: {
     id: row.type.id,
-    name: row.type.name,
+    name: row.type.code,
     code: row.type.code as ContractTypeCodeValue,
   },
   startDate: row.startDate,

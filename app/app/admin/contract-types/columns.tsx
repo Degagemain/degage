@@ -19,27 +19,19 @@ export const createColumns = (options: ColumnOptions): ColumnDef<ContractType>[]
   const { t } = options;
   return [
     {
-      accessorKey: 'name',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.name')} onSort={options.onSort} />,
-      cell: ({ row }) => {
-        const item = row.original;
-        if (!item.id) {
-          return <span className="font-medium">{row.getValue('name')}</span>;
-        }
-        return (
-          <Link href={`/app/admin/contract-types/${item.id}`} className="font-medium hover:underline">
-            {row.getValue('name')}
-          </Link>
-        );
-      },
-      enableHiding: true,
-    },
-    {
       accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.code')} onSort={options.onSort} />,
       cell: ({ row }) => {
+        const item = row.original;
         const code = row.getValue('code') as string;
-        return <span className="text-sm">{t(`codes.${code}`)}</span>;
+        if (!item.id) {
+          return <span className="font-medium">{code}</span>;
+        }
+        return (
+          <Link href={`/app/admin/contract-types/${item.id}`} className="font-medium hover:underline">
+            {code}
+          </Link>
+        );
       },
       enableHiding: true,
     },

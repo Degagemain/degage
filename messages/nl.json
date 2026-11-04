@@ -356,17 +356,12 @@
       "searchPlaceholder": "Zoek contracttypes...",
       "tryAgain": "Opnieuw proberen",
       "columns": {
-        "name": "Naam",
         "code": "Code",
         "defaultSignee": "Standaard ondertekenaar",
         "defaultViewers": "Standaard kijkers",
         "template": "Documenso-template",
         "created": "Aangemaakt",
         "updated": "Bijgewerkt"
-      },
-      "codes": {
-        "car-onboarding": "Wagenonboarding",
-        "other": "Overig"
       },
       "template": {
         "ready": "Template klaar",
@@ -385,17 +380,19 @@
       "form": {
         "none": "Geen",
         "placeholders": {
-          "code": "Selecteer een code",
-          "name": "Naam van het contracttype",
+          "code": "car-onboarding",
           "defaultSignee": "Optionele Dégage-ondertekenaar",
           "defaultViewers": "Selecteer kijkers"
         },
         "help": {
-          "code": "Stabiele code die de app gebruikt (car-onboarding of other).",
-          "name": "Weergavenaam in de adminzone.",
+          "code": "Unieke code, ook gebruikt als naam. Kleine letters, cijfers en koppeltekens. Kan na het aanmaken niet meer worden gewijzigd.",
           "defaultSignee": "Optionele Dégage-admin die ook moet ondertekenen. Laat leeg als alleen de eigenaar tekent.",
           "defaultViewers": "Admins die een kopie van het getekende contract ontvangen.",
           "template": "Upload een PDF om een Documenso-template te maken en plaats daarna handtekeningvelden in Documenso."
+        },
+        "validation": {
+          "code": "Gebruik kleine letters, cijfers en koppeltekens.",
+          "duplicate": "Er bestaat al een contracttype met deze code."
         }
       },
       "delete": {

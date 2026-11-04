@@ -9,7 +9,7 @@ export const filterToQuery = (filter: ContractTypeFilter): Prisma.ContractTypeWh
   const q = filter.query?.trim();
   if (!q) return {};
   return {
-    OR: [{ code: { contains: q, mode: 'insensitive' } }, { name: { contains: q, mode: 'insensitive' } }],
+    code: { contains: q, mode: 'insensitive' },
   };
 };
 

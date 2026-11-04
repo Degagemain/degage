@@ -356,17 +356,12 @@
       "searchPlaceholder": "Rechercher des types de contrat...",
       "tryAgain": "Réessayer",
       "columns": {
-        "name": "Nom",
         "code": "Code",
         "defaultSignee": "Signataire par défaut",
         "defaultViewers": "Observateurs par défaut",
         "template": "Modèle Documenso",
         "created": "Créé",
         "updated": "Mis à jour"
-      },
-      "codes": {
-        "car-onboarding": "Intégration voiture",
-        "other": "Autre"
       },
       "template": {
         "ready": "Modèle prêt",
@@ -385,17 +380,19 @@
       "form": {
         "none": "Aucun",
         "placeholders": {
-          "code": "Sélectionner un code",
-          "name": "Nom du type de contrat",
+          "code": "car-onboarding",
           "defaultSignee": "Signataire Dégage optionnel",
           "defaultViewers": "Sélectionner des observateurs"
         },
         "help": {
-          "code": "Code stable utilisé par l'application (car-onboarding ou other).",
-          "name": "Nom affiché dans la zone admin.",
+          "code": "Code unique, aussi utilisé comme nom. Lettres minuscules, chiffres et tirets. Ne peut plus être modifié après la création.",
           "defaultSignee": "Admin Dégage optionnel qui doit aussi signer. Laisser vide si seul le propriétaire signe.",
           "defaultViewers": "Admins qui reçoivent une copie du contrat signé.",
           "template": "Téléversez un PDF pour créer un modèle Documenso, puis placez les champs de signature dans Documenso."
+        },
+        "validation": {
+          "code": "Utilisez des lettres minuscules, des chiffres et des tirets.",
+          "duplicate": "Un type de contrat avec ce code existe déjà."
         }
       },
       "delete": {

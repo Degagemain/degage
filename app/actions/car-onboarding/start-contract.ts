@@ -43,7 +43,7 @@ export const startCarOnboardingContract = async (id: string, caller: UserWithRol
   const draft = await createContract({
     id: null,
     user: { id: owner.id, name: owner.name },
-    type: { id: contractType.id, name: contractType.name, code: contractType.code },
+    type: { id: contractType.id, name: contractType.code, code: contractType.code },
     startDate,
     endDate: null,
     status: ContractStatus.Draft,

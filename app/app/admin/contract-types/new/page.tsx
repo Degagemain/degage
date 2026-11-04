@@ -16,6 +16,7 @@ import { AdminPageToolbar } from '@/app/admin/components/admin-page-toolbar';
 const OVERVIEW_PATH = '/app/admin/contract-types';
 
 export default function NewContractTypePage() {
+  const t = useTranslations('admin.contractTypes');
   const tCommon = useTranslations('admin.common');
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -25,7 +26,9 @@ export default function NewContractTypePage() {
     try {
       const response = await apiPost('/api/contract-types', contractType);
       if (!response.ok) {
-        const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'));
+        const message = await parseApiErrorMessage(response, tCommon('feedback.saveError'), {
+          conflict: t('form.validation.duplicate'),
+        });
         toast.error(message);
         return;
       }

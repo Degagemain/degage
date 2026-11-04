@@ -42,7 +42,7 @@ const getInitialState = (contract?: Contract): ContractFormValues => ({
   userId: contract?.user.id ?? '',
   userName: contract?.user.name ?? '',
   typeId: contract?.type.id ?? '',
-  typeName: contract?.type.name ?? '',
+  typeName: contract?.type.code ?? contract?.type.name ?? '',
   startDate: toDateInput(contract?.startDate),
   endDate: toDateInput(contract?.endDate),
 });
@@ -151,7 +151,7 @@ export function ContractForm({
                 form.setValue('typeName', option.name, { shouldValidate: true });
               }}
               apiPath="contract-types"
-              labelKey="name"
+              labelKey="code"
               placeholder={t('form.placeholders.type')}
               description={t('form.help.type')}
               error={fieldState.error?.message}

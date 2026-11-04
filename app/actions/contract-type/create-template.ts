@@ -31,7 +31,7 @@ export const createContractTypeTemplate = async (input: CreateContractTypeTempla
 
   try {
     const created = await createTemplateEnvelope({
-      title: contractType.name,
+      title: contractType.code,
       externalId: `contract-type:${contractType.id}`,
       pdf: input.pdf,
       fileName: input.fileName,
