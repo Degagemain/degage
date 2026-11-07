@@ -1,11 +1,11 @@
 import { google } from '@ai-sdk/google';
-import { Output, embed, generateText } from 'ai';
+import { Output, embed, gateway, generateText } from 'ai';
 import type { ZodType } from 'zod';
 import { isPostHogEnabled } from '@/integrations/posthog';
 import { logger } from '@/lib/logger';
 
-const INFERENCE_MODEL = 'gemini-2.5-pro';
-const EMBEDDING_MODEL = 'gemini-embedding-001';
+const INFERENCE_MODEL = 'google/gemini-2.5-pro';
+const EMBEDDING_MODEL = 'google/gemini-embedding-001';
 const EMBEDDING_DIMENSIONS = 1536;
 
 type EmbeddingTaskType = 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY';
@@ -26,7 +26,7 @@ export async function generateEmbedding(text: string, taskType: EmbeddingTaskTyp
   const functionId = taskType === 'RETRIEVAL_QUERY' ? 'documentation-query-embed' : 'documentation-embed';
   try {
     const { embedding } = await embed({
-      model: google.embedding(EMBEDDING_MODEL),
+      model: gateway.embedding(EMBEDDING_MODEL),
       value: text,
       providerOptions: {
         google: {
@@ -48,7 +48,7 @@ export async function generateEmbedding(text: string, taskType: EmbeddingTaskTyp
 
 export async function generateStructuredJson<T>(prompt: string, responseSchema: ZodType<T>, functionId: string): Promise<T> {
   const { output } = await generateText({
-    model: google(INFERENCE_MODEL),
+    model: gateway(INFERENCE_MODEL),
     prompt,
     output: Output.object({ schema: responseSchema }),
     experimental_telemetry: telemetry(functionId),
@@ -63,7 +63,7 @@ export async function generateStructuredJsonFromImage<T>(
   functionId: string,
 ): Promise<T> {
   const { output } = await generateText({
-    model: google(INFERENCE_MODEL),
+    model: gateway(INFERENCE_MODEL),
     messages: [
       {
         role: 'user',
@@ -82,7 +82,7 @@ export async function generateStructuredJsonFromImage<T>(
 export async function generateGroundedJson<T>(prompt: string, responseSchema: ZodType<T>, functionId: string): Promise<T> {
   // Gemini rejects JSON mode and Google Search in the same request, so search runs first.
   const search = await generateText({
-    model: google(INFERENCE_MODEL),
+    model: gateway(INFERENCE_MODEL),
     prompt,
     tools: {
       google_search: google.tools.googleSearch({}),
@@ -95,7 +95,7 @@ export async function generateGroundedJson<T>(prompt: string, responseSchema: Zo
   }
 
   const { output } = await generateText({
-    model: google(INFERENCE_MODEL),
+    model: gateway(INFERENCE_MODEL),
     prompt: [
       'Extract the data from the following text into the requested JSON structure.',
       'Return only the JSON object, no additional text.',
