@@ -133,7 +133,7 @@ Notes:
 
 ### Documentation embeddings
 
-After seeding documentation in production, sync search embeddings. The command uses `DATABASE_URL` and `GOOGLE_GENERATIVE_AI_API_KEY` from the process environment (it does not load `.env`):
+After seeding documentation in production, sync search embeddings. The command uses `DATABASE_URL` and `AI_GATEWAY_API_KEY` from the process environment (it does not load `.env`):
 
 ```bash
 pnpm docs:sync-embeddings
@@ -235,7 +235,7 @@ Copy `.env.example` to `.env` and fill in your values. The app loads `.env` loca
 | GITHUB_CLIENT_SECRET              | GitHub OAuth client secret (required for GitHub auth).                                                                                                                                                                               |
 | GOOGLE_CLIENT_ID                  | Google OAuth client ID (required for Google auth).                                                                                                                                                                                   |
 | GOOGLE_CLIENT_SECRET              | Google OAuth client secret (required for Google auth).                                                                                                                                                                               |
-| GOOGLE_GENERATIVE_AI_API_KEY      | API key for Gemini chat responses and documentation embeddings.                                                                                                                                                                      |
+| AI_GATEWAY_API_KEY                | Vercel AI Gateway key (`vck_…`) for Gemini chat, document reading, price estimates, and documentation embeddings.                                                                                                                    |
 | ADMIN_EMAIL_DOMAINS               | Comma-separated email domains allowed for admin users.                                                                                                                                                                               |
 | RESEND_API_KEY                    | API key for transactional emails sent by auth flows.                                                                                                                                                                                 |
 | RESEND_FROM                       | Sender address used by Resend (for auth and support replies).                                                                                                                                                                        |

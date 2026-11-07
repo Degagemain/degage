@@ -24,7 +24,7 @@ flowchart TB
     App -->|Prisma / SQL| DB
     App -->|outbound auth mail| Resend
     Resend -->|inbound support webhook| App
-    App -->|documents, estimates, chat, embeddings| Gemini
+    App -->|via AI Gateway| Gemini
     App -->|events, traces, errors| PostHog
     Browser -->|product analytics| PostHog
     GitHub -->|deploy trigger| App
@@ -32,16 +32,16 @@ flowchart TB
 
 # Service map
 
-| Service                 | Role                                          | Current plan              | Free allowance                                                     | First paid tier           | Metering                                                       |
-| ----------------------- | --------------------------------------------- | ------------------------- | ------------------------------------------------------------------ | ------------------------- | -------------------------------------------------------------- |
-| Neon                    | Postgres + pgvector (prod)                    | Free                      | 0.5 GB storage, ~191 compute-hrs/mo, autosuspend, 1 project        | Launch $19/mo             | Compute-hours ($/CU-hr) + storage $/GB-month + egress          |
-| Resend                  | Outbound auth mail + inbound support webhook  | Free                      | 3,000 emails/mo · 100/day · 1 verified domain                      | Pro $20/mo (50k emails)   | Per-email overage (~$1 / 1,000 extra)                          |
-| Google Gemini API       | Documents, estimates, chat, embeddings        | Free tier (AI Studio key) | Rate-limited RPM/RPD per model; data may be used to improve models | Paid tier (Cloud billing) | Per 1M input / output tokens, per model                        |
-| PostHog                 | Product analytics, error tracking, LLM traces | Free (EU cloud)           | 1M events, 5k session recordings, 1M flag req, 100k exceptions /mo | Pay-as-you-go             | Per-event, per-recording, per-exception, per-LLM-trace overage |
-| GitHub                  | Source control + OAuth provider               | Free                      | Unlimited public repos, 2,000 Actions min/mo (private)             | Team $4/user/mo           | Actions minutes + storage overages                             |
-| GitHub Actions          | CI: lint, build, test, format, docs           | Included in GitHub Free   | 2,000 Linux min/mo on private repos; unlimited on public           | Per-minute overage        | $0.008/min Linux · 2× macOS · 10× Windows                      |
-| Better Auth (in-app UI) | Email/password + GitHub OAuth                 | Self-hosted (OSS)         | No SaaS cost — runs in our Next.js process                         | —                         | Infra cost only (DB rows, function time)                       |
-| ngrok (optional, local) | HTTPS tunnel for Resend webhook dev           | Free                      | Random hostname, 1 online tunnel, limited requests/min             | Personal $8/mo            | Reserved domain + higher limits per seat                       |
+| Service                 | Role                                          | Current plan            | Free allowance                                                     | First paid tier           | Metering                                                       |
+| ----------------------- | --------------------------------------------- | ----------------------- | ------------------------------------------------------------------ | ------------------------- | -------------------------------------------------------------- |
+| Neon                    | Postgres + pgvector (prod)                    | Free                    | 0.5 GB storage, ~191 compute-hrs/mo, autosuspend, 1 project        | Launch $19/mo             | Compute-hours ($/CU-hr) + storage $/GB-month + egress          |
+| Resend                  | Outbound auth mail + inbound support webhook  | Free                    | 3,000 emails/mo · 100/day · 1 verified domain                      | Pro $20/mo (50k emails)   | Per-email overage (~$1 / 1,000 extra)                          |
+| Google Gemini API       | Documents, estimates, chat, embeddings        | Vercel AI Gateway       | Rate-limited RPM/RPD per model; data may be used to improve models | Paid tier (Cloud billing) | Per 1M input / output tokens, per model                        |
+| PostHog                 | Product analytics, error tracking, LLM traces | Free (EU cloud)         | 1M events, 5k session recordings, 1M flag req, 100k exceptions /mo | Pay-as-you-go             | Per-event, per-recording, per-exception, per-LLM-trace overage |
+| GitHub                  | Source control + OAuth provider               | Free                    | Unlimited public repos, 2,000 Actions min/mo (private)             | Team $4/user/mo           | Actions minutes + storage overages                             |
+| GitHub Actions          | CI: lint, build, test, format, docs           | Included in GitHub Free | 2,000 Linux min/mo on private repos; unlimited on public           | Per-minute overage        | $0.008/min Linux · 2× macOS · 10× Windows                      |
+| Better Auth (in-app UI) | Email/password + GitHub OAuth                 | Self-hosted (OSS)       | No SaaS cost — runs in our Next.js process                         | —                         | Infra cost only (DB rows, function time)                       |
+| ngrok (optional, local) | HTTPS tunnel for Resend webhook dev           | Free                    | Random hostname, 1 online tunnel, limited requests/min             | Personal $8/mo            | Reserved domain + higher limits per seat                       |
 
 # Detail by category
 
@@ -78,9 +78,9 @@ Docs: [Neon pricing](https://neon.tech/pricing) · [Plans & billing](https://neo
 
 ### Google Gemini API
 
-Document reading, car specifications, price estimates, documentation embeddings, and support replies all go through the Vercel AI SDK. Support
-replies use Gemini 2.5 Flash. The other text and image calls use Gemini 2.5 Pro, and embeddings use gemini-embedding-001. Price estimates still
-search the web.
+Document reading, car specifications, price estimates, documentation embeddings, and support replies go through the Vercel AI Gateway to Gemini.
+Support replies use Gemini 2.5 Flash. The other text and image calls use Gemini 2.5 Pro, and embeddings use gemini-embedding-001. Price
+estimates still search the web. The app authenticates with the AI Gateway key.
 
 - Free tier (AI Studio key): low RPM/RPD per model, prompts and completions may be used to improve Google models — not acceptable for
   confidential user content at scale. The moment the key is attached to a Cloud billing account, the tier flips to paid and training opt-out
