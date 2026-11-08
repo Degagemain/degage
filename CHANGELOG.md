@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.10] - 2026-11-08
+
 ### Public features
 
 - Added: after the contract is sent, owners see that they still need to sign; once signed, they can download the contract.
