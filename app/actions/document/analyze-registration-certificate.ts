@@ -1,7 +1,10 @@
-import type { Schema } from '@google/genai';
-import { Type } from '@google/genai';
+import * as z from 'zod';
 
-import { type RegistrationCertificateAnalysis, registrationCertificateAnalysisSchema } from '@/domain/registration-certificate-analysis.model';
+import {
+  type RegistrationCertificateAnalysis,
+  registrationCertificateAnalysisSchema,
+  registrationCertificateSideSchema,
+} from '@/domain/registration-certificate-analysis.model';
 import { generateStructuredJsonFromImage } from '@/integrations/gemini';
 
 export type AnalyzeRegistrationCertificateInput = {
@@ -9,32 +12,17 @@ export type AnalyzeRegistrationCertificateInput = {
   contentType: string;
 };
 
-const responseSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    isRegistrationDocument: {
-      type: Type.BOOLEAN,
-      description: 'Whether the image is a vehicle registration certificate (registration document)',
-    },
-    side: {
-      type: Type.STRING,
-      nullable: true,
-      description: 'Which side of the registration document is shown: front or back',
-    },
-    vin: { type: Type.STRING, nullable: true, description: 'Full VIN number' },
-    plate: { type: Type.STRING, nullable: true, description: 'License plate number' },
-    firstRegisteredAt: {
-      type: Type.STRING,
-      nullable: true,
-      description: 'First registration date in YYYY-MM-DD format',
-    },
-    ownerName: { type: Type.STRING, nullable: true, description: 'Registered owner full name' },
-    ownerStreet: { type: Type.STRING, nullable: true, description: 'Owner address street' },
-    ownerZip: { type: Type.INTEGER, nullable: true, description: 'Owner address postal code as integer' },
-    ownerCity: { type: Type.STRING, nullable: true, description: 'Owner address city' },
-  },
-  required: ['isRegistrationDocument'],
-};
+const responseSchema = z.object({
+  isRegistrationDocument: z.boolean().describe('Whether the image is a vehicle registration certificate (registration document)'),
+  side: registrationCertificateSideSchema.nullable().describe('Which side of the registration document is shown: front or back'),
+  vin: z.string().nullable().describe('Full VIN number'),
+  plate: z.string().nullable().describe('License plate number'),
+  firstRegisteredAt: z.string().nullable().describe('First registration date in YYYY-MM-DD format'),
+  ownerName: z.string().nullable().describe('Registered owner full name'),
+  ownerStreet: z.string().nullable().describe('Owner address street'),
+  ownerZip: z.number().int().nullable().describe('Owner address postal code as integer'),
+  ownerCity: z.string().nullable().describe('Owner address city'),
+});
 
 const buildPrompt = (): string => {
   return [
@@ -56,10 +44,11 @@ const buildPrompt = (): string => {
 
 export const analyzeRegistrationCertificate = async (input: AnalyzeRegistrationCertificateInput): Promise<RegistrationCertificateAnalysis> => {
   const prompt = buildPrompt();
-  const raw = await generateStructuredJsonFromImage<RegistrationCertificateAnalysis>(
+  const raw = await generateStructuredJsonFromImage(
     prompt,
     { data: input.body, mimeType: input.contentType },
     responseSchema,
+    'registration-certificate-analysis',
   );
   const analysis = registrationCertificateAnalysisSchema.parse(raw);
   return analysis;

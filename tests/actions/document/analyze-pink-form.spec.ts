@@ -27,11 +27,10 @@ describe('analyzePinkForm', () => {
     expect(generateStructuredJsonFromImage).toHaveBeenCalledWith(
       expect.stringContaining('pink form'),
       { data: fileBody, mimeType: 'image/jpeg' },
-      expect.objectContaining({
-        type: 'OBJECT',
-        required: ['isPinkForm'],
-      }),
+      expect.anything(),
+      'pink-form-analysis',
     );
+    expect(vi.mocked(generateStructuredJsonFromImage).mock.calls[0][2].safeParse({ isPinkForm: true }).success).toBe(true);
     expect(result).toEqual({ isPinkForm: true });
   });
 

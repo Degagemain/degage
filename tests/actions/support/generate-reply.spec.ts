@@ -2,15 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SystemParameterCategory, SystemParameterType } from '@/domain/system-parameter.model';
 import { supportAssistantPromptSystemParameterCodes } from '@/domain/support-assistant-prompt.model';
 
-vi.mock('@ai-sdk/google', () => ({
-  google: vi.fn((model: string) => ({ model })),
-}));
-
 vi.mock('ai', () => ({
   generateText: vi.fn().mockResolvedValue({ text: 'assistant reply' }),
   streamText: vi.fn(),
   stepCountIs: vi.fn((count: number) => ({ count })),
   convertToModelMessages: vi.fn(async (messages: unknown) => messages),
+  gateway: vi.fn((model: string) => ({ model })),
 }));
 
 vi.mock('@/actions/documentation/search-rag', () => ({

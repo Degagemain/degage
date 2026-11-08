@@ -1,5 +1,4 @@
-import type { Schema } from '@google/genai';
-import { Type } from '@google/genai';
+import * as z from 'zod';
 
 import { type InspectionCertificateAnalysis, inspectionCertificateAnalysisSchema } from '@/domain/inspection-certificate-analysis.model';
 import { generateStructuredJsonFromImage } from '@/integrations/gemini';
@@ -9,16 +8,9 @@ export type AnalyzeInspectionCertificateInput = {
   contentType: string;
 };
 
-const responseSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    isInspectionCertificate: {
-      type: Type.BOOLEAN,
-      description: 'Whether the image is a vehicle inspection certificate (technical inspection document)',
-    },
-  },
-  required: ['isInspectionCertificate'],
-};
+const responseSchema = z.object({
+  isInspectionCertificate: z.boolean().describe('Whether the image is a vehicle inspection certificate (technical inspection document)'),
+});
 
 const buildPrompt = (): string => {
   return [
@@ -29,10 +21,11 @@ const buildPrompt = (): string => {
 
 export const analyzeInspectionCertificate = async (input: AnalyzeInspectionCertificateInput): Promise<InspectionCertificateAnalysis> => {
   const prompt = buildPrompt();
-  const raw = await generateStructuredJsonFromImage<InspectionCertificateAnalysis>(
+  const raw = await generateStructuredJsonFromImage(
     prompt,
     { data: input.body, mimeType: input.contentType },
     responseSchema,
+    'inspection-certificate-analysis',
   );
   const analysis = inspectionCertificateAnalysisSchema.parse(raw);
   return analysis;

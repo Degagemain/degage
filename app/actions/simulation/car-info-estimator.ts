@@ -1,5 +1,4 @@
-import type { Schema } from '@google/genai';
-import { Type } from '@google/genai';
+import * as z from 'zod';
 
 import type { FuelType } from '@/domain/fuel-type.model';
 import type { SimulationCarInfo } from '@/domain/simulation.model';
@@ -12,32 +11,17 @@ import { dbCarInfoFindByCarTypeAndYear } from '@/storage/car-info/car-info.find-
 import { dbCarInfoCreate } from '@/storage/car-info/car-info.create';
 import { generateStructuredJson } from '@/integrations/gemini';
 
-interface GeminiCarInfoResponse {
-  cylinderCc: number;
-  co2Emission: number;
-  ecoscore: number;
-  euroNormCode: string | null;
-  consumption: number;
-}
-
-function buildResponseSchema(euroNormCodes: string[], isElectric: boolean): Schema {
+function buildResponseSchema(euroNormCodes: string[], isElectric: boolean) {
   const consumptionDescription = isElectric ? 'Energy consumption in kWh/100 km' : 'Fuel consumption in L/100 km';
-  return {
-    type: Type.OBJECT,
-    properties: {
-      cylinderCc: { type: Type.INTEGER, description: 'Engine displacement in cubic centimeters (cc)' },
-      co2Emission: { type: Type.INTEGER, description: 'CO2 emissions in g/km (NEDC or WLTP combined)' },
-      ecoscore: { type: Type.INTEGER, minimum: 0, maximum: 100, description: 'Ecoscore rating from 0 to 100' },
-      euroNormCode: {
-        type: Type.STRING,
-        nullable: true,
-        enum: euroNormCodes,
-        description: 'Euro emission norm code that applies to this car',
-      },
-      consumption: { type: Type.NUMBER, description: consumptionDescription },
-    },
-    required: ['cylinderCc', 'co2Emission', 'ecoscore', 'consumption'],
-  };
+  const euroNormCodeSchema =
+    euroNormCodes.length > 0 ? z.enum([euroNormCodes[0], ...euroNormCodes.slice(1)]).nullable() : z.string().nullable();
+  return z.object({
+    cylinderCc: z.number().int().describe('Engine displacement in cubic centimeters (cc)'),
+    co2Emission: z.number().int().describe('CO2 emissions in g/km (NEDC or WLTP combined)'),
+    ecoscore: z.number().int().min(0).max(100).describe('Ecoscore rating from 0 to 100'),
+    euroNormCode: euroNormCodeSchema.describe('Euro emission norm code that applies to this car'),
+    consumption: z.number().describe(consumptionDescription),
+  });
 }
 
 function buildPrompt(
@@ -104,7 +88,7 @@ export async function carInfoEstimator(
   const prompt = buildPrompt(brand.name, carTypeName, fuelType.name, year, euroNormCodes, isElectric);
   const responseSchema = buildResponseSchema(euroNormCodes, isElectric);
 
-  const result = await generateStructuredJson<GeminiCarInfoResponse>(prompt, responseSchema);
+  const result = await generateStructuredJson(prompt, responseSchema, 'car-info-estimate');
 
   if (carTypeId) {
     const euroNormResolved = result.euroNormCode ? await dbEuroNormFindByCode(result.euroNormCode) : null;

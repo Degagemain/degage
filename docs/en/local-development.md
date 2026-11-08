@@ -6,8 +6,28 @@ roles:
 
 # Local development
 
+This is an open source project. Avoid brand names in places that are not user-facing: code, developer docs, examples, commit messages, scripts,
+and agent rules. User-facing product copy can keep the product name.
+
 Several checkouts of this repository (worktrees, clones, branches) can run at the same time. They share one Postgres container, and each
 checkout gets its own database inside it.
+
+## Branches
+
+Trunk-based development. `staging` is the trunk and the GitHub default branch. Open pull requests against `staging`.
+
+`main` is production. The Release action tags it, and it lags `staging`. Start feature work from an up-to-date `staging`:
+
+```bash
+git fetch origin staging
+git checkout staging
+git pull
+pnpm worktree:new -- feat/my-branch
+cd ../<repository>-feat-my-branch
+pnpm dev
+```
+
+The `--` is required. `pnpm worktree:new` creates the branch from the current commit.
 
 ## Shared stack
 
@@ -32,11 +52,9 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app_feat_my_branch?sc
 DATABASE_URL_UNPOOLED=postgresql://postgres:postgres@localhost:5432/app_feat_my_branch?schema=public
 ```
 
-Create a sibling checkout with `pnpm worktree:new -- feat/my-branch`. That creates the branch when it does not exist (or checks out an existing
-local or `origin` branch), adds a git worktree one directory above the repo (slashes in the branch name become hyphens in the folder name:
-`<repository>-feat-my-branch`), and runs `pnpm i`. The `.env` is copied from the checkout you run the command in, so run it somewhere that has
-one. If it does not, you get a warning and the database steps are skipped. Otherwise it copies `.env`, runs `pnpm worktree:init`, then
-`db:start`, migrate, seed, and the dev-account seed.
+The worktree command creates the branch when it does not exist (or checks out an existing local or `origin` branch) and runs `pnpm i`. The
+`.env` is copied from the checkout you run the command in, so run it somewhere that has one. If it does not, you get a warning and the database
+steps are skipped. Otherwise it copies `.env`, runs `pnpm worktree:init`, then `db:start`, migrate, seed, and the dev-account seed.
 
 `pnpm worktree:init` rewrites the current checkout's `.env` only. It sets `app_<branch>` and `PORT=3000 + (worktree count - 1)`. On a detached
 `HEAD`, the name comes from the directory, with a leading `<repository>-` removed. `pnpm db:migrate` creates the database when it does not
