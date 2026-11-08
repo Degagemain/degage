@@ -1,15 +1,21 @@
 ---
-description: How to write release notes and maintain the changelog
-alwaysApply: false
-globs:
-  - CHANGELOG.md
+description: Write per-feature unreleased notes instead of editing CHANGELOG.md
+alwaysApply: true
 ---
 
 # Release Notes
 
-Release notes live in `CHANGELOG.md` at the repo root. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
-[Semantic Versioning](https://semver.org/).
+Do **not** edit `CHANGELOG.md` during feature work. Concurrent agents conflict on that file.
+
+Write notes to `unreleased/{feature-slug}.md` in the same change that ships a
+user-, admin-, or developer-visible change. One kebab-case file per feature.
+If that file already exists on this branch, append to it.
+
+Never fold `unreleased/` into `CHANGELOG.md` unless the user explicitly asks.
+When they do, run `pnpm changelog:collect` and review the result.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
+the project uses [Semantic Versioning](https://semver.org/).
 
 ## Golden rules
 
@@ -17,29 +23,19 @@ Release notes live in `CHANGELOG.md` at the repo root. The format follows
 - **Functional, not technical** — except in the Technical section.
 - **Write for the reader of that section.** A public entry is read by end users;
   an admin entry by hub operators; a technical entry by developers.
-- **Latest version first.** Newest release at the top, under `Unreleased`.
 - **Omit empty sections.** Only include a section when it has entries.
 
-## Structure
-
-Keep a top `## [Unreleased]` section; move it into a dated version at release time.
-
-Each version is split into three fixed sections, always in this order:
+## File format
 
 ```markdown
-## [Unreleased]
-
 ### Public features
-<!-- End-user facing changes: the simulation, public pages, e-mails users receive. -->
-- ...
+- Added: landing page shows the product flow.
 
 ### Admin features
-<!-- Admin zone changes: entities, configuration, exports/imports operators use. -->
-- ...
+- Changed: the FAQ search now matches article tags.
 
 ### Technical
-<!-- Developer-facing changes: noteworthy refactors, dependencies, breaking APIs. -->
-- ...
+- Extracted documentation search embedding sync into a shared helper.
 ```
 
 ## Writing each section
@@ -66,11 +62,9 @@ Avoid:
 - Here detail is welcome: noteworthy refactors, new dependencies, breaking
   internal changes.
 - Call out **breaking changes** explicitly.
-- **Do not** add entries that only announce a routine schema/Prisma migration
-  (e.g. “migration for nullable `foo` on bar”). If the change already has a
-  Public or Admin entry, that is enough. Mention a migration only when it is
-  itself noteworthy: breaking, destructive, requires a data backfill, or
-  needs operator action beyond a normal deploy.
+- **Do not** add entries that only announce a routine schema/Prisma migration.
+  Mention a migration only when it is noteworthy: breaking, destructive,
+  requires a data backfill, or needs operator action beyond a normal deploy.
 
 ## Versioning
 
@@ -78,13 +72,9 @@ Avoid:
 - `MINOR` — new backward-compatible feature.
 - `PATCH` — backward-compatible bug fix.
 
-## When to update
-
-Add an entry under `## [Unreleased]` in the same change that ships a
-user-, admin-, or developer-visible change. Derive the entry from the change
-itself, not from the git log.
+Derive the entry from the change itself, not from the git log.
 
 ## Discord announcements
 
-The changelog stays English. When asked to announce a release to admins, follow
+The notes stay English. When asked to announce a release to admins, follow
 `.cursor/rules/release-announcements.mdc` (Dutch Discord post, not changelog).

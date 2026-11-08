@@ -6,12 +6,29 @@ roles:
 
 # Releasing
 
+Feature work writes notes to `unreleased/{feature-slug}.md` so concurrent changes do not conflict on `CHANGELOG.md`. Collect those files into
+`[Unreleased]` yourself before cutting a version. The release workflow does not collect them.
+
 Releases are created manually via the **Release** GitHub Action (`.github/workflows/release.yml`). The workflow:
 
 1. Moves `[Unreleased]` entries in `CHANGELOG.md` into a new dated version (patch bump of the latest release).
 2. Syncs `package.json` `version` to that number.
 3. Commits, tags, and pushes to `main`.
 4. Creates a GitHub Release whose body is exactly that changelog section.
+
+## Collecting unreleased notes
+
+Run this locally, review the changelog, and commit the result before starting a release:
+
+```bash
+pnpm changelog:collect
+```
+
+This merges every `unreleased/*.md` into `## [Unreleased]` and deletes the collected files. Dry-run:
+
+```bash
+pnpm changelog:collect -- --dry-run
+```
 
 ## `RELEASE_TOKEN` secret
 
@@ -27,11 +44,12 @@ Without this secret, the workflow will fail when pushing the release commit.
 
 ## Running a release
 
-1. Ensure `[Unreleased]` in `CHANGELOG.md` has at least one bullet entry.
-2. On GitHub: **Actions → Release → Run workflow**.
-3. Confirm the new commit, tag, and Release on `main`.
+1. Run `pnpm changelog:collect` if `unreleased/*.md` still has notes, then commit `CHANGELOG.md` and the removed note files.
+2. Ensure `[Unreleased]` in `CHANGELOG.md` has at least one bullet entry.
+3. On GitHub: **Actions → Release → Run workflow**.
+4. Confirm the new commit, tag, and Release on `main`.
 
-Local dry-run (no file changes):
+Local dry-run of the version bump (no file changes):
 
 ```bash
 node scripts/release-changelog.mjs --dry-run

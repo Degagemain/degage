@@ -1,5 +1,4 @@
-import { google } from '@ai-sdk/google';
-import { type UIMessage, convertToModelMessages, generateText, stepCountIs, streamText } from 'ai';
+import { type UIMessage, convertToModelMessages, gateway, generateText, stepCountIs, streamText } from 'ai';
 import { z } from 'zod';
 import { searchDocumentationForRag } from '@/actions/documentation/search-rag';
 import type { DocumentationAudienceRole } from '@/domain/documentation.model';
@@ -112,7 +111,7 @@ export const generateSupportReplyStream = async (
   let latestRagCitations: DocumentationSupportCitation[] = [];
 
   const result = streamText({
-    model: google('gemini-2.5-flash'),
+    model: gateway('google/gemini-2.5-flash'),
     system: await buildSystemPrompt({
       channel: options.replyStyle === 'formal_email' ? 'email' : 'chat',
       includeCitations,
@@ -175,7 +174,7 @@ export const generateSupportReplyText = async (
   let latestRagCitations: DocumentationSupportCitation[] = [];
 
   const response = await generateText({
-    model: google('gemini-2.5-flash'),
+    model: gateway('google/gemini-2.5-flash'),
     system: await buildSystemPrompt({
       channel: options.replyStyle === 'formal_email' ? 'email' : 'chat',
       includeCitations,

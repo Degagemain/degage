@@ -351,6 +351,117 @@
         "error": "Failed to delete email template."
       }
     },
+    "contractTypes": {
+      "title": "Contract types",
+      "searchPlaceholder": "Search contract types...",
+      "tryAgain": "Try again",
+      "columns": {
+        "code": "Code",
+        "defaultSignee": "Default signee",
+        "defaultViewers": "Default viewers",
+        "template": "Documenso template",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "template": {
+        "ready": "Template ready",
+        "missing": "No template yet",
+        "upload": "Upload PDF",
+        "uploading": "Uploading…",
+        "open": "Open in Documenso",
+        "uploadSuccess": "Documenso template created.",
+        "uploadError": "Could not create the Documenso template."
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "form": {
+        "none": "None",
+        "placeholders": {
+          "code": "car-onboarding",
+          "defaultSignee": "Optional Degage signee",
+          "defaultViewers": "Select viewers"
+        },
+        "help": {
+          "code": "Unique code, also used as the name. Lowercase letters, numbers, and hyphens. Cannot be changed after creation.",
+          "defaultSignee": "Optional Degage admin who must also sign. Leave empty when only the owner signs.",
+          "defaultViewers": "Admins who receive a copy of the signed contract.",
+          "template": "Upload a PDF to create a Documenso template, then place signature fields in Documenso."
+        },
+        "validation": {
+          "code": "Use lowercase letters, numbers, and hyphens.",
+          "duplicate": "A contract type with this code already exists."
+        }
+      },
+      "delete": {
+        "title": "Delete contract type",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Contract type deleted successfully.",
+        "error": "Failed to delete contract type.",
+        "conflict": "This contract type is linked to contracts and cannot be deleted."
+      }
+    },
+    "contracts": {
+      "title": "Contracts",
+      "searchPlaceholder": "Search contracts...",
+      "tryAgain": "Try again",
+      "columns": {
+        "user": "User",
+        "type": "Type",
+        "status": "Status",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "updated": "Updated"
+      },
+      "statuses": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "signed": "Signed"
+      },
+      "actions": {
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "view": "View",
+        "delete": "Delete",
+        "send": "Send",
+        "openDocument": "Open PDF"
+      },
+      "form": {
+        "placeholders": {
+          "user": "Select a user",
+          "type": "Select a contract type"
+        },
+        "help": {
+          "user": "Person who must sign the contract.",
+          "type": "Contract type and Documenso template to use.",
+          "startDate": "Contract start date.",
+          "endDate": "Optional end date."
+        },
+        "validation": {
+          "endBeforeStart": "End date must be on or after the start date."
+        }
+      },
+      "send": {
+        "success": "Contract sent for signature.",
+        "error": "Could not send the contract.",
+        "sending": "Sending…"
+      },
+      "document": {
+        "error": "Could not open the signed PDF."
+      },
+      "delete": {
+        "title": "Delete contract",
+        "description": "Are you sure you want to delete the contract for \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel",
+        "success": "Contract deleted successfully.",
+        "error": "Failed to delete contract."
+      }
+    },
     "carBrands": {
       "title": "Car Brands",
       "filters": {
@@ -1455,6 +1566,20 @@
         "columnName": "Road assistance plan"
       }
     },
+    "featureFlags": {
+      "title": "Feature flags",
+      "columns": {
+        "code": "Code",
+        "description": "Description",
+        "enabled": "Enabled",
+        "updated": "Updated"
+      },
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "toggleFailed": "Failed to update feature flag",
+      "searchPlaceholder": "Search feature flags...",
+      "tryAgain": "Try again"
+    },
     "systemParameters": {
       "title": "System Parameters",
       "filters": {
@@ -1672,6 +1797,7 @@
         "shareStartDate": "Share start date",
         "carName": "Car name",
         "carPcId": "Autofiche",
+        "gsheetRowNumber": "Google Sheet row",
         "preparationConfirmedAt": "Preparation confirmed by owner at",
         "lastPreparationNudgeEmail": "Last preparation reminder email",
         "simulation": "Simulation",
@@ -1692,7 +1818,8 @@
         "carValue": "Car value",
         "shareStart": "Car name & start date",
         "finalize": "Finalize",
-        "adminHandoff": "Admin wrap-up"
+        "adminHandoff": "Admin wrap-up",
+        "contract": "Contract"
       },
       "preparationStatus": {
         "open": "Open",
@@ -1806,6 +1933,13 @@
         "syncAutoficheConfirming": "Syncing…",
         "syncAutoficheSuccess": "Autofiche synced.",
         "syncAutoficheError": "Failed to sync autofiche.",
+        "syncGsheet": "Sync Google Sheet",
+        "syncGsheetTitle": "Sync Google Sheet?",
+        "syncGsheetDescription": "Preparation is not finished yet. The spreadsheet row may be incomplete. Sync anyway?",
+        "syncGsheetConfirm": "Sync",
+        "syncGsheetConfirming": "Syncing…",
+        "syncGsheetSuccess": "Google Sheet synced.",
+        "syncGsheetError": "Failed to sync Google Sheet.",
         "ownerPlayConnectorPendingSave": "Save the record to refresh the Play connector status for the selected owner.",
         "startOnboardingLocked": "Preparation is locked. Unlock it to allow changes again.",
         "unlockPreparation": "Unlock preparation",
@@ -1892,7 +2026,23 @@
           "carNameTaken": "This name is already taken.",
           "carNameChecking": "Checking availability…",
           "carNameAvailable": "This name is available."
-        }
+        },
+        "contractOwnerMissing": "Assign an owner before starting the contract.",
+        "contractNotStarted": "No car-onboarding contract has been started yet.",
+        "contractStart": "Start contract",
+        "contractStarting": "Starting…",
+        "contractSend": "Send for signature",
+        "contractStartSuccess": "Contract sent for signature.",
+        "contractStartError": "Failed to start the contract.",
+        "contractResend": "Send signature again",
+        "contractResending": "Sending…",
+        "contractResendSuccess": "Signature request sent again.",
+        "contractResendError": "Failed to resend the signature request.",
+        "contractStatus": "Contract status",
+        "contractType": "Contract type",
+        "contractOpenAdmin": "Open in contracts",
+        "contractOpenDocument": "Open signed PDF",
+        "contractDocumentError": "Failed to open the signed contract."
       },
       "detailPage": {
         "owner": "Owner",
@@ -2055,7 +2205,8 @@
         "car_onboarding_road_assistance_plan": "Car onboarding — Road assistance plan",
         "car_onboarding_car_value": "Car onboarding — Car value",
         "car_onboarding_share_start": "Car onboarding — Car name & start date",
-        "car_onboarding_car_stickers": "Car onboarding — Car stickers"
+        "car_onboarding_car_stickers": "Car onboarding — Car stickers",
+        "car_onboarding_contract": "Car onboarding — Contract"
       },
       "filters": {
         "isFaq": "Type",
@@ -2488,6 +2639,14 @@
       "ownerKmLabel": "Km per year",
       "ownerKmPlaceholder": "e.g. 15000",
       "ownerKmHint": "How many kilometres you expect to drive per year with this car. As a guide: occasional use about 5,000–8,000; daily commute about 12,000–20,000; heavy use 25,000 or more.",
+      "errorCarTypeOtherRequired": "Enter the car type when \"Other\" is selected.",
+      "errorValidSeats": "Enter a valid number of seats.",
+      "errorValidPurchaseAmount": "Enter a valid purchase amount.",
+      "errorValidMileage": "Enter a valid mileage.",
+      "errorFirstRegistrationRequired": "Please enter the first registration date.",
+      "errorFirstRegistrationInvalid": "Please enter a valid date.",
+      "errorFirstRegistrationFuture": "The first registration date cannot be in the future.",
+      "errorValidOwnerKmPerYear": "Enter a valid number of kilometres per year.",
       "submit": "Simulate my car →"
     },
     "loading": {
@@ -2742,9 +2901,18 @@
       "paragraph2": "Dégage is a fast-growing community of more than 550 owners and 7,000 members. We pursue no profit, but affordable, reliable and accessible mobility.",
       "paragraph3": "By sharing cars and bikes with each other, Dégage brings people back in touch with one another. We have been doing this for more than 25 years, independent and self-sufficient. And we are proud of that.",
       "stats": {
-        "owners": { "value": "550+", "label": "owners" },
-        "members": { "value": "7,000", "label": "members" },
-        "years": { "value": "25+", "label": "years of experience" }
+        "owners": {
+          "value": "550+",
+          "label": "owners"
+        },
+        "members": {
+          "value": "7,000",
+          "label": "members"
+        },
+        "years": {
+          "value": "25+",
+          "label": "years of experience"
+        }
       },
       "imageAlt": "Dégage community, neighbours sharing cars"
     },
@@ -2831,6 +2999,7 @@
     "emptyConversationTitle": "Ask anything",
     "emptyConversationDescription": "You can ask any question about Dégage. Replies use your documentation when it helps.",
     "inputPlaceholder": "Ask your question...",
+    "inputDisclaimer": "You're chatting with an AI assistant. Dégage volunteers and staff periodically review chats to improve our service.",
     "inputCharacterCount": "{current} / {max}",
     "send": "Send",
     "stop": "Stop",
@@ -3185,6 +3354,15 @@
         "loading": "Loading stickers…",
         "loadError": "Could not load stickers. Please try again.",
         "alwaysIncluded": "Always included"
+      },
+      "contract": {
+        "waiting": "Dégage still needs to start your owner contract. You will see this step once the signature request is sent.",
+        "needsSignature": "You still need to sign your owner contract.",
+        "checkEmail": "Check your email for the Documenso signing link.",
+        "signed": "Everyone has signed. You can download the signed contract.",
+        "download": "Download contract",
+        "downloading": "Opening…",
+        "downloadError": "Failed to open the signed contract."
       }
     }
   },

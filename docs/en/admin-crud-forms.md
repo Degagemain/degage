@@ -30,6 +30,8 @@ entities that will get matching **new** and **`[id]`** pages.
 | `insurance-price-benchmarks`               | `/api/insurance-price-benchmarks`    | `…/{id}`                    | No                                    | Done                         |
 | `documentation`                            | `/api/documentation`                 | `/api/documentation/{id}`   | Per-locale content (custom)           | Separate flow                |
 | `email-templates`                          | `/api/email-templates`               | `/api/email-templates/{id}` | Yes (`translations[]` with variables) | Done                         |
+| `contract-types`                           | `/api/contract-types`                | `/api/contract-types/{id}`  | No                                    | Done                         |
+| `contracts`                                | `/api/contracts`                     | `/api/contracts/{id}`       | No                                    | Done                         |
 | `simulations`                              | `/api/simulations`                   | — (no `PUT` on item)        | N/A                                   | Has `new` + read-only `[id]` |
 | `users`                                    | — (no collection `POST`)             | `/api/users/{id}`           | No                                    | Edit only (`[id]`, no `new`) |
 

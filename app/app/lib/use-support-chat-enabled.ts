@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import posthog from 'posthog-js';
-import { isPostHogClientEnabled } from '@/app/lib/posthog';
-import { supportChatFeatureFlag } from '@/domain/chat.model';
+import { type FeatureFlag, SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
+import { Page } from '@/domain/page.model';
+import { MaxTake } from '@/domain/utils';
 
 export type SupportChatAvailability = 'loading' | 'enabled' | 'disabled';
 
@@ -11,20 +11,30 @@ export function useSupportChatAvailability(): SupportChatAvailability {
   const [availability, setAvailability] = useState<SupportChatAvailability>('loading');
 
   useEffect(() => {
-    if (!isPostHogClientEnabled()) {
-      setAvailability('enabled');
-      return;
-    }
+    let cancelled = false;
 
-    const apply = () => {
-      setAvailability(posthog.isFeatureEnabled(supportChatFeatureFlag) === true ? 'enabled' : 'disabled');
+    const load = async () => {
+      try {
+        const params = new URLSearchParams({ take: String(MaxTake) });
+        const response = await fetch(`/api/feature-flags?${params.toString()}`);
+        if (!response.ok) {
+          if (!cancelled) setAvailability('disabled');
+          return;
+        }
+        const result: Page<FeatureFlag> = await response.json();
+        const flag = result.records.find((item) => item.code === SUPPORT_CHAT_FEATURE_FLAG);
+        if (!cancelled) {
+          setAvailability(flag?.enabled === true ? 'enabled' : 'disabled');
+        }
+      } catch {
+        if (!cancelled) setAvailability('disabled');
+      }
     };
 
-    if (posthog.isFeatureEnabled(supportChatFeatureFlag) !== undefined) {
-      apply();
-    }
-
-    return posthog.onFeatureFlags(apply);
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return availability;

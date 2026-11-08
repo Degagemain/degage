@@ -1,5 +1,6 @@
 import * as z from 'zod';
 
+import { contractStatusSchema } from '@/domain/contract.model';
 import { idNameSchema, userReferenceSchema } from '@/domain/id-name.model';
 import { isValidPhoneNumber, nullablePhoneNumberSchema } from '@/domain/phone.model';
 
@@ -100,12 +101,17 @@ export const carOnboardingInfoSessionSchema = z
   })
   .strict();
 
+export const carOnboardingContractRefSchema = idNameSchema.extend({
+  status: contractStatusSchema,
+});
+
 export type CarOnboardingCarInfo = z.infer<typeof carOnboardingCarInfoSchema>;
 export type CarOnboardingUserInfo = z.infer<typeof carOnboardingUserInfoSchema>;
 export type CarOnboardingCarValue = z.infer<typeof carOnboardingCarValueSchema>;
 export type CarOnboardingInsurer = z.infer<typeof carOnboardingInsurerSchema>;
 export type CarOnboardingRoadAssistancePlan = z.infer<typeof carOnboardingRoadAssistancePlanSchema>;
 export type CarOnboardingInfoSession = z.infer<typeof carOnboardingInfoSessionSchema>;
+export type CarOnboardingContractRef = z.infer<typeof carOnboardingContractRefSchema>;
 
 export const carOnboardingSchema = carOnboardingCarInfoSchema
   .merge(carOnboardingUserInfoSchema)
@@ -134,10 +140,12 @@ export const carOnboardingSchema = carOnboardingCarInfoSchema
     inspectionCertificate: idNameSchema.nullable().default(null),
     pinkForm: idNameSchema.nullable().default(null),
     proofOfPurchase: idNameSchema.nullable().default(null),
+    contract: carOnboardingContractRefSchema.nullable().default(null),
     carStickers: z.array(idNameSchema).default([]),
     carName: z.string().nullable().default(null),
     shareStartDate: z.coerce.date().nullable().default(null),
     carPcId: z.number().int().positive().nullable().default(null),
+    gsheetRowNumber: z.number().int().positive().nullable().default(null),
     preparationConfirmedAt: z.coerce.date().nullable().default(null),
     lastPreparationNudgeEmail: z.coerce.date().nullable().default(null),
     statusInPreparation: z.enum(CarOnboardingInPreparationStatus).default(CarOnboardingInPreparationStatus.OPEN),
@@ -312,10 +320,12 @@ export const carOnboardingFromSimulation = (
     inspectionCertificate: null,
     pinkForm: null,
     proofOfPurchase: null,
+    contract: null,
     carStickers: [],
     carName: null,
     shareStartDate: null,
     carPcId: null,
+    gsheetRowNumber: null,
     statusInPreparation: CarOnboardingInPreparationStatus.OPEN,
     preparationConfirmedAt: null,
     lastPreparationNudgeEmail: null,

@@ -1,5 +1,5 @@
 import type { ChapterActor } from './chapters-config';
-import type { StepId } from './types';
+import type { PrepStepId, StepId, TransitionStepId } from './types';
 
 export type StepDefinition = {
   id: StepId;
@@ -63,6 +63,16 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
     subtitleKey: 'steps.carStickers.subtitle',
     actors: ['you'],
   },
+  {
+    id: 'contract',
+    titleKey: 'chapters.transition.steps.contract.title',
+    subtitleKey: 'chapters.transition.steps.contract.subtitle',
+    actors: ['you', 'degage'],
+  },
 ];
 
 export const getStepDefinition = (id: StepId): StepDefinition | undefined => STEP_DEFINITIONS.find((s) => s.id === id);
+
+export const getPrepStepDefinition = (id: PrepStepId): StepDefinition | undefined => getStepDefinition(id);
+
+export const getTransitionStepDefinition = (id: TransitionStepId): StepDefinition | undefined => getStepDefinition(id);

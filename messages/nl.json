@@ -351,6 +351,117 @@
         "error": "E-mailtemplate verwijderen mislukt."
       }
     },
+    "contractTypes": {
+      "title": "Contracttypes",
+      "searchPlaceholder": "Zoek contracttypes...",
+      "tryAgain": "Opnieuw proberen",
+      "columns": {
+        "code": "Code",
+        "defaultSignee": "Standaard ondertekenaar",
+        "defaultViewers": "Standaard kijkers",
+        "template": "Documenso-template",
+        "created": "Aangemaakt",
+        "updated": "Bijgewerkt"
+      },
+      "template": {
+        "ready": "Template klaar",
+        "missing": "Nog geen template",
+        "upload": "PDF uploaden",
+        "uploading": "Uploaden…",
+        "open": "Open in Documenso",
+        "uploadSuccess": "Documenso-template aangemaakt.",
+        "uploadError": "Kon de Documenso-template niet aanmaken."
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen"
+      },
+      "form": {
+        "none": "Geen",
+        "placeholders": {
+          "code": "car-onboarding",
+          "defaultSignee": "Optionele Dégage-ondertekenaar",
+          "defaultViewers": "Selecteer kijkers"
+        },
+        "help": {
+          "code": "Unieke code, ook gebruikt als naam. Kleine letters, cijfers en koppeltekens. Kan na het aanmaken niet meer worden gewijzigd.",
+          "defaultSignee": "Optionele Dégage-admin die ook moet ondertekenen. Laat leeg als alleen de eigenaar tekent.",
+          "defaultViewers": "Admins die een kopie van het getekende contract ontvangen.",
+          "template": "Upload een PDF om een Documenso-template te maken en plaats daarna handtekeningvelden in Documenso."
+        },
+        "validation": {
+          "code": "Gebruik kleine letters, cijfers en koppeltekens.",
+          "duplicate": "Er bestaat al een contracttype met deze code."
+        }
+      },
+      "delete": {
+        "title": "Contracttype verwijderen",
+        "description": "Weet je zeker dat je \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Contracttype succesvol verwijderd.",
+        "error": "Contracttype verwijderen mislukt.",
+        "conflict": "Dit contracttype is gekoppeld aan contracten en kan niet worden verwijderd."
+      }
+    },
+    "contracts": {
+      "title": "Contracten",
+      "searchPlaceholder": "Zoek contracten...",
+      "tryAgain": "Opnieuw proberen",
+      "columns": {
+        "user": "Gebruiker",
+        "type": "Type",
+        "status": "Status",
+        "startDate": "Startdatum",
+        "endDate": "Einddatum",
+        "updated": "Bijgewerkt"
+      },
+      "statuses": {
+        "draft": "Concept",
+        "sent": "Verzonden",
+        "signed": "Getekend"
+      },
+      "actions": {
+        "openMenu": "Menu openen",
+        "edit": "Bewerken",
+        "view": "Bekijken",
+        "delete": "Verwijderen",
+        "send": "Verzenden",
+        "openDocument": "PDF openen"
+      },
+      "form": {
+        "placeholders": {
+          "user": "Selecteer een gebruiker",
+          "type": "Selecteer een contracttype"
+        },
+        "help": {
+          "user": "Persoon die het contract moet ondertekenen.",
+          "type": "Contracttype en Documenso-template die gebruikt worden.",
+          "startDate": "Startdatum van het contract.",
+          "endDate": "Optionele einddatum."
+        },
+        "validation": {
+          "endBeforeStart": "Einddatum moet op of na de startdatum liggen."
+        }
+      },
+      "send": {
+        "success": "Contract verzonden ter ondertekening.",
+        "error": "Kon het contract niet verzenden.",
+        "sending": "Verzenden…"
+      },
+      "document": {
+        "error": "Kon de getekende PDF niet openen."
+      },
+      "delete": {
+        "title": "Contract verwijderen",
+        "description": "Weet je zeker dat je het contract voor \"{name}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "cancel": "Annuleren",
+        "success": "Contract succesvol verwijderd.",
+        "error": "Contract verwijderen mislukt."
+      }
+    },
     "carBrands": {
       "title": "Automerken",
       "filters": {
@@ -1455,6 +1566,20 @@
         "columnName": "Pechverhelpingsplan"
       }
     },
+    "featureFlags": {
+      "title": "Feature flags",
+      "columns": {
+        "code": "Code",
+        "description": "Omschrijving",
+        "enabled": "Ingeschakeld",
+        "updated": "Bijgewerkt"
+      },
+      "enabled": "Ingeschakeld",
+      "disabled": "Uitgeschakeld",
+      "toggleFailed": "Feature flag bijwerken mislukt",
+      "searchPlaceholder": "Zoek feature flags...",
+      "tryAgain": "Opnieuw proberen"
+    },
     "systemParameters": {
       "title": "Systeemparameters",
       "filters": {
@@ -1672,6 +1797,7 @@
         "shareStartDate": "Startdatum autodelen",
         "carName": "Naam van de wagen",
         "carPcId": "Autofiche",
+        "gsheetRowNumber": "Google Sheet-rij",
         "preparationConfirmedAt": "Voorbereiding door eigenaar bevestigd op",
         "lastPreparationNudgeEmail": "Laatste herinneringsmail voorbereiding",
         "simulation": "Simulatie",
@@ -1692,7 +1818,8 @@
         "carValue": "Waarde van de wagen",
         "shareStart": "Naam & startdatum",
         "finalize": "Afronden",
-        "adminHandoff": "Administratieve afhandeling"
+        "adminHandoff": "Administratieve afhandeling",
+        "contract": "Contract"
       },
       "preparationStatus": {
         "open": "Open",
@@ -1806,6 +1933,13 @@
         "syncAutoficheConfirming": "Bezig met synchroniseren…",
         "syncAutoficheSuccess": "Autofiche gesynchroniseerd.",
         "syncAutoficheError": "Autofiche synchroniseren mislukt.",
+        "syncGsheet": "Google Sheet synchroniseren",
+        "syncGsheetTitle": "Google Sheet synchroniseren?",
+        "syncGsheetDescription": "De voorbereiding is nog niet afgerond. De spreadsheetrij kan onvolledig zijn. Toch synchroniseren?",
+        "syncGsheetConfirm": "Synchroniseren",
+        "syncGsheetConfirming": "Bezig met synchroniseren…",
+        "syncGsheetSuccess": "Google Sheet gesynchroniseerd.",
+        "syncGsheetError": "Google Sheet synchroniseren mislukt.",
         "ownerPlayConnectorPendingSave": "Sla het record op om de Play connector-status voor de geselecteerde eigenaar te vernieuwen.",
         "startOnboardingLocked": "Voorbereiding is vergrendeld. Ontgrendel om opnieuw wijzigingen toe te laten.",
         "unlockPreparation": "Voorbereiding ontgrendelen",
@@ -1892,7 +2026,23 @@
           "carNameTaken": "Deze naam is al in gebruik.",
           "carNameChecking": "Beschikbaarheid controleren…",
           "carNameAvailable": "Deze naam is beschikbaar."
-        }
+        },
+        "contractOwnerMissing": "Wijs eerst een eigenaar toe voor je het contract start.",
+        "contractNotStarted": "Er is nog geen eigenaarscontract gestart.",
+        "contractStart": "Contract starten",
+        "contractStarting": "Bezig met starten…",
+        "contractSend": "Versturen ter ondertekening",
+        "contractStartSuccess": "Contract verstuurd ter ondertekening.",
+        "contractStartError": "Contract starten mislukt.",
+        "contractResend": "Handtekening opnieuw versturen",
+        "contractResending": "Bezig met versturen…",
+        "contractResendSuccess": "Handtekeningverzoek opnieuw verstuurd.",
+        "contractResendError": "Handtekening opnieuw versturen mislukt.",
+        "contractStatus": "Contractstatus",
+        "contractType": "Contracttype",
+        "contractOpenAdmin": "Openen bij contracten",
+        "contractOpenDocument": "Ondertekende pdf openen",
+        "contractDocumentError": "Ondertekend contract openen mislukt."
       },
       "detailPage": {
         "owner": "Eigenaar",
@@ -2055,7 +2205,8 @@
         "car_onboarding_road_assistance_plan": "Auto-onboarding — Pechverhelpingsplan",
         "car_onboarding_car_value": "Auto-onboarding — Waarde van de auto",
         "car_onboarding_share_start": "Auto-onboarding — Naam & startdatum",
-        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers"
+        "car_onboarding_car_stickers": "Auto-onboarding — Autostickers",
+        "car_onboarding_contract": "Auto-onboarding — Contract"
       },
       "filters": {
         "isFaq": "Type",
@@ -2488,6 +2639,14 @@
       "ownerKmLabel": "Kilometer per jaar",
       "ownerKmPlaceholder": "bv. 15000",
       "ownerKmHint": "Hoeveel kilometer je per jaar met deze wagen rijdt. Ter indicatie: af en toe gebruik circa 5.000–8.000; woon-werk circa 12.000–20.000; intensief gebruik 25.000 of meer.",
+      "errorCarTypeOtherRequired": "Vul het autotype in wanneer \"Anders\" is geselecteerd.",
+      "errorValidSeats": "Vul een geldig aantal zitplaatsen in.",
+      "errorValidPurchaseAmount": "Vul een geldig aankoopbedrag in.",
+      "errorValidMileage": "Vul een geldige kilometerstand in.",
+      "errorFirstRegistrationRequired": "Vul de datum van eerste inschrijving in.",
+      "errorFirstRegistrationInvalid": "Vul een geldige datum in.",
+      "errorFirstRegistrationFuture": "De datum van eerste inschrijving kan niet in de toekomst liggen.",
+      "errorValidOwnerKmPerYear": "Vul een geldig aantal kilometer per jaar in.",
       "submit": "Simuleer mijn wagen →"
     },
     "loading": {
@@ -2840,6 +2999,7 @@
     "emptyConversationTitle": "Stel een vraag",
     "emptyConversationDescription": "Je kan me alles over Dégage vragen. Ik doe mijn best om te antwoorden. ",
     "inputPlaceholder": "Stel je vraag...",
+    "inputDisclaimer": "Je chat met een AI-assistent. Vrijwilligers en medewerkers van Dégage lezen de chats periodiek na om onze dienstverlening te verbeteren.",
     "inputCharacterCount": "{current} / {max}",
     "send": "Versturen",
     "stop": "Stop",
@@ -3194,6 +3354,15 @@
         "loading": "Stickers laden…",
         "loadError": "Stickers laden mislukt. Probeer opnieuw.",
         "alwaysIncluded": "Altijd inbegrepen"
+      },
+      "contract": {
+        "waiting": "Dégage moet je eigenaarscontract nog starten. Je ziet deze stap zodra het handtekeningverzoek is verstuurd.",
+        "needsSignature": "Je moet je eigenaarscontract nog ondertekenen.",
+        "checkEmail": "Bekijk je e-mail voor de Documenso-ondertekenlink.",
+        "signed": "Iedereen heeft getekend. Je kan het ondertekende contract downloaden.",
+        "download": "Contract downloaden",
+        "downloading": "Openen…",
+        "downloadError": "Ondertekend contract openen mislukt."
       }
     }
   },

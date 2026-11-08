@@ -10,10 +10,11 @@ import { generateSupportReplyStream } from '@/actions/support/generate-reply';
 import { forbiddenResponse, notFoundResponse, safeParseRequestJson } from '@/api/utils';
 import { statusCodes } from '@/api/status-codes';
 import { withPublic } from '@/api/with-context';
-import { isSupportChatEnabled } from '@/integrations/posthog';
+import { isFeatureFlagEnabled } from '@/actions/feature-flag/read';
 import { logger } from '@/lib/logger';
 import { isAdmin } from '@/domain/role.utils';
 import { type ChatCitation, chatUserMessageMaxLength } from '@/domain/chat.model';
+import { SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
 import { type DocumentationAudienceRole, documentationAudienceRoleSchema } from '@/domain/documentation.model';
 
 export const maxDuration = 30;
@@ -53,7 +54,7 @@ const supportChatDisabledResponse = (): Response => {
 export const POST = withPublic(async (request: NextRequest, _context, session) => {
   const user = session?.user;
   try {
-    if (!(await isSupportChatEnabled(user?.id))) {
+    if (!(await isFeatureFlagEnabled(SUPPORT_CHAT_FEATURE_FLAG))) {
       return supportChatDisabledResponse();
     }
   } catch (error) {

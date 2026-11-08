@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Public features
+
+- Added: after the contract is sent, owners see that they still need to sign; once signed, they can download the contract.
+- Added: a short disclaimer under the support chat input explaining that chats are with an AI assistant and may be reviewed by Dégage volunteers and staff.
+- Fixed: the car simulation now shows a clear error when the first registration date is in the future (and for other invalid car-info fields), instead of only greying out the simulate button.
+
+### Admin features
+
+- Added: admins can turn feature flags on or off (including support chat).
+- Added: admins can turn the FAQ hub articles section on or off via the `faq-articles` feature flag.
+- Added: contract types with Documenso PDF templates, and contracts that can be sent for signature.
+- Added: contract type code `other` for general contracts outside car onboarding.
+- Added: admins can start the car-onboarding owner contract from a Contract tab on the onboarding, and can send the signature request again.
+- Added: admins can sync a car onboarding row to the configured Google Spreadsheet from Admin wrap-up.
+- Changed: new simulation result mails to the support inbox include the requester’s email in the subject so each person gets their own thread.
+
+### Technical
+
+- Changed: support chat follows the in-app feature flag `support-chat` instead of PostHog.
+- Removed: `NEXT_PUBLIC_FAQ_ARTICLES_ENABLED`; FAQ hub articles use the `faq-articles` feature flag.
+- Added: Documenso integration (`DOCUMENSO_*` env vars) and webhook at `/api/webhooks/documenso`.
+- Changed: document reading, car info, price estimates, and documentation embeddings go through the AI SDK. The direct Google client is gone.
+- Changed: Gemini calls, including support replies, authenticate with the Vercel AI Gateway key.
+- Linked car onboardings to contracts; Documenso redistribute powers contract resend. Signing does not change car-onboarding status fields.
+- Added: an agent can implement tickets from a worktree through one pull request, one commit per ticket.
+- Added Google Sheets service-account integration (`@googleapis/sheets`) with setup script and health check.
+- Car-onboarding spreadsheet mapping lives under `app/actions/car-onboarding/gsheet/` so the Sheets client stays reusable.
+- Changed: release notes for a change are written to `unreleased/{feature-slug}.md` and folded into the changelog with `pnpm changelog:collect` before a release.
+
 ## [0.0.9] - 2026-10-11
 
 ### Public features

@@ -659,6 +659,7 @@ export function SupportChatDialog({ open, onOpenChange }: SupportChatDialogProps
                       </div>
                     </PromptInputFooter>
                   </PromptInput>
+                  <p className="text-muted-foreground px-0.5 text-xs leading-snug">{t('inputDisclaimer')}</p>
                 </div>
               )}
             </CardContent>

@@ -28,11 +28,12 @@ describe('analyzeProofOfPurchase', () => {
     expect(generateStructuredJsonFromImage).toHaveBeenCalledWith(
       expect.stringContaining('proof of purchase'),
       { data: fileBody, mimeType: 'image/jpeg' },
-      expect.objectContaining({
-        type: 'OBJECT',
-        required: ['isProofOfPurchase'],
-      }),
+      expect.anything(),
+      'proof-of-purchase-analysis',
     );
+    expect(
+      vi.mocked(generateStructuredJsonFromImage).mock.calls[0][2].safeParse({ isProofOfPurchase: true, purchasePriceInclVat: 24990.5 }).success,
+    ).toBe(true);
     expect(result).toEqual({
       isProofOfPurchase: true,
       purchasePriceInclVat: 24990.5,

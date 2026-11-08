@@ -36,6 +36,7 @@ export const documentationTagValues = [
   'car_onboarding_car_value',
   'car_onboarding_share_start',
   'car_onboarding_car_stickers',
+  'car_onboarding_contract',
 ] as const;
 
 export const documentationTagSchema = z.enum(documentationTagValues);

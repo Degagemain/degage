@@ -1,5 +1,4 @@
-import type { Schema } from '@google/genai';
-import { Type } from '@google/genai';
+import * as z from 'zod';
 
 import { type ProofOfPurchaseAnalysis, proofOfPurchaseAnalysisSchema } from '@/domain/proof-of-purchase-analysis.model';
 import { generateStructuredJsonFromImage } from '@/integrations/gemini';
@@ -9,21 +8,12 @@ export type AnalyzeProofOfPurchaseInput = {
   contentType: string;
 };
 
-const responseSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    isProofOfPurchase: {
-      type: Type.BOOLEAN,
-      description: 'Whether the image is a proof of purchase for a new car (invoice, dealer receipt, sales contract, or order confirmation)',
-    },
-    purchasePriceInclVat: {
-      type: Type.NUMBER,
-      nullable: true,
-      description: 'Total purchase amount including VAT, in euros',
-    },
-  },
-  required: ['isProofOfPurchase'],
-};
+const responseSchema = z.object({
+  isProofOfPurchase: z
+    .boolean()
+    .describe('Whether the image is a proof of purchase for a new car (invoice, dealer receipt, sales contract, or order confirmation)'),
+  purchasePriceInclVat: z.number().nullable().describe('Total purchase amount including VAT, in euros'),
+});
 
 const buildPrompt = (): string => {
   return [
@@ -39,10 +29,11 @@ const buildPrompt = (): string => {
 
 export const analyzeProofOfPurchase = async (input: AnalyzeProofOfPurchaseInput): Promise<ProofOfPurchaseAnalysis> => {
   const prompt = buildPrompt();
-  const raw = await generateStructuredJsonFromImage<ProofOfPurchaseAnalysis>(
+  const raw = await generateStructuredJsonFromImage(
     prompt,
     { data: input.body, mimeType: input.contentType },
     responseSchema,
+    'proof-of-purchase-analysis',
   );
   const analysis = proofOfPurchaseAnalysisSchema.parse(raw);
   return analysis;

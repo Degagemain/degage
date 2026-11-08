@@ -53,6 +53,12 @@ function emailTemplateLocale(): UILocale {
   return uiLocales.includes(raw as UILocale) ? (raw as UILocale) : defaultUILocale;
 }
 
+const simulationResultsSupportSubject: Record<UILocale, string> = {
+  en: '[Support] New simulation — result sent – {{{RECIPIENT_EMAIL}}}',
+  nl: '[Support] Nieuwe simulatie — resultaat verstuurd – {{{RECIPIENT_EMAIL}}}',
+  fr: '[Support] Nouvelle simulation — résultat envoyé – {{{RECIPIENT_EMAIL}}}',
+};
+
 export async function notifySimulationResultEmails(simulation: Simulation, options: { recipientEmail: string }): Promise<void> {
   if (simulation.id == null) {
     return;
@@ -88,6 +94,7 @@ export async function notifySimulationResultEmails(simulation: Simulation, optio
       BUTTON_URL: buildAdminSimulationUrl(simulation.id),
       RECIPIENT_EMAIL: options.recipientEmail,
       IS_PURCHASED: isPurchased,
+      ...(isManualReview ? {} : { SUBJECT: simulationResultsSupportSubject[locale] }),
     },
     replyTo: options.recipientEmail,
   });

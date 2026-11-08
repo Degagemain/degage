@@ -27,11 +27,10 @@ describe('analyzeInspectionCertificate', () => {
     expect(generateStructuredJsonFromImage).toHaveBeenCalledWith(
       expect.stringContaining('inspection certificate'),
       { data: fileBody, mimeType: 'image/jpeg' },
-      expect.objectContaining({
-        type: 'OBJECT',
-        required: ['isInspectionCertificate'],
-      }),
+      expect.anything(),
+      'inspection-certificate-analysis',
     );
+    expect(vi.mocked(generateStructuredJsonFromImage).mock.calls[0][2].safeParse({ isInspectionCertificate: true }).success).toBe(true);
     expect(result).toEqual({ isInspectionCertificate: true });
   });
 

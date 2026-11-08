@@ -204,9 +204,26 @@ screen. The same reminder is also sent automatically when no reminder was sent y
 
 ## Onboarding
 
-After preparation, admins manage the onboarding itself under a second menu. That menu has an **Admin wrap-up** tab where admins can sync the
-**Autofiche** (the car record in Play). Sync is unavailable until the owner has attached their Play account. If preparation is not locked yet,
-the admin is asked to confirm before syncing.
+After preparation, admins manage the onboarding itself under a second menu.
+
+### Contract
+
+From the **Contract** tab, an admin starts the car-onboarding contract (same flow as Contracts: create a draft of type car-onboarding and send
+it via Documenso). While the contract is sent, the admin can send the signature request again. When it is signed, the stored PDF can be opened
+from this tab or from Contracts.
+
+On the public onboarding, once preparation is locked and the contract has been sent, the owner sees **Sign your owner contract** under
+**Transition**. Until they have signed, the step shows that a signature is still due (via the email signing link). When the contract is signed,
+they can download the PDF.
+
+Signing the contract does **not** change any car-onboarding status field. Only the linked contract moves to signed; the public step unlocks
+download from that contract status.
+
+### Admin wrap-up
+
+That menu also has an **Admin wrap-up** tab where admins can sync the **Autofiche** (the car record in Play) and the **Google Sheet** row.
+Autofiche sync is unavailable until the owner has attached their Play account. If preparation is not locked yet, the admin is asked to confirm
+before either sync.
 
 ## Creating a record
 
@@ -250,6 +267,7 @@ the admin is asked to confirm before syncing.
 | Info session date                  | Scheduled date of the enrolled info session.                                                                                    |
 | Info session PC id                 | Play connector identifier for the enrolled info session.                                                                        |
 | Autofiche                          | Play identifier of the synced car fiche. Admins sync it from Admin wrap-up.                                                     |
+| Google Sheet row                   | Row number in the car-onboarding Google Spreadsheet. Admins sync it from Admin wrap-up.                                         |
 | Info session status                | Progress of the info session subprocess.                                                                                        |
 | Simulation                         | Linked simulation run, if any.                                                                                                  |
 | Preparation confirmed at           | Date and time when the owner confirmed preparation details.                                                                     |

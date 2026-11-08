@@ -110,7 +110,14 @@ enum DocumentType {
   pinkForm
   proofOfPurchase
   carSticker
+  contract
   other
+}
+
+enum ContractStatus {
+  draft
+  sent
+  signed
 }
 
 model Document {
@@ -129,6 +136,7 @@ model Document {
   carOnboardingsPinkForm                     CarOnboarding[] @relation("PinkForm")
   carOnboardingsProofOfPurchase              CarOnboarding[] @relation("ProofOfPurchase")
   carStickersImage                           CarSticker[]    @relation("CarStickerImage")
+  contracts                                  Contract[]      @relation("ContractDocument")
 }
 
 model CarOnboarding {
@@ -189,10 +197,13 @@ model CarOnboarding {
   pinkForm                       Document?                        @relation("PinkForm", fields: [pinkFormId], references: [id], onDelete: SetNull)
   proofOfPurchaseId              String?
   proofOfPurchase                Document?                        @relation("ProofOfPurchase", fields: [proofOfPurchaseId], references: [id], onDelete: SetNull)
+  contractId          String?                          @unique
+  contract            Contract?                        @relation(fields: [contractId], references: [id], onDelete: SetNull)
   statusInPreparation CarOnboardingInPreparationStatus @default(open)
   shareStartDate      DateTime?
   carName             String?
   carPcId             Int?
+  gsheetRowNumber     Int?
   preparationConfirmedAt DateTime?
   lastPreparationNudgeEmail DateTime?
   stickerLinks        CarOnboardingSticker[]
@@ -517,6 +528,9 @@ model User {
   oauthconsents      OauthConsent[]
   playConnector      PlayConnector?
   carOnboardings     CarOnboarding[]
+  contracts          Contract[]
+  contractTypesAsDefaultSignee ContractType[] @relation("ContractTypeDefaultSignee")
+  contractTypeViewers ContractTypeViewer[]
 
   @@unique([email])
   @@map("user")
@@ -628,6 +642,7 @@ enum DocumentationTag {
   car_onboarding_car_value
   car_onboarding_car_stickers
   car_onboarding_share_start
+  car_onboarding_contract
 }
 
 enum ChatConversationMedium {
@@ -698,6 +713,10 @@ model DocumentationChunk {
   @@unique([documentationId, locale, chunkIndex])
   @@index([documentationId])
   @@index([locale])
+  // Prisma cannot express the hnsw index type; the migration creates it as
+  // `USING hnsw (embedding vector_cosine_ops)`. Keep the name in sync so
+  // `migrate dev` does not see drift and drop it.
+  @@index([embedding], map: "DocumentationChunk_embedding_hnsw_idx")
 }
 
 model TranslationOverride {
@@ -970,4 +989,58 @@ model RoadAssistancePlanTranslation {
   description          String             @default("")
 
   @@unique([roadAssistancePlanId, locale])
+}
+
+model FeatureFlag {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  description String   @default("")
+  enabled     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContractType {
+  id                          String               @id @default(uuid())
+  code                        String               @unique
+  defaultSigneeId             String?
+  defaultSignee               User?                @relation("ContractTypeDefaultSignee", fields: [defaultSigneeId], references: [id], onDelete: SetNull)
+  documensoTemplateEnvelopeId String?
+  viewers                     ContractTypeViewer[]
+  contracts                   Contract[]
+  createdAt                   DateTime             @default(now())
+  updatedAt                   DateTime             @updatedAt
+}
+
+model ContractTypeViewer {
+  id             String       @id @default(uuid())
+  contractTypeId String
+  contractType   ContractType @relation(fields: [contractTypeId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([contractTypeId, userId])
+  @@index([userId])
+}
+
+model Contract {
+  id                           String         @id @default(uuid())
+  userId                       String
+  user                         User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  typeId                       String
+  type                         ContractType   @relation(fields: [typeId], references: [id], onDelete: Restrict)
+  startDate                    DateTime
+  endDate                      DateTime?
+  status                       ContractStatus @default(draft)
+  documentId                   String?
+  document                     Document?      @relation("ContractDocument", fields: [documentId], references: [id], onDelete: SetNull)
+  documensoDocumentEnvelopeId  String?
+  carOnboarding                CarOnboarding?
+  createdAt                    DateTime       @default(now())
+  updatedAt                    DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([typeId])
+  @@index([status])
+  @@index([documensoDocumentEnvelopeId])
 }

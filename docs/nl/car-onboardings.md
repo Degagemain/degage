@@ -193,9 +193,26 @@ zeven dagen geleden is.
 
 ## De instap
 
-Na de voorbereiding beheren admins de instap zelf in een tweede menu. Dat menu heeft een tabblad **Administratieve afhandeling** waar admins de
-**Autofiche** (het wagenrecord in Play) kunnen synchroniseren. Synchroniseren is niet beschikbaar tot de eigenaar het Play-account heeft
-gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de admin eerst bevestiging.
+Na de voorbereiding beheren admins de instap zelf in een tweede menu.
+
+### Contract
+
+Via het tabblad **Contract** start een admin het eigenaarscontract (zelfde flow als bij Contracten: concept van type car-onboarding aanmaken en
+via Documenso versturen). Zolang het contract verzonden is, kan de admin de handtekening opnieuw versturen. Als het getekend is, kan de
+opgeslagen pdf vanaf dit tabblad of via Contracten worden geopend.
+
+Op de publieke onboarding ziet de eigenaar, zodra de voorbereiding vergrendeld is en het contract is verstuurd, **Teken je eigenaarscontract**
+onder **De overstap**. Tot iedereen getekend heeft, ziet de eigenaar dat de handtekening nog openstaat (via de e-mail-ondertekenlink). Na
+ondertekening kan de eigenaar de pdf downloaden.
+
+Het ondertekenen van het contract wijzigt **geen** statusveld van de auto-onboarding. Alleen het gekoppelde contract wordt `signed`; de publieke
+stap ontgrendelt de download op basis van die contractstatus.
+
+### Administratieve afhandeling
+
+Dat menu heeft ook een tabblad **Administratieve afhandeling** waar admins de **Autofiche** (het wagenrecord in Play) en de **Google Sheet**-rij
+kunnen synchroniseren. Autofiche-synchronisatie is niet beschikbaar tot de eigenaar het Play-account heeft gekoppeld. Als de voorbereiding nog
+niet vergrendeld is, vraagt de admin eerst bevestiging voor elke sync.
 
 ## Record aanmaken
 
@@ -244,6 +261,7 @@ gekoppeld. Als de voorbereiding nog niet vergrendeld is, vraagt de admin eerst b
 | Infosessie datum                       | Geplande datum van de ingeschreven infosessie.                                                                                      |
 | Infosessie PC-id                       | Play connector-identificatie van de ingeschreven infosessie.                                                                        |
 | Autofiche                              | Play-identificatie van de gesynchroniseerde autofiche. Admins synchroniseren die vanuit Administratieve afhandeling.                |
+| Google Sheet-rij                       | Rijnummer in de Google Spreadsheet voor auto-onboarding. Admins synchroniseren die vanuit Administratieve afhandeling.              |
 | Infosessiestatus                       | Voortgang van het infosessie-proces.                                                                                                |
 | Simulatie                              | Gekoppelde simulatie-run, indien aanwezig.                                                                                          |
 | Voorbereiding bevestigd op             | Datum en tijd waarop de eigenaar de voorbereidingsgegevens bevestigde.                                                              |

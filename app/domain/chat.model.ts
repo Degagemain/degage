@@ -2,7 +2,6 @@ import * as z from 'zod';
 import { idNameSchema } from './id-name.model';
 
 export const chatUserMessageMaxLength = 4000;
-export const supportChatFeatureFlag = 'support-chat';
 export const chatConversationMediumValues = ['frontend', 'email'] as const;
 export const chatConversationMediumSchema = z.enum(chatConversationMediumValues);
 export type ChatConversationMedium = z.infer<typeof chatConversationMediumSchema>;
