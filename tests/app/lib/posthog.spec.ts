@@ -8,8 +8,7 @@ vi.mock('posthog-js', () => ({
   },
 }));
 
-import posthog from 'posthog-js';
-import type { CaptureResult } from 'posthog-js';
+import posthog, { type CaptureResult } from 'posthog-js';
 import { capture, dropScannerExceptions, identifyPostHogUser, resetPostHog } from '@/app/lib/posthog';
 import { AnalyticsEvent } from '@/domain/analytics-event.model';
 

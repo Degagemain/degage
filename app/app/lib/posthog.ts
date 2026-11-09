@@ -1,4 +1,4 @@
-import posthog, { type CaptureResult } from 'posthog-js';
+import posthog, { type BeforeSendFn } from 'posthog-js';
 import type { AnalyticsEventName } from '@/domain/analytics-event.model';
 
 export const isPostHogClientEnabled = () => !!(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST);
@@ -27,11 +27,8 @@ export const resetPostHog = () => {
 // rejects promises with this message. It does not come from app code.
 const SAFE_LINKS_SCANNER_REJECTION = /Object Not Found Matching Id:\d+, MethodName:\w+, ParamCount:\d+/;
 
-export const dropScannerExceptions = (event: CaptureResult | null): CaptureResult | null => {
-  if (event?.event !== '$exception') return event;
-  const exceptions: { value?: unknown }[] = event.properties.$exception_list ?? [];
-  const isScannerNoise = exceptions.some(
-    (exception) => typeof exception.value === 'string' && SAFE_LINKS_SCANNER_REJECTION.test(exception.value),
-  );
-  return isScannerNoise ? null : event;
+export const dropScannerExceptions: BeforeSendFn = (event) => {
+  if (event.event !== '$exception') return event;
+  const exceptions: { value?: string }[] = event.properties.$exception_list ?? [];
+  return exceptions.some((exception) => SAFE_LINKS_SCANNER_REJECTION.test(exception.value ?? '')) ? null : event;
 };
