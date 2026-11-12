@@ -28,21 +28,6 @@ import { fetchPlay, postPlayForm, postPlayJson } from '@/play-connector/client';
 const userId = 'admin-user';
 const cookieHeader = 'PLAY_SESSION=upgraded';
 
-const carsListRow = (row: { id: number; name: string; brand: string; active: string }): string =>
-  [
-    '<tr>',
-    `<td><a href="/cars/view?id=${row.id}">${row.name}</a></td>`,
-    '<td></td><td></td>',
-    `<td>${row.brand}</td><td></td>`,
-    `<td>${row.active}</td>`,
-    '</tr>',
-  ].join('');
-
-const carsListHtml = (rows: { id: number; name: string; brand: string; active: string }[]): string => {
-  const head = ['name', 'dashboard', 'license_plate', 'brand', 'category', 'active'].map((name) => `<th name="${name}"></th>`).join('');
-  return `<table id="dataTables-cars"><thead><tr>${head}</tr></thead><tbody>${rows.map(carsListRow).join('')}</tbody></table>`;
-};
-
 describe('playConnectorIsCarNameAvailable', () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -64,7 +49,7 @@ describe('playConnectorIsCarNameAvailable', () => {
   it('returns false when a result name matches case-insensitively', async () => {
     vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
     vi.mocked(fetchPlay).mockResolvedValueOnce({
-      html: carsListHtml([{ id: 3493, name: '2BAB', brand: 'Opel', active: 'Actief' }]),
+      html: '<a href="/cars/view?id=3493">2BAB</a>',
       status: 200,
     });
 
@@ -74,7 +59,7 @@ describe('playConnectorIsCarNameAvailable', () => {
   it('returns true when results are substring hits without an exact name match', async () => {
     vi.mocked(getPlayAdminModeSessionCookie).mockResolvedValueOnce({ cookieHeader });
     vi.mocked(fetchPlay).mockResolvedValueOnce({
-      html: carsListHtml([{ id: 3493, name: '2BAB', brand: 'Opel', active: 'Actief' }]),
+      html: '<a href="/cars/view?id=3493">2BAB</a>',
       status: 200,
     });
 

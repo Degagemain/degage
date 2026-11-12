@@ -57,7 +57,7 @@ Mock endpoints:
   - `parsers/infosession-table.parser.ts` — upcoming infosession table rows from `/infosession` HTML
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
   - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/house number/zip/city), GSM from `/profile` HTML
-  - `parsers/cars-page.parser.ts` — car id, name, brand, and active flag from `/cars/page` (names stay available for the exact name check)
+  - `parsers/cars-page.parser.ts` — car names from `/cars/page` `/cars/view` links (exact match for availability)
   - `parsers/reserve-fleet.parser.ts` — car id, name, brand-and-model text, and fuel from a saved `/calendar/cars` page
   - `match-car-brand.ts` — brand prefix match, then model prefix match for that brand and fuel (`mercedes` maps to `mercedes-benz`)
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
