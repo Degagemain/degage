@@ -10,18 +10,22 @@ const CARS_PAGE_SIZE = 50;
 
 const buildCarsNameFilter = (name: string): string => `name=${name},brand=,license_plate=,owner=,zipCode=,city=,district=`;
 
+const buildCarsListPath = (page: number, name: string): string => {
+  const filter = encodeURIComponent(buildCarsNameFilter(name));
+  return `/cars/page?page=${page}&pageSize=${CARS_PAGE_SIZE}&asc=1&orderBy=&filter=${filter}`;
+};
+
 export const playConnectorIsCarNameAvailable = async (adminModeUserId: string, name: string): Promise<boolean> => {
   if (name.includes(',') || name.includes('=')) {
     throw new PlayConnectorError('fetch_failed', 'Car name must not contain comma or equals');
   }
 
   const { cookieHeader } = await getPlayAdminModeSessionCookie(adminModeUserId);
-  const filter = encodeURIComponent(buildCarsNameFilter(name));
   const needle = name.toLowerCase();
 
   let page = 1;
   while (true) {
-    const path = `/cars/page?page=${page}&pageSize=${CARS_PAGE_SIZE}&asc=1&orderBy=&filter=${filter}`;
+    const path = buildCarsListPath(page, name);
     const { html } = await fetchPlay(path, cookieHeader);
     const names = parseCarsPageNames(html);
 
