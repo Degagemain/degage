@@ -58,6 +58,8 @@ Mock endpoints:
   - `parsers/infosession-chosen.parser.ts` — enrolled "Gekozen infosessie" panel from `/infosession` HTML
   - `parsers/profile-page.parser.ts` — name (first/last), Dégage ID, Verblijfsadres (street/house number/zip/city), GSM from `/profile` HTML
   - `parsers/cars-page.parser.ts` — car names from `/cars/page` `/cars/view` links (exact match for availability)
+  - `parsers/reserve-fleet.parser.ts` — car id, name, brand-and-model text, and fuel from a saved `/calendar/cars` page
+  - `match-car-brand.ts` — longest brand prefix, then explicit fleet spellings, then the model prefix (`mercedes` maps to `mercedes-benz`)
 - `app/storage/play-connector/` — `PlayConnector` table (encrypted secrets at rest)
 - `app/actions/play-connector/` — link, disconnect, status, session cookie orchestration (including admin mode), create car
 - `app/actions/play-infosession/` — list owner infosessions (type contains `eigenaar`) and unenroll
@@ -96,6 +98,29 @@ defaults `INFINITE` / `THREEMONTHS` / `NONE`).
 4. Admin-mode-only Play actions (e.g. car name availability) should use this helper instead of `getPlaySessionCookie`.
 
 Car onboarding car-name availability uses admin mode via the oldest Code1 admin user (temporary).
+
+### Degapp brand mapping
+
+Save `https://degapp.be/calendar/cars` while logged in, then run:
+
+```bash
+pnpm map:degapp-car-brands -- /path/to/Reserveer.html
+```
+
+The page lists the reservable fleet. Each car row has the Degapp car name and one free-text brand and model, such as `Opel Zafira`, plus a fuel
+label. Bicycles on the same page are counted and left out. The script matches the leading words to a catalog brand, then matches the remaining
+words to a catalog type of that brand and fuel. `Benzine` is gasoline, `Elektrisch` is electric, and `Plugin Hybride` is plugin-hybrid. Extra
+words still match: `Golf 1.6` matches `GOLF`, while `Golf Variant` matches `GOLF Variant`. `ID3` matches `ID.3`. It prints a JSON report and
+writes nothing to Play or to this database.
+
+A match folds case, accents, spaces, and hyphens. When that prefix misses, the script rewrites a few fleet spellings and matches again: `Toyoya`
+to Toyota, `Peugot` to Peugeot, `Huyndai` to Hyundai, `Mercedes` to Mercedes-Benz, `FIAT500` to Fiat 500, and `zoe` to Renault ZOE.
+`Mercedes C220` then matches with model `C220`. An abbreviation such as `VW` stays unmatched. Two catalog types with the same name and fuel
+count as one match.
+
+Each car has a brand result and a type result. A type is `confident`, `suggested` when the brand matches and no catalog type does, or
+`conflict`. Unmatched brand-and-model strings are listed once. Suggested types are listed once per brand, fuel, and model text. A confident
+match on an inactive catalog row includes `isActive: false`.
 
 `// TODO: replace oldest-admin lookup with a dedicated admin-mode play connector account.`
 
