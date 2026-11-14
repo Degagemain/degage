@@ -32,8 +32,13 @@ const FLEET_FUEL_TO_CODE: Record<string, string> = {
   CNG: 'cng',
 };
 
-const MERCEDES_BENZ_CODE = 'mercedes-benz';
-const MIN_BRAND_TYPO_LENGTH = 5;
+// Spellings from the saved Degapp fleet that are not a catalog brand prefix.
+const FLEET_BRAND_SPELLINGS: Record<string, string> = {
+  huyndai: 'Hyundai',
+  mercedes: 'Mercedes-Benz',
+  peugot: 'Peugeot',
+  toyoya: 'Toyota',
+};
 
 export type DegappFleetReport = {
   cars: {
@@ -67,32 +72,6 @@ const catalogTokens = (value: string): string[] =>
     .split(/[\s-]+/)
     .filter(Boolean);
 
-const editDistance = (left: string, right: string): number => {
-  if (Math.abs(left.length - right.length) > 1) return 2;
-  const rows = left.length + 1;
-  const cols = right.length + 1;
-  const distances = Array.from({ length: rows }, () => Array<number>(cols).fill(0));
-  for (let row = 0; row < rows; row += 1) distances[row][0] = row;
-  for (let col = 0; col < cols; col += 1) distances[0][col] = col;
-
-  for (let row = 1; row < rows; row += 1) {
-    for (let col = 1; col < cols; col += 1) {
-      const cost = left[row - 1] === right[col - 1] ? 0 : 1;
-      distances[row][col] = Math.min(distances[row - 1][col] + 1, distances[row][col - 1] + 1, distances[row - 1][col - 1] + cost);
-      if (row > 1 && col > 1 && left[row - 1] === right[col - 2] && left[row - 2] === right[col - 1]) {
-        distances[row][col] = Math.min(distances[row][col], distances[row - 2][col - 2] + 1);
-      }
-    }
-  }
-
-  return distances[left.length][right.length];
-};
-
-const singleBrandToken = (brand: CatalogCarBrand): string | null => {
-  const nameTokens = catalogTokens(brand.name);
-  return nameTokens.length === 1 ? nameTokens[0] : null;
-};
-
 const toReportBrand = (brand: CatalogCarBrand) => ({
   brandId: brand.id,
   brandName: brand.name,
@@ -106,9 +85,9 @@ const toReportType = (type: CatalogCarType) => ({
   isActive: type.isActive,
 });
 
-export const splitBrandAndModel = (brandModel: string, brands: CatalogCarBrand[]): { model: string; match: BrandMatch } => {
+const matchLongestBrandPrefix = (brandModel: string, brands: CatalogCarBrand[]): { model: string; match: BrandMatch } => {
   const tokens = catalogTokens(brandModel);
-  const originalTokens = brandModel
+  const words = brandModel
     .trim()
     .split(/[\s-]+/)
     .filter(Boolean);
@@ -121,42 +100,42 @@ export const splitBrandAndModel = (brandModel: string, brands: CatalogCarBrand[]
         hits.push({ brand, length: prefix.length });
       }
     }
-    if (brand.code === MERCEDES_BENZ_CODE && tokens[0] === 'mercedes' && tokens[1] !== 'benz') {
-      hits.push({ brand, length: 1 });
-    }
-  }
-
-  if (hits.length === 0 && tokens[0] && tokens[0].length >= MIN_BRAND_TYPO_LENGTH) {
-    for (const brand of brands) {
-      const token = singleBrandToken(brand);
-      if (token && token.length >= MIN_BRAND_TYPO_LENGTH && editDistance(tokens[0], token) === 1) hits.push({ brand, length: 1 });
-    }
-  }
-
-  if (hits.length === 0 && tokens[0]) {
-    for (const brand of brands) {
-      const token = singleBrandToken(brand);
-      if (!token || !tokens[0].startsWith(token)) continue;
-      const remainder = tokens[0].slice(token.length);
-      if (/^\d+$/.test(remainder)) hits.push({ brand, length: 1 });
-    }
-    if (hits.length === 1) {
-      const token = singleBrandToken(hits[0].brand);
-      if (token) {
-        originalTokens.splice(0, 1, originalTokens[0].slice(0, token.length), originalTokens[0].slice(token.length));
-      }
-    }
   }
 
   const bestLength = hits.reduce((best, hit) => Math.max(best, hit.length), 0);
   const winners = [...new Map(hits.filter((hit) => hit.length === bestLength).map((hit) => [hit.brand.id, hit.brand])).values()].sort(
     (left, right) => left.code.localeCompare(right.code),
   );
-  if (winners.length === 0) return { model: originalTokens.join(' '), match: { status: 'missing' } };
+  if (winners.length === 0) return { model: words.join(' '), match: { status: 'missing' } };
 
-  const model = originalTokens.slice(bestLength).join(' ');
+  const model = words.slice(bestLength).join(' ');
   if (winners.length === 1) return { model, match: { status: 'confident', brand: winners[0] } };
   return { model, match: { status: 'conflict', candidates: winners } };
+};
+
+const explicitBrandModel = (brandModel: string): string | null => {
+  const tokens = catalogTokens(brandModel);
+  const words = brandModel
+    .trim()
+    .split(/[\s-]+/)
+    .filter(Boolean);
+  const first = tokens[0];
+  if (!first || words.length === 0) return null;
+
+  const spelling = FLEET_BRAND_SPELLINGS[first];
+  if (spelling) return [spelling, ...words.slice(1)].join(' ');
+  if (first === 'fiat500') return ['Fiat', '500', ...words.slice(1)].join(' ');
+  if (first === 'zoe') return ['Renault', ...words].join(' ');
+  return null;
+};
+
+export const splitBrandAndModel = (brandModel: string, brands: CatalogCarBrand[]): { model: string; match: BrandMatch } => {
+  const prefix = matchLongestBrandPrefix(brandModel, brands);
+  if (prefix.match.status !== 'missing') return prefix;
+
+  const rewritten = explicitBrandModel(brandModel);
+  if (!rewritten) return prefix;
+  return matchLongestBrandPrefix(rewritten, brands);
 };
 
 const matchModel = (model: string, brandId: string, fuel: string | null, types: CatalogCarType[]): TypeMatch => {
@@ -192,39 +171,6 @@ const chooseType = (hits: { type: CatalogCarType; length: number }[]): TypeMatch
   };
 };
 
-const matchLeadingType = (
-  brandModel: string,
-  fuel: string | null,
-  brands: CatalogCarBrand[],
-  types: CatalogCarType[],
-): { model: string; brand: CatalogCarBrand; type: CatalogCarType } | null => {
-  const fuelCode = fuel ? FLEET_FUEL_TO_CODE[fuel] : undefined;
-  const tokens = catalogTokens(brandModel);
-  const originalTokens = brandModel
-    .trim()
-    .split(/[\s-]+/)
-    .filter(Boolean);
-  if (!fuelCode || tokens.length === 0) return null;
-
-  const hits: { type: CatalogCarType; length: number }[] = [];
-  for (const type of types) {
-    if (type.fuelCode !== fuelCode) continue;
-    const typeTokens = catalogTokens(type.name);
-    if (typeTokens.length === 0 || typeTokens.length > tokens.length) continue;
-    if (typeTokens.every((token, index) => tokens[index] === token)) hits.push({ type, length: typeTokens.length });
-  }
-
-  const bestLength = hits.reduce((best, hit) => Math.max(best, hit.length), 0);
-  const winners = hits.filter((hit) => hit.length === bestLength).map((hit) => hit.type);
-  const brandIds = [...new Set(winners.map((type) => type.brandId))];
-  if (brandIds.length !== 1) return null;
-  const chosen = chooseType(hits);
-  if (chosen.status !== 'confident') return null;
-  const brand = brands.find((candidate) => candidate.id === brandIds[0]);
-  if (!brand) return null;
-  return { model: originalTokens.slice(bestLength).join(' '), brand, type: chosen.type };
-};
-
 const toReportBrandMatch = (match: BrandMatch): DegappFleetReport['cars'][number]['brand'] => {
   if (match.status === 'confident') return { status: 'confident', ...toReportBrand(match.brand) };
   if (match.status === 'missing') return { status: 'missing' };
@@ -245,20 +191,6 @@ export const buildDegappFleetReport = (
 ): DegappFleetReport => {
   const cars = fleetCars.map((car) => {
     const split = splitBrandAndModel(car.brandModel, brands);
-    if (split.match.status === 'missing') {
-      const leading = matchLeadingType(car.brandModel, car.fuel, brands, types);
-      if (leading) {
-        return {
-          id: car.id,
-          name: car.name,
-          brandModel: car.brandModel,
-          model: leading.model,
-          fuel: car.fuel,
-          brand: toReportBrandMatch({ status: 'confident', brand: leading.brand }),
-          type: toReportTypeMatch({ status: 'confident', type: leading.type }),
-        };
-      }
-    }
     const type = split.match.status === 'confident' ? matchModel(split.model, split.match.brand.id, car.fuel, types) : null;
     return {
       id: car.id,
