@@ -2827,6 +2827,10 @@
       "startNewCta": "Nieuwe simulatie starten →"
     }
   },
+  "carSharingPage": {
+    "title": "Autodelen",
+    "intro": "Dit is de nieuwe plek om een deelwagen te zoeken. Zoeken kan hier nog niet."
+  },
   "landing": {
     "brand": "Dégage!",
     "header": {

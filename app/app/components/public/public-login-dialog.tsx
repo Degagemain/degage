@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CalendarDays, CarFront, ClipboardList, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { CAR_SHARING_PATH } from '@/app/car-sharing/access';
 import { buildSignInUrlWithReturnPath } from '@/app/lib/sign-in-return-path';
 import { useCarSharingEnabled } from '@/app/lib/use-car-sharing-enabled';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
@@ -12,7 +13,6 @@ import { cn } from '@/app/lib/utils';
 import styles from './public-theme.module.css';
 
 const DEGAPP_URL = 'https://degapp.be/';
-export const CAR_SHARING_SIGN_IN_PATH = '/app/car-sharing';
 
 type PublicLoginDialogProps = {
   open: boolean;
@@ -23,7 +23,7 @@ export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps
   const t = useTranslations('landing.header.loginDialog');
   const carSharing = useCarSharingEnabled();
   const onboardingSignInUrl = buildSignInUrlWithReturnPath('/app/dashboard');
-  const carSharingSignInUrl = buildSignInUrlWithReturnPath(CAR_SHARING_SIGN_IN_PATH);
+  const carSharingSignInUrl = buildSignInUrlWithReturnPath(CAR_SHARING_PATH);
 
   const optionClassName = cn(
     styles.publicTheme,
