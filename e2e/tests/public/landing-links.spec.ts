@@ -61,5 +61,7 @@ test.describe('landing page links', () => {
 
     const onboarding = page.getByRole('link', { name: 'New owner onboarding' });
     await expect(onboarding).toHaveAttribute('href', /\/app\/auth\/sign-in/);
+
+    await expect(page.getByRole('link', { name: 'Car sharing' })).toHaveCount(0);
   });
 });

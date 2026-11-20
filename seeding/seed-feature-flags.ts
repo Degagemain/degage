@@ -1,5 +1,5 @@
 import { PrismaClient } from '@/storage/client/client';
-import { FAQ_ARTICLES_FEATURE_FLAG, SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
+import { CAR_SHARING_FEATURE_FLAG, FAQ_ARTICLES_FEATURE_FLAG, SUPPORT_CHAT_FEATURE_FLAG } from '@/domain/feature-flag.model';
 
 const featureFlags = [
   {
@@ -10,6 +10,11 @@ const featureFlags = [
   {
     code: FAQ_ARTICLES_FEATURE_FLAG,
     description: 'Controls whether the articles section is shown on the public FAQ hub.',
+    enabled: false,
+  },
+  {
+    code: CAR_SHARING_FEATURE_FLAG,
+    description: 'Shows a car-sharing choice on the sign-in dialog.',
     enabled: false,
   },
 ] as const;

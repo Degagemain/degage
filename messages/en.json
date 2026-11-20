@@ -2840,6 +2840,10 @@
         "onboarding": {
           "title": "New owner onboarding",
           "description": "Continue enrolling your car with Dégage. Follow your application and upload documents."
+        },
+        "carSharing": {
+          "title": "Car sharing",
+          "description": "Sign in here to use the new car-sharing app."
         }
       }
     },

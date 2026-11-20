@@ -2,6 +2,7 @@ import * as z from 'zod';
 
 export const SUPPORT_CHAT_FEATURE_FLAG = 'support-chat';
 export const FAQ_ARTICLES_FEATURE_FLAG = 'faq-articles';
+export const CAR_SHARING_FEATURE_FLAG = 'car-sharing';
 
 export const featureFlagSchema = z
   .object({

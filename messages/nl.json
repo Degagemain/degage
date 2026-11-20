@@ -2840,6 +2840,10 @@
         "onboarding": {
           "title": "Instap nieuwe eigenaar",
           "description": "Ga verder met de inschrijving van je wagen bij Dégage. "
+        },
+        "carSharing": {
+          "title": "Autodelen",
+          "description": "Meld je hier aan voor de nieuwe deelapp."
         }
       }
     },

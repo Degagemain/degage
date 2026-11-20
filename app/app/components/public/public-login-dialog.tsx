@@ -1,16 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { CarFront, ClipboardList, ExternalLink } from 'lucide-react';
+import { CalendarDays, CarFront, ClipboardList, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { buildSignInUrlWithReturnPath } from '@/app/lib/sign-in-return-path';
+import { useCarSharingEnabled } from '@/app/lib/use-car-sharing-enabled';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 import { cn } from '@/app/lib/utils';
 
 import styles from './public-theme.module.css';
 
 const DEGAPP_URL = 'https://degapp.be/';
+export const CAR_SHARING_SIGN_IN_PATH = '/app/car-sharing';
 
 type PublicLoginDialogProps = {
   open: boolean;
@@ -19,7 +21,9 @@ type PublicLoginDialogProps = {
 
 export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps) {
   const t = useTranslations('landing.header.loginDialog');
+  const carSharing = useCarSharingEnabled();
   const onboardingSignInUrl = buildSignInUrlWithReturnPath('/app/dashboard');
+  const carSharingSignInUrl = buildSignInUrlWithReturnPath(CAR_SHARING_SIGN_IN_PATH);
 
   const optionClassName = cn(
     styles.publicTheme,
@@ -55,6 +59,18 @@ export function PublicLoginDialog({ open, onOpenChange }: PublicLoginDialogProps
               aria-hidden
             />
           </a>
+
+          {carSharing === 'enabled' ? (
+            <Link href={carSharingSignInUrl} className={optionClassName} onClick={() => onOpenChange(false)}>
+              <span className="inline-flex rounded-lg bg-[var(--public-option-icon-bg)] p-2.5 text-[var(--public-option-icon-fg)]">
+                <CalendarDays className="size-5" aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className={cn('font-semibold', styles.textHeading)}>{t('carSharing.title')}</span>
+                <span className={cn('mt-1 block text-sm leading-relaxed', styles.textMuted)}>{t('carSharing.description')}</span>
+              </span>
+            </Link>
+          ) : null}
 
           <Link href={onboardingSignInUrl} className={optionClassName} onClick={() => onOpenChange(false)}>
             <span className="inline-flex rounded-lg bg-[var(--public-option-icon-bg)] p-2.5 text-[var(--public-option-icon-fg)]">

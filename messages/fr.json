@@ -2840,6 +2840,10 @@
         "onboarding": {
           "title": "Inscription nouveau propriétaire",
           "description": "Poursuivez l'inscription de votre voiture chez Dégage. Suivez votre demande et téléchargez vos documents."
+        },
+        "carSharing": {
+          "title": "Autopartage",
+          "description": "Connectez-vous ici pour utiliser la nouvelle application de partage."
         }
       }
     },
