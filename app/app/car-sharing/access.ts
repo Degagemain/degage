@@ -11,3 +11,11 @@ export const carSharingAccess = (signedIn: boolean, flag: CarSharingFlag): CarSh
   if (flag === 'disabled') return 'home';
   return 'page';
 };
+
+export const carSharingConnectHref = `/app/account/settings?tab=play-connector&redirectTo=${encodeURIComponent(CAR_SHARING_PATH)}`;
+
+export const carSharingConnectReturnPath = (value: string | null | undefined): string | null =>
+  value === CAR_SHARING_PATH ? CAR_SHARING_PATH : null;
+
+export const carSharingShowsConnectPrompt = (status: 'missing' | 'failing' | 'success'): boolean =>
+  status === 'missing' || status === 'failing';

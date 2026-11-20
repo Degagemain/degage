@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { carSharingAccess } from '@/app/car-sharing/access';
+import { carSharingAccess, carSharingConnectReturnPath, carSharingShowsConnectPrompt } from '@/app/car-sharing/access';
 
 describe('carSharingAccess', () => {
   it('sends a signed-out visitor to sign in', () => {
@@ -19,5 +19,30 @@ describe('carSharingAccess', () => {
 
   it('shows the page when the visitor is signed in and the flag is on', () => {
     expect(carSharingAccess(true, 'enabled')).toBe('page');
+  });
+});
+
+describe('carSharingConnectReturnPath', () => {
+  it('accepts only the car-sharing page', () => {
+    expect(carSharingConnectReturnPath('/app/car-sharing')).toBe('/app/car-sharing');
+  });
+
+  it('rejects other paths, protocol-relative URLs, and off-site URLs', () => {
+    expect(carSharingConnectReturnPath(null)).toBeNull();
+    expect(carSharingConnectReturnPath('')).toBeNull();
+    expect(carSharingConnectReturnPath('/app')).toBeNull();
+    expect(carSharingConnectReturnPath('/app/dashboard')).toBeNull();
+    expect(carSharingConnectReturnPath('/app/car-sharing/extra')).toBeNull();
+    expect(carSharingConnectReturnPath('//evil.example')).toBeNull();
+    expect(carSharingConnectReturnPath('https://evil.example')).toBeNull();
+    expect(carSharingConnectReturnPath('/app/car-sharing?next=https://evil.example')).toBeNull();
+  });
+});
+
+describe('carSharingShowsConnectPrompt', () => {
+  it('shows the prompt only when the connection is missing or failing', () => {
+    expect(carSharingShowsConnectPrompt('missing')).toBe(true);
+    expect(carSharingShowsConnectPrompt('failing')).toBe(true);
+    expect(carSharingShowsConnectPrompt('success')).toBe(false);
   });
 });

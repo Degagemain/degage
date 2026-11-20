@@ -2829,7 +2829,8 @@
   },
   "carSharingPage": {
     "title": "Car sharing",
-    "intro": "This is the new place to find a shared car. Search is not here yet."
+    "intro": "This is the new place to find a shared car. Search is not here yet.",
+    "connect": "Connect Degapp"
   },
   "landing": {
     "brand": "Dégage!",

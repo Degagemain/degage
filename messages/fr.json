@@ -2829,7 +2829,8 @@
   },
   "carSharingPage": {
     "title": "Autopartage",
-    "intro": "C'est ici que vous chercherez une voiture partagée. La recherche n'est pas encore disponible."
+    "intro": "C'est ici que vous chercherez une voiture partagée. La recherche n'est pas encore disponible.",
+    "connect": "Connecter Degapp"
   },
   "landing": {
     "brand": "Dégage!",
