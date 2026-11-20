@@ -1,10 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Loader2, TriangleAlertIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { carSharingConnectReturnPath } from '@/app/car-sharing/access';
 import { InlineCopy } from '@/app/components/inline-copy';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -18,12 +20,15 @@ export function PlayConnectorCard({
   connectPath = '/api/play-connector',
   onStatusChange,
   allowDisconnect = true,
+  returnPath = null,
 }: {
   connectPath?: string;
   onStatusChange?: (status: PlayConnectorStatus) => void;
   allowDisconnect?: boolean;
+  returnPath?: string | null;
 }) {
   const t = useTranslations('playConnector');
+  const router = useRouter();
   const { data: session } = authClient.useSession();
   const [status, setStatus] = useState<PlayConnectorStatus | null>(null);
   const [email, setEmail] = useState('');
@@ -72,6 +77,10 @@ export function PlayConnectorCard({
       setPassword('');
       onStatusChange?.(data);
       toast.success(t('connectSuccess'));
+      const safeReturn = carSharingConnectReturnPath(returnPath);
+      if (safeReturn) {
+        router.push(safeReturn);
+      }
     } catch {
       toast.error(t('connectFailed'));
     } finally {

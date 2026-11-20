@@ -37,7 +37,7 @@ export function AccountSettingsPage() {
             <ChangePasswordCard />
           </TabsContent>
           <TabsContent value="play-connector" className="mt-0">
-            <PlayConnectorCard />
+            <PlayConnectorCard returnPath={searchParams.get('redirectTo')} />
           </TabsContent>
           {hasSocialProviders ? (
             <TabsContent value="sign-in" className="mt-0">
