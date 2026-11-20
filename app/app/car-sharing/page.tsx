@@ -5,21 +5,28 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { CAR_SHARING_HOME_PATH, carSharingAccess, carSharingConnectHref, carSharingShowsConnectPrompt } from '@/app/car-sharing/access';
+import {
+  CAR_SHARING_HOME_PATH,
+  type CarSharingConnection,
+  carSharingAccess,
+  carSharingConnectHref,
+  carSharingConnectionFromStatus,
+  carSharingShowsConnectPrompt,
+} from '@/app/car-sharing/access';
 import { PublicPage } from '@/app/components/public/public-shell';
 import { Button } from '@/app/components/ui/button';
 import { authClient } from '@/app/lib/auth';
 import { useCarSharingEnabled } from '@/app/lib/use-car-sharing-enabled';
-import type { PlayConnectorStatusValue } from '@/domain/play-connector.model';
 
-export function CarSharingContent({ status }: { status: PlayConnectorStatusValue }) {
+export function CarSharingContent({ status }: { status: CarSharingConnection }) {
   const t = useTranslations('carSharingPage');
 
   return (
     <PublicPage narrow>
       <h1 className="text-[28px] leading-tight font-extrabold tracking-tight text-stone-900">{t('title')}</h1>
       <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-stone-600">{t('intro')}</p>
-      {carSharingShowsConnectPrompt(status) ? (
+      {status === 'load-error' ? <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-stone-600">{t('loadError')}</p> : null}
+      {status !== 'load-error' && carSharingShowsConnectPrompt(status) ? (
         <Button className="mt-8 h-11 rounded-lg bg-[var(--public-brand)] px-6 text-white hover:bg-[var(--public-brand-hover)]" asChild>
           <Link href={carSharingConnectHref}>{t('connect')}</Link>
         </Button>
@@ -28,15 +35,12 @@ export function CarSharingContent({ status }: { status: PlayConnectorStatusValue
   );
 }
 
-const isPlayConnectorStatus = (value: string): value is PlayConnectorStatusValue =>
-  value === 'missing' || value === 'failing' || value === 'success';
-
 export default function CarSharingPage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const flag = useCarSharingEnabled();
   const access = carSharingAccess(!isPending && Boolean(session), flag);
-  const [connection, setConnection] = useState<PlayConnectorStatusValue | null>(null);
+  const [connection, setConnection] = useState<CarSharingConnection | null>(null);
 
   useEffect(() => {
     if (access === 'home') {
@@ -52,11 +56,9 @@ export default function CarSharingPage() {
         const response = await fetch('/api/play-connector');
         if (!response.ok) throw new Error('load failed');
         const data = (await response.json()) as { status?: string };
-        if (!cancelled && data.status && isPlayConnectorStatus(data.status)) {
-          setConnection(data.status);
-        }
+        if (!cancelled) setConnection(carSharingConnectionFromStatus(data.status));
       } catch {
-        if (!cancelled) setConnection('missing');
+        if (!cancelled) setConnection('load-error');
       }
     })();
     return () => {

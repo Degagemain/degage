@@ -2830,7 +2830,8 @@
   "carSharingPage": {
     "title": "Autodelen",
     "intro": "Dit is de nieuwe plek om een deelwagen te zoeken. Zoeken kan hier nog niet.",
-    "connect": "Degapp koppelen"
+    "connect": "Degapp koppelen",
+    "loadError": "De Degapp-koppeling kon niet worden geladen."
   },
   "landing": {
     "brand": "Dégage!",

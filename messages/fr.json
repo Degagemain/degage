@@ -2830,7 +2830,8 @@
   "carSharingPage": {
     "title": "Autopartage",
     "intro": "C'est ici que vous chercherez une voiture partagée. La recherche n'est pas encore disponible.",
-    "connect": "Connecter Degapp"
+    "connect": "Connecter Degapp",
+    "loadError": "La connexion Degapp n'a pas pu être chargée."
   },
   "landing": {
     "brand": "Dégage!",

@@ -19,3 +19,8 @@ export const carSharingConnectReturnPath = (value: string | null | undefined): s
 
 export const carSharingShowsConnectPrompt = (status: 'missing' | 'failing' | 'success'): boolean =>
   status === 'missing' || status === 'failing';
+
+export type CarSharingConnection = 'missing' | 'failing' | 'success' | 'load-error';
+
+export const carSharingConnectionFromStatus = (status: string | undefined): CarSharingConnection =>
+  status === 'missing' || status === 'failing' || status === 'success' ? status : 'load-error';

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { carSharingAccess, carSharingConnectReturnPath, carSharingShowsConnectPrompt } from '@/app/car-sharing/access';
+import {
+  carSharingAccess,
+  carSharingConnectReturnPath,
+  carSharingConnectionFromStatus,
+  carSharingShowsConnectPrompt,
+} from '@/app/car-sharing/access';
 
 describe('carSharingAccess', () => {
   it('sends a signed-out visitor to sign in', () => {
@@ -36,6 +41,20 @@ describe('carSharingConnectReturnPath', () => {
     expect(carSharingConnectReturnPath('//evil.example')).toBeNull();
     expect(carSharingConnectReturnPath('https://evil.example')).toBeNull();
     expect(carSharingConnectReturnPath('/app/car-sharing?next=https://evil.example')).toBeNull();
+  });
+});
+
+describe('carSharingConnectionFromStatus', () => {
+  it('keeps a known connection status', () => {
+    expect(carSharingConnectionFromStatus('missing')).toBe('missing');
+    expect(carSharingConnectionFromStatus('failing')).toBe('failing');
+    expect(carSharingConnectionFromStatus('success')).toBe('success');
+  });
+
+  it('treats an unexpected status as a load error', () => {
+    expect(carSharingConnectionFromStatus(undefined)).toBe('load-error');
+    expect(carSharingConnectionFromStatus('')).toBe('load-error');
+    expect(carSharingConnectionFromStatus('unknown')).toBe('load-error');
   });
 });
 

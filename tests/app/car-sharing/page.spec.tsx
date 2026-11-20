@@ -30,4 +30,11 @@ describe('CarSharingContent', () => {
 
     expect(screen.queryByRole('link', { name: 'connect' })).toBeNull();
   });
+
+  it('shows a load error and hides the connect button when the connection could not be read', () => {
+    render(<CarSharingContent status="load-error" />);
+
+    expect(screen.getByText('loadError')).toBeTruthy();
+    expect(screen.queryByRole('link', { name: 'connect' })).toBeNull();
+  });
 });

@@ -2830,7 +2830,8 @@
   "carSharingPage": {
     "title": "Car sharing",
     "intro": "This is the new place to find a shared car. Search is not here yet.",
-    "connect": "Connect Degapp"
+    "connect": "Connect Degapp",
+    "loadError": "The Degapp connection could not be loaded."
   },
   "landing": {
     "brand": "Dégage!",
