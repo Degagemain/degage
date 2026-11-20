@@ -2827,6 +2827,10 @@
       "startNewCta": "Démarrer une nouvelle simulation →"
     }
   },
+  "carSharingPage": {
+    "title": "Autopartage",
+    "intro": "C'est ici que vous chercherez une voiture partagée. La recherche n'est pas encore disponible."
+  },
   "landing": {
     "brand": "Dégage!",
     "header": {
